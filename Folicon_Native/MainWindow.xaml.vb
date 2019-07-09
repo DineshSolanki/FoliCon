@@ -9,6 +9,14 @@ Class MainWindow
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
         Dim selectedbtn As RadioButton = sender
         SearchMod = selectedbtn.Content.ToString
+        If SearchMod = "TV" Then
+            DateProperty = "first_air_date"
+            INameProperty = "name"
+        Else
+            DateProperty = "release_date"
+            INameProperty = "title"
+        End If
+
     End Sub
 
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
