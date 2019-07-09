@@ -205,6 +205,7 @@
     <Content Include="Model\star.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\TMDB black logo.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lib\" />
