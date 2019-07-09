@@ -34,10 +34,13 @@ Public Class SearchResult
 
         ImgDownloadList.Clear()
         InitPickedListDataTable()
-        StartSearch()
+        StartSearch(True)
     End Sub
-    Public Async Sub StartSearch()
-        BusyIndicator1.IsBusy = True
+    Public Async Sub StartSearch(ByVal useBusy As Boolean)
+        If useBusy Then
+            BusyIndicator1.IsBusy = True
+        End If
+
         Dim titleToSearch As String
         If Not RetryMovieTitle = Nothing Then
             titleToSearch = RetryMovieTitle
@@ -51,7 +54,10 @@ Public Class SearchResult
         Await PerformAcctualSearch(titleToSearch)
         'GoogleURl = Await GoogleIt(titleToSearch)
         RetryMovieTitle = Nothing
-        BusyIndicator1.IsBusy = False
+        If useBusy Then
+            BusyIndicator1.IsBusy = False
+        End If
+
     End Sub
     Private Async Function PerformAcctualSearch(title As String) As Task
         Dim cleantitle = New TitleCleaner().Clean(title)
@@ -170,7 +176,7 @@ Public Class SearchResult
     Private Sub Skipbtn_Click(sender As Object, e As RoutedEventArgs) Handles Skipbtn.Click
         i += 1
         If Not i > Fnames.Length - 1 Then
-            StartSearch()
+            StartSearch(True)
         Else
             Close()
         End If
@@ -179,7 +185,7 @@ Public Class SearchResult
     Private Sub SearchAgainbtn_Click(sender As Object, e As RoutedEventArgs) Handles SearchAgainbtn.Click
         RetryMovieTitle = SearchTxt.Text
 
-        StartSearch()
+        StartSearch(True)
     End Sub
 
     Private Sub Pickbtn_Click(sender As Object, e As RoutedEventArgs) Handles Pickbtn.Click
@@ -211,7 +217,7 @@ Public Class SearchResult
             End If
             i += 1
             If Not i > Fnames.Length - 1 Then
-                StartSearch()
+                StartSearch(True)
             Else
                 Close()
             End If
@@ -228,5 +234,10 @@ Public Class SearchResult
 
     Private Sub Slider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
         OverviewText.FontSize = FontSlider.Value
+    End Sub
+
+    Private Sub SearchTxt_TextChanged(sender As Object, e As TextChangedEventArgs) Handles SearchTxt.TextChanged
+        RetryMovieTitle = SearchTxt.Text
+        StartSearch(False)
     End Sub
 End Class
