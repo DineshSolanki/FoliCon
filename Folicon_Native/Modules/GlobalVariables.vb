@@ -2,6 +2,8 @@
 Imports System.Configuration
 
 Module GlobalVariables
+    Public DateProperty As String = Nothing
+    Public INameProperty As String = Nothing
     Public SelectedFolderPath As String = Nothing
     Public SearchMod As String = "Movie"
     Public IconMode As String = "Poster Mode"
