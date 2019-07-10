@@ -6,6 +6,7 @@ Imports System.Net
 Imports System.Net.TMDb
 Imports System.Threading
 Imports Folicon_Native.Model
+Imports Ookii.Dialogs.Wpf
 
 Module PublicFunctions
 
@@ -13,6 +14,17 @@ Module PublicFunctions
     ''' Creates an array of all Folders Names which do not have an icon assigned 
     ''' </summary>
     ''' 
+    Public Function NewFolderBrowseDialog(description As String) As VistaFolderBrowserDialog
+        Dim folderBrowser As New VistaFolderBrowserDialog()
+        With folderBrowser
+            .Description = description
+            .UseDescriptionForTitle = True
+        End With
+
+        Return folderBrowser
+
+
+    End Function
     Public Function IsNullOrEmpty(ByVal myStringArray() As String) As Boolean
         Return myStringArray Is Nothing OrElse myStringArray.Length < 1 OrElse myStringArray(0) = ""
     End Function
