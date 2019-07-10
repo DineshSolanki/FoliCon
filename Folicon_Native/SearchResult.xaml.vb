@@ -194,9 +194,12 @@ Public Class SearchResult
             PickedMovieIndex = ListView1.SelectedIndex
             If Searchresultob.item("results")(PickedMovieIndex).item("poster_path").ToString IsNot "null" Then
 
-                Dim releaseDate As DateTime = CDate(Searchresultob.item("results")(PickedMovieIndex).item(DateProperty).ToString)
-
-                AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".png", Searchresultob.item("results")(PickedMovieIndex).item(INameProperty), releaseDate.Year.ToString, Searchresultob.item("results")(PickedMovieIndex).item("vote_average"), SelectedFolderPath & "\" & Fnames(i), Fnames(i))
+                If Not Fnames(i).ToLower.Contains("collection") Then
+                    Dim releaseDate As DateTime = CDate(Searchresultob.item("results")(PickedMovieIndex).item(DateProperty).ToString)
+                    AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".png", Searchresultob.item("results")(PickedMovieIndex).item(INameProperty), Searchresultob.item("results")(PickedMovieIndex).item("vote_average"), SelectedFolderPath & "\" & Fnames(i), Fnames(i), releaseDate.Year.ToString)
+                Else
+                    AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".png", Searchresultob.item("results")(PickedMovieIndex).item(INameProperty), Searchresultob.item("results")(PickedMovieIndex).item("vote_average"), SelectedFolderPath & "\" & Fnames(i), Fnames(i))
+                End If
                 FolderProcessedCount += 1
 
                 Dim image1 As New ImageToDownload()

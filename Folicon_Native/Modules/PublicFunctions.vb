@@ -201,7 +201,7 @@ Module PublicFunctions
         PickedListDataTable.Columns.Add(column5)
         PickedListDataTable.Columns.Add(column6)
     End Sub
-    Public Sub AddToPickedListDataTable(poster As String, title As String, year As String, rating As String, folder As String, folderName As String)
+    Public Sub AddToPickedListDataTable(poster As String, title As String, rating As String, folder As String, folderName As String, Optional year As String = "")
         Dim nRow As DataRow
         nRow = PickedListDataTable.NewRow()
         nRow.Item("Poster") = poster

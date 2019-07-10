@@ -25,6 +25,7 @@ Class MainWindow
             SelectedFolderPath = folderbrowse.SelectedPath
             SelectedFolderlbl.Content = SelectedFolderPath
             Searchbtn.IsEnabled = True
+            PosterProgressBar.Value = 0
             GetFileNames()
         End If
     End Sub
@@ -117,16 +118,20 @@ Class MainWindow
         If ValidFolder(SelectedFolderPath) Then
             If PosterProgressBar.Value.ToString = "100" Then
                 BusyIndicator1.IsBusy = True
-                MakeIco("visible")
+                Dim ts As New System.Threading.ThreadStart(Sub() MakeIco("visible"))
+                Dim t As New System.Threading.Thread(ts)
+                t.Start()
                 IconsProcessedValue.Content = IconProcessedCount.ToString()
-
-                MessageBox.Show("Done!", "Icon(s) Created")
                 BusyIndicator1.IsBusy = False
+                MessageBox.Show("Done!", "Icon(s) Created")
+
             Else
                 Dim result = MessageBox.Show("Please wait for the posters to Download..." & vbCrLf & "Have you already downloaded Images ?", "Please wait...", MessageBoxButton.YesNo)
                 If result = MessageBoxResult.Yes Then
                     BusyIndicator1.IsBusy = True
-                    MakeIco()
+                    Dim ts As New System.Threading.ThreadStart(AddressOf MakeIco)
+                    Dim t As New System.Threading.Thread(ts)
+                    t.Start()
                     BusyIndicator1.IsBusy = False
                     IconsProcessedValue.Content = IconProcessedCount.ToString()
                     MessageBox.Show("Done!", "Icon(s) Created")
@@ -134,6 +139,13 @@ Class MainWindow
             End If
         Else
             MessageBox.Show("Sorry, Folder is Empty or not selected.", "Empty Folder")
+        End If
+    End Sub
+
+    Private Sub FinalistView_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles FinalistView.MouseDoubleClick
+        Dim item = FinalistView.SelectedItem
+        If item IsNot Nothing Then
+            Process.Start(FinalistView.SelectedItem.Folder)
         End If
     End Sub
 End Class

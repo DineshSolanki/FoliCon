@@ -116,7 +116,8 @@ Public Class FolderIcon
         Me.IniPath = Me.FolderPath & "desktop.ini"
 
         ' Write .ini settings to the desktop.ini file
-        IniWriter.WriteValue(".ShellClassInfo", "IconResource", iconFilePath & ",0", Me.IniPath)
+        'IniWriter.WriteValue(".ShellClassInfo", "IconResource", iconFilePath & ",0", Me.IniPath)
+        IniWriter.WriteValue(".ShellClassInfo", "IconResource", infoTip & ".ico" & ",0", Me.IniPath)
         'IniWriter.WriteValue(".ShellClassInfo", "IconIndex", iconIndex.ToString(), Me.IniPath)
         'IniWriter.WriteValue(".ShellClassInfo", "InfoTip", infoTip, Me.IniPath)
 
