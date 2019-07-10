@@ -20,27 +20,15 @@ Class MainWindow
     End Sub
 
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
-        SelectedFolderPath = ShowFolderBrowseDialog("Select Folder")
-        If Not SelectedFolderPath = Nothing Then
+        Dim folderbrowse = NewFolderBrowseDialog("Selected Folder")
+        If folderbrowse.ShowDialog Then
+            SelectedFolderPath = folderbrowse.SelectedPath
             SelectedFolderlbl.Content = SelectedFolderPath
             Searchbtn.IsEnabled = True
             GetFileNames()
-
         End If
     End Sub
-    Private Function ShowFolderBrowseDialog(description As String)
-        Dim folderBrowser As New VistaFolderBrowserDialog()
-        With folderBrowser
-            .Description = description
-            .UseDescriptionForTitle = True
-        End With
-        If folderBrowser.ShowDialog() Then
-            Return folderBrowser.SelectedPath.ToString
-        Else
-            Return Nothing
-        End If
 
-    End Function
 
     Private Sub Searchbtn_Click(sender As Object, e As RoutedEventArgs) Handles Searchbtn.Click
         GetFileNames()
