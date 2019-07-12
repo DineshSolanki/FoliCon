@@ -4,6 +4,16 @@ Creates Folder icons for Movies and Serials, inspired and derived by Raticon
 This Application Converts your Boring Movie, TV, Game Folder Icons to A good Looking and informative icons, Which includes their Rating too.
 The Application is WIP, but usable, 
 
+## Screens 
+![Before](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/Before.png)
+![After](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/After.png)
+![Searching](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/Searching.png)
+![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/FoliconSS%201.png)
+![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/Description.png)
+![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/FoliconSS%202.png)
+![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/FoliconSS%204.png)
+
+
 ## Getting Started
 
 To compile this Source you need to Create "App.config" file with structure given below
