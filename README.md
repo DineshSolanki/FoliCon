@@ -7,7 +7,7 @@ The Application is WIP, but usable.
 [![Download](https://user-images.githubusercontent.com/15937452/61147148-51575280-a4f9-11e9-953e-3989e58ed067.png) ](https://github.com/dinesh-solanki/Folicon/releases/latest)
 
 <details>
-  <summary>Screens </summary>
+  <summary>Screens (Click here to see) </summary>
     
 ![Before](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/Before.png)
 ![After](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon%20v1.0/After.png)
