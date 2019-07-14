@@ -37,8 +37,8 @@ Public Class FolderIcon
         End Get
         Set(ByVal value As String)
             _folderPathRenamed = value
-            If Not Me._folderPathRenamed.EndsWith("\") Then
-                Me._folderPathRenamed &= "\"
+            If Not _folderPathRenamed.EndsWith("\") Then
+                _folderPathRenamed &= "\"
             End If
         End Set
     End Property

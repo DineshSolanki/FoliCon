@@ -20,7 +20,7 @@ Public Class IniWriter
     ''' <param name="iniFilePath">The path to the .ini file to modify.</param>
 
     Public Shared Sub WriteValue(ByVal iniSection As String, ByVal iniKey As String, ByVal iniValue As String, ByVal iniFilePath As String)
-        WritePrivateProfileString(iniSection, iniKey, iniValue, iniFilePath)
+        Dim unused = WritePrivateProfileString(iniSection, iniKey, iniValue, iniFilePath)
     End Sub
 
 End Class

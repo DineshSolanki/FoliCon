@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded">
+        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <!--<Window.DataContext>
         <local:ListItem/>
     </Window.DataContext>-->
@@ -14,11 +14,11 @@
             <RowDefinition Height="147*"/>
             <RowDefinition Height="275*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="MovieTitle"  Content="Movie Name" HorizontalAlignment="Left" Margin="80,14,0,0" VerticalAlignment="Top" Width="278" HorizontalContentAlignment="Center" ScrollViewer.CanContentScroll="True"/>
-        <ListView x:Name="ListView1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding ListItem}" HorizontalAlignment="Left" Height="304" Margin="21,76,0,0" VerticalAlignment="Top" Width="426" Grid.RowSpan="2">
+        <Label x:Name="MovieTitle"  Content="Movie Name" Margin="168,10,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left"/>
+        <ListView x:Name="ListView1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding ListItem}" HorizontalAlignment="Left" Height="304" Margin="21,76,0,0" VerticalAlignment="Top" Width="426" Grid.RowSpan="2" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="190">
+                    <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Title}"/>
@@ -26,8 +26,8 @@
                         </GridViewColumn.CellTemplate>
                         <GridViewColumnHeader Tag="Title" Content="Title"/>
                     </GridViewColumn>
-                    <GridViewColumn Header="Year" Width="Auto" DisplayMemberBinding="{Binding Year}" />
-                    <GridViewColumn Header="Rating" Width="Auto" DisplayMemberBinding="{Binding Rating}" />
+                    <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
+                    <GridViewColumn Header="Rating" Width="50" DisplayMemberBinding="{Binding Rating}" />
                 </GridView>
             </ListView.View>
         </ListView>

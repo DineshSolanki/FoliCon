@@ -1,11 +1,11 @@
 ﻿Imports System.ComponentModel
 Imports System.Data
-Imports System.IO
-Imports Ookii.Dialogs.Wpf
 
 Class MainWindow
-    Private WithEvents BackgrundWorker1 As New BackgroundWorker
+    Private WithEvents BackgrundWorker1 As New BackgroundWorker With {
+        .WorkerSupportsCancellation = True, .WorkerReportsProgress = True}
     Dim _draggedFileName As String = Nothing
+    Private progressUpdater1 As New ProgressUpdater
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
         Dim selectedbtn As RadioButton = sender
         SearchMod = selectedbtn.Content.ToString
@@ -26,6 +26,7 @@ Class MainWindow
             SelectedFolderlbl.Content = SelectedFolderPath
             Searchbtn.IsEnabled = True
             PosterProgressBar.Value = 0
+            BusyIndicator1.DataContext = progressUpdater1
             GetFileNames()
         End If
     End Sub
@@ -45,6 +46,10 @@ Class MainWindow
                     End If
                     ProcessedFolderValue.Content = FolderProcessedCount.ToString
                     TotalIconsValue.Content = ImgDownloadList.Count.ToString
+                    progressUpdater1.Maximum = ImgDownloadList.Count.ToString
+                    progressUpdater1.Text = "Downloading Icon 1/" & ImgDownloadList.Count.ToString & "..."
+                    PosterProgressBar.Maximum = ImgDownloadList.Count.ToString
+
                     Dim items As New List(Of ListItem)()
                     For Each r As DataRow In PickedListDataTable.Rows
 
@@ -56,8 +61,11 @@ Class MainWindow
             })
                     Next
                     FinalistView.ItemsSource = items
+                    SetColumnWidth(FinalistView)
                     If ImgDownloadList.Count > 0 Then
+                        BusyIndicator1.IsBusy = True
                         DoWorkOfDownload()
+
                     End If
                 Else
                     MessageBox.Show("Sorry, Internet is Not available.", "Network Error")
@@ -70,27 +78,37 @@ Class MainWindow
 
     End Sub
     Private Sub DoWorkOfDownload()
-        BackgrundWorker1.RunWorkerAsync()
+        Searchbtn.IsEnabled = False
+        BackgrundWorker1.RunWorkerAsync()     '<== Causes Exception when searching, while posters are downloading
     End Sub
 
     Private Sub RadioButton_Checked_1(sender As Object, e As RoutedEventArgs)
         Dim selectedbtn As RadioButton = sender
         IconMode = selectedbtn.Content.ToString
+
     End Sub
 
+
     Private Sub BackgrundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgrundWorker1.DoWork
-        For Each i As ImageToDownload In ImgDownloadList
-            DownloadImageFromUrl(i.RemotePath, i.LocalPath)
-            Me.Dispatcher.Invoke(Sub()
-                                     PosterProgressBar.Value += 1
-                                 End Sub)
+        Dim i As Integer = 0
+        For Each img As ImageToDownload In ImgDownloadList
+            If (BackgrundWorker1.CancellationPending = True) Then
+                e.Cancel = True
+                Return
+            End If
+
+            DownloadImageFromUrl(img.RemotePath, img.LocalPath)
+            i += 1
+            BackgrundWorker1.ReportProgress(i)
+
 
         Next
     End Sub
 
     Private Sub BackgrundWorker1_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgrundWorker1.RunWorkerCompleted
-        PosterProgressBar.Value = 100
+        BusyIndicator1.IsBusy = False
         MessageBox.Show("Done!", "Posters Downloaded")
+        Searchbtn.IsEnabled = True
     End Sub
 
     Private Sub Window_Drop(sender As Object, e As DragEventArgs)
@@ -116,22 +134,27 @@ Class MainWindow
 
     Private Sub Makebtn_Click(sender As Object, e As RoutedEventArgs) Handles Makebtn.Click
         If ValidFolder(SelectedFolderPath) Then
-            If PosterProgressBar.Value.ToString = "100" Then
+            If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
                 BusyIndicator1.IsBusy = True
-                Dim ts As New System.Threading.ThreadStart(Sub() MakeIco("visible"))
-                Dim t As New System.Threading.Thread(ts)
-                t.Start()
+                'Dim ts As New System.Threading.ThreadStart(Sub() MakeIco("visible"))
+                'Dim t As New System.Threading.Thread(ts)
+                't.Start()
+                MakeIco("visible")
                 IconsProcessedValue.Content = IconProcessedCount.ToString()
                 BusyIndicator1.IsBusy = False
-                MessageBox.Show("Done!", "Icon(s) Created")
+                Select Case MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel, MessageBoxImage.Information)
+                    Case MessageBoxResult.OK
+                        Process.Start(SelectedFolderPath)
+                End Select
 
             Else
                 Dim result = MessageBox.Show("Please wait for the posters to Download..." & vbCrLf & "Have you already downloaded Images ?", "Please wait...", MessageBoxButton.YesNo)
                 If result = MessageBoxResult.Yes Then
                     BusyIndicator1.IsBusy = True
-                    Dim ts As New System.Threading.ThreadStart(AddressOf MakeIco)
-                    Dim t As New System.Threading.Thread(ts)
-                    t.Start()
+                    'Dim ts As New System.Threading.ThreadStart(AddressOf MakeIco)
+                    'Dim t As New System.Threading.Thread(ts)
+                    't.Start()
+                    MakeIco()
                     BusyIndicator1.IsBusy = False
                     IconsProcessedValue.Content = IconProcessedCount.ToString()
                     MessageBox.Show("Done!", "Icon(s) Created")
@@ -146,6 +169,22 @@ Class MainWindow
         Dim item = FinalistView.SelectedItem
         If item IsNot Nothing Then
             Process.Start(FinalistView.SelectedItem.Folder)
+        End If
+    End Sub
+
+    Private Sub DownloadCancelbtn_Click(sender As Object, e As RoutedEventArgs)
+        BackgrundWorker1.CancelAsync()
+    End Sub
+
+    Private Sub BackgrundWorker1_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles BackgrundWorker1.ProgressChanged
+        progressUpdater1.Text = "Downloading Icon " & e.ProgressPercentage & "/" & progressUpdater1.Maximum & "..."
+        progressUpdater1.Value = e.ProgressPercentage
+        PosterProgressBar.Value = e.ProgressPercentage
+    End Sub
+
+    Private Sub BusyPosterProgessBar_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
+        If progressUpdater1.Value = progressUpdater1.Maximum Then
+            BusyIndicator1.IsBusy = False
         End If
     End Sub
 End Class

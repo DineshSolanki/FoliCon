@@ -6,7 +6,6 @@ Imports Xceed.Wpf.Toolkit
 
 Public Class SearchResult
     Dim i As Integer = 0
-    ReadOnly Items As New ObservableCollection(Of ListItem)()
     Private _ListItem As ListItem
     Public Property ListItem() As ListItem
         Get
@@ -49,9 +48,14 @@ Public Class SearchResult
         End If
         BusyIndicator1.BusyContent = "Searching for " & titleToSearch & "..."
         OverviewText.Text = ""
-        Items.Clear()
+        'Items.Clear()
 
         Await PerformAcctualSearch(titleToSearch)
+        If ListView1.Items.Count > 0 Then
+            ListView1.SelectedIndex = 0
+            ListView1.Focus()
+        End If
+
         'GoogleURl = Await GoogleIt(titleToSearch)
         RetryMovieTitle = Nothing
         If useBusy Then
@@ -108,7 +112,7 @@ Public Class SearchResult
             'If SplashScreenManager1.IsSplashFormVisible Then
             '    SplashScreenManager1.CloseWaitForm()
             'End If
-            MessageBox.Show("Nothing found for " & cleantitle & vbCrLf & "Try Searching with Other Title")
+            MessageBox.Show("Nothing found for " & cleantitle & vbCrLf & "Try Searching with Other Title " & vbCrLf & "OR Check search Mode")
             ' Skipbtn.PerformClick()
             'Skipbtn_Click(Nothing, Nothing)
 
@@ -119,7 +123,7 @@ Public Class SearchResult
     End Function
 
     Public Sub FetchAndAddDetailsToListView(listviewName As ListView, jsonResult As Object, Title As String)
-
+        Dim Items As New ObservableCollection(Of ListItem)()
         For Each m In jsonResult.item("results")
             Dim arr As String() = New String(3) {}
             Dim originalTitle As String = m.item("original_title")
@@ -169,6 +173,7 @@ Public Class SearchResult
 
         Next
         listviewName.ItemsSource = Items
+        SetColumnWidth(listviewName)
 
 
     End Sub
@@ -242,5 +247,22 @@ Public Class SearchResult
     Private Sub SearchTxt_TextChanged(sender As Object, e As TextChangedEventArgs) Handles SearchTxt.TextChanged
         RetryMovieTitle = SearchTxt.Text
         StartSearch(False)
+    End Sub
+
+    Private Sub ListView1_KeyDown(sender As Object, e As KeyEventArgs) Handles ListView1.KeyDown
+        e.Handled = True
+        If e.Key = Key.Enter Then
+            Pickbtn_Click(sender, Nothing)
+        Else
+            If e.Key = Key.Escape Then
+                Skipbtn_Click(sender, Nothing)
+            End If
+        End If
+    End Sub
+
+    Private Sub Window_KeyDown(sender As Object, e As KeyEventArgs)
+        If e.Key = Key.Escape Then
+            Skipbtn_Click(sender, Nothing)
+        End If
     End Sub
 End Class

@@ -24,7 +24,7 @@ Public Class IconLayout
         Return rtb
     End Function
 
-    Private Function RenderTargetBitmapTo32bppArgb(ByVal rtb As RenderTargetBitmap) As Bitmap
+    Private Shared Function RenderTargetBitmapTo32bppArgb(ByVal rtb As RenderTargetBitmap) As Bitmap
         Dim stream As New MemoryStream()
         Dim encoder As BitmapEncoder = New PngBitmapEncoder()
         encoder.Frames.Add(BitmapFrame.Create(rtb))

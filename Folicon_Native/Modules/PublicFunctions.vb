@@ -28,6 +28,18 @@ Module PublicFunctions
     Public Function IsNullOrEmpty(ByVal myStringArray() As String) As Boolean
         Return myStringArray Is Nothing OrElse myStringArray.Length < 1 OrElse myStringArray(0) = ""
     End Function
+    Public Sub SetColumnWidth(ByVal listview As ListView)
+        Dim gridView As GridView = TryCast(listview.View, GridView)
+        If gridView IsNot Nothing Then
+            For Each column In gridView.Columns
+                If Double.IsNaN(column.Width) Then
+                    column.Width = column.ActualWidth
+                End If
+                column.Width = Double.NaN
+            Next column
+        End If
+
+    End Sub
 
     Public Sub GetFileNames()
         ' Fnames = Nothing
@@ -83,7 +95,6 @@ Module PublicFunctions
                     read = stream.Read(bytes, 0, bytes.Length)
                     fileStream.Write(bytes, 0, read)
                 Loop While read <> 0
-                fileStream.Dispose()
             End Using
         End Using
     End Sub
