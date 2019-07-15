@@ -57,7 +57,6 @@ See also the list of [contributors](https://github.com/dinesh-solanki/Folicon/gr
 ## Acknowledgments
 
 * A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start, and throughout this Project, His code and Design is used.
-* 
-![TMDB Logo](https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png "Powered By TMDB API")
+* [<img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png" />]
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
 
