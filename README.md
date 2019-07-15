@@ -1,3 +1,5 @@
+<img src="https://img.shields.io/github/commit-activity/w/dinesh-solanki/folicon.svg?logo=FoliconCommitTime"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/dinesh-solanki/Folicon.svg?logo=FoliconOpenIssues">
+
 # Folicon
 Creates Folder icons for Movies and Serials, inspired and derived by Raticon
 
