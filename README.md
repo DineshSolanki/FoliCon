@@ -22,7 +22,7 @@ The Application is WIP, but usable.
 
 
 ## Getting Started
-*To Use this Application Instantly, Click the Download button Above or Go to "Release", and start using.*
+*To Use this Application Instantly, Click the Download button Above or Go to "Release", and start using. (No Installation or Additional Libraries needed)*
 
 To compile this Source you need to Create "App.config" file with structure given below
 ```
