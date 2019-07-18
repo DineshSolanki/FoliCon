@@ -1,7 +1,9 @@
 ﻿Imports System.Data
 Imports System.Configuration
+Imports Newtonsoft.Json.Linq
 
 Module GlobalVariables
+    Public FolderNameIndex As Integer = 0
     Public DateProperty As String = Nothing
     Public INameProperty As String = Nothing
     Public SelectedFolderPath As String = Nothing
@@ -12,7 +14,8 @@ Module GlobalVariables
     Public Response As Net.Http.HttpResponseMessage
     Public Fnames() As String = Nothing
     Public PickedListDataTable As DataTable = New DataTable
-    Public Searchresultob As Object
+    Public Searchresultob As JObject
+    Public SearchTitle As String = Nothing
     Public ImgDownloadList As New List(Of ImageToDownload)
     Public FolderProcessedCount As Integer = 0
     Public IconProcessedCount As Integer = 0

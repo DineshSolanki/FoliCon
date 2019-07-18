@@ -3,17 +3,16 @@ Imports System.Data
 Imports System.Drawing
 Imports System.IO
 Imports System.Net
+Imports System.Net.Http
 Imports System.Net.TMDb
 Imports System.Threading
 Imports Folicon_Native.Model
+Imports Newtonsoft.Json.Linq
 Imports Ookii.Dialogs.Wpf
 
 Module PublicFunctions
 
-    ''' <summary>
-    ''' Creates an array of all Folders Names which do not have an icon assigned 
-    ''' </summary>
-    ''' 
+
     Public Function NewFolderBrowseDialog(description As String) As VistaFolderBrowserDialog
         Dim folderBrowser As New VistaFolderBrowserDialog()
         With folderBrowser
@@ -25,6 +24,80 @@ Module PublicFunctions
 
 
     End Function
+    Public Async Function PerformAcctualSearch(title As String) As Task(Of Object)
+        'Dim cleantitle = New TitleCleaner().Clean(title)
+        Dim http = New HttpClient()
+
+
+        If SearchMod = "Game" Then
+            http.BaseAddress = New Uri("http://www.giantbomb.com/api/")
+        Else
+            http.BaseAddress = New Uri("http://api.themoviedb.org/3/")
+        End If
+        Dim URL As String = Nothing
+        If SearchMod = "Movie" Then
+            If title.ToLower.Contains("collection") Then
+                URL = "search/collection?api_key=" & ApikeyTMDB & "&language=en-US&query=" & title & "&page=1"
+            Else
+                URL = "search/movie?api_key=" & ApikeyTMDB & "&language=en-US&query=" & title
+            End If
+        ElseIf SearchMod = "TV" Then
+            URL = "search/tv?api_key=" & ApikeyTMDB & "&language=en-US&query=" & title
+        ElseIf SearchMod = "Auto" Then
+            URL = "search/multi?api_key=" & ApikeyTMDB & "&language=en-US&query=" & title
+        ElseIf SearchMod = "Game" Then
+            URL = "search?api_key=" & Apikeygb & "&format=" & Responseformatgb & "&query=" & title & "&field_list=" & Fieldlistgb
+        End If
+
+        Using Response
+            Try
+                Response = Await http.GetAsync(URL)
+            Catch ex As Exception
+                MessageBox.Show(ex.Message)
+                Return -1
+                Exit Function
+            End Try
+            Dim jsonData = Await Response.Content.ReadAsStringAsync()
+            Searchresultob = JValue.Parse(jsonData)
+        End Using
+        Return Searchresultob
+
+
+    End Function
+    Public Sub ResultPicked(ByVal PickedIndex As Integer)
+        If Searchresultob.Item("results")(PickedIndex).Item("poster_path").ToString IsNot "null" Then
+
+            If Not Fnames(FolderNameIndex).ToLower.Contains("collection") Then
+                Dim releaseDate As DateTime = CDate(Searchresultob.Item("results")(PickedIndex).Item(DateProperty).ToString)
+                AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png", Searchresultob.Item("results")(PickedIndex).Item(INameProperty), Searchresultob.Item("results")(PickedIndex).Item("vote_average"), SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex), releaseDate.Year.ToString)
+            Else
+                AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png", Searchresultob.Item("results")(PickedIndex).Item(INameProperty), Searchresultob.Item("results")(PickedIndex).Item("vote_average"), SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex))
+            End If
+
+            FolderProcessedCount += 1
+
+            Dim image1 As New ImageToDownload()
+            With image1
+                .LocalPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png"
+                If IconMode = "Poster" Then
+                    .RemotePath = "https://image.tmdb.org/t/p/w500/" & Searchresultob.Item("results")(PickedIndex).Item("poster_path").ToString
+                Else
+                    .RemotePath = GoogleURl
+                End If
+                '.RemotePath = Searchresult.item("results")(PickedMovieIndex).item("poster_path")
+
+            End With
+            ImgDownloadList.Add(image1)
+            'DownloadImage(Searchresult.item("results")(PickedMovieIndex).item("poster_path"), SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".jpg", CancellationToken.None)
+        Else
+            MessageBox.Show("sorry, No Poster Found, Please try in Professional Mode")
+        End If
+
+    End Sub
+    Public Sub GetReadyForSearch()
+        ImgDownloadList.Clear()
+        InitPickedListDataTable()
+    End Sub
     Public Function IsNullOrEmpty(ByVal myStringArray() As String) As Boolean
         Return myStringArray Is Nothing OrElse myStringArray.Length < 1 OrElse myStringArray(0) = ""
     End Function
@@ -40,7 +113,10 @@ Module PublicFunctions
         End If
 
     End Sub
-
+    ''' <summary>
+    ''' Creates an array of all Folders Names which do not have an icon assigned 
+    ''' </summary>
+    ''' 
     Public Sub GetFileNames()
         ' Fnames = Nothing
         If Not String.IsNullOrEmpty(SelectedFolderPath) Then

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded" >
     <!--<Window.DataContext>
         <local:ListItem/>
     </Window.DataContext>-->
@@ -32,8 +32,8 @@
             </ListView.View>
         </ListView>
 
-        <Button x:Name="Pickbtn" Content="Pick Selected" HorizontalAlignment="Left" Margin="21,41,0,0" VerticalAlignment="Top" Width="98"/>
-        <Button x:Name="Skipbtn" Content="Skip" HorizontalAlignment="Left" Margin="349,41,0,0" VerticalAlignment="Top" Width="98"/>
+        <Button x:Name="Pickbtn" Content="Pick Selected" HorizontalAlignment="Left" Margin="21,41,0,0" VerticalAlignment="Top" Width="98" IsDefault="True"/>
+        <Button x:Name="Skipbtn" Content="Skip" HorizontalAlignment="Left" Margin="349,41,0,0" VerticalAlignment="Top" Width="98" IsCancel="True"/>
         <Label Content="~OR~" HorizontalAlignment="Left" Margin="178,223,0,0" Grid.Row="1" VerticalAlignment="Top" Width="54" FontSize="16"/>
         <TextBox x:Name="SearchTxt" HorizontalAlignment="Left" Height="23" Margin="21,270,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{x:Null}" VerticalAlignment="Top" Width="313"/>
         <Button x:Name="SearchAgainbtn" Content="Search Again" HorizontalAlignment="Left" Margin="349,270,0,0" VerticalAlignment="Top" Width="98" Grid.Row="1"/>

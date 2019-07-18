@@ -1,8 +1,5 @@
 ﻿Option Strict Off
 Imports System.Collections.ObjectModel
-Imports System.Net.Http
-Imports Newtonsoft.Json.Linq
-Imports Xceed.Wpf.Toolkit
 
 Public Class SearchResult
     Dim i As Integer = 0
@@ -30,10 +27,12 @@ Public Class SearchResult
 
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-
-        ImgDownloadList.Clear()
-        InitPickedListDataTable()
-        StartSearch(True)
+        MovieTitle.Content = SearchTitle
+        If Searchresultob IsNot Nothing OrElse Searchresultob.Item("total_results") IsNot Nothing OrElse Searchresultob.Item("number_of_total_results") IsNot Nothing Then
+            FetchAndAddDetailsToListView(ListView1, Searchresultob, SearchTitle)
+        Else
+            SearchTxt.Focus()
+        End If
     End Sub
     Public Async Sub StartSearch(ByVal useBusy As Boolean)
         If useBusy Then
@@ -44,83 +43,21 @@ Public Class SearchResult
         If Not RetryMovieTitle = Nothing Then
             titleToSearch = RetryMovieTitle
         Else
-            titleToSearch = Fnames(i)
+            titleToSearch = SearchTitle
         End If
         BusyIndicator1.BusyContent = "Searching for " & titleToSearch & "..."
         OverviewText.Text = ""
         'Items.Clear()
 
         Await PerformAcctualSearch(titleToSearch)
-        If ListView1.Items.Count > 0 Then
-            ListView1.SelectedIndex = 0
-            ListView1.Focus()
-        End If
-
         'GoogleURl = Await GoogleIt(titleToSearch)
         RetryMovieTitle = Nothing
         If useBusy Then
             BusyIndicator1.IsBusy = False
         End If
-
+        Window_Loaded(Nothing, Nothing)
     End Sub
-    Private Async Function PerformAcctualSearch(title As String) As Task
-        Dim cleantitle = New TitleCleaner().Clean(title)
-        Dim http = New HttpClient()
 
-
-        If SearchMod = "Game" Then
-            http.BaseAddress = New Uri("http://www.giantbomb.com/api/")
-        Else
-            http.BaseAddress = New Uri("http://api.themoviedb.org/3/")
-        End If
-        Dim URL As String = Nothing
-        If SearchMod = "Movie" Then
-            If title.ToLower.Contains("collection") Then
-                URL = "search/collection?api_key=" & ApikeyTMDB & "&language=en-US&query=" & cleantitle & "&page=1"
-            Else
-                URL = "search/movie?api_key=" & ApikeyTMDB & "&language=en-US&query=" & cleantitle
-            End If
-        ElseIf SearchMod = "TV" Then
-            URL = "search/tv?api_key=" & ApikeyTMDB & "&language=en-US&query=" & cleantitle
-        ElseIf SearchMod = "Auto" Then
-            URL = "search/multi?api_key=" & ApikeyTMDB & "&language=en-US&query=" & cleantitle
-        ElseIf SearchMod = "Game" Then
-            URL = "search?api_key=" & Apikeygb & "&format=" & Responseformatgb & "&query=" & cleantitle & "&field_list=" & Fieldlistgb
-        End If
-
-        Using Response
-            Try
-                Response = Await http.GetAsync(URL)
-            Catch ex As Exception
-                'If SplashScreenManager1.IsSplashFormVisible Then
-                '    SplashScreenManager1.CloseWaitForm()
-                'End If
-                MessageBox.Show(ex.Message)
-                Exit Function
-            End Try
-
-            Dim jsonData = Await Response.Content.ReadAsStringAsync()
-            Searchresultob = JValue.Parse(jsonData)
-        End Using
-        Dim result As String
-        If SearchMod = "Game" Then
-            result = Searchresultob.item("number_of_total_results")
-        Else
-            result = Searchresultob.item("total_results")
-        End If
-        If result = 0 Then
-            'If SplashScreenManager1.IsSplashFormVisible Then
-            '    SplashScreenManager1.CloseWaitForm()
-            'End If
-            MessageBox.Show("Nothing found for " & cleantitle & vbCrLf & "Try Searching with Other Title " & vbCrLf & "OR Check search Mode")
-            ' Skipbtn.PerformClick()
-            'Skipbtn_Click(Nothing, Nothing)
-
-        Else
-            FetchAndAddDetailsToListView(ListView1, Searchresultob, title)
-        End If
-        MovieTitle.Content = cleantitle
-    End Function
 
     Public Sub FetchAndAddDetailsToListView(listviewName As ListView, jsonResult As Object, Title As String)
         Dim Items As New ObservableCollection(Of ListItem)()
@@ -179,65 +116,22 @@ Public Class SearchResult
     End Sub
 
     Private Sub Skipbtn_Click(sender As Object, e As RoutedEventArgs) Handles Skipbtn.Click
-        i += 1
-        If Not i > Fnames.Length - 1 Then
-            StartSearch(True)
-        Else
-            Close()
-        End If
+        Close()
     End Sub
 
     Private Sub SearchAgainbtn_Click(sender As Object, e As RoutedEventArgs) Handles SearchAgainbtn.Click
-        RetryMovieTitle = SearchTxt.Text
-
+        SearchTitle = SearchTxt.Text
         StartSearch(True)
+        Window_Loaded(Nothing, Nothing)
     End Sub
 
     Private Sub Pickbtn_Click(sender As Object, e As RoutedEventArgs) Handles Pickbtn.Click
-
         If ListView1.SelectedItems.Count > 0 Then
             PickedMovieIndex = ListView1.SelectedIndex
-            If Searchresultob.item("results")(PickedMovieIndex).item("poster_path").ToString IsNot "null" Then
-
-                If Not Fnames(i).ToLower.Contains("collection") Then
-                    Dim releaseDate As DateTime = CDate(Searchresultob.item("results")(PickedMovieIndex).item(DateProperty).ToString)
-                    AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".png", Searchresultob.item("results")(PickedMovieIndex).item(INameProperty), Searchresultob.item("results")(PickedMovieIndex).item("vote_average"), SelectedFolderPath & "\" & Fnames(i), Fnames(i), releaseDate.Year.ToString)
-                Else
-                    AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".png", Searchresultob.item("results")(PickedMovieIndex).item(INameProperty), Searchresultob.item("results")(PickedMovieIndex).item("vote_average"), SelectedFolderPath & "\" & Fnames(i), Fnames(i))
-                End If
-                FolderProcessedCount += 1
-
-                Dim image1 As New ImageToDownload()
-                With image1
-                    .LocalPath = SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".png"
-                    If IconMode = "Poster" Then
-                        .RemotePath = "https://image.tmdb.org/t/p/w500/" & Searchresultob.item("results")(PickedMovieIndex).item("poster_path")
-                    Else
-                        .RemotePath = GoogleURl
-                    End If
-                    '.RemotePath = Searchresult.item("results")(PickedMovieIndex).item("poster_path")
-
-                End With
-                ImgDownloadList.Add(image1)
-                'DownloadImage(Searchresult.item("results")(PickedMovieIndex).item("poster_path"), SelectedFolderPath & "\" & Fnames(i) & "\" & Fnames(i) & ".jpg", CancellationToken.None)
-            Else
-                MessageBox.Show("sorry, No Poster Found, Please try in Professional Mode")
-            End If
-            i += 1
-            If Not i > Fnames.Length - 1 Then
-                StartSearch(True)
-            Else
-                Close()
-            End If
+            ResultPicked(PickedMovieIndex)
+            DialogResult = True
+            Close()
         End If
-    End Sub
-
-    Private Sub ListView1_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles ListView1.SelectionChanged
-        'If ListView1.SelectedItems.Count > 0 Then
-        '    If Not ListView1.SelectedItems(0).Tag = Nothing Then
-        '        OverviewText.Text = ListView1.SelectedItems(0).Tag.ToString()
-        '    End If
-        'End If
     End Sub
 
     Private Sub Slider_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
@@ -249,20 +143,4 @@ Public Class SearchResult
         StartSearch(False)
     End Sub
 
-    Private Sub ListView1_KeyDown(sender As Object, e As KeyEventArgs) Handles ListView1.KeyDown
-        e.Handled = True
-        If e.Key = Key.Enter Then
-            Pickbtn_Click(sender, Nothing)
-        Else
-            If e.Key = Key.Escape Then
-                Skipbtn_Click(sender, Nothing)
-            End If
-        End If
-    End Sub
-
-    Private Sub Window_KeyDown(sender As Object, e As KeyEventArgs)
-        If e.Key = Key.Escape Then
-            Skipbtn_Click(sender, Nothing)
-        End If
-    End Sub
 End Class

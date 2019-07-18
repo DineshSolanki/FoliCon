@@ -1,5 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Data
 
 Class MainWindow
     Private WithEvents BackgrundWorker1 As New BackgroundWorker With {
@@ -32,40 +31,65 @@ Class MainWindow
     End Sub
 
 
-    Private Sub Searchbtn_Click(sender As Object, e As RoutedEventArgs) Handles Searchbtn.Click
+    Private Async Sub Searchbtn_ClickAsync(sender As Object, e As RoutedEventArgs) Handles Searchbtn.Click
         GetFileNames()
         If Not IsNullOrEmpty(Fnames) Then
             If ValidFolder(SelectedFolderPath) Then
                 If My.Computer.Network.IsAvailable Then
                     If IconMode = "Poster" Then                    'Poster Mode
-                        Dim searchPage As New SearchResult
-                        searchPage.ShowDialog()
+                        'Mouse.SetCursor(Cursors.Wait) 
+                        Searchbtn.IsEnabled = False
+                        FolderNameIndex = 0
+                        Dim isAutoPicked As Boolean
+                        GetReadyForSearch()
+                        For Each Title As String In Fnames
+                            isAutoPicked = False
+                            SearchTitle = New TitleCleaner().Clean(Title)
+                            Dim response = Await PerformAcctualSearch(SearchTitle)
+                            Dim result As String
+                            Dim sr As New SearchResult
+                            If SearchMod = "Game" Then
+                                result = response.item("number_of_total_results")
+                            Else
+                                result = response.item("total_results")
+                            End If
+                            If result = 0 Then
+                                MessageBox.Show("Nothing found for " & Title & vbCrLf & "Try Searching with Other Title " & vbCrLf & "OR Check search Mode")
+                                sr.ShowDialog()
+                            ElseIf result = 1 Then
+                                ResultPicked(0)
+                                isAutoPicked = True
+                            ElseIf result > 1 Then
+                                ' MessageBox.Show("Too Many Results, Please Pick The Correct Title", "Ambigious Title")
+                                sr.ShowDialog()
+                            End If
+                            If isAutoPicked OrElse sr.DialogResult Then
+                                FinalistView.Items.Add(New ListItem() With {
+               .Title = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Title").ToString(),
+               .Year = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Year").ToString(),
+               .Rating = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Rating").ToString(),
+               .Folder = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Folder").ToString()
+           })
+                            End If
+
+                            FolderNameIndex += 1
+                        Next
+
+                        'Dim searchPage As New SearchResult
+                        'searchPage.ShowDialog()
                         'Else                                    'Professional Mode
                         '    Dim Gpage As New googlePage
-                        '    Gpage.ShowDialog()
                     End If
+                    'Mouse.SetCursor(Cursors.Arrow)
                     ProcessedFolderValue.Content = FolderProcessedCount.ToString
                     TotalIconsValue.Content = ImgDownloadList.Count.ToString
                     progressUpdater1.Maximum = ImgDownloadList.Count.ToString
                     progressUpdater1.Text = "Downloading Icon 1/" & ImgDownloadList.Count.ToString & "..."
                     PosterProgressBar.Maximum = ImgDownloadList.Count.ToString
-
-                    Dim items As New List(Of ListItem)()
-                    For Each r As DataRow In PickedListDataTable.Rows
-
-                        items.Add(New ListItem() With {
-                .Title = r("Title").ToString(),
-                .Year = r("Year").ToString(),
-                .Rating = r("Rating").ToString(),
-                .Folder = r("Folder").ToString()
-            })
-                    Next
-                    FinalistView.ItemsSource = items
                     SetColumnWidth(FinalistView)
                     If ImgDownloadList.Count > 0 Then
                         BusyIndicator1.IsBusy = True
                         DoWorkOfDownload()
-
                     End If
                 Else
                     MessageBox.Show("Sorry, Internet is Not available.", "Network Error")
@@ -107,7 +131,10 @@ Class MainWindow
 
     Private Sub BackgrundWorker1_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgrundWorker1.RunWorkerCompleted
         BusyIndicator1.IsBusy = False
-        MessageBox.Show("Done!", "Posters Downloaded")
+        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
+            BusyIndicator1.IsBusy = True
+            MakeIcons()
+        End If
         Searchbtn.IsEnabled = True
     End Sub
 
@@ -132,39 +159,6 @@ Class MainWindow
         'End If
     End Sub
 
-    Private Sub Makebtn_Click(sender As Object, e As RoutedEventArgs) Handles Makebtn.Click
-        If ValidFolder(SelectedFolderPath) Then
-            If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
-                BusyIndicator1.IsBusy = True
-                'Dim ts As New System.Threading.ThreadStart(Sub() MakeIco("visible"))
-                'Dim t As New System.Threading.Thread(ts)
-                't.Start()
-                MakeIco("visible")
-                IconsProcessedValue.Content = IconProcessedCount.ToString()
-                BusyIndicator1.IsBusy = False
-                Select Case MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel, MessageBoxImage.Information)
-                    Case MessageBoxResult.OK
-                        Process.Start(SelectedFolderPath)
-                End Select
-
-            Else
-                Dim result = MessageBox.Show("Please wait for the posters to Download..." & vbCrLf & "Have you already downloaded Images ?", "Please wait...", MessageBoxButton.YesNo)
-                If result = MessageBoxResult.Yes Then
-                    BusyIndicator1.IsBusy = True
-                    'Dim ts As New System.Threading.ThreadStart(AddressOf MakeIco)
-                    'Dim t As New System.Threading.Thread(ts)
-                    't.Start()
-                    MakeIco()
-                    BusyIndicator1.IsBusy = False
-                    IconsProcessedValue.Content = IconProcessedCount.ToString()
-                    MessageBox.Show("Done!", "Icon(s) Created")
-                End If
-            End If
-        Else
-            MessageBox.Show("Sorry, Folder is Empty or not selected.", "Empty Folder")
-        End If
-    End Sub
-
     Private Sub FinalistView_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles FinalistView.MouseDoubleClick
         Dim item = FinalistView.SelectedItem
         If item IsNot Nothing Then
@@ -185,6 +179,18 @@ Class MainWindow
     Private Sub BusyPosterProgessBar_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
         If progressUpdater1.Value = progressUpdater1.Maximum Then
             BusyIndicator1.IsBusy = False
+        End If
+    End Sub
+    Private Sub MakeIcons()
+        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
+            BusyIndicator1.IsBusy = True
+            MakeIco("visible")
+            IconsProcessedValue.Content = IconProcessedCount.ToString()
+            BusyIndicator1.IsBusy = False
+            Select Case MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel, MessageBoxImage.Information)
+                Case MessageBoxResult.OK
+                    Process.Start(SelectedFolderPath)
+            End Select
         End If
     End Sub
 End Class
