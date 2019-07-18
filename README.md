@@ -1,10 +1,12 @@
+<img src="https://img.shields.io/github/commit-activity/w/dinesh-solanki/folicon.svg?logo=FoliconCommitTime"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/dinesh-solanki/Folicon.svg?logo=FoliconOpenIssues">
+
 # Folicon
-Creates Folder icons for Movies and Serials, inspired and derived by Raticon
+Creates Folder icons for Movies and Serials, inspired and derived From [Raticon](https://github.com/Jamedjo/Raticon)
 
 This Application Converts your Boring Movie, TV, Game Folder Icons to A good Looking and informative icons, Which includes their Rating too.
 The Application is WIP, but usable. 
 
-[<img height=150 alt="Download" src="https://user-images.githubusercontent.com/15937452/61147148-51575280-a4f9-11e9-953e-3989e58ed067.png" />](https://github.com/dinesh-solanki/Folicon/releases/latest)
+[<img height=100  alt="Download" src="https://user-images.githubusercontent.com/15937452/61147148-51575280-a4f9-11e9-953e-3989e58ed067.png" />](https://github.com/dinesh-solanki/Folicon/releases/latest) [![Download Folicon](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/folicon/files/latest/download)
 
 <details>
   <summary>Screens (Click here to see) </summary>
@@ -20,6 +22,7 @@ The Application is WIP, but usable.
 
 
 ## Getting Started
+*To Use this Application Instantly, Click the Download button Above or Go to "Release", and start using. (No Installation or Additional Libraries needed)*
 
 To compile this Source you need to Create "App.config" file with structure given below
 ```
@@ -56,7 +59,6 @@ See also the list of [contributors](https://github.com/dinesh-solanki/Folicon/gr
 ## Acknowledgments
 
 * A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start, and throughout this Project, His code and Design is used.
-* 
-![TMDB Logo](https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png "Powered By TMDB API")
+* <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
 
