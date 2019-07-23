@@ -1,10 +1,37 @@
 ﻿Imports System.ComponentModel
+Imports System.Net.NetworkInformation
 
 Class MainWindow
     Private WithEvents BackgrundWorker1 As New BackgroundWorker With {
         .WorkerSupportsCancellation = True, .WorkerReportsProgress = True}
     Dim _draggedFileName As String = Nothing
     Private progressUpdater1 As New ProgressUpdater
+
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+        Dim myHandler As New NetworkAvailabilityChangedEventHandler(AddressOf AvailabilityChanged)
+        AddHandler NetworkChange.NetworkAvailabilityChanged, myHandler
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
+    Private Sub AvailabilityChanged(ByVal sender As Object, ByVal e As NetworkAvailabilityEventArgs)
+
+        If e.IsAvailable Then
+
+            Me.Dispatcher.Invoke(Sub()
+                                     NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
+                                 End Sub)
+        Else
+
+            Me.Dispatcher.Invoke(Sub()
+                                     NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
+                                 End Sub)
+
+        End If
+    End Sub
+
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
         Dim selectedbtn As RadioButton = sender
         SearchMod = selectedbtn.Content.ToString
@@ -192,5 +219,15 @@ Class MainWindow
                     Process.Start(SelectedFolderPath)
             End Select
         End If
+    End Sub
+
+    Private Sub MainForm_Loaded(sender As Object, e As RoutedEventArgs) Handles MainForm.Loaded
+        If My.Computer.Network.IsAvailable Then
+            NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
+        Else
+            NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
+
+        End If
+
     End Sub
 End Class

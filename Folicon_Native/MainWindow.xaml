@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="MainForm"
     x:Class="MainWindow"
         mc:Ignorable="d"
         Title="FoliCon Beta" Height="613" Width="800" MinWidth="800" MinHeight="613" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter">
@@ -73,6 +73,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
@@ -100,6 +101,10 @@
             <StatusBarItem x:Name="TotalIconsValue"   Grid.Column="6">
                 <Label  Content="0"/>
             </StatusBarItem>
+            <StatusBarItem x:Name="NetworkSignal" Grid.Column="7">
+                <Image Name="NetworkImage" Height="32" Source="{Binding NetIcon}" Stretch="Fill" Width="32"/>
+            </StatusBarItem>
+            
         </StatusBar>
         <!--<xctk:BusyIndicator  x:Name="BusyIndicator1"  Margin="19,0,20,71" BusyContent="Loading Icons..." Grid.ColumnSpan="2"/ >-->
         <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="2" Margin="20,61,10,10">

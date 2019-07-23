@@ -206,6 +206,13 @@
     <Folder Include="Lib\" />
     <Folder Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="No-WiFi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Model\No-WiFi.png" />
+    <Resource Include="Model\Strong-WiFi.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\Fody.5.0.0\build\Fody.targets" Condition="Exists('..\packages\Fody.5.0.0\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
