@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/github/commit-activity/w/dinesh-solanki/folicon.svg?logo=FoliconCommitTime"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/dinesh-solanki/Folicon.svg?logo=FoliconOpenIssues">
+<img src="https://img.shields.io/github/commit-activity/w/dinesh-solanki/folicon.svg?logo=FoliconCommitTime"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon">
 
 # Folicon
 Creates Folder icons for Movies and Serials, inspired and derived From [Raticon](https://github.com/Jamedjo/Raticon)
@@ -48,9 +48,9 @@ A TMDB API [Get it](https://www.themoviedb.org/settings/api)
 
 ## Authors
 
-* **Dinesh Solanki** - [Profile](https://github.com/dinesh-solanki)
+* **Dinesh Solanki** - [Profile](https://github.com/dineshsolanki)
 
-See also the list of [contributors](https://github.com/dinesh-solanki/Folicon/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/dineshsolanki/Folicon/graphs/contributors) who participated in this project.
 
 ## License
 
