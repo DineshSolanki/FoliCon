@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Net
 Imports System.Net.NetworkInformation
 
 Class MainWindow
@@ -222,7 +223,8 @@ Class MainWindow
     End Sub
 
     Private Sub MainForm_Loaded(sender As Object, e As RoutedEventArgs) Handles MainForm.Loaded
-        If My.Computer.Network.IsAvailable Then
+        If isNetworkAvailable() Then
+
             NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
         Else
             NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
@@ -230,4 +232,16 @@ Class MainWindow
         End If
 
     End Sub
+    Private Function isNetworkAvailable() As Boolean
+        If My.Computer.Network.IsAvailable Then
+            Try
+                Dim IPHost As IPHostEntry = Dns.GetHostEntry("www.google.com")
+                Return True
+            Catch
+                Return False
+            End Try
+        End If
+        Return False
+    End Function
+
 End Class
