@@ -5,26 +5,39 @@ Imports System.IO
 Imports System.Net
 Imports System.Net.Http
 Imports System.Net.TMDb
+Imports System.Runtime.InteropServices
 Imports System.Threading
 Imports Folicon_Native.Model
 Imports Newtonsoft.Json.Linq
 Imports Ookii.Dialogs.Wpf
 
 Module PublicFunctions
+    <DllImport("gdi32")>
+    Private Function DeleteObject(ByVal o As IntPtr) As Integer
 
+    End Function
 
+    Public Function loadBitmap(ByVal source As System.Drawing.Bitmap) As BitmapSource
+        Dim ip As IntPtr = source.GetHbitmap()
+        Dim bs As BitmapSource = Nothing
+
+        Try
+            bs = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions())
+        Finally
+            DeleteObject(ip)
+        End Try
+
+        Return bs
+    End Function
     Public Function NewFolderBrowseDialog(description As String) As VistaFolderBrowserDialog
         Dim folderBrowser As New VistaFolderBrowserDialog()
         With folderBrowser
             .Description = description
             .UseDescriptionForTitle = True
         End With
-
         Return folderBrowser
-
-
     End Function
-    Public Async Function PerformAcctualSearch(title As String) As Task(Of Object)
+    Public Async Function PerformActualSearch(title As String) As Task(Of Object)
         'Dim cleantitle = New TitleCleaner().Clean(title)
         Dim http = New HttpClient()
 
@@ -259,6 +272,14 @@ Module PublicFunctions
 
         'MessageBox.Show("Done!", "Icon(s) Created")
     End Sub
+    Public Function GetBitmapFromURL(URL As String) As Bitmap
+        Dim myRequest As HttpWebRequest = CType(WebRequest.Create(URL), HttpWebRequest)
+        myRequest.Method = "GET"
+        Dim myResponse As HttpWebResponse = CType(myRequest.GetResponse(), HttpWebResponse)
+        Dim bmp As New Bitmap(myResponse.GetResponseStream())
+        myResponse.Close()
+        Return bmp
+    End Function
     Public Sub InitPickedListDataTable()
         PickedListDataTable.Columns.Clear()
         PickedListDataTable.Rows.Clear()

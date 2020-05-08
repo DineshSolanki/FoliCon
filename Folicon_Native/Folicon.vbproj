@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\FolderIcon.vb" />
+    <Compile Include="Classes\GoogleResult.vb" />
     <Compile Include="Classes\IconLayoutViewModel.vb" />
     <Compile Include="Classes\ImageToDownload.vb" />
     <Compile Include="Classes\IniWriter.vb" />
@@ -103,6 +104,9 @@
     <Compile Include="Modules\GlobalVariables.vb" />
     <Compile Include="Modules\PublicFunctions.vb" />
     <Compile Include="Modules\StaTask.vb" />
+    <Compile Include="ProSearchResults.xaml.vb">
+      <DependentUpon>ProSearchResults.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SearchResult.xaml.vb">
       <DependentUpon>SearchResult.xaml</DependentUpon>
     </Compile>
@@ -126,6 +130,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProSearchResults.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SearchResult.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

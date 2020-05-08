@@ -47,9 +47,9 @@ Class MainWindow
     End Sub
 
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
-        Dim folderbrowse = NewFolderBrowseDialog("Selected Folder")
-        If folderbrowse.ShowDialog Then
-            SelectedFolderPath = folderbrowse.SelectedPath
+        Dim folderBrowserDialog = NewFolderBrowseDialog("Selected Folder")
+        If folderBrowserDialog.ShowDialog Then
+            SelectedFolderPath = folderBrowserDialog.SelectedPath
             SelectedFolderlbl.Content = SelectedFolderPath
             Searchbtn.IsEnabled = True
             PosterProgressBar.Value = 0
@@ -70,10 +70,10 @@ Class MainWindow
                         FolderNameIndex = 0
                         Dim isAutoPicked As Boolean
                         GetReadyForSearch()
-                        For Each Title As String In Fnames
+                        For Each itemTitle As String In Fnames
                             isAutoPicked = False
-                            SearchTitle = New TitleCleaner().Clean(Title)
-                            Dim response = Await PerformAcctualSearch(SearchTitle)
+                            SearchTitle = New TitleCleaner().Clean(itemTitle)
+                            Dim response = Await PerformActualSearch(SearchTitle)
                             Dim result As String
                             Dim sr As New SearchResult
                             If SearchMod = "Game" Then
@@ -82,7 +82,7 @@ Class MainWindow
                                 result = response.item("total_results")
                             End If
                             If result = 0 Then
-                                MessageBox.Show("Nothing found for " & Title & vbCrLf & "Try Searching with Other Title " & vbCrLf & "OR Check search Mode")
+                                MessageBox.Show("Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " & vbCrLf & "OR Check search Mode")
                                 sr.ShowDialog()
                             ElseIf result = 1 Then
                                 ResultPicked(0)
@@ -105,8 +105,22 @@ Class MainWindow
 
                         'Dim searchPage As New SearchResult
                         'searchPage.ShowDialog()
-                        'Else                                    'Professional Mode
-                        '    Dim Gpage As New googlePage
+                    Else                                    'Professional Mode
+                        GetReadyForSearch()
+                        Dim Gpage As New ProSearchResults()
+                        Gpage.ShowDialog()
+                        If PickedListDataTable.Rows.Count > 0 Then
+                            For i As Integer = 0 To PickedListDataTable.Rows.Count - 1
+                                FinalistView.Items.Add(New ListItem() With {
+                                                          .Title = PickedListDataTable.Rows(i)("Title").ToString(),
+                                                          .Year = PickedListDataTable.Rows(i)("Year").ToString(),
+                                                          .Rating = PickedListDataTable.Rows(i)("Rating").ToString(),
+                                                          .Folder = PickedListDataTable.Rows(i)("Folder").ToString()
+                                                          })
+                            Next
+
+                        End If
+
                     End If
                     'Mouse.SetCursor(Cursors.Arrow)
                     ProcessedFolderValue.Content = FolderProcessedCount.ToString
@@ -137,7 +151,6 @@ Class MainWindow
     Private Sub RadioButton_Checked_1(sender As Object, e As RoutedEventArgs)
         Dim selectedbtn As RadioButton = sender
         IconMode = selectedbtn.Content.ToString
-
     End Sub
 
 

@@ -20,8 +20,9 @@ Module GlobalVariables
     Public FolderProcessedCount As Integer = 0
     Public IconProcessedCount As Integer = 0
     Public GoogleURl As String = Nothing
-    Public Apikeygb As String = ConfigurationManager.AppSettings.Get("GBAPI")
-    Public ApikeyTMDB As String = ConfigurationManager.AppSettings.Get("TMDBAPI")
+    Public APIkeygb As String = ConfigurationManager.AppSettings.Get("GBAPI")
+    Public APIkeyTMDB As String = ConfigurationManager.AppSettings.Get("TMDBAPI")
+    Public APIkeyGoogle As String = ConfigurationManager.AppSettings.Get("GoogleAPI")
     Public Responseformatgb As String = "json"
     Public Fieldlistgb As String = "*"
 End Module

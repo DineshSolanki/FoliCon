@@ -49,7 +49,7 @@ Public Class SearchResult
         OverviewText.Text = ""
         'Items.Clear()
 
-        Await PerformAcctualSearch(titleToSearch)
+        Await PerformActualSearch(titleToSearch)
         'GoogleURl = Await GoogleIt(titleToSearch)
         RetryMovieTitle = Nothing
         If useBusy Then

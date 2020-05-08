@@ -20,7 +20,7 @@
                         <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,10,68"/>
                         <Label Content="Icon Creation Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top"/>
                         <RadioButton Content="Poster" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsChecked="True" Checked="RadioButton_Checked_1"/>
-                        <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsEnabled="False" />
+                        <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" Checked="RadioButton_Checked_1" />
                     </Grid>
                     <Grid Height="68" Margin="21,88,0,0" Width="383" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Border BorderBrush="Black" BorderThickness="1"/>
