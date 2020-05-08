@@ -1,12 +1,14 @@
 ﻿Imports System.ComponentModel
 Imports System.Net
 Imports System.Net.NetworkInformation
+Imports Xceed.Wpf.Toolkit
 
 Class MainWindow
     Private WithEvents BackgrundWorker1 As New BackgroundWorker With {
         .WorkerSupportsCancellation = True, .WorkerReportsProgress = True}
+
     Dim _draggedFileName As String = Nothing
-    Private progressUpdater1 As New ProgressUpdater
+    Private ReadOnly progressUpdater1 As New ProgressUpdater
 
     Public Sub New()
 
@@ -15,20 +17,20 @@ Class MainWindow
         Dim myHandler As New NetworkAvailabilityChangedEventHandler(AddressOf AvailabilityChanged)
         AddHandler NetworkChange.NetworkAvailabilityChanged, myHandler
         ' Add any initialization after the InitializeComponent() call.
-
     End Sub
-    Private Sub AvailabilityChanged(ByVal sender As Object, ByVal e As NetworkAvailabilityEventArgs)
+
+    Private Sub AvailabilityChanged(sender As Object, e As NetworkAvailabilityEventArgs)
 
         If e.IsAvailable Then
 
-            Me.Dispatcher.Invoke(Sub()
-                                     NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
-                                 End Sub)
+            Dispatcher.Invoke(Sub()
+                                  NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
+                              End Sub)
         Else
 
-            Me.Dispatcher.Invoke(Sub()
-                                     NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
-                                 End Sub)
+            Dispatcher.Invoke(Sub()
+                                  NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
+                              End Sub)
 
         End If
     End Sub
@@ -43,7 +45,6 @@ Class MainWindow
             DateProperty = "release_date"
             INameProperty = "title"
         End If
-
     End Sub
 
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
@@ -64,7 +65,7 @@ Class MainWindow
         If Not IsNullOrEmpty(Fnames) Then
             If ValidFolder(SelectedFolderPath) Then
                 If My.Computer.Network.IsAvailable Then
-                    If IconMode = "Poster" Then                    'Poster Mode
+                    If IconMode = "Poster" Then 'Poster Mode
                         'Mouse.SetCursor(Cursors.Wait) 
                         Searchbtn.IsEnabled = False
                         FolderNameIndex = 0
@@ -82,7 +83,9 @@ Class MainWindow
                                 result = response.item("total_results")
                             End If
                             If result = 0 Then
-                                MessageBox.Show("Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " & vbCrLf & "OR Check search Mode")
+                                MessageBox.Show(
+                                    "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
+                                    vbCrLf & "OR Check search Mode")
                                 sr.ShowDialog()
                             ElseIf result = 1 Then
                                 ResultPicked(0)
@@ -93,11 +96,19 @@ Class MainWindow
                             End If
                             If isAutoPicked OrElse sr.DialogResult Then
                                 FinalistView.Items.Add(New ListItem() With {
-               .Title = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Title").ToString(),
-               .Year = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Year").ToString(),
-               .Rating = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Rating").ToString(),
-               .Folder = PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)("Folder").ToString()
-           })
+                                                          .Title =
+                                                          PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)(
+                                                              "Title").ToString(),
+                                                          .Year =
+                                                          PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)(
+                                                              "Year").ToString(),
+                                                          .Rating =
+                                                          PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)(
+                                                              "Rating").ToString(),
+                                                          .Folder =
+                                                          PickedListDataTable.Rows(PickedListDataTable.Rows.Count - 1)(
+                                                              "Folder").ToString()
+                                                          })
                             End If
 
                             FolderNameIndex += 1
@@ -105,12 +116,12 @@ Class MainWindow
 
                         'Dim searchPage As New SearchResult
                         'searchPage.ShowDialog()
-                    Else                                    'Professional Mode
+                    Else 'Professional Mode
                         GetReadyForSearch()
                         Dim Gpage As New ProSearchResults()
                         Gpage.ShowDialog()
                         If PickedListDataTable.Rows.Count > 0 Then
-                            For i As Integer = 0 To PickedListDataTable.Rows.Count - 1
+                            For i = 0 To PickedListDataTable.Rows.Count - 1
                                 FinalistView.Items.Add(New ListItem() With {
                                                           .Title = PickedListDataTable.Rows(i)("Title").ToString(),
                                                           .Year = PickedListDataTable.Rows(i)("Year").ToString(),
@@ -140,9 +151,8 @@ Class MainWindow
         Else
             MessageBox.Show("Folder already have Icons or is Empty", "Folder Error")
         End If
-
-
     End Sub
+
     Private Sub DoWorkOfDownload()
         Searchbtn.IsEnabled = False
         BackgrundWorker1.RunWorkerAsync()     '<== Causes Exception when searching, while posters are downloading
@@ -155,7 +165,7 @@ Class MainWindow
 
 
     Private Sub BackgrundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgrundWorker1.DoWork
-        Dim i As Integer = 0
+        Dim i = 0
         For Each img As ImageToDownload In ImgDownloadList
             If (BackgrundWorker1.CancellationPending = True) Then
                 e.Cancel = True
@@ -170,7 +180,8 @@ Class MainWindow
         Next
     End Sub
 
-    Private Sub BackgrundWorker1_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) Handles BackgrundWorker1.RunWorkerCompleted
+    Private Sub BackgrundWorker1_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) _
+        Handles BackgrundWorker1.RunWorkerCompleted
         BusyIndicator1.IsBusy = False
         If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
             BusyIndicator1.IsBusy = True
@@ -200,7 +211,8 @@ Class MainWindow
         'End If
     End Sub
 
-    Private Sub FinalistView_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles FinalistView.MouseDoubleClick
+    Private Sub FinalistView_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) _
+        Handles FinalistView.MouseDoubleClick
         Dim item = FinalistView.SelectedItem
         If item IsNot Nothing Then
             Process.Start(FinalistView.SelectedItem.Folder)
@@ -211,7 +223,8 @@ Class MainWindow
         BackgrundWorker1.CancelAsync()
     End Sub
 
-    Private Sub BackgrundWorker1_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) Handles BackgrundWorker1.ProgressChanged
+    Private Sub BackgrundWorker1_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) _
+        Handles BackgrundWorker1.ProgressChanged
         progressUpdater1.Text = "Downloading Icon " & e.ProgressPercentage & "/" & progressUpdater1.Maximum & "..."
         progressUpdater1.Value = e.ProgressPercentage
         PosterProgressBar.Value = e.ProgressPercentage
@@ -222,13 +235,21 @@ Class MainWindow
             BusyIndicator1.IsBusy = False
         End If
     End Sub
+
     Private Sub MakeIcons()
         If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
             BusyIndicator1.IsBusy = True
-            MakeIco("visible")
+            If IconMode = "Poster" Then
+                MakeIco("visible")
+            Else
+                MakeIco()
+            End If
+
             IconsProcessedValue.Content = IconProcessedCount.ToString()
             BusyIndicator1.IsBusy = False
-            Select Case MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel, MessageBoxImage.Information)
+            Select Case _
+                MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel,
+                                MessageBoxImage.Information)
                 Case MessageBoxResult.OK
                     Process.Start(SelectedFolderPath)
             End Select
@@ -243,8 +264,8 @@ Class MainWindow
             NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
 
         End If
-
     End Sub
+
     Private Function isNetworkAvailable() As Boolean
         If My.Computer.Network.IsAvailable Then
             Try
@@ -256,5 +277,4 @@ Class MainWindow
         End If
         Return False
     End Function
-
 End Class

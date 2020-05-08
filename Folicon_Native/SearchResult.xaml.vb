@@ -2,28 +2,26 @@
 Imports System.Collections.ObjectModel
 
 Public Class SearchResult
-    Dim i As Integer = 0
-    Private _ListItem As ListItem
+    Private _listItem As ListItem
+
     Public Property ListItem() As ListItem
         Get
-            Return _ListItem
+            Return _listItem
         End Get
         Set(ByVal value As ListItem)
-            If _ListItem IsNot value Then
-                _ListItem = value
+            If _listItem IsNot value Then
+                _listItem = value
             End If
         End Set
     End Property
+
     Public Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
         ListItem = New ListItem()
         ' Add any initialization after the InitializeComponent() call.
-
     End Sub
-
-
 
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
@@ -34,6 +32,7 @@ Public Class SearchResult
             SearchTxt.Focus()
         End If
     End Sub
+
     Public Async Sub StartSearch(ByVal useBusy As Boolean)
         If useBusy Then
             BusyIndicator1.IsBusy = True
@@ -60,7 +59,7 @@ Public Class SearchResult
 
 
     Public Sub FetchAndAddDetailsToListView(listviewName As ListView, jsonResult As Object, Title As String)
-        Dim Items As New ObservableCollection(Of ListItem)()
+        Dim items As New ObservableCollection(Of ListItem)()
         For Each m In jsonResult.item("results")
             Dim arr As String() = New String(3) {}
             Dim originalTitle As String = m.item("original_title")
@@ -106,13 +105,11 @@ Public Class SearchResult
                     End If
                     arr(2) = voteAverage
             End Select
-            Items.Add(New ListItem(arr(0), arr(1), arr(2), overview))
+            items.Add(New ListItem(arr(0), arr(1), arr(2), overview))
 
         Next
-        listviewName.ItemsSource = Items
+        listviewName.ItemsSource = items
         SetColumnWidth(listviewName)
-
-
     End Sub
 
     Private Sub Skipbtn_Click(sender As Object, e As RoutedEventArgs) Handles Skipbtn.Click
@@ -142,5 +139,4 @@ Public Class SearchResult
         RetryMovieTitle = SearchTxt.Text
         StartSearch(False)
     End Sub
-
 End Class
