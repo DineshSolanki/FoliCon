@@ -1,4 +1,4 @@
-<img src="https://img.shields.io/github/commit-activity/m/DineshSolanki/Folicon"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon">
+<img src="https://img.shields.io/github/commit-activity/m/DineshSolanki/FoliCon"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon">
 
 # Folicon
 Creates Folder icons for Movies and Serials, inspired and derived From [Raticon](https://github.com/Jamedjo/Raticon)
@@ -33,15 +33,19 @@ To compile this Source you need to Create "App.config" file with structure given
     </startup>
   <appSettings>
    <add key="TMDBAPI" value="Your_TMDB_API_here"/>
+   <add key="GoogleAPI" value="Your_Google_API_here"/>
   </appSettings>
 </configuration>
 ```
 ### Prerequisites
 A TMDB API [Get it](https://www.themoviedb.org/settings/api)
 
+A GOOGLE API [Get it](https://developers.google.com/maps/documentation/javascript/get-api-key#get-the-api-key)
+
 ## Built With
 
 * [The Movie Database](https://www.themoviedb.org/) - Powered by TMDB API
+* Google Custom Search
 * [IconLib](https://www.codeproject.com/Articles/16178/IconLib-Icons-Unfolded-MultiIcon-and-Windows-Vista) - To make Icons from viewModel
 * [Extended WPF Toolkit™](https://github.com/xceedsoftware/wpftoolkit) - For Custom Controls
 * [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) - For File Dialogs
