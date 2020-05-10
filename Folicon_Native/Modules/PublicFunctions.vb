@@ -269,10 +269,11 @@ Module PublicFunctions
             End If
         Next
     End Sub
-    Public Function GetBitmapFromUrl(url As String) As Bitmap
-        Dim myRequest = CType(WebRequest.Create(url), HttpWebRequest)
+    Public Async Function GetBitmapFromUrlAsync(url As String) As Task(Of Bitmap)
+        Dim myRequest = CType(WebRequest.Create(New Uri(url)), HttpWebRequest)
         myRequest.Method = "GET"
-        Dim myResponse = CType(myRequest.GetResponse(), HttpWebResponse)
+
+        Dim myResponse = CType(Await myRequest.GetResponseAsync().ConfigureAwait(False), HttpWebResponse)
         Dim bmp As New Bitmap(myResponse.GetResponseStream())
         myResponse.Close()
         Return bmp

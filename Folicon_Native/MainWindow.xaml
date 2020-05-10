@@ -15,14 +15,7 @@
         <TabControl Margin="0,0,0,35" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" DragEnter="Window_DragEnter" Drop="Window_Drop" FocusVisualStyle="{x:Null}">
             <TabItem Header="Auto Mode">
                 <Grid Background="#FFE5E5E5" Margin="0,0,-9,-2">
-
-                    <Grid Height="113" Margin="21,22,0,0" Width="395" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,10,68"/>
-                        <Label Content="Icon Creation Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top"/>
-                        <RadioButton Content="Poster" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsChecked="True" Checked="RadioButton_Checked_1"/>
-                        <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" Checked="RadioButton_Checked_1" />
-                    </Grid>
-                    <Grid Height="68" Margin="21,88,0,0" Width="383" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid x:Name="GridSearchMode" Height="68" Margin="21,88,0,0" Width="383" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Border BorderBrush="Black" BorderThickness="1"/>
                         <RadioButton Content="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" Margin="253,39,0,0" Width="58" IsEnabled="False"/>
                         <Label Content="Search Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top" />
@@ -30,6 +23,13 @@
                         <RadioButton Content="TV" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" />
                         <RadioButton Content="Game" HorizontalAlignment="Left" Margin="146,39,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsEnabled="False"/>
                     </Grid>
+                    <Grid x:Name="GridIconCreationMode" Height="113" Margin="21,22,0,0" Width="395" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,10,68"/>
+                        <Label Content="Icon Creation Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top"/>
+                        <RadioButton Content="Poster" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsChecked="True" Checked="RadioButton_Checked_1"/>
+                        <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" Checked="RadioButton_Checked_1" />
+                    </Grid>
+                    
 
                     <Grid Height="144" Margin="421,22,0,0" VerticalAlignment="Top" Width="327">
                         <Grid.ColumnDefinitions>
@@ -107,20 +107,16 @@
             
         </StatusBar>
         <!--<xctk:BusyIndicator  x:Name="BusyIndicator1"  Margin="19,0,20,71" BusyContent="Loading Icons..." Grid.ColumnSpan="2"/ >-->
-        <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="2" Margin="20,61,10,10">
+        <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="2" Margin="10,37,10,10">
             <xctk:BusyIndicator.BusyContentTemplate>
                 <DataTemplate>
                     <StackPanel Margin="4">
                         <TextBlock Text="Downloading Icons" FontWeight="Bold" HorizontalAlignment="Center"/>
                         <StackPanel Margin="4">
                             <TextBlock x:Name="posterDownloadText" Text="{Binding Text}"/>
-                            <ProgressBar x:Name="BusyPosterProgessBar" Value="{Binding Value}" Maximum="{Binding Maximum}" ValueChanged="BusyPosterProgessBar_ValueChanged" Height="15"/>
+                            <ProgressBar x:Name="BusyPosterProgressBar" Value="{Binding Value}" Maximum="{Binding Maximum}" ValueChanged="BusyPosterProgressBar_ValueChanged" Height="15"/>
                         </StackPanel>
                         <Grid>
-                            <Grid.ColumnDefinitions>
-
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
                             <Button x:Name="DownloadCancelbtn" Grid.Column="1" Content="Cancel" HorizontalAlignment="Center" Margin="2 0 0 0" Click="DownloadCancelbtn_Click"/>
                         </Grid>
                     </StackPanel>

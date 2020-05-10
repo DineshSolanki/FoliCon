@@ -36,8 +36,8 @@ Class MainWindow
     End Sub
 
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
-        Dim selectedbtn As RadioButton = sender
-        SearchMod = selectedbtn.Content.ToString
+        Dim selectedBtn As RadioButton = sender
+        SearchMod = selectedBtn.Content.ToString
         If SearchMod = "TV" Then
             DateProperty = "first_air_date"
             INameProperty = "name"
@@ -66,7 +66,6 @@ Class MainWindow
             If ValidFolder(SelectedFolderPath) Then
                 If My.Computer.Network.IsAvailable Then
                     If IconMode = "Poster" Then 'Poster Mode
-                        'Mouse.SetCursor(Cursors.Wait) 
                         Searchbtn.IsEnabled = False
                         FolderNameIndex = 0
                         Dim isAutoPicked As Boolean
@@ -91,7 +90,6 @@ Class MainWindow
                                 ResultPicked(0)
                                 isAutoPicked = True
                             ElseIf result > 1 Then
-                                ' MessageBox.Show("Too Many Results, Please Pick The Correct Title", "Ambigious Title")
                                 sr.ShowDialog()
                             End If
                             If isAutoPicked OrElse sr.DialogResult Then
@@ -113,13 +111,10 @@ Class MainWindow
 
                             FolderNameIndex += 1
                         Next
-
-                        'Dim searchPage As New SearchResult
-                        'searchPage.ShowDialog()
                     Else 'Professional Mode
                         GetReadyForSearch()
-                        Dim Gpage As New ProSearchResults()
-                        Gpage.ShowDialog()
+                        Dim gPage As New ProSearchResults()
+                        gPage.ShowDialog()
                         If PickedListDataTable.Rows.Count > 0 Then
                             For i = 0 To PickedListDataTable.Rows.Count - 1
                                 FinalistView.Items.Add(New ListItem() With {
@@ -161,6 +156,11 @@ Class MainWindow
     Private Sub RadioButton_Checked_1(sender As Object, e As RoutedEventArgs)
         Dim selectedbtn As RadioButton = sender
         IconMode = selectedbtn.Content.ToString
+        If IconMode = "Professional" Then
+            GridSearchMode.Visibility = Visibility.Hidden
+        Else
+            GridSearchMode.Visibility = Visibility.Visible
+        End If
     End Sub
 
 
@@ -183,7 +183,7 @@ Class MainWindow
     Private Sub BackgrundWorker1_RunWorkerCompleted(sender As Object, e As RunWorkerCompletedEventArgs) _
         Handles BackgrundWorker1.RunWorkerCompleted
         BusyIndicator1.IsBusy = False
-        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
+        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum.ToString() Then
             BusyIndicator1.IsBusy = True
             MakeIcons()
         End If
@@ -230,14 +230,14 @@ Class MainWindow
         PosterProgressBar.Value = e.ProgressPercentage
     End Sub
 
-    Private Sub BusyPosterProgessBar_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
+    Private Sub BusyPosterProgressBar_ValueChanged(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
         If progressUpdater1.Value = progressUpdater1.Maximum Then
             BusyIndicator1.IsBusy = False
         End If
     End Sub
 
     Private Sub MakeIcons()
-        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum Then
+        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum.ToString() Then
             BusyIndicator1.IsBusy = True
             If IconMode = "Poster" Then
                 MakeIco("visible")
@@ -269,7 +269,7 @@ Class MainWindow
     Private Function isNetworkAvailable() As Boolean
         If My.Computer.Network.IsAvailable Then
             Try
-                Dim IPHost As IPHostEntry = Dns.GetHostEntry("www.google.com")
+                Dim ipHost As IPHostEntry = Dns.GetHostEntry("www.google.com")
                 Return True
             Catch
                 Return False
