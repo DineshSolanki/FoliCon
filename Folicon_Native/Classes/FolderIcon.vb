@@ -21,19 +21,11 @@ Imports System.IO
 
 Public Class FolderIcon
     Private _folderPathRenamed As String = ""
-    Private _iniPathRenamed As String = ""
-    Public Property IniPath() As String
-        Get
-            Return _iniPathRenamed
-        End Get
-        Set(ByVal value As String)
-            _iniPathRenamed = value
-        End Set
-    End Property
+    Public Property IniPath As String = ""
 
     Public Property FolderPath() As String
         Get
-            Return Me._folderPathRenamed
+            Return _folderPathRenamed
         End Get
         Set(ByVal value As String)
             _folderPathRenamed = value
@@ -42,8 +34,8 @@ Public Class FolderIcon
             End If
         End Set
     End Property
-    Public Sub New(ByVal folderPath As String)
-        Me.FolderPath = folderPath
+    Public Sub New(ByVal folderPathString As String)
+        FolderPath = folderPathString
     End Sub
 
     Public Sub CreateFolderIcon(ByVal iconFilePath As String, ByVal infoTip As String)
@@ -61,7 +53,7 @@ Public Class FolderIcon
     ''' <param name="infoTip">Text to be displayed in the InfoTip shown by Windows Explorer</param>
     Public Sub CreateFolderIcon(ByVal targetFolderPath As String, ByVal iconFilePath As String, ByVal infoTip As String)
         FolderPath = targetFolderPath
-        Me.CreateFolderIcon(iconFilePath, infoTip)
+        CreateFolderIcon(iconFilePath, infoTip)
     End Sub
     Public Shared Function GetIconFromBitmap(ByVal FileName As String) As Icon
         Using Bmp As New Bitmap(FileName)
@@ -71,18 +63,18 @@ Public Class FolderIcon
     Private Function CreateFolder() As Boolean
         ' Check for a path in the folderPath variable, which we use to 
         ' create the folder if it does not exist.
-        If Me.FolderPath.Length = 0 Then
+        If FolderPath.Length = 0 Then
             Return False
         End If
 
         ' If the directory exists, then just return true.
-        If Directory.Exists(Me.FolderPath) Then
+        If Directory.Exists(FolderPath) Then
             Return True
         End If
 
         Try
             ' Try to create the directory.
-            Dim di As DirectoryInfo = Directory.CreateDirectory(Me.FolderPath)
+            Dim di As DirectoryInfo = Directory.CreateDirectory(FolderPath)
         Catch e As Exception
             Return False
         End Try
@@ -99,7 +91,7 @@ Public Class FolderIcon
     Private Function CreateDesktopIniFile(ByVal iconFilePath As String, ByVal getIconFromDLL As Boolean, ByVal iconIndex As Integer, ByVal infoTip As String) As Boolean
         ' check some things that must (or should) be true before we continue...
         ' determine if the Folder exists
-        If Not Directory.Exists(Me.FolderPath) Then
+        If Not Directory.Exists(FolderPath) Then
             Return False
         End If
 
@@ -113,13 +105,8 @@ Public Class FolderIcon
         End If
 
         ' Set path to the desktop.ini file
-        Me.IniPath = Me.FolderPath & "desktop.ini"
-
-        ' Write .ini settings to the desktop.ini file
-        'IniWriter.WriteValue(".ShellClassInfo", "IconResource", iconFilePath & ",0", Me.IniPath)
+        IniPath = FolderPath & "desktop.ini"
         IniWriter.WriteValue(".ShellClassInfo", "IconResource", infoTip & ".ico" & ",0", Me.IniPath)
-        'IniWriter.WriteValue(".ShellClassInfo", "IconIndex", iconIndex.ToString(), Me.IniPath)
-        'IniWriter.WriteValue(".ShellClassInfo", "InfoTip", infoTip, Me.IniPath)
 
         Return True
     End Function
@@ -131,7 +118,7 @@ Public Class FolderIcon
     ''' <param name="iconFilePath">Path to icon file (.ico)</param>
     ''' <param name="infoTip">Text to be displayed in the InfoTip shown by Windows Explorer</param>
     Private Sub CreateDesktopIniFile(ByVal iconFilePath As String, ByVal infoTip As String)
-        Me.CreateDesktopIniFile(iconFilePath, False, 0, infoTip)
+        CreateDesktopIniFile(iconFilePath, False, 0, infoTip)
     End Sub
 
 
@@ -140,18 +127,18 @@ Public Class FolderIcon
     ''' </summary>
     Private Function SetIniFileAttributes() As Boolean
         ' determine if the Folder exists
-        If Not File.Exists(Me.IniPath) Then
+        If Not File.Exists(IniPath) Then
             Return False
         End If
 
         ' Set ini file attribute to "Hidden"
-        If (File.GetAttributes(Me.IniPath) And FileAttributes.Hidden) <> FileAttributes.Hidden Then
-            File.SetAttributes(Me.IniPath, File.GetAttributes(Me.IniPath) Or FileAttributes.Hidden)
+        If (File.GetAttributes(IniPath) And FileAttributes.Hidden) <> FileAttributes.Hidden Then
+            File.SetAttributes(IniPath, File.GetAttributes(IniPath) Or FileAttributes.Hidden)
         End If
 
         ' Set ini file attribute to "System"
-        If (File.GetAttributes(Me.IniPath) And FileAttributes.System) <> FileAttributes.System Then
-            File.SetAttributes(Me.IniPath, File.GetAttributes(Me.IniPath) Or FileAttributes.System)
+        If (File.GetAttributes(IniPath) And FileAttributes.System) <> FileAttributes.System Then
+            File.SetAttributes(IniPath, File.GetAttributes(IniPath) Or FileAttributes.System)
         End If
 
         Return True
@@ -163,13 +150,13 @@ Public Class FolderIcon
     ''' </summary>
     Private Function SetFolderAttributes() As Boolean
         ' determine if the Folder exists
-        If Not Directory.Exists(Me.FolderPath) Then
+        If Not Directory.Exists(FolderPath) Then
             Return False
         End If
 
         ' Set folder attribute to "System"
-        If (File.GetAttributes(Me.FolderPath) And FileAttributes.System) <> FileAttributes.System Then
-            File.SetAttributes(Me.FolderPath, File.GetAttributes(Me.FolderPath) Or FileAttributes.System)
+        If (File.GetAttributes(FolderPath) And FileAttributes.System) <> FileAttributes.System Then
+            File.SetAttributes(FolderPath, File.GetAttributes(FolderPath) Or FileAttributes.System)
         End If
 
         Return True

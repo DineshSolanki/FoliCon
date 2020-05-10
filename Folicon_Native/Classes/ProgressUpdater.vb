@@ -5,23 +5,23 @@ Public Class ProgressUpdater
 
     Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
 
-    Private pVal As Integer, pMax As Integer, pText As String
+    Private _pVal As Integer, _pMax As Integer, _pText As String
 
     Public Property Text As String
         Get
-            Return pText
+            Return _pText
         End Get
         Set(value As String)
-            pText = value
+            _pText = value
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(NameOf(Text)))
         End Set
     End Property
     Public Property Value As Integer
         Get
-            Return pVal
+            Return _pVal
         End Get
-        Set(newvalue As Integer)
-            pVal = newvalue
+        Set(newValue As Integer)
+            _pVal = newValue
 
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(NameOf(Value)))
         End Set
@@ -29,10 +29,10 @@ Public Class ProgressUpdater
 
     Public Property Maximum As Integer
         Get
-            Return pMax
+            Return _pMax
         End Get
-        Set(newvalue As Integer)
-            pMax = newvalue
+        Set(newValue As Integer)
+            _pMax = newValue
 
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(NameOf(Maximum)))
         End Set
