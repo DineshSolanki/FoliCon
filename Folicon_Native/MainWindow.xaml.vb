@@ -247,7 +247,6 @@ Class MainWindow
             End If
 
             IconsProcessedValue.Content = IconProcessedCount.ToString()
-            RefreshIconCache()
             BusyIndicator1.IsBusy = False
             Select Case _
                 MessageBox.Show("Note:The Icon may take some time to reload. " & vbCrLf & " To Force Reload, click on Restart Explorer "& vbCrLf &"OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel,
@@ -291,5 +290,9 @@ Class MainWindow
 
     Private Sub MenuRExbtn_Click(sender As Object, e As RoutedEventArgs) Handles MenuRExbtn.Click
         RefreshIconCache()
+    End Sub
+
+    Private Sub SelectedFolderlbl_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles SelectedFolderlbl.MouseDoubleClick
+        Process.Start(SelectedFolderPath)
     End Sub
 End Class
