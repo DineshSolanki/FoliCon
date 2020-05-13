@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="MainForm"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock" x:Name="MainForm"
     x:Class="MainWindow"
         mc:Ignorable="d"
         Title="FoliCon Beta" Height="613" Width="800" MinWidth="800" MinHeight="613" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter">
@@ -29,9 +29,8 @@
                         <RadioButton Content="Poster" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsChecked="True" Checked="RadioButton_Checked_1"/>
                         <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" Checked="RadioButton_Checked_1" />
                     </Grid>
-                    
 
-                    <Grid Height="144" Margin="421,22,0,0" VerticalAlignment="Top" Width="327">
+                    <Grid Height="144" Margin="421,22,0,0" VerticalAlignment="Top" Width="327" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0*"/>
                             <ColumnDefinition Width="107*"/>
@@ -39,7 +38,6 @@
                         </Grid.ColumnDefinitions>
                         <Button x:Name="Loadbtn" Content="Load" Margin="44,3,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="40" />
                         <Button x:Name="Searchbtn" Margin="44,78,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="37" Content="Make Icons" IsEnabled="False"/>
-                        
                     </Grid>
                     <ListView x:Name="FinalistView" Margin="7,161,13,10" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center" >
                         <ListView.View>
@@ -102,12 +100,10 @@
                 <Label  Content="0"/>
             </StatusBarItem>
             <StatusBarItem x:Name="NetworkSignal" Grid.Column="7">
-                <Image Name="NetworkImage" Height="32" Source="{Binding NetIcon}" Stretch="Fill" Width="32"/>
+                <Image x:Name="NetworkImage" Height="32" Source="{Binding NetIcon}" Stretch="Fill" Width="32"/>
             </StatusBarItem>
-            
         </StatusBar>
-        <!--<xctk:BusyIndicator  x:Name="BusyIndicator1"  Margin="19,0,20,71" BusyContent="Loading Icons..." Grid.ColumnSpan="2"/ >-->
-        <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="2" Margin="10,37,10,10">
+        <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="2" Margin="10,37,10,10" >
             <xctk:BusyIndicator.BusyContentTemplate>
                 <DataTemplate>
                     <StackPanel Margin="4">

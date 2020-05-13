@@ -1,5 +1,6 @@
 ﻿Imports System.Data
 Imports System.Configuration
+Imports System.Net.Http
 Imports Newtonsoft.Json.Linq
 
 Module GlobalVariables
@@ -23,6 +24,9 @@ Module GlobalVariables
     Public APIkeygb As String = ConfigurationManager.AppSettings.Get("GBAPI")
     Public APIkeyTMDB As String = ConfigurationManager.AppSettings.Get("TMDBAPI")
     Public APIkeyGoogle As String = ConfigurationManager.AppSettings.Get("GoogleAPI")
+    Public ClientSecretDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientSecret")
+    Public ClientIdDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientId")
     Public Responseformatgb As String = "json"
     Public Fieldlistgb As String = "*"
+    Public HttpC as new HttpClient()
 End Module

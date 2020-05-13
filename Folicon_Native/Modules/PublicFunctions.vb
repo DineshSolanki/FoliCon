@@ -15,24 +15,45 @@ Imports Ookii.Dialogs.Wpf
 Imports Xceed.Wpf.Toolkit
 
 Module PublicFunctions
-    <DllImport("gdi32")>
-    Private Function DeleteObject(o As IntPtr) As Integer
+    <DllImport("kernel32.dll", SetLastError:=True)>
+    Private  Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
 
     End Function
+        <DllImport("kernel32.dll", SetLastError:=True)>
+        Private  Function Wow64RevertWow64FsRedirection(ByVal ptr As IntPtr) As Boolean
 
-
+        End Function
+    <DllImport("gdi32")>
+    Private Function DeleteObject(o As IntPtr) As Integer
+    End Function
+    Public Function WriteToTempFile(ByVal Data As String) As String
+        ' Writes text to a temporary file and returns path
+        Dim strFilename As String = Path.GetTempFileName()
+        Dim objFS As New FileStream(strFilename, FileMode.Append, _
+                                              FileAccess.Write)
+        ' Opens stream and begins writing
+        Dim writer As New StreamWriter(objFS)
+        writer.BaseStream.Seek(0, SeekOrigin.End)
+        writer.WriteLine(Data)
+        writer.Flush()
+        ' Closes and returns temp path
+        writer.Close()
+        Return strFilename
+    End Function
     Public Function LoadBitmap(source As Bitmap) As BitmapSource
         Dim ip As IntPtr = source.GetHbitmap()
         Dim bs As BitmapSource
 
         Try
-            bs = Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions())
+            bs = Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty,
+                                                       BitmapSizeOptions.FromEmptyOptions())
         Finally
             DeleteObject(ip)
         End Try
 
         Return bs
     End Function
+
     Public Function NewFolderBrowseDialog(description As String) As VistaFolderBrowserDialog
         Dim folderBrowser As New VistaFolderBrowserDialog()
         With folderBrowser
@@ -41,50 +62,61 @@ Module PublicFunctions
         End With
         Return folderBrowser
     End Function
-    Public Async Function PerformActualSearch(title As String) As Task(Of Object)
-        Dim http = New HttpClient()
-        If SearchMod = "Game" Then
-            http.BaseAddress = New Uri("http://www.giantbomb.com/api/")
-        Else
-            http.BaseAddress = New Uri("http://api.themoviedb.org/3/")
-        End If
-        Dim url As String = Nothing
-        If SearchMod = "Movie" Then
-            If title.ToLower.Contains("collection") Then
-                url = "search/collection?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title & "&page=1"
-            Else
-                url = "search/movie?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
-            End If
-        ElseIf SearchMod = "TV" Then
-            url = "search/tv?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
-        ElseIf SearchMod = "Auto" Then
-            url = "search/multi?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
-        ElseIf SearchMod = "Game" Then
-            url = "search?api_key=" & APIkeygb & "&format=" & Responseformatgb & "&query=" & title & "&field_list=" & Fieldlistgb
-        End If
 
-        Using Response
-            Try
-                Response = Await http.GetAsync(url)
-            Catch ex As Exception
-                MessageBox.Show(ex.Message)
-                Return -1
-            End Try
-            Dim jsonData = Await Response.Content.ReadAsStringAsync()
-            Searchresultob = JValue.Parse(jsonData)
+    Public Async Function PerformActualSearch(title As String) As Task(Of Object)
+        using http = New HttpClient()
+            If SearchMod = "Game" Then
+                http.BaseAddress = New Uri("http://www.giantbomb.com/api/")
+            Else
+                http.BaseAddress = New Uri("http://api.themoviedb.org/3/")
+            End If
+            Dim url As String = Nothing
+            If SearchMod = "Movie" Then
+                If title.ToLower.Contains("collection") Then
+                    url = "search/collection?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title & "&page=1"
+                Else
+                    url = "search/movie?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
+                End If
+            ElseIf SearchMod = "TV" Then
+                url = "search/tv?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
+            ElseIf SearchMod = "Auto" Then
+                url = "search/multi?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
+            ElseIf SearchMod = "Game" Then
+                url = "search?api_key=" & APIkeygb & "&format=" & Responseformatgb & "&query=" & title & "&field_list=" &
+                      Fieldlistgb
+            End If
+
+            Using Response
+                Try
+                    Response = Await http.GetAsync(url)
+                Catch ex As Exception
+                    MessageBox.Show(ex.Message)
+                    Return - 1
+                End Try
+                Dim jsonData = Await Response.Content.ReadAsStringAsync()
+                Searchresultob = JToken.Parse(jsonData)
+            End Using
         End Using
         Return Searchresultob
-
-
     End Function
+
     Public Sub ResultPicked(pickedIndex As Integer)
         If Searchresultob.Item("results")(pickedIndex).Item("poster_path").ToString IsNot "null" Then
 
             If Not Fnames(FolderNameIndex).ToLower.Contains("collection") Then
                 Dim releaseDate = CDate(Searchresultob.Item("results")(pickedIndex).Item(DateProperty).ToString)
-                AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png", Searchresultob.Item("results")(pickedIndex).Item(INameProperty), Searchresultob.Item("results")(pickedIndex).Item("vote_average"), SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex), releaseDate.Year.ToString)
+                AddToPickedListDataTable(
+                    SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png",
+                    Searchresultob.Item("results")(pickedIndex).Item(INameProperty),
+                    Searchresultob.Item("results")(pickedIndex).Item("vote_average"),
+                    SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex),
+                    releaseDate.Year.ToString)
             Else
-                AddToPickedListDataTable(SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png", Searchresultob.Item("results")(pickedIndex).Item(INameProperty), Searchresultob.Item("results")(pickedIndex).Item("vote_average"), SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex))
+                AddToPickedListDataTable(
+                    SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png",
+                    Searchresultob.Item("results")(pickedIndex).Item(INameProperty),
+                    Searchresultob.Item("results")(pickedIndex).Item("vote_average"),
+                    SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex))
             End If
 
             FolderProcessedCount += 1
@@ -93,7 +125,8 @@ Module PublicFunctions
             With image1
                 .LocalPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png"
                 If IconMode = "Poster" Then
-                    .RemotePath = "https://image.tmdb.org/t/p/w500/" & Searchresultob.Item("results")(pickedIndex).Item("poster_path").ToString
+                    .RemotePath = "https://image.tmdb.org/t/p/w500/" &
+                                  Searchresultob.Item("results")(pickedIndex).Item("poster_path").ToString
                 Else
                     .RemotePath = GoogleURl
                 End If
@@ -104,15 +137,17 @@ Module PublicFunctions
         Else
             MessageBox.Show("sorry, No Poster Found, Please try in Professional Mode")
         End If
-
     End Sub
+
     Public Sub GetReadyForSearch()
         ImgDownloadList.Clear()
         InitPickedListDataTable()
     End Sub
+
     Public Function IsNullOrEmpty(myStringArray() As String) As Boolean
         Return myStringArray Is Nothing OrElse myStringArray.Length < 1 OrElse myStringArray(0) = ""
     End Function
+
     Public Sub SetColumnWidth(listView As ListView)
         Dim gridView = TryCast(listView.View, GridView)
         If gridView IsNot Nothing Then
@@ -123,8 +158,8 @@ Module PublicFunctions
                 column.Width = Double.NaN
             Next column
         End If
-
     End Sub
+
     ''' <summary>
     ''' Creates an array of all Folders Names which do not have an icon assigned 
     ''' </summary>
@@ -143,7 +178,6 @@ Module PublicFunctions
         Else
             MessageBox.Show("Folder is Empty or not Selected", "Folder Error")
         End If
-
     End Sub
 
     ''' <summary>
@@ -165,10 +199,14 @@ Module PublicFunctions
     ''' <param name="url"> The URL of Image to Download</param>
     ''' <param name="saveFilename">The Local Path Of Downloaded Image</param>
     Public Sub DownloadImageFromUrl(url As String, saveFilename As String)
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 Or SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 Or SecurityProtocolType.Tls Or
+                                               SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
         Dim httpWebRequest = DirectCast(WebRequest.Create(url), HttpWebRequest)
         Dim httpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
-        If (httpWebResponse.StatusCode <> HttpStatusCode.OK AndAlso httpWebResponse.StatusCode <> HttpStatusCode.Moved AndAlso httpWebResponse.StatusCode <> HttpStatusCode.Redirect) OrElse Not httpWebResponse.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase) Then
+        If _
+            (httpWebResponse.StatusCode <> HttpStatusCode.OK AndAlso httpWebResponse.StatusCode <> HttpStatusCode.Moved AndAlso
+             httpWebResponse.StatusCode <> HttpStatusCode.Redirect) OrElse
+            Not httpWebResponse.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase) Then
             Return
         End If
         Using stream = httpWebResponse.GetResponseStream()
@@ -186,12 +224,15 @@ Module PublicFunctions
         End Using
     End Sub
 
-    Public Async Function DownloadImage(filename As String, localPath As String, cancellationToken As CancellationToken) As Task
+    Public Async Function DownloadImage(filename As String, localPath As String, cancellationToken As CancellationToken) _
+        As Task
         If Not File.Exists(localPath) Then
             Dim folder As String = Path.GetDirectoryName(localPath)
             Directory.CreateDirectory(folder)
             Dim storage = New StorageClient()
-            Using fileStream = New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None, Short.MaxValue, True)
+            Using _
+                fileStream =
+                    New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None, Short.MaxValue, True)
                 Try
                     Await storage.DownloadAsync(filename, fileStream, cancellationToken)
                 Catch ex As Exception
@@ -212,7 +253,11 @@ Module PublicFunctions
             Exit Sub
         End If
         Dim icon As Bitmap
-        Using task As Task(Of Bitmap) = Start(Function() New MyMovieCIcon(New MyMovieIconLayout(filmFolderPath, rating, isVisible)).RenderToBitmap())
+        Using _
+            task As Task(Of Bitmap) =
+                Start(
+                    Function() _
+                         New MyMovieCIcon(New MyMovieIconLayout(filmFolderPath, rating, isVisible)).RenderToBitmap())
             task.Wait()
             icon = task.Result
         End Using
@@ -231,6 +276,7 @@ Module PublicFunctions
             File.SetAttributes(icoFile, File.GetAttributes(icoFile) Or FileAttributes.System)
         End If
     End Sub
+
     ''' <summary>
     ''' Creates Icons from PNG
     ''' </summary>
@@ -265,10 +311,25 @@ Module PublicFunctions
                 myFolderIcon.CreateFolderIcon(targetFile, i)
 
                 Dim dirInf As New DirectoryInfo(SelectedFolderPath & "\" & i & "\")
+                dirInf.Attributes = dirInf.Attributes Or FileAttributes.Directory
+                dirInf.Attributes = dirInf.Attributes Or FileAttributes.ReadOnly
                 dirInf.Refresh()
             End If
         Next
     End Sub
+    Public sub RefreshIconCache()
+        Dim wow64Value As IntPtr = IntPtr.Zero
+        Wow64DisableWow64FsRedirection(wow64Value)
+        Dim objProcess As Process
+        objProcess = New Process()
+        objProcess.StartInfo.FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) & "\ie4uinit.exe"
+        objProcess.StartInfo.Arguments = "-ClearIconCache"
+        objProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
+        objProcess.Start()
+        objProcess.WaitForExit()
+        objProcess.Close()
+        RestartExplorer()
+    End sub
     Public Async Function GetBitmapFromUrlAsync(url As String) As Task(Of Bitmap)
         Dim myRequest = CType(WebRequest.Create(New Uri(url)), HttpWebRequest)
         myRequest.Method = "GET"
@@ -278,27 +339,28 @@ Module PublicFunctions
         myResponse.Close()
         Return bmp
     End Function
+
     Public Sub InitPickedListDataTable()
         PickedListDataTable.Columns.Clear()
         PickedListDataTable.Rows.Clear()
         Dim column1 = New DataColumn("Poster") With {
-            .DataType = Type.GetType("System.String")
-        }
+                .DataType = Type.GetType("System.String")
+                }
         Dim column2 = New DataColumn("Title") With {
-            .DataType = Type.GetType("System.String")
-        }
+                .DataType = Type.GetType("System.String")
+                }
         Dim column3 = New DataColumn("Year") With {
-            .DataType = Type.GetType("System.String")
-        }
+                .DataType = Type.GetType("System.String")
+                }
         Dim column4 = New DataColumn("Rating") With {
-            .DataType = Type.GetType("System.String")
-        }
+                .DataType = Type.GetType("System.String")
+                }
         Dim column5 = New DataColumn("Folder") With {
-            .DataType = Type.GetType("System.String")
-        }
+                .DataType = Type.GetType("System.String")
+                }
         Dim column6 = New DataColumn("FolderName") With {
-            .DataType = Type.GetType("System.String")
-        }
+                .DataType = Type.GetType("System.String")
+                }
 
         PickedListDataTable.Columns.Add(column1)
         PickedListDataTable.Columns.Add(column2)
@@ -307,7 +369,9 @@ Module PublicFunctions
         PickedListDataTable.Columns.Add(column5)
         PickedListDataTable.Columns.Add(column6)
     End Sub
-    Public Sub AddToPickedListDataTable(poster As String, title As String, rating As String, folder As String, folderName As String, Optional year As String = "")
+
+    Public Sub AddToPickedListDataTable(poster As String, title As String, rating As String, folder As String,
+                                        folderName As String, Optional year As String = "")
         Dim nRow As DataRow
         nRow = PickedListDataTable.NewRow()
         nRow.Item("Poster") = poster
@@ -317,5 +381,17 @@ Module PublicFunctions
         nRow.Item("Folder") = folder
         nRow.Item("FolderName") = folderName
         PickedListDataTable.Rows.Add(nRow)
+    End Sub
+    Sub KillExplorer()
+        Dim taskKill As ProcessStartInfo = New ProcessStartInfo("taskkill", "/F /IM explorer.exe")
+        taskKill.WindowStyle = ProcessWindowStyle.Hidden
+        Dim process As Process = New Process()
+        process.StartInfo = taskKill
+        process.Start()
+        process.WaitForExit()
+    End Sub
+    Sub RestartExplorer()
+        KillExplorer()
+        Process.Start("explorer.exe")
     End Sub
 End Module

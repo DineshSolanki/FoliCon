@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.IO
 Imports System.Net
 Imports System.Net.NetworkInformation
 Imports Xceed.Wpf.Toolkit
@@ -113,7 +114,7 @@ Class MainWindow
                         Next
                     Else 'Professional Mode
                         GetReadyForSearch()
-                        Dim gPage As New ProSearchResults()
+                        Dim gPage As New ProSearchResultsDArt()
                         gPage.ShowDialog()
                         If PickedListDataTable.Rows.Count > 0 Then
                             For i = 0 To PickedListDataTable.Rows.Count - 1
@@ -246,6 +247,7 @@ Class MainWindow
             End If
 
             IconsProcessedValue.Content = IconProcessedCount.ToString()
+            RefreshIconCache()
             BusyIndicator1.IsBusy = False
             Select Case _
                 MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel,
