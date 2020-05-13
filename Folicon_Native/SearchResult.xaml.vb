@@ -46,10 +46,7 @@ Public Class SearchResult
         End If
         BusyIndicator1.BusyContent = "Searching for " & titleToSearch & "..."
         OverviewText.Text = ""
-        'Items.Clear()
-
         Await PerformActualSearch(titleToSearch)
-        'GoogleURl = Await GoogleIt(titleToSearch)
         RetryMovieTitle = Nothing
         If useBusy Then
             BusyIndicator1.IsBusy = False

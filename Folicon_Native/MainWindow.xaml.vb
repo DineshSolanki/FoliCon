@@ -1,4 +1,5 @@
 ﻿Imports System.ComponentModel
+Imports System.Configuration
 Imports System.IO
 Imports System.Net
 Imports System.Net.NetworkInformation
@@ -172,8 +173,7 @@ Class MainWindow
                 e.Cancel = True
                 Return
             End If
-
-            DownloadImageFromUrl(img.RemotePath, img.LocalPath)
+                    DownloadImageFromUrl(img.RemotePath, img.LocalPath)
             i += 1
             BackgrundWorker1.ReportProgress(i)
 
@@ -250,7 +250,7 @@ Class MainWindow
             RefreshIconCache()
             BusyIndicator1.IsBusy = False
             Select Case _
-                MessageBox.Show("Press OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel,
+                MessageBox.Show("Note:The Icon may take some time to reload. " & vbCrLf & " To Force Reload, click on Restart Explorer "& vbCrLf &"OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel,
                                 MessageBoxImage.Information)
                 Case MessageBoxResult.OK
                     Process.Start(SelectedFolderPath)
@@ -260,11 +260,9 @@ Class MainWindow
 
     Private Sub MainForm_Loaded(sender As Object, e As RoutedEventArgs) Handles MainForm.Loaded
         If isNetworkAvailable() Then
-
             NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
         Else
             NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
-
         End If
     End Sub
 
@@ -279,4 +277,19 @@ Class MainWindow
         End If
         Return False
     End Function
+
+
+    Private Sub MenuApiConfigBtn_Click(sender As Object, e As RoutedEventArgs) Handles MenuApiConfigBtn.Click
+        Dim fr as New ApiConfig()
+        fr.ShowDialog()
+    End Sub
+
+    Private Sub MenubtnHelp_Click(sender As Object, e As RoutedEventArgs) Handles MenubtnHelp.Click
+        Dim url As String = "https://github.com/DineshSolanki/FoliCon"
+        Process.Start(url)
+    End Sub
+
+    Private Sub MenuRExbtn_Click(sender As Object, e As RoutedEventArgs) Handles MenuRExbtn.Click
+        RefreshIconCache()
+    End Sub
 End Class
