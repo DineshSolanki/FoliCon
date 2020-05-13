@@ -8,7 +8,7 @@ Class testPage
     Private Async Sub Button_Click(sender As Object, e As RoutedEventArgs)
         
       Dim accessToken=Await GetClientAccessTokenAsync()
-        Await Browse(accessToken,"forrest gump folder icon")
+      
         
 
     End Sub

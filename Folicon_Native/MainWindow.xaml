@@ -7,123 +7,138 @@
     x:Class="MainWindow"
         mc:Ignorable="d"
         Title="FoliCon Beta" Height="613" Width="800" MinWidth="800" MinHeight="613" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="215*"/>
-            <ColumnDefinition Width="181*"/>
-        </Grid.ColumnDefinitions>
-        <TabControl Margin="0,0,0,35" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" DragEnter="Window_DragEnter" Drop="Window_Drop" FocusVisualStyle="{x:Null}">
-            <TabItem Header="Auto Mode">
-                <Grid Background="#FFE5E5E5" Margin="0,0,-9,-2">
-                    <Grid x:Name="GridSearchMode" Height="68" Margin="21,88,0,0" Width="383" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Border BorderBrush="Black" BorderThickness="1"/>
-                        <RadioButton Content="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" Margin="253,39,0,0" Width="58" IsEnabled="False"/>
-                        <Label Content="Search Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top" />
-                        <RadioButton Content="Movie" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsChecked="True"/>
-                        <RadioButton Content="TV" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" />
-                        <RadioButton Content="Game" HorizontalAlignment="Left" Margin="146,39,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsEnabled="False"/>
-                    </Grid>
-                    <Grid x:Name="GridIconCreationMode" Height="113" Margin="21,22,0,0" Width="395" HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,10,68"/>
-                        <Label Content="Icon Creation Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top"/>
-                        <RadioButton Content="Poster" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsChecked="True" Checked="RadioButton_Checked_1"/>
-                        <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" Checked="RadioButton_Checked_1" />
-                    </Grid>
-
-                    <Grid Height="144" Margin="421,22,0,0" VerticalAlignment="Top" Width="327" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0*"/>
-                            <ColumnDefinition Width="107*"/>
-                            <ColumnDefinition Width="9*"/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="Loadbtn" Content="Load" Margin="44,3,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="40" />
-                        <Button x:Name="Searchbtn" Margin="44,78,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="37" Content="Make Icons" IsEnabled="False"/>
-                    </Grid>
-                    <ListView x:Name="FinalistView" Margin="7,161,13,10" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center" >
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Title" Width="Auto" DisplayMemberBinding="{Binding Title}" />
-                                <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
-                                <GridViewColumn Header="Rating" Width="50" DisplayMemberBinding="{Binding Rating}" />
-                                <GridViewColumn Header="Folder" Width="Auto" DisplayMemberBinding="{Binding Folder}" />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <Label x:Name="SelectedFolderlbl" Content="" HorizontalAlignment="Left" Margin="65,-1,0,0" VerticalAlignment="Top" Height="27" FontStyle="Italic"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Custom Mode" IsEnabled="False">
-                <Grid Background="#FFE5E5E5"/>
-            </TabItem>
-        </TabControl>
-        <StatusBar Height="35" VerticalAlignment="Bottom" Grid.ColumnSpan="3">
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                    </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
-            <StatusBarItem  HorizontalContentAlignment="Stretch" >
-                <ProgressBar x:Name="PosterProgressBar" Value="0" Height="18" />
-            </StatusBarItem>
-            <StatusBarItem  Grid.Column="1">
-                <Label Content="Folder Processed:"/>
-            </StatusBarItem>
-
-            <StatusBarItem  Grid.Column="2">
-                <Label x:Name="ProcessedFolderValue" Content="0"/>
-            </StatusBarItem>
-
-            <StatusBarItem  Grid.Column="3">
-                <Label  Content="Icons Created :"/>
-            </StatusBarItem>
-            <StatusBarItem x:Name="IconsProcessedValue"  Grid.Column="4">
-                <Label  Content="0"/>
-            </StatusBarItem>
-            <StatusBarItem   Grid.Column="5">
-                <Label  Content="out of"/>
-            </StatusBarItem>
-            <StatusBarItem x:Name="TotalIconsValue"   Grid.Column="6">
-                <Label  Content="0"/>
-            </StatusBarItem>
-            <StatusBarItem x:Name="NetworkSignal" Grid.Column="7">
-                <Image x:Name="NetworkImage" Height="32" Source="{Binding NetIcon}" Stretch="Fill" Width="32"/>
-            </StatusBarItem>
-        </StatusBar>
-        <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="2" Margin="10,37,10,10" >
-            <xctk:BusyIndicator.BusyContentTemplate>
-                <DataTemplate>
-                    <StackPanel Margin="4">
-                        <TextBlock Text="Downloading Icons" FontWeight="Bold" HorizontalAlignment="Center"/>
-                        <StackPanel Margin="4">
-                            <TextBlock x:Name="posterDownloadText" Text="{Binding Text}"/>
-                            <ProgressBar x:Name="BusyPosterProgressBar" Value="{Binding Value}" Maximum="{Binding Maximum}" ValueChanged="BusyPosterProgressBar_ValueChanged" Height="15"/>
-                        </StackPanel>
-                        <Grid>
-                            <Button x:Name="DownloadCancelbtn" Grid.Column="1" Content="Cancel" HorizontalAlignment="Center" Margin="2 0 0 0" Click="DownloadCancelbtn_Click"/>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Settings">
+                <MenuItem Name="MenuApiConfigBtn" Header="_API keys Configuration"/>
+                <Separator/>
+            </MenuItem>
+            <MenuItem Name="MenuRExbtn" Header="Restart Explorer" ToolTip="This will close all Open folders and Restart Explorer"></MenuItem>
+            <MenuItem Header="Help" >
+                <MenuItem Name="MenubtnHelp" Header="Help Document"></MenuItem>
+                <MenuItem Header="About"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="190*"/>
+                <ColumnDefinition Width="181*"/>
+            </Grid.ColumnDefinitions>
+            <TabControl Margin="0,0,0,35" Grid.ColumnSpan="3" HorizontalContentAlignment="Stretch" DragEnter="Window_DragEnter" Drop="Window_Drop" FocusVisualStyle="{x:Null}">
+                <TabItem Header="Auto Mode">
+                    <Grid Background="#FFE5E5E5" Margin="0,0,-9,-2">
+                        <Grid x:Name="GridSearchMode" Height="68" Margin="21,88,0,0" Width="383" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Border BorderBrush="Black" BorderThickness="1"/>
+                            <RadioButton Content="Auto" HorizontalAlignment="Left" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" Margin="253,39,0,0" Width="58" IsEnabled="False"/>
+                            <Label Content="Search Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top" />
+                            <RadioButton Content="Movie" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsChecked="True"/>
+                            <RadioButton Content="TV" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" />
+                            <RadioButton Content="Game" HorizontalAlignment="Left" Margin="146,39,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsEnabled="False"/>
                         </Grid>
-                    </StackPanel>
-                </DataTemplate>
-            </xctk:BusyIndicator.BusyContentTemplate>
-            <xctk:BusyIndicator.ProgressBarStyle>
-                <Style TargetType="ProgressBar">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </Style>
-            </xctk:BusyIndicator.ProgressBarStyle>
-        </xctk:BusyIndicator>
-    </Grid>
+                        <Grid x:Name="GridIconCreationMode" Height="113" Margin="21,22,0,0" Width="395" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,10,68"/>
+                            <Label Content="Icon Creation Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top"/>
+                            <RadioButton Content="Poster" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="IconMode" IsChecked="True" Checked="RadioButton_Checked_1"/>
+                            <RadioButton Content="Professional" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="IconMode" Checked="RadioButton_Checked_1" />
+                        </Grid>
+
+                        <Grid Height="144" Margin="421,22,0,0" VerticalAlignment="Top" Width="327" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0*"/>
+                                <ColumnDefinition Width="107*"/>
+                                <ColumnDefinition Width="9*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="Loadbtn" Content="Load" Margin="44,3,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="40" />
+                            <Button x:Name="Searchbtn" Margin="44,78,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="37" Content="Make Icons" IsEnabled="False"/>
+                        </Grid>
+                        <ListView x:Name="FinalistView" Margin="7,161,13,10" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center" >
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Title" Width="Auto" DisplayMemberBinding="{Binding Title}" />
+                                        <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
+                                        <GridViewColumn Header="Rating" Width="50" DisplayMemberBinding="{Binding Rating}" />
+                                        <GridViewColumn Header="Folder" Width="Auto" DisplayMemberBinding="{Binding Folder}" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        <Label x:Name="SelectedFolderlbl" Content="" HorizontalAlignment="Left" Margin="65,-1,0,0" VerticalAlignment="Top" Height="27" FontStyle="Italic"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Custom Mode" IsEnabled="False">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+            <StatusBar Height="35" VerticalAlignment="Bottom" Grid.ColumnSpan="3">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+                <StatusBarItem  HorizontalContentAlignment="Stretch" >
+                    <ProgressBar x:Name="PosterProgressBar" Value="0" Height="18" />
+                </StatusBarItem>
+                <StatusBarItem  Grid.Column="1">
+                    <Label Content="Folder Processed:"/>
+                </StatusBarItem>
+
+                <StatusBarItem  Grid.Column="2">
+                    <Label x:Name="ProcessedFolderValue" Content="0"/>
+                </StatusBarItem>
+
+                <StatusBarItem  Grid.Column="3">
+                    <Label  Content="Icons Created :"/>
+                </StatusBarItem>
+                <StatusBarItem x:Name="IconsProcessedValue"  Grid.Column="4">
+                    <Label  Content="0"/>
+                </StatusBarItem>
+                <StatusBarItem   Grid.Column="5">
+                    <Label  Content="out of"/>
+                </StatusBarItem>
+                <StatusBarItem x:Name="TotalIconsValue"   Grid.Column="6">
+                    <Label  Content="0"/>
+                </StatusBarItem>
+                <StatusBarItem x:Name="NetworkSignal" Grid.Column="7">
+                    <Image x:Name="NetworkImage" Height="32" Source="{Binding NetIcon}" Stretch="Fill" Width="32"/>
+                </StatusBarItem>
+            </StatusBar>
+            <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="{Binding}"  DisplayAfter="0" Grid.ColumnSpan="3" Margin="10,37,10,10" >
+                <xctk:BusyIndicator.BusyContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="4">
+                            <TextBlock Text="Downloading Icons" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <StackPanel Margin="4">
+                                <TextBlock x:Name="posterDownloadText" Text="{Binding Text}"/>
+                                <ProgressBar x:Name="BusyPosterProgressBar" Value="{Binding Value}" Maximum="{Binding Maximum}" ValueChanged="BusyPosterProgressBar_ValueChanged" Height="15"/>
+                            </StackPanel>
+                            <Grid>
+                                <Button x:Name="DownloadCancelbtn" Grid.Column="1" Content="Cancel" HorizontalAlignment="Center" Margin="2 0 0 0" Click="DownloadCancelbtn_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </xctk:BusyIndicator.BusyContentTemplate>
+                <xctk:BusyIndicator.ProgressBarStyle>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style>
+                </xctk:BusyIndicator.ProgressBarStyle>
+            </xctk:BusyIndicator>
+        </Grid>
+    </DockPanel>
+
 
 </Window>

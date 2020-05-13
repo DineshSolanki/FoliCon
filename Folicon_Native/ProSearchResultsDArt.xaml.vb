@@ -1,5 +1,4 @@
 ﻿Imports System.Drawing
-Imports Google.Apis.Customsearch.v1
 Imports Xceed.Wpf.Toolkit
 Imports Folicon_Native.DArt
 
@@ -16,7 +15,7 @@ Public Class ProSearchResultsDArt
         pic.Height = _imageSize.Height
         pic.Width = _imageSize.Width
         'pic.Source=img
-        
+        pic.Margin=New Thickness(5,5,5,5)
         pic.Source = LoadBitmap(img)
         _pics.Add(pic)
         pic.Tag = link
@@ -57,23 +56,19 @@ Public Class ProSearchResultsDArt
         BusyIndicator1.BusyContent = "Searching for " & _titleToSearch & "..."
         BusyIndicator1.IsBusy = True
         Title = "Pick Icon for " & _titleToSearch
-
         Await DArtSearchAsync(_titleToSearch)
-
-
         RetryMovieTitle = Nothing
         BusyIndicator1.IsBusy = False
         IsEnabled = True
     End Sub
-
     Private Async Function DArtSearchAsync(query As String,Optional offset As Integer=0) As Task
         Dim searchResult As DArtBrowseResult
          _accessToken=await GetClientAccessTokenAsync()
         searchResult =await Browse(_accessToken,query,offset)
+
         If searchResult.Results.Length>0
             For Each item In searchResult.Results
                 Dim bm = Await GetBitmapFromUrlAsync(item.Thumbs(0).Src)
-                'dim bm=GetImageFromUrl(item.Thumbs(0).Src)
                 CreatePicBox(item.Content.Src, bm)
                 bm.Dispose()
             Next

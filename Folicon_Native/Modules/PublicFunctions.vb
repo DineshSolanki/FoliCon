@@ -26,19 +26,21 @@ Module PublicFunctions
     <DllImport("gdi32")>
     Private Function DeleteObject(o As IntPtr) As Integer
     End Function
-    Public Function WriteToTempFile(ByVal Data As String) As String
+    Public  Sub SaveImageToFile(ByVal filePath As String,image As BitmapSource)
+        Using fileStream = New FileStream(filePath, FileMode.Create)
+            Dim encoder As BitmapEncoder = New PngBitmapEncoder()
+            encoder.Frames.Add(BitmapFrame.Create(image))
+            encoder.Save(fileStream)
+        End Using
+    End Sub
+    Public Async Function DownloadToTempAsync(ByVal url As String) As Task(Of String)
         ' Writes text to a temporary file and returns path
-        Dim strFilename As String = Path.GetTempFileName()
-        Dim objFS As New FileStream(strFilename, FileMode.Append, _
-                                              FileAccess.Write)
-        ' Opens stream and begins writing
-        Dim writer As New StreamWriter(objFS)
-        writer.BaseStream.Seek(0, SeekOrigin.End)
-        writer.WriteLine(Data)
-        writer.Flush()
-        ' Closes and returns temp path
-        writer.Close()
-        Return strFilename
+        Dim tempPath=Path.GetTempPath()
+        Dim fileName=Path.GetRandomFileName()
+        Dim filePath=Path.Combine(tempPath,"FoliconTmp",fileName & ".png")
+        'DownloadImageFromUrl(url,filePath)
+       ' await DownloadImage(url,filePath,CancellationToken.None)
+        Return filePath
     End Function
     Public Function LoadBitmap(source As Bitmap) As BitmapSource
         Dim ip As IntPtr = source.GetHbitmap()
@@ -127,8 +129,6 @@ Module PublicFunctions
                 If IconMode = "Poster" Then
                     .RemotePath = "https://image.tmdb.org/t/p/w500/" &
                                   Searchresultob.Item("results")(pickedIndex).Item("poster_path").ToString
-                Else
-                    .RemotePath = GoogleURl
                 End If
 
 
@@ -201,7 +201,7 @@ Module PublicFunctions
     Public Sub DownloadImageFromUrl(url As String, saveFilename As String)
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 Or SecurityProtocolType.Tls Or
                                                SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
-        Dim httpWebRequest = DirectCast(WebRequest.Create(url), HttpWebRequest)
+        Dim httpWebRequest = DirectCast(WebRequest.Create(New Uri(url)), HttpWebRequest)
         Dim httpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
         If _
             (httpWebResponse.StatusCode <> HttpStatusCode.OK AndAlso httpWebResponse.StatusCode <> HttpStatusCode.Moved AndAlso
@@ -333,7 +333,6 @@ Module PublicFunctions
     Public Async Function GetBitmapFromUrlAsync(url As String) As Task(Of Bitmap)
         Dim myRequest = CType(WebRequest.Create(New Uri(url)), HttpWebRequest)
         myRequest.Method = "GET"
-
         Dim myResponse = CType(Await myRequest.GetResponseAsync().ConfigureAwait(False), HttpWebResponse)
         Dim bmp As New Bitmap(myResponse.GetResponseStream())
         myResponse.Close()
@@ -390,7 +389,7 @@ Module PublicFunctions
         process.Start()
         process.WaitForExit()
     End Sub
-    Sub RestartExplorer()
+    Private Sub RestartExplorer()
         KillExplorer()
         Process.Start("explorer.exe")
     End Sub
