@@ -4,13 +4,11 @@ Imports System.Data
 Imports System.Drawing
 Imports System.IO
 Imports System.Net
-Imports System.Net.Http
 Imports System.Net.TMDb
 Imports System.Runtime.InteropServices
 Imports System.Threading
 Imports System.Windows.Interop
 Imports Folicon_Native.Model
-Imports Newtonsoft.Json.Linq
 Imports Ookii.Dialogs.Wpf
 Imports Xceed.Wpf.Toolkit
 
@@ -26,22 +24,7 @@ Module PublicFunctions
     <DllImport("gdi32")>
     Private Function DeleteObject(o As IntPtr) As Integer
     End Function
-    Public  Sub SaveImageToFile(ByVal filePath As String,image As BitmapSource)
-        Using fileStream = New FileStream(filePath, FileMode.Create)
-            Dim encoder As BitmapEncoder = New PngBitmapEncoder()
-            encoder.Frames.Add(BitmapFrame.Create(image))
-            encoder.Save(fileStream)
-        End Using
-    End Sub
-    Public Async Function DownloadToTempAsync(ByVal url As String) As Task(Of String)
-        ' Writes text to a temporary file and returns path
-        Dim tempPath=Path.GetTempPath()
-        Dim fileName=Path.GetRandomFileName()
-        Dim filePath=Path.Combine(tempPath,"FoliconTmp",fileName & ".png")
-        'DownloadImageFromUrl(url,filePath)
-       ' await DownloadImage(url,filePath,CancellationToken.None)
-        Return filePath
-    End Function
+
     Public Function LoadBitmap(source As Bitmap) As BitmapSource
         Dim ip As IntPtr = source.GetHbitmap()
         Dim bs As BitmapSource
@@ -64,80 +47,6 @@ Module PublicFunctions
         End With
         Return folderBrowser
     End Function
-
-    Public Async Function PerformActualSearch(title As String) As Task(Of Object)
-        using http = New HttpClient()
-            If SearchMod = "Game" Then
-                http.BaseAddress = New Uri("http://www.giantbomb.com/api/")
-            Else
-                http.BaseAddress = New Uri("http://api.themoviedb.org/3/")
-            End If
-            Dim url As String = Nothing
-            If SearchMod = "Movie" Then
-                If title.ToLower.Contains("collection") Then
-                    url = "search/collection?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title & "&page=1"
-                Else
-                    url = "search/movie?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
-                End If
-            ElseIf SearchMod = "TV" Then
-                url = "search/tv?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
-            ElseIf SearchMod = "Auto" Then
-                url = "search/multi?api_key=" & APIkeyTMDB & "&language=en-US&query=" & title
-            ElseIf SearchMod = "Game" Then
-                url = "search?api_key=" & APIkeygb & "&format=" & Responseformatgb & "&query=" & title & "&field_list=" &
-                      Fieldlistgb
-            End If
-
-            Using Response
-                Try
-                    Response = Await http.GetAsync(url)
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message)
-                    Return - 1
-                End Try
-                Dim jsonData = Await Response.Content.ReadAsStringAsync()
-                Searchresultob = JToken.Parse(jsonData)
-            End Using
-        End Using
-        Return Searchresultob
-    End Function
-
-    Public Sub ResultPicked(pickedIndex As Integer)
-        If Searchresultob.Item("results")(pickedIndex).Item("poster_path").ToString IsNot "null" Then
-
-            If Not Fnames(FolderNameIndex).ToLower.Contains("collection") Then
-                Dim releaseDate = CDate(Searchresultob.Item("results")(pickedIndex).Item(DateProperty).ToString)
-                AddToPickedListDataTable(
-                    SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png",
-                    Searchresultob.Item("results")(pickedIndex).Item(INameProperty),
-                    Searchresultob.Item("results")(pickedIndex).Item("vote_average"),
-                    SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex),
-                    releaseDate.Year.ToString)
-            Else
-                AddToPickedListDataTable(
-                    SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png",
-                    Searchresultob.Item("results")(pickedIndex).Item(INameProperty),
-                    Searchresultob.Item("results")(pickedIndex).Item("vote_average"),
-                    SelectedFolderPath & "\" & Fnames(FolderNameIndex), Fnames(FolderNameIndex))
-            End If
-
-            FolderProcessedCount += 1
-
-            Dim image1 As New ImageToDownload()
-            With image1
-                .LocalPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) & ".png"
-                If IconMode = "Poster" Then
-                    .RemotePath = "https://image.tmdb.org/t/p/w500/" &
-                                  Searchresultob.Item("results")(pickedIndex).Item("poster_path").ToString
-                End If
-
-
-            End With
-            ImgDownloadList.Add(image1)
-        Else
-            MessageBox.Show("sorry, No Poster Found, Please try in Professional Mode")
-        End If
-    End Sub
 
     Public Sub GetReadyForSearch()
         ImgDownloadList.Clear()
@@ -224,8 +133,11 @@ Module PublicFunctions
         End Using
     End Sub
 
-    Public Async Function DownloadImage(filename As String, localPath As String, cancellationToken As CancellationToken) _
+    Public Async Function DownloadImage(filename As String, localPath As String,optional cancellationToken As CancellationToken=nothing) _
         As Task
+        If cancellationToken = Nothing
+            cancellationToken= CancellationToken.none
+        End If
         If Not File.Exists(localPath) Then
             Dim folder As String = Path.GetDirectoryName(localPath)
             Directory.CreateDirectory(folder)

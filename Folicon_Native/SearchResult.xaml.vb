@@ -1,7 +1,10 @@
 ﻿Option Strict Off
+
 Imports System.Collections.ObjectModel
+Imports System.Net.TMDb
 
 Public Class SearchResult
+    Dim serviceClient as New ServiceClient(APIkeyTMDB)
     Private _listItem As ListItem
 
     Public Property ListItem() As ListItem
@@ -26,7 +29,7 @@ Public Class SearchResult
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         MovieTitle.Content = SearchTitle
-        If Searchresultob IsNot Nothing OrElse Searchresultob.Item("total_results") IsNot Nothing OrElse Searchresultob.Item("number_of_total_results") IsNot Nothing Then
+        If Searchresultob IsNot Nothing AndAlso Searchresultob.TotalCount IsNot Nothing Then
             FetchAndAddDetailsToListView(ListView1, Searchresultob, SearchTitle)
         Else
             SearchTxt.Focus()
@@ -46,7 +49,7 @@ Public Class SearchResult
         End If
         BusyIndicator1.BusyContent = "Searching for " & titleToSearch & "..."
         OverviewText.Text = ""
-        Await PerformActualSearch(titleToSearch)
+            Await SearchIt(titleToSearch,serviceClient)
         RetryMovieTitle = Nothing
         If useBusy Then
             BusyIndicator1.IsBusy = False
@@ -55,58 +58,29 @@ Public Class SearchResult
     End Sub
 
 
-    Public Sub FetchAndAddDetailsToListView(listviewName As ListView, jsonResult As Object, Title As String)
-        Dim items As New ObservableCollection(Of ListItem)()
-        For Each m In jsonResult.item("results")
-            Dim arr As String() = New String(3) {}
-            Dim originalTitle As String = m.item("original_title")
-            Dim releaseDate As String = m.item("release_date")
-            Dim voteAverage As String = m.item("vote_average")
-            Dim name As String = m.item("name")
-            Dim originalName As String = m.item("original_name")
-            Dim firstAirDate As String = m.item("first_air_date")
-            Dim overview As String = m.item("overview")
-            Select Case SearchMod
-                Case "Movie"
-                    If Title.ToLower.Contains("collection") Then
-                        arr(0) = name
-                    Else
-                        arr(0) = originalTitle
-                        If Not String.IsNullOrEmpty(releaseDate) Then
-                            Dim dates As DateTime = CDate(releaseDate)
-                            arr(1) = dates.Year.ToString()
-                        End If
-                        arr(2) = voteAverage
-                    End If
-                Case "TV"
-                    arr(0) = name
-                    If Not String.IsNullOrEmpty(firstAirDate) Then
-                        Dim dates As DateTime = CDate(firstAirDate)
-                        arr(1) = dates.Year.ToString()
-                    End If
-                    arr(2) = voteAverage
-                Case "All"
-                    If Not name = Nothing Then
-                        arr(0) = name
-                    ElseIf Not originalName = Nothing Then
-                        arr(0) = originalName
-                    ElseIf Not m.item("original_title") = Nothing Then
-                        arr(0) = m.item("original_title")
-                    End If
-                    If Not String.IsNullOrEmpty(firstAirDate) Then
-                        Dim dates As DateTime = CDate(firstAirDate)
-                        arr(1) = dates.Year.ToString()
-                    ElseIf Not String.IsNullOrEmpty(releaseDate) Then
-                        Dim dates As DateTime = CDate(releaseDate)
-                        arr(1) = dates.Year.ToString()
-                    End If
-                    arr(2) = voteAverage
-            End Select
-            items.Add(New ListItem(arr(0), arr(1), arr(2), overview))
+    Public Sub FetchAndAddDetailsToListView(listViewName As ListView, result As Object, query As String)
+        Contracts.Contract.Requires(listViewName IsNot Nothing)
+        Contracts.Contract.Requires(result IsNot Nothing)
+        Dim source As new ObservableCollection(Of ListItem)
 
-        Next
-        listviewName.ItemsSource = items
-        SetColumnWidth(listviewName)
+        If SearchMod = "TV"
+            Dim ob = DirectCast(result, Shows)
+            source = ExtractTvDetailsIntoListItem(ob)
+        ElseIf SearchMod = "Movie"
+            If query.ToLower.Contains("collection")
+                Dim ob = DirectCast(result, collections)
+                source = ExtractCollectionDetailsIntoListItem(ob)
+            Else
+                Dim ob = DirectCast(result, Movies)
+                source = ExtractMoviesDetailsIntoListItem(ob)
+            End If
+        ElseIf SearchMod = "All"
+            ' TODO: Implement logic for "ALL"" Search
+
+        End If
+        
+        listViewName.ItemsSource =source
+            SetColumnWidth(listViewName)
     End Sub
 
     Private Sub Skipbtn_Click(sender As Object, e As RoutedEventArgs) Handles Skipbtn.Click
@@ -116,13 +90,12 @@ Public Class SearchResult
     Private Sub SearchAgainbtn_Click(sender As Object, e As RoutedEventArgs) Handles SearchAgainbtn.Click
         SearchTitle = SearchTxt.Text
         StartSearch(True)
-        Window_Loaded(Nothing, Nothing)
     End Sub
 
     Private Sub Pickbtn_Click(sender As Object, e As RoutedEventArgs) Handles Pickbtn.Click
         If ListView1.SelectedItems.Count > 0 Then
             PickedMovieIndex = ListView1.SelectedIndex
-            ResultPicked(PickedMovieIndex)
+            ResultPicked(Searchresultob,SearchMod,PickedMovieIndex)
             DialogResult = True
             Close()
         End If

@@ -1,6 +1,4 @@
 ﻿Imports System.ComponentModel
-Imports System.Configuration
-Imports System.IO
 Imports System.Net
 Imports System.Net.NetworkInformation
 Imports Xceed.Wpf.Toolkit
@@ -11,6 +9,7 @@ Class MainWindow
 
     Dim _draggedFileName As String = Nothing
     Private ReadOnly progressUpdater1 As New ProgressUpdater
+    ReadOnly serviceClient as New Net.TMDb.ServiceClient(APIkeyTMDB)
 
     Public Sub New()
 
@@ -26,13 +25,13 @@ Class MainWindow
         If e.IsAvailable Then
 
             Dispatcher.Invoke(Sub()
-                                  NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
-                              End Sub)
+                NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
+            End Sub)
         Else
 
             Dispatcher.Invoke(Sub()
-                                  NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
-                              End Sub)
+                NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
+            End Sub)
 
         End If
     End Sub
@@ -40,18 +39,13 @@ Class MainWindow
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
         Dim selectedBtn As RadioButton = sender
         SearchMod = selectedBtn.Content.ToString
-        If SearchMod = "TV" Then
-            DateProperty = "first_air_date"
-            INameProperty = "name"
-        Else
-            DateProperty = "release_date"
-            INameProperty = "title"
-        End If
+     
     End Sub
 
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
         Dim folderBrowserDialog = NewFolderBrowseDialog("Selected Folder")
         If folderBrowserDialog.ShowDialog Then
+            FinalistView.Items.Clear()
             SelectedFolderPath = folderBrowserDialog.SelectedPath
             SelectedFolderlbl.Content = SelectedFolderPath
             Searchbtn.IsEnabled = True
@@ -73,27 +67,29 @@ Class MainWindow
                         Dim isAutoPicked As Boolean
                         GetReadyForSearch()
                         For Each itemTitle As String In Fnames
-                            isAutoPicked = False
+                            isAutoPicked=False
+                            Dim sr as New SearchResult()
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
-                            Dim response = Await PerformActualSearch(SearchTitle)
-                            Dim result As String
-                            Dim sr As New SearchResult
-                            If SearchMod = "Game" Then
-                                result = response.item("number_of_total_results")
-                            Else
-                                result = response.item("total_results")
-                            End If
-                            If result = 0 Then
-                                MessageBox.Show(
-                                    "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
-                                    vbCrLf & "OR Check search Mode")
-                                sr.ShowDialog()
-                            ElseIf result = 1 Then
-                                ResultPicked(0)
-                                isAutoPicked = True
-                            ElseIf result > 1 Then
-                                sr.ShowDialog()
-                            End If
+                                Dim response= Await SearchIt(SearchTitle, serviceClient)
+                                Dim resultCount as Integer=response.Result.TotalCount
+                                If resultCount=0
+                                    MessageBox.Show(
+                                        "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
+                                        vbCrLf & "OR Check search Mode")
+                                    sr.ShowDialog()
+                                    ElseIf resultCount=1
+                                        ResultPicked(response.Result,response.MediaType,0)
+                                        isAutoPicked =true
+                                        ElseIf resultCount>1
+                                            sr.ShowDialog()
+                                End If
+
+
+                            'If SearchMod = "Game" Then
+                            '    result = response.item("number_of_total_results")
+                            'Else
+                            '    result = response.item("total_results")
+                            'End If
                             If isAutoPicked OrElse sr.DialogResult Then
                                 FinalistView.Items.Add(New ListItem() With {
                                                           .Title =
@@ -130,7 +126,6 @@ Class MainWindow
                         End If
 
                     End If
-                    'Mouse.SetCursor(Cursors.Arrow)
                     ProcessedFolderValue.Content = FolderProcessedCount.ToString
                     TotalIconsValue.Content = ImgDownloadList.Count.ToString
                     progressUpdater1.Maximum = ImgDownloadList.Count.ToString
@@ -173,11 +168,9 @@ Class MainWindow
                 e.Cancel = True
                 Return
             End If
-                    DownloadImageFromUrl(img.RemotePath, img.LocalPath)
+            DownloadImageFromUrl(img.RemotePath, img.LocalPath)
             i += 1
             BackgrundWorker1.ReportProgress(i)
-
-
         Next
     End Sub
 
@@ -249,8 +242,11 @@ Class MainWindow
             IconsProcessedValue.Content = IconProcessedCount.ToString()
             BusyIndicator1.IsBusy = False
             Select Case _
-                MessageBox.Show("Note:The Icon may take some time to reload. " & vbCrLf & " To Force Reload, click on Restart Explorer "& vbCrLf &"OK to Open Folder", "Icon(s) Created", MessageBoxButton.OKCancel,
-                                MessageBoxImage.Information)
+                MessageBox.Show(
+                    "Note:The Icon may take some time to reload. " & vbCrLf &
+                    " To Force Reload, click on Restart Explorer " & vbCrLf & "OK to Open Folder", "Icon(s) Created",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Information)
                 Case MessageBoxResult.OK
                     Process.Start(SelectedFolderPath)
             End Select
@@ -268,7 +264,7 @@ Class MainWindow
     Private Function isNetworkAvailable() As Boolean
         If My.Computer.Network.IsAvailable Then
             Try
-                Dim ipHost As IPHostEntry = Dns.GetHostEntry("www.google.com")
+                 Dns.GetHostEntry("www.google.com")
                 Return True
             Catch
                 Return False
@@ -292,7 +288,8 @@ Class MainWindow
         RefreshIconCache()
     End Sub
 
-    Private Sub SelectedFolderlbl_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles SelectedFolderlbl.MouseDoubleClick
+    Private Sub SelectedFolderlbl_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) _
+        Handles SelectedFolderlbl.MouseDoubleClick
         Process.Start(SelectedFolderPath)
     End Sub
 End Class
