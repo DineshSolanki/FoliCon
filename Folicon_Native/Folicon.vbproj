@@ -93,9 +93,6 @@
     <Compile Include="Classes\PngToIcoService.vb" />
     <Compile Include="Classes\ProgressUpdater.vb" />
     <Compile Include="Classes\TitleCleaner.vb" />
-    <Compile Include="Controls\IconLayout.xaml.vb">
-      <DependentUpon>IconLayout.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\MyMovieIcon.xaml.vb">
       <DependentUpon>MyMovieIcon.xaml</DependentUpon>
     </Compile>
@@ -119,10 +116,6 @@
       <DependentUpon>testPage.xaml</DependentUpon>
     </Compile>
     <Page Include="ApiConfig.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\IconLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

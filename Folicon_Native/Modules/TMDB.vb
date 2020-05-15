@@ -32,6 +32,9 @@ Module TMDB
 
 
     Public Sub ResultPicked(result As Object, resultType As String, pickIndex As integer)
+        If result.Results(pickIndex).Poster Is nothing
+            throw New Exception("NoPoster")
+        End If
         Dim localPosterPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) &
                               ".png"
         Dim folderPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex)

@@ -2,15 +2,15 @@
 
 Public Class ApiConfig
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
-        txtTMDBApi.Text=ConfigurationManager.AppSettings.Get("TMDBAPI")
+        TxtTmdbApi.Text=ConfigurationManager.AppSettings.Get("TMDBAPI")
         TxtClientSecret.Text=ConfigurationManager.AppSettings.Get("DeviantClientSecret")
-        TxtClientID.Text=ConfigurationManager.AppSettings.Get("DeviantClientId")
+        TxtClientId.Text=ConfigurationManager.AppSettings.Get("DeviantClientId")
     End Sub
 
     Private Sub BtnSave_Click(sender As Object, e As RoutedEventArgs) Handles BtnSave.Click
-        Dim tmdbApi As String=txtTMDBApi.text
+        Dim tmdbApi As String=TxtTmdbApi.text
         Dim clientSecret As String=TxtClientSecret.Text
-        Dim clientId As String= TxtClientID.Text
+        Dim clientId As String= TxtClientId.Text
         If Not String.IsNullOrEmpty(tmdbApi) AndAlso Not String.IsNullOrEmpty(clientSecret) AndAlso Not String.IsNullOrEmpty(clientId)
             dim config As Configuration =
                     ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)

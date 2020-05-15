@@ -50,7 +50,7 @@ Namespace DArt
 
         public Async Function Browse(accessToken As string, query As string,Optional offset As Integer=0) As Task(Of DArtBrowseResult)
             Dim url ="https://www.deviantart.com/api/v1/oauth2/browse/popular?timerange=alltime&offset=" & offset & "&category_path=customization%2ficons%2fos%2fwin&q=" &
-                    query & " folder icon" & "&limit=30&access_token=" & accessToken
+                    query & " folder icon" & "&limit=20&access_token=" & accessToken
             Dim result As DArtBrowseResult
             Using response = Await HttpC.GetAsync(New Uri(url))
                 Dim jsonData = Await response.Content.ReadAsStringAsync()

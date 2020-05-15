@@ -4,7 +4,7 @@ Imports System.Collections.ObjectModel
 Imports System.Net.TMDb
 
 Public Class SearchResult
-    Dim serviceClient as New ServiceClient(APIkeyTMDB)
+    Dim serviceClient as New ServiceClient(ApikeyTmdb)
     Private _listItem As ListItem
 
     Public Property ListItem() As ListItem
@@ -95,7 +95,17 @@ Public Class SearchResult
     Private Sub Pickbtn_Click(sender As Object, e As RoutedEventArgs) Handles Pickbtn.Click
         If ListView1.SelectedItems.Count > 0 Then
             PickedMovieIndex = ListView1.SelectedIndex
-            ResultPicked(Searchresultob,SearchMod,PickedMovieIndex)
+            Try
+                ResultPicked(Searchresultob,SearchMod,PickedMovieIndex)
+            Catch ex As Exception
+                If ex.Message="NoPoster"
+                    MessageBox.Show("No poster found")
+                Skipbtn_Click(Nothing,nothing)
+                    Exit Sub
+                End If
+               
+            End Try
+           
             DialogResult = True
             Close()
         End If

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FoliconNative"
         mc:Ignorable="d"
         Title="API Configuration" Height="355" Width="665.48" ResizeMode="NoResize" MinWidth="655.48" MinHeight="355" Loaded="Window_Loaded">
     <Grid>
@@ -12,12 +11,12 @@
                 <Label Content="Client Secret :" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="99"/>
                 <TextBox Name="TxtClientSecret" Margin="10,0,0,0" Height="21" />
                 <Label Content="Client ID :" HorizontalAlignment="Left" Margin="10,24,0,0" VerticalAlignment="Top" Width="99"/>
-                <TextBox Name="TxtClientID" Margin="10,0,0,0" Height="21" />
+                <TextBox Name="TxtClientId" Margin="10,0,0,0" Height="21" />
             </StackPanel>
         </GroupBox>
 
         <Label Content="TMDB API: " HorizontalAlignment="Left" Margin="22,222,0,0" VerticalAlignment="Top" Width="150"/>
-        <TextBox Name="txtTMDBApi"  HorizontalAlignment="Left" Height="23" Margin="101,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="534"/>
+        <TextBox Name="TxtTmdbApi"  HorizontalAlignment="Left" Height="23" Margin="101,222,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="534"/>
         <Button Name="BtnSave" Content="Save" HorizontalAlignment="Left" Margin="190,269,0,0" VerticalAlignment="Top" Width="106" Height="35" FontSize="20"/>
         <Button Name="BtnClose" Content="Close" HorizontalAlignment="Left" Margin="346,269,0,0" VerticalAlignment="Top" Width="106" Height="35" FontSize="20"/>
 

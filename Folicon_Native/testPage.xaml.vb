@@ -3,7 +3,7 @@ Imports System.Threading
 
 Class testPage
     Private Async Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        Dim st=New System.Net.TMDb.ServiceClient(APIkeyTMDB)
+        Dim st=New System.Net.TMDb.ServiceClient(ApikeyTmdb)
 
         Dim result=Await  st.SearchAsync("The Vampire Diaries", "en-US",True,1,CancellationToken.none)
         'Dim sc=new System.Net.TMDb.StorageClient()

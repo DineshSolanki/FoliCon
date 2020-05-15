@@ -55,8 +55,8 @@ Public Class FolderIcon
         FolderPath = targetFolderPath
         CreateFolderIcon(iconFilePath, infoTip)
     End Sub
-    Public Shared Function GetIconFromBitmap(ByVal FileName As String) As Icon
-        Using Bmp As New Bitmap(FileName)
+    Public Shared Function GetIconFromBitmap(ByVal fileName As String) As Icon
+        Using Bmp As New Bitmap(fileName)
             Return Icon.FromHandle(Bmp.GetHicon)
         End Using
     End Function

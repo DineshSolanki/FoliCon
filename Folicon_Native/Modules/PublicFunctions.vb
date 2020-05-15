@@ -108,8 +108,6 @@ Module PublicFunctions
     ''' <param name="url"> The URL of Image to Download</param>
     ''' <param name="saveFilename">The Local Path Of Downloaded Image</param>
     Public Sub DownloadImageFromUrl(url As String, saveFilename As String)
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 Or SecurityProtocolType.Tls Or
-                                               SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
         Dim httpWebRequest = DirectCast(WebRequest.Create(New Uri(url)), HttpWebRequest)
         Dim httpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
         If _

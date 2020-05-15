@@ -50,7 +50,7 @@
                                 <ColumnDefinition Width="9*"/>
                             </Grid.ColumnDefinitions>
                             <Button x:Name="Loadbtn" Content="Load" Margin="44,3,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="40" />
-                            <Button x:Name="Searchbtn" Margin="44,78,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="37" Content="Make Icons" IsEnabled="False"/>
+                            <Button x:Name="SearchAndMakehbtn" Margin="44,78,0,0" VerticalAlignment="Top"  Grid.ColumnSpan="2" HorizontalContentAlignment="Center" Height="37" Content="Make Icons" IsEnabled="False"/>
                         </Grid>
                         <ListView x:Name="FinalistView" Margin="7,161,13,10" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center" >
                                 <ListView.View>

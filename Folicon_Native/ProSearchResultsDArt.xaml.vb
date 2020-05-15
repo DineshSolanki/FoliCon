@@ -14,7 +14,6 @@ Public Class ProSearchResultsDArt
         Dim pic As New Controls.Image()
         pic.Height = _imageSize.Height
         pic.Width = _imageSize.Width
-        'pic.Source=img
         pic.Margin=New Thickness(5,5,5,5)
         pic.Source = LoadBitmap(img)
         _pics.Add(pic)

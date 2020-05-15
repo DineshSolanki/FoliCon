@@ -9,7 +9,7 @@ Class MainWindow
 
     Dim _draggedFileName As String = Nothing
     Private ReadOnly progressUpdater1 As New ProgressUpdater
-    ReadOnly serviceClient as New Net.TMDb.ServiceClient(APIkeyTMDB)
+    ReadOnly serviceClient as New Net.TMDb.ServiceClient(ApikeyTmdb)
 
     Public Sub New()
 
@@ -45,10 +45,11 @@ Class MainWindow
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
         Dim folderBrowserDialog = NewFolderBrowseDialog("Selected Folder")
         If folderBrowserDialog.ShowDialog Then
+            FolderProcessedCount=0
             FinalistView.Items.Clear()
             SelectedFolderPath = folderBrowserDialog.SelectedPath
             SelectedFolderlbl.Content = SelectedFolderPath
-            Searchbtn.IsEnabled = True
+            SearchAndMakehbtn.IsEnabled = True
             PosterProgressBar.Value = 0
             BusyIndicator1.DataContext = progressUpdater1
             GetFileNames()
@@ -56,17 +57,22 @@ Class MainWindow
     End Sub
 
 
-    Private Async Sub Searchbtn_ClickAsync(sender As Object, e As RoutedEventArgs) Handles Searchbtn.Click
+    Private Async Sub SearchAndMakebtn_ClickAsync(sender As Object, e As RoutedEventArgs) _
+        Handles SearchAndMakehbtn.Click
         GetFileNames()
         If Not IsNullOrEmpty(Fnames) Then
             If ValidFolder(SelectedFolderPath) Then
                 If My.Computer.Network.IsAvailable Then
+                    FolderProcessedCount=0
+                    FinalistView.Items.Clear()
+                    IconProcessedCount=0
                     If IconMode = "Poster" Then 'Poster Mode
-                        Searchbtn.IsEnabled = False
+                        SearchAndMakehbtn.IsEnabled = False
                         FolderNameIndex = 0
                         Dim isAutoPicked As Boolean
                         GetReadyForSearch()
                         For Each itemTitle As String In Fnames
+                            Cursor=Cursors.Wait
                             isAutoPicked=False
                             Dim sr as New SearchResult()
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
@@ -78,7 +84,17 @@ Class MainWindow
                                         vbCrLf & "OR Check search Mode")
                                     sr.ShowDialog()
                                     ElseIf resultCount=1
-                                        ResultPicked(response.Result,response.MediaType,0)
+                                        Try
+                                            ResultPicked(response.Result,response.MediaType,0)
+                                        Catch ex As Exception
+                                            If ex.Message="NoPoster"
+                                                FolderNameIndex += 1
+                                                MessageBox.Show("No poster found for " & SearchTitle)
+                                                Continue For
+                                            End If
+                                                
+                                        End Try
+                                        
                                         isAutoPicked =true
                                         ElseIf resultCount>1
                                             sr.ShowDialog()
@@ -106,7 +122,7 @@ Class MainWindow
                                                               "Folder").ToString()
                                                           })
                             End If
-
+                            Cursor=Cursors.Arrow
                             FolderNameIndex += 1
                         Next
                     Else 'Professional Mode
@@ -146,7 +162,7 @@ Class MainWindow
     End Sub
 
     Private Sub DoWorkOfDownload()
-        Searchbtn.IsEnabled = False
+        SearchAndMakehbtn.IsEnabled = False
         BackgrundWorker1.RunWorkerAsync()     '<== Causes Exception when searching, while posters are downloading
     End Sub
 
@@ -181,7 +197,7 @@ Class MainWindow
             BusyIndicator1.IsBusy = True
             MakeIcons()
         End If
-        Searchbtn.IsEnabled = True
+        SearchAndMakehbtn.IsEnabled = True
     End Sub
 
     Private Sub Window_Drop(sender As Object, e As DragEventArgs)
