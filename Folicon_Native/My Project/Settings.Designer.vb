@@ -62,9 +62,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.Folicon_Native.MySettings
+        Friend ReadOnly Property Settings() As Global.FoliconNative.MySettings
             Get
-                Return Global.Folicon_Native.MySettings.Default
+                Return Global.FoliconNative.MySettings.Default
             End Get
         End Property
     End Module

@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing
 Imports Xceed.Wpf.Toolkit
-Imports Folicon_Native.DArt
+Imports FoliconNative.DArt
 
 Public Class ProSearchResultsDArt
     Dim _titleToSearch As String

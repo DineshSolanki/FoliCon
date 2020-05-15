@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Folicon_Native"
+        xmlns:local="clr-namespace:FoliconNative"
         mc:Ignorable="d"
         Title="API Configuration" Height="355" Width="665.48" ResizeMode="NoResize" MinWidth="655.48" MinHeight="355" Loaded="Window_Loaded">
     <Grid>

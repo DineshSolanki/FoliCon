@@ -11,10 +11,10 @@ Imports System.Windows
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("Folicon_Native")>
+<Assembly: AssemblyTitle("FoliconNative")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("Folicon_Native")>
+<Assembly: AssemblyProduct("FoliconNative")>
 <Assembly: AssemblyCopyright("Copyright ©  2019")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>

@@ -8,7 +8,7 @@ Imports System.Net.TMDb
 Imports System.Runtime.InteropServices
 Imports System.Threading
 Imports System.Windows.Interop
-Imports Folicon_Native.Model
+Imports FoliconNative.Model
 Imports Ookii.Dialogs.Wpf
 Imports Xceed.Wpf.Toolkit
 

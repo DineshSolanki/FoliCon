@@ -26,7 +26,7 @@ Module TMDB
             ' TODO: Write logic to search for all
         End If
         Searchresultob=r
-        Dim response As New resultResponse() With{.Result=r,.MediaType=mt}
+        Dim response As New resultResponse() With {.Result = r, .MediaType = mt}
         Return response
     End Function
 
@@ -72,8 +72,6 @@ Module TMDB
                     .LocalPath=localPosterPath,
                     .RemotePath=posterUrl}
             ImgDownloadList.Add(tempImage)
-        Else
-            Throw new CustomExceptions("No Poster Found, Please try in Professional Mode", "NoPoster")
         End If
     End Sub
     public Function ExtractTvDetailsIntoListItem(result As shows) As ObservableCollection(Of ListItem)
