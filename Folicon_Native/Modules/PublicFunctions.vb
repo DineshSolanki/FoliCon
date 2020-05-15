@@ -282,6 +282,9 @@ Module PublicFunctions
     Public Sub AddToPickedListDataTable(poster As String, title As String, rating As String, folder As String,
                                         folderName As String, Optional year As String = "")
         Dim nRow As DataRow
+        If rating="0"
+            rating=""
+        End If
         nRow = PickedListDataTable.NewRow()
         nRow.Item("Poster") = poster
         nRow.Item("Title") = title

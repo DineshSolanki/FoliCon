@@ -39,13 +39,12 @@ Class MainWindow
     Private Sub RadioButton_Checked(sender As Object, e As RoutedEventArgs)
         Dim selectedBtn As RadioButton = sender
         SearchMod = selectedBtn.Content.ToString
-     
     End Sub
 
     Private Sub Loadbtn_Click(sender As Object, e As RoutedEventArgs) Handles Loadbtn.Click
         Dim folderBrowserDialog = NewFolderBrowseDialog("Selected Folder")
         If folderBrowserDialog.ShowDialog Then
-            FolderProcessedCount=0
+            FolderProcessedCount = 0
             FinalistView.Items.Clear()
             SelectedFolderPath = folderBrowserDialog.SelectedPath
             SelectedFolderlbl.Content = SelectedFolderPath
@@ -63,42 +62,42 @@ Class MainWindow
         If Not IsNullOrEmpty(Fnames) Then
             If ValidFolder(SelectedFolderPath) Then
                 If My.Computer.Network.IsAvailable Then
-                    FolderProcessedCount=0
+                    FolderProcessedCount = 0
                     FinalistView.Items.Clear()
-                    IconProcessedCount=0
+                    IconProcessedCount = 0
                     If IconMode = "Poster" Then 'Poster Mode
                         SearchAndMakehbtn.IsEnabled = False
                         FolderNameIndex = 0
                         Dim isAutoPicked As Boolean
                         GetReadyForSearch()
                         For Each itemTitle As String In Fnames
-                            Cursor=Cursors.Wait
-                            isAutoPicked=False
+                            Cursor = Cursors.Wait
+                            isAutoPicked = False
                             Dim sr as New SearchResult()
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
-                                Dim response= Await SearchIt(SearchTitle, serviceClient)
-                                Dim resultCount as Integer=response.Result.TotalCount
-                                If resultCount=0
-                                    MessageBox.Show(
-                                        "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
-                                        vbCrLf & "OR Check search Mode")
-                                    sr.ShowDialog()
-                                    ElseIf resultCount=1
-                                        Try
-                                            ResultPicked(response.Result,response.MediaType,0)
-                                        Catch ex As Exception
-                                            If ex.Message="NoPoster"
-                                                FolderNameIndex += 1
-                                                MessageBox.Show("No poster found for " & SearchTitle)
-                                                Continue For
-                                            End If
-                                                
-                                        End Try
-                                        
-                                        isAutoPicked =true
-                                        ElseIf resultCount>1
-                                            sr.ShowDialog()
-                                End If
+                            Dim response = Await SearchIt(SearchTitle, serviceClient)
+                            Dim resultCount as Integer = response.Result.TotalCount
+                            If resultCount = 0
+                                MessageBox.Show(
+                                    "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
+                                    vbCrLf & "OR Check search Mode")
+                                sr.ShowDialog()
+                            ElseIf resultCount = 1
+                                Try
+                                    ResultPicked(response.Result, response.MediaType, 0)
+                                Catch ex As Exception
+                                    If ex.Message = "NoPoster"
+                                        FolderNameIndex += 1
+                                        MessageBox.Show("No poster found for " & SearchTitle)
+                                        Continue For
+                                    End If
+
+                                End Try
+
+                                isAutoPicked = true
+                            ElseIf resultCount > 1
+                                sr.ShowDialog()
+                            End If
 
 
                             'If SearchMod = "Game" Then
@@ -122,7 +121,7 @@ Class MainWindow
                                                               "Folder").ToString()
                                                           })
                             End If
-                            Cursor=Cursors.Arrow
+                            Cursor = Cursors.Arrow
                             FolderNameIndex += 1
                         Next
                     Else 'Professional Mode
@@ -280,7 +279,7 @@ Class MainWindow
     Private Function isNetworkAvailable() As Boolean
         If My.Computer.Network.IsAvailable Then
             Try
-                 Dns.GetHostEntry("www.google.com")
+                Dns.GetHostEntry("www.google.com")
                 Return True
             Catch
                 Return False

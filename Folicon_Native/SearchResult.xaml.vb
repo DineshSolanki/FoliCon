@@ -74,9 +74,10 @@ Public Class SearchResult
                 Dim ob = DirectCast(result, Movies)
                 source = ExtractMoviesDetailsIntoListItem(ob)
             End If
-        ElseIf SearchMod = "All"
-            ' TODO: Implement logic for "ALL"" Search
-
+        ElseIf SearchMod = "Auto (Movies & TV Shows)"
+            ' TODO: Implement logic for "Auto (Movies & TV Shows)"" Search
+            Dim ob=DirectCast(result,Resources)
+            source=ExtractResourceDetailsIntoListItem(ob)
         End If
         
         listViewName.ItemsSource =source

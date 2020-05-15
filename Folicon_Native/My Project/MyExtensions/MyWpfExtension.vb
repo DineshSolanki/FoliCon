@@ -79,8 +79,8 @@ Namespace My
                     Return Instance
                 End If
             End Function
-            <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1822:MarkMembersAsStatic")>  _
-            <Global.System.Diagnostics.DebuggerHidden()> _
+            <CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1822:MarkMembersAsStatic")>  _
+            <DebuggerHidden()> _
             Private Sub Dispose__Instance__(Of T As Global.System.Windows.Window)(ByRef instance As T)
                 instance = Nothing
             End Sub
