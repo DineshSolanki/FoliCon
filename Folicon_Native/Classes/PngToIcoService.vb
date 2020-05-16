@@ -3,9 +3,7 @@ Imports System.Drawing
 Imports System.Drawing.IconLib
 
 Public Class PngToIcoService
-
-
-    Public Shared Sub Convert(ByVal bitmap As Bitmap, ByVal icoPath As String)
+    Public Shared Sub Convert(bitmap As Bitmap, ByVal icoPath As String)
         Dim mIcon As New MultiIcon()
         mIcon.Add("Untitled").CreateFrom(bitmap, IconOutputFormat.Vista)
         mIcon.SelectedIndex = 0

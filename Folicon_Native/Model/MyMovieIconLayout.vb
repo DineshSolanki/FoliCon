@@ -1,6 +1,4 @@
-﻿Imports System.Drawing
-Imports System.IO
-Imports System.Windows.Media
+﻿Imports System.IO
 
 Namespace Model
 
@@ -21,10 +19,9 @@ Namespace Model
         Public Sub New(ByVal folderJpgPath As String, ByVal Rating As String, ByVal isVisible As String)
             Me.IsVisible = isVisible
             Me.Rating = Rating
-            Dim ThisMemoryStream As New MemoryStream(My.Computer.FileSystem.ReadAllBytes(folderJpgPath))
-            Dim imageSourceConverter As ImageSourceConverter = New ImageSourceConverter()
-            'Me.FolderJpg = CType(imageSourceConverter.ConvertFromString(folderJpgPath), ImageSource) <--This kept PNG file Locked
-            Me.FolderJpg = CType(imageSourceConverter.ConvertFrom(ThisMemoryStream), ImageSource)
+            Dim thisMemoryStream As New MemoryStream(My.Computer.FileSystem.ReadAllBytes(folderJpgPath))
+            Dim imageSourceConverter = New ImageSourceConverter()
+            Me.FolderJpg = CType(imageSourceConverter.ConvertFrom(thisMemoryStream), ImageSource)
         End Sub
     End Class
 End Namespace

@@ -200,7 +200,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Model\star.png" />
     <Resource Include="Resources\TMDB black logo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +238,12 @@
     <PackageReference Include="Ookii.Dialogs.Wpf">
       <Version>1.1.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Model\PosterMockup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Model\shield.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -295,7 +295,7 @@ Class MainWindow
     End Sub
 
     Private Sub MenubtnHelp_Click(sender As Object, e As RoutedEventArgs) Handles MenubtnHelp.Click
-        Dim url As String = "https://github.com/DineshSolanki/FoliCon"
+        Dim url = "https://github.com/DineshSolanki/FoliCon"
         Process.Start(url)
     End Sub
 

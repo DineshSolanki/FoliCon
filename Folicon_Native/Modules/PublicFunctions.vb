@@ -13,14 +13,14 @@ Imports Ookii.Dialogs.Wpf
 Imports Xceed.Wpf.Toolkit
 
 Module PublicFunctions
-    <DllImport("kernel32.dll", SetLastError:=True)>
-    Private  Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
-
+    <DllImport("kernel32.dll", SetLastError := True)>
+    Private Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
     End Function
-        <DllImport("kernel32.dll", SetLastError:=True)>
-        Private  Function Wow64RevertWow64FsRedirection(ByVal ptr As IntPtr) As Boolean
 
-        End Function
+    <DllImport("kernel32.dll", SetLastError := True)>
+    Private Function Wow64RevertWow64FsRedirection(ByVal ptr As IntPtr) As Boolean
+    End Function
+
     <DllImport("gdi32")>
     Private Function DeleteObject(o As IntPtr) As Integer
     End Function
@@ -131,10 +131,11 @@ Module PublicFunctions
         End Using
     End Sub
 
-    Public Async Function DownloadImage(filename As String, localPath As String,optional cancellationToken As CancellationToken=nothing) _
+    Public Async Function DownloadImage(filename As String, localPath As String,
+                                        optional cancellationToken As CancellationToken = nothing) _
         As Task
         If cancellationToken = Nothing
-            cancellationToken= CancellationToken.none
+            cancellationToken = CancellationToken.none
         End If
         If Not File.Exists(localPath) Then
             Dim folder As String = Path.GetDirectoryName(localPath)
@@ -162,6 +163,12 @@ Module PublicFunctions
         If Not File.Exists(filmFolderPath) Then
             Exit Sub
         End If
+        isVisible = If(rating <> "", "Visible", "Hidden")
+        If Not rating = "10"
+            rating = If(Not rating.Contains("."), rating & ".0", rating)
+        End If
+
+
         Dim icon As Bitmap
         Using _
             task As Task(Of Bitmap) =
@@ -227,6 +234,7 @@ Module PublicFunctions
             End If
         Next
     End Sub
+
     Public sub RefreshIconCache()
         Dim wow64Value As IntPtr = IntPtr.Zero
         Wow64DisableWow64FsRedirection(wow64Value)
@@ -240,6 +248,7 @@ Module PublicFunctions
         objProcess.Close()
         RestartExplorer()
     End sub
+
     Public Async Function GetBitmapFromUrlAsync(url As String) As Task(Of Bitmap)
         Dim myRequest = CType(WebRequest.Create(New Uri(url)), HttpWebRequest)
         myRequest.Method = "GET"
@@ -282,8 +291,8 @@ Module PublicFunctions
     Public Sub AddToPickedListDataTable(poster As String, title As String, rating As String, folder As String,
                                         folderName As String, Optional year As String = "")
         Dim nRow As DataRow
-        If rating="0"
-            rating=""
+        If rating = "0"
+            rating = ""
         End If
         nRow = PickedListDataTable.NewRow()
         nRow.Item("Poster") = poster
@@ -294,6 +303,7 @@ Module PublicFunctions
         nRow.Item("FolderName") = folderName
         PickedListDataTable.Rows.Add(nRow)
     End Sub
+
     Sub KillExplorer()
         Dim taskKill As ProcessStartInfo = New ProcessStartInfo("taskkill", "/F /IM explorer.exe")
         taskKill.WindowStyle = ProcessWindowStyle.Hidden
@@ -302,6 +312,7 @@ Module PublicFunctions
         process.Start()
         process.WaitForExit()
     End Sub
+
     Private Sub RestartExplorer()
         KillExplorer()
         Process.Start("explorer.exe")

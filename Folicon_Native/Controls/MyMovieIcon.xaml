@@ -4,27 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:model="clr-namespace:FoliconNative.Model"
-             mc:Ignorable="d"
-             d:DesignHeight="256" d:DesignWidth="256" DataContext="{DynamicResource LayoutDesign}">
+             mc:Ignorable="d" DataContext="{DynamicResource LayoutDesign}" Width="265" Height="256">
 
     <UserControl.Resources>
         <model:LayoutDesign x:Key="LayoutDesign" />
     </UserControl.Resources>
-    <Grid>
-        <Image Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"
-               Margin="0,0,18,2" />
+    <Grid Margin="0,0,0,-11">
+        <Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="56,16,47,22" />
+        <Image Source="../Model/PosterMockup.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="3,-40,16,-40"/>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <Image x:Name="Star" Source="../Model/star.png" RenderOptions.BitmapScalingMode="HighQuality"
-                   Margin="140,150,-1,0" Panel.ZIndex="2" Visibility="{Binding IsVisible}" Grid.RowSpan="2" />
+            <Image x:Name="Star" Source="../Model/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
+                   Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding IsVisible}" Grid.Row="1" Grid.RowSpan="2" />
             <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
-                       VerticalAlignment="Center" FontFamily="Tahoma" FontWeight="Bold"
-                       Visibility="{Binding IsVisible}" FontSize="24" Margin="176,28,10,43" Panel.ZIndex="3"
-                       Grid.Row="1" Width="70" />
-           
+                       VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"
+                       Visibility="{Binding IsVisible}" FontSize="25" Margin="189,30,21,24" Panel.ZIndex="3"
+                       Grid.Row="2" Width="55" Height="46" />
+
         </Grid>
     </Grid>
 </UserControl>
