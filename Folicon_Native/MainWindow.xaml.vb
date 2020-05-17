@@ -2,6 +2,7 @@
 Imports System.Net
 Imports System.Net.NetworkInformation
 Imports Xceed.Wpf.Toolkit
+Imports FoliconNative.Modules
 
 Class MainWindow
     Private WithEvents BackgrundWorker1 As New BackgroundWorker With {

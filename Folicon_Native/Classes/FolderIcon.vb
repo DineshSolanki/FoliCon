@@ -18,6 +18,7 @@
 '                BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Imports System.Drawing
 Imports System.IO
+Imports FoliconNative.Modules
 
 Public Class FolderIcon
     Private _folderPathRenamed As String = ""
@@ -56,8 +57,8 @@ Public Class FolderIcon
         CreateFolderIcon(iconFilePath, infoTip)
     End Sub
     Public Shared Function GetIconFromBitmap(ByVal fileName As String) As Icon
-        Using Bmp As New Bitmap(fileName)
-            Return Icon.FromHandle(Bmp.GetHicon)
+        Using bmp As New Bitmap(fileName)
+            Return Icon.FromHandle(bmp.GetHicon)
         End Using
     End Function
     Private Function CreateFolder() As Boolean
@@ -85,10 +86,10 @@ Public Class FolderIcon
     ''' Creates the desktop.ini file which points to a .ico file
     ''' </summary>
     ''' <param name="iconFilePath">Path to icon [-containing] file</param>
-    ''' <param name="getIconFromDLL">Indicates that the icon is embedded in a DLL (or EXE)</param>
+    ''' <param name="getIconFromDll">Indicates that the icon is embedded in a DLL (or EXE)</param>
     ''' <param name="iconIndex">Index of icon embedded in DLL or EXE; set to zero if getIconFromDLL is false</param>
     ''' <param name="infoTip">Text to be displayed in the InfoTip shown by Windows Explorer</param>
-    Private Function CreateDesktopIniFile(ByVal iconFilePath As String, ByVal getIconFromDLL As Boolean, ByVal iconIndex As Integer, ByVal infoTip As String) As Boolean
+    Private Function CreateDesktopIniFile(ByVal iconFilePath As String, ByVal getIconFromDll As Boolean, ByVal iconIndex As Integer, ByVal infoTip As String) As Boolean
         ' check some things that must (or should) be true before we continue...
         ' determine if the Folder exists
         If Not Directory.Exists(FolderPath) Then
@@ -100,13 +101,13 @@ Public Class FolderIcon
             Return False
         End If
 
-        If Not getIconFromDLL Then
+        If Not getIconFromDll Then
             iconIndex = 0
         End If
 
         ' Set path to the desktop.ini file
         IniPath = FolderPath & "desktop.ini"
-        IniWriter.WriteValue(".ShellClassInfo", "IconResource", infoTip & ".ico" & ",0", Me.IniPath)
+        WriteValue(".ShellClassInfo", "IconResource", infoTip & ".ico" & ",0", IniPath)
 
         Return True
     End Function

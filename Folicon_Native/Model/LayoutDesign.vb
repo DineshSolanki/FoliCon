@@ -1,5 +1,5 @@
 ﻿Imports System.Threading
-
+Imports FoliconNative.Modules
 Namespace Model
     Public Class LayoutDesign
         Inherits MyMovieIconLayout

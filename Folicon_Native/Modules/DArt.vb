@@ -1,8 +1,7 @@
 ﻿Imports System.Configuration
-Imports System.Net.Http
 Imports Newtonsoft.Json
 
-Namespace DArt
+Namespace Modules
     Public Module DArt
         Private Async Function GenerateNewAccessToken() As Task(of string)
             Dim clientAccessToken = ""

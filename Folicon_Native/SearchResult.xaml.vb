@@ -1,5 +1,5 @@
 ﻿Option Strict Off
-
+Imports FoliconNative.Modules
 Imports System.Collections.ObjectModel
 Imports System.Net.TMDb
 
