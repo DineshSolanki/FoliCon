@@ -103,6 +103,7 @@
     <Compile Include="Model\ProIcon.vb" />
     <Compile Include="Modules\DArt.vb" />
     <Compile Include="Modules\GlobalVariables.vb" />
+    <Compile Include="Modules\IGDB.vb" />
     <Compile Include="Modules\IniWriter.vb" />
     <Compile Include="Modules\PublicFunctions.vb" />
     <Compile Include="Modules\StaTask.vb" />

@@ -10,10 +10,10 @@ Class MainWindow
 
     Dim _draggedFileName As String = Nothing
     Private ReadOnly progressUpdater1 As New ProgressUpdater
-    ReadOnly serviceClient as New Net.TMDb.ServiceClient(ApikeyTmdb)
+    ReadOnly _serviceClient as New Net.TMDb.ServiceClient(ApikeyTmdb)
+    ReadOnly _igdbClient = IGDB.Client.Create(ApikeyIgdb)
 
     Public Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
         Dim myHandler As New NetworkAvailabilityChangedEventHandler(AddressOf AvailabilityChanged)
@@ -76,8 +76,13 @@ Class MainWindow
                             isAutoPicked = False
                             Dim sr as New SearchResult()
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
-                            Dim response = Await SearchIt(SearchTitle, serviceClient)
-                            Dim resultCount as Integer = response.Result.TotalCount
+
+                            Dim response =
+                                    If _
+                                    (SearchMod = "Game", Await Igdbf.SearchGame(SearchTitle, _igdbClient),
+                                     await SearchIt(SearchTitle, _serviceClient))
+                            Dim resultCount as Integer =
+                                    If(SearchMod = "Game", response.Length, response.Result.TotalCount)
                             If resultCount = 0
                                 MessageBox.Show(
                                     "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
@@ -85,7 +90,11 @@ Class MainWindow
                                 sr.ShowDialog()
                             ElseIf resultCount = 1
                                 Try
-                                    ResultPicked(response.Result, response.MediaType, 0)
+                                    If (SearchMod = "Game")
+                                        Igdbf.ResultPicked(response(0))
+                                    Else
+                                        ResultPicked(response.Result, response.MediaType, 0)
+                                    End If
                                 Catch ex As Exception
                                     If ex.Message = "NoPoster"
                                         FolderNameIndex += 1
@@ -99,13 +108,6 @@ Class MainWindow
                             ElseIf resultCount > 1
                                 sr.ShowDialog()
                             End If
-
-
-                            'If SearchMod = "Game" Then
-                            '    result = response.item("number_of_total_results")
-                            'Else
-                            '    result = response.item("total_results")
-                            'End If
                             If isAutoPicked OrElse sr.DialogResult Then
                                 FinalistView.Items.Add(New ListItem() With {
                                                           .Title =
@@ -249,7 +251,7 @@ Class MainWindow
     Private Sub MakeIcons()
         If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum.ToString() Then
             BusyIndicator1.IsBusy = True
-            If IconMode = "Poster" Then
+            If IconMode = "Poster" AndAlso Not SearchMod="Game" Then
                 MakeIco("visible")
             Else
                 MakeIco()

@@ -1,16 +1,26 @@
 ﻿
 Imports System.Threading
 Imports FoliconNative.Modules
+Imports IGDB
+Imports IGDB.Models
+
 Class TestPage
     Private Async Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        Dim st=New Net.TMDb.ServiceClient(ApikeyTmdb)
+        
+        Dim client =IGDB.Client.Create(ApikeyIgdb)
+        Dim query="Desert storm"
+        
 
-        Dim result=Await  st.SearchAsync("The Vampire Diaries", "en-US",True,1,CancellationToken.none)
-        'Dim sc=new System.Net.TMDb.StorageClient()
-        'sc.DownloadAsync()
-        'Await DownloadImage(result.Results(0).Poster,"E:\Movies\Avengers - Endgame\ag.png",CancellationToken.None)
-        MessageBox.Show("")
-        st.Dispose()
+       'Dim r= Await client.QueryAsync (Of Game)(IGDB.Client.Endpoints.Games,"search ""Halo"";fields name,total_rating,summary,cover.*;")
+       Dim r= Await client.QueryAsync(of game)(IGDB.Client.Endpoints.games,"search " & """"& query &"""" & "; fields *;")
+       ' client.QueryAsync(IGDB.Client.Endpoints.Covers)
+        For Each o  In r
+            If o.Cover.Value IsNot nothing
+                Dim posterUrl= IGDB.ImageHelper.GetImageUrl(o.Cover.Value.ImageId,ImageSize.HD720)
+                MessageBox.Show(posterUrl.Substring(2))
+            End If
+        Next
+        
 
     End Sub
 End Class

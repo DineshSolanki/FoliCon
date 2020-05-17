@@ -9,7 +9,7 @@ Namespace Modules
         Public SelectedFolderPath As String = Nothing
         Public SearchMod As String = "Movie"
         Public IconMode As String = "Poster Mode"
-        Public PickedMovieIndex As Integer = 0
+        Public PickedIndex As Integer = 0
         Public RetryMovieTitle As String = Nothing
         Public Fnames() As String = Nothing
         Public PickedListDataTable As DataTable = New DataTable
@@ -19,6 +19,7 @@ Namespace Modules
         Public FolderProcessedCount As Integer = 0
         Public IconProcessedCount As Integer = 0
         Public Apikeygb As String = ConfigurationManager.AppSettings.Get("GBAPI")
+        Public ApikeyIgdb As String = ConfigurationManager.AppSettings.Get("IGDBAPI")
         Public ApikeyTmdb As String = ConfigurationManager.AppSettings.Get("TMDBAPI")
         Public ClientSecretDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientSecret")
         Public ClientIdDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientId")

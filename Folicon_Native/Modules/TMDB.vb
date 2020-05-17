@@ -145,12 +145,6 @@ Namespace Modules
                     year = If(res.ReleaseDate Isnot Nothing, res.ReleaseDate.Value.Year, "")
                     rating = res.VoteAverage
                     overview = res.Overview
-                    'ElseIf mediaType.Name="Collection"
-                    '        Dim res As Collection=item
-                    '        mediaName = res.Name
-                    '        year = ""
-                    '        rating = ""
-                    '        overview = ""
                 End If
 
                 items.Add(new ListItem(mediaName, year, rating, overview))

@@ -34,7 +34,7 @@
                             <Label Content="Search Mode:" HorizontalAlignment="Left" Margin="22,11,0,0" VerticalAlignment="Top" />
                             <RadioButton Content="Movie" HorizontalAlignment="Left" Margin="146,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsChecked="True"/>
                             <RadioButton Content="TV" HorizontalAlignment="Left" Margin="253,12,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" />
-                            <RadioButton Content="Game" HorizontalAlignment="Left" Margin="146,39,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked" IsEnabled="False"/>
+                            <RadioButton Content="Game" HorizontalAlignment="Left" Margin="146,39,0,0" VerticalAlignment="Top" GroupName="SearchMode" Checked="RadioButton_Checked"/>
                         </Grid>
                         <Grid x:Name="GridIconCreationMode" Height="113" Margin="21,22,0,0" Width="455" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <Border BorderBrush="Black" BorderThickness="1" Margin="0,0,10,68"/>

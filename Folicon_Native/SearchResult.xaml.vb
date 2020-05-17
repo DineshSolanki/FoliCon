@@ -1,10 +1,13 @@
 ﻿Option Strict Off
+
 Imports FoliconNative.Modules
 Imports System.Collections.ObjectModel
 Imports System.Net.TMDb
+Imports IGDB.Models
 
 Public Class SearchResult
-    Dim serviceClient as New ServiceClient(ApikeyTmdb)
+    Dim ReadOnly _serviceClient as New ServiceClient(ApikeyTmdb)
+    dim _igdbClient = IGDB.Client.Create(ApikeyIgdb)
     Private _listItem As ListItem
 
     Public Property ListItem() As ListItem
@@ -29,7 +32,7 @@ Public Class SearchResult
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         MovieTitle.Content = SearchTitle
-        If Searchresultob IsNot Nothing AndAlso Searchresultob.TotalCount IsNot Nothing Then
+        If Searchresultob IsNot Nothing AndAlso if(searchMod="Game",Searchresultob.Length ,Searchresultob.TotalCount) IsNot Nothing Then
             FetchAndAddDetailsToListView(ListView1, Searchresultob, SearchTitle)
         Else
             SearchTxt.Focus()
@@ -49,7 +52,12 @@ Public Class SearchResult
         End If
         BusyIndicator1.BusyContent = "Searching for " & titleToSearch & "..."
         OverviewText.Text = ""
-            Await SearchIt(titleToSearch,serviceClient)
+
+        If SearchMod = "Game"
+            Await Igdbf.SearchGame(titleToSearch, _igdbClient)
+        Else
+            Await SearchIt(titleToSearch, _serviceClient)
+        End If
         RetryMovieTitle = Nothing
         If useBusy Then
             BusyIndicator1.IsBusy = False
@@ -75,13 +83,15 @@ Public Class SearchResult
                 source = ExtractMoviesDetailsIntoListItem(ob)
             End If
         ElseIf SearchMod = "Auto (Movies & TV Shows)"
-            ' TODO: Implement logic for "Auto (Movies & TV Shows)"" Search
-            Dim ob=DirectCast(result,Resources)
-            source=ExtractResourceDetailsIntoListItem(ob)
+            Dim ob = DirectCast(result, Resources)
+            source = ExtractResourceDetailsIntoListItem(ob)
+        ElseIf SearchMod = "Game"
+            Dim ob = DirectCast(result, Game())
+            source = Igdbf.ExtractGameDetailsIntoListItem(ob)
         End If
-        
-        listViewName.ItemsSource =source
-            SetColumnWidth(listViewName)
+
+        listViewName.ItemsSource = source
+        SetColumnWidth(listViewName)
     End Sub
 
     Private Sub Skipbtn_Click(sender As Object, e As RoutedEventArgs) Handles Skipbtn.Click
@@ -95,18 +105,21 @@ Public Class SearchResult
 
     Private Sub Pickbtn_Click(sender As Object, e As RoutedEventArgs) Handles Pickbtn.Click
         If ListView1.SelectedItems.Count > 0 Then
-            PickedMovieIndex = ListView1.SelectedIndex
+            PickedIndex = ListView1.SelectedIndex
             Try
-                ResultPicked(Searchresultob,SearchMod,PickedMovieIndex)
+                If SearchMod = "Game"
+                    Igdbf.ResultPicked(Searchresultob(PickedIndex))
+                End If
+                ResultPicked(Searchresultob, SearchMod, PickedIndex)
             Catch ex As Exception
-                If ex.Message="NoPoster"
+                If ex.Message = "NoPoster"
                     MessageBox.Show("No poster found")
-                Skipbtn_Click(Nothing,nothing)
+                    Skipbtn_Click(Nothing, nothing)
                     Exit Sub
                 End If
-               
+
             End Try
-           
+
             DialogResult = True
             Close()
         End If
