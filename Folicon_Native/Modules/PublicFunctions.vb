@@ -2,6 +2,7 @@
 
 Imports System.Data
 Imports System.Drawing
+Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Net
 Imports System.Net.TMDb
@@ -13,7 +14,6 @@ Imports Ookii.Dialogs.Wpf
 Imports Xceed.Wpf.Toolkit
 
 Namespace Modules
-
     Module PublicFunctions
         <DllImport("kernel32.dll", SetLastError := True)>
         Private Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
@@ -113,7 +113,8 @@ Namespace Modules
             Dim httpWebRequest = DirectCast(WebRequest.Create(New Uri(url)), HttpWebRequest)
             Dim httpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
             If _
-                (httpWebResponse.StatusCode <> HttpStatusCode.OK AndAlso httpWebResponse.StatusCode <> HttpStatusCode.Moved AndAlso
+                (httpWebResponse.StatusCode <> HttpStatusCode.OK AndAlso
+                 httpWebResponse.StatusCode <> HttpStatusCode.Moved AndAlso
                  httpWebResponse.StatusCode <> HttpStatusCode.Redirect) OrElse
                 Not httpWebResponse.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase) Then
                 Return
@@ -145,7 +146,8 @@ Namespace Modules
                 Dim storage = New StorageClient()
                 Using _
                     fileStream =
-                        New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None, Short.MaxValue, True)
+                        New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None, Short.MaxValue,
+                                       True)
                     Try
                         Await storage.DownloadAsync(filename, fileStream, cancellationToken)
                     Catch ex As Exception
@@ -169,17 +171,21 @@ Namespace Modules
             If Not rating = "10"
                 rating = If(Not rating.Contains("."), rating & ".0", rating)
             End If
-
-
             Dim icon As Bitmap
-            Using _
-                task As Task(Of Bitmap) =
-                    Start(
-                        Function() _
-                             New MyMovieCIcon(New MyMovieIconLayout(filmFolderPath, rating, isVisible)).RenderToBitmap())
-                task.Wait()
-                icon = task.Result
-            End Using
+            If IconMode = "Professional"
+                icon=new ProIcon(filmFolderPath).RenderToBitmap()
+            Else
+                Using _
+                    task As Task(Of Bitmap) =
+                        Start(
+                            Function() _
+                                 New MyMovieCIcon(New MyMovieIconLayout(filmFolderPath, rating, isVisible)).
+                                 RenderToBitmap())
+                    task.Wait()
+                    icon = task.Result
+                End Using
+            End If
+
             Call PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"))
             icon.Dispose()
         End Sub
@@ -214,7 +220,8 @@ Namespace Modules
                 Dim targetFile = SelectedFolderPath & "\" & i & "\" & i & ".ico"
                 If File.Exists(SelectedFolderPath & "\" & i & "\" & i & ".png") AndAlso Not File.Exists(targetFile) Then
                     Dim rating As String =
-                            PickedListDataTable.AsEnumerable().Where(Function(p) p("FolderName").ToString() = tempI).Select(
+                            PickedListDataTable.AsEnumerable().Where(Function(p) p("FolderName").ToString() = tempI).
+                            Select(
                                 Function(p) p("Rating").ToString()).FirstOrDefault()
 
 
@@ -242,7 +249,8 @@ Namespace Modules
             Wow64DisableWow64FsRedirection(wow64Value)
             Dim objProcess As Process
             objProcess = New Process()
-            objProcess.StartInfo.FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) & "\ie4uinit.exe"
+            objProcess.StartInfo.FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) &
+                                            "\ie4uinit.exe"
             objProcess.StartInfo.Arguments = "-ClearIconCache"
             objProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal
             objProcess.Start()

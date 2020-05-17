@@ -28,6 +28,5 @@ Public Class MyMovieCIcon
         encoder.Frames.Add(BitmapFrame.Create(rtb))
         encoder.Save(stream)
         Return New Bitmap(stream) 'png; 
-
     End Function
 End Class

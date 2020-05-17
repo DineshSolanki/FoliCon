@@ -100,6 +100,7 @@
     <Compile Include="Model\DesignData.vb" />
     <Compile Include="Model\LayoutDesign.vb" />
     <Compile Include="Model\MyMovieIconLayout.vb" />
+    <Compile Include="Model\ProIcon.vb" />
     <Compile Include="Modules\DArt.vb" />
     <Compile Include="Modules\GlobalVariables.vb" />
     <Compile Include="Modules\IniWriter.vb" />
