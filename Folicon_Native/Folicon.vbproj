@@ -50,6 +50,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Model\folicon Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
     <Reference Include="Microsoft.VisualBasic" />
@@ -246,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Model\shield.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Model\folicon Icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

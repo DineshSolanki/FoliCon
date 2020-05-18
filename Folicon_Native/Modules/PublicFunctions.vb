@@ -167,8 +167,8 @@ Namespace Modules
             If Not File.Exists(filmFolderPath) Then
                 Exit Sub
             End If
-            isVisible = If(rating <> "", "Visible", "Hidden")
-            If Not rating = "10"
+            isVisible = If(not String.IsNullOrEmpty(rating), "Visible", "Hidden")
+            If Not String.IsNullOrEmpty(rating) AndAlso Not rating = "10" 
                 rating = If(Not rating.Contains("."), rating & ".0", rating)
             End If
             Dim icon As Bitmap

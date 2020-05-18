@@ -3,6 +3,7 @@
 Imports FoliconNative.Modules
 Imports System.Collections.ObjectModel
 Imports System.Net.TMDb
+Imports System.Windows.Controls.Primitives
 Imports IGDB.Models
 
 Public Class SearchResult
@@ -132,5 +133,9 @@ Public Class SearchResult
     Private Sub SearchTxt_TextChanged(sender As Object, e As TextChangedEventArgs) Handles SearchTxt.TextChanged
         RetryMovieTitle = SearchTxt.Text
         StartSearch(False)
+    End Sub
+
+    Private Sub ListView1_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles ListView1.MouseDoubleClick
+        Pickbtn_Click(Nothing,nothing)
     End Sub
 End Class

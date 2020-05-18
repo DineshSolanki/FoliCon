@@ -103,4 +103,10 @@ Public Class ProSearchResultsDArt
         RetryMovieTitle = txtSearchAgain.Text
         StartSearch()
     End Sub
+
+    Private Sub txtSearchAgain_KeyDown(sender As Object, e As KeyEventArgs) Handles txtSearchAgain.KeyDown
+        If e.Key=Key.Enter
+            btnSearchAgain_Click(Nothing,nothing)
+        End If
+    End Sub
 End Class
