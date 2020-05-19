@@ -2,6 +2,7 @@
 layout: default
 published: true
 ---
+<link type="text/css" href="https://cdn.jotfor.ms/before-after/before-after.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
@@ -43,7 +44,20 @@ published: true
 	<li>Shows Story overview, Year and rating</li>
 	<li>Automatic selection of icons minimizes the work user has to do</li>
 </ul> 
-
+<div class="ba-slider">
+   <img src="http://i.imgur.com/BIHN8KQ.jpg">
+   <div class="resize">
+       <img src="http://i.imgur.com/nS6dvpq.jpg">
+   </div>
+   <span class="handle"></span>
+</div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="before-after.min.js"></script>
+<!-- CDN link if you prefer to use this one -->
+<!-- <script type="text/javascript" src="https://cdn.jotfor.ms/before-after/before-after.min.js"></script> -->
+<script type="text/javascript">
+  $('.ba-slider').beforeAfter();
+</script>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="slick/slick.min.js"></script>
