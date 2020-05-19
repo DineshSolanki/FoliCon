@@ -3,13 +3,6 @@
 Primary style
 
 -------------------------------- */
-html { 
-  background: url(https://github.com/DineshSolanki/Project-Assets/raw/master/Folicon/Poster mode.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
 .github-ribbon img {
 	position: fixed; 
 	top: 0; right: 0; 
