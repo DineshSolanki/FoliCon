@@ -3,6 +3,13 @@
 Primary style
 
 -------------------------------- */
+.github-ribbon img {
+	position: fixed; 
+	top: 0; right: 0; 
+	z-index: 2;
+	border: 0;
+}
+
 *, *:after, *:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
