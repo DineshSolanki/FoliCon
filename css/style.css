@@ -3,10 +3,6 @@
 Primary style
 
 -------------------------------- */
-.download,
-ul.features > li:before {
-	background-color: #80A060;
-}
 .github-ribbon img {
 	position: fixed; 
 	top: 0; right: 0; 
