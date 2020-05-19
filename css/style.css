@@ -9,59 +9,6 @@ Primary style
 	z-index: 2;
 	border: 0;
 }
-
-*, *:after, *:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-body {
-  font-size: 100%;
-  font-family: "Open Sans", sans-serif;
-  color: #445b7c;
-  background-color: #445b7c;
-}
-
-a {
-  color: #dc717d;
-  text-decoration: none;
-}
-
-img {
-  max-width: 100%;
-}
-
-/* -------------------------------- 
-
-Main components 
-
--------------------------------- */
-header {
-  position: relative;
-  height: 160px;
-  line-height: 160px;
-  text-align: center;
-}
-header h1 {
-  font-size: 22px;
-  font-size: 1.375rem;
-  color: #ffffff;
-  font-weight: 300;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-@media only screen and (min-width: 768px) {
-  header {
-    height: 240px;
-    line-height: 240px;
-  }
-  header h1 {
-    font-size: 32px;
-    font-size: 2rem;
-  }
-}
-
 .cd-image-container {
   position: relative;
   width: 90%;
