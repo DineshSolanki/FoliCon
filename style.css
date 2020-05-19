@@ -1,0 +1,66 @@
+.ba-container {
+  width: 400px;
+}
+
+.ba-slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.ba-slider img {
+  width: 100%;
+  display: block;
+}
+
+.resize {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  overflow: hidden;
+}
+
+.handle {
+  /* Thin line seperator */
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  margin-left: -2px;
+  background: rgba(0, 0, 0, .5);
+  cursor: ew-resize;
+}
+
+.handle:after {
+  /* Big green knob  */
+  position: absolute;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  content: '\21ff';
+  color: #008000;
+  /* a dark green */
+  // font-weight:bold;
+  font-size: 48px;
+  text-align: center;
+  line-height: 64px;
+  background: #99ff99;
+  /* @darker green of gradient */
+  border: 1px solid #008000;
+  /* a green */
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3), inset 0 2px 0 rgba(255, 255, 255, .5), inset 0 60px 50px -30px #e6ffe6;
+  /* lighter green in gradient */
+}
+
+.draggable:after {
+  width: 48px;
+  height: 48px;
+  margin: -24px 0 0 -24px;
+  line-height: 48px;
+  font-size: 30px;
+}
