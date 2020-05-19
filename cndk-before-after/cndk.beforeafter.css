@@ -1,0 +1,62 @@
+/*!
+ * Cndk.BeforeAfter.js v 0.0.2 (https://github.com/ilkerccom/cndkbeforeafter)
+ * Ilker Cindik
+ * Licensed under the MIT license
+ */
+ 
+.cndkbeforeafter { overflow: hidden; position: relative; transition: 0.5s; }
+.cndkbeforeafter-container { background: none; position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 10; }
+.cndkbeforeafter-item { overflow: hidden; position: relative; }
+.cndkbeforeafter-item > div { height: 100%; position: absolute; }
+.cndkbeforeafter-item img { position: absolute; left: 0; top: 0; width: auto; height: 100%; }
+.cndkbeforeafter-item-before { z-index: 5; }
+.cndkbeforeafter-item-after { z-index: 10; }
+.cndkbeforeafter-seperator { width:4px; position: absolute; height: 100%; z-index: 15; left: 0; top: 0; background: black; cursor: ew-resize; }
+.cndkbeforeafter-seperator > div > span { transition: 0.25s; cursor: pointer; position: absolute; width: 60px; height: 60px; cursor: ew-resize; border:3px solid black; background: white; top: 50%; left: 50%; margin-top: -30px; margin-left: -30px; border-radius: 30px; } 
+.cndkbeforeafter-seperator > div > span::after { content: ""; border: solid #9e9e9e; border-width: 0 7px 7px 0; display: inline-block; padding: 6px; transform: rotate(135deg); -webkit-transform: rotate(135deg); top: 50%; position: absolute; margin-top: -10px; left: 0; margin-left: 10px; }
+.cndkbeforeafter-seperator > div > span::before { content: ""; border: solid #9e9e9e; border-width: 7px 0 0 7px; display: inline-block; padding: 6px; transform: rotate(135deg); -webkit-transform: rotate(135deg); top: 50%; position: absolute; margin-top: -10px; right: 0; margin-right: 10px; }
+.cndkbeforeafter-seperator:hover > div > span, .cndkbeforeafter-seperator:active > div > span { background: black; }
+.cndkbeforeafter-seperator:active > div > span { transform: scale(0.8); }
+.cndkbeforeafter-seperator:hover { opacity:1 !important; }
+.cndkbeforeafter-seperator:active { box-shadow: 0 0 35px #000; }
+.cndkbeforeafter-item-before-text, .cndkbeforeafter-item-after-text { position: absolute; z-index: 14; display: inline-block; background: rgba(0, 0, 0, 0.6); color:#fff; padding: 10px; }
+.cndkbeforeafter-top-left {  left:0; top: 0; }
+.cndkbeforeafter-top-right {  right:0; top: 0; }
+.cndkbeforeafter-bottom-left {  left:0; bottom: 0; }
+.cndkbeforeafter-bottom-right {  right:0; bottom: 0; }
+.cndkbeforeafter-extra-small-text { padding: 5px !important; font-size: 11px !important; bottom: 0; }  
+.cndkbeforeafter-extra-small-text-before { left: 0; }
+.cndkbeforeafter-extra-small-text-after { right: 0; }
+.cndkbeforeafter-hover:hover { opacity: 0.95; box-shadow: 0 0 50px #ccc; }
+.cndkbeforeafter-drag-transition { transition: 0.5s; }
+.cndkbeforeafter-hover-transition { transition: 0s; }
+.cndkbeforeafter-animation { animation: cndkbeforeafter-startanimaton 1s ease-in-out ; }
+.cndkbeforeafter-animation-item-1 { animation: cndkbeforeafter-continuous-1 10s ease-in-out infinite; }
+.cndkbeforeafter-animation-item-2 { animation: cndkbeforeafter-continuous-2 10s ease-in-out infinite; }
+.cndkbeforeafter-animation-seperator { animation: cndkbeforeafter-continuous-3 10s ease-in-out infinite; }
+
+/* Animations */
+@keyframes cndkbeforeafter-startanimaton { from { opacity: 0; width:50%; transform: scale(0.85); } to { opacity: 1; width:100%; transform: scale(1); }  }
+@keyframes cndkbeforeafter-continuous-1 { 0% { width:10%; } 50% { width:90%; } 100% { width:10%; } }
+@keyframes cndkbeforeafter-continuous-2 { 0% { width:90%; } 50% { width:10%; } 100% { width:90%; } }
+@keyframes cndkbeforeafter-continuous-3 { 0% { left:10%; } 50% { left:90%; } 100% { left:10%; } }
+
+/* Theme Light */
+.cndkbeforeafter-theme-light .cndkbeforeafter-seperator  { background: white !important; }
+.cndkbeforeafter-theme-light .cndkbeforeafter-seperator > div > span { border-color: white !important; background: white !important; }
+.cndkbeforeafter-theme-light .cndkbeforeafter-seperator > span::after, .cndkbeforeafter-theme-light .cndkbeforeafter-seperator > span::before { border-color: white !important; }
+.cndkbeforeafter-theme-light :hover > div > span, .cndkbeforeafter-theme-light :active > div > span { background: white !important; }
+.cndkbeforeafter-theme-light .cndkbeforeafter-item-before-text, .cndkbeforeafter-theme-light .cndkbeforeafter-item-after-text { background: white !important; color:black !important }
+
+/* Theme Dark */
+.cndkbeforeafter-theme-dark .cndkbeforeafter-seperator  { background: black !important; }
+.cndkbeforeafter-theme-dark .cndkbeforeafter-seperator > div > span { border-color: black !important; background: black !important; }
+.cndkbeforeafter-theme-dark .cndkbeforeafter-seperator > span::after, .cndkbeforeafter-theme-dark .cndkbeforeafter-seperator > span::before { border-color: black !important; }
+.cndkbeforeafter-theme-dark :hover > div > span, .cndkbeforeafter-theme-dark :active > div > span { background: black !important; }
+.cndkbeforeafter-theme-dark .cndkbeforeafter-item-before-text, .cndkbeforeafter-theme-dark .cndkbeforeafter-item-after-text { background: black !important; color:white !important }
+
+/* For Mobile Devices */
+@media only screen and (max-width: 600px) {
+    .cndkbeforeafter{ width: 100% !important; }
+}
+  

@@ -2,6 +2,11 @@
 layout: default
 published: true
 ---
+<!-- Before After scripts -->
+<link href="cndk-before-after/cndk.beforeafter.css" rel="stylesheet" />
+<script src="cndk-before-after/cndk.beforeafter.js"></script>
+<!-- Before After script ends -->
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
 <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
@@ -44,7 +49,26 @@ published: true
 	<li>Automatic selection of icons minimizes the work user has to do</li>
 </ul> 
 
-<iframe frameborder="0" class="juxtapose" width="100%" height="549.3502145922747" src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=d0f8744a-9a00-11ea-a879-0edaf8f81e27"></iframe>
+<!-- before after slide -->
+<div class="beforeafterdefault">
+	<div data-type="data-type-image">
+	  <div data-type="before"><img src="https://github.com/DineshSolanki/Project-Assets/raw/master/Folicon/before.png"></div>
+	  <div data-type="after"><img src="https://github.com/DineshSolanki/Project-Assets/raw/master/Folicon/after.jpg"></div>
+	</div>
+  </div>
+  <script>
+	$(document).ready(function () {
+		$(".beforeafterdefault").cndkbeforeafter(
+			{
+  autoSliding: true,
+  autoSlidingStopOnHover: true
+	}
+	);
+});
+	</script>
+  <!-- before after slide ends  -->
+
+<!-- <iframe frameborder="0" class="juxtapose" width="100%" height="549.3502145922747" src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=d0f8744a-9a00-11ea-a879-0edaf8f81e27"></iframe> -->
 <!--Slick -->
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
