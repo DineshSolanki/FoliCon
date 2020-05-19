@@ -5,5 +5,6 @@ $(document).ready(function(){
   autoplay: true,
   autoplaySpeed: 2000,
   adaptiveHeight: true,
+  cssEase: 'linear'
   });
 });
