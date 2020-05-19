@@ -11,11 +11,11 @@ Imports System.Windows
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("FoliconNative")>
-<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyTitle("FoliCon v2.0")>
+<Assembly: AssemblyDescription("FoliCon is more than just a typical folder Icon changer, It automates this task to a greater extent, it has two different modes for different designs of folder Icons, and it can fetch 'Games,Movies, and shows' folder icons.")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("FoliconNative")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
+<Assembly: AssemblyProduct("Folicon - The ultimate folder icon customizer")>
+<Assembly: AssemblyCopyright("Copyright ©  2020")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(false)>
 
@@ -55,5 +55,5 @@ Imports System.Windows
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.0.0.0")>
-<Assembly: AssemblyFileVersion("1.0.0.0")>
+<Assembly: AssemblyVersion("2.0.0.0")>
+<Assembly: AssemblyFileVersion("2.0.0.0")>

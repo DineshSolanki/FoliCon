@@ -154,6 +154,8 @@ Class MainWindow
                     If ImgDownloadList.Count > 0 Then
                         BusyIndicator1.IsBusy = True
                         DoWorkOfDownload()
+                        else
+                            SearchAndMakehbtn.IsEnabled=true
                     End If
                 Else
                     MessageBox.Show("Sorry, Internet is Not available.", "Network Error")
@@ -310,5 +312,19 @@ Class MainWindow
     Private Sub SelectedFolderlbl_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) _
         Handles SelectedFolderlbl.MouseDoubleClick
         Process.Start(SelectedFolderPath)
+    End Sub
+
+    Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
+        Dim about As New Gat.Controls.About() With{
+                .Title="FoliCon v2.0",
+                .ApplicationLogo=New BitmapImage(New Uri("\Model\folicon Icon.ico",UriKind.Relative)),
+                .Description="FoliCon is more than just a typical folder Icon changer" & vbCrLf _
+                             & "It automates this task to a greater extent, it has two different modes for different designs of folder Icons," & vbCrLf _
+                             & "and it can fetch 'Games,Movies, and shows' folder icons.",
+                .Version="2.0",
+                .PublisherLogo=New BitmapImage(New Uri("\Model\folicon Icon.ico",UriKind.Relative)),
+                .AdditionalNotes="Developed by Dinesh Solanki",
+                .Copyright="GNU General Public License v3.0"}
+        about.Show()
     End Sub
 End Class

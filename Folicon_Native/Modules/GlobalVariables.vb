@@ -18,13 +18,10 @@ Namespace Modules
         Public ImgDownloadList As New List(Of ImageToDownload)
         Public FolderProcessedCount As Integer = 0
         Public IconProcessedCount As Integer = 0
-        Public Apikeygb As String = ConfigurationManager.AppSettings.Get("GBAPI")
         Public ApikeyIgdb As String = ConfigurationManager.AppSettings.Get("IGDBAPI")
         Public ApikeyTmdb As String = ConfigurationManager.AppSettings.Get("TMDBAPI")
         Public ClientSecretDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientSecret")
         Public ClientIdDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientId")
-        Public Responseformatgb As String = "json"
-        Public Fieldlistgb As String = "*"
         Public HttpC as new HttpClient()
     End Module
 End NameSpace

@@ -16,7 +16,7 @@
             <MenuItem x:Name="MenuRExbtn" Header="Restart Explorer" ToolTip="This will close all Open folders and Restart Explorer"/>
             <MenuItem Header="Help" >
                 <MenuItem x:Name="MenubtnHelp" Header="Help Document"/>
-                <MenuItem Header="About"/>
+                <MenuItem Header="About" Click="MenuItem_Click"/>
             </MenuItem>
         </Menu>
         <Grid>
