@@ -4,8 +4,7 @@ published: true
 ---
 <!-- Add the slick-theme.css if you want default styling -->
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<!-- Add the slick-theme.css if you want default styling -->
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <div class="slider autoplay">
 				<div>
 					<h3>1</h3>
@@ -57,3 +56,14 @@ published: true
 <script src="js/jquery.mobile.custom.min.js"></script> <!-- Resource jQuery -->
 <script src="js/main.js"></script> <!-- Resource jQuery -->
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+ <script type="text/javascript">
+    $(document).ready(function(){
+      $('.slider autoplay').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+});
+    });
+  </script>
