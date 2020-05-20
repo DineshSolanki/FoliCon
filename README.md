@@ -66,12 +66,11 @@ DeviantArt API [Get it](https://www.deviantart.com/developers/register)
 See also the list of [contributors](https://github.com/dineshsolanki/Folicon/graphs/contributors) who participated in this project.
 
 ## License
-**GNU General Public License v3.0**
 [GNU General Public License v3.0](https://github.com/DineshSolanki/FoliCon/blob/master/LICENSE)
 
 ## Acknowledgments
 
-* A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start, and throughout this Project, His code and Design is used.
+* A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
 * <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
 * All Professional Mode icons are fetched from publicly available galaries of DeviantArt, and all rights reserves to their respective owners.
