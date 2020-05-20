@@ -1,5 +1,6 @@
 theme: jekyll-theme-cayman
-title: Folicon v2.0 - The ultimate movie, show, games folder icon customizer
+title: Folicon v2.0
+subtitle: The ultimate movie, show, games folder icon customizer
 description: Folicon is a Folder icon changer which works for movie,games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, Professional mode icons are fetched from DeviantArt.
 show_downloads: "true"
 github:
