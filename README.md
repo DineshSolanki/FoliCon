@@ -4,7 +4,7 @@
 
 # Folicon - The ultimate movie, show, games folder icon customizer
 
-<img src="https://img.shields.io/github/commit-activity/m/DineshSolanki/FoliCon"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon">
+<img src="https://img.shields.io/github/commits-since/DineshSolanki/Folicon/latest/master"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/commits-since/dinesh-solanki/folicon/v1.0.svg?logo=FoliconReleaseCommits"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon">
 
 Folicon is a Folder icon changer which works for movie,games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, inspired From [Raticon](https://github.com/Jamedjo/Raticon)
 
