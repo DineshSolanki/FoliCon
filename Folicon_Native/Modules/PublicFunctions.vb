@@ -162,24 +162,24 @@ Namespace Modules
         ''' </summary>
         ''' <param name="filmFolderPath"> Path where to save and where PNG is Downloaded</param>
         ''' <param name="rating"> if Wants to Include rating on Icon</param>
-        ''' <param name="isVisible">Show rating or NOT</param>
-        Public Sub BuildFolderIco(filmFolderPath As String, rating As String, isVisible As String)
+        ''' <param name="ratingVisibility">Show rating or NOT</param>
+        Public Sub BuildFolderIco(filmFolderPath As String, rating As String, ratingVisibility As String, mockupVisibility As String)
             If Not File.Exists(filmFolderPath) Then
                 Exit Sub
             End If
-            isVisible = If(not String.IsNullOrEmpty(rating), "Visible", "Hidden")
-            If Not String.IsNullOrEmpty(rating) AndAlso Not rating = "10" 
+            ratingVisibility = If(String.IsNullOrEmpty(rating), "Hidden", ratingVisibility)
+            If Not String.IsNullOrEmpty(rating) AndAlso Not rating = "10" Then
                 rating = If(Not rating.Contains("."), rating & ".0", rating)
             End If
             Dim icon As Bitmap
-            If IconMode = "Professional"
-                icon=new ProIcon(filmFolderPath).RenderToBitmap()
+            If IconMode = "Professional" Then
+                icon = New ProIcon(filmFolderPath).RenderToBitmap()
             Else
                 Using _
                     task As Task(Of Bitmap) =
                         Start(
                             Function() _
-                                 New MyMovieCIcon(New MyMovieIconLayout(filmFolderPath, rating, isVisible)).
+                                 New MyMovieCIcon(New MyMovieIconLayout(filmFolderPath, rating, ratingVisibility, mockupVisibility)).
                                  RenderToBitmap())
                     task.Wait()
                     icon = task.Result
@@ -205,8 +205,10 @@ Namespace Modules
         ''' <summary>
         ''' Creates Icons from PNG
         ''' </summary>
-        Public Sub MakeIco(Optional ByVal isVisible As String = "Hidden")
+        Public Sub MakeIco(Optional ByVal isRatingVisible As Boolean = False, Optional ByVal isMockupVisible As Boolean = True)
             'Try
+            Dim ratingVisibility As String = If(isRatingVisible, "visible", "hidden")
+            Dim mockupVisibility As String = If(isMockupVisible, "visible", "hidden")
             Dim folderNames = ""
             Dim fNames() As String
             Dim separator = ""
@@ -225,7 +227,7 @@ Namespace Modules
                                 Function(p) p("Rating").ToString()).FirstOrDefault()
 
 
-                    BuildFolderIco(SelectedFolderPath & "\" & i & "\" & i & ".png", rating, isVisible)
+                    BuildFolderIco(SelectedFolderPath & "\" & i & "\" & i & ".png", rating, ratingVisibility, mockupVisibility)
                     IconProcessedCount += 1
                     File.Delete(SelectedFolderPath & "\" & i & "\" & i & ".png") '<--IO Exception here
                 End If

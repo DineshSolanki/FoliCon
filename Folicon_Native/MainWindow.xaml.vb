@@ -255,7 +255,7 @@ Class MainWindow
         If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum.ToString() Then
             BusyIndicator1.IsBusy = True
             If IconMode = "Poster" AndAlso Not SearchMod="Game" Then
-                MakeIco("visible")
+                MakeIco(My.Settings.isRatingVisible, My.Settings.isPosterMockupUsed)
             Else
                 MakeIco()
             End If
@@ -275,11 +275,14 @@ Class MainWindow
     End Sub
 
     Private Sub MainForm_Loaded(sender As Object, e As RoutedEventArgs) Handles MainForm.Loaded
+        chkIsPosterOverlayVisible.IsChecked = My.Settings.isPosterMockupUsed
+        chkIsRatingVisible.IsChecked = My.Settings.isRatingVisible
         If isNetworkAvailable() Then
             NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
         Else
             NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
         End If
+
     End Sub
 
     Private Function isNetworkAvailable() As Boolean
@@ -315,16 +318,34 @@ Class MainWindow
     End Sub
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
-        Dim about As New Gat.Controls.About() With{
-                .Title="FoliCon v2.0",
-                .ApplicationLogo=New BitmapImage(New Uri("\Model\folicon Icon.ico",UriKind.Relative)),
-                .Description="FoliCon is more than just a typical folder Icon changer" & vbCrLf _
+        Dim about As New Gat.Controls.About() With {
+                .Title = "FoliCon v2.0",
+                .ApplicationLogo = New BitmapImage(New Uri("\Model\folicon Icon.ico", UriKind.Relative)),
+                .Description = "FoliCon is more than just a typical folder Icon changer" & vbCrLf _
                              & "It automates this task to a greater extent, it has two different modes for different designs of folder Icons," & vbCrLf _
                              & "and it can fetch 'Games,Movies, and shows' folder icons.",
-                .Version="2.0",
-                .PublisherLogo=New BitmapImage(New Uri("\Model\folicon Icon.ico",UriKind.Relative)),
-                .AdditionalNotes="Developed by Dinesh Solanki",
-                .Copyright="GNU General Public License v3.0"}
+                .Version = "2.0",
+                .PublisherLogo = New BitmapImage(New Uri("\Model\folicon Icon.ico", UriKind.Relative)),
+                .AdditionalNotes = "Developed by Dinesh Solanki",
+                .Copyright = "GNU General Public License v3.0"}
         about.Show()
+    End Sub
+
+    Private Sub chkIsRatingVisible_Click(sender As Object, e As RoutedEventArgs) Handles chkIsRatingVisible.Click
+        If chkIsRatingVisible.IsChecked Then
+            My.Settings.isRatingVisible = True
+        Else
+            My.Settings.isRatingVisible = False
+        End If
+        My.Settings.Save()
+    End Sub
+
+    Private Sub chkIsPosterOverlayVisible_Click(sender As Object, e As RoutedEventArgs) Handles chkIsPosterOverlayVisible.Click
+        If chkIsPosterOverlayVisible.IsChecked Then
+            My.Settings.isPosterMockupUsed = True
+        Else
+            My.Settings.isPosterMockupUsed = False
+        End If
+        My.Settings.Save()
     End Sub
 End Class

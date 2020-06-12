@@ -90,7 +90,6 @@
     <Compile Include="Classes\DArtBrowseResult.vb" />
     <Compile Include="Classes\DArtTokenResponse.vb" />
     <Compile Include="Classes\FolderIcon.vb" />
-    <Compile Include="Classes\IconLayoutViewModel.vb" />
     <Compile Include="Classes\ImageToDownload.vb" />
     <Compile Include="Classes\ListItem.vb" />
     <Compile Include="Classes\PngToIcoService.vb" />
@@ -100,7 +99,6 @@
       <DependentUpon>MyMovieIcon.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.vb" />
-    <Compile Include="Model\DesignData.vb" />
     <Compile Include="Model\LayoutDesign.vb" />
     <Compile Include="Model\MyMovieIconLayout.vb" />
     <Compile Include="Model\ProIcon.vb" />

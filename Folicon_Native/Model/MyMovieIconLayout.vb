@@ -13,12 +13,14 @@ Namespace Model
         End Sub
 
         Public Property FolderJpg() As ImageSource
-        Public Property IsVisible() As String
+        Public Property RatingVisibilty() As String
         Public Property Rating() As String
+        Public Property MockupVisibility As String
 
-        Public Sub New(ByVal folderJpgPath As String, ByVal Rating As String, ByVal isVisible As String)
-            Me.IsVisible = isVisible
+        Public Sub New(ByVal folderJpgPath As String, ByVal Rating As String, ByVal ratingVisibilty As String, ByVal mockupVisibility As String)
+            Me.RatingVisibilty = ratingVisibilty
             Me.Rating = Rating
+            Me.MockupVisibility = mockupVisibility
             Dim thisMemoryStream As New MemoryStream(My.Computer.FileSystem.ReadAllBytes(folderJpgPath))
             Dim imageSourceConverter = New ImageSourceConverter()
             Me.FolderJpg = CType(imageSourceConverter.ConvertFrom(thisMemoryStream), ImageSource)

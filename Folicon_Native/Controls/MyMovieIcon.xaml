@@ -11,7 +11,7 @@
     </UserControl.Resources>
     <Grid Margin="0,0,0,-11">
         <Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="56,16,47,22" />
-        <Image Source="../Model/PosterMockup.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="3,-40,16,-40"/>
+        <Image Source="../Model/PosterMockup.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="3,-40,16,-40" Visibility="{Binding MockupVisibility}"/>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -19,10 +19,10 @@
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
             <Image x:Name="Star" Source="../Model/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
-                   Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding IsVisible}" Grid.Row="1" Grid.RowSpan="2" />
+                   Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding RatingVisibilty}" Grid.Row="1" Grid.RowSpan="2" />
             <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
                        VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"
-                       Visibility="{Binding IsVisible}" FontSize="25" Margin="189,30,21,24" Panel.ZIndex="3"
+                       Visibility="{Binding RatingVisibilty}" FontSize="25" Margin="189,30,21,24" Panel.ZIndex="3"
                        Grid.Row="2" Width="55" Height="46" />
 
         </Grid>

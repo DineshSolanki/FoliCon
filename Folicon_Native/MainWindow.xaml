@@ -3,13 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock" xmlns:Custom="http://wpfcontrols.com/" x:Name="MainForm"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Name="MainForm"
     x:Class="MainWindow"
         mc:Ignorable="d"
-        Title="FoliCon v2.0" Height="613" Width="800" MinWidth="800" MinHeight="613" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter" Icon="Model/folicon Icon.ico">
+        Title="FoliCon v2.1" Height="613" Width="800" MinWidth="800" MinHeight="613" AllowDrop="True" Drop="Window_Drop" DragEnter="Window_DragEnter" Icon="Model/folicon Icon.ico">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Settings">
+                <MenuItem x:Name="chkIsRatingVisible" Header="Show Rating badge" IsCheckable="True" ToolTip="Controls whether to hide or show Rating Shield"/>
+                <MenuItem x:Name="chkIsPosterOverlayVisible" Header="Use Poster overlay" IsCheckable="True" ToolTip="Controls whether to use poster Overlay or Plain Posters"/>
                 <MenuItem x:Name="MenuApiConfigBtn" Header="_API keys Configuration"/>
                 <Separator/>
             </MenuItem>

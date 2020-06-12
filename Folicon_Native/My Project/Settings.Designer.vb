@@ -52,6 +52,30 @@ Partial Friend NotInheritable Class MySettings
             Return defaultInstance
         End Get
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+    Public Property isRatingVisible() As Boolean
+        Get
+            Return CType(Me("isRatingVisible"),Boolean)
+        End Get
+        Set
+            Me("isRatingVisible") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("True")>  _
+    Public Property isPosterMockupUsed() As Boolean
+        Get
+            Return CType(Me("isPosterMockupUsed"),Boolean)
+        End Get
+        Set
+            Me("isPosterMockupUsed") = value
+        End Set
+    End Property
 End Class
 
 Namespace My
