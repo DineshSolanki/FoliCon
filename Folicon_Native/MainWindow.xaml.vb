@@ -11,7 +11,7 @@ Class MainWindow
 
     Dim _draggedFileName As String = Nothing
     Private ReadOnly progressUpdater1 As New ProgressUpdater
-    ReadOnly _serviceClient as New Net.TMDb.ServiceClient(ApikeyTmdb)
+    ReadOnly _serviceClient As New Net.TMDb.ServiceClient(ApikeyTmdb)
     ReadOnly _igdbClient = IGDB.Client.Create(ApikeyIgdb)
 
     Public Sub New()
@@ -27,13 +27,13 @@ Class MainWindow
         If e.IsAvailable Then
 
             Dispatcher.Invoke(Sub()
-                NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
-            End Sub)
+                                  NetworkImage.Source = New BitmapImage(New Uri("/Model/Strong-WiFi.png", UriKind.Relative))
+                              End Sub)
         Else
 
             Dispatcher.Invoke(Sub()
-                NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
-            End Sub)
+                                  NetworkImage.Source = New BitmapImage(New Uri("/Model/No-WiFi.png", UriKind.Relative))
+                              End Sub)
 
         End If
     End Sub
@@ -75,29 +75,30 @@ Class MainWindow
                         For Each itemTitle As String In Fnames
                             Cursor = Cursors.Wait
                             isAutoPicked = False
-                            Dim sr as New SearchResult()
+                            Dim sr As New SearchResult()
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
 
                             Dim response =
                                     If _
                                     (SearchMod = "Game", Await Igdbf.SearchGame(SearchTitle, _igdbClient),
-                                     await SearchIt(SearchTitle, _serviceClient))
-                            Dim resultCount as Integer =
+                                     Await SearchIt(SearchTitle, _serviceClient))
+                            Dim resultCount As Integer =
                                     If(SearchMod = "Game", response.Length, response.Result.TotalCount)
-                            If resultCount = 0
+                            If resultCount = 0 Then
                                 MessageBox.Show(
                                     "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
                                     vbCrLf & "OR Check search Mode")
                                 sr.ShowDialog()
-                            ElseIf resultCount = 1
+                            ElseIf resultCount = 1 Then
+
                                 Try
-                                    If (SearchMod = "Game")
+                                    If (SearchMod = "Game") Then
                                         Igdbf.ResultPicked(response(0))
                                     Else
                                         ResultPicked(response.Result, response.MediaType, 0)
                                     End If
                                 Catch ex As Exception
-                                    If ex.Message = "NoPoster"
+                                    If ex.Message = "NoPoster" Then
                                         FolderNameIndex += 1
                                         MessageBox.Show("No poster found for " & SearchTitle)
                                         Continue For
@@ -105,8 +106,8 @@ Class MainWindow
 
                                 End Try
 
-                                isAutoPicked = true
-                            ElseIf resultCount > 1
+                                isAutoPicked = True
+                            ElseIf resultCount > 1 Then
                                 sr.ShowDialog()
                             End If
                             If isAutoPicked OrElse sr.DialogResult Then
@@ -154,8 +155,8 @@ Class MainWindow
                     If ImgDownloadList.Count > 0 Then
                         BusyIndicator1.IsBusy = True
                         DoWorkOfDownload()
-                        else
-                            SearchAndMakehbtn.IsEnabled=true
+                    Else
+                        SearchAndMakehbtn.IsEnabled = True
                     End If
                 Else
                     MessageBox.Show("Sorry, Internet is Not available.", "Network Error")
@@ -206,24 +207,21 @@ Class MainWindow
     End Sub
 
     Private Sub Window_Drop(sender As Object, e As DragEventArgs)
-        'If e.Data.GetDataPresent(DataFormats.FileDrop) Then
-        '    SelectedFolderPath = CType(e.Data.GetData(DataFormats.FileDrop), Array).GetValue(0).ToString
-        'End If
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            SelectedFolderPath = CType(e.Data.GetData(DataFormats.FileDrop), Array).GetValue(0).ToString
+        End If
 
-        'If e.Effects = DragDropEffects.Move Then
-        '    SelectedFolderPath = _draggedFileName
-        '    MessageBox.Show("Folder Loaded: " & _draggedFileName)
-        '    e.Effects = DragDropEffects.None
-        'End If
-    End Sub
-
-    Private Sub Window_DragEnter(sender As Object, e As DragEventArgs)
-        'Dim data As String = CType(e.Data.GetData(DataFormats.FileDrop), Array).GetValue(0).ToString
-        'If Directory.Exists(data) Then
-        '    ' here you can restrict allowed files for drag & drop operation
-        '    e.Effects = DragDropEffects.Move
-        '    _draggedFileName = data
-        'End If
+        Dim data As String = CType(e.Data.GetData(DataFormats.FileDrop), Array).GetValue(0).ToString
+        If Directory.Exists(data) Then
+            SelectedFolderPath = data
+            FolderProcessedCount = 0
+            FinalistView.Items.Clear()
+            SelectedFolderlbl.Content = SelectedFolderPath
+            SearchAndMakehbtn.IsEnabled = True
+            PosterProgressBar.Value = 0
+            BusyIndicator1.DataContext = progressUpdater1
+            GetFileNames()
+        End If
     End Sub
 
     Private Sub FinalistView_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) _
@@ -297,7 +295,7 @@ Class MainWindow
 
 
     Private Sub MenuApiConfigBtn_Click(sender As Object, e As RoutedEventArgs) Handles MenuApiConfigBtn.Click
-        Dim fr as New ApiConfig()
+        Dim fr As New ApiConfig()
         fr.ShowDialog()
     End Sub
 
