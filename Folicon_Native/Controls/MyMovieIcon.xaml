@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:model="clr-namespace:FoliconNative.Model"
              mc:Ignorable="d" DataContext="{DynamicResource LayoutDesign}" Width="265" Height="256">
-
     <UserControl.Resources>
         <model:LayoutDesign x:Key="LayoutDesign" />
     </UserControl.Resources>
@@ -24,7 +23,6 @@
                        VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"
                        Visibility="{Binding RatingVisibilty}" FontSize="25" Margin="189,30,21,24" Panel.ZIndex="3"
                        Grid.Row="2" Width="55" Height="46" />
-
         </Grid>
     </Grid>
 </UserControl>

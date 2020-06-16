@@ -103,58 +103,15 @@ Namespace Modules
 
             Return False
         End Function
-
         ''' <summary>
-        ''' Sub That can Download image from any URL and save to local path
+        ''' Async function That can Download image from any URL and save to local path
         ''' </summary>
         ''' <param name="url"> The URL of Image to Download</param>
         ''' <param name="saveFilename">The Local Path Of Downloaded Image</param>
-        Public Sub DownloadImageFromUrl(url As String, saveFilename As String)
-            Dim httpWebRequest = DirectCast(WebRequest.Create(New Uri(url)), HttpWebRequest)
-            Dim httpWebResponse = DirectCast(httpWebRequest.GetResponse(), HttpWebResponse)
-            If _
-                (httpWebResponse.StatusCode <> HttpStatusCode.OK AndAlso
-                 httpWebResponse.StatusCode <> HttpStatusCode.Moved AndAlso
-                 httpWebResponse.StatusCode <> HttpStatusCode.Redirect) OrElse
-                Not httpWebResponse.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase) Then
-                Return
-            End If
-            Using stream = httpWebResponse.GetResponseStream()
-                Using fileStream = File.OpenWrite(saveFilename)
-                    Dim bytes = New Byte(4095) {}
-                    Dim read = 0
-                    Do
-                        If stream Is Nothing Then
-                            Continue Do
-                        End If
-                        read = stream.Read(bytes, 0, bytes.Length)
-                        fileStream.Write(bytes, 0, read)
-                    Loop While read <> 0
-                End Using
+        Public Async Function DownloadImageFromUrlAsync(url As String, saveFileName As String) As Task
+            Using client As New WebClient
+                Await client.DownloadFileTaskAsync(url, saveFileName)
             End Using
-        End Sub
-
-        Public Async Function DownloadImage(filename As String, localPath As String,
-                                            optional cancellationToken As CancellationToken = nothing) _
-            As Task
-            If cancellationToken = Nothing
-                cancellationToken = CancellationToken.none
-            End If
-            If Not File.Exists(localPath) Then
-                Dim folder As String = Path.GetDirectoryName(localPath)
-                Directory.CreateDirectory(folder)
-                Dim storage = New StorageClient()
-                Using _
-                    fileStream =
-                        New FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None, Short.MaxValue,
-                                       True)
-                    Try
-                        Await storage.DownloadAsync(filename, fileStream, cancellationToken)
-                    Catch ex As Exception
-                        Trace.TraceError(ex.ToString())
-                    End Try
-                End Using
-            End If
         End Function
 
         ''' <summary>
