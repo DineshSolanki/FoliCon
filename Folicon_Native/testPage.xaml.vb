@@ -23,4 +23,8 @@ Class TestPage
         
 
     End Sub
+
+    Private Sub Page_Loaded(sender As Object, e As RoutedEventArgs)
+        BusyIndicator1.IsBusy = True
+    End Sub
 End Class

@@ -168,7 +168,7 @@ Class MainWindow
 
     Private Sub DoWorkOfDownload()
         SearchAndMakehbtn.IsEnabled = False
-        BackgrundWorker1.RunWorkerAsync()     '<== Causes Exception when searching, while posters are downloading
+        BackgrundWorker1.RunWorkerAsync()
     End Sub
 
     Private Sub RadioButton_Checked_1(sender As Object, e As RoutedEventArgs)
@@ -185,13 +185,13 @@ Class MainWindow
     Private Sub BackgrundWorker1_DoWork(sender As Object, e As DoWorkEventArgs) Handles BackgrundWorker1.DoWork
         Dim i = 0
         For Each img As ImageToDownload In ImgDownloadList
+            DownloadImageFromUrl(img.RemotePath, img.LocalPath)
+            i += 1
+            BackgrundWorker1.ReportProgress(i)
             If (BackgrundWorker1.CancellationPending = True) Then
                 e.Cancel = True
                 Return
             End If
-            DownloadImageFromUrl(img.RemotePath, img.LocalPath)
-            i += 1
-            BackgrundWorker1.ReportProgress(i)
         Next
     End Sub
 
@@ -236,6 +236,7 @@ Class MainWindow
 
     Private Sub DownloadCancelbtn_Click(sender As Object, e As RoutedEventArgs)
         BackgrundWorker1.CancelAsync()
+        MakeIcons()
     End Sub
 
     Private Sub BackgrundWorker1_ProgressChanged(sender As Object, e As ProgressChangedEventArgs) _
@@ -252,26 +253,23 @@ Class MainWindow
     End Sub
 
     Private Sub MakeIcons()
-        If PosterProgressBar.Value.ToString = PosterProgressBar.Maximum.ToString() Then
-            BusyIndicator1.IsBusy = True
-            If IconMode = "Poster" AndAlso Not SearchMod="Game" Then
-                MakeIco(My.Settings.isRatingVisible, My.Settings.isPosterMockupUsed)
-            Else
-                MakeIco()
-            End If
-
-            IconsProcessedValue.Content = IconProcessedCount.ToString()
-            BusyIndicator1.IsBusy = False
-            Select Case _
-                MessageBox.Show(
-                    "Note:The Icon may take some time to reload. " & vbCrLf &
-                    " To Force Reload, click on Restart Explorer " & vbCrLf & "OK to Open Folder", "Icon(s) Created",
-                    MessageBoxButton.OKCancel,
-                    MessageBoxImage.Information)
-                Case MessageBoxResult.OK
-                    Process.Start(SelectedFolderPath)
-            End Select
+        BusyIndicator1.IsBusy = True
+        If IconMode = "Poster" AndAlso Not SearchMod = "Game" Then
+            MakeIco(My.Settings.isRatingVisible, My.Settings.isPosterMockupUsed)
+        Else
+            MakeIco()
         End If
+        IconsProcessedValue.Content = IconProcessedCount.ToString()
+        BusyIndicator1.IsBusy = False
+        Select Case _
+            MessageBox.Show(
+                "Note:The Icon may take some time to reload. " & vbCrLf &
+                " To Force Reload, click on Restart Explorer " & vbCrLf & "OK to Open Folder", "Icon(s) Created",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Information)
+            Case MessageBoxResult.OK
+                Process.Start(SelectedFolderPath)
+        End Select
     End Sub
 
     Private Sub MainForm_Loaded(sender As Object, e As RoutedEventArgs) Handles MainForm.Loaded

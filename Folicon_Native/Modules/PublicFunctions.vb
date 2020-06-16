@@ -82,10 +82,10 @@ Namespace Modules
                 For Each folder As String In Directory.GetDirectories(SelectedFolderPath)
                     If Not File.Exists(folder & "\" & Path.GetFileName(folder) & ".ico") Then
                         folderNames &= separator & Path.GetFileName(folder)
-                        separator = ","
+                        separator = "█" 'ALT+219
                     End If
                 Next
-                Fnames = folderNames.Split(CType(",", Char))
+                Fnames = folderNames.Split(CType("█", Char))
             Else
                 MessageBox.Show("Folder is Empty or not Selected", "Folder Error")
             End If
@@ -214,9 +214,9 @@ Namespace Modules
             Dim separator = ""
             For Each folder As String In Directory.GetDirectories(SelectedFolderPath)
                 folderNames &= separator & Path.GetFileName(folder)
-                separator = ","
+                separator = "█"
             Next
-            fNames = folderNames.Split(",")
+            fNames = folderNames.Split("█")
             For Each i As String In fNames
                 Dim tempI = i
                 Dim targetFile = SelectedFolderPath & "\" & i & "\" & i & ".ico"

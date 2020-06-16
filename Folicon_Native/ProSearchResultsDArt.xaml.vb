@@ -8,7 +8,8 @@ Public Class ProSearchResultsDArt
     ReadOnly _imageSize As Windows.Size = New Windows.Size(128, 128)
     ReadOnly _pics As New ArrayList
     ReadOnly _msgStyle = New Style()
-    Dim _accessToken as string
+    Dim _accessToken As String
+    Dim stopSearch As Boolean = False
 
     Private Sub CreatePicBox(link As String, img As Bitmap)
         Dim pic As New Controls.Image()
@@ -43,8 +44,8 @@ Public Class ProSearchResultsDArt
     End Sub
 
     Private Async Sub StartSearch()
+        stopSearch = False
         WrapPanel1.Children.Clear()
-        IsEnabled = False
         _titleToSearch = Nothing
         If Not RetryMovieTitle = Nothing Then
             _titleToSearch = RetryMovieTitle
@@ -52,13 +53,13 @@ Public Class ProSearchResultsDArt
             Dim titleCleaner As New TitleCleaner
             _titleToSearch = titleCleaner.Clean(Fnames(_i))
         End If
-        BusyIndicator1.BusyContent = "Searching for " & _titleToSearch & "..."
+        busyText.Text = "Searching for " & _titleToSearch & "..."
         BusyIndicator1.IsBusy = True
         Title = "Pick Icon for " & _titleToSearch
         Await DArtSearchAsync(_titleToSearch)
         RetryMovieTitle = Nothing
+        'btnStopSearch.Visibility = Visibility.Hidden
         BusyIndicator1.IsBusy = False
-        IsEnabled = True
     End Sub
     Private Async Function DArtSearchAsync(query As String,Optional offset As Integer=0) As Task
         Dim searchResult As DArtBrowseResult
@@ -70,6 +71,9 @@ Public Class ProSearchResultsDArt
                 Dim bm = Await GetBitmapFromUrlAsync(item.Thumbs(0).Src)
                 CreatePicBox(item.Content.Src, bm)
                 bm.Dispose()
+                If stopSearch Then
+                    Exit Function
+                End If
             Next
             If searchResult.HasMore AndAlso searchResult.NextOffset<=30
                 Await DArtSearchAsync(query,searchResult.NextOffset)
@@ -105,8 +109,12 @@ Public Class ProSearchResultsDArt
     End Sub
 
     Private Sub txtSearchAgain_KeyDown(sender As Object, e As KeyEventArgs) Handles txtSearchAgain.KeyDown
-        If e.Key=Key.Enter
-            btnSearchAgain_Click(Nothing,nothing)
+        If e.Key = Key.Enter Then
+            btnSearchAgain_Click(Nothing, Nothing)
         End If
+    End Sub
+
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        stopSearch = True
     End Sub
 End Class

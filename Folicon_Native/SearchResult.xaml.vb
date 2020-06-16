@@ -35,6 +35,7 @@ Public Class SearchResult
         MovieTitle.Content = SearchTitle
         If Searchresultob IsNot Nothing AndAlso if(searchMod="Game",Searchresultob.Length ,Searchresultob.TotalCount) IsNot Nothing Then
             FetchAndAddDetailsToListView(ListView1, Searchresultob, SearchTitle)
+            ListView1.Focus()
         Else
             SearchTxt.Focus()
         End If
@@ -100,8 +101,10 @@ Public Class SearchResult
     End Sub
 
     Private Sub SearchAgainbtn_Click(sender As Object, e As RoutedEventArgs) Handles SearchAgainbtn.Click
-        SearchTitle = SearchTxt.Text
-        StartSearch(True)
+        If Not String.IsNullOrWhiteSpace(SearchTxt.Text) Then
+            SearchTitle = SearchTxt.Text
+            StartSearch(True)
+        End If
     End Sub
 
     Private Sub Pickbtn_Click(sender As Object, e As RoutedEventArgs) Handles Pickbtn.Click
