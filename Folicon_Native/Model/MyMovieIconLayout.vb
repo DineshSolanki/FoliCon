@@ -9,7 +9,11 @@ Namespace Model
         Protected Sub New(task As Task(Of String), p2 As String)
 
             _task = task
+            'Dim thisMemoryStream As New MemoryStream(My.Computer.FileSystem.ReadAllBytes(_task.Result))
+            'Dim imageSourceConverter = New ImageSourceConverter()
+            'FolderJpg = CType(ImageSourceConverter.ConvertFrom(thisMemoryStream), ImageSource)
             _p2 = p2
+            'Rating = _p2
         End Sub
 
         Public Property FolderJpg() As ImageSource

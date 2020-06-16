@@ -1,9 +1,9 @@
 ﻿Imports FoliconNative.Modules
 Namespace Model
     Public Class LayoutDesign
-        Inherits MyMovieIconLayout
+        Inherits MyMovieCIcon
         Public Sub New()
-            MyBase.New(DummyFolderJpg(), "8.1")
+            MyBase.New(New MyMovieIconLayout(DummyFolderJpg.Result, "8.1", "visible", "visible"))
         End Sub
         Private Shared Async Function DummyFolderJpg() As Task(Of String)
             Dim folderJpgPath = IO.Path.Combine(IO.Path.GetTempPath, "FoliconDummy.jpg")
