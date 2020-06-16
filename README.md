@@ -2,11 +2,11 @@
     <img src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/folicon Icon.png" alt="FoliCon logo" title="FoliCon" align="right" height="120" />
 </a>
 
-# Folicon - The ultimate movie, show, games folder icon customizer
+# Folicon - The ultimate movie, show, music, games folder icon customizer
 
 <img src="https://img.shields.io/github/commits-since/DineshSolanki/Folicon/latest/master"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/downloads/dineshsolanki/FoliCon/total?color=blue&style=plastic"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon">
 
-Folicon is a Folder icon changer which works for movie,games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, inspired From [Raticon](https://github.com/Jamedjo/Raticon)
+Folicon is a Folder icon changer which works for movie,music, games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, inspired From [Raticon](https://github.com/Jamedjo/Raticon)
 
 :star: Star us on GitHub — it helps!
 
