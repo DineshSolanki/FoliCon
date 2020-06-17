@@ -335,11 +335,15 @@ Class MainWindow
     End Sub
 
     Private Sub MenuDeleteIconsbtn_Click(sender As Object, e As RoutedEventArgs) Handles MenuDeleteIconsbtn.Click
-        If Directory.Exists(SelectedFolderPath) Then
-            DeleteIconsFromPath(SelectedFolderPath)
-            MessageBox.Show("Icons Deleted Sucessfully", "Icons Deleted", MessageBoxButton.OK, MessageBoxImage.Information)
-        Else
-            MessageBox.Show("Directory is Empty", "Empty Directory", MessageBoxButton.OK, MessageBoxImage.Warning)
+        If MessageBox.Show("Are you sure you want to delete all Icons?", "Confirm Icon Deletion", MessageBoxButton.OKCancel, MessageBoxImage.Question) = MessageBoxResult.OK Then
+            If Directory.Exists(SelectedFolderPath) Then
+                DeleteIconsFromPath(SelectedFolderPath)
+                MessageBox.Show("Icons Deleted Sucessfully", "Icons Deleted", MessageBoxButton.OK, MessageBoxImage.Information)
+            Else
+                MessageBox.Show("Directory is Empty", "Empty Directory", MessageBoxButton.OK, MessageBoxImage.Warning)
+            End If
         End If
+
+
     End Sub
 End Class

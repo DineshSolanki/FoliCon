@@ -11,7 +11,7 @@
         <xctk:BusyIndicator.BusyContent>
             <StackPanel>
                 <TextBlock x:Name="busyText" Text="Searching..." FontWeight="Bold" />
-                <Button Content="Stop Searching" HorizontalAlignment="Center"  VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+                <Button Content="Stop Searching" HorizontalAlignment="Center"  VerticalAlignment="Top" Click="Button_Click"/>
             </StackPanel>
         </xctk:BusyIndicator.BusyContent>
         <Grid>

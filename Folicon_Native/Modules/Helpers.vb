@@ -109,8 +109,9 @@ Namespace Modules
         ''' <param name="url"> The URL of Image to Download</param>
         ''' <param name="saveFilename">The Local Path Of Downloaded Image</param>
         Public Async Function DownloadImageFromUrlAsync(url As String, saveFileName As String) As Task
-            Using client As New WebClient
-                Await client.DownloadFileTaskAsync(url, saveFileName)
+            Dim response = Await HttpC.GetAsync(New Uri(url))
+            Using fs As New FileStream(saveFileName, FileMode.Create)
+                Await response.Content.CopyToAsync(fs)
             End Using
         End Function
 
