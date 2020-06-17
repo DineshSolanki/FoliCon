@@ -16,6 +16,7 @@
                 <Separator/>
             </MenuItem>
             <MenuItem x:Name="MenuRExbtn" Header="Restart Explorer" ToolTip="This will close all Open folders and Restart Explorer"/>
+            <MenuItem x:Name="MenuDeleteIconsbtn" Header="Delete Icons" ToolTip="This will delete existing icons from all subFolders"/>
             <MenuItem Header="Help" >
                 <MenuItem x:Name="MenubtnHelp" Header="Help Document"/>
                 <MenuItem Header="About" Click="MenuItem_Click"/>

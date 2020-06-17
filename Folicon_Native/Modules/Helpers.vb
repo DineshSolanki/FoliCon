@@ -14,12 +14,12 @@ Imports Ookii.Dialogs.Wpf
 Imports Xceed.Wpf.Toolkit
 
 Namespace Modules
-    Module PublicFunctions
-        <DllImport("kernel32.dll", SetLastError := True)>
+    Module Helpers
+        <DllImport("kernel32.dll", SetLastError:=True)>
         Private Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
         End Function
 
-        <DllImport("kernel32.dll", SetLastError := True)>
+        <DllImport("kernel32.dll", SetLastError:=True)>
         Private Function Wow64RevertWow64FsRedirection(ByVal ptr As IntPtr) As Boolean
         End Function
 
@@ -203,7 +203,7 @@ Namespace Modules
             Next
         End Sub
 
-        Public sub RefreshIconCache()
+        Public Sub RefreshIconCache()
             Dim wow64Value As IntPtr = IntPtr.Zero
             Wow64DisableWow64FsRedirection(wow64Value)
             Dim objProcess As Process
@@ -216,7 +216,7 @@ Namespace Modules
             objProcess.WaitForExit()
             objProcess.Close()
             RestartExplorer()
-        End sub
+        End Sub
 
         Public Async Function GetBitmapFromUrlAsync(url As String) As Task(Of Bitmap)
             Dim myRequest = CType(WebRequest.Create(New Uri(url)), HttpWebRequest)
@@ -260,7 +260,7 @@ Namespace Modules
         Public Sub AddToPickedListDataTable(poster As String, title As String, rating As String, folder As String,
                                             folderName As String, Optional year As String = "")
             Dim nRow As DataRow
-            If rating = "0"
+            If rating = "0" Then
                 rating = ""
             End If
             nRow = PickedListDataTable.NewRow()
@@ -306,6 +306,21 @@ Namespace Modules
             End If
             Return Nothing
         End Function
-
+        Public Sub DeleteIconsFromPath(folderPath As String)
+            'Dim foldername = Path.GetFileNameWithoutExtension(folderPath)
+            'Dim rootIcoFile = Path.Combine(folderPath, foldername & ".ico")
+            'Dim rootIniFile = Path.Combine(folderPath, "desktop.ini")
+            'File.Delete(rootIcoFile)
+            'File.Delete(rootIniFile)
+            For Each folder In Directory.EnumerateDirectories(folderPath)
+                Dim foldername = Path.GetFileNameWithoutExtension(folder)
+                Dim IcoFile = Path.Combine(folder, foldername & ".ico")
+                Dim IniFile = Path.Combine(folder, "desktop.ini")
+                File.Delete(IcoFile)
+                File.Delete(IniFile)
+            Next
+        End Sub
     End Module
-End NameSpace
+
+
+End Namespace

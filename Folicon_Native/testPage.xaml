@@ -7,32 +7,6 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="testPage" Loaded="Page_Loaded">
-    <xctk:BusyIndicator x:Name="BusyIndicator1" Margin="10">
-        <xctk:BusyIndicator.BusyContent>
-            <Grid>
-                <Button Content="Button" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-            </Grid>
-        </xctk:BusyIndicator.BusyContent>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="254*"/>
-                <RowDefinition Height="165*"/>
-            </Grid.RowDefinitions>
-            <Grid Height="61" Margin="15,10,5,0" VerticalAlignment="Top" Width="772">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0*"/>
-                    <ColumnDefinition Width="107*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="btnSkip" Content="Skip" Margin="10,10,489,13" Height="38" FontSize="24" Grid.ColumnSpan="2"/>
-                <TextBlock Margin="310,12,402,0" TextWrapping="Wrap" Text="~OR~" VerticalAlignment="Top" Height="38" FontSize="20" Grid.ColumnSpan="3"/>
-                <TextBox x:Name="txtSearchAgain" Height="38" Margin="387,12,132,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
-                <Button x:Name="btnSearchAgain" Content="Search Again" Margin="659,10,10,0" VerticalAlignment="Top" Width="103" Height="38" Grid.ColumnSpan="5"/>
-            </Grid>
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="0,71,0,10" Grid.RowSpan="2">
-                <WrapPanel x:Name="WrapPanel1" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-            </ScrollViewer>
-        </Grid>
-    </xctk:BusyIndicator>
-    
+    <Button Content="Button" HorizontalAlignment="Left" Margin="373,205,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
 </Page>
