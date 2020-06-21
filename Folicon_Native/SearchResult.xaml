@@ -9,37 +9,40 @@
     <!--<Window.DataContext>
         <local:ListItem/>
     </Window.DataContext>-->
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="147*"/>
-            <RowDefinition Height="275*"/>
-        </Grid.RowDefinitions>
-        <Label x:Name="MovieTitle"  Content="Movie Name" Margin="168,10,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left"/>
-        <ListView x:Name="ListView1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding ListItem}" HorizontalAlignment="Left" Height="304" Margin="21,76,0,0" VerticalAlignment="Top" Width="426" Grid.RowSpan="2" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Title}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                        <GridViewColumnHeader Tag="Title" Content="Title"/>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
-                    <GridViewColumn Header="Rating" Width="50" DisplayMemberBinding="{Binding Rating}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
 
-        <Button x:Name="Pickbtn" Content="Pick Selected" HorizontalAlignment="Left" Margin="21,41,0,0" VerticalAlignment="Top" Width="98" IsDefault="True"/>
-        <Button x:Name="Skipbtn" Content="Skip" HorizontalAlignment="Left" Margin="349,41,0,0" VerticalAlignment="Top" Width="98" IsCancel="True"/>
-        <Label Content="~OR~" HorizontalAlignment="Left" Margin="178,223,0,0" Grid.Row="1" VerticalAlignment="Top" Width="54" FontSize="16"/>
-        <TextBox x:Name="SearchTxt" HorizontalAlignment="Left" Height="23" Margin="21,270,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{x:Null}" VerticalAlignment="Top" Width="313"/>
-        <Button x:Name="SearchAgainbtn" Content="Search Again" HorizontalAlignment="Left" Margin="349,270,0,0" VerticalAlignment="Top" Width="98" Grid.Row="1"/>
-        <TextBox x:Name="OverviewText" HorizontalAlignment="Left" Height="385" Margin="473,76,0,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="{Binding SelectedItem.Overview, ElementName=ListView1}" VerticalAlignment="Top" Width="358" IsReadOnly="True" FontSize="15"/>
-        <Slider x:Name="FontSlider" HorizontalAlignment="Left" Margin="526,43,0,0" VerticalAlignment="Top" Width="260" Maximum="25" ValueChanged="Slider_ValueChanged" Minimum="12" Value="15"/>
-        <xctk:BusyIndicator x:Name="BusyIndicator1" Margin="21,36,25,23" Grid.RowSpan="2" BusyContent="Searching..." />
+    <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="Searching..." >
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="147*"/>
+                <RowDefinition Height="275*"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="MovieTitle"  Content="Movie Name" Margin="168,10,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left"/>
+            <ListView x:Name="ListView1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding ListItem}" HorizontalAlignment="Left" Height="304" Margin="21,76,0,0" VerticalAlignment="Top" Width="426" Grid.RowSpan="2" FocusVisualStyle="{x:Null}" HorizontalContentAlignment="Center">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Title}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                            <GridViewColumnHeader Tag="Title" Content="Title"/>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
+                        <GridViewColumn Header="Rating" Width="50" DisplayMemberBinding="{Binding Rating}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
 
-    </Grid>
+            <Button x:Name="Pickbtn" Content="Pick Selected" HorizontalAlignment="Left" Margin="21,41,0,0" VerticalAlignment="Top" Width="98" IsDefault="True"/>
+            <Button x:Name="Skipbtn" Content="Skip" HorizontalAlignment="Left" Margin="349,41,0,0" VerticalAlignment="Top" Width="98" IsCancel="True"/>
+            <Label Content="~OR~" HorizontalAlignment="Left" Margin="178,223,0,0" Grid.Row="1" VerticalAlignment="Top" Width="54" FontSize="16"/>
+            <TextBox x:Name="SearchTxt" HorizontalAlignment="Left" Height="23" Margin="21,270,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{x:Null}" VerticalAlignment="Top" Width="313"/>
+            <Button x:Name="SearchAgainbtn" Content="Search Again" HorizontalAlignment="Left" Margin="349,270,0,0" VerticalAlignment="Top" Width="98" Grid.Row="1"/>
+            <TextBox x:Name="OverviewText" HorizontalAlignment="Left" Height="385" Margin="473,76,0,0" Grid.RowSpan="2" TextWrapping="Wrap" Text="{Binding SelectedItem.Overview, ElementName=ListView1}" VerticalAlignment="Top" Width="358" IsReadOnly="True" FontSize="15"/>
+            <Slider x:Name="FontSlider" HorizontalAlignment="Left" Margin="526,43,0,0" VerticalAlignment="Top" Width="260" Maximum="25" ValueChanged="Slider_ValueChanged" Minimum="12" Value="15"/>
+        </Grid>
+    </xctk:BusyIndicator>
+
+
 </Window>
