@@ -21,8 +21,8 @@ Namespace Modules
             Dim folderPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex)
             Dim folderName = Fnames(FolderNameIndex)
             Dim year=If(result.FirstReleaseDate IsNot Nothing,result.FirstReleaseDate.Value.Year,"")
-            Dim posterUrl= IGDB.ImageHelper.GetImageUrl(result.Cover.Value.ImageId,ImageSize.HD720)
-        AddToPickedListDataTable(localPosterPath,result.Name,"",folderPath,folderName,year)
+            Dim posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720)
+            AddToPickedListDataTable(localPosterPath,result.Name,"",folderPath,folderName,year)
             FolderProcessedCount += 1
             Dim tempImage As New ImageToDownload() With{
                     .LocalPath=localPosterPath,
@@ -35,13 +35,15 @@ Namespace Modules
             dim mediaName as String
             dim year As String
             Dim rating as String
-            Dim overview as String
+            Dim overview As String
+            Dim poster As String
             For Each item In result
                 mediaName = item.Name
                 year = If(item.FirstReleaseDate Isnot Nothing, item.FirstReleaseDate.Value.Year, "")
                 'rating = If(item.TotalRating Isnot Nothing, item.TotalRating,"") 
                 overview = item.Summary
-                items.Add(new ListItem(mediaName, year, "", overview))
+                poster = If(item.Cover IsNot Nothing, "https://" & ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720).Substring(2), Nothing)
+                items.Add(New ListItem(mediaName, year, "", overview, poster))
             Next
             Return items
             End Function

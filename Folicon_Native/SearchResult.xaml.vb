@@ -35,7 +35,7 @@ Public Class SearchResult
         MovieTitle.Content = SearchTitle
         If Searchresultob IsNot Nothing AndAlso if(searchMod="Game",Searchresultob.Length ,Searchresultob.TotalCount) IsNot Nothing Then
             FetchAndAddDetailsToListView(ListView1, Searchresultob, SearchTitle)
-            ListView1.Focus()
+
         Else
             SearchTxt.Focus()
         End If
@@ -76,13 +76,22 @@ Public Class SearchResult
         If SearchMod = "TV"
             Dim ob = DirectCast(result, Shows)
             source = ExtractTvDetailsIntoListItem(ob)
-        ElseIf SearchMod = "Movie"
-            If query.ToLower.Contains("collection")
+        ElseIf SearchMod = "Movie" Then
+
+            If query.ToLower.Contains("collection") Then
                 Dim ob = DirectCast(result, collections)
                 source = ExtractCollectionDetailsIntoListItem(ob)
             Else
-                Dim ob = DirectCast(result, Movies)
-                source = ExtractMoviesDetailsIntoListItem(ob)
+                Dim ob
+                Try
+                    ob = DirectCast(result, Movies)
+                    source = ExtractMoviesDetailsIntoListItem(ob)
+                Catch ex As Exception
+                    ob = DirectCast(result, Collections)
+                    source = ExtractCollectionDetailsIntoListItem(ob)
+                End Try
+
+
             End If
         ElseIf SearchMod = "Auto (Movies & TV Shows)"
             Dim ob = DirectCast(result, Resources)
@@ -139,6 +148,6 @@ Public Class SearchResult
     End Sub
 
     Private Sub ListView1_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles ListView1.MouseDoubleClick
-        Pickbtn_Click(Nothing,nothing)
+        Pickbtn_Click(Nothing, Nothing)
     End Sub
 End Class

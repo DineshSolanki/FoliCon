@@ -7,11 +7,13 @@ Public Class ListItem
     Public Property Rating() As String
     Public Property Folder() As String
     Public Property Overview() As String
-    Public Sub New(ByVal _title As String, ByVal _year As String, ByVal _rating As String, ByVal Optional _overview As String = Nothing, Optional ByVal _folder As String = "")
+    Public Property Poster() As String
+    Public Sub New(ByVal _title As String, ByVal _year As String, ByVal _rating As String, ByVal Optional _overview As String = Nothing, Optional _poster As String = Nothing, Optional ByVal _folder As String = "")
         Title = _title
         Year = _year
         Rating = _rating
         Overview = _overview
+        Poster = _poster
         Folder = _folder
     End Sub
 

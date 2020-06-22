@@ -254,5 +254,9 @@
   <ItemGroup>
     <Resource Include="Model\folicon Icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\LoadingPosterImage.png" />
+    <Resource Include="Resources\NoPosterAvailable.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
