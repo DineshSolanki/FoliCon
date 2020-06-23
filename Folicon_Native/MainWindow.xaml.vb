@@ -1,5 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.IO
+﻿Imports System.IO
 Imports System.Net
 Imports System.Net.NetworkInformation
 Imports Xceed.Wpf.Toolkit
@@ -137,8 +136,9 @@ Class MainWindow
                         Next
                     Else 'Professional Mode
                         GetReadyForSearch()
-                        Dim gPage As New ProSearchResultsDArt()
-                        gPage.Owner = Me
+                        Dim gPage As New ProSearchResultsDArt With {
+                            .Owner = Me
+                        }
                         gPage.ShowDialog()
                         If PickedListDataTable.Rows.Count > 0 Then
                             For i = 0 To PickedListDataTable.Rows.Count - 1
@@ -176,7 +176,7 @@ Class MainWindow
     Private Async Function DoWorkOfDownloadAsync() As Task
         SearchAndMakehbtn.IsEnabled = False
         Await DownloadAndMakeIcons()
-        'BackgrundWorker1.RunWorkerAsync()
+
     End Function
 
     Private Sub RadioButton_Checked_1(sender As Object, e As RoutedEventArgs)
@@ -311,12 +311,12 @@ Class MainWindow
 
     Private Sub MenuItem_Click(sender As Object, e As RoutedEventArgs)
         Dim about As New Gat.Controls.About() With {
-                .Title = "FoliCon v2.1.0",
+                .Title = "FoliCon v2.2.0",
                 .ApplicationLogo = New BitmapImage(New Uri("\Model\folicon Icon.ico", UriKind.Relative)),
                 .Description = "FoliCon is more than just a typical folder Icon changer" & vbCrLf _
                              & "It automates this task to a greater extent, it has two different modes for different designs of folder Icons," & vbCrLf _
                              & "and it can fetch 'Games,Movies, and shows' folder icons.",
-                .Version = "2.1.0",
+                .Version = "2.2.0",
                 .PublisherLogo = New BitmapImage(New Uri("\Model\folicon Icon.ico", UriKind.Relative)),
                 .AdditionalNotes = "Developed by Dinesh Solanki",
                 .Copyright = "GNU General Public License v3.0"}
