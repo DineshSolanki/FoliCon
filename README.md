@@ -19,8 +19,8 @@ Folicon is a Folder icon changer which works for movie,music, games, and shows, 
 ![After](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/after.jpg)
 ![Searching](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/searchingpro.jpg)
 ![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/posterresult.jpg)
-![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/downloading.jpg)
-![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/mainview.jpg)
+![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/downloading.png)
+![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/mainview.png)
 </details>
 
 
