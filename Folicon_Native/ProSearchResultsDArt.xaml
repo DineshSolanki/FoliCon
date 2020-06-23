@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FoliconNative"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="ProSearchResultsDArt" Height="450" Width="900" Loaded="Window_Loaded">
+        Title="ProSearchResultsDArt" Height="450" Width="900" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
     <xctk:BusyIndicator x:Name="BusyIndicator1" Margin="10" IsBusy="True">
         <xctk:BusyIndicator.BusyContent>
             <StackPanel>

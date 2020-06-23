@@ -22,6 +22,7 @@ Namespace Modules
         Public ApikeyTmdb As String = ConfigurationManager.AppSettings.Get("TMDBAPI")
         Public ClientSecretDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientSecret")
         Public ClientIdDArt As String = ConfigurationManager.AppSettings.Get("DeviantClientId")
-        Public HttpC as new HttpClient()
+        Public HttpC As New HttpClient()
+        Public SkipAll As Boolean = False
     End Module
 End NameSpace

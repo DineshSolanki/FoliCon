@@ -5,13 +5,13 @@ Imports IGDB.Models
 
 Namespace Modules
     Public Class Igdbf
-        public shared Async Function SearchGame(query As string,client As IGDB.IGDBApi) As Task(of Game())
-            Contracts.Contract.Assert(client Isnot nothing)
-           Dim response= Await client.QueryAsync (Of Game)(IGDB.Client.Endpoints.Games,"search " & """"& query &"""" & "; fields name,first_release_date,total_rating,summary,cover.*;")
-            Searchresultob=response 
-            return response
+        Public Shared Async Function SearchGame(query As String, client As IGDBApi) As Task(Of Game())
+            Contracts.Contract.Assert(client IsNot Nothing)
+            Dim response = Await client.QueryAsync(Of Game)(IGDB.Client.Endpoints.Games, "search " & """" & query & """" & "; fields name,first_release_date,total_rating,summary,cover.*;")
+            Searchresultob = response
+            Return response
         End Function
-        public shared sub ResultPicked(result As Game)
+        Public shared sub ResultPicked(result As Game)
             Contracts.Contract.requires(result Isnot nothing)
             If result.Cover Is Nothing
                 throw New Exception("NoPoster")

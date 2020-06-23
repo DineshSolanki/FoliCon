@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded" >
+        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" >
     <Window.Resources>
         <BitmapImage x:Key="NoPoster" UriSource="/Resources/NoPosterAvailable.png"/>
         <BitmapImage x:Key="LoadingPoster" UriSource="/Resources/LoadingPosterImage.png"/>
@@ -47,6 +47,7 @@
                     <DropShadowEffect/>
                 </Image.Effect>
             </Image>
+            <Button x:Name="SkipAllbtn" Content="All" HorizontalAlignment="Left" Margin="452,41,0,0" VerticalAlignment="Top" Width="41" ToolTip="Skip all remining Folders"/>
         </Grid>
     </xctk:BusyIndicator>
 

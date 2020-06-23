@@ -120,7 +120,7 @@ Public Class SearchResult
         If ListView1.SelectedItems.Count > 0 Then
             PickedIndex = ListView1.SelectedIndex
             Try
-                If SearchMod = "Game"
+                If SearchMod = "Game" Then
                     Igdbf.ResultPicked(Searchresultob(PickedIndex))
                 End If
                 ResultPicked(Searchresultob, SearchMod, PickedIndex)
@@ -149,5 +149,10 @@ Public Class SearchResult
 
     Private Sub ListView1_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles ListView1.MouseDoubleClick
         Pickbtn_Click(Nothing, Nothing)
+    End Sub
+
+    Private Sub SkipAllbtn_Click(sender As Object, e As RoutedEventArgs) Handles SkipAllbtn.Click
+        SkipAll = True
+        Close()
     End Sub
 End Class

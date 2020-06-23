@@ -11,6 +11,7 @@ Class MainWindow
     ReadOnly _igdbClient = IGDB.Client.Create(ApikeyIgdb)
     Dim stopIconDownload As Boolean = False
 
+
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
@@ -61,6 +62,7 @@ Class MainWindow
     Private Async Sub SearchAndMakebtn_ClickAsync(sender As Object, e As RoutedEventArgs) _
         Handles SearchAndMakehbtn.Click
         GetFileNames()
+        SkipAll = False
         If Not IsNullOrEmpty(Fnames) Then
             If ValidFolder(SelectedFolderPath) Then
                 If My.Computer.Network.IsAvailable Then
@@ -76,6 +78,7 @@ Class MainWindow
                             Cursor = Cursors.Wait
                             isAutoPicked = False
                             Dim sr As New SearchResult()
+                            sr.Owner = Me
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
 
                             Dim response =
@@ -128,10 +131,12 @@ Class MainWindow
                             End If
                             Cursor = Cursors.Arrow
                             FolderNameIndex += 1
+                            If SkipAll Then : Exit For : End If
                         Next
                     Else 'Professional Mode
                         GetReadyForSearch()
                         Dim gPage As New ProSearchResultsDArt()
+                        gPage.Owner = Me
                         gPage.ShowDialog()
                         If PickedListDataTable.Rows.Count > 0 Then
                             For i = 0 To PickedListDataTable.Rows.Count - 1
