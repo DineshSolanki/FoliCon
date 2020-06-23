@@ -12,6 +12,7 @@
             <MenuItem Header="Settings">
                 <MenuItem x:Name="chkIsRatingVisible" Header="Show Rating badge" IsCheckable="True" ToolTip="Controls whether to hide or show Rating Shield"/>
                 <MenuItem x:Name="chkIsPosterOverlayVisible" Header="Use Poster overlay" IsCheckable="True" ToolTip="Controls whether to use poster Overlay or Plain Posters"/>
+                <MenuItem x:Name="chkIgnoreAmbiguous" Header="Ignore Ambigous title" IsCheckable="True" ToolTip="Skip ambigous titles from search"/>
                 <MenuItem x:Name="MenuApiConfigBtn" Header="_API keys Configuration"/>
                 <Separator/>
             </MenuItem>

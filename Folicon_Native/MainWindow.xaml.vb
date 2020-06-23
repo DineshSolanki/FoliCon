@@ -10,6 +10,7 @@ Class MainWindow
     ReadOnly _serviceClient As New Net.TMDb.ServiceClient(ApikeyTmdb)
     ReadOnly _igdbClient = IGDB.Client.Create(ApikeyIgdb)
     Dim stopIconDownload As Boolean = False
+    Dim ignoreAmbigousTitle As Boolean = False
 
 
     Public Sub New()
@@ -77,8 +78,9 @@ Class MainWindow
                         For Each itemTitle As String In Fnames
                             Cursor = Cursors.Wait
                             isAutoPicked = False
-                            Dim sr As New SearchResult()
-                            sr.Owner = Me
+                            Dim sr As New SearchResult With {
+                                .Owner = Me
+                            }
                             SearchTitle = New TitleCleaner().Clean(itemTitle)
 
                             Dim response =
@@ -111,7 +113,7 @@ Class MainWindow
 
                                 isAutoPicked = True
                             ElseIf resultCount > 1 Then
-                                sr.ShowDialog()
+                                If Not ignoreAmbigousTitle Then : sr.ShowDialog() : End If
                             End If
                             If isAutoPicked OrElse sr.DialogResult Then
                                 FinalistView.Items.Add(New ListItem() With {
@@ -350,5 +352,13 @@ Class MainWindow
         End If
 
 
+    End Sub
+
+    Private Sub chkIgnoreAmbiguous_Click(sender As Object, e As RoutedEventArgs) Handles chkIgnoreAmbiguous.Click
+        If chkIgnoreAmbiguous.IsChecked Then
+            ignoreAmbigousTitle = True
+        Else
+            ignoreAmbigousTitle = False
+        End If
     End Sub
 End Class
