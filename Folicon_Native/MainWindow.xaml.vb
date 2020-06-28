@@ -75,6 +75,7 @@ Class MainWindow
                         Dim isAutoPicked As Boolean
                         GetReadyForSearch()
                         For Each itemTitle As String In Fnames
+                            lblStatus.Content = "Searching..."
                             Cursor = Cursors.Wait
                             isAutoPicked = False
                             Dim sr As New SearchResult With {
@@ -131,6 +132,7 @@ Class MainWindow
                                                           })
                             End If
                             Cursor = Cursors.Arrow
+                            lblStatus.Content = "Idle"
                             FolderNameIndex += 1
                             If SkipAll Then : Exit For : End If
                         Next
@@ -175,8 +177,9 @@ Class MainWindow
 
     Private Async Function DoWorkOfDownloadAsync() As Task
         SearchAndMakehbtn.IsEnabled = False
+        lblStatus.Content = "Creating Icons..."
         Await DownloadAndMakeIcons()
-
+        lblStatus.Content = "Idle"
     End Function
 
     Private Sub RadioButton_Checked_1(sender As Object, e As RoutedEventArgs)

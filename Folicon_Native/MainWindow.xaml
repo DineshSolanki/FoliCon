@@ -74,42 +74,46 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </ItemsPanelTemplate>
                 </StatusBar.ItemsPanel>
-                <StatusBarItem  HorizontalContentAlignment="Stretch" >
+                <StatusBarItem Grid.Column="0">
+                    <Label x:Name="lblStatus" Content="Idle"/>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch" >
                     <ProgressBar x:Name="PosterProgressBar" Value="0" Height="18" />
                 </StatusBarItem>
-                <StatusBarItem  Grid.Column="1">
+                <StatusBarItem  Grid.Column="2">
                     <Label Content="Folder Processed:"/>
                 </StatusBarItem>
 
-                <StatusBarItem  Grid.Column="2">
+                <StatusBarItem  Grid.Column="3">
                     <Label x:Name="ProcessedFolderValue" Content="0"/>
                 </StatusBarItem>
 
-                <StatusBarItem  Grid.Column="3">
+                <StatusBarItem  Grid.Column="4">
                     <Label  Content="Icons Created :"/>
                 </StatusBarItem>
-                <StatusBarItem x:Name="IconsProcessedValue"  Grid.Column="4">
+                <StatusBarItem x:Name="IconsProcessedValue"  Grid.Column="5">
                     <Label  Content="0"/>
                 </StatusBarItem>
-                <StatusBarItem   Grid.Column="5">
+                <StatusBarItem   Grid.Column="6">
                     <Label  Content="out of"/>
                 </StatusBarItem>
-                <StatusBarItem x:Name="TotalIconsValue"   Grid.Column="6">
+                <StatusBarItem x:Name="TotalIconsValue"   Grid.Column="7">
                     <Label  Content="0"/>
                 </StatusBarItem>
-                <StatusBarItem x:Name="NetworkSignal" Grid.Column="7">
+                <StatusBarItem x:Name="NetworkSignal" Grid.Column="8">
                     <Image x:Name="NetworkImage" Height="32" Source="{Binding NetIcon}" Stretch="Fill" Width="32"/>
                 </StatusBarItem>
             </StatusBar>
