@@ -321,7 +321,14 @@ Namespace Modules
                 File.Delete(IniFile)
             Next
         End Sub
+        Public Function GetFileNamesFromFolder(ByVal folder As String) As ArrayList
+            Dim itemList As New ArrayList()
+            If Not String.IsNullOrEmpty(folder) Then
+                For Each file As String In Directory.GetFiles(folder)
+                    itemList.Add(Path.GetFileName(file))
+                Next
+            End If
+            Return itemList
+        End Function
     End Module
-
-
 End Namespace

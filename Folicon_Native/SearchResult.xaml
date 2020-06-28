@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Search Result" Height="514.5" Width="861.5" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" >
+        Title="Search Result" Height="514.5" Width="1061.5" ResizeMode="NoResize" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner" >
     <Window.Resources>
         <BitmapImage x:Key="NoPoster" UriSource="/Resources/NoPosterAvailable.png"/>
         <BitmapImage x:Key="LoadingPoster" UriSource="/Resources/LoadingPosterImage.png"/>
     </Window.Resources>
 
-    <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="Searching..." >
+    <xctk:BusyIndicator x:Name="BusyIndicator1" BusyContent="Searching..." Margin="0,0,4,0" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="147*"/>
@@ -40,16 +40,16 @@
             <Label Content="~OR~" HorizontalAlignment="Left" Margin="178,223,0,0" Grid.Row="1" VerticalAlignment="Top" Width="54" FontSize="16"/>
             <TextBox x:Name="SearchTxt" HorizontalAlignment="Left" Height="23" Margin="21,270,0,0" Grid.Row="1" TextWrapping="Wrap" Text="{x:Null}" VerticalAlignment="Top" Width="313"/>
             <Button x:Name="SearchAgainbtn" Content="Search Again" HorizontalAlignment="Left" Margin="349,270,0,0" VerticalAlignment="Top" Width="98" Grid.Row="1"/>
-            <TextBox x:Name="OverviewText" HorizontalAlignment="Left" Height="189" Margin="465,103,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.Overview, ElementName=ListView1}" VerticalAlignment="Top" Width="366" IsReadOnly="True" FontSize="15" Grid.Row="1"/>
-            <Slider x:Name="FontSlider" HorizontalAlignment="Left" Margin="526,43,0,0" VerticalAlignment="Top" Width="260" Maximum="25" ValueChanged="Slider_ValueChanged" Minimum="12" Value="15"/>
-            <Image x:Name="imgTitlePoster" Source="{Binding SelectedItem.Poster, ElementName=ListView1, FallbackValue={StaticResource LoadingPoster}, TargetNullValue={StaticResource NoPoster}}" HorizontalAlignment="Left" Height="198" Margin="569,66,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="158" Stretch="Fill">
+            <TextBox x:Name="OverviewText" HorizontalAlignment="Left" Height="189" Margin="653,75,0,0" TextWrapping="Wrap" Text="{Binding SelectedItem.Overview, ElementName=ListView1}" VerticalAlignment="Top" Width="366" IsReadOnly="True" FontSize="15" Grid.RowSpan="2"/>
+            <Slider x:Name="FontSlider" HorizontalAlignment="Left" Margin="712,43,0,0" VerticalAlignment="Top" Width="260" Maximum="25" ValueChanged="Slider_ValueChanged" Minimum="12" Value="15"/>
+            <Image  Source="{StaticResource LoadingPoster}" HorizontalAlignment="Left" Height="198" Margin="471,66,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="158" Stretch="Fill"/>
+            <Image x:Name="imgTitlePoster" Source="{Binding SelectedItem.Poster, ElementName=ListView1, TargetNullValue={StaticResource NoPoster}}" HorizontalAlignment="Left" Height="198" Margin="471,66,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="158" Stretch="Fill">
                 <Image.Effect>
                     <DropShadowEffect/>
                 </Image.Effect>
             </Image>
             <Button x:Name="SkipAllbtn" Content="All" HorizontalAlignment="Left" Margin="452,41,0,0" VerticalAlignment="Top" Width="41" ToolTip="Skip all remining Folders"/>
+            <ListBox x:Name="ListBoxMedia" HorizontalAlignment="Left" Height="179" Margin="471,111,0,0" Grid.Row="1" VerticalAlignment="Top" Width="548"/>
         </Grid>
     </xctk:BusyIndicator>
-
-
 </Window>

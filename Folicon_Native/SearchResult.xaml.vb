@@ -3,12 +3,11 @@
 Imports FoliconNative.Modules
 Imports System.Collections.ObjectModel
 Imports System.Net.TMDb
-Imports System.Windows.Controls.Primitives
 Imports IGDB.Models
+Imports IGDB
 
 Public Class SearchResult
-    Dim ReadOnly _serviceClient as New ServiceClient(ApikeyTmdb)
-    dim _igdbClient = IGDB.Client.Create(ApikeyIgdb)
+    ReadOnly _serviceClient As New ServiceClient(ApikeyTmdb)
     Private _listItem As ListItem
 
     Public Property ListItem() As ListItem
@@ -22,8 +21,11 @@ Public Class SearchResult
         End Set
     End Property
 
-    Public Sub New()
+    Public Property IgdbClient As IGDBApi = Client.Create(ApikeyIgdb)
+    Private ReadOnly _currentFolder As String = SelectedFolderPath & "\" & Fnames(FolderNameIndex)
+    Private _FileList As ArrayList = GetFileNamesFromFolder(_currentFolder)
 
+    Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
         ListItem = New ListItem()
@@ -33,12 +35,14 @@ Public Class SearchResult
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
         MovieTitle.Content = SearchTitle
-        If Searchresultob IsNot Nothing AndAlso if(searchMod="Game",Searchresultob.Length ,Searchresultob.TotalCount) IsNot Nothing Then
+        If Searchresultob IsNot Nothing AndAlso If(SearchMod = "Game", Searchresultob.Length, Searchresultob.TotalCount) IsNot Nothing Then
             FetchAndAddDetailsToListView(ListView1, Searchresultob, SearchTitle)
 
         Else
             SearchTxt.Focus()
         End If
+        ListBoxMedia.Items.Clear()
+        ListBoxMedia.ItemsSource = _FileList
     End Sub
 
     Public Async Sub StartSearch(ByVal useBusy As Boolean)
@@ -55,8 +59,8 @@ Public Class SearchResult
         BusyIndicator1.BusyContent = "Searching for " & titleToSearch & "..."
         OverviewText.Text = ""
 
-        If SearchMod = "Game"
-            Await Igdbf.SearchGame(titleToSearch, _igdbClient)
+        If SearchMod = "Game" Then
+            Await Igdbf.SearchGame(titleToSearch, IgdbClient)
         Else
             Await SearchIt(titleToSearch, _serviceClient)
         End If
