@@ -42,7 +42,7 @@ Public Class SearchResult
         Else
             SearchTxt.Focus()
         End If
-        ListBoxMedia.ItemsSource = Nothing
+        '        ListBoxMedia.ItemsSource = Nothing
         ListBoxMedia.ItemsSource = _FileList
     End Sub
 
