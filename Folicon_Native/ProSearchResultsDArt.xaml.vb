@@ -12,11 +12,12 @@ Public Class ProSearchResultsDArt
     Dim stopSearch As Boolean = False
 
     Private Sub CreatePicBox(link As String, img As Bitmap)
-        Dim pic As New Controls.Image()
-        pic.Height = _imageSize.Height
-        pic.Width = _imageSize.Width
-        pic.Margin=New Thickness(5,5,5,5)
-        pic.Source = LoadBitmap(img)
+        Dim pic As New Controls.Image With {
+            .Height = _imageSize.Height,
+            .Width = _imageSize.Width,
+            .Margin = New Thickness(5, 5, 5, 5),
+            .Source = LoadBitmap(img)
+        }
         _pics.Add(pic)
         pic.Tag = link
         AddHandler pic.MouseLeftButtonDown, AddressOf pic_DoubleClick
@@ -50,15 +51,14 @@ Public Class ProSearchResultsDArt
         If Not RetryMovieTitle = Nothing Then
             _titleToSearch = RetryMovieTitle
         Else
-            Dim titleCleaner As New TitleCleaner
-            _titleToSearch = titleCleaner.Clean(Fnames(_i))
+
+            _titleToSearch = Clean(Fnames(_i))
         End If
         busyText.Text = "Searching for " & _titleToSearch & "..."
         BusyIndicator1.IsBusy = True
         Title = "Pick Icon for " & _titleToSearch
         Await DArtSearchAsync(_titleToSearch)
         RetryMovieTitle = Nothing
-        'btnStopSearch.Visibility = Visibility.Hidden
         BusyIndicator1.IsBusy = False
     End Sub
     Private Async Function DArtSearchAsync(query As String,Optional offset As Integer=0) As Task

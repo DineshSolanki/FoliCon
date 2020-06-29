@@ -104,7 +104,7 @@
     <Compile Include="Model\ProIcon.vb" />
     <Compile Include="Modules\DArt.vb" />
     <Compile Include="Modules\GlobalVariables.vb" />
-    <Compile Include="Modules\IGDB.vb" />
+    <Compile Include="Modules\Igdbf.vb" />
     <Compile Include="Modules\IniWriter.vb" />
     <Compile Include="Modules\Helpers.vb" />
     <Compile Include="Modules\NativeMethods.vb" />

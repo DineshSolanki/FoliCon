@@ -4,35 +4,35 @@ Imports IGDB
 Imports IGDB.Models
 
 Namespace Modules
-    Public Class Igdbf
-        Public Shared Async Function SearchGame(query As String, client As IGDBApi) As Task(Of Game())
+    Module Igdbf
+        Public Async Function SearchGame(query As String, client As IGDBApi) As Task(Of Game())
             Contracts.Contract.Assert(client IsNot Nothing)
             Dim response = Await client.QueryAsync(Of Game)(IGDB.Client.Endpoints.Games, "search " & """" & query & """" & "; fields name,first_release_date,total_rating,summary,cover.*;")
             Searchresultob = response
             Return response
         End Function
-        Public shared sub ResultPicked(result As Game)
-            Contracts.Contract.requires(result Isnot nothing)
-            If result.Cover Is Nothing
-                throw New Exception("NoPoster")
+        Public Sub ResultPicked(result As Game)
+            Contracts.Contract.Requires(result IsNot Nothing)
+            If result.Cover Is Nothing Then
+                Throw New Exception("NoPoster")
             End If
             Dim localPosterPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex) & "\" & Fnames(FolderNameIndex) &
                                   ".png"
             Dim folderPath = SelectedFolderPath & "\" & Fnames(FolderNameIndex)
             Dim folderName = Fnames(FolderNameIndex)
-            Dim year=If(result.FirstReleaseDate IsNot Nothing,result.FirstReleaseDate.Value.Year,"")
+            Dim year = If(result.FirstReleaseDate IsNot Nothing, result.FirstReleaseDate.Value.Year, "")
             Dim posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720)
-            AddToPickedListDataTable(localPosterPath,result.Name,"",folderPath,folderName,year)
+            AddToPickedListDataTable(localPosterPath, result.Name, "", folderPath, folderName, year)
             FolderProcessedCount += 1
-            Dim tempImage As New ImageToDownload() With{
-                    .LocalPath=localPosterPath,
-                    .RemotePath="https://" & posterUrl.Substring(2) }
+            Dim tempImage As New ImageToDownload() With {
+                    .LocalPath = localPosterPath,
+                    .RemotePath = "https://" & posterUrl.Substring(2)}
             ImgDownloadList.Add(tempImage)
-        End sub
-        public Shared Function ExtractGameDetailsIntoListItem(result As Game()) As ObservableCollection(Of ListItem)
-            Contracts.Contract.Requires(result IsNot nothing)
+        End Sub
+        Public Function ExtractGameDetailsIntoListItem(result As Game()) As ObservableCollection(Of ListItem)
+            Contracts.Contract.Requires(result IsNot Nothing)
             Dim items As New ObservableCollection(Of ListItem)()
-            dim mediaName as String
+            Dim mediaName As String
             Dim year As String
             Dim overview As String
             Dim poster As String
@@ -44,6 +44,6 @@ Namespace Modules
                 items.Add(New ListItem(mediaName, year, "", overview, poster))
             Next
             Return items
-            End Function
-    End Class
+        End Function
+    End Module
 End NameSpace

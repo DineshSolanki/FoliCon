@@ -61,7 +61,7 @@ Public Class SearchResult
         OverviewText.Text = ""
 
         If SearchMod = "Game" Then
-            Await Igdbf.SearchGame(titleToSearch, IgdbClient)
+            Await SearchGame(titleToSearch, IgdbClient)
         Else
             Dim r = Await SearchIt(titleToSearch, _serviceClient)
             mediaType = r.MediaType
@@ -129,7 +129,7 @@ Public Class SearchResult
                 If SearchMod = "Game" Then
                     Igdbf.ResultPicked(Searchresultob(PickedIndex))
                 End If
-                ResultPicked(Searchresultob, mediaType, PickedIndex)
+                TMDB.ResultPicked(Searchresultob, mediaType, PickedIndex)
             Catch ex As Exception
                 If ex.Message = "NoPoster"
                     MessageBox.Show("No poster found")

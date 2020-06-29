@@ -81,7 +81,7 @@ Class MainWindow
                             Dim sr As New SearchResult With {
                                 .Owner = Me
                             }
-                            SearchTitle = New TitleCleaner().Clean(itemTitle)
+                            SearchTitle = Clean(itemTitle)
 
                             Dim response =
                                     If _
@@ -100,7 +100,7 @@ Class MainWindow
                                     If (SearchMod = "Game") Then
                                         Igdbf.ResultPicked(response(0))
                                     Else
-                                        ResultPicked(response.Result, response.MediaType, 0)
+                                        TMDB.ResultPicked(response.Result, response.MediaType, 0)
                                     End If
                                 Catch ex As Exception
                                     If ex.Message = "NoPoster" Then
@@ -113,7 +113,7 @@ Class MainWindow
 
                                 isAutoPicked = True
                             ElseIf resultCount > 1 Then
-                                If Not ignoreAmbigousTitle Then : sr.mediaType = response.MediaType : sr.ShowDialog() : End If
+                                If Not ignoreAmbigousTitle Then : sr.mediaType = If(SearchMod = "Game", "Game", response.MediaType) : sr.ShowDialog() : End If
                             End If
                             If isAutoPicked OrElse sr.DialogResult Then
                                 FinalistView.Items.Add(New ListItem() With {
