@@ -315,7 +315,7 @@ Namespace Modules
             Return itemList
         End Function
         ''' <summary>
-        ''' Set folder icon for given folder.
+        ''' Set folder icon for a given folder.
         ''' </summary>
         ''' <param name="icoFile"> path to the icon file [MUST BE .Ico]</param>
         ''' <param name="FolderPath">path to the folder</param>

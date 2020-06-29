@@ -11,16 +11,16 @@ Public Class ApiConfig
         Dim tmdbApi As String=TxtTmdbApi.text
         Dim clientSecret As String=TxtClientSecret.Text
         Dim clientId As String= TxtClientId.Text
-        If Not String.IsNullOrEmpty(tmdbApi) AndAlso Not String.IsNullOrEmpty(clientSecret) AndAlso Not String.IsNullOrEmpty(clientId)
-            dim config As Configuration =
+        If Not String.IsNullOrEmpty(tmdbApi) AndAlso Not String.IsNullOrEmpty(clientSecret) AndAlso Not String.IsNullOrEmpty(clientId) Then
+            Dim config As Configuration =
                     ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None)
             config.AppSettings.Settings("TMDBAPI").Value = tmdbApi
             config.AppSettings.Settings("DeviantClientSecret").Value = clientSecret
             config.AppSettings.Settings("DeviantClientId").Value = clientId
             config.Save(ConfigurationSaveMode.Modified)
             ConfigurationManager.RefreshSection("appSettings")
-            Else 
-                Xceed.Wpf.Toolkit.MessageBox.Show("All values are required!","Cannot Save configuration",MessageBoxButton.OK,MessageBoxImage.Error)
+        Else
+            Xceed.Wpf.Toolkit.MessageBox.Show("All values are required!", "Cannot Save configuration", MessageBoxButton.OK, MessageBoxImage.Error)
         End If
     End Sub
 
