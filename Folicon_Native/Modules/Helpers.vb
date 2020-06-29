@@ -4,8 +4,6 @@ Imports System.Data
 Imports System.Drawing
 Imports System.IO
 Imports System.Net
-Imports System.Runtime.InteropServices
-Imports System.Security
 Imports System.Windows.Interop
 Imports FoliconNative.Model
 Imports Ookii.Dialogs.Wpf
@@ -13,19 +11,6 @@ Imports Xceed.Wpf.Toolkit
 
 Namespace Modules
     Module Helpers
-
-        <DllImport("kernel32.dll", SetLastError:=True)>
-        Private Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
-        End Function
-
-        <DllImport("kernel32.dll", SetLastError:=True)>
-        Private Function Wow64RevertWow64FsRedirection(ByVal ptr As IntPtr) As Boolean
-        End Function
-
-        <DllImport("gdi32")>
-        Private Function DeleteObject(o As IntPtr) As Integer
-        End Function
-
         Public Function LoadBitmap(source As Bitmap) As BitmapSource
             Dim ip As IntPtr = source.GetHbitmap()
             Dim bs As BitmapSource
@@ -34,7 +19,7 @@ Namespace Modules
                 bs = Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty,
                                                            BitmapSizeOptions.FromEmptyOptions())
             Finally
-                DeleteObject(ip)
+                Dim unused = DeleteObject(ip)
             End Try
 
             Return bs
@@ -276,12 +261,15 @@ Namespace Modules
         End Sub
 
         Sub KillExplorer()
-            Dim taskKill As ProcessStartInfo = New ProcessStartInfo("taskkill", "/F /IM explorer.exe")
-            taskKill.WindowStyle = ProcessWindowStyle.Hidden
-            Dim process As Process = New Process()
-            process.StartInfo = taskKill
+            Dim taskKill As ProcessStartInfo = New ProcessStartInfo("taskkill", "/F /IM explorer.exe") With {
+                .WindowStyle = ProcessWindowStyle.Hidden
+            }
+            Dim process As Process = New Process With {
+                .StartInfo = taskKill
+            }
             process.Start()
             process.WaitForExit()
+            process.Dispose()
         End Sub
 
         Private Sub RestartExplorer()
@@ -298,7 +286,7 @@ Namespace Modules
                 HideIcons(fileName)
             End If
         End Sub
-        Public Function getID(folderPath As String) As Integer
+        Public Function GetID(folderPath As String) As Integer
             Dim fileName As String = Path.Combine(folderPath, "id.folicon")
             If File.Exists(fileName) Then
                 Using sr As StreamReader = My.Computer.FileSystem.OpenTextFileReader _
@@ -326,28 +314,11 @@ Namespace Modules
             End If
             Return itemList
         End Function
-        <DllImport("Shell32.dll", CharSet:=CharSet.Auto)>
-        Public Function SHGetSetFolderCustomSettings(ByRef pfcs As LPSHFOLDERCUSTOMSETTINGS, ByVal pszPath As String, ByVal dwReadWrite As UInt32) As UInt32
-        End Function
-
-        <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)>
-        Friend Structure LPSHFOLDERCUSTOMSETTINGS
-            Public dwSize As UInt32
-            Public dwMask As UInt32
-            Public pvid As IntPtr
-            Public pszWebViewTemplate As String
-            Public cchWebViewTemplate As UInt32
-            Public pszWebViewTemplateVersion As String
-            Public pszInfoTip As String
-            Public cchInfoTip As UInt32
-            Public pclsid As IntPtr
-            Public dwFlags As UInt32
-            Public pszIconFile As String
-            Public cchIconFile As UInt32
-            Public iIconIndex As Integer
-            Public pszLogo As String
-            Public cchLogo As UInt32
-        End Structure
+        ''' <summary>
+        ''' Set folder icon for given folder.
+        ''' </summary>
+        ''' <param name="icoFile"> path to the icon file [MUST BE .Ico]</param>
+        ''' <param name="FolderPath">path to the folder</param>
         Private Sub SetFolderIcon(ByVal icoFile As String, ByVal FolderPath As String)
             Try
                 Dim FolderSettings As New LPSHFOLDERCUSTOMSETTINGS With {
@@ -356,17 +327,26 @@ Namespace Modules
                 }
                 'FolderSettings.iIconIndex = 0;
 
-                Dim FCS_READ As UInt32 = &H1
-                Dim FCS_FORCEWRITE As UInt32 = &H2
-                Dim FCS_WRITE As UInt32 = FCS_READ Or FCS_FORCEWRITE
+                Dim FCS_READ As UInteger = &H1
+                Dim FCS_FORCEWRITE As UInteger = &H2
+                Dim FCS_WRITE As UInteger = FCS_READ Or FCS_FORCEWRITE
 
                 Dim pszPath As String = FolderPath
-                Dim HRESULT As UInt32 = SHGetSetFolderCustomSettings(FolderSettings, pszPath, FCS_FORCEWRITE)
+                Dim HRESULT As UInteger = SHGetSetFolderCustomSettings(FolderSettings, pszPath, FCS_FORCEWRITE)
                 'Console.WriteLine(HRESULT.ToString("x"));
                 'Console.ReadLine();
             Catch ex As Exception
                 ' log exception
             End Try
+            ApplyChanges(FolderPath)
         End Sub
+
+
+        Public Sub ApplyChanges(folderPath As String)
+            SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0)
+            Dim pidl = ILCreateFromPath(folderPath)
+            SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_FLUSHNOWAIT, pidl, Nothing)
+        End Sub
+
     End Module
 End Namespace

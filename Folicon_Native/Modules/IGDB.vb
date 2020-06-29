@@ -33,14 +33,12 @@ Namespace Modules
             Contracts.Contract.Requires(result IsNot nothing)
             Dim items As New ObservableCollection(Of ListItem)()
             dim mediaName as String
-            dim year As String
-            Dim rating as String
+            Dim year As String
             Dim overview As String
             Dim poster As String
             For Each item In result
                 mediaName = item.Name
-                year = If(item.FirstReleaseDate Isnot Nothing, item.FirstReleaseDate.Value.Year, "")
-                'rating = If(item.TotalRating Isnot Nothing, item.TotalRating,"") 
+                year = If(item.FirstReleaseDate IsNot Nothing, item.FirstReleaseDate.Value.Year, "")
                 overview = item.Summary
                 poster = If(item.Cover IsNot Nothing, "https://" & ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720).Substring(2), Nothing)
                 items.Add(New ListItem(mediaName, year, "", overview, poster))

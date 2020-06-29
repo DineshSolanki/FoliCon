@@ -13,8 +13,8 @@ Namespace Modules
         End Class
 
         Public Async Function SearchIt(query As String, serviceClient As ServiceClient) As Task(Of ResultResponse)
-            Dim r
-            Dim mt As String
+            Dim r = Nothing
+            Dim mt As String = ""
             If SearchMod = "Movie" Then
 
                 If query.ToLower.Contains("collection") Then

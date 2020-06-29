@@ -107,6 +107,7 @@
     <Compile Include="Modules\IGDB.vb" />
     <Compile Include="Modules\IniWriter.vb" />
     <Compile Include="Modules\Helpers.vb" />
+    <Compile Include="Modules\NativeMethods.vb" />
     <Compile Include="Modules\StaTask.vb" />
     <Compile Include="Modules\TMDB.vb" />
     <Compile Include="ProSearchResultsDArt.xaml.vb">
