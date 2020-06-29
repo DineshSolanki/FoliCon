@@ -89,7 +89,6 @@
     </Compile>
     <Compile Include="Classes\DArtBrowseResult.vb" />
     <Compile Include="Classes\DArtTokenResponse.vb" />
-    <Compile Include="Classes\FolderIcon.vb" />
     <Compile Include="Classes\ImageToDownload.vb" />
     <Compile Include="Classes\ListItem.vb" />
     <Compile Include="Classes\PngToIcoService.vb" />
@@ -105,7 +104,6 @@
     <Compile Include="Modules\DArt.vb" />
     <Compile Include="Modules\GlobalVariables.vb" />
     <Compile Include="Modules\Igdbf.vb" />
-    <Compile Include="Modules\IniWriter.vb" />
     <Compile Include="Modules\Helpers.vb" />
     <Compile Include="Modules\NativeMethods.vb" />
     <Compile Include="Modules\StaTask.vb" />
