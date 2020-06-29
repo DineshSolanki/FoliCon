@@ -113,7 +113,7 @@ Class MainWindow
 
                                 isAutoPicked = True
                             ElseIf resultCount > 1 Then
-                                If Not ignoreAmbigousTitle Then : sr.ShowDialog() : End If
+                                If Not ignoreAmbigousTitle Then : sr.mediaType = response.MediaType : sr.ShowDialog() : End If
                             End If
                             If isAutoPicked OrElse sr.DialogResult Then
                                 FinalistView.Items.Add(New ListItem() With {

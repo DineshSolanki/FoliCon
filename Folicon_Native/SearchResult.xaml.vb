@@ -9,6 +9,7 @@ Imports IGDB
 Public Class SearchResult
     ReadOnly _serviceClient As New ServiceClient(ApikeyTmdb)
     Private _listItem As ListItem
+    Public Property mediaType As String
 
     Public Property ListItem() As ListItem
         Get
@@ -62,7 +63,8 @@ Public Class SearchResult
         If SearchMod = "Game" Then
             Await Igdbf.SearchGame(titleToSearch, IgdbClient)
         Else
-            Await SearchIt(titleToSearch, _serviceClient)
+            Dim r = Await SearchIt(titleToSearch, _serviceClient)
+            mediaType = r.MediaType
         End If
         RetryMovieTitle = Nothing
         If useBusy Then
@@ -127,7 +129,7 @@ Public Class SearchResult
                 If SearchMod = "Game" Then
                     Igdbf.ResultPicked(Searchresultob(PickedIndex))
                 End If
-                ResultPicked(Searchresultob, SearchMod, PickedIndex)
+                ResultPicked(Searchresultob, mediaType, PickedIndex)
             Catch ex As Exception
                 If ex.Message = "NoPoster"
                     MessageBox.Show("No poster found")

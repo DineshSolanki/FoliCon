@@ -2,12 +2,10 @@
 
 Imports System.Data
 Imports System.Drawing
-Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Net
-Imports System.Net.TMDb
 Imports System.Runtime.InteropServices
-Imports System.Threading
+Imports System.Security
 Imports System.Windows.Interop
 Imports FoliconNative.Model
 Imports Ookii.Dialogs.Wpf
@@ -15,6 +13,7 @@ Imports Xceed.Wpf.Toolkit
 
 Namespace Modules
     Module Helpers
+
         <DllImport("kernel32.dll", SetLastError:=True)>
         Private Function Wow64DisableWow64FsRedirection(ByRef ptr As IntPtr) As Boolean
         End Function
@@ -102,6 +101,7 @@ Namespace Modules
             End If
 
             Return False
+
         End Function
         ''' <summary>
         ''' Async function That can Download image from any URL and save to local path
@@ -158,6 +158,7 @@ Namespace Modules
             If (File.GetAttributes(icoFile) And FileAttributes.System) <> FileAttributes.System Then
                 File.SetAttributes(icoFile, File.GetAttributes(icoFile) Or FileAttributes.System)
             End If
+
         End Sub
 
         ''' <summary>
@@ -193,9 +194,9 @@ Namespace Modules
                 If File.Exists(targetFile) Then
                     HideIcons(targetFile)
                     'File.Delete(SelectedFolderPath & "\" & i & "\" & i & ".jpg")
-                    Dim myFolderIcon As New FolderIcon(SelectedFolderPath & "\" & i)
-                    myFolderIcon.CreateFolderIcon(targetFile, i)
-
+                    'Dim myFolderIcon As New FolderIcon(SelectedFolderPath & "\" & i)
+                    'myFolderIcon.CreateFolderIcon(targetFile, i)
+                    SetFolderIcon(i & ".ico", SelectedFolderPath & "\" & i)
                     Dim dirInf As New DirectoryInfo(SelectedFolderPath & "\" & i & "\")
                     dirInf.Attributes = dirInf.Attributes Or FileAttributes.Directory
                     dirInf.Attributes = dirInf.Attributes Or FileAttributes.ReadOnly
@@ -308,11 +309,6 @@ Namespace Modules
             Return Nothing
         End Function
         Public Sub DeleteIconsFromPath(folderPath As String)
-            'Dim foldername = Path.GetFileNameWithoutExtension(folderPath)
-            'Dim rootIcoFile = Path.Combine(folderPath, foldername & ".ico")
-            'Dim rootIniFile = Path.Combine(folderPath, "desktop.ini")
-            'File.Delete(rootIcoFile)
-            'File.Delete(rootIniFile)
             For Each folder In Directory.EnumerateDirectories(folderPath)
                 Dim foldername = Path.GetFileNameWithoutExtension(folder)
                 Dim IcoFile = Path.Combine(folder, foldername & ".ico")
@@ -330,5 +326,47 @@ Namespace Modules
             End If
             Return itemList
         End Function
+        <DllImport("Shell32.dll", CharSet:=CharSet.Auto)>
+        Public Function SHGetSetFolderCustomSettings(ByRef pfcs As LPSHFOLDERCUSTOMSETTINGS, ByVal pszPath As String, ByVal dwReadWrite As UInt32) As UInt32
+        End Function
+
+        <StructLayout(LayoutKind.Sequential, CharSet:=CharSet.Auto)>
+        Friend Structure LPSHFOLDERCUSTOMSETTINGS
+            Public dwSize As UInt32
+            Public dwMask As UInt32
+            Public pvid As IntPtr
+            Public pszWebViewTemplate As String
+            Public cchWebViewTemplate As UInt32
+            Public pszWebViewTemplateVersion As String
+            Public pszInfoTip As String
+            Public cchInfoTip As UInt32
+            Public pclsid As IntPtr
+            Public dwFlags As UInt32
+            Public pszIconFile As String
+            Public cchIconFile As UInt32
+            Public iIconIndex As Integer
+            Public pszLogo As String
+            Public cchLogo As UInt32
+        End Structure
+        Private Sub SetFolderIcon(ByVal icoFile As String, ByVal FolderPath As String)
+            Try
+                Dim FolderSettings As New LPSHFOLDERCUSTOMSETTINGS With {
+                    .dwMask = &H10,
+                    .pszIconFile = icoFile
+                }
+                'FolderSettings.iIconIndex = 0;
+
+                Dim FCS_READ As UInt32 = &H1
+                Dim FCS_FORCEWRITE As UInt32 = &H2
+                Dim FCS_WRITE As UInt32 = FCS_READ Or FCS_FORCEWRITE
+
+                Dim pszPath As String = FolderPath
+                Dim HRESULT As UInt32 = SHGetSetFolderCustomSettings(FolderSettings, pszPath, FCS_FORCEWRITE)
+                'Console.WriteLine(HRESULT.ToString("x"));
+                'Console.ReadLine();
+            Catch ex As Exception
+                ' log exception
+            End Try
+        End Sub
     End Module
 End Namespace
