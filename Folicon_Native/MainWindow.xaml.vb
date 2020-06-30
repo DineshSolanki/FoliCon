@@ -3,6 +3,7 @@ Imports System.Net
 Imports System.Net.NetworkInformation
 Imports Xceed.Wpf.Toolkit
 Imports FoliconNative.Modules
+Imports Notifications.Wpf
 
 Class MainWindow
     Private ReadOnly progressUpdater1 As New ProgressUpdater
@@ -10,6 +11,7 @@ Class MainWindow
     ReadOnly _igdbClient = IGDB.Client.Create(ApikeyIgdb)
     Dim stopIconDownload As Boolean = False
     Dim ignoreAmbigousTitle As Boolean = False
+    Dim notificationManager As New NotificationManager
 
 
     Public Sub New()
@@ -90,7 +92,7 @@ Class MainWindow
                             Dim resultCount As Integer =
                                     If(SearchMod = "Game", response.Length, response.Result.TotalCount)
                             If resultCount = 0 Then
-                                MessageBox.Show(
+                                MessageBox.Show(Me,
                                     "Nothing found for " & itemTitle & vbCrLf & "Try Searching with Other Title " &
                                     vbCrLf & "OR Check search Mode")
                                 sr.ShowDialog()
@@ -105,7 +107,7 @@ Class MainWindow
                                 Catch ex As Exception
                                     If ex.Message = "NoPoster" Then
                                         FolderNameIndex += 1
-                                        MessageBox.Show("No poster found for " & SearchTitle)
+                                        MessageBox.Show(Me, "No poster found for " & SearchTitle)
                                         Continue For
                                     End If
 
@@ -167,11 +169,11 @@ Class MainWindow
                         SearchAndMakehbtn.IsEnabled = True
                     End If
                 Else
-                    MessageBox.Show("Sorry, Internet is Not available.", "Network Error")
+                    MessageBox.Show(Me, "Sorry, Internet is Not available.", "Network Error")
                 End If
             End If
         Else
-            MessageBox.Show("Folder already have Icons or is Empty", "Folder Error")
+            MessageBox.Show(Me, "Folder already have Icons or is Empty", "Folder Error")
         End If
     End Sub
 
@@ -260,8 +262,11 @@ Class MainWindow
         End If
         IconsProcessedValue.Content = IconProcessedCount.ToString()
         BusyIndicator1.IsBusy = False
-        Select Case _
-            MessageBox.Show(
+        notificationManager.Show(New NotificationContent() With {
+                                  .Message = IconProcessedCount & " Icon created",
+                                  .Title = "Icon creation Completed", .Type = NotificationType.Success})
+            Select Case _
+            MessageBox.Show(Me,
                 "Note:The Icon may take some time to reload. " & vbCrLf &
                 " To Force Reload, click on Restart Explorer " & vbCrLf & "OK to Open Folder", "Icon(s) Created",
                 MessageBoxButton.OKCancel,
@@ -345,12 +350,12 @@ Class MainWindow
     End Sub
 
     Private Sub MenuDeleteIconsbtn_Click(sender As Object, e As RoutedEventArgs) Handles MenuDeleteIconsbtn.Click
-        If MessageBox.Show("Are you sure you want to delete all Icons?", "Confirm Icon Deletion", MessageBoxButton.OKCancel, MessageBoxImage.Question) = MessageBoxResult.OK Then
+        If MessageBox.Show(Me, "Are you sure you want to delete all Icons?", "Confirm Icon Deletion", MessageBoxButton.OKCancel, MessageBoxImage.Question) = MessageBoxResult.OK Then
             If Directory.Exists(SelectedFolderPath) Then
                 DeleteIconsFromPath(SelectedFolderPath)
-                MessageBox.Show("Icons Deleted Sucessfully", "Icons Deleted", MessageBoxButton.OK, MessageBoxImage.Information)
+                MessageBox.Show(Me, "Icons Deleted Sucessfully", "Icons Deleted", MessageBoxButton.OK, MessageBoxImage.Information)
             Else
-                MessageBox.Show("Directory is Empty", "Empty Directory", MessageBoxButton.OK, MessageBoxImage.Warning)
+                MessageBox.Show(Me, "Directory is Empty", "Empty Directory", MessageBoxButton.OK, MessageBoxImage.Warning)
             End If
         End If
 

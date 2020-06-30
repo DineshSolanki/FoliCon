@@ -178,16 +178,10 @@ Namespace Modules
 
                 If File.Exists(targetFile) Then
                     HideIcons(targetFile)
-                    'File.Delete(SelectedFolderPath & "\" & i & "\" & i & ".jpg")
-                    'Dim myFolderIcon As New FolderIcon(SelectedFolderPath & "\" & i)
-                    'myFolderIcon.CreateFolderIcon(targetFile, i)
                     SetFolderIcon(i & ".ico", SelectedFolderPath & "\" & i)
-                    Dim dirInf As New DirectoryInfo(SelectedFolderPath & "\" & i & "\")
-                    dirInf.Attributes = dirInf.Attributes Or FileAttributes.Directory
-                    dirInf.Attributes = dirInf.Attributes Or FileAttributes.ReadOnly
-                    dirInf.Refresh()
                 End If
             Next
+            SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0)
         End Sub
 
         Public Sub RefreshIconCache()
@@ -333,8 +327,6 @@ Namespace Modules
 
                 Dim pszPath As String = FolderPath
                 Dim HRESULT As UInteger = SHGetSetFolderCustomSettings(FolderSettings, pszPath, FCS_FORCEWRITE)
-                'Console.WriteLine(HRESULT.ToString("x"));
-                'Console.ReadLine();
             Catch ex As Exception
                 ' log exception
             End Try
@@ -343,7 +335,6 @@ Namespace Modules
 
 
         Public Sub ApplyChanges(folderPath As String)
-            SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0)
             Dim pidl = ILCreateFromPath(folderPath)
             SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_FLUSHNOWAIT, pidl, Nothing)
         End Sub

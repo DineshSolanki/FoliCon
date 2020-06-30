@@ -42,7 +42,6 @@ Public Class SearchResult
         Else
             SearchTxt.Focus()
         End If
-        '        ListBoxMedia.ItemsSource = Nothing
         ListBoxMedia.ItemsSource = _FileList
     End Sub
 
@@ -131,8 +130,8 @@ Public Class SearchResult
                 End If
                 TMDB.ResultPicked(Searchresultob, mediaType, PickedIndex)
             Catch ex As Exception
-                If ex.Message = "NoPoster"
-                    MessageBox.Show("No poster found")
+                If ex.Message = "NoPoster" Then
+                    MessageBox.Show(Me, "No poster found")
                     Skipbtn_Click(Nothing, nothing)
                     Exit Sub
                 End If

@@ -78,11 +78,11 @@ Public Class ProSearchResultsDArt
             If searchResult.HasMore AndAlso searchResult.NextOffset<=30
                 Await DArtSearchAsync(query,searchResult.NextOffset)
             End If
-            Else 
-                
-                MessageBox.Show("No result Found, Try to search again with correct title", "No Result", MessageBoxButton.OK,
+            Else
+
+            MessageBox.Show(Me, "No result Found, Try to search again with correct title", "No Result", MessageBoxButton.OK,
                                 MessageBoxImage.Warning)
-                txtSearchAgain.Focus()
+            txtSearchAgain.Focus()
         End If
     End Function
 

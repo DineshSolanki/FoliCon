@@ -20,7 +20,7 @@ Public Class ApiConfig
             config.Save(ConfigurationSaveMode.Modified)
             ConfigurationManager.RefreshSection("appSettings")
         Else
-            Xceed.Wpf.Toolkit.MessageBox.Show("All values are required!", "Cannot Save configuration", MessageBoxButton.OK, MessageBoxImage.Error)
+            Xceed.Wpf.Toolkit.MessageBox.Show(Me, "All values are required!", "Cannot Save configuration", MessageBoxButton.OK, MessageBoxImage.Error)
         End If
     End Sub
 
