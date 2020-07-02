@@ -89,8 +89,10 @@
     </Compile>
     <Compile Include="Classes\DArtBrowseResult.vb" />
     <Compile Include="Classes\DArtTokenResponse.vb" />
+    <Compile Include="Classes\IDObject.vb" />
     <Compile Include="Classes\ImageToDownload.vb" />
     <Compile Include="Classes\ListItem.vb" />
+    <Compile Include="Modules\MediaType.vb" />
     <Compile Include="Classes\PngToIcoService.vb" />
     <Compile Include="Classes\ProgressUpdater.vb" />
     <Compile Include="Classes\TitleCleaner.vb" />

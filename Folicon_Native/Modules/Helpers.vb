@@ -270,23 +270,27 @@ Namespace Modules
             KillExplorer()
             Process.Start("explorer.exe")
         End Sub
-        Public Sub WriteIDtoFile(ByVal ID As Integer, ByVal folderPath As String)
+        Public Sub WriteIDtoFile(ByVal ID As Integer, mediaType As String, ByVal folderPath As String)
             Dim fileName As String = Path.Combine(folderPath, "id.folicon")
             Using sw As StreamWriter = My.Computer.FileSystem.OpenTextFileWriter _
                 (fileName, True)
                 sw.WriteLine(ID)
+                sw.WriteLine(mediaType)
             End Using
             If File.Exists(fileName) Then
                 HideIcons(fileName)
             End If
         End Sub
-        Public Function GetID(folderPath As String) As Integer
+        Public Function GetID(folderPath As String) As IDObject
+            Dim obj As New IDObject
             Dim fileName As String = Path.Combine(folderPath, "id.folicon")
             If File.Exists(fileName) Then
                 Using sr As StreamReader = My.Computer.FileSystem.OpenTextFileReader _
                 (fileName)
-                    Return sr.ReadLine()
+                    obj.ID = sr.ReadLine()
+                    obj.MediaType = sr.ReadLine
                 End Using
+                Return obj
             End If
             Return Nothing
         End Function

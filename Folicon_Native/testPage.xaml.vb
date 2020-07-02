@@ -2,6 +2,7 @@
 Imports System.IO
 Imports FoliconNative.ViewModel
 Imports Notifications.Wpf
+Imports FoliconNative.Modules
 
 Class TestPage
     ReadOnly fileWatcher As New FileSystemWatcher("E:\Movies\") With {
@@ -25,7 +26,8 @@ Class TestPage
 
     End Sub
 
-    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+    Private Async Sub Button_Click(sender As Object, e As RoutedEventArgs)
+
         fileWatcher.EnableRaisingEvents = True
         MessageBox.Show(fileWatcher.Path)
 
