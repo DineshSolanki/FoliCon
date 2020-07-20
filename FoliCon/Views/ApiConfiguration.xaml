@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="FoliCon.Views.ApiConfiguration"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             prism:ViewModelLocator.AutoWireViewModel="True" Height="320" Width="665.48">
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="Height" Value="325"/>
+            <Setter Property="Width" Value="665.48"/>
+            <Setter Property="ResizeMode" Value="NoResize"/>
+            <Setter Property="WindowStyle" Value="ToolWindow"/>
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <GroupBox Style="{StaticResource GroupBoxTab}" Header="DeviantArt Api" Grid.Row="0" hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding DArtClient, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :"/>
+                <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding DArtClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :"/>
+            </StackPanel>
+        </GroupBox>
+        <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding TMDBKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" hc:InfoElement.Title="TMDB API Key :" Margin="8,7,8,0"/>
+        <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding IGDBKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" hc:InfoElement.Title="IGDB API Key :" Margin="8,7,8,0"/>
+        <Button Grid.Row="3" Command="{Binding SaveCommand}" Content="Save" Style="{StaticResource ButtonPrimary}" Height="44" Width="75" Margin="266,5,0,0" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" IsDefault="True"/>
+        <Button Grid.Row="3" Content="Close" Command="{Binding CloseDialogCommand}" CommandParameter="false" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75" Height="44" FontSize="18" VerticalAlignment="Top" IsCancel="True"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>FoliCon</AssemblyName>
+    <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\folicon Icon.ico" />
+    <None Remove="Resources\folicon Icon.png" />
+    <None Remove="Resources\LoadingPosterImage.png" />
+    <None Remove="Resources\No-WiFi.png" />
+    <None Remove="Resources\NoPosterAvailable.png" />
+    <None Remove="Resources\PosterMockup.png" />
+    <None Remove="Resources\shield.png" />
+    <None Remove="Resources\Strong-WiFi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="HandyControls" Version="2.5.3.2" />
+    <PackageReference Include="IconLib" Version="0.74.3" />
+    <PackageReference Include="IGDB" Version="1.0.1" />
+    <PackageReference Include="Jot" Version="2.1.7" />
+    <PackageReference Include="Ookii.Dialogs.Wpf.NETCore" Version="2.1.0" />
+    <PackageReference Include="PInvoke.Gdi32" Version="0.6.49" />
+    <PackageReference Include="Prism.DryIoc" Version="7.2.0.1422" />
+    <PackageReference Include="TMDbLib" Version="1.6.0" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.12" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.12" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folicon Icon.ico" />
+    <Resource Include="Resources\folicon Icon.png" />
+    <Resource Include="Resources\LoadingPosterImage.png" />
+    <Resource Include="Resources\No-WiFi.png" />
+    <Resource Include="Resources\NoPosterAvailable.png" />
+    <Resource Include="Resources\PosterMockup.png" />
+    <Resource Include="Resources\shield.png" />
+    <Resource Include="Resources\Strong-WiFi.png" />
+  </ItemGroup>
+</Project>
