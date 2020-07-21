@@ -27,21 +27,14 @@ Folicon is a Folder icon changer which works for movie,music, games, and shows, 
 ## Getting Started
 *To Use this Application Instantly, Click the Download button Above or Go to "Release", and start using. (No Installation or Additional Libraries needed)*
 
-To compile this Source you need to Create "App.config" file with structure given below
+To compile this Source you need to Create "AppConfig.json" file with structure given below, or you will be guided to it on first Run so you can skip manual creation.
 ```
-<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-    <startup> 
-        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
-    </startup>
-  <appSettings>
-   <add key="TMDBAPI" value="Your_TMDB_API_here"/>
-    <add key="IGDBAPI" value="Your_IGDB_API_here" />
-    <add key="DeviantClientSecret" value="Your_DeviantArt_Client_Secret_here" />
-    <add key="DeviantClientId" value="Your_DeviantArt_Client_ID_here" />
-    <add key="Token" value="" />
-  </appSettings>
-</configuration>
+{
+  "DevClientID": "Your_DeviantArt_Client_ID_here",
+  "DevClientSecret": "Your_DeviantArt_Client_Secret_here",
+  "TMDBKey": "Your_TMDB_API_here",
+  "IGDBKey": "Your_IGDB_API_here"
+}
 ```
 ### Prerequisites (these are for compiling the source, to only use the application, you can download latest release)
 A TMDB API [Get it](https://www.themoviedb.org/settings/api)
