@@ -1,23 +1,22 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
+using HandyControl.Controls;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Net.NetworkInformation;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.IO;
-using HandyControl.Controls;
-using System.Diagnostics;
-using FoliCon.Views;
+using System.Net.NetworkInformation;
 
 namespace FoliCon.ViewModels
 {
     public class MainWindowViewModel : BindableBase
-    {  
+    {
         #region Variables
+
         private string _selectedFolder;
         private string _title = "Folicon MVVM";
         private bool _isRatingVisible = true;
@@ -25,10 +24,10 @@ namespace FoliCon.ViewModels
         private bool _isBusy = false;
         private bool _isMakeEnabled = false;
         private bool _isSkipAmbigous = false;
-        private string _iconMode="Poster";
-        private string _searchMode="Movie";
-        private bool _isSearchModeVisible=true;
-        private bool _stopIconDownload=false;
+        private string _iconMode = "Poster";
+        private string _searchMode = "Movie";
+        private bool _isSearchModeVisible = true;
+        private bool _stopIconDownload = false;
         public TMDbLib.Client.TMDbClient tMDbClient;
         public IGDB.IGDBApi igdbClient;
         public IGDBClass IGDBObject;
@@ -42,9 +41,9 @@ namespace FoliCon.ViewModels
         private ListViewData _finalListViewData;
         public List<ImageToDownload> ImgDownloadList;
         public DataTable PickedListDataTable;
-        public bool IsObjectsInitlized { get;set;}=false;
-        public bool IsSearchModeVisible { get=>_isSearchModeVisible;set=>SetProperty(ref _isSearchModeVisible,value);}
-        public ListViewData FinalListViewData { get=> _finalListViewData;set=>SetProperty(ref _finalListViewData,value);}
+        public bool IsObjectsInitlized { get; set; } = false;
+        public bool IsSearchModeVisible { get => _isSearchModeVisible; set => SetProperty(ref _isSearchModeVisible, value); }
+        public ListViewData FinalListViewData { get => _finalListViewData; set => SetProperty(ref _finalListViewData, value); }
         private readonly IDialogService _dialogService;
         public StatusBarData StatusBarProperties { get; set; }
         public ProgressBarData BusyIndicatorProperties { get; set; }
@@ -53,21 +52,28 @@ namespace FoliCon.ViewModels
         public List<string> Fnames { get; set; }
         public bool IsMakeEnabled { get => _isMakeEnabled; set => SetProperty(ref _isMakeEnabled, value); }
         public bool IsSkipAmbigous { get => _isSkipAmbigous; set => SetProperty(ref _isSkipAmbigous, value); }
-        public bool StopIconDownload { get=> _stopIconDownload;set=> SetProperty(ref _stopIconDownload,value);}
-        public string IconMode { 
-            get{
-               return _iconMode; }
-            set{
-                SetProperty(ref _iconMode,value); 
-                if(value== "Professional")
-                    IsSearchModeVisible=false;
-                else 
-                    IsSearchModeVisible=true;
-                
-                }
+        public bool StopIconDownload { get => _stopIconDownload; set => SetProperty(ref _stopIconDownload, value); }
+
+        public string IconMode
+        {
+            get
+            {
+                return _iconMode;
             }
-        public string SearchMode { get=> _searchMode;set=>SetProperty(ref _searchMode,value);}
-        #endregion
+            set
+            {
+                SetProperty(ref _iconMode, value);
+                if (value == "Professional")
+                    IsSearchModeVisible = false;
+                else
+                    IsSearchModeVisible = true;
+            }
+        }
+
+        public string SearchMode { get => _searchMode; set => SetProperty(ref _searchMode, value); }
+
+        #endregion Variables
+
         #region GetterSetters
 
         public string SelectedFolder
@@ -78,56 +84,73 @@ namespace FoliCon.ViewModels
                 SetProperty(ref _selectedFolder, value);
             }
         }
+
         public string Title
         {
             get { return _title; }
             set { SetProperty(ref _title, value); }
         }
+
         public bool IsRatingVisible
         {
             get { return _isRatingVisible; }
             set { SetProperty(ref _isRatingVisible, value); }
         }
+
         public bool IsPosterMockupUsed
         {
             get { return _isPosterMockupUsed; }
             set { SetProperty(ref _isPosterMockupUsed, value); }
         }
+
         public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-        #endregion
+
+        #endregion GetterSetters
+
         #region DelegateCommands
+
         #region MenuItem Commands
+
         #region SettingMenu
+
         public DelegateCommand ShowRatingBadgeCommand { get; private set; }
         public DelegateCommand UsePosterOverlatCommand { get; private set; }
         public DelegateCommand IgnoreAmbigousCommand { get; private set; }
         public DelegateCommand APIConfigCommand { get; private set; }
-        #endregion
+
+        #endregion SettingMenu
+
         public DelegateCommand RestartExCommand { get; private set; } = new DelegateCommand(Util.RefreshIconCache);
         public DelegateCommand DeleteIconsCommand { get; private set; }
-        public DelegateCommand ApiConfigCommand { get;private set;}
-        public DelegateCommand HelpCommand { get;private set;}=new DelegateCommand(delegate {
+        public DelegateCommand ApiConfigCommand { get; private set; }
+
+        public DelegateCommand HelpCommand { get; private set; } = new DelegateCommand(delegate
+        {
             Util.StartProcess("https://github.com/DineshSolanki/FoliCon");
-            
-            });
-        public DelegateCommand AboutCommand { get;private set;}
-        public DelegateCommand UpdateCommand { get;private set;}=new DelegateCommand(delegate { Util.CheckForUpdate();});
-        #endregion
+        });
+
+        public DelegateCommand AboutCommand { get; private set; }
+        public DelegateCommand UpdateCommand { get; private set; } = new DelegateCommand(delegate { Util.CheckForUpdate(); });
+
+        #endregion MenuItem Commands
+
         public DelegateCommand LoadCommand { get; private set; }
         public DelegateCommand SearchAndMakeCommand { get; private set; }
-        public DelegateCommand<object> IconModeChangedCommand { get; private set;}
-        public DelegateCommand<object> SearchModeChangedCommand { get; private set;}
-        public DelegateCommand ListViewDoubleClickCommand { get;private set;}
-        public DelegateCommand SelectedFolderDClickCommand { get;private set;}
-        public DelegateCommand DownloadCancelCommand { get; private set;}
-        #endregion
+        public DelegateCommand<object> IconModeChangedCommand { get; private set; }
+        public DelegateCommand<object> SearchModeChangedCommand { get; private set; }
+        public DelegateCommand ListViewDoubleClickCommand { get; private set; }
+        public DelegateCommand SelectedFolderDClickCommand { get; private set; }
+        public DelegateCommand DownloadCancelCommand { get; private set; }
+
+        #endregion DelegateCommands
 
         public MainWindowViewModel(IDialogService dialogService)
         {
+            _dialogService = dialogService;
             InitilizeProperties();
             InitilizeDelegates();
             NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
-            _dialogService = dialogService;
+            
             Services.Tracker.Configure<MainWindowViewModel>()
                 .Property(p => p.IsRatingVisible, true)
                 .Property(p => p.IsPosterMockupUsed, true)
@@ -139,13 +162,9 @@ namespace FoliCon.ViewModels
         {
             StatusBarProperties.NetIcon = Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png";
         }
-        #region MenuItems Commands Methods
-
-        #endregion
 
         private void LoadMethod()
         {
-           
             var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Folder");
             if ((bool)folderBrowserDialog.ShowDialog())
             {
@@ -154,6 +173,7 @@ namespace FoliCon.ViewModels
                 IsMakeEnabled = true;
             }
         }
+
         private async void SearchAndMakeMethod()
         {
             if (Directory.Exists(SelectedFolder))
@@ -162,7 +182,7 @@ namespace FoliCon.ViewModels
             }
             else
             {
-                MessageBox.Error("Folder does not exist!","Invalid Path");
+                MessageBox.Error("Folder does not exist!", "Invalid Path");
                 return;
             }
             if (Fnames.Count != 0)
@@ -172,20 +192,20 @@ namespace FoliCon.ViewModels
                     if (!IsObjectsInitlized)
                     {
                         InitlizeClientObjects();
-                        IsObjectsInitlized=true;
+                        IsObjectsInitlized = true;
                     }
                     StatusBarProperties.ResetData();
                     FinalListViewData.Data.Clear();
                     PrepareForSearch();
-                    if(IconMode == "Poster")
+                    if (IconMode == "Poster")
                         await ProcessPosterModeAsync();
                     else
                     {
                         ProcessProfessionalMode();
                     }
-                    StatusBarProperties.ProcessedFolder=Fnames.Count;
-                    StatusBarProperties.TotalIcons= BusyIndicatorProperties.Max = 
-                        StatusBarProperties.ProgressBarData.Max =  ImgDownloadList.Count;
+                    StatusBarProperties.ProcessedFolder = Fnames.Count;
+                    StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
+                        StatusBarProperties.ProgressBarData.Max = ImgDownloadList.Count;
                     BusyIndicatorProperties.Text = $"Downloading Icon 1/{ImgDownloadList.Count}...";
                     if (ImgDownloadList.Count > 0)
                     {
@@ -193,19 +213,18 @@ namespace FoliCon.ViewModels
                     }
                     else
                     {
-                       IsMakeEnabled = true;
+                        IsMakeEnabled = true;
                     }
-
                 }
                 else
                 {
-                   MessageBox.Error("Sorry, Internet is Not available.", "Network Error");
-                //    DialogParameters p = new DialogParameters
-                //{
-                //    { "message", "Sorry, Internet is Not available." },
-                //    { "title", "Network Error" }
-                //};
-                //    _dialogService.ShowDialog("MessageBox", p, result => { });
+                    MessageBox.Error("Sorry, Internet is Not available.", "Network Error");
+                    //    DialogParameters p = new DialogParameters
+                    //{
+                    //    { "message", "Sorry, Internet is Not available." },
+                    //    { "title", "Network Error" }
+                    //};
+                    //    _dialogService.ShowDialog("MessageBox", p, result => { });
                 }
             }
             else
@@ -219,23 +238,24 @@ namespace FoliCon.ViewModels
                 //_dialogService.ShowDialog("MessageBox", p, result => { });
             }
         }
+
         private async System.Threading.Tasks.Task ProcessPosterModeAsync()
         {
-            IsMakeEnabled=false;
-            GlobalVariables.SkipAll=false;
+            IsMakeEnabled = false;
+            GlobalVariables.SkipAll = false;
             bool isAutoPicked;
             string searchTitle;
             foreach (string itemTitle in Fnames)
             {
                 string fullFolderPath = SelectedFolder + "\\" + itemTitle;
-                bool dialogResult=false;
-                StatusBarProperties.AppStatus= "Searching...";
+                bool dialogResult = false;
+                StatusBarProperties.AppStatus = "Searching...";
                 // TODO: Set cursor to WAIT.
-                isAutoPicked=false;
-                searchTitle=TitleCleaner.Clean(itemTitle);
-                ResultResponse response = (SearchMode == "Game") ?await IGDBObject.SearchGameAsync(searchTitle) :await TMDBObject.SearchAsync(searchTitle,SearchMode);
+                isAutoPicked = false;
+                searchTitle = TitleCleaner.Clean(itemTitle);
+                ResultResponse response = (SearchMode == "Game") ? await IGDBObject.SearchGameAsync(searchTitle) : await TMDBObject.SearchAsync(searchTitle, SearchMode);
                 int resultCount = (SearchMode == "Game") ? response.Result.Length : response.Result.TotalResults;
-                if (resultCount==0)
+                if (resultCount == 0)
                 {
                     MessageBox.Info($"Nothing found for { itemTitle}\n Try Searching with Other Title\n or check Search Mode", "No Result Found");
                     //DialogParameters p=new DialogParameters
@@ -245,7 +265,7 @@ namespace FoliCon.ViewModels
                     //};
                     //_dialogService.ShowDialog("MessageBox", p, result => { });
 
-                    _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,response, TMDBObject, IGDBObject, 
+                    _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response, TMDBObject, IGDBObject,
                         r =>
                     {
                         if (r.Result == ButtonResult.None)
@@ -258,7 +278,7 @@ namespace FoliCon.ViewModels
                             dialogResult = false;
                     });
                 }
-                else if (resultCount==1)
+                else if (resultCount == 1)
                 {
                     try
                     {
@@ -273,17 +293,16 @@ namespace FoliCon.ViewModels
                     }
                     catch (Exception e)
                     {
-
-                        if (e.Message== "NoPoster")
+                        if (e.Message == "NoPoster")
                         {
-                            MessageBox.Error($"No poster found for \"{searchTitle}\"","No Poster found");
+                            MessageBox.Error($"No poster found for \"{searchTitle}\"", "No Poster found");
                             continue;
                         }
                     }
-                    
-                    isAutoPicked=true;
+
+                    isAutoPicked = true;
                 }
-                else if (resultCount>1)
+                else if (resultCount > 1)
                 {
                     if (!IgnoreAmbigousTitle)
                     {
@@ -301,7 +320,7 @@ namespace FoliCon.ViewModels
                         });
                     }
                 }
-                if(isAutoPicked || dialogResult)
+                if (isAutoPicked || dialogResult)
                 {
                     FinalListViewData.Data.Add(new ListItem()
                     {
@@ -317,11 +336,12 @@ namespace FoliCon.ViewModels
             }
             StatusBarProperties.AppStatus = "Idle";
         }
+
         private void ProcessProfessionalMode()
         {
             StatusBarProperties.AppStatus = "Searching...";
             //DialogParameters p=CreateProSearchParameters();
-            _dialogService.ShowProSearchResult(SelectedFolder,Fnames,PickedListDataTable,ImgDownloadList,DArtObject, r => { });
+            _dialogService.ShowProSearchResult(SelectedFolder, Fnames, PickedListDataTable, ImgDownloadList, DArtObject, r => { });
             //_dialogService.ShowDialog("ProSearchResult", p, r => { });
             if (PickedListDataTable.Rows.Count > 0)
             {
@@ -335,37 +355,35 @@ namespace FoliCon.ViewModels
                         Folder = v["Folder"].ToString()
                     });
                 }
-
             }
-
         }
 
         private void InitilizeDelegates()
         {
-            APIConfigCommand=new DelegateCommand (delegate
-            {
-                _dialogService.ShowApiConfig( r => { });
-            });
-            AboutCommand=new DelegateCommand(AboutMethod);
+            APIConfigCommand = new DelegateCommand(delegate
+             {
+                 _dialogService.ShowApiConfig(r => { });
+             });
+            AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
             LoadCommand = new DelegateCommand(LoadMethod);
             SearchAndMakeCommand = new DelegateCommand(SearchAndMakeMethod);
             IconModeChangedCommand = new DelegateCommand<object>(delegate (object parameter) { IconMode = (string)parameter; });
             SearchModeChangedCommand = new DelegateCommand<object>(delegate (object parameter) { SearchMode = (string)parameter; });
-            ListViewDoubleClickCommand=new DelegateCommand(ListViewDoubleClickMethod);
-            DownloadCancelCommand=new DelegateCommand(delegate { StopIconDownload=true; });
+            ListViewDoubleClickCommand = new DelegateCommand(ListViewDoubleClickMethod);
+            DownloadCancelCommand = new DelegateCommand(delegate { StopIconDownload = true; });
 
             SelectedFolderDClickCommand = new DelegateCommand(delegate
             {
                 if (Directory.Exists(SelectedFolder))
                 {
-                    Util.StartProcess(SelectedFolder+Path.DirectorySeparatorChar);
+                    Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                 }
             });
-            }
+        }
+
         private void InitilizeProperties()
         {
-             
             Fnames = new List<string>();
             BusyIndicatorProperties = new ProgressBarData
             {
@@ -377,25 +395,25 @@ namespace FoliCon.ViewModels
             {
                 NetIcon = Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
                 TotalIcons = 0,
-                AppStatus="IDLE"
+                AppStatus = "IDLE"
             };
             FinalListViewData = new ListViewData()
             {
-                Data=new ObservableCollection<ListItem>(),
-                SelectedItem=new ListItem(),
-                SelectedCount=0
+                Data = new ObservableCollection<ListItem>(),
+                SelectedItem = new ListItem(),
+                SelectedCount = 0
             };
             StatusBarProperties.ProgressBarData.Max = 100;
             StatusBarProperties.ProgressBarData.Value = 0;
-            ImgDownloadList=new List<ImageToDownload>();
+            ImgDownloadList = new List<ImageToDownload>();
             PickedListDataTable = new DataTable();
-           if (Util.IsNetworkAvailable())
+            if (Util.IsNetworkAvailable())
             {
                 InitlizeClientObjects();
-                IsObjectsInitlized=true;
+                IsObjectsInitlized = true;
             }
             else
-                IsObjectsInitlized=false;
+                IsObjectsInitlized = false;
         }
 
         private void PrepareForSearch()
@@ -422,30 +440,32 @@ namespace FoliCon.ViewModels
             PickedListDataTable.Columns.Add(column6);
         }
 
-        private DialogParameters CreateSearchResultParameters(string searchTitle, dynamic result,string folderPath)
+        private DialogParameters CreateSearchResultParameters(string searchTitle, dynamic result, string folderPath)
         {
-            DialogParameters p=new DialogParameters
+            DialogParameters p = new DialogParameters
             {
                 {"query", searchTitle},{"result",result},{"searchmode",SearchMode},{"tmdbObject",TMDBObject},{"igdbObject",IGDBObject},
                 {"folderpath",folderPath }
             };
             return p;
         }
+
         private DialogParameters CreateProSearchParameters()
         {
-            DialogParameters p= new DialogParameters
+            DialogParameters p = new DialogParameters
             {
                 {"dartobject",DArtObject },{"fnames",Fnames},{"pickedtable",PickedListDataTable},{"imglist",ImgDownloadList},
                 {"folderpath",SelectedFolder}
             };
             return p;
         }
+
         private void DeleteIconsMethod()
         {
             if (Directory.Exists(SelectedFolder))
             {
                 //TODO: Replace with DialogService if efficient.
-                if(MessageBox.Ask("Are you sure you want to delete all Icons?", "Confirm Icon Deletion") == System.Windows.MessageBoxResult.OK)
+                if (MessageBox.Ask("Are you sure you want to delete all Icons?", "Confirm Icon Deletion") == System.Windows.MessageBoxResult.OK)
                 {
                     Util.DeleteIconsFromPath(SelectedFolder);
                 }
@@ -455,28 +475,29 @@ namespace FoliCon.ViewModels
                 MessageBox.Error("Directory is Empty", "Empty Directory");
             }
         }
+
         private void ListViewDoubleClickMethod()
         {
-            if (FinalListViewData.SelectedItem.Folder!=null)
+            if (FinalListViewData.SelectedItem.Folder != null)
             {
                 if (Directory.Exists(FinalListViewData.SelectedItem.Folder))
                 {
-                     Util.StartProcess(FinalListViewData.SelectedItem.Folder+Path.DirectorySeparatorChar);
-                       
+                    Util.StartProcess(FinalListViewData.SelectedItem.Folder + Path.DirectorySeparatorChar);
                 }
-                
             }
         }
+
         private async System.Threading.Tasks.Task StartDownloadingAsync()
         {
-            IsMakeEnabled=false;
-            StatusBarProperties.AppStatus= "Creating Icons...";
+            IsMakeEnabled = false;
+            StatusBarProperties.AppStatus = "Creating Icons...";
             await DownloadAndMakeIconsAsync();
-            StatusBarProperties.AppStatus="IDLE";
+            StatusBarProperties.AppStatus = "IDLE";
         }
+
         private async System.Threading.Tasks.Task DownloadAndMakeIconsAsync()
         {
-           StopIconDownload = false;
+            StopIconDownload = false;
             IsBusy = true;
             var i = 0;
             foreach (ImageToDownload img in ImgDownloadList)
@@ -484,14 +505,14 @@ namespace FoliCon.ViewModels
                 if (StopIconDownload)
                 {
                     MakeIcons();
-                    IsMakeEnabled=true;
+                    IsMakeEnabled = true;
                     StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
                     return;
                 }
                 await Util.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
                 i += 1;
                 BusyIndicatorProperties.Text = "Downloading Icon " + i + "/" + BusyIndicatorProperties.Max + "...";
-               BusyIndicatorProperties.Value = i;
+                BusyIndicatorProperties.Value = i;
                 StatusBarProperties.ProgressBarData.Value = i;
             }
             IsBusy = false;
@@ -501,39 +522,40 @@ namespace FoliCon.ViewModels
                 MakeIcons();
             }
             IsMakeEnabled = true;
-
         }
+
         private void MakeIcons()
         {
             IsBusy = true;
             int IconProcessedCount;
             if (IconMode.Equals("Poster") && !SearchMode.Equals("Game"))
             {
-                IconProcessedCount= Util.MakeIco(IconMode,SelectedFolder,PickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
+                IconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, PickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
             }
             else
             {
-                IconProcessedCount = Util.MakeIco(IconMode,SelectedFolder,PickedListDataTable);
+                IconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, PickedListDataTable);
             }
             StatusBarProperties.ProcessedIcon = IconProcessedCount;
             IsBusy = false;
-               Growl.SuccessGlobal($"{IconProcessedCount} Icon created");
+            Growl.SuccessGlobal($"{IconProcessedCount} Icon created");
             switch (MessageBox.Ask("Note:The Icon may take some time to reload. " + Environment.NewLine + " To Force Reload, click on Restart Explorer " + Environment.NewLine + "Click \"Confirm\" to open folder.", "Icon(s) Created"))
             {
                 case System.Windows.MessageBoxResult.OK:
-                    Util.StartProcess(SelectedFolder+Path.DirectorySeparatorChar);
+                    Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                     break;
             }
         }
+
         private void InitlizeClientObjects()
         {
             if (string.IsNullOrEmpty(TMDBAPIKey) || string.IsNullOrEmpty(IGDBKey) || string.IsNullOrEmpty(DevClientSecret) || string.IsNullOrEmpty(DevClientID))
             {
                 _dialogService.ShowApiConfig(r =>
                 {
-                    if (r.Result==ButtonResult.Cancel)
+                    if (r.Result == ButtonResult.Cancel)
                     {
-                        MessageBox.Error($"API keys not provided{Environment.NewLine}The Application will close.","Closing Application");
+                        MessageBox.Error($"API keys not provided{Environment.NewLine}The Application will close.", "Closing Application");
                         Environment.Exit(0);
                     }
                 });
@@ -545,9 +567,10 @@ namespace FoliCon.ViewModels
             TMDBObject = new TMDB(ref tMDbClient, ref PickedListDataTable, ref ImgDownloadList);
             DArtObject = new DArt(DevClientSecret, DevClientID);
         }
+
         private void AboutMethod()
         {
-            _dialogService.ShowAboutBox(r=>{ });
+            _dialogService.ShowAboutBox(r => { });
         }
     }
 }

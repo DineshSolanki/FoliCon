@@ -9,14 +9,15 @@ namespace FoliCon.ViewModels
     {
         public DialogControlViewModel()
         {
-
         }
 
         private DelegateCommand<string> _closeDialogCommand;
+
         public DelegateCommand<string> CloseDialogCommand =>
             _closeDialogCommand ?? (_closeDialogCommand = new DelegateCommand<string>(CloseDialog));
 
         private string _message;
+
         public string Message
         {
             get { return _message; }
@@ -24,6 +25,7 @@ namespace FoliCon.ViewModels
         }
 
         private string _title = "Notification";
+
         public string Title
         {
             get { return _title; }
@@ -56,13 +58,12 @@ namespace FoliCon.ViewModels
 
         public virtual void OnDialogClosed()
         {
-
         }
 
         public virtual void OnDialogOpened(IDialogParameters parameters)
         {
             Message = parameters.GetValue<string>("message");
-            Title=parameters.GetValue<String>("title");
+            Title = parameters.GetValue<String>("title");
         }
     }
 }

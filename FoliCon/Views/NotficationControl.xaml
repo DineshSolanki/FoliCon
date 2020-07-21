@@ -7,7 +7,7 @@
              Height="200">
     <hc:SimplePanel>
 
-        <TextBlock Text="HandyControl" FontSize="30" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Left" Margin="22,10,0,24" Width="199"/>
-        <Button Command="hc:ControlCommands.CloseWindow" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Content="{x:Static hc:Lang.Close}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,0,10,10"/>
+        <TextBlock Text="HandyControl" FontSize="30" Foreground="{StaticResource PrimaryBrush}" HorizontalAlignment="Left" Margin="22,10,0,24" Width="199" />
+        <Button Command="hc:ControlCommands.CloseWindow" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Content="{x:Static hc:Lang.Close}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="10,0,10,10" />
     </hc:SimplePanel>
 </Border>

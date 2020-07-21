@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 
 namespace FoliCon.Views
 {
@@ -12,7 +10,6 @@ namespace FoliCon.Views
         public ProSearchResult()
         {
             InitializeComponent();
-            
         }
     }
 }

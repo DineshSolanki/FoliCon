@@ -1,10 +1,9 @@
-﻿using Prism.Ioc;
-using FoliCon.Views;
-using System.Windows;
-using FoliCon.ViewModels;
-using DryIoc;
+﻿using DryIoc;
 using FoliCon.Modules;
+using FoliCon.ViewModels;
+using FoliCon.Views;
 using HandyControl.Controls;
+using Prism.Ioc;
 
 namespace FoliCon
 {
@@ -17,17 +16,19 @@ namespace FoliCon
         {
             return Container.Resolve<MainWindow>();
         }
+
         public App()
         {
             GlobalDataHelper<AppConfig>.Init();
         }
+
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterDialog<DialogControl, DialogControlViewModel>("MessageBox");
-            containerRegistry.RegisterDialog<SearchResult,SearchResultViewModel>("SearchResult");
-            containerRegistry.RegisterDialog<ProSearchResult,ProSearchResultViewModel>("ProSearchResult");
-            containerRegistry.RegisterDialog<ApiConfiguration,ApiConfigurationViewModel>("ApiConfig");
-            containerRegistry.RegisterDialog<AboutBox,AboutBoxViewModel>("AboutBox");
+            containerRegistry.RegisterDialog<SearchResult, SearchResultViewModel>("SearchResult");
+            containerRegistry.RegisterDialog<ProSearchResult, ProSearchResultViewModel>("ProSearchResult");
+            containerRegistry.RegisterDialog<ApiConfiguration, ApiConfigurationViewModel>("ApiConfig");
+            containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         }
     }
 }

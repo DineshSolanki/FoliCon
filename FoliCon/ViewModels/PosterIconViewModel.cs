@@ -6,7 +6,6 @@ namespace FoliCon.ViewModels
     {
         public PosterIconViewModel()
         {
-
         }
     }
 }

@@ -14,14 +14,13 @@ namespace FoliCon.Views
             InitializeComponent();
             ((INotifyCollectionChanged)ListViewResult.Items).CollectionChanged += ListView_CollectionChanged;
         }
+
         private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                 
                 Util.SetColumnWidth(ListViewResult);
-                // scroll the new item into view  
+                // scroll the new item into view
                 //    //ListViewResult.ScrollIntoView(e.NewItems[0]);
             }
         }

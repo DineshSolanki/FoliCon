@@ -6,7 +6,7 @@ namespace FoliCon.Modules
 {
     public class ProIcon
     {
-        private string _filePath;
+        private readonly string _filePath;
 
         public ProIcon(string filePath)
         {
@@ -38,5 +38,4 @@ namespace FoliCon.Modules
             return new Bitmap(stream); //png;
         }
     }
-
 }

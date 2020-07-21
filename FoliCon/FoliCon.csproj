@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
+    <Version>3.0.0</Version>
+    <PublishTrimmed>true</PublishTrimmed>
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
@@ -17,6 +19,13 @@
     <None Remove="Resources\Strong-WiFi.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="4.1.0">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Fody" Version="6.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="HandyControls" Version="2.5.3.2" />
     <PackageReference Include="IconLib" Version="0.74.3" />
     <PackageReference Include="IGDB" Version="1.0.1" />

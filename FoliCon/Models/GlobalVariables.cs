@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
-    static class GlobalVariables
+    internal static class GlobalVariables
     {
-        public static bool SkipAll=false;
+        public static bool SkipAll = false;
     }
 }

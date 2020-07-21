@@ -1,7 +1,4 @@
-﻿using FoliCon.ViewModels;
-using Prism.Services.Dialogs;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace FoliCon.Views
 {
@@ -14,7 +11,6 @@ namespace FoliCon.Views
         public AboutBox()
         {
             InitializeComponent();
-           
         }
 
         //private void W_Deactivated(object sender, System.EventArgs e)
@@ -28,7 +24,7 @@ namespace FoliCon.Views
         //{
         //    w = (DialogWindow)Parent;
         //     w.Deactivated += W_Deactivated;
-            
+
         //}
     }
 }

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     using Newtonsoft.Json;
 
     public class Author
     {
-
         [JsonProperty("userid")]
         public string Userid { get; set; }
 
@@ -24,7 +19,6 @@ namespace FoliCon.Models
 
     public class Stats
     {
-
         [JsonProperty("comments")]
         public int Comments { get; set; }
 
@@ -34,7 +28,6 @@ namespace FoliCon.Models
 
     public class Content
     {
-
         [JsonProperty("src")]
         public string Src { get; set; }
 
@@ -53,7 +46,6 @@ namespace FoliCon.Models
 
     public class Thumb
     {
-
         [JsonProperty("src")]
         public string Src { get; set; }
 
@@ -69,7 +61,6 @@ namespace FoliCon.Models
 
     public class Result
     {
-
         [JsonProperty("deviationid")]
         public string Deviationid { get; set; }
 
@@ -121,7 +112,6 @@ namespace FoliCon.Models
 
     public class DArtBrowseResult
     {
-
         [JsonProperty("has_more")]
         public bool HasMore { get; set; }
 
@@ -131,5 +121,4 @@ namespace FoliCon.Models
         [JsonProperty("results")]
         public Result[] Results { get; set; }
     }
-
 }

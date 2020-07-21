@@ -15,10 +15,12 @@ namespace FoliCon.Models
         public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
         public string NetIcon { get => _netIcon; set => SetProperty(ref _netIcon, value); }
         public ProgressBarData ProgressBarData { get; set; }
+
         public StatusBarData()
         {
             ProgressBarData = new ProgressBarData();
         }
+
         public void ResetData()
         {
             AppStatus = "IDLE";
@@ -28,6 +30,5 @@ namespace FoliCon.Models
             ProgressBarData.Value = 0;
             ProgressBarData.Max = 100;
         }
-
     }
 }

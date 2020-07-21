@@ -1,4 +1,6 @@
 ﻿using FoliCon.Models;
+using HandyControl.Controls;
+using HandyControl.Data;
 using IGDB.Models;
 using Ookii.Dialogs.Wpf;
 using System;
@@ -9,44 +11,58 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using static PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Controls;
-using System.Runtime.InteropServices;
-using HandyControl.Controls;
 
 namespace FoliCon.Modules
 {
-    static class Util
+    internal static class Util
     {
-        public static bool CheckForUpdate()
+        public static void CheckForUpdate()
         {
-            var ver = UpdateHelper.CheckForUpdate(""); //TODO: Add Updater.xml Path
+            var ver = UpdateHelper.CheckForUpdate("https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
             if (ver.IsExistNewVersion)
             {
-                Growl.InfoGlobal("New Version Found!");
-                //lblUrl.Content = ver.URL;
-                //txtChangelog.Text = ver.ChangeLog;
-                return true;
+                GrowlInfo info = new GrowlInfo()
+                {
+                    Message = $"New Version Found!\n Changelog:{ver.Changelog}",
+                    ConfirmStr = "Update Now",
+                    CancelStr = "Ignore",
+                    ShowDateTime = false,
+                    ActionBeforeClose = isConfirmed =>
+                     {
+                         if (isConfirmed)
+                             StartProcess(ver.Url);
+                         return true;
+                     },
+                };
+                Growl.AskGlobal(info);
             }
             else
             {
-                Growl.ErrorGlobal("you are using latest version");
-                return false;
+                GrowlInfo info = new GrowlInfo()
+                {
+                    Message = "Great! you are using the latest version",
+                    ShowDateTime = false,
+                    StaysOpen = false
+                };
+                Growl.InfoGlobal(info);
             }
         }
+
         /// <summary>
-        /// Starts Process associated with given path. 
+        /// Starts Process associated with given path.
         /// </summary>
         /// <param name="processName">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
         public static void StartProcess(string path)
@@ -58,12 +74,12 @@ namespace FoliCon.Modules
                 Verb = "open"
             });
         }
+
         public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
             byte[] bytes = null;
-            var bitmapSource = imageSource as BitmapSource;
 
-            if (bitmapSource != null)
+            if (imageSource is BitmapSource bitmapSource)
             {
                 encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
@@ -76,6 +92,7 @@ namespace FoliCon.Modules
 
             return bytes;
         }
+
         /// <summary>
         /// Set Column width of list view to fit content
         /// </summary>
@@ -111,6 +128,7 @@ namespace FoliCon.Modules
                 process.WaitForExit();
             }
         }
+
         /// <summary>
         /// Terminates and Restart Explorer.exe process.
         /// </summary>
@@ -133,6 +151,7 @@ namespace FoliCon.Modules
             objProcess.Close();
             RestartExplorer();
         }
+
         /// <summary>
         /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
         /// </summary>
@@ -151,10 +170,11 @@ namespace FoliCon.Modules
 
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
         }
+
         /// <summary>
         /// Checks if Web is accessible from This System
         /// </summary>
-        /// <returns> Returns true if Web accessible</returns>
+        /// <returns> Returns true if Web is accessible</returns>
         public static bool IsNetworkAvailable()
         {
             string host = "www.google.com";
@@ -167,10 +187,11 @@ namespace FoliCon.Modules
                     if (reply.Status == IPStatus.Success)
                         return true;
                 }
-                catch { }
+                catch {}
             }
             return result;
         }
+
         public static List<string> GetFolderNames(string folderPath)
         {
             List<string> FolderNames = new List<string>();
@@ -186,6 +207,7 @@ namespace FoliCon.Modules
             }
             return FolderNames;
         }
+
         public static VistaFolderBrowserDialog NewFolderBrowserDialog(string description)
         {
             var folderBrowser = new VistaFolderBrowserDialog()
@@ -195,6 +217,7 @@ namespace FoliCon.Modules
             };
             return folderBrowser;
         }
+
         /// <summary>
         /// Adds Data to DataTable specifically PickedListDataTable
         /// </summary>
@@ -205,7 +228,7 @@ namespace FoliCon.Modules
         /// <param name="folder">Media Full Folder Path</param>
         /// <param name="folderName">Short Folder Name</param>
         /// <param name="year">Media Year</param>
-        public static void AddToPickedListDataTable(DataTable dataTable,string poster, string title, string rating, string fullFolderPath, string folderName, string year = "")
+        public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating, string fullFolderPath, string folderName, string year = "")
         {
             if (rating == "0")
             {
@@ -218,21 +241,21 @@ namespace FoliCon.Modules
             nRow["Rating"] = rating;
             nRow["Folder"] = fullFolderPath;
             nRow["FolderName"] = folderName;
-           dataTable.Rows.Add(nRow);
+            dataTable.Rows.Add(nRow);
         }
-        public static ObservableCollection<ListItem> FetchAndAddDetailsToListView( ResultResponse result, string query)
+
+        public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query)
         {
             System.Diagnostics.Contracts.Contract.Requires(result != null);
             ObservableCollection<ListItem> source = new ObservableCollection<ListItem>();
 
             if (result.MediaType == MediaTypes.TV)
             {
-                SearchContainer<SearchTv> ob =( SearchContainer < SearchTv >)result.Result;
+                SearchContainer<SearchTv> ob = (SearchContainer<SearchTv>)result.Result;
                 source = TMDB.ExtractTvDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Movie)
             {
-
                 if (query.ToLower().Contains("collection"))
                 {
                     SearchContainer<SearchCollection> ob = (SearchContainer<SearchCollection>)result.Result;
@@ -258,7 +281,7 @@ namespace FoliCon.Modules
                 SearchContainer<SearchBase> ob = (SearchContainer<SearchBase>)result.Result;
                 source = TMDB.ExtractResourceDetailsIntoListItem(ob);
             }
-            else if (result.MediaType==MediaTypes.Game)
+            else if (result.MediaType == MediaTypes.Game)
             {
                 var ob = (Game[])result.Result;
                 source = IGDBClass.ExtractGameDetailsIntoListItem(ob);
@@ -266,6 +289,7 @@ namespace FoliCon.Modules
 
             return source;
         }
+
         /// <summary>
         /// Get List of file in given folder.
         /// </summary>
@@ -283,6 +307,7 @@ namespace FoliCon.Modules
             }
             return itemList;
         }
+
         /// <summary>
         /// Converts Bitmap to BitmapSource
         /// </summary>
@@ -300,11 +325,12 @@ namespace FoliCon.Modules
             finally
             {
                 DeleteObject(ip);
-               // _ = NativeMethods.DeleteObject(ip);
+                // _ = NativeMethods.DeleteObject(ip);
             }
 
             return bs;
         }
+
         /// <summary>
         /// Get Bitmap from URL
         /// </summary>
@@ -319,6 +345,7 @@ namespace FoliCon.Modules
             myResponse.Close();
             return bmp;
         }
+
         /// <summary>
 		/// Async function That can Download image from any URL and save to local path
 		/// </summary>
@@ -332,16 +359,18 @@ namespace FoliCon.Modules
                 await response.Content.CopyToAsync(fs);
             }
         }
+
         #region IconUtil
+
         /// <summary>
         /// Creates Icons from PNG
         /// </summary>
-        public static int MakeIco(string IconMode,string selectedFolder,DataTable PickedListDataTable, bool isRatingVisible = false, bool isMockupVisible = true)
+        public static int MakeIco(string IconMode, string selectedFolder, DataTable PickedListDataTable, bool isRatingVisible = false, bool isMockupVisible = true)
         {
-            int IconProcessedCount=0;
+            int IconProcessedCount = 0;
             string ratingVisibility = isRatingVisible ? "visible" : "hidden";
             string mockupVisibility = isMockupVisible ? "visible" : "hidden";
-           List<string> fNames = new List<string>();
+            List<string> fNames = new List<string>();
             fNames.AddRange(Directory.GetDirectories(selectedFolder).Select(folder => Path.GetFileName(folder)));
             foreach (string i in fNames)
             {
@@ -354,8 +383,7 @@ namespace FoliCon.Modules
                                                        .Select((p) => p["Rating"].ToString())
                                                        .FirstOrDefault();
 
-
-                    BuildFolderIco(IconMode,selectedFolder + "\\" + i + "\\" + i + ".png", rating, ratingVisibility, mockupVisibility);
+                    BuildFolderIco(IconMode, selectedFolder + "\\" + i + "\\" + i + ".png", rating, ratingVisibility, mockupVisibility);
                     IconProcessedCount += 1;
                     File.Delete(selectedFolder + "\\" + i + "\\" + i + ".png"); //<--IO Exception here
                 }
@@ -366,7 +394,7 @@ namespace FoliCon.Modules
                     SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
                 }
             }
-            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST,IntPtr.Zero, IntPtr.Zero);
+            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
             return IconProcessedCount;
         }
 
@@ -376,7 +404,7 @@ namespace FoliCon.Modules
 		/// <param name="filmFolderPath"> Path where to save and where PNG is Downloaded</param>
 		/// <param name="rating"> if Wants to Include rating on Icon</param>
 		/// <param name="ratingVisibility">Show rating or NOT</param>
-		public static void BuildFolderIco(string IconMode,string filmFolderPath, string rating, string ratingVisibility, string mockupVisibility)
+		public static void BuildFolderIco(string IconMode, string filmFolderPath, string rating, string ratingVisibility, string mockupVisibility)
         {
             if (!File.Exists(filmFolderPath))
             {
@@ -404,6 +432,7 @@ namespace FoliCon.Modules
             PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));
             icon.Dispose();
         }
+
         public static void HideIcons(string icoFile)
         {
             // Set icon file attribute to "Hidden"
@@ -417,8 +446,8 @@ namespace FoliCon.Modules
             {
                 File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
             }
-
         }
+
         /// <summary>
 		/// Set folder icon for a given folder.
 		/// </summary>
@@ -435,8 +464,7 @@ namespace FoliCon.Modules
                 };
                 //FolderSettings.iIconIndex = 0;
                 string pszPath = FolderPath;
-                Vanara.PInvoke.HRESULT HRESULT = SHGetSetFolderCustomSettings(ref FolderSettings,pszPath,FCS.FCS_FORCEWRITE | FCS.FCS_READ);
-                
+                Vanara.PInvoke.HRESULT HRESULT = SHGetSetFolderCustomSettings(ref FolderSettings, pszPath, FCS.FCS_FORCEWRITE | FCS.FCS_READ);
             }
             catch (Exception)
             {
@@ -444,20 +472,23 @@ namespace FoliCon.Modules
             }
             ApplyChanges(FolderPath);
         }
+
         public static void ApplyChanges(string folderPath)
         {
             PIDL pidl = ILCreateFromPath(folderPath);
-            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR,SHCNF.SHCNF_FLUSHNOWAIT,pidl.DangerousGetHandle());
-            
+            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_FLUSHNOWAIT, pidl.DangerousGetHandle());
         }
-        #endregion
-        public static void ReadApiConfiguration(out string tmdbkey,out string igdbkey,out string dartClientSecret, out string dartID )
+
+        #endregion IconUtil
+
+        public static void ReadApiConfiguration(out string tmdbkey, out string igdbkey, out string dartClientSecret, out string dartID)
         {
-            tmdbkey= GlobalDataHelper<AppConfig>.Config.TMDBKey;
-            igdbkey= GlobalDataHelper<AppConfig>.Config.IGDBKey;
-            dartClientSecret= GlobalDataHelper<AppConfig>.Config.DevClientSecret;
-            dartID= GlobalDataHelper<AppConfig>.Config.DevClientID;
+            tmdbkey = GlobalDataHelper<AppConfig>.Config.TMDBKey;
+            igdbkey = GlobalDataHelper<AppConfig>.Config.IGDBKey;
+            dartClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
+            dartID = GlobalDataHelper<AppConfig>.Config.DevClientID;
         }
+
         public static void WriteApiConfiguration(string tmdbkey, string igdbkey, string dartClientSecret, string dartID)
         {
             GlobalDataHelper<AppConfig>.Config.TMDBKey = tmdbkey;
@@ -466,6 +497,5 @@ namespace FoliCon.Modules
             GlobalDataHelper<AppConfig>.Config.DevClientSecret = dartClientSecret;
             GlobalDataHelper<AppConfig>.Save();
         }
-
     }
 }

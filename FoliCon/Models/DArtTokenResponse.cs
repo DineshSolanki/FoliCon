@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace FoliCon.Models
 {
     public class DArtTokenResponse
     {
-
         [JsonProperty("access_token")]
         public string AccessToken { get; set; }
 

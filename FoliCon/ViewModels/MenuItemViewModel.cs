@@ -12,6 +12,7 @@ namespace FoliCon.ViewModels
         public ObservableCollection<MenuItemViewModel> MenuItems { get; set; }
         public string ToolTip { get; set; }
         public DelegateCommand Command { get; set; }
+
         private void Execute()
         {
             MessageBox.Show("Clicked at " + Header);
@@ -24,6 +25,9 @@ namespace FoliCon.ViewModels
             Command = command;
             //Command = new DelegateCommand(Execute);
         }
-        public MenuItemViewModel() { }
+
+        public MenuItemViewModel()
+        {
+        }
     }
 }
