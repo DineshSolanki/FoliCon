@@ -280,8 +280,8 @@ namespace FoliCon.ViewModels
                 }
                 else if (resultCount == 1)
                 {
-                    try
-                    {
+                   // try
+                  //  {
                         if (SearchMode == "Game")
                         {
                             IGDBObject.ResultPicked(response.Result[0], fullFolderPath);
@@ -290,15 +290,15 @@ namespace FoliCon.ViewModels
                         {
                             TMDBObject.ResultPicked(response.Result.Results[0], response.MediaType, fullFolderPath);
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        if (e.Message == "NoPoster")
-                        {
-                            MessageBox.Error($"No poster found for \"{searchTitle}\"", "No Poster found");
-                            continue;
-                        }
-                    }
+                  //  }
+                  //  catch (Exception e)
+                  //  {
+                      //  if (e.Message == "NoPoster")
+                      //  {
+                      //      MessageBox.Error($"No poster found for \"{searchTitle}\"", "No Poster found");
+                     //       continue;
+                      //  }
+                   // }
 
                     isAutoPicked = true;
                 }

@@ -132,16 +132,18 @@ namespace FoliCon.Modules
             string posterUrl = string.Concat(posterBase, result.PosterPath);
             if (resultType.Equals(MediaTypes.TV))
             {
-                SearchTv searchResult = (SearchTv)result;
-                Util.AddToPickedListDataTable(listDataTable, localPosterPath, searchResult.Name,
-                    searchResult.VoteAverage.ToString(), fullFolderPath, folderName,
-                    searchResult.FirstAirDate.Value.Year.ToString());
+                SearchTv pickedResult = (SearchTv)result;
+                var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
+                Util.AddToPickedListDataTable(listDataTable, localPosterPath, pickedResult.Name,
+                    pickedResult.VoteAverage.ToString(), fullFolderPath, folderName,
+                   year);
             }
             else if (resultType.Equals(MediaTypes.Movie))
             {
-                SearchMovie searchResult = (SearchMovie)result;
-                Util.AddToPickedListDataTable(listDataTable, localPosterPath, searchResult.Title,
-                    searchResult.VoteAverage.ToString(), fullFolderPath, folderName, searchResult.ReleaseDate.Value.Year.ToString());
+                SearchMovie pickedResult = (SearchMovie)result;
+                var year= pickedResult.ReleaseDate!=null? pickedResult.ReleaseDate.Value.Year.ToString():"";
+                Util.AddToPickedListDataTable(listDataTable, localPosterPath, pickedResult.Title,
+                    pickedResult.VoteAverage.ToString(), fullFolderPath, folderName, year);
             }
             else if (resultType.Equals(MediaTypes.Collection))
             {
@@ -154,15 +156,17 @@ namespace FoliCon.Modules
                 if (mediaType.Equals(MediaType.Tv))
                 {
                     SearchTv pickedResult = result;
+                    var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
                     Util.AddToPickedListDataTable(listDataTable, localPosterPath, pickedResult.Name,
                    pickedResult.VoteAverage.ToString(), fullFolderPath, folderName,
-                   pickedResult.FirstAirDate.Value.Year.ToString());
+                   year);
                 }
                 else if (mediaType.Equals(MediaType.Movie))
                 {
                     SearchMovie pickedResult = result;
+                    var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Value.Year.ToString() : "";
                     Util.AddToPickedListDataTable(listDataTable, localPosterPath, pickedResult.Title,
-                    pickedResult.VoteAverage.ToString(), fullFolderPath, folderName, pickedResult.ReleaseDate.Value.Year.ToString());
+                    pickedResult.VoteAverage.ToString(), fullFolderPath, folderName,year);
                 }
             }
             ImageToDownload tempImage = new ImageToDownload()

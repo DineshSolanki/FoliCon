@@ -127,11 +127,12 @@ namespace FoliCon.ViewModels
             ResultResponse result;
             if (SearchMode == MediaTypes.Game)
             {
-                result = await igdbObject.SearchGameAsync(titleToSearch);
+                
+                result = await igdbObject.SearchGameAsync(titleToSearch.Replace(@"\"," "));
             }
             else
             {
-                result = await tmdbObject.SearchAsync(titleToSearch, SearchMode);
+                result = await tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
             }
             SearchResult = result;
             if (useBusy)
