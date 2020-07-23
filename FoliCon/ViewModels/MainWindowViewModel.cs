@@ -13,7 +13,7 @@ using System.Net.NetworkInformation;
 
 namespace FoliCon.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase,IFileDragDropTarget
     {
         #region Variables
 
@@ -571,6 +571,13 @@ namespace FoliCon.ViewModels
         private void AboutMethod()
         {
             _dialogService.ShowAboutBox(r => { });
+        }
+
+        public void OnFileDrop(string[] filepaths)
+        {
+            SelectedFolder=filepaths.GetValue(0).ToString();
+            StatusBarProperties.ResetData();
+            IsMakeEnabled = true;
         }
     }
 }

@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+                xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             Title="{Binding Title}" Height="714" Width="636" MinWidth="636" MinHeight="608" WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True">
+             Title="{Binding Title}" Height="714" Width="636" MinWidth="636" MinHeight="608" WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
+        modules:FolderDragDropHelper.IsFileDragDropEnabled="True" modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>

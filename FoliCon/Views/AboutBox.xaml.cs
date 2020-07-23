@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace FoliCon.Views
 {
@@ -11,6 +12,16 @@ namespace FoliCon.Views
         public AboutBox()
         {
             InitializeComponent();
+        }
+
+        private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
+        {
+          Cursor=Cursors.Hand;
+        }
+
+        private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Cursor=Cursors.Arrow;
         }
 
         //private void W_Deactivated(object sender, System.EventArgs e)
