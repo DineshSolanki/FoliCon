@@ -22,7 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
-using static PInvoke.Gdi32;
+using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
 
 namespace FoliCon.Modules
@@ -31,34 +31,39 @@ namespace FoliCon.Modules
     {
         public static void CheckForUpdate()
         {
-            var ver = UpdateHelper.CheckForUpdate("https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
-            if (ver.IsExistNewVersion)
+            if (IsNetworkAvailable())
             {
-                GrowlInfo info = new GrowlInfo()
+                var ver = UpdateHelper.CheckForUpdate("https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
+                if (ver.IsExistNewVersion)
                 {
-                    Message = $"New Version Found!\n Changelog:{ver.Changelog}",
-                    ConfirmStr = "Update Now",
-                    CancelStr = "Ignore",
-                    ShowDateTime = false,
-                    ActionBeforeClose = isConfirmed =>
-                     {
-                         if (isConfirmed)
-                             StartProcess(ver.Url);
-                         return true;
-                     },
-                };
-                Growl.AskGlobal(info);
-            }
-            else
-            {
-                GrowlInfo info = new GrowlInfo()
+                    GrowlInfo info = new GrowlInfo()
+                    {
+                        Message = $"New Version Found!\n Changelog:{ver.Changelog}",
+                        ConfirmStr = "Update Now",
+                        CancelStr = "Ignore",
+                        ShowDateTime = false,
+                        ActionBeforeClose = isConfirmed =>
+                        {
+                            if (isConfirmed)
+                                StartProcess(ver.Url);
+                            return true;
+                        },
+                    };
+                    Growl.AskGlobal(info);
+                }
+                else
                 {
-                    Message = "Great! you are using the latest version",
-                    ShowDateTime = false,
-                    StaysOpen = false
-                };
-                Growl.InfoGlobal(info);
+                    GrowlInfo info = new GrowlInfo()
+                    {
+                        Message = "Great! you are using the latest version",
+                        ShowDateTime = false,
+                        StaysOpen = false
+                    };
+                    Growl.InfoGlobal(info);
+                }
             }
+            else Growl.ErrorGlobal(new GrowlInfo() { Message = "Network not available!", ShowDateTime = false });
+
         }
 
         /// <summary>

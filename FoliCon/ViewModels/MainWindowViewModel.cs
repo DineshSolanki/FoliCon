@@ -1,6 +1,7 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
 using HandyControl.Controls;
+using HandyControl.Data;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -538,7 +539,13 @@ namespace FoliCon.ViewModels
             }
             StatusBarProperties.ProcessedIcon = IconProcessedCount;
             IsBusy = false;
-            Growl.SuccessGlobal($"{IconProcessedCount} Icon created");
+            GrowlInfo info = new GrowlInfo()
+            {
+                Message = $"{IconProcessedCount} Icon created",
+                ShowDateTime = false,
+                StaysOpen = false
+            };
+            Growl.SuccessGlobal(info);
             switch (MessageBox.Ask("Note:The Icon may take some time to reload. " + Environment.NewLine + " To Force Reload, click on Restart Explorer " + Environment.NewLine + "Click \"Confirm\" to open folder.", "Icon(s) Created"))
             {
                 case System.Windows.MessageBoxResult.OK:

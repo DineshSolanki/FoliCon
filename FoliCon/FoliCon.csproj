@@ -5,7 +5,8 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
     <Version>3.0.0</Version>
-    <PublishTrimmed>true</PublishTrimmed>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
@@ -19,21 +20,14 @@
     <None Remove="Resources\Strong-WiFi.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="4.1.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Fody" Version="6.2.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="HandyControls" Version="2.5.3.2" />
     <PackageReference Include="IconLib" Version="0.74.3" />
     <PackageReference Include="IGDB" Version="1.0.1" />
     <PackageReference Include="Jot" Version="2.1.7" />
     <PackageReference Include="Ookii.Dialogs.Wpf.NETCore" Version="2.1.0" />
-    <PackageReference Include="PInvoke.Gdi32" Version="0.6.49" />
     <PackageReference Include="Prism.DryIoc" Version="7.2.0.1422" />
     <PackageReference Include="TMDbLib" Version="1.6.0" />
+    <PackageReference Include="Vanara.PInvoke.Gdi32" Version="3.2.12" />
     <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.12" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.12" />
   </ItemGroup>
