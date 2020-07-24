@@ -19,7 +19,7 @@ namespace FoliCon.ViewModels
         #region Variables
 
         private string _selectedFolder;
-        private string _title = "Folicon MVVM";
+        private string _title = "FoliCon";
         private bool _isRatingVisible = true;
         private bool _isPosterMockupUsed = true;
         private bool _isBusy = false;

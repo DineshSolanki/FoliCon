@@ -149,7 +149,8 @@ namespace FoliCon.ViewModels
                 && ((SearchMode == "Game") ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != 0)
             {
                 ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, SearchTitle);
-                ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+                if(ResultListViewData.Data.Count!=0)
+                    ResultListViewData.SelectedItem = ResultListViewData.Data[0];
             }
             else
             {
