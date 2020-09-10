@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
   <AppVersion>
-    <version>3.0.0.0</version>
+    <version>3.0.1.0</version>
     <url>https://github.com/DineshSolanki/FoliCon/releases</url>
     <changelog>
-    Major Update with new features and Improvements.
+    Fixed Exception on Poster mode, if no result found.
     </changelog>
   </AppVersion>
