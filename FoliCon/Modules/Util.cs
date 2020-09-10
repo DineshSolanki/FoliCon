@@ -164,9 +164,9 @@ namespace FoliCon.Modules
         public static void DeleteIconsFromPath(string folderPath)
         {
             foreach (var (icoFile, iniFile) in from string folder in Directory.EnumerateDirectories(folderPath)
-                                               let folderName = Path.GetFileNameWithoutExtension(folder)
+                                               let folderName = Path.GetFileName(folder)
                                                let icoFile = Path.Combine(folder, folderName + ".ico")
-                                               let iniFile = Path.Combine(folder, folderName + "desktop.ini")
+                                               let iniFile = Path.Combine(folder, "desktop.ini")
                                                select (icoFile, iniFile))
             {
                 File.Delete(icoFile);
