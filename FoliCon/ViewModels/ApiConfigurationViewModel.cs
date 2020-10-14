@@ -13,13 +13,15 @@ namespace FoliCon.ViewModels
         private string dartClient = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
         private string dartClientID = GlobalDataHelper<AppConfig>.Config.DevClientID;
         private string tmdbKey = GlobalDataHelper<AppConfig>.Config.TMDBKey;
-        private string igdbKey = GlobalDataHelper<AppConfig>.Config.IGDBKey;
+        private string igdbClientID = GlobalDataHelper<AppConfig>.Config.IGDBClientID;
+        private string igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IGDBClientSecret;
 
         public string Title { get => title; set => SetProperty(ref title, value); }
         public string DArtClient { get => dartClient; set => SetProperty(ref dartClient, value); }
         public string DArtClientId { get => dartClientID; set => SetProperty(ref dartClientID, value); }
         public string TMDBKey { get => tmdbKey; set => SetProperty(ref tmdbKey, value); }
-        public string IGDBKey { get => igdbKey; set => SetProperty(ref igdbKey, value); }
+        public string IGDBClientID { get => igdbClientID; set => SetProperty(ref igdbClientID, value); }
+        public string IGDBClientSecret { get => igdbClientSecret; set => SetProperty(ref igdbClientSecret, value); }
         private DelegateCommand<string> _closeDialogCommand;
         public DelegateCommand SaveCommand { get; private set; }
 
@@ -33,13 +35,13 @@ namespace FoliCon.ViewModels
 
         private void SaveMethod()
         {
-            if (string.IsNullOrEmpty(TMDBKey) || string.IsNullOrEmpty(IGDBKey) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
+            if (string.IsNullOrEmpty(TMDBKey) || string.IsNullOrEmpty(IGDBClientID) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
             {
                 MessageBox.Error("All fields are required!", "Invalid Value");
             }
             else
             {
-                Util.WriteApiConfiguration(TMDBKey, IGDBKey, DArtClient, DArtClientId);
+                Util.WriteApiConfiguration(TMDBKey, IGDBClientID,IGDBClientSecret, DArtClient, DArtClientId);
                 MessageBox.Success("API configuration Saved.", "Sucess");
                 CloseDialog("true");
             }

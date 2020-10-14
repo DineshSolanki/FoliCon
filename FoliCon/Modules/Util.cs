@@ -486,18 +486,20 @@ namespace FoliCon.Modules
 
         #endregion IconUtil
 
-        public static void ReadApiConfiguration(out string tmdbkey, out string igdbkey, out string dartClientSecret, out string dartID)
+        public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientID, out string igdbClientSecret, out string dartClientSecret, out string dartID)
         {
             tmdbkey = GlobalDataHelper<AppConfig>.Config.TMDBKey;
-            igdbkey = GlobalDataHelper<AppConfig>.Config.IGDBKey;
+            igdbClientID = GlobalDataHelper<AppConfig>.Config.IGDBClientID;
+            igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IGDBClientSecret;
             dartClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
             dartID = GlobalDataHelper<AppConfig>.Config.DevClientID;
         }
 
-        public static void WriteApiConfiguration(string tmdbkey, string igdbkey, string dartClientSecret, string dartID)
+        public static void WriteApiConfiguration(string tmdbkey, string igdbClientID, string igdbClientSecret, string dartClientSecret, string dartID)
         {
             GlobalDataHelper<AppConfig>.Config.TMDBKey = tmdbkey;
-            GlobalDataHelper<AppConfig>.Config.IGDBKey = igdbkey;
+            GlobalDataHelper<AppConfig>.Config.IGDBClientID = igdbClientID;
+            GlobalDataHelper<AppConfig>.Config.IGDBClientSecret = igdbClientSecret;
             GlobalDataHelper<AppConfig>.Config.DevClientID = dartID;
             GlobalDataHelper<AppConfig>.Config.DevClientSecret = dartClientSecret;
             GlobalDataHelper<AppConfig>.Save();

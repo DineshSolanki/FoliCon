@@ -30,13 +30,14 @@ namespace FoliCon.ViewModels
         private bool _isSearchModeVisible = true;
         private bool _stopIconDownload = false;
         public TMDbLib.Client.TMDbClient tMDbClient;
-        public IGDB.IGDBApi igdbClient;
+        public IGDB.IGDBClient igdbClient;
         public IGDBClass IGDBObject;
         public TMDB TMDBObject;
         public DArt DArtObject;
 
         public string TMDBAPIKey = GlobalDataHelper<AppConfig>.Config.TMDBKey;
-        public string IGDBKey = GlobalDataHelper<AppConfig>.Config.IGDBKey;
+        public string IGDBClientID = GlobalDataHelper<AppConfig>.Config.IGDBClientID;
+        public string IGDBClientSecret = GlobalDataHelper<AppConfig>.Config.IGDBClientSecret;
         public string DevClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
         public string DevClientID = GlobalDataHelper<AppConfig>.Config.DevClientID;
         private ListViewData _finalListViewData;
@@ -556,7 +557,9 @@ namespace FoliCon.ViewModels
 
         private void InitlizeClientObjects()
         {
-            if (string.IsNullOrEmpty(TMDBAPIKey) || string.IsNullOrEmpty(IGDBKey) || string.IsNullOrEmpty(DevClientSecret) || string.IsNullOrEmpty(DevClientID))
+            if (string.IsNullOrEmpty(TMDBAPIKey) 
+                || string.IsNullOrEmpty(IGDBClientID) || string.IsNullOrEmpty(IGDBClientSecret)  
+                || string.IsNullOrEmpty(DevClientSecret) || string.IsNullOrEmpty(DevClientID))
             {
                 _dialogService.ShowApiConfig(r =>
                 {
@@ -567,9 +570,10 @@ namespace FoliCon.ViewModels
                     }
                 });
             }
-            Util.ReadApiConfiguration(out TMDBAPIKey, out IGDBKey, out DevClientSecret, out DevClientID);
+            Util.ReadApiConfiguration(out TMDBAPIKey, out IGDBClientID, out IGDBClientSecret, out DevClientSecret, out DevClientID);
             tMDbClient = new TMDbLib.Client.TMDbClient(TMDBAPIKey);
-            igdbClient = IGDB.Client.Create(IGDBKey);
+            igdbClient = new IGDB.IGDBClient(IGDBClientID,IGDBClientSecret);
+            //igdbClient = IGDB.Client.Create(IGDBKey);
             IGDBObject = new IGDBClass(ref PickedListDataTable, ref igdbClient, ref ImgDownloadList);
             TMDBObject = new TMDB(ref tMDbClient, ref PickedListDataTable, ref ImgDownloadList);
             DArtObject = new DArt(DevClientSecret, DevClientID);

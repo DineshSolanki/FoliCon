@@ -14,7 +14,7 @@ namespace FoliCon.Models
     public class IGDBClass
     {
         private readonly DataTable listDataTable;
-        private readonly IGDBApi serviceClient;
+        private readonly IGDBClient serviceClient;
         private readonly List<ImageToDownload> imgDownloadList;
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace FoliCon.Models
         /// <param name="listDataTable">DataTable that stores all the Picked Results.</param>
         /// <param name="serviceClient">Initlized IDGB Client</param>
         /// <param name="imgDownloadList">List that stores all the images to download.</param>
-        public IGDBClass(ref DataTable listDataTable, ref IGDBApi serviceClient, ref List<ImageToDownload> imgDownloadList)
+        public IGDBClass(ref DataTable listDataTable, ref IGDBClient serviceClient, ref List<ImageToDownload> imgDownloadList)
         {
             this.listDataTable = listDataTable ?? throw new ArgumentNullException(nameof(listDataTable));
             this.serviceClient = serviceClient ?? throw new ArgumentNullException(nameof(serviceClient));
@@ -38,7 +38,7 @@ namespace FoliCon.Models
         public async Task<ResultResponse> SearchGameAsync(string query)
         {
             System.Diagnostics.Contracts.Contract.Assert(serviceClient != null);
-            Game[] r = await serviceClient.QueryAsync<Game>(Client.Endpoints.Games, "search " + "\"" + query + "\"" + "; fields name,first_release_date,total_rating,summary,cover.*;");
+            Game[] r = await serviceClient.QueryAsync<Game>(IGDB.IGDBClient.Endpoints.Games, "search " + "\"" + query + "\"" + "; fields name,first_release_date,total_rating,summary,cover.*;");
             ResultResponse response = new ResultResponse
             {
                 MediaType = MediaTypes.Game,

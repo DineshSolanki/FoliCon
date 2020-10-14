@@ -7,6 +7,7 @@ namespace FoliCon.Modules
         public string DevClientID { get; set; }
         public string DevClientSecret { get; set; }
         public string TMDBKey { get; set; }
-        public string IGDBKey { get; set; }
+        public string IGDBClientID { get; set; }
+        public string IGDBClientSecret { get; set; }
     }
 }
