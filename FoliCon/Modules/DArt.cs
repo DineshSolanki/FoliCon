@@ -22,6 +22,7 @@ namespace FoliCon.Modules
                 .PersistOn(nameof(PropertyChanged));
             ClientSecret = clientSecret;
             ClientID = clientId;
+            Services.Tracker.Track(this);
             GetClientAccessTokenAsync();
         }
 

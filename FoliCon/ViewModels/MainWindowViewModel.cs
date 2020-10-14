@@ -572,7 +572,7 @@ namespace FoliCon.ViewModels
             }
             Util.ReadApiConfiguration(out TMDBAPIKey, out IGDBClientID, out IGDBClientSecret, out DevClientSecret, out DevClientID);
             tMDbClient = new TMDbLib.Client.TMDbClient(TMDBAPIKey);
-            igdbClient = new IGDB.IGDBClient(IGDBClientID,IGDBClientSecret);
+            igdbClient = new IGDB.IGDBClient(IGDBClientID,IGDBClientSecret,new IGDBjotTrackerStore());
             //igdbClient = IGDB.Client.Create(IGDBKey);
             IGDBObject = new IGDBClass(ref PickedListDataTable, ref igdbClient, ref ImgDownloadList);
             TMDBObject = new TMDB(ref tMDbClient, ref PickedListDataTable, ref ImgDownloadList);
