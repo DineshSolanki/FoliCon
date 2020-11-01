@@ -20,7 +20,7 @@ namespace FoliCon.Modules
 
         private BitmapSource AsRenderTargetBitmap()
         {
-            using (Bitmap img = new Bitmap(_filePath))
+            using (var img = new Bitmap(_filePath))
             {
                 using (var icon = new Bitmap(img, 256, 256))
                 {
@@ -31,7 +31,7 @@ namespace FoliCon.Modules
 
         private Bitmap RenderTargetBitmapTo32bppArgb(BitmapSource rtb)
         {
-            MemoryStream stream = new MemoryStream();
+            var stream = new MemoryStream();
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
             encoder.Save(stream);

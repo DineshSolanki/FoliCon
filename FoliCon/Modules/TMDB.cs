@@ -36,14 +36,14 @@ namespace FoliCon.Modules
         public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
             SearchContainer<SearchCollection> result)
         {
-            ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
+            var items = new ObservableCollection<ListItem>();
             foreach (var item in result.Results)
             {
-                string mediaName = item.Name;
-                string year = "";
-                string rating = "";
-                string overview = "";
-                string poster = Convert.ToString((item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null);
+                var mediaName = item.Name;
+                var year = "";
+                var rating = "";
+                var overview = "";
+                var poster = Convert.ToString((item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null);
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
             }
 
@@ -53,14 +53,14 @@ namespace FoliCon.Modules
         public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
             SearchContainer<SearchMovie> result)
         {
-            ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
+            var items = new ObservableCollection<ListItem>();
             foreach (var item in result.Results)
             {
-                string mediaName = item.Title;
-                string year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString() : "";
-                string rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
-                string overview = item.Overview;
-                string poster = (item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null;
+                var mediaName = item.Title;
+                var year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString() : "";
+                var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                var overview = item.Overview;
+                var poster = (item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null;
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
             }
 
@@ -70,11 +70,11 @@ namespace FoliCon.Modules
         public static ObservableCollection<ListItem> ExtractResourceDetailsIntoListItem(
             SearchContainer<SearchBase> result)
         {
-            ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
-            string mediaName = "";
-            string year = "";
-            string rating = "";
-            string overview = "";
+            var items = new ObservableCollection<ListItem>();
+            var mediaName = "";
+            var year = "";
+            var rating = "";
+            var overview = "";
             string poster = null;
             foreach (var item in result.Results)
             {
@@ -83,7 +83,7 @@ namespace FoliCon.Modules
                 {
                     case MediaType.Tv:
                     {
-                        SearchTv res = (SearchTv) item;
+                        var res = (SearchTv) item;
                         mediaName = res.Name;
                         year = (res.FirstAirDate != null) ? res.FirstAirDate.Value.Year.ToString() : "";
                         rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
@@ -93,7 +93,7 @@ namespace FoliCon.Modules
                     }
                     case MediaType.Movie:
                     {
-                        SearchMovie res = (SearchMovie) item;
+                        var res = (SearchMovie) item;
                         mediaName = res.Title;
                         year = (res.ReleaseDate != null) ? res.ReleaseDate.Value.Year.ToString() : "";
                         rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
@@ -111,14 +111,14 @@ namespace FoliCon.Modules
 
         public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(SearchContainer<SearchTv> result)
         {
-            ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
+            var items = new ObservableCollection<ListItem>();
             foreach (var item in result.Results)
             {
-                string mediaName = item.Name;
-                string year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString() : "";
-                string rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
-                string overview = item.Overview;
-                string poster = (item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null;
+                var mediaName = item.Name;
+                var year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString() : "";
+                var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                var overview = item.Overview;
+                var poster = (item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null;
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
             }
 
@@ -139,12 +139,12 @@ namespace FoliCon.Modules
                 throw new Exception("NoPoster");
             }
 
-            string folderName = Path.GetFileName(fullFolderPath);
-            string localPosterPath = fullFolderPath + @"\" + folderName + ".png";
+            var folderName = Path.GetFileName(fullFolderPath);
+            var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
             string posterUrl = string.Concat(PosterBase, result.PosterPath);
             if (resultType.Equals(MediaTypes.TV))
             {
-                SearchTv pickedResult = (SearchTv) result;
+                var pickedResult = (SearchTv) result;
                 var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                     pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
@@ -152,14 +152,14 @@ namespace FoliCon.Modules
             }
             else if (resultType.Equals(MediaTypes.Movie))
             {
-                SearchMovie pickedResult = (SearchMovie) result;
+                var pickedResult = (SearchMovie) result;
                 var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Value.Year.ToString() : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                     pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName, year);
             }
             else if (resultType.Equals(MediaTypes.Collection))
             {
-                SearchCollection searchResult = (SearchCollection) result;
+                var searchResult = (SearchCollection) result;
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, searchResult.Name, "", fullFolderPath,
                     folderName);
             }
@@ -193,7 +193,7 @@ namespace FoliCon.Modules
                 }
             }
 
-            ImageToDownload tempImage = new ImageToDownload()
+            var tempImage = new ImageToDownload()
             {
                 LocalPath = localPosterPath,
                 RemotePath = new Uri(posterUrl)
@@ -210,7 +210,7 @@ namespace FoliCon.Modules
         public async Task<ResultResponse> SearchAsync(string query, string searchMode)
         {
             object r = null;
-            string mediaType = "";
+            var mediaType = "";
             if (searchMode == MediaTypes.Movie)
             {
                 if (query.ToLower().Contains("collection"))
@@ -235,7 +235,7 @@ namespace FoliCon.Modules
                 mediaType = MediaTypes.MTV;
             }
 
-            ResultResponse response = new ResultResponse()
+            var response = new ResultResponse()
             {
                 Result = r,
                 MediaType = mediaType

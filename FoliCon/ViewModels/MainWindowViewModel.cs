@@ -60,7 +60,6 @@ namespace FoliCon.ViewModels
         private readonly IDialogService _dialogService;
         public StatusBarData StatusBarProperties { get; set; }
         public ProgressBarData BusyIndicatorProperties { get; set; }
-        public string Text { get; set; }
         public bool IgnoreAmbiguousTitle { get; set; }
         public List<string> Fnames { get; set; }
 
@@ -254,15 +253,15 @@ namespace FoliCon.ViewModels
         {
             IsMakeEnabled = false;
             GlobalVariables.SkipAll = false;
-            foreach (string itemTitle in Fnames)
+            foreach (var itemTitle in Fnames)
             {
-                string fullFolderPath = SelectedFolder + "\\" + itemTitle;
-                bool dialogResult = false;
+                var fullFolderPath = SelectedFolder + "\\" + itemTitle;
+                var dialogResult = false;
                 StatusBarProperties.AppStatus = "Searching...";
                 // TODO: Set cursor to WAIT.
                 var isAutoPicked = false;
                 var searchTitle = TitleCleaner.Clean(itemTitle);
-                ResultResponse response = (SearchMode == "Game")
+                var response = (SearchMode == "Game")
                     ? await _igdbObject.SearchGameAsync(searchTitle)
                     : await _tmdbObject.SearchAsync(searchTitle, SearchMode);
                 int resultCount = (SearchMode == "Game") ? response.Result.Length : response.Result.TotalResults;
@@ -270,7 +269,7 @@ namespace FoliCon.ViewModels
                 {
                     case 0:
                         MessageBox.Info($"Nothing found for {itemTitle}\n Try Searching with Other Title\n" +
-                                        $" or check Search Mode", "No Result Found");
+                                        " or check Search Mode", "No Result Found");
                         _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response,
                             _tmdbObject, _igdbObject,
                             r =>
@@ -433,12 +432,12 @@ namespace FoliCon.ViewModels
         {
             PickedListDataTable.Columns.Clear();
             PickedListDataTable.Rows.Clear();
-            DataColumn column1 = new DataColumn("Poster") {DataType = Type.GetType("System.String")};
-            DataColumn column2 = new DataColumn("Title") {DataType = Type.GetType("System.String")};
-            DataColumn column3 = new DataColumn("Year") {DataType = Type.GetType("System.String")};
-            DataColumn column4 = new DataColumn("Rating") {DataType = Type.GetType("System.String")};
-            DataColumn column5 = new DataColumn("Folder") {DataType = Type.GetType("System.String")};
-            DataColumn column6 = new DataColumn("FolderName") {DataType = Type.GetType("System.String")};
+            var column1 = new DataColumn("Poster") {DataType = Type.GetType("System.String")};
+            var column2 = new DataColumn("Title") {DataType = Type.GetType("System.String")};
+            var column3 = new DataColumn("Year") {DataType = Type.GetType("System.String")};
+            var column4 = new DataColumn("Rating") {DataType = Type.GetType("System.String")};
+            var column5 = new DataColumn("Folder") {DataType = Type.GetType("System.String")};
+            var column6 = new DataColumn("FolderName") {DataType = Type.GetType("System.String")};
             PickedListDataTable.Columns.Add(column1);
             PickedListDataTable.Columns.Add(column2);
             PickedListDataTable.Columns.Add(column3);
@@ -449,7 +448,7 @@ namespace FoliCon.ViewModels
 
         private DialogParameters CreateSearchResultParameters(string searchTitle, dynamic result, string folderPath)
         {
-            DialogParameters p = new DialogParameters
+            var p = new DialogParameters
             {
                 {"query", searchTitle}, {"result", result}, {"searchmode", SearchMode}, {"tmdbObject", _tmdbObject},
                 {"igdbObject", _igdbObject},
@@ -460,7 +459,7 @@ namespace FoliCon.ViewModels
 
         private DialogParameters CreateProSearchParameters()
         {
-            DialogParameters p = new DialogParameters
+            var p = new DialogParameters
             {
                 {"dartobject", _dArtObject}, {"fnames", Fnames}, {"pickedtable", PickedListDataTable},
                 {"imglist", ImgDownloadList},
@@ -508,7 +507,7 @@ namespace FoliCon.ViewModels
             StopIconDownload = false;
             IsBusy = true;
             var i = 0;
-            foreach (ImageToDownload img in ImgDownloadList)
+            foreach (var img in ImgDownloadList)
             {
                 if (StopIconDownload)
                 {
@@ -551,7 +550,7 @@ namespace FoliCon.ViewModels
 
             StatusBarProperties.ProcessedIcon = iconProcessedCount;
             IsBusy = false;
-            GrowlInfo info = new GrowlInfo()
+            var info = new GrowlInfo()
             {
                 Message = $"{iconProcessedCount} Icon created",
                 ShowDateTime = false,
@@ -578,7 +577,7 @@ namespace FoliCon.ViewModels
                 {
                     if (r.Result != ButtonResult.Cancel) return;
                     MessageBox.Error($"API keys not provided{Environment.NewLine}" +
-                                     $"The Application will close.", "Closing Application");
+                                     "The Application will close.", "Closing Application");
                     Environment.Exit(0);
                 });
             }

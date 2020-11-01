@@ -24,11 +24,11 @@ namespace FoliCon.Views
 
         private RenderTargetBitmap AsRenderTargetBitmap()
         {
-            System.Windows.Size size = new System.Windows.Size(256, 256);
+            var size = new System.Windows.Size(256, 256);
             Measure(size);
             Arrange(new Rect(size));
 
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
+            var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
             rtb.Render(this);
 
             return rtb;
@@ -36,7 +36,7 @@ namespace FoliCon.Views
 
         private Bitmap RenderTargetBitmapTo32bppArgb(RenderTargetBitmap rtb)
         {
-            MemoryStream stream = new MemoryStream();
+            var stream = new MemoryStream();
             BitmapEncoder encoder = new PngBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
             encoder.Save(stream);

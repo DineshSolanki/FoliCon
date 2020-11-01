@@ -32,7 +32,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            ButtonResult result = ButtonResult.None;
+            var result = ButtonResult.None;
 
             if (parameter?.ToLower() == "true")
                 result = ButtonResult.OK;

@@ -18,7 +18,7 @@ namespace FoliCon.Modules
             string folderPath, ResultResponse result, Tmdb tmdbObject, IgdbClass igdbObject,
             Action<IDialogResult> callBack)
         {
-            DialogParameters p = new DialogParameters
+            var p = new DialogParameters
             {
                 {"query", query}, {"result", result}, {"searchmode", searchMode}, {"tmdbObject", tmdbObject},
                 {"igdbObject", igdbObject},
@@ -31,7 +31,7 @@ namespace FoliCon.Modules
             List<string> fnames, DataTable pickedTable, List<ImageToDownload> imgList, DArt dartObject,
             Action<IDialogResult> callBack)
         {
-            DialogParameters p = new DialogParameters
+            var p = new DialogParameters
             {
                 {"folderpath", folderPath}, {"fnames", fnames}, {"pickedtable", pickedTable}, {"imglist", imgList},
                 {"dartobject", dartObject}

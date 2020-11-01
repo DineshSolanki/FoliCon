@@ -39,9 +39,9 @@ namespace FoliCon.Models
         public async Task<ResultResponse> SearchGameAsync(string query)
         {
             System.Diagnostics.Contracts.Contract.Assert(_serviceClient != null);
-            Game[] r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
+            var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
                 "search " + "\"" + query + "\"" + "; fields name,first_release_date,total_rating,summary,cover.*;");
-            ResultResponse response = new ResultResponse
+            var response = new ResultResponse
             {
                 MediaType = MediaTypes.Game,
                 Result = r
@@ -52,8 +52,8 @@ namespace FoliCon.Models
         public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(Game[] result)
         {
             System.Diagnostics.Contracts.Contract.Requires(result != null);
-            ObservableCollection<ListItem> items = new ObservableCollection<ListItem>();
-            foreach ((string mediaName, string year, string overview, string poster) in from item in result
+            var items = new ObservableCollection<ListItem>();
+            foreach ((var mediaName, var year, var overview, var poster) in from item in result
                 let mediaName = item.Name
                 let year = (item.FirstReleaseDate != null) ? item.FirstReleaseDate.Value.Year.ToString() : ""
                 let overview = item.Summary
@@ -76,13 +76,13 @@ namespace FoliCon.Models
                 throw new Exception("NoPoster");
             }
 
-            string folderName = Path.GetFileName(fullFolderPath);
+            var folderName = Path.GetFileName(fullFolderPath);
             var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
             var year = (result.FirstReleaseDate != null) ? result.FirstReleaseDate.Value.Year.ToString() : "";
             var posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720);
             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, "", fullFolderPath, folderName,
                 year);
-            ImageToDownload tempImage = new ImageToDownload()
+            var tempImage = new ImageToDownload()
             {
                 LocalPath = localPosterPath,
                 RemotePath = new Uri("https://" + posterUrl.Substring(2))

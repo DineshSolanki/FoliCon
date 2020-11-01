@@ -6,7 +6,7 @@ namespace FoliCon.Modules
     {
         public static string Clean(string title)
         {
-            string normalizedTitle = title.Replace('-', ' ').Replace('_', ' ').Replace('.', ' ');
+            var normalizedTitle = title.Replace('-', ' ').Replace('_', ' ').Replace('.', ' ');
 
             // \s* --Remove any whitespace which would be left at the end after this substitution
             // \(? --Remove optional bracket starting (720p)
@@ -15,7 +15,7 @@ namespace FoliCon.Modules
             // (year|resolutions) find at least one main token to remove
             // p?i? \)? --Not needed. To emphasize removal of 1080i, closing bracket etc, but not needed due to the last part
             // .* --Remove all trailing information after having found year or resolution as junk usually follows
-            string cleanTitle = Regex.Replace(normalizedTitle, "\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            var cleanTitle = Regex.Replace(normalizedTitle, "\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
             return string.IsNullOrWhiteSpace(cleanTitle) ? normalizedTitle : cleanTitle;
         }

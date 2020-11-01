@@ -51,7 +51,7 @@ namespace FoliCon.Modules
         private static void Control_DragOver(object sender, DragEventArgs e)
         {
             var dt = e.Data.GetData(DataFormats.FileDrop);
-            string data = (dt as Array)?.GetValue(0)?.ToString();
+            var data = (dt as Array)?.GetValue(0)?.ToString();
 
             e.Effects = Directory.Exists(data) ? DragDropEffects.Link : DragDropEffects.None;
             e.Handled = true;
@@ -59,9 +59,9 @@ namespace FoliCon.Modules
 
         private static void OnDrop(object sender, DragEventArgs dragEventArgs)
         {
-            DependencyObject d = sender as DependencyObject;
+            var d = sender as DependencyObject;
             if (d == null) return;
-            object target = d.GetValue(FileDragDropTargetProperty);
+            var target = d.GetValue(FileDragDropTargetProperty);
             if (target is IFileDragDropTarget fileTarget)
             {
                 // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))

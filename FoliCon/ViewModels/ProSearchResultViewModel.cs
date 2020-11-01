@@ -89,12 +89,12 @@ namespace FoliCon.ViewModels
 
         private async Task Search(string query, int offset = 0)
         {
-            DArtBrowseResult searchResult = await DArtObject.Browse(query, offset);
+            var searchResult = await DArtObject.Browse(query, offset);
             if (searchResult.Results.Length > 0)
             {
                 foreach (var item in searchResult.Results)
                 {
-                    Bitmap bm = await Util.GetBitmapFromUrlAsync(item.Thumbs[0].Src);
+                    var bm = await Util.GetBitmapFromUrlAsync(item.Thumbs[0].Src);
                     ImageUrl.Add(new DArtImageList(item.Content.Src, Util.LoadBitmap(bm)));
                     bm.Dispose();
                     if (_stopSearch)
@@ -117,9 +117,9 @@ namespace FoliCon.ViewModels
 
         private void PickMethod(object parameter)
         {
-            string link = (string)parameter;
-            string currentPath = $"{_folderPath}\\{Fnames[_i]}";
-            ImageToDownload tempImage = new ImageToDownload
+            var link = (string)parameter;
+            var currentPath = $"{_folderPath}\\{Fnames[_i]}";
+            var tempImage = new ImageToDownload
             {
                 LocalPath = $"{currentPath}\\{Fnames[_i]}.png",
                 RemotePath = new Uri(link)
@@ -152,7 +152,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            ButtonResult result = ButtonResult.None;
+            var result = ButtonResult.None;
 
             if (parameter?.ToLower() == "true")
                 result = ButtonResult.OK;

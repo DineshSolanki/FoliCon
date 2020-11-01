@@ -72,7 +72,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            ButtonResult result = ButtonResult.None;
+            var result = ButtonResult.None;
 
             if (parameter?.ToLower() == "true")
                 result = ButtonResult.OK;
@@ -171,7 +171,7 @@ namespace FoliCon.ViewModels
         {
             if (ResultListViewData.SelectedItem != null)
             {
-                int pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
+                var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
                 try
                 {
                     if (SearchMode == MediaTypes.Game)
@@ -187,7 +187,7 @@ namespace FoliCon.ViewModels
                 {
                     if (ex.Message == "NoPoster")
                     {
-                        DialogParameters p = new DialogParameters {
+                        var p = new DialogParameters {
                             {"title","No Poster" }, {"message", "No poster found."}
                             };
                         _dialogService.ShowDialog("MessageBox", p, result => { });

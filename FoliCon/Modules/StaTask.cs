@@ -10,7 +10,7 @@ namespace FoliCon.Modules
         public static Task<T> Start<T>(Func<T> func)
         {
             var tcs = new TaskCompletionSource<T>();
-            Thread thread = new Thread(() =>
+            var thread = new Thread(() =>
             {
                 try
                 {

@@ -136,7 +136,7 @@ namespace FoliCon.Modules
         public static void RefreshIconCache()
         {
             _ = Vanara.PInvoke.Kernel32.Wow64DisableWow64FsRedirection(out _);
-            Process objProcess = new Process
+            var objProcess = new Process
             {
                 StartInfo =
                 {
@@ -178,11 +178,11 @@ namespace FoliCon.Modules
         public static bool IsNetworkAvailable()
         {
             const string host = "www.google.com";
-            bool result = false;
-            using Ping p = new Ping();
+            var result = false;
+            using var p = new Ping();
             try
             {
-                PingReply reply = p.Send(host, 3000);
+                var reply = p.Send(host, 3000);
                 if (reply != null && reply.Status == IPStatus.Success)
                     result = true;
             }
@@ -235,7 +235,7 @@ namespace FoliCon.Modules
                 rating = "";
             }
 
-            DataRow nRow = dataTable.NewRow();
+            var nRow = dataTable.NewRow();
             nRow["Poster"] = poster;
             nRow["Title"] = title;
             nRow["Year"] = year;
@@ -252,14 +252,14 @@ namespace FoliCon.Modules
 
             if (result.MediaType == MediaTypes.TV)
             {
-                SearchContainer<SearchTv> ob = (SearchContainer<SearchTv>) result.Result;
+                var ob = (SearchContainer<SearchTv>) result.Result;
                 source = Tmdb.ExtractTvDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Movie)
             {
                 if (query.ToLower().Contains("collection"))
                 {
-                    SearchContainer<SearchCollection> ob = (SearchContainer<SearchCollection>) result.Result;
+                    var ob = (SearchContainer<SearchCollection>) result.Result;
                     source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                 }
                 else
@@ -279,7 +279,7 @@ namespace FoliCon.Modules
             }
             else if (result.MediaType == MediaTypes.MTV)
             {
-                SearchContainer<SearchBase> ob = (SearchContainer<SearchBase>) result.Result;
+                var ob = (SearchContainer<SearchBase>) result.Result;
                 source = Tmdb.ExtractResourceDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Game)
@@ -300,7 +300,7 @@ namespace FoliCon.Modules
         {
             var itemList = new ArrayList();
             if (string.IsNullOrEmpty(folder)) return itemList;
-            foreach (string file in Directory.GetFiles(folder))
+            foreach (var file in Directory.GetFiles(folder))
             {
                 itemList.Add(Path.GetFileName(file));
             }
@@ -315,7 +315,7 @@ namespace FoliCon.Modules
         /// <returns></returns>
         public static BitmapSource LoadBitmap(Bitmap source)
         {
-            IntPtr ip = source.GetHbitmap();
+            var ip = source.GetHbitmap();
             BitmapSource bs;
 
             try
@@ -355,7 +355,7 @@ namespace FoliCon.Modules
         public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
         {
             var response = await Services.HttpC.GetAsync(url);
-            await using FileStream fs = new FileStream(saveFileName, FileMode.Create);
+            await using var fs = new FileStream(saveFileName, FileMode.Create);
             await response.Content.CopyToAsync(fs);
         }
 
@@ -367,18 +367,18 @@ namespace FoliCon.Modules
         public static int MakeIco(string iconMode, string selectedFolder, DataTable pickedListDataTable,
             bool isRatingVisible = false, bool isMockupVisible = true)
         {
-            int iconProcessedCount = 0;
-            string ratingVisibility = isRatingVisible ? "visible" : "hidden";
-            string mockupVisibility = isMockupVisible ? "visible" : "hidden";
+            var iconProcessedCount = 0;
+            var ratingVisibility = isRatingVisible ? "visible" : "hidden";
+            var mockupVisibility = isMockupVisible ? "visible" : "hidden";
             var fNames = new List<string>();
             fNames.AddRange(Directory.GetDirectories(selectedFolder).Select(Path.GetFileName));
-            foreach (string i in fNames)
+            foreach (var i in fNames)
             {
                 var tempI = i;
                 var targetFile = selectedFolder + "\\" + i + "\\" + i + ".ico";
                 if (File.Exists(selectedFolder + "\\" + i + "\\" + i + ".png") && !File.Exists(targetFile))
                 {
-                    string rating = pickedListDataTable.AsEnumerable()
+                    var rating = pickedListDataTable.AsEnumerable()
                         .Where((p) => p["FolderName"].Equals(tempI))
                         .Select((p) => p["Rating"].ToString())
                         .FirstOrDefault();
@@ -462,14 +462,14 @@ namespace FoliCon.Modules
         {
             try
             {
-                SHFOLDERCUSTOMSETTINGS folderSettings = new SHFOLDERCUSTOMSETTINGS
+                var folderSettings = new SHFOLDERCUSTOMSETTINGS
                 {
                     dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
                     pszIconFile = icoFile
                 };
                 //FolderSettings.iIconIndex = 0;
-                string pszPath = folderPath;
-                Vanara.PInvoke.HRESULT unused =
+                var pszPath = folderPath;
+                var unused =
                     SHGetSetFolderCustomSettings(ref folderSettings, pszPath, FCS.FCS_FORCEWRITE | FCS.FCS_READ);
             }
             catch (Exception)
@@ -482,7 +482,7 @@ namespace FoliCon.Modules
 
         public static void ApplyChanges(string folderPath)
         {
-            PIDL pidl = ILCreateFromPath(folderPath);
+            var pidl = ILCreateFromPath(folderPath);
             SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_FLUSHNOWAIT);
         }
 
