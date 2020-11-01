@@ -8,26 +8,33 @@ namespace FoliCon.Modules
 {
     public static class DialogServiceExtensions
     {
-        public static void ShowMessageBox(this IDialogService dialogService, string message, Action<IDialogResult> callBack)
+        public static void ShowMessageBox(this IDialogService dialogService, string message,
+            Action<IDialogResult> callBack)
         {
             dialogService.ShowDialog("MessageBox", new DialogParameters($"message={message}"), callBack);
         }
 
-        public static void ShowSearchResult(this IDialogService dialogService, string searchMode, string query, string folderPath, ResultResponse result, TMDB tmdbObject, IGDBClass igdbObject, Action<IDialogResult> callBack)
+        public static void ShowSearchResult(this IDialogService dialogService, string searchMode, string query,
+            string folderPath, ResultResponse result, Tmdb tmdbObject, IgdbClass igdbObject,
+            Action<IDialogResult> callBack)
         {
             DialogParameters p = new DialogParameters
             {
-                {"query", query},{"result",result},{"searchmode",searchMode},{"tmdbObject",tmdbObject},{"igdbObject",igdbObject},
-                {"folderpath",folderPath }
+                {"query", query}, {"result", result}, {"searchmode", searchMode}, {"tmdbObject", tmdbObject},
+                {"igdbObject", igdbObject},
+                {"folderpath", folderPath}
             };
             dialogService.ShowDialog("SearchResult", p, callBack);
         }
 
-        public static void ShowProSearchResult(this IDialogService dialogService, string folderPath, List<string> fnames, DataTable pickedTable, List<ImageToDownload> imgList, DArt dartObject, Action<IDialogResult> callBack)
+        public static void ShowProSearchResult(this IDialogService dialogService, string folderPath,
+            List<string> fnames, DataTable pickedTable, List<ImageToDownload> imgList, DArt dartObject,
+            Action<IDialogResult> callBack)
         {
             DialogParameters p = new DialogParameters
             {
-                {"folderpath", folderPath},{"fnames",fnames},{"pickedtable",pickedTable},{"imglist",imgList},{"dartobject",dartObject}
+                {"folderpath", folderPath}, {"fnames", fnames}, {"pickedtable", pickedTable}, {"imglist", imgList},
+                {"dartobject", dartObject}
             };
 
             dialogService.ShowDialog("ProSearchResult", p, callBack);

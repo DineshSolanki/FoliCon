@@ -9,19 +9,19 @@ namespace FoliCon.ViewModels
 {
     public class ApiConfigurationViewModel : BindableBase, IDialogAware
     {
-        private string title = "API Configuration";
-        private string dartClient = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
-        private string dartClientID = GlobalDataHelper<AppConfig>.Config.DevClientID;
-        private string tmdbKey = GlobalDataHelper<AppConfig>.Config.TMDBKey;
-        private string igdbClientID = GlobalDataHelper<AppConfig>.Config.IGDBClientID;
-        private string igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IGDBClientSecret;
+        private string _title = "API Configuration";
+        private string _dartClient = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
+        private string _dartClientId = GlobalDataHelper<AppConfig>.Config.DevClientId;
+        private string _tmdbKey = GlobalDataHelper<AppConfig>.Config.TmdbKey;
+        private string _igdbClientId = GlobalDataHelper<AppConfig>.Config.IgdbClientId;
+        private string _igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IgdbClientSecret;
 
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        public string DArtClient { get => dartClient; set => SetProperty(ref dartClient, value); }
-        public string DArtClientId { get => dartClientID; set => SetProperty(ref dartClientID, value); }
-        public string TMDBKey { get => tmdbKey; set => SetProperty(ref tmdbKey, value); }
-        public string IGDBClientID { get => igdbClientID; set => SetProperty(ref igdbClientID, value); }
-        public string IGDBClientSecret { get => igdbClientSecret; set => SetProperty(ref igdbClientSecret, value); }
+        public string Title { get => _title; set => SetProperty(ref _title, value); }
+        public string DArtClient { get => _dartClient; set => SetProperty(ref _dartClient, value); }
+        public string DArtClientId { get => _dartClientId; set => SetProperty(ref _dartClientId, value); }
+        public string TmdbKey { get => _tmdbKey; set => SetProperty(ref _tmdbKey, value); }
+        public string IgdbClientId { get => _igdbClientId; set => SetProperty(ref _igdbClientId, value); }
+        public string IgdbClientSecret { get => _igdbClientSecret; set => SetProperty(ref _igdbClientSecret, value); }
         private DelegateCommand<string> _closeDialogCommand;
         public DelegateCommand SaveCommand { get; private set; }
 
@@ -35,13 +35,13 @@ namespace FoliCon.ViewModels
 
         private void SaveMethod()
         {
-            if (string.IsNullOrEmpty(TMDBKey) || string.IsNullOrEmpty(IGDBClientID) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
+            if (string.IsNullOrEmpty(TmdbKey) || string.IsNullOrEmpty(IgdbClientSecret) ||string.IsNullOrEmpty(IgdbClientId) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
             {
                 MessageBox.Error("All fields are required!", "Invalid Value");
             }
             else
             {
-                Util.WriteApiConfiguration(TMDBKey, IGDBClientID,IGDBClientSecret, DArtClient, DArtClientId);
+                Util.WriteApiConfiguration(TmdbKey, IgdbClientId,IgdbClientSecret, DArtClient, DArtClientId);
                 MessageBox.Success("API configuration Saved.", "Sucess");
                 CloseDialog("true");
             }

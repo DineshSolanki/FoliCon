@@ -9,13 +9,13 @@ namespace FoliCon.Models
         private string _url;
         private BitmapSource _image;
 
-        public DArtImageList(string uRL, BitmapSource bmp)
+        public DArtImageList(string url, BitmapSource bmp)
         {
-            URL = uRL ?? throw new ArgumentNullException(nameof(uRL));
+            Url = url ?? throw new ArgumentNullException(nameof(url));
             Image = bmp ?? throw new ArgumentNullException(nameof(bmp));
         }
 
-        public string URL { get => _url; set => SetProperty(ref _url, value); }
+        public string Url { get => _url; set => SetProperty(ref _url, value); }
         public BitmapSource Image { get => _image; set => SetProperty(ref _image, value); }
     }
 }

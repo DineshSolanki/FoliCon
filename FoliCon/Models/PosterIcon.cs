@@ -8,7 +8,7 @@ namespace FoliCon.Models
     public class PosterIcon
     {
         public ImageSource FolderJpg { get; set; }
-        public string RatingVisibilty { get; set; }
+        public string RatingVisibility { get; set; }
         public string Rating { get; set; }
         public string MockupVisibility { get; set; }
 
@@ -23,12 +23,12 @@ namespace FoliCon.Models
             FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
             Rating = "7.8";
             MockupVisibility = "visible";
-            RatingVisibilty = "visible";
+            RatingVisibility = "visible";
         }
 
-        public PosterIcon(string folderJpgPath, string rating, string ratingVisibilty, string mockupVisibility)
+        public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility)
         {
-            RatingVisibilty = ratingVisibilty;
+            RatingVisibility = ratingVisibility;
             Rating = rating;
             MockupVisibility = mockupVisibility;
             MemoryStream thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));

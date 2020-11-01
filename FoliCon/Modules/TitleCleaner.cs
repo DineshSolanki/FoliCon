@@ -17,14 +17,7 @@ namespace FoliCon.Modules
             // .* --Remove all trailing information after having found year or resolution as junk usually follows
             string cleanTitle = Regex.Replace(normalizedTitle, "\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-            if (string.IsNullOrWhiteSpace(cleanTitle))
-            {
-                return normalizedTitle;
-            }
-            else
-            {
-                return cleanTitle;
-            }
+            return string.IsNullOrWhiteSpace(cleanTitle) ? normalizedTitle : cleanTitle;
         }
     }
 }

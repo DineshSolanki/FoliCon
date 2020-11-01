@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for ApiConfiguration
     /// </summary>
-    public partial class ApiConfiguration : UserControl
+    public partial class ApiConfiguration
     {
         public ApiConfiguration()
         {

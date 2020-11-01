@@ -1,13 +1,12 @@
 ﻿using FoliCon.Modules;
 using System.Collections.Specialized;
-using System.Windows.Controls;
 
 namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for SearchResult
     /// </summary>
-    public partial class SearchResult : UserControl
+    public partial class SearchResult
     {
         public SearchResult()
         {

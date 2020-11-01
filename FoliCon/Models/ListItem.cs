@@ -17,14 +17,14 @@ namespace FoliCon.Models
         public string Overview { get => _overview; set => SetProperty(ref _overview, value); }
         public string Poster { get => _poster; set => SetProperty(ref _poster, value); }
 
-        public ListItem(string _title, string _year, string _rating, string _overview = null, string _poster = null, string _folder = "")
+        public ListItem(string title, string year, string rating, string overview = null, string poster = null, string folder = "")
         {
-            Title = _title;
-            Year = _year;
-            Rating = _rating;
-            Overview = _overview;
-            Poster = _poster;
-            Folder = _folder;
+            Title = title;
+            Year = year;
+            Rating = rating;
+            Overview = overview;
+            Poster = poster;
+            Folder = folder;
         }
 
         public ListItem()

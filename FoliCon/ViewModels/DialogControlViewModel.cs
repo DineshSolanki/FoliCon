@@ -7,14 +7,10 @@ namespace FoliCon.ViewModels
 {
     public class DialogControlViewModel : BindableBase, IDialogAware
     {
-        public DialogControlViewModel()
-        {
-        }
-
         private DelegateCommand<string> _closeDialogCommand;
 
         public DelegateCommand<string> CloseDialogCommand =>
-            _closeDialogCommand ?? (_closeDialogCommand = new DelegateCommand<string>(CloseDialog));
+            _closeDialogCommand ??= new DelegateCommand<string>(CloseDialog);
 
         private string _message;
 

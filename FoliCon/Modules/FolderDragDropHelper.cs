@@ -1,28 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace FoliCon.Modules
 {
-    // <summary>
-    /// IFileDragDropTarget Interface
-    /// </summary>
     public interface IFileDragDropTarget
     {
         void OnFileDrop(string[] filepaths);
     }
 
-    /// <summary>
-    /// FileDragDropHelper
-    /// </summary>
     public class FolderDragDropHelper
     {
         public static bool GetIsFileDragDropEnabled(DependencyObject obj)
         {
-            return (bool)obj.GetValue(IsFileDragDropEnabledProperty);
+            return (bool) obj.GetValue(IsFileDragDropEnabledProperty);
         }
 
         public static void SetIsFileDragDropEnabled(DependencyObject obj, bool value)
@@ -32,7 +24,7 @@ namespace FoliCon.Modules
 
         public static bool GetFileDragDropTarget(DependencyObject obj)
         {
-            return (bool)obj.GetValue(FileDragDropTargetProperty);
+            return (bool) obj.GetValue(FileDragDropTargetProperty);
         }
 
         public static void SetFileDragDropTarget(DependencyObject obj, bool value)
@@ -41,46 +33,43 @@ namespace FoliCon.Modules
         }
 
         public static readonly DependencyProperty IsFileDragDropEnabledProperty =
-                DependencyProperty.RegisterAttached("IsFileDragDropEnabled", typeof(bool), typeof(FolderDragDropHelper), new PropertyMetadata(OnFileDragDropEnabled));
+            DependencyProperty.RegisterAttached("IsFileDragDropEnabled", typeof(bool), typeof(FolderDragDropHelper),
+                new PropertyMetadata(OnFileDragDropEnabled));
 
         public static readonly DependencyProperty FileDragDropTargetProperty =
-                DependencyProperty.RegisterAttached("FileDragDropTarget", typeof(object), typeof(FolderDragDropHelper), null);
+            DependencyProperty.RegisterAttached("FileDragDropTarget", typeof(object), typeof(FolderDragDropHelper),
+                null);
 
         private static void OnFileDragDropEnabled(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue == e.OldValue) return;
-            Control control = d as Control;
-            if (control != null){
-                control.Drop += OnDrop;
-                control.DragOver += Control_DragOver;
-            }
+            if (!(d is Control control)) return;
+            control.Drop += OnDrop;
+            control.DragOver += Control_DragOver;
         }
 
         private static void Control_DragOver(object sender, DragEventArgs e)
         {
-            string data = ((Array)e.Data.GetData(DataFormats.FileDrop)).GetValue(0).ToString();
+            var dt = e.Data.GetData(DataFormats.FileDrop);
+            string data = (dt as Array)?.GetValue(0)?.ToString();
 
-            if (Directory.Exists(data))
-            {
-                e.Effects = DragDropEffects.Link;
-            }
-            else e.Effects = DragDropEffects.None;
+            e.Effects = Directory.Exists(data) ? DragDropEffects.Link : DragDropEffects.None;
             e.Handled = true;
         }
-       
-        private static void OnDrop(object _sender, DragEventArgs _dragEventArgs)
+
+        private static void OnDrop(object sender, DragEventArgs dragEventArgs)
         {
-            DependencyObject d = _sender as DependencyObject;
+            DependencyObject d = sender as DependencyObject;
             if (d == null) return;
             object target = d.GetValue(FileDragDropTargetProperty);
             if (target is IFileDragDropTarget fileTarget)
             {
-               // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
-              //  {
-                    
-                        fileTarget.OnFileDrop((string[])_dragEventArgs.Data.GetData(DataFormats.FileDrop));
-                        
-              //  }
+                // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
+                //  {
+
+                fileTarget.OnFileDrop((string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop));
+
+                //  }
             }
             else
             {

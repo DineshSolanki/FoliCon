@@ -33,10 +33,11 @@ namespace FoliCon.Modules
         {
             if (IsNetworkAvailable())
             {
-                var ver = UpdateHelper.CheckForUpdate("https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
+                var ver = UpdateHelper.CheckForUpdate(
+                    "https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
                 if (ver.IsExistNewVersion)
                 {
-                    GrowlInfo info = new GrowlInfo()
+                    var info = new GrowlInfo()
                     {
                         Message = $"New Version Found!\n Changelog:{ver.Changelog}",
                         ConfirmStr = "Update Now",
@@ -53,7 +54,7 @@ namespace FoliCon.Modules
                 }
                 else
                 {
-                    GrowlInfo info = new GrowlInfo()
+                    var info = new GrowlInfo()
                     {
                         Message = "Great! you are using the latest version",
                         ShowDateTime = false,
@@ -62,14 +63,13 @@ namespace FoliCon.Modules
                     Growl.InfoGlobal(info);
                 }
             }
-            else Growl.ErrorGlobal(new GrowlInfo() { Message = "Network not available!", ShowDateTime = false });
-
+            else Growl.ErrorGlobal(new GrowlInfo() {Message = "Network not available!", ShowDateTime = false});
         }
 
         /// <summary>
         /// Starts Process associated with given path.
         /// </summary>
-        /// <param name="processName">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
+        /// <param name="path">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
         public static void StartProcess(string path)
         {
             Process.Start(new ProcessStartInfo()
@@ -82,19 +82,12 @@ namespace FoliCon.Modules
 
         public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
-            byte[] bytes = null;
+            if (!(imageSource is BitmapSource bitmapSource)) return null;
+            encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
-            if (imageSource is BitmapSource bitmapSource)
-            {
-                encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-
-                using (var stream = new MemoryStream())
-                {
-                    encoder.Save(stream);
-                    bytes = stream.ToArray();
-                }
-            }
-
+            using var stream = new MemoryStream();
+            encoder.Save(stream);
+            var bytes = stream.ToArray();
             return bytes;
         }
 
@@ -104,16 +97,15 @@ namespace FoliCon.Modules
         /// <param name="listView"> list view to change width</param>
         public static void SetColumnWidth(ListView listView)
         {
-            if (listView.View is GridView gridView)
+            if (!(listView.View is GridView gridView)) return;
+            foreach (var column in gridView.Columns)
             {
-                foreach (var column in gridView.Columns)
+                if (double.IsNaN(column.Width))
                 {
-                    if (double.IsNaN(column.Width))
-                    {
-                        column.Width = column.ActualWidth;
-                    }
-                    column.Width = double.NaN;
+                    column.Width = column.ActualWidth;
                 }
+
+                column.Width = double.NaN;
             }
         }
 
@@ -122,16 +114,14 @@ namespace FoliCon.Modules
         /// </summary>
         public static void KillExplorer()
         {
-            ProcessStartInfo taskKill = new ProcessStartInfo("taskkill", "/F /IM explorer.exe")
+            var taskKill = new ProcessStartInfo("taskkill", "/F /IM explorer.exe")
             {
                 WindowStyle = ProcessWindowStyle.Hidden,
                 UseShellExecute = true
             };
-            using (Process process = new Process { StartInfo = taskKill })
-            {
-                process.Start();
-                process.WaitForExit();
-            }
+            using var process = new Process {StartInfo = taskKill};
+            process.Start();
+            process.WaitForExit();
         }
 
         /// <summary>
@@ -146,11 +136,16 @@ namespace FoliCon.Modules
         public static void RefreshIconCache()
         {
             _ = Vanara.PInvoke.Kernel32.Wow64DisableWow64FsRedirection(out _);
-            Process objProcess = new Process();
-            objProcess.StartInfo.FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) +
-                                            "\\ie4uinit.exe";
-            objProcess.StartInfo.Arguments = "-ClearIconCache";
-            objProcess.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            Process objProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) +
+                               "\\ie4uinit.exe",
+                    Arguments = "-ClearIconCache",
+                    WindowStyle = ProcessWindowStyle.Normal
+                }
+            };
             objProcess.Start();
             objProcess.WaitForExit();
             objProcess.Close();
@@ -164,16 +159,16 @@ namespace FoliCon.Modules
         public static void DeleteIconsFromPath(string folderPath)
         {
             foreach (var (icoFile, iniFile) in from string folder in Directory.EnumerateDirectories(folderPath)
-                                               let folderName = Path.GetFileName(folder)
-                                               let icoFile = Path.Combine(folder, folderName + ".ico")
-                                               let iniFile = Path.Combine(folder, "desktop.ini")
-                                               select (icoFile, iniFile))
+                let folderName = Path.GetFileName(folder)
+                let icoFile = Path.Combine(folder, folderName + ".ico")
+                let iniFile = Path.Combine(folder, "desktop.ini")
+                select (icoFile, iniFile))
             {
                 File.Delete(icoFile);
                 File.Delete(iniFile);
             }
 
-            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
+            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
         }
 
         /// <summary>
@@ -182,35 +177,34 @@ namespace FoliCon.Modules
         /// <returns> Returns true if Web is accessible</returns>
         public static bool IsNetworkAvailable()
         {
-            string host = "www.google.com";
+            const string host = "www.google.com";
             bool result = false;
-            using (Ping p = new Ping())
+            using Ping p = new Ping();
+            try
             {
-                try
-                {
-                    PingReply reply = p.Send(host, 3000);
-                    if (reply.Status == IPStatus.Success)
-                        return true;
-                }
-                catch {}
+                PingReply reply = p.Send(host, 3000);
+                if (reply != null && reply.Status == IPStatus.Success)
+                    result = true;
             }
+            catch
+            {
+                // ignored
+            }
+
             return result;
         }
 
         public static List<string> GetFolderNames(string folderPath)
         {
-            List<string> FolderNames = new List<string>();
+            var folderNames = new List<string>();
             if (!string.IsNullOrEmpty(folderPath))
             {
-                foreach (string folder in Directory.GetDirectories(folderPath))
-                {
-                    if (!File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico"))
-                    {
-                        FolderNames.Add(Path.GetFileName(folder));
-                    }
-                }
+                folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
+                    where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
+                    select Path.GetFileName(folder));
             }
-            return FolderNames;
+
+            return folderNames;
         }
 
         public static VistaFolderBrowserDialog NewFolderBrowserDialog(string description)
@@ -230,15 +224,17 @@ namespace FoliCon.Modules
         /// <param name="poster">Local Poster path</param>
         /// <param name="title">Media Title</param>
         /// <param name="rating">Media Rating</param>
-        /// <param name="folder">Media Full Folder Path</param>
+        /// <param name="fullFolderPath">Complete Folder Path</param>
         /// <param name="folderName">Short Folder Name</param>
         /// <param name="year">Media Year</param>
-        public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating, string fullFolderPath, string folderName, string year = "")
+        public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating,
+            string fullFolderPath, string folderName, string year = "")
         {
             if (rating == "0")
             {
                 rating = "";
             }
+
             DataRow nRow = dataTable.NewRow();
             nRow["Poster"] = poster;
             nRow["Title"] = title;
@@ -252,44 +248,44 @@ namespace FoliCon.Modules
         public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query)
         {
             System.Diagnostics.Contracts.Contract.Requires(result != null);
-            ObservableCollection<ListItem> source = new ObservableCollection<ListItem>();
+            var source = new ObservableCollection<ListItem>();
 
             if (result.MediaType == MediaTypes.TV)
             {
-                SearchContainer<SearchTv> ob = (SearchContainer<SearchTv>)result.Result;
-                source = TMDB.ExtractTvDetailsIntoListItem(ob);
+                SearchContainer<SearchTv> ob = (SearchContainer<SearchTv>) result.Result;
+                source = Tmdb.ExtractTvDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Movie)
             {
                 if (query.ToLower().Contains("collection"))
                 {
-                    SearchContainer<SearchCollection> ob = (SearchContainer<SearchCollection>)result.Result;
-                    source = TMDB.ExtractCollectionDetailsIntoListItem(ob);
+                    SearchContainer<SearchCollection> ob = (SearchContainer<SearchCollection>) result.Result;
+                    source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                 }
                 else
                 {
                     dynamic ob;
                     try
                     {
-                        ob = (SearchContainer<SearchMovie>)result.Result;
-                        source = TMDB.ExtractMoviesDetailsIntoListItem(ob);
+                        ob = (SearchContainer<SearchMovie>) result.Result;
+                        source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
                     }
                     catch (Exception)
                     {
-                        ob = (SearchContainer<SearchCollection>)result.Result;
-                        source = TMDB.ExtractCollectionDetailsIntoListItem(ob);
+                        ob = (SearchContainer<SearchCollection>) result.Result;
+                        source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                     }
                 }
             }
             else if (result.MediaType == MediaTypes.MTV)
             {
-                SearchContainer<SearchBase> ob = (SearchContainer<SearchBase>)result.Result;
-                source = TMDB.ExtractResourceDetailsIntoListItem(ob);
+                SearchContainer<SearchBase> ob = (SearchContainer<SearchBase>) result.Result;
+                source = Tmdb.ExtractResourceDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Game)
             {
-                var ob = (Game[])result.Result;
-                source = IGDBClass.ExtractGameDetailsIntoListItem(ob);
+                var ob = (Game[]) result.Result;
+                source = IgdbClass.ExtractGameDetailsIntoListItem(ob);
             }
 
             return source;
@@ -302,14 +298,13 @@ namespace FoliCon.Modules
         /// <returns>ArrayList with file Names.</returns>
         public static ArrayList GetFileNamesFromFolder(string folder)
         {
-            ArrayList itemList = new ArrayList();
-            if (!string.IsNullOrEmpty(folder))
+            var itemList = new ArrayList();
+            if (string.IsNullOrEmpty(folder)) return itemList;
+            foreach (string file in Directory.GetFiles(folder))
             {
-                foreach (string file in Directory.GetFiles(folder))
-                {
-                    itemList.Add(Path.GetFileName(file));
-                }
+                itemList.Add(Path.GetFileName(file));
             }
+
             return itemList;
         }
 
@@ -321,11 +316,12 @@ namespace FoliCon.Modules
         public static BitmapSource LoadBitmap(Bitmap source)
         {
             IntPtr ip = source.GetHbitmap();
-            BitmapSource bs = null;
+            BitmapSource bs;
 
             try
             {
-                bs = Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                bs = Imaging.CreateBitmapSourceFromHBitmap(ip, IntPtr.Zero, Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions());
             }
             finally
             {
@@ -343,26 +339,24 @@ namespace FoliCon.Modules
         /// <returns>Bitmap object</returns>
         public static async Task<Bitmap> GetBitmapFromUrlAsync(string url)
         {
-            var myRequest = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            var myRequest = (HttpWebRequest) WebRequest.Create(new Uri(url));
             myRequest.Method = "GET";
-            var myResponse = (HttpWebResponse)(await myRequest.GetResponseAsync().ConfigureAwait(false));
-            Bitmap bmp = new Bitmap(myResponse.GetResponseStream());
+            var myResponse = (HttpWebResponse) (await myRequest.GetResponseAsync().ConfigureAwait(false));
+            var bmp = new Bitmap(myResponse.GetResponseStream());
             myResponse.Close();
             return bmp;
         }
 
         /// <summary>
-		/// Async function That can Download image from any URL and save to local path
-		/// </summary>
-		/// <param name="url"> The URL of Image to Download</param>
-		/// <param name="saveFilename">The Local Path Of Downloaded Image</param>
-		public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
+        /// Async function That can Download image from any URL and save to local path
+        /// </summary>
+        /// <param name="url"> The URL of Image to Download</param>
+        /// <param name="saveFileName">The Local Path Of Downloaded Image</param>
+        public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
         {
             var response = await Services.HttpC.GetAsync(url);
-            using (FileStream fs = new FileStream(saveFileName, FileMode.Create))
-            {
-                await response.Content.CopyToAsync(fs);
-            }
+            await using FileStream fs = new FileStream(saveFileName, FileMode.Create);
+            await response.Content.CopyToAsync(fs);
         }
 
         #region IconUtil
@@ -370,68 +364,74 @@ namespace FoliCon.Modules
         /// <summary>
         /// Creates Icons from PNG
         /// </summary>
-        public static int MakeIco(string IconMode, string selectedFolder, DataTable PickedListDataTable, bool isRatingVisible = false, bool isMockupVisible = true)
+        public static int MakeIco(string iconMode, string selectedFolder, DataTable pickedListDataTable,
+            bool isRatingVisible = false, bool isMockupVisible = true)
         {
-            int IconProcessedCount = 0;
+            int iconProcessedCount = 0;
             string ratingVisibility = isRatingVisible ? "visible" : "hidden";
             string mockupVisibility = isMockupVisible ? "visible" : "hidden";
-            List<string> fNames = new List<string>();
-            fNames.AddRange(Directory.GetDirectories(selectedFolder).Select(folder => Path.GetFileName(folder)));
+            var fNames = new List<string>();
+            fNames.AddRange(Directory.GetDirectories(selectedFolder).Select(Path.GetFileName));
             foreach (string i in fNames)
             {
                 var tempI = i;
                 var targetFile = selectedFolder + "\\" + i + "\\" + i + ".ico";
                 if (File.Exists(selectedFolder + "\\" + i + "\\" + i + ".png") && !File.Exists(targetFile))
                 {
-                    string rating = PickedListDataTable.AsEnumerable()
-                                                       .Where((p) => p["FolderName"].Equals(tempI))
-                                                       .Select((p) => p["Rating"].ToString())
-                                                       .FirstOrDefault();
+                    string rating = pickedListDataTable.AsEnumerable()
+                        .Where((p) => p["FolderName"].Equals(tempI))
+                        .Select((p) => p["Rating"].ToString())
+                        .FirstOrDefault();
 
-                    BuildFolderIco(IconMode, selectedFolder + "\\" + i + "\\" + i + ".png", rating, ratingVisibility, mockupVisibility);
-                    IconProcessedCount += 1;
+                    BuildFolderIco(iconMode, selectedFolder + "\\" + i + "\\" + i + ".png", rating, ratingVisibility,
+                        mockupVisibility);
+                    iconProcessedCount += 1;
                     File.Delete(selectedFolder + "\\" + i + "\\" + i + ".png"); //<--IO Exception here
                 }
 
-                if (File.Exists(targetFile))
-                {
-                    HideIcons(targetFile);
-                    SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
-                }
+                if (!File.Exists(targetFile)) continue;
+                HideIcons(targetFile);
+                SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
             }
-            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST, IntPtr.Zero, IntPtr.Zero);
-            return IconProcessedCount;
+
+            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
+            return iconProcessedCount;
         }
 
         /// <summary>
-		/// Converts From PNG to ICO
-		/// </summary>
-		/// <param name="filmFolderPath"> Path where to save and where PNG is Downloaded</param>
-		/// <param name="rating"> if Wants to Include rating on Icon</param>
-		/// <param name="ratingVisibility">Show rating or NOT</param>
-		public static void BuildFolderIco(string IconMode, string filmFolderPath, string rating, string ratingVisibility, string mockupVisibility)
+        /// Converts From PNG to ICO
+        /// </summary>
+        /// <param name="iconMode">Icon Mode to generate Icon.</param>
+        /// <param name="filmFolderPath"> Path where to save and where PNG is Downloaded</param>
+        /// <param name="rating"> if Wants to Include rating on Icon</param>
+        /// <param name="ratingVisibility">Show rating or NOT</param>
+        /// <param name="mockupVisibility">Is Cover Mockup visible. </param>
+        public static void BuildFolderIco(string iconMode, string filmFolderPath, string rating,
+            string ratingVisibility, string mockupVisibility)
         {
             if (!File.Exists(filmFolderPath))
             {
                 return;
             }
+
             ratingVisibility = string.IsNullOrEmpty(rating) ? "Hidden" : ratingVisibility;
-            if (!string.IsNullOrEmpty(rating) && !(rating == "10"))
+            if (!string.IsNullOrEmpty(rating) && rating != "10")
             {
-                rating = (!rating.Contains(".")) ? rating + ".0" : rating;
+                rating = !rating.Contains(".") ? rating + ".0" : rating;
             }
-            Bitmap icon = null;
-            if (IconMode == "Professional")
+
+            Bitmap icon;
+            if (iconMode == "Professional")
             {
                 icon = (new ProIcon(filmFolderPath)).RenderToBitmap();
             }
             else
             {
-                using (Task<Bitmap> task = StaTask.Start(() => new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility)).RenderToBitmap()))
-                {
-                    task.Wait();
-                    icon = task.Result;
-                }
+                using var task = StaTask.Start(() =>
+                    new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                        .RenderToBitmap());
+                task.Wait();
+                icon = task.Result;
             }
 
             PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));
@@ -454,53 +454,57 @@ namespace FoliCon.Modules
         }
 
         /// <summary>
-		/// Set folder icon for a given folder.
-		/// </summary>
-		/// <param name="icoFile"> path to the icon file [MUST BE .Ico]</param>
-		/// <param name="FolderPath">path to the folder</param>
-		private static void SetFolderIcon(string icoFile, string FolderPath)
+        /// Set folder icon for a given folder.
+        /// </summary>
+        /// <param name="icoFile"> path to the icon file [MUST BE .Ico]</param>
+        /// <param name="folderPath">path to the folder</param>
+        private static void SetFolderIcon(string icoFile, string folderPath)
         {
             try
             {
-                SHFOLDERCUSTOMSETTINGS FolderSettings = new SHFOLDERCUSTOMSETTINGS
+                SHFOLDERCUSTOMSETTINGS folderSettings = new SHFOLDERCUSTOMSETTINGS
                 {
                     dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
                     pszIconFile = icoFile
                 };
                 //FolderSettings.iIconIndex = 0;
-                string pszPath = FolderPath;
-                Vanara.PInvoke.HRESULT HRESULT = SHGetSetFolderCustomSettings(ref FolderSettings, pszPath, FCS.FCS_FORCEWRITE | FCS.FCS_READ);
+                string pszPath = folderPath;
+                Vanara.PInvoke.HRESULT unused =
+                    SHGetSetFolderCustomSettings(ref folderSettings, pszPath, FCS.FCS_FORCEWRITE | FCS.FCS_READ);
             }
             catch (Exception)
             {
                 // log exception
             }
-            ApplyChanges(FolderPath);
+
+            ApplyChanges(folderPath);
         }
 
         public static void ApplyChanges(string folderPath)
         {
             PIDL pidl = ILCreateFromPath(folderPath);
-            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_FLUSHNOWAIT, pidl.DangerousGetHandle());
+            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_FLUSHNOWAIT);
         }
 
         #endregion IconUtil
 
-        public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientID, out string igdbClientSecret, out string dartClientSecret, out string dartID)
+        public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
+            out string igdbClientSecret, out string dartClientSecret, out string dartId)
         {
-            tmdbkey = GlobalDataHelper<AppConfig>.Config.TMDBKey;
-            igdbClientID = GlobalDataHelper<AppConfig>.Config.IGDBClientID;
-            igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IGDBClientSecret;
+            tmdbkey = GlobalDataHelper<AppConfig>.Config.TmdbKey;
+            igdbClientId = GlobalDataHelper<AppConfig>.Config.IgdbClientId;
+            igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IgdbClientSecret;
             dartClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
-            dartID = GlobalDataHelper<AppConfig>.Config.DevClientID;
+            dartId = GlobalDataHelper<AppConfig>.Config.DevClientId;
         }
 
-        public static void WriteApiConfiguration(string tmdbkey, string igdbClientID, string igdbClientSecret, string dartClientSecret, string dartID)
+        public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
+            string dartClientSecret, string dartId)
         {
-            GlobalDataHelper<AppConfig>.Config.TMDBKey = tmdbkey;
-            GlobalDataHelper<AppConfig>.Config.IGDBClientID = igdbClientID;
-            GlobalDataHelper<AppConfig>.Config.IGDBClientSecret = igdbClientSecret;
-            GlobalDataHelper<AppConfig>.Config.DevClientID = dartID;
+            GlobalDataHelper<AppConfig>.Config.TmdbKey = tmdbkey;
+            GlobalDataHelper<AppConfig>.Config.IgdbClientId = igdbClientId;
+            GlobalDataHelper<AppConfig>.Config.IgdbClientSecret = igdbClientSecret;
+            GlobalDataHelper<AppConfig>.Config.DevClientId = dartId;
             GlobalDataHelper<AppConfig>.Config.DevClientSecret = dartClientSecret;
             GlobalDataHelper<AppConfig>.Save();
         }

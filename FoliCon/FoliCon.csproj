@@ -24,12 +24,13 @@
     <PackageReference Include="IconLib" Version="0.74.3" />
     <PackageReference Include="IGDB" Version="2.0.1" />
     <PackageReference Include="Jot" Version="2.1.7" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
     <PackageReference Include="Ookii.Dialogs.Wpf.NETCore" Version="2.1.0" />
-    <PackageReference Include="Prism.DryIoc" Version="7.2.0.1422" />
+    <PackageReference Include="Prism.DryIoc" Version="8.0.0.1909" />
     <PackageReference Include="TMDbLib" Version="1.6.0" />
-    <PackageReference Include="Vanara.PInvoke.Gdi32" Version="3.2.17" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.17" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.17" />
+    <PackageReference Include="Vanara.PInvoke.Gdi32" Version="3.2.19" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.2.19" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.2.19" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\folicon Icon.ico" />

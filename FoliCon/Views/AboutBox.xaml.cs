@@ -1,12 +1,11 @@
-﻿using System.Windows.Controls;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 
 namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for AboutBox
     /// </summary>
-    public partial class AboutBox : UserControl
+    public partial class AboutBox
     {
         //DialogWindow w;
         public AboutBox()

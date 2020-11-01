@@ -15,7 +15,7 @@ namespace FoliCon.ViewModels
         private string _title = "Search Result";
         private string _searchTitle = " Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking ";
         private string _busyContent = "searching";
-        private bool _isBusy = false;
+        private bool _isBusy;
         private string _searchMode;
         private ListViewData _resultListViewData;
         private string _searchAgainTitle;
@@ -23,12 +23,12 @@ namespace FoliCon.ViewModels
         private ResultResponse _searchResult;
         private string _fullFolderPath;
         private readonly IDialogService _dialogService;
-        private bool _isSearchFocused = false;
+        private bool _isSearchFocused;
 
         public event Action<IDialogResult> RequestClose;
 
-        public TMDB tmdbObject;
-        public IGDBClass igdbObject;
+        private Tmdb _tmdbObject;
+        private IgdbClass _igdbObject;
 
         #endregion Variables
 
@@ -101,8 +101,8 @@ namespace FoliCon.ViewModels
             SearchTitle = parameters.GetValue<string>("query");
             SearchResult = parameters.GetValue<ResultResponse>("result");
             SearchMode = parameters.GetValue<string>("searchmode");
-            tmdbObject = parameters.GetValue<TMDB>("tmdbObject");
-            igdbObject = parameters.GetValue<IGDBClass>("igdbObject");
+            _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
+            _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
             _fullFolderPath = parameters.GetValue<string>("folderpath");
             LoadData();
         }
@@ -128,11 +128,11 @@ namespace FoliCon.ViewModels
             if (SearchMode == MediaTypes.Game)
             {
                 
-                result = await igdbObject.SearchGameAsync(titleToSearch.Replace(@"\"," "));
+                result = await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\"," "));
             }
             else
             {
-                result = await tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
+                result = await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
             }
             SearchResult = result;
             if (useBusy)
@@ -171,16 +171,16 @@ namespace FoliCon.ViewModels
         {
             if (ResultListViewData.SelectedItem != null)
             {
-                int PickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
+                int pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
                 try
                 {
                     if (SearchMode == MediaTypes.Game)
                     {
-                        igdbObject.ResultPicked(SearchResult.Result[PickedIndex], _fullFolderPath);
+                        _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath);
                     }
                     else
                     {
-                        tmdbObject.ResultPicked(SearchResult.Result.Results[PickedIndex], SearchResult.MediaType, _fullFolderPath);
+                        _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType, _fullFolderPath);
                     }
                 }
                 catch (Exception ex)

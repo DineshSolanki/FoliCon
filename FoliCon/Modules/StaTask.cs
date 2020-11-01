@@ -26,7 +26,7 @@ namespace FoliCon.Modules
             return tcs.Task;
         }
 
-        public static Task StartSTATask(Action func)
+        public static Task StartStaTask(Action func)
         {
             var tcs = new TaskCompletionSource<object>();
             var thread = new Thread(() =>

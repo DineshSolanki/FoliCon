@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for ProSearchResult
     /// </summary>
-    public partial class ProSearchResult : UserControl
+    public partial class ProSearchResult
     {
         public ProSearchResult()
         {

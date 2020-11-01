@@ -1,5 +1,4 @@
-﻿using DryIoc;
-using FoliCon.Modules;
+﻿using FoliCon.Modules;
 using FoliCon.ViewModels;
 using FoliCon.Views;
 using HandyControl.Controls;

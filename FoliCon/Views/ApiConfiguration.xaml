@@ -3,7 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             prism:ViewModelLocator.AutoWireViewModel="True" Height="330" Width="665.48">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True" Height="330" Width="665.48"
+             d:DataContext="{d:DesignInstance viewModels:ApiConfigurationViewModel}">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="380" />
@@ -21,20 +26,37 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <GroupBox Style="{StaticResource GroupBoxTab}" Header="DeviantArt Api" Grid.Row="0" hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal">
+        <GroupBox Style="{StaticResource GroupBoxTab}" Header="DeviantArt Api" Grid.Row="0"
+                  hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding DArtClient, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :" />
-                <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding DArtClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :" />
+                <hc:TextBox hc:InfoElement.Necessary="True"
+                            Text="{Binding DArtClient, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :" />
+                <hc:TextBox hc:InfoElement.Necessary="True"
+                            Text="{Binding DArtClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :" />
             </StackPanel>
         </GroupBox>
-        <GroupBox Style="{StaticResource GroupBoxTab}" Header="IGDB(Twitch) Api" Grid.Row="1" hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal" hc:TitleElement.Background="BlueViolet">
+        <GroupBox Style="{StaticResource GroupBoxTab}" Header="IGDB(Twitch) Api" Grid.Row="1"
+                  hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal"
+                  hc:TitleElement.Background="BlueViolet">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding IGDBClientSecret, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :" />
-                <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding IGDBClientID, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :" />
+                <hc:TextBox hc:InfoElement.Necessary="True"
+                            Text="{Binding IgdbClientSecret, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :" />
+                <hc:TextBox hc:InfoElement.Necessary="True"
+                            Text="{Binding IgdbClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :" />
             </StackPanel>
         </GroupBox>
-        <hc:TextBox hc:InfoElement.Necessary="True" Text="{Binding TMDBKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" hc:InfoElement.Title="TMDB API Key :" Margin="8,7,8,0" />
-        <Button Grid.Row="4" Command="{Binding SaveCommand}" Content="Save" Style="{StaticResource ButtonPrimary}" Height="44" Width="75" Margin="266,5,0,0" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Top" IsDefault="True" />
-        <Button Grid.Row="4" Content="Close" Command="{Binding CloseDialogCommand}" CommandParameter="false" Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75" Height="44" FontSize="18" VerticalAlignment="Top" IsCancel="True" />
+        <hc:TextBox hc:InfoElement.Necessary="True"
+                    Text="{Binding TmdbKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"
+                    hc:InfoElement.Title="TMDB API Key :" Margin="8,7,8,0" />
+        <Button Grid.Row="4" Command="{Binding SaveCommand}" Content="Save" Style="{StaticResource ButtonPrimary}"
+                Height="44" Width="75" Margin="266,5,0,0" FontSize="18" HorizontalAlignment="Left"
+                VerticalAlignment="Top" IsDefault="True" />
+        <Button Grid.Row="4" Content="Close" Command="{Binding CloseDialogCommand}" CommandParameter="false"
+                Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75"
+                Height="44" FontSize="18" VerticalAlignment="Top" IsCancel="True" />
     </Grid>
 </UserControl>

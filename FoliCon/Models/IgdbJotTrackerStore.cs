@@ -1,20 +1,16 @@
-﻿using FoliCon.Modules;
-using IGDB;
+﻿using IGDB;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FoliCon.Models
 {
-    public class IGDBjotTrackerStore : BindableBase, ITokenStore
+    public class IgdbJotTrackerStore : BindableBase, ITokenStore
     {
         private TwitchAccessToken _currentToken;
         private TwitchAccessToken CurrentToken { get => _currentToken; set => SetProperty(ref _currentToken, value); }
-       public IGDBjotTrackerStore()
+       public IgdbJotTrackerStore()
         {
-            Services.Tracker.Configure<IGDBjotTrackerStore>()
+            Services.Tracker.Configure<IgdbJotTrackerStore>()
                 .Property(p => p._currentToken)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);

@@ -17,19 +17,19 @@ namespace FoliCon.ViewModels
     {
         private string _title = "Search Result";
         private bool _stopSearch;
-        private string _searchTitle = null;
-        private string _searchAgainTitle = null;
-        private int _i = 0;
+        private string _searchTitle;
+        private string _searchAgainTitle;
+        private int _i;
         private string _busyContent = "searching";
-        private bool _isBusy = false;
+        private bool _isBusy;
         private DArt _dArtObject;
-        private DataTable listDataTable;
-        private List<ImageToDownload> imgDownloadList;
+        private DataTable _listDataTable;
+        private List<ImageToDownload> _imgDownloadList;
 
         public event Action<IDialogResult> RequestClose;
 
-        private string _FolderPath;
-        private bool _isSearchFocused = false;
+        private string _folderPath;
+        private bool _isSearchFocused;
 
         public string Title { get => _title; set => SetProperty(ref _title, value); }
         public ObservableCollection<DArtImageList> ImageUrl { get; set; }
@@ -78,18 +78,11 @@ namespace FoliCon.ViewModels
             StopSearch = false;
             ImageUrl.Clear();
             SearchTitle = null;
-            if (!string.IsNullOrEmpty(SearchAgainTitle))
-            {
-                SearchTitle = SearchAgainTitle;
-            }
-            else
-            {
-                SearchTitle = TitleCleaner.Clean(Fnames[_i]);
-            }
+            SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.Clean(Fnames[_i]);
             BusyContent = $"Searching for {SearchTitle}...";
             IsBusy = true;
             Title = $"Pick Icon for {SearchTitle}";
-            await Search(SearchTitle, 0);
+            await Search(SearchTitle);
             SearchAgainTitle = null;
             IsBusy = false;
         }
@@ -125,14 +118,14 @@ namespace FoliCon.ViewModels
         private void PickMethod(object parameter)
         {
             string link = (string)parameter;
-            string currentPath = $"{_FolderPath}\\{Fnames[_i]}";
+            string currentPath = $"{_folderPath}\\{Fnames[_i]}";
             ImageToDownload tempImage = new ImageToDownload
             {
                 LocalPath = $"{currentPath}\\{Fnames[_i]}.png",
                 RemotePath = new Uri(link)
             };
-            Util.AddToPickedListDataTable(listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
-            imgDownloadList.Add(tempImage);
+            Util.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
+            _imgDownloadList.Add(tempImage);
             _i++;
             if (!(_i > Fnames.Count - 1))
             {
@@ -187,9 +180,9 @@ namespace FoliCon.ViewModels
         {
             DArtObject = parameters.GetValue<DArt>("dartobject");
             Fnames = parameters.GetValue<List<string>>("fnames");
-            listDataTable = parameters.GetValue<DataTable>("pickedtable");
-            imgDownloadList = parameters.GetValue<List<ImageToDownload>>("imglist");
-            _FolderPath = parameters.GetValue<string>("folderpath");
+            _listDataTable = parameters.GetValue<DataTable>("pickedtable");
+            _imgDownloadList = parameters.GetValue<List<ImageToDownload>>("imglist");
+            _folderPath = parameters.GetValue<string>("folderpath");
             PrepareForSearch();
         }
     }

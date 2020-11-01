@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for DialogControl
     /// </summary>
-    public partial class DialogControl : UserControl
+    public partial class DialogControl
     {
         public DialogControl()
         {
