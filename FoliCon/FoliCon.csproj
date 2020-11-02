@@ -8,11 +8,14 @@
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\folicon Icon.ico" />
     <None Remove="Resources\folicon Icon.png" />
     <None Remove="Resources\LoadingPosterImage.png" />
+    <None Remove="Resources\mockup cover cropped.png" />
+    <None Remove="Resources\mockup2base.png" />
     <None Remove="Resources\No-WiFi.png" />
     <None Remove="Resources\NoPosterAvailable.png" />
     <None Remove="Resources\PosterMockup.png" />
@@ -36,6 +39,8 @@
     <Resource Include="Resources\folicon Icon.ico" />
     <Resource Include="Resources\folicon Icon.png" />
     <Resource Include="Resources\LoadingPosterImage.png" />
+    <Resource Include="Resources\mockup cover cropped.png" />
+    <Resource Include="Resources\mockup2base.png" />
     <Resource Include="Resources\No-WiFi.png" />
     <Resource Include="Resources\NoPosterAvailable.png" />
     <Resource Include="Resources\PosterMockup.png" />

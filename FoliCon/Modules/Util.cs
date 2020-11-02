@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -393,7 +394,7 @@ namespace FoliCon.Modules
                 HideIcons(targetFile);
                 SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
             }
-
+            ApplyChanges(selectedFolder);
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
             return iconProcessedCount;
         }
@@ -428,7 +429,7 @@ namespace FoliCon.Modules
             else
             {
                 using var task = StaTask.Start(() =>
-                    new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                    new Views.Page1(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap());
                 task.Wait();
                 icon = task.Result;
@@ -465,16 +466,18 @@ namespace FoliCon.Modules
                 var folderSettings = new SHFOLDERCUSTOMSETTINGS
                 {
                     dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
-                    pszIconFile = icoFile
+                    pszIconFile = icoFile,
+                    dwSize =(uint) Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
+                    cchIconFile = 0
                 };
                 //FolderSettings.iIconIndex = 0;
                 var pszPath = folderPath;
                 var unused =
-                    SHGetSetFolderCustomSettings(ref folderSettings, pszPath, FCS.FCS_FORCEWRITE | FCS.FCS_READ);
+                    SHGetSetFolderCustomSettings(ref folderSettings, pszPath, FCS.FCS_FORCEWRITE);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // log exception
+                HandyControl.Controls.MessageBox.Error(e.Message);
             }
 
             ApplyChanges(folderPath);
@@ -482,8 +485,11 @@ namespace FoliCon.Modules
 
         public static void ApplyChanges(string folderPath)
         {
+            // CultureInfo ci = new CultureInfo("en-US"); 
+            // System.Threading.Thread.CurrentThread.CurrentCulture = ci
             var pidl = ILCreateFromPath(folderPath);
-            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_FLUSHNOWAIT);
+            
+            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_IDLIST,pidl.DangerousGetHandle());
         }
 
         #endregion IconUtil
