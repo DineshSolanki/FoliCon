@@ -44,10 +44,15 @@ namespace FoliCon.Modules
         {
             dialogService.ShowDialog("ApiConfig", new DialogParameters(), callBack);
         }
+        public static void ShowPosterIconConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
+        {
+            dialogService.ShowDialog("PosterIconConfig", new DialogParameters(), callBack);
+        }
 
         public static void ShowAboutBox(this IDialogService dialogService, Action<IDialogResult> callBack)
         {
             dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
         }
+        
     }
 }

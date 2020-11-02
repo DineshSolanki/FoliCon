@@ -27,6 +27,7 @@ namespace FoliCon
             containerRegistry.RegisterDialog<SearchResult, SearchResultViewModel>("SearchResult");
             containerRegistry.RegisterDialog<ProSearchResult, ProSearchResultViewModel>("ProSearchResult");
             containerRegistry.RegisterDialog<ApiConfiguration, ApiConfigurationViewModel>("ApiConfig");
+            containerRegistry.RegisterDialog<posterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
             containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         }
     }

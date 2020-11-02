@@ -56,6 +56,8 @@
                               IsChecked="{Binding IgnoreAmbiguousTitle}" IsCheckable="True"
                               ToolTip="Skip ambigous titles from search" />
                     <Separator />
+                    <MenuItem x:Name="MenuPosterIconConfigBtn" Header="_Change Poster Icon overlay"
+                              Command="{Binding PosterIconConfigCommand}" />
                     <MenuItem x:Name="MenuApiConfigBtn" Header="_API keys Configuration"
                               Command="{Binding ApiConfigCommand}" />
                     <Separator />

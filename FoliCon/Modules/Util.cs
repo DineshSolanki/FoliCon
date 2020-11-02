@@ -428,8 +428,9 @@ namespace FoliCon.Modules
             }
             else
             {
+                //TODO: Change here
                 using var task = StaTask.Start(() =>
-                    new Views.Page1(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                    new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap());
                 task.Wait();
                 icon = task.Result;

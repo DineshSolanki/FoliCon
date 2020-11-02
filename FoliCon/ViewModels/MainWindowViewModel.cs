@@ -140,6 +140,7 @@ namespace FoliCon.ViewModels
         #region SettingMenu
 
         public DelegateCommand ApiConfigCommand { get; set; }
+        public DelegateCommand PosterIconConfigCommand { get; set; }
 
         #endregion SettingMenu
 
@@ -364,6 +365,7 @@ namespace FoliCon.ViewModels
         private void InitializeDelegates()
         {
             ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(r => { }); });
+            PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(r => { }); });
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
             LoadCommand = new DelegateCommand(LoadMethod);

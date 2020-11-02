@@ -18,6 +18,8 @@
     <None Remove="Resources\mockup2base.png" />
     <None Remove="Resources\No-WiFi.png" />
     <None Remove="Resources\NoPosterAvailable.png" />
+    <None Remove="Resources\PosterIcon.ico" />
+    <None Remove="Resources\PosterIconAlt.ico" />
     <None Remove="Resources\PosterMockup.png" />
     <None Remove="Resources\shield.png" />
     <None Remove="Resources\Strong-WiFi.png" />
@@ -43,6 +45,8 @@
     <Resource Include="Resources\mockup2base.png" />
     <Resource Include="Resources\No-WiFi.png" />
     <Resource Include="Resources\NoPosterAvailable.png" />
+    <Resource Include="Resources\PosterIcon.ico" />
+    <Resource Include="Resources\PosterIconAlt.ico" />
     <Resource Include="Resources\PosterMockup.png" />
     <Resource Include="Resources\shield.png" />
     <Resource Include="Resources\Strong-WiFi.png" />
