@@ -429,9 +429,18 @@ namespace FoliCon.Modules
             else
             {
                 //TODO: Change here
-                using var task = StaTask.Start(() =>
-                    new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
-                        .RenderToBitmap());
+                using var task = GlobalVariables.IconOverlayType switch
+                {
+                    IconOverlay.Legacy => StaTask.Start(() =>
+                        new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                            .RenderToBitmap()),
+                    IconOverlay.Alternate => StaTask.Start(() =>
+                        new Views.PosterIconAlt(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                            .RenderToBitmap()),
+                    _ => StaTask.Start(() =>
+                        new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                            .RenderToBitmap())
+                };
                 task.Wait();
                 icon = task.Result;
             }

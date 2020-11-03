@@ -9,9 +9,9 @@ namespace FoliCon.Views
     /// <summary>
     /// Interaction logic for PosterIcon
     /// </summary>
-    public partial class Page1
+    public partial class PosterIconAlt
     {
-        public Page1(object dataContext)
+        public PosterIconAlt(object dataContext)
         {
             DataContext = dataContext;
             InitializeComponent();

@@ -9,6 +9,8 @@
     <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
+    <PackageVersion>3.1.0</PackageVersion>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\folicon Icon.ico" />

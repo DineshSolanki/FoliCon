@@ -1,18 +1,20 @@
 ﻿using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using FoliCon.Models;
 using Prism.Commands;
 
 namespace FoliCon.ViewModels
 {
     public class PosterIconConfigViewModel : BindableBase, IDialogAware
     {
-        private string _iconOverlay = "PosterLegacy";
+        private string _iconOverlay = "Legacy";
         public DelegateCommand<object> IconOverlayChangedCommand { get; private set; }
+
         public PosterIconConfigViewModel()
         {
             Services.Tracker.Configure<PosterIconConfigViewModel>()
-                .Property(p => p.IconOverlay, defaultValue: "PosterLegacy")
+                .Property(p => p.IconOverlay, defaultValue: "Legacy")
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
             IconOverlayChangedCommand = new DelegateCommand<object>(delegate(object parameter)
@@ -21,8 +23,19 @@ namespace FoliCon.ViewModels
             });
         }
 
-        public string IconOverlay { get => _iconOverlay;
-            set => SetProperty(ref _iconOverlay, value);
+        public string IconOverlay
+        {
+            get => _iconOverlay;
+            set
+            {
+                SetProperty(ref _iconOverlay, value);
+                GlobalVariables.IconOverlayType = value switch
+                {
+                    "Legacy" => Models.IconOverlay.Legacy,
+                    "Alternate" => Models.IconOverlay.Alternate,
+                    _ => GlobalVariables.IconOverlayType
+                };
+            }
         }
 
         public string Title => "Select Poster Icon overlay";

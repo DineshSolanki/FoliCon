@@ -302,7 +302,7 @@ namespace FoliCon.ViewModels
                     {
                         if (resultCount > 1)
                         {
-                            if (!IgnoreAmbiguousTitle)
+                            if (!IsSkipAmbiguous)
                             {
                                 _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
                                     response, _tmdbObject, _igdbObject,

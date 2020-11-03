@@ -8,7 +8,7 @@ namespace FoliCon.ViewModels
 {
     public class AboutBoxViewModel : BindableBase, IDialogAware
     {
-        private string _title = "Folicon v3.0";
+        private string _title = "Folicon v3.1";
         private string _logo = "/Resources/folicon Icon.png";
 
         private string _description = "FoliCon is more than just a typical folder Icon changer"
@@ -20,7 +20,7 @@ namespace FoliCon.ViewModels
         private string _license = "GNU General Public License v3.0";
         private string _version = AssemblyInfo.GetVersion();
 
-        //These properties can also be initlized from Parameters for better reusability. or From assembly
+        //These properties can also be initialized from Parameters for better re-usability. or From assembly
         public AboutBoxViewModel()
         {
             WebsiteClickCommand = new DelegateCommand(delegate { Util.StartProcess(Website); });
