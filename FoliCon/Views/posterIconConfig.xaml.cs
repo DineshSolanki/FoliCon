@@ -1,13 +1,11 @@
-﻿using System.Windows.Controls;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for posterIconConfig
     /// </summary>
-    public partial class posterIconConfig : UserControl
+    public partial class PosterIconConfig
     {
-        public posterIconConfig()
+        public PosterIconConfig()
         {
             InitializeComponent();
         }
