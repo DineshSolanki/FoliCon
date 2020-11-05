@@ -210,7 +210,7 @@ namespace FoliCon.Modules
 
         public static VistaFolderBrowserDialog NewFolderBrowserDialog(string description)
         {
-            var folderBrowser = new VistaFolderBrowserDialog()
+            var folderBrowser = new VistaFolderBrowserDialog
             {
                 Description = description,
                 UseDescriptionForTitle = true

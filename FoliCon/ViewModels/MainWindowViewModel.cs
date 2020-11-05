@@ -60,7 +60,6 @@ namespace FoliCon.ViewModels
         private readonly IDialogService _dialogService;
         public StatusBarData StatusBarProperties { get; set; }
         public ProgressBarData BusyIndicatorProperties { get; set; }
-        public bool IgnoreAmbiguousTitle { get; set; }
         public List<string> Fnames { get; set; }
 
         public bool IsMakeEnabled
@@ -258,7 +257,7 @@ namespace FoliCon.ViewModels
             {
                 var fullFolderPath = SelectedFolder + "\\" + itemTitle;
                 var dialogResult = false;
-                StatusBarProperties.AppStatus = "Searching...";
+                StatusBarProperties.AppStatus = $"Searching...{itemTitle}";
                 // TODO: Set cursor to WAIT.
                 var isAutoPicked = false;
                 var searchTitle = TitleCleaner.Clean(itemTitle);
@@ -286,16 +285,30 @@ namespace FoliCon.ViewModels
                         break;
                     case 1:
                     {
-                        if (SearchMode == "Game")
+                        try
                         {
-                            _igdbObject.ResultPicked(response.Result[0], fullFolderPath);
+                            if (SearchMode == "Game")
+                            {
+                                _igdbObject.ResultPicked(response.Result[0], fullFolderPath);
+                            }
+                            else
+                            {
+                                _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType, fullFolderPath);
+                            }
+                            isAutoPicked = true;
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType, fullFolderPath);
-                        }
+                            if (ex.Message == "NoPoster")
+                            {
+                                var p = new DialogParameters {
+                                    {"title","No Poster" }, {"message", "No poster found."}
+                                };
+                                _dialogService.ShowDialog("MessageBox", p, result => { });
+                            }
 
-                        isAutoPicked = true;
+                            isAutoPicked = false;
+                        }
                         break;
                     }
                     default:
