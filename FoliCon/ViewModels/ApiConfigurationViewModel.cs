@@ -23,10 +23,10 @@ namespace FoliCon.ViewModels
         public string IgdbClientId { get => _igdbClientId; set => SetProperty(ref _igdbClientId, value); }
         public string IgdbClientSecret { get => _igdbClientSecret; set => SetProperty(ref _igdbClientSecret, value); }
         private DelegateCommand<string> _closeDialogCommand;
-        public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand SaveCommand { get; }
 
         public DelegateCommand<string> CloseDialogCommand =>
-             _closeDialogCommand ?? (_closeDialogCommand = new DelegateCommand<string>(CloseDialog));
+             _closeDialogCommand ??= new DelegateCommand<string>(CloseDialog);
 
         public ApiConfigurationViewModel()
         {
@@ -42,7 +42,7 @@ namespace FoliCon.ViewModels
             else
             {
                 Util.WriteApiConfiguration(TmdbKey, IgdbClientId,IgdbClientSecret, DArtClient, DArtClientId);
-                MessageBox.Success("API configuration Saved.", "Sucess");
+                MessageBox.Success("API configuration Saved.", "Success");
                 CloseDialog("true");
             }
         }
@@ -53,12 +53,12 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }

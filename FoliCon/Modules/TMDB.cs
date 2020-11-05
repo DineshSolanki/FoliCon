@@ -1,11 +1,12 @@
-﻿using FoliCon.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using FoliCon.Models;
+using TMDbLib.Client;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 
@@ -17,7 +18,7 @@ namespace FoliCon.Modules
         private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
         private readonly List<ImageToDownload> _imgDownloadList;
         private readonly DataTable _listDataTable;
-        private readonly TMDbLib.Client.TMDbClient _serviceClient;
+        private readonly TMDbClient _serviceClient;
 
         /// <summary>
         /// TMDB Helper Class for Working with IGDB API efficiently for this project.
@@ -25,7 +26,7 @@ namespace FoliCon.Modules
         /// <param name="serviceClient">Initialized TMDB Client</param>
         /// <param name="listDataTable">DataTable that stores all the Picked Results.</param>
         /// <param name="imgDownloadList">List that stores all the images to download.</param>
-        public Tmdb(ref TMDbLib.Client.TMDbClient serviceClient, ref DataTable listDataTable,
+        public Tmdb(ref TMDbClient serviceClient, ref DataTable listDataTable,
             ref List<ImageToDownload> imgDownloadList)
         {
             _listDataTable = listDataTable;
@@ -40,10 +41,10 @@ namespace FoliCon.Modules
             foreach (var item in result.Results)
             {
                 var mediaName = item.Name;
-                var year = "";
-                var rating = "";
-                var overview = "";
-                var poster = Convert.ToString((item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null);
+                const string year = "";
+                const string rating = "";
+                const string overview = "";
+                var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null);
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
             }
 
@@ -60,7 +61,7 @@ namespace FoliCon.Modules
                 var year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString() : "";
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
-                var poster = (item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null;
+                var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
             }
 
@@ -85,20 +86,20 @@ namespace FoliCon.Modules
                     {
                         var res = (SearchTv) item;
                         mediaName = res.Name;
-                        year = (res.FirstAirDate != null) ? res.FirstAirDate.Value.Year.ToString() : "";
+                        year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString() : "";
                         rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
                         overview = res.Overview;
-                        poster = (res.PosterPath != null) ? SmallPosterBase + res.PosterPath : null;
+                        poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
                         break;
                     }
                     case MediaType.Movie:
                     {
                         var res = (SearchMovie) item;
                         mediaName = res.Title;
-                        year = (res.ReleaseDate != null) ? res.ReleaseDate.Value.Year.ToString() : "";
+                        year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString() : "";
                         rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
                         overview = res.Overview;
-                        poster = (res.PosterPath != null) ? SmallPosterBase + res.PosterPath : null;
+                        poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
                         break;
                     }
                 }
@@ -118,7 +119,7 @@ namespace FoliCon.Modules
                 var year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString() : "";
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
-                var poster = (item.PosterPath != null) ? SmallPosterBase + item.PosterPath : null;
+                var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
             }
 
@@ -193,7 +194,7 @@ namespace FoliCon.Modules
                 }
             }
 
-            var tempImage = new ImageToDownload()
+            var tempImage = new ImageToDownload
             {
                 LocalPath = localPosterPath,
                 RemotePath = new Uri(posterUrl)
@@ -235,7 +236,7 @@ namespace FoliCon.Modules
                 mediaType = MediaTypes.MTV;
             }
 
-            var response = new ResultResponse()
+            var response = new ResultResponse
             {
                 Result = r,
                 MediaType = mediaType

@@ -1,9 +1,4 @@
-﻿using FoliCon.Models;
-using HandyControl.Controls;
-using HandyControl.Data;
-using IGDB.Models;
-using Ookii.Dialogs.Wpf;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,10 +16,19 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using FoliCon.Models;
+using FoliCon.Views;
+using HandyControl.Controls;
+using HandyControl.Data;
+using IGDB.Models;
+using Ookii.Dialogs.Wpf;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
+using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
+using MessageBox = HandyControl.Controls.MessageBox;
+using PosterIcon = FoliCon.Models.PosterIcon;
 
 namespace FoliCon.Modules
 {
@@ -38,7 +42,7 @@ namespace FoliCon.Modules
                     "https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
                 if (ver.IsExistNewVersion)
                 {
-                    var info = new GrowlInfo()
+                    var info = new GrowlInfo
                     {
                         Message = $"New Version Found!\n Changelog:{ver.Changelog}",
                         ConfirmStr = "Update Now",
@@ -49,13 +53,13 @@ namespace FoliCon.Modules
                             if (isConfirmed)
                                 StartProcess(ver.Url);
                             return true;
-                        },
+                        }
                     };
                     Growl.AskGlobal(info);
                 }
                 else
                 {
-                    var info = new GrowlInfo()
+                    var info = new GrowlInfo
                     {
                         Message = "Great! you are using the latest version",
                         ShowDateTime = false,
@@ -64,7 +68,7 @@ namespace FoliCon.Modules
                     Growl.InfoGlobal(info);
                 }
             }
-            else Growl.ErrorGlobal(new GrowlInfo() {Message = "Network not available!", ShowDateTime = false});
+            else Growl.ErrorGlobal(new GrowlInfo {Message = "Network not available!", ShowDateTime = false});
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace FoliCon.Modules
         /// <param name="path">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
         public static void StartProcess(string path)
         {
-            Process.Start(new ProcessStartInfo()
+            Process.Start(new ProcessStartInfo
             {
                 FileName = path,
                 UseShellExecute = true,
@@ -136,7 +140,7 @@ namespace FoliCon.Modules
 
         public static void RefreshIconCache()
         {
-            _ = Vanara.PInvoke.Kernel32.Wow64DisableWow64FsRedirection(out _);
+            _ = Kernel32.Wow64DisableWow64FsRedirection(out _);
             var objProcess = new Process
             {
                 StartInfo =
@@ -248,7 +252,6 @@ namespace FoliCon.Modules
 
         public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query)
         {
-            System.Diagnostics.Contracts.Contract.Requires(result != null);
             var source = new ObservableCollection<ListItem>();
 
             if (result.MediaType == MediaTypes.TV)
@@ -342,7 +345,7 @@ namespace FoliCon.Modules
         {
             var myRequest = (HttpWebRequest) WebRequest.Create(new Uri(url));
             myRequest.Method = "GET";
-            var myResponse = (HttpWebResponse) (await myRequest.GetResponseAsync().ConfigureAwait(false));
+            var myResponse = (HttpWebResponse) await myRequest.GetResponseAsync().ConfigureAwait(false);
             var bmp = new Bitmap(myResponse.GetResponseStream());
             myResponse.Close();
             return bmp;
@@ -380,8 +383,8 @@ namespace FoliCon.Modules
                 if (File.Exists(selectedFolder + "\\" + i + "\\" + i + ".png") && !File.Exists(targetFile))
                 {
                     var rating = pickedListDataTable.AsEnumerable()
-                        .Where((p) => p["FolderName"].Equals(tempI))
-                        .Select((p) => p["Rating"].ToString())
+                        .Where(p => p["FolderName"].Equals(tempI))
+                        .Select(p => p["Rating"].ToString())
                         .FirstOrDefault();
 
                     BuildFolderIco(iconMode, selectedFolder + "\\" + i + "\\" + i + ".png", rating, ratingVisibility,
@@ -424,7 +427,7 @@ namespace FoliCon.Modules
             Bitmap icon;
             if (iconMode == "Professional")
             {
-                icon = (new ProIcon(filmFolderPath)).RenderToBitmap();
+                icon = new ProIcon(filmFolderPath).RenderToBitmap();
             }
             else
             {
@@ -435,7 +438,7 @@ namespace FoliCon.Modules
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap()),
                     IconOverlay.Alternate => StaTask.Start(() =>
-                        new Views.PosterIconAlt(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                        new PosterIconAlt(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap()),
                     _ => StaTask.Start(() =>
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
@@ -487,7 +490,7 @@ namespace FoliCon.Modules
             }
             catch (Exception e)
             {
-                HandyControl.Controls.MessageBox.Error(e.Message);
+                MessageBox.Error(e.Message);
             }
 
             ApplyChanges(folderPath);
@@ -499,7 +502,7 @@ namespace FoliCon.Modules
             // System.Threading.Thread.CurrentThread.CurrentCulture = ci
             var pidl = ILCreateFromPath(folderPath);
             
-            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_IDLIST,pidl.DangerousGetHandle());
+            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_IDLIST);
         }
 
         #endregion IconUtil

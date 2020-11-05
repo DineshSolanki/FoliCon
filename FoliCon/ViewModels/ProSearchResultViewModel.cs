@@ -42,10 +42,7 @@ namespace FoliCon.ViewModels
 
         public bool IsSearchFocused
         {
-            get
-            {
-                return _isSearchFocused;
-            }
+            get => _isSearchFocused;
             set
             {
                 if (_isSearchFocused == value)
@@ -88,29 +85,36 @@ namespace FoliCon.ViewModels
 
         private async Task Search(string query, int offset = 0)
         {
-            var searchResult = await DArtObject.Browse(query, offset);
-            if (searchResult.Results.Length > 0)
+            while (true)
             {
-                foreach (var item in searchResult.Results)
+                var searchResult = await DArtObject.Browse(query, offset);
+                if (searchResult.Results.Length > 0)
                 {
-                    var bm = await Util.GetBitmapFromUrlAsync(item.Thumbs[0].Src);
-                    ImageUrl.Add(new DArtImageList(item.Content.Src, Util.LoadBitmap(bm)));
-                    bm.Dispose();
-                    if (_stopSearch)
+                    foreach (var item in searchResult.Results)
                     {
-                        return;
+                        var bm = await Util.GetBitmapFromUrlAsync(item.Thumbs[0].Src);
+                        ImageUrl.Add(new DArtImageList(item.Content.Src, Util.LoadBitmap(bm)));
+                        bm.Dispose();
+                        if (_stopSearch)
+                        {
+                            return;
+                        }
+                    }
+
+                    if (searchResult.HasMore && searchResult.NextOffset <= 30)
+                    {
+                        offset = searchResult.NextOffset;
+                        continue;
                     }
                 }
-                if (searchResult.HasMore && searchResult.NextOffset <= 30)
+                else
                 {
-                    await Search(query, searchResult.NextOffset);
+                    IsBusy = false;
+                    MessageBox.Warning("No result Found, Try to search again with correct title", "No Result"); //TODO: Solve exception here
+                    IsSearchFocused = true;
                 }
-            }
-            else
-            {
-                IsBusy = false;
-                MessageBox.Warning("No result Found, Try to search again with correct title", "No Result"); //TODO: Solve exception here
-                IsSearchFocused = true;
+
+                break;
             }
         }
 
@@ -151,12 +155,12 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }

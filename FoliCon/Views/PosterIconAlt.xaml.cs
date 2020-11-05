@@ -19,7 +19,7 @@ namespace FoliCon.Views
 
         public Bitmap RenderToBitmap()
         {
-            return RenderTargetBitmapTo32bppArgb(AsRenderTargetBitmap());
+            return RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
         }
 
         private RenderTargetBitmap AsRenderTargetBitmap()
@@ -34,7 +34,7 @@ namespace FoliCon.Views
             return rtb;
         }
 
-        private Bitmap RenderTargetBitmapTo32bppArgb(RenderTargetBitmap rtb)
+        private static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)
         {
             var stream = new MemoryStream();
             BitmapEncoder encoder = new PngBitmapEncoder();

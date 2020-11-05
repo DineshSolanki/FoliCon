@@ -1,11 +1,11 @@
 ﻿namespace FoliCon.Views
 {
     /// <summary>
-    /// Interaction logic for NotficationControl
+    /// Interaction logic for NotificationControl
     /// </summary>
-    public partial class NotficationControl
+    public partial class NotificationControl
     {
-        public NotficationControl()
+        public NotificationControl()
         {
             InitializeComponent();
         }

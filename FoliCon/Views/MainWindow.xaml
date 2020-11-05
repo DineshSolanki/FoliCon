@@ -52,9 +52,9 @@
                     <MenuItem x:Name="ChkIsPosterOverlayVisible" Header="Use Poster overlay"
                               IsChecked="{Binding IsPosterMockupUsed}" IsCheckable="True"
                               ToolTip="Controls whether to use poster Overlay or Plain Posters" />
-                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="Ignore Ambigous title"
+                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="Ignore Ambiguous title"
                               IsChecked="{Binding IsSkipAmbiguous}" IsCheckable="True"
-                              ToolTip="Skip ambigous titles from search" />
+                              ToolTip="Skip ambiguous titles from search" />
                     <Separator />
                     <MenuItem x:Name="MenuPosterIconConfigBtn" Header="_Change Poster Icon overlay"
                               Command="{Binding PosterIconConfigCommand}" />

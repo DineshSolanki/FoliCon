@@ -8,8 +8,8 @@ namespace FoliCon.ViewModels
 {
     public class PosterIconConfigViewModel : BindableBase, IDialogAware
     {
-        private string _iconOverlay = "Legacy";
-        public DelegateCommand<object> IconOverlayChangedCommand { get; private set; }
+        private string _iconOverlay;
+        public DelegateCommand<object> IconOverlayChangedCommand { get; }
 
         public PosterIconConfigViewModel()
         {
@@ -46,12 +46,12 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }

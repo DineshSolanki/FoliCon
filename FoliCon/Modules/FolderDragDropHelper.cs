@@ -59,8 +59,7 @@ namespace FoliCon.Modules
 
         private static void OnDrop(object sender, DragEventArgs dragEventArgs)
         {
-            var d = sender as DependencyObject;
-            if (d == null) return;
+            if (!(sender is DependencyObject d)) return;
             var target = d.GetValue(FileDragDropTargetProperty);
             if (target is IFileDragDropTarget fileTarget)
             {

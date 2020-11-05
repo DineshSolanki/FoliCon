@@ -53,10 +53,10 @@ namespace FoliCon.ViewModels
 
         #region Commands
 
-        public DelegateCommand PickCommand { get; private set; }
-        public DelegateCommand SkipCommand { get; private set; }
-        public DelegateCommand SkipAllCommand { get; private set; }
-        public DelegateCommand SearchAgainCommand { get; private set; }
+        public DelegateCommand PickCommand { get; }
+        public DelegateCommand SkipCommand { get; }
+        public DelegateCommand SkipAllCommand { get; }
+        public DelegateCommand SearchAgainCommand { get; }
 
         #endregion Commands
 
@@ -72,12 +72,12 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }
@@ -114,15 +114,7 @@ namespace FoliCon.ViewModels
                 IsBusy = true;
             }
 
-            string titleToSearch;
-            if (SearchAgainTitle != null)
-            {
-                titleToSearch = SearchAgainTitle;
-            }
-            else
-            {
-                titleToSearch = SearchTitle;
-            }
+            var titleToSearch = SearchAgainTitle ?? SearchTitle;
             BusyContent = "Searching for " + titleToSearch + "...";
             ResultResponse result;
             if (SearchMode == MediaTypes.Game)
@@ -145,8 +137,8 @@ namespace FoliCon.ViewModels
         private void LoadData()
         {
             if (SearchResult != null
-                && ((SearchMode == "Game") ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
-                && ((SearchMode == "Game") ? SearchResult?.Result.Length : SearchResult?.Result.TotalResults) != 0)
+                && (SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
+                && (SearchMode == "Game" ? SearchResult?.Result.Length : SearchResult?.Result.TotalResults) != 0)
             {
                 ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, SearchTitle);
                 if(ResultListViewData.Data.Count!=0)
@@ -169,32 +161,30 @@ namespace FoliCon.ViewModels
 
         private void PickMethod()
         {
-            if (ResultListViewData.SelectedItem != null)
+            if (ResultListViewData.SelectedItem == null) return;
+            var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
+            try
             {
-                var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
-                try
+                if (SearchMode == MediaTypes.Game)
                 {
-                    if (SearchMode == MediaTypes.Game)
-                    {
-                        _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath);
-                    }
-                    else
-                    {
-                        _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType, _fullFolderPath);
-                    }
+                    _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath);
                 }
-                catch (Exception ex)
+                else
                 {
-                    if (ex.Message == "NoPoster")
-                    {
-                        var p = new DialogParameters {
-                            {"title","No Poster" }, {"message", "No poster found."}
-                            };
-                        _dialogService.ShowDialog("MessageBox", p, result => { });
-                    }
+                    _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType, _fullFolderPath);
                 }
-                CloseDialog("true");
             }
+            catch (Exception ex)
+            {
+                if (ex.Message == "NoPoster")
+                {
+                    var p = new DialogParameters {
+                        {"title","No Poster" }, {"message", "No poster found."}
+                    };
+                    _dialogService.ShowDialog("MessageBox", p, result => { });
+                }
+            }
+            CloseDialog("true");
         }
     }
 }

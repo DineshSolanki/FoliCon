@@ -261,10 +261,10 @@ namespace FoliCon.ViewModels
                 // TODO: Set cursor to WAIT.
                 var isAutoPicked = false;
                 var searchTitle = TitleCleaner.Clean(itemTitle);
-                var response = (SearchMode == "Game")
+                var response = SearchMode == "Game"
                     ? await _igdbObject.SearchGameAsync(searchTitle)
                     : await _tmdbObject.SearchAsync(searchTitle, SearchMode);
-                int resultCount = (SearchMode == "Game") ? response.Result.Length : response.Result.TotalResults;
+                int resultCount = SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
                 switch (resultCount)
                 {
                     case 0:
@@ -338,7 +338,7 @@ namespace FoliCon.ViewModels
 
                 if (isAutoPicked || dialogResult)
                 {
-                    FinalListViewData.Data.Add(new ListItem()
+                    FinalListViewData.Data.Add(new ListItem
                     {
                         Title = PickedListDataTable.Rows[^1]["Title"].ToString(),
                         Year = PickedListDataTable.Rows[^1]["Year"].ToString(),
@@ -365,7 +365,7 @@ namespace FoliCon.ViewModels
             if (PickedListDataTable.Rows.Count <= 0) return;
             foreach (DataRow v in PickedListDataTable.Rows)
             {
-                FinalListViewData.Data.Add(new ListItem()
+                FinalListViewData.Data.Add(new ListItem
                 {
                     Title = v["Title"].ToString(),
                     Year = v["Year"].ToString(),
@@ -418,7 +418,7 @@ namespace FoliCon.ViewModels
                 TotalIcons = 0,
                 AppStatus = "IDLE"
             };
-            FinalListViewData = new ListViewData()
+            FinalListViewData = new ListViewData
             {
                 Data = new ObservableCollection<ListItem>(),
                 SelectedItem = new ListItem(),
@@ -565,7 +565,7 @@ namespace FoliCon.ViewModels
 
             StatusBarProperties.ProcessedIcon = iconProcessedCount;
             IsBusy = false;
-            var info = new GrowlInfo()
+            var info = new GrowlInfo
             {
                 Message = $"{iconProcessedCount} Icon created",
                 ShowDateTime = false,

@@ -16,28 +16,28 @@ namespace FoliCon.ViewModels
 
         public string Message
         {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
+            get => _message;
+            set => SetProperty(ref _message, value);
         }
 
         private string _title = "Notification";
 
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         public event Action<IDialogResult> RequestClose;
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }
@@ -59,7 +59,7 @@ namespace FoliCon.ViewModels
         public virtual void OnDialogOpened(IDialogParameters parameters)
         {
             Message = parameters.GetValue<string>("message");
-            Title = parameters.GetValue<String>("title");
+            Title = parameters.GetValue<string>("title");
         }
     }
 }

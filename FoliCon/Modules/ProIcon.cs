@@ -15,21 +15,17 @@ namespace FoliCon.Modules
 
         public Bitmap RenderToBitmap()
         {
-            return RenderTargetBitmapTo32bppArgb(AsRenderTargetBitmap());
+            return RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
         }
 
         private BitmapSource AsRenderTargetBitmap()
         {
-            using (var img = new Bitmap(_filePath))
-            {
-                using (var icon = new Bitmap(img, 256, 256))
-                {
-                    return Util.LoadBitmap(icon);
-                }
-            }
+            using var img = new Bitmap(_filePath);
+            using var icon = new Bitmap(img, 256, 256);
+            return Util.LoadBitmap(icon);
         }
 
-        private Bitmap RenderTargetBitmapTo32bppArgb(BitmapSource rtb)
+        private static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)
         {
             var stream = new MemoryStream();
             BitmapEncoder encoder = new PngBitmapEncoder();

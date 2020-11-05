@@ -33,7 +33,7 @@ namespace FoliCon.Modules
         public DArt(string clientSecret, string clientId)
         {
             Services.Tracker.Configure<DArt>()
-                .Property(p => p._clientAccessToken)
+                .Property(p => p.ClientAccessToken)
                 .PersistOn(nameof(PropertyChanged));
             ClientSecret = clientSecret;
             ClientId = clientId;
@@ -43,37 +43,27 @@ namespace FoliCon.Modules
 
         public async void GetClientAccessTokenAsync()
         {
-            if (!string.IsNullOrEmpty(_clientAccessToken))
+            if (!string.IsNullOrEmpty(ClientAccessToken))
             {
-                if (!(await IsTokenValidAsync(_clientAccessToken)))
+                if (!await IsTokenValidAsync(ClientAccessToken))
                 {
-                    _clientAccessToken = await GenerateNewAccessToken();
+                    ClientAccessToken = await GenerateNewAccessToken();
                 }
             }
             else
             {
-                _clientAccessToken = await GenerateNewAccessToken();
+                ClientAccessToken = await GenerateNewAccessToken();
             }
         }
 
         public async Task<bool> IsTokenValidAsync(string clientAccessToken)
         {
             var url = "https://www.deviantart.com/api/v1/oauth2/placebo?access_token=" + clientAccessToken;
-            DArtTokenResponse tokenResponse;
-            using (var response = await Services.HttpC.GetAsync(new Uri(url)))
-            {
-                var jsonData = await response.Content.ReadAsStringAsync();
-                tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
-            }
+            using var response = await Services.HttpC.GetAsync(new Uri(url));
+            var jsonData = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
-            if (tokenResponse.Status == "success")
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return tokenResponse.Status == "success";
         }
 
         private async Task<string> GenerateNewAccessToken()
@@ -93,7 +83,7 @@ namespace FoliCon.Modules
             GetClientAccessTokenAsync();
             var url = "https://www.deviantart.com/api/v1/oauth2/browse/popular?timerange=alltime&offset=" + offset +
                       "&category_path=customization%2ficons%2fos%2fwin&q=" + query + " folder icon" +
-                      "&limit=20&access_token=" + _clientAccessToken;
+                      "&limit=20&access_token=" + ClientAccessToken;
             using var response = await Services.HttpC.GetAsync(new Uri(url));
             var jsonData = await response.Content.ReadAsStringAsync();
             var serializerSettings = new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore};

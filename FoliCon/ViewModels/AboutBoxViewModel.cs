@@ -33,7 +33,7 @@ namespace FoliCon.ViewModels
         public string License { get => _license; set => SetProperty(ref _license, value); }
         public string Website { get => _website; set => SetProperty(ref _website, value); }
         public string Version { get => _version; set => SetProperty(ref _version, value); }
-        public DelegateCommand WebsiteClickCommand { get; private set; }
+        public DelegateCommand WebsiteClickCommand { get; }
 
         #region DialogMethods
 
@@ -41,12 +41,12 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = ButtonResult.None;
-
-            if (parameter?.ToLower() == "true")
-                result = ButtonResult.OK;
-            else if (parameter?.ToLower() == "false")
-                result = ButtonResult.Cancel;
+            var result = parameter?.ToLower() switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
 
             RaiseRequestClose(new DialogResult(result));
         }
