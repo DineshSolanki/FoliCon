@@ -148,7 +148,7 @@ namespace FoliCon.ViewModels
             {
                 IsSearchFocused = true;
             }
-            FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
+            FileList = new ArrayList {Util.GetFileNamesFromFolder(_fullFolderPath)};
         }
 
         private void SearchAgainMethod()

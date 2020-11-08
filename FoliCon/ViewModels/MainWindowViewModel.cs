@@ -144,6 +144,7 @@ namespace FoliCon.ViewModels
         #endregion SettingMenu
 
         public DelegateCommand RestartExCommand { get; } = new DelegateCommand(Util.RefreshIconCache);
+        public DelegateCommand CustomIconsCommand { get; private set;}
         public DelegateCommand DeleteIconsCommand { get; private set; }
 
         public DelegateCommand HelpCommand { get; } = new DelegateCommand(delegate
@@ -381,6 +382,13 @@ namespace FoliCon.ViewModels
             PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(r => { }); });
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
+            CustomIconsCommand = new DelegateCommand(delegate
+            {
+                _dialogService.ShowCustomIconWindow(
+                    r => { }
+                    ); 
+            }
+            );
             LoadCommand = new DelegateCommand(LoadMethod);
             SearchAndMakeCommand = new DelegateCommand(SearchAndMakeMethod);
             IconModeChangedCommand = new DelegateCommand<object>(delegate(object parameter)

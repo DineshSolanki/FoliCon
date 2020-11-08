@@ -26,6 +26,10 @@ namespace FoliCon.Modules
             };
             dialogService.ShowDialog("SearchResult", p, callBack);
         }
+        public static void ShowCustomIconWindow(this IDialogService dialogService, Action<IDialogResult> callBack)
+        {
+            dialogService.ShowDialog("CustomIcon", new DialogParameters(), callBack);
+        }
 
         public static void ShowProSearchResult(this IDialogService dialogService, string folderPath,
             List<string> fnames, DataTable pickedTable, List<ImageToDownload> imgList, DArt dartObject,

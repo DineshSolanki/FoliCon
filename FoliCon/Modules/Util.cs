@@ -85,6 +85,11 @@ namespace FoliCon.Modules
             });
         }
 
+        public static bool IsPngOrIco(string f) =>
+            f != null && (
+                f.EndsWith(".png", StringComparison.Ordinal) ||
+                f.EndsWith(".ico", StringComparison.Ordinal));
+
         public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
             if (!(imageSource is BitmapSource bitmapSource)) return null;
@@ -300,15 +305,11 @@ namespace FoliCon.Modules
         /// </summary>
         /// <param name="folder">Folder to Get File from.</param>
         /// <returns>ArrayList with file Names.</returns>
-        public static ArrayList GetFileNamesFromFolder(string folder)
+        public static List<string> GetFileNamesFromFolder(string folder)
         {
-            var itemList = new ArrayList();
+            var itemList = new List<string>();
             if (string.IsNullOrEmpty(folder)) return itemList;
-            foreach (var file in Directory.GetFiles(folder))
-            {
-                itemList.Add(Path.GetFileName(file));
-            }
-
+            itemList.AddRange(Directory.GetFiles(folder).Select(Path.GetFileName));
             return itemList;
         }
 
