@@ -35,7 +35,8 @@ To compile this Source you need to Create "AppConfig.json" file with structure g
   "DevClientID": "Your_DeviantArt_Client_ID_here",
   "DevClientSecret": "Your_DeviantArt_Client_Secret_here",
   "TMDBKey": "Your_TMDB_API_here",
-  "IGDBKey": "Your_IGDB_API_here"
+  "IgdbClientId": "Your_IGDB_Client_ID_here",
+  "IgdbClientSecret": "Your_Client_Secret_API_here"
 }
 ```
 ### Prerequisites (these are for compiling the source, to only use the application, you can download latest release)
@@ -66,6 +67,7 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 ## Acknowledgments
 
 * A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
+* Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming) for His Poster design used as an alternate Poster Icon design starting with v3.1.
 * <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
 * All Professional Mode icons are fetched from publicly available galaries of DeviantArt, and all rights reserves to their respective owners.

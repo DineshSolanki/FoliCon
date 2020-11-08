@@ -4,6 +4,7 @@
     <url>https://github.com/DineshSolanki/FoliCon/releases</url>
     <changelog>
     Added new Poster Icon design.
-      Updated IGDB Api
+      Updated IGDB Api.
+    Fixed crash on No poster for autopicked titles.
     </changelog>
   </AppVersion>
