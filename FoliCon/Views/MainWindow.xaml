@@ -69,7 +69,7 @@
                           ToolTip="This will delete existing icons from all subFolders"
                           Command="{Binding DeleteIconsCommand}" />
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="you already have icons?"
-                          ToolTip="Let you set your own icons."
+                          ToolTip="Let you set your own icons(only png and ico allowed)."
                           Command="{Binding CustomIconsCommand}" />
                 <MenuItem Header="Help">
                     <MenuItem x:Name="MenubtnHelp" Header="Help Document" Command="{Binding HelpCommand}" />

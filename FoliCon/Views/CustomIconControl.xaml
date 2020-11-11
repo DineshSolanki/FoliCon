@@ -7,10 +7,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:CustomIconControlViewModel}"
              prism:ViewModelLocator.AutoWireViewModel="True">
-    <hc:BusyIndicator>
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="Height" Value="500" />
+            <Setter Property="Width" Value="636" />
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+    <hc:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="{Binding BusyContent}">
         <Grid Background="BurlyWood">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70" />
@@ -32,16 +40,28 @@
                        Foreground="Black" />
             <TextBlock Grid.Row="1" FontSize="20" Grid.Column="1" Text="Icons" HorizontalAlignment="Center"
                        Foreground="Black" />
-            <ListBox Grid.Row="2" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <ListBox x:Name="FoldersList" Grid.Row="2" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                      Grid.Column="0" IsManipulationEnabled="True" dd:DragDrop.IsDragSource="True"
                      dd:DragDrop.IsDropTarget="True" SelectionMode="Extended"
-                     ItemsSource="{Binding Path=Directories, UpdateSourceTrigger=PropertyChanged}" />
-            <ListBox Grid.Row="2" Grid.Column="1" Margin="10,0,10,0" IsManipulationEnabled="True"
+                     ItemsSource="{Binding Path=Directories, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:KeyTrigger Key="Delete">
+                        <i:InvokeCommandAction CommandParameter="{Binding ElementName=FoldersList, Path=SelectedItems}" Command="{Binding KeyPressFolderList}" />
+                    </i:KeyTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
+            <ListBox x:Name="IconsList" Grid.Row="2" Grid.Column="1" Margin="10,0,10,0" IsManipulationEnabled="True"
                      dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" SelectionMode="Extended" 
-                     ItemsSource="{Binding Path=Icons, UpdateSourceTrigger=PropertyChanged}"/>
-            
-            <Button Grid.Column="0" Grid.Row="3" Margin="10,10,10,10" Height="80" Width="500" Content="Apply"
-                    Grid.ColumnSpan="2" Command="{Binding Apply}" />
+                     ItemsSource="{Binding Path=Icons, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:KeyTrigger Key="Delete">
+                        <i:InvokeCommandAction CommandParameter="{Binding ElementName=IconsList, Path=SelectedItems}" Command="{Binding KeyPressIconsList}" />
+                    </i:KeyTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
+            <CheckBox Grid.Row="3" Grid.Column="0" Content="only keep exact matches?" IsChecked="{Binding KeepExactOnly}"/>
+            <Button Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Height="80" Width="500" Content="Apply"
+                     Command="{Binding Apply}" />
         </Grid>
     </hc:BusyIndicator>
 

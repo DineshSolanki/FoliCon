@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -473,7 +472,7 @@ namespace FoliCon.Modules
         /// </summary>
         /// <param name="icoFile"> path to the icon file [MUST BE .Ico]</param>
         /// <param name="folderPath">path to the folder</param>
-        private static void SetFolderIcon(string icoFile, string folderPath)
+        public static void SetFolderIcon(string icoFile, string folderPath)
         {
             try
             {
