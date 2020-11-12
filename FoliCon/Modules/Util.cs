@@ -186,16 +186,16 @@ namespace FoliCon.Modules
         /// <returns> Returns true if Web is accessible</returns>
         public static bool IsNetworkAvailable()
         {
-            const string host = "www.google.com";
+            const string host = "8.8.8.8";
             var result = false;
             using var p = new Ping();
             try
             {
-                var reply = p.Send(host, 3000);
+                var reply = p.Send(host, 500, new byte[32], new PingOptions { DontFragment = true, Ttl = 32 });
                 if (reply != null && reply.Status == IPStatus.Success)
                     result = true;
             }
-            catch
+            catch(Exception)
             {
                 // ignored
             }
