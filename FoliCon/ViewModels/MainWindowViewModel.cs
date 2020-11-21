@@ -143,7 +143,11 @@ namespace FoliCon.ViewModels
 
         #endregion SettingMenu
 
-        public DelegateCommand RestartExCommand { get; } = new DelegateCommand(Util.RefreshIconCache);
+        public DelegateCommand RestartExCommand { get; } = new DelegateCommand(delegate
+        {
+            Util.RefreshIconCache();
+            Util.RestartExplorer();
+        });
         public DelegateCommand CustomIconsCommand { get; private set;}
         public DelegateCommand DeleteIconsCommand { get; private set; }
 

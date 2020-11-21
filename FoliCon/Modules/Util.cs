@@ -158,7 +158,7 @@ namespace FoliCon.Modules
             objProcess.Start();
             objProcess.WaitForExit();
             objProcess.Close();
-            RestartExplorer();
+            Kernel32.Wow64EnableWow64FsRedirection(true);
         }
 
         /// <summary>
@@ -176,8 +176,9 @@ namespace FoliCon.Modules
                 File.Delete(icoFile);
                 File.Delete(iniFile);
             }
-
-            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
+            RefreshIconCache();
+            // SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
+            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace FoliCon.Modules
             using var p = new Ping();
             try
             {
-                var reply = p.Send(host, 500, new byte[32], new PingOptions { DontFragment = true, Ttl = 32 });
+                var reply = p.Send(host, 5000, new byte[32], new PingOptions { DontFragment = true, Ttl = 32 });
                 if (reply != null && reply.Status == IPStatus.Success)
                     result = true;
             }
@@ -398,7 +399,7 @@ namespace FoliCon.Modules
                 SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
             }
             ApplyChanges(selectedFolder);
-            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
+            SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW,selectedFolder);
             return iconProcessedCount;
         }
 
@@ -502,7 +503,7 @@ namespace FoliCon.Modules
             // System.Threading.Thread.CurrentThread.CurrentCulture = ci
             var pidl = ILCreateFromPath(folderPath);
             
-            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_IDLIST);
+            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW,folderPath);
         }
 
         #endregion IconUtil

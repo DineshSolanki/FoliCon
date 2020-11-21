@@ -11,12 +11,15 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="714" Width="636" MinWidth="636" MinHeight="608"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
+           Icon="/Resources/folicon Icon.ico"
         modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
         modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}"
+         >
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
+   
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
@@ -44,7 +47,7 @@
             </Style>
         </hc:BusyIndicator.ProgressBarStyle>
         <Grid>
-            <Menu IsMainMenu="True" Grid.Row="0" Grid.ColumnSpan="3">
+            <Menu IsMainMenu="True" Grid.Row="0">
                 <MenuItem Header="Settings">
                     <MenuItem x:Name="ChkIsRatingVisible" Header="Show Rating badge"
                               IsChecked="{Binding IsRatingVisible}" IsCheckable="True"
@@ -96,7 +99,7 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <TextBlock Text="{Binding SelectedFolder}" HorizontalAlignment="Center" VerticalAlignment="Top"
-                               FontStyle="Italic" Foreground="Black" />
+                               FontStyle="Italic" Foreground="Black"/>
                 </ContentControl>
 
                 <Grid Grid.Column="0" Grid.Row="2" Grid.IsSharedSizeScope="True" Background="WhiteSmoke">

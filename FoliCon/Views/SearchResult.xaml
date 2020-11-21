@@ -42,9 +42,9 @@
                     <RowDefinition Height="35" />
                     <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
-                <Button Content="Pick Selected" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0"
+                <Button Content="Pick Selected" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonPrimary}"
                         Command="{Binding PickCommand}" IsDefault="True" />
-                <Button Content="Skip" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0"
+                <Button Content="Skip" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1">
