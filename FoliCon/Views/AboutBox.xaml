@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:prism="http://prismlibrary.com/" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              mc:Ignorable="d"
@@ -20,7 +21,7 @@
             <Setter Property="Title" Value="{Binding Title}" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <hc:MainContentBackground Background="White" Style="{StaticResource LiveStyle}" Margin="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <ContentControl Background="White" Style="{StaticResource LiveStyle}" Margin="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid Width="580" Height="256">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -43,5 +44,5 @@
                 </ContentControl>
             </StackPanel>
         </Grid>
-    </hc:MainContentBackground>
+    </ContentControl>
 </UserControl>

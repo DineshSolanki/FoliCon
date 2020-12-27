@@ -16,6 +16,7 @@ namespace FoliCon.ViewModels
 {
     public class CustomIconControlViewModel : BindableBase, IDialogAware
     {
+        //TODO: Fix png getting copied instead of created ICO
         private string _selectedDirectory;
         private string _selectedIconsDirectory;
         private ObservableCollection<string> _directories;
