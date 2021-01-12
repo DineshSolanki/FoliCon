@@ -92,6 +92,8 @@ namespace FoliCon.ViewModels
                 {
                     foreach (var item in searchResult.Results)
                     {
+                        if (item.Thumbs.Length <= 0 || item.Content != null)  //item.IsDownlodable might be better choice
+                            continue;
                         var bm = await Util.GetBitmapFromUrlAsync(item.Thumbs[0].Src);
                         ImageUrl.Add(new DArtImageList(item.Content.Src, Util.LoadBitmap(bm)));
                         bm.Dispose();
