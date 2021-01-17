@@ -20,9 +20,10 @@ Folicon is a Folder icon changer which works for movie,music, games, and shows, 
 ![Before](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/before.png)
 ![After](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/after.jpg)
 ![Searching](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/searchingpro.jpg)
-![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/posterresult.jpg)
-![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/downloading.png)
-![Description](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/mainview.png)
+![PosterSearch](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/posterresult.jpg)
+![DDownloading](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/downloading.png)
+![Folicon](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/mainview.png)
+![FoliconCustomIcon](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/customiconsetter.png)
 </details>
 
 
@@ -68,7 +69,7 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 
 * A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
 * Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming) for His Poster design used as an alternate Poster Icon design starting with v3.1.
-* <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Folicon/blob/master/Folicon_Native/Resources/TMDB%20black%20logo.png" />
+* <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/tmdbblack.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
 * All Professional Mode icons are fetched from publicly available galaries of DeviantArt, and all rights reserves to their respective owners.
 
