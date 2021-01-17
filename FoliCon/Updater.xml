@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
   <AppVersion>
-    <version>3.1.0.0</version>
+    <version>3.2.0.0</version>
     <url>https://github.com/DineshSolanki/FoliCon/releases</url>
     <changelog>
-    Added new Poster Icon design.
-      Updated IGDB Api.
-    Fixed crash on No poster for autopicked titles.
+		whats new ?
+            Added option to create/apply custom icons from png or ico.
+        whats fixed ? -
+            fixed crash in Professional Mode.
+		Known issues -
+		    Due to DeviantART changes, Professional Mode might give unrelevent results
+			or fewer results than before. This is being worked on.
     </changelog>
   </AppVersion>

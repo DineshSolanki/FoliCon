@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using FoliCon.Modules;
 using HandyControl.Controls;
 using HandyControl.Data;
@@ -11,6 +12,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using static Vanara.PInvoke.Shell32;
+using MessageBox = HandyControl.Controls.MessageBox;
 
 namespace FoliCon.ViewModels
 {
@@ -192,12 +194,14 @@ namespace FoliCon.ViewModels
         {
             if (Directories.Count <= 0)
             {
-                MessageBox.Show("No folders Selected or folders already have icons.", "No folders to process");
+                MessageBox.Show("No folders Selected or folders already have icons.", "No folders to process"
+                    , MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             else if (Icons.Count <= 0)
             {
-                MessageBox.Show("No icons selected", "No icons to apply");
+                MessageBox.Show("No icons selected", "No icons to apply"
+                    , MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             var iconProcessedCount = MakeIcons();

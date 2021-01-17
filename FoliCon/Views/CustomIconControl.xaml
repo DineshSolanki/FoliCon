@@ -25,7 +25,7 @@
                 <RowDefinition Height="70" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="200*" />
-                <RowDefinition Height="70" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -68,10 +68,10 @@
             </ListBox>
             <VirtualizingStackPanel Grid.Row="3" Grid.Column="0">
                 <CheckBox Content="only keep exact matches?" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
-                <Button Content="Undo" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
+                <Button Style="{StaticResource ButtonInfo}" Content="Undo" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
             </VirtualizingStackPanel>
-            
-            <Button Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Height="80" Width="500" Content="Apply"
+
+            <Button Style="{StaticResource ButtonPrimary}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="Apply"
                      Command="{Binding Apply}" />
         </Grid>
     </hc:BusyIndicator>
