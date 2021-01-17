@@ -12,13 +12,13 @@ namespace FoliCon.Modules
         {
             return Path.GetFileNameWithoutExtension(str);
         }
-    /// <summary>
-    /// https://stackoverflow.com/a/15275682/8076598
-    /// </summary>
-    public static IEnumerable<T> OrderBySequence<T, TId>(
-            this IEnumerable<T> source,
-            IEnumerable<TId> order,
-            Func<T, TId> idSelector)
+        /// <summary>
+        /// https://stackoverflow.com/a/15275682/8076598
+        /// </summary>
+        public static IEnumerable<T> OrderBySequence<T, TId>(
+                this IEnumerable<T> source,
+                IEnumerable<TId> order,
+                Func<T, TId> idSelector)
         {
             var lookup = source.ToLookup(idSelector, t => t);
             foreach (var id in order)
@@ -29,12 +29,12 @@ namespace FoliCon.Modules
                 }
             }
         }
-       /// <summary>
-       /// https://stackoverflow.com/a/13257600/8076598
-       /// </summary>
-       public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> col)
-       {
-           return new(col);
-       }
+        /// <summary>
+        /// https://stackoverflow.com/a/13257600/8076598
+        /// </summary>
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> col)
+        {
+            return new(col);
+        }
     }
 }

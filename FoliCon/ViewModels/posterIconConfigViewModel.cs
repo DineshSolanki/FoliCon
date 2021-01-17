@@ -1,8 +1,8 @@
-﻿using Prism.Mvvm;
+﻿using Prism.Commands;
+using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Globalization;
-using Prism.Commands;
 
 namespace FoliCon.ViewModels
 {
@@ -17,9 +17,9 @@ namespace FoliCon.ViewModels
                 .Property(p => p.IconOverlay, defaultValue: "Alternate")
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
-            IconOverlayChangedCommand = new DelegateCommand<object>(delegate(object parameter)
+            IconOverlayChangedCommand = new DelegateCommand<object>(delegate (object parameter)
             {
-                IconOverlay = (string) parameter;
+                IconOverlay = (string)parameter;
             });
         }
 
@@ -47,7 +47,7 @@ namespace FoliCon.ViewModels
             RaiseRequestClose(new DialogResult(result));
         }
 
-        public virtual void RaiseRequestClose(IDialogResult dialogResult) => 
+        public virtual void RaiseRequestClose(IDialogResult dialogResult) =>
             RequestClose?.Invoke(dialogResult);
 
         public virtual bool CanCloseDialog() => true;

@@ -15,12 +15,12 @@ namespace FoliCon.Views
 
         private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
         {
-          Cursor=Cursors.Hand;
+            Cursor = Cursors.Hand;
         }
 
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
         {
-            Cursor=Cursors.Arrow;
+            Cursor = Cursors.Arrow;
         }
 
         //private void W_Deactivated(object sender, System.EventArgs e)

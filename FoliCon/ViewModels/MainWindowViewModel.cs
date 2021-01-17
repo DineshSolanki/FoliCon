@@ -198,7 +198,7 @@ namespace FoliCon.ViewModels
         {
             var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Folder");
             var dialogResult = folderBrowserDialog.ShowDialog();
-            if (dialogResult != null && (bool) !dialogResult) return;
+            if (dialogResult != null && (bool)!dialogResult) return;
             SelectedFolder = folderBrowserDialog.SelectedPath;
             StatusBarProperties.ResetData();
             IsMakeEnabled = true;
@@ -292,60 +292,60 @@ namespace FoliCon.ViewModels
                             });
                         break;
                     case 1:
-                    {
-                        try
                         {
-                            if (SearchMode == "Game")
+                            try
                             {
-                                _igdbObject.ResultPicked(response.Result[0], fullFolderPath);
-                            }
-                            else
-                            {
-                                _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType,
-                                    fullFolderPath);
-                            }
+                                if (SearchMode == "Game")
+                                {
+                                    _igdbObject.ResultPicked(response.Result[0], fullFolderPath);
+                                }
+                                else
+                                {
+                                    _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType,
+                                        fullFolderPath);
+                                }
 
-                            isAutoPicked = true;
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex.Message == "NoPoster")
+                                isAutoPicked = true;
+                            }
+                            catch (Exception ex)
                             {
-                                var p = new DialogParameters
+                                if (ex.Message == "NoPoster")
+                                {
+                                    var p = new DialogParameters
                                 {
                                     {"title", "No Poster"}, {"message", "No poster found."}
                                 };
-                                _dialogService.ShowDialog("MessageBox", p, _ => { });
+                                    _dialogService.ShowDialog("MessageBox", p, _ => { });
+                                }
+
+                                isAutoPicked = false;
                             }
 
-                            isAutoPicked = false;
+                            break;
                         }
-
-                        break;
-                    }
                     default:
-                    {
-                        if (resultCount > 1)
                         {
-                            if (!IsSkipAmbiguous)
+                            if (resultCount > 1)
                             {
-                                _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
-                                    response, _tmdbObject, _igdbObject,
-                                    r =>
-                                    {
-                                        dialogResult = r.Result switch
+                                if (!IsSkipAmbiguous)
+                                {
+                                    _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
+                                        response, _tmdbObject, _igdbObject,
+                                        r =>
                                         {
-                                            ButtonResult.None => false,
-                                            ButtonResult.OK => true,
-                                            ButtonResult.Cancel => false,
-                                            _ => false
-                                        };
-                                    });
+                                            dialogResult = r.Result switch
+                                            {
+                                                ButtonResult.None => false,
+                                                ButtonResult.OK => true,
+                                                ButtonResult.Cancel => false,
+                                                _ => false
+                                            };
+                                        });
+                                }
                             }
-                        }
 
-                        break;
-                    }
+                            break;
+                        }
                 }
 
                 if (isAutoPicked || dialogResult)
@@ -402,13 +402,13 @@ namespace FoliCon.ViewModels
             );
             LoadCommand = new DelegateCommand(LoadMethod);
             SearchAndMakeCommand = new DelegateCommand(SearchAndMakeMethod);
-            IconModeChangedCommand = new DelegateCommand<object>(delegate(object parameter)
+            IconModeChangedCommand = new DelegateCommand<object>(delegate (object parameter)
             {
-                IconMode = (string) parameter;
+                IconMode = (string)parameter;
             });
-            SearchModeChangedCommand = new DelegateCommand<object>(delegate(object parameter)
+            SearchModeChangedCommand = new DelegateCommand<object>(delegate (object parameter)
             {
-                SearchMode = (string) parameter;
+                SearchMode = (string)parameter;
             });
             ListViewDoubleClickCommand = new DelegateCommand(ListViewDoubleClickMethod);
             DownloadCancelCommand = new DelegateCommand(delegate { StopIconDownload = true; });
@@ -466,12 +466,12 @@ namespace FoliCon.ViewModels
         {
             _pickedListDataTable.Columns.Clear();
             _pickedListDataTable.Rows.Clear();
-            var column1 = new DataColumn("Poster") {DataType = typeof(string)};
-            var column2 = new DataColumn("Title") {DataType = typeof(string)};
-            var column3 = new DataColumn("Year") {DataType = typeof(string)};
-            var column4 = new DataColumn("Rating") {DataType = typeof(string)};
-            var column5 = new DataColumn("Folder") {DataType = typeof(string)};
-            var column6 = new DataColumn("FolderName") {DataType = typeof(string)};
+            var column1 = new DataColumn("Poster") { DataType = typeof(string) };
+            var column2 = new DataColumn("Title") { DataType = typeof(string) };
+            var column3 = new DataColumn("Year") { DataType = typeof(string) };
+            var column4 = new DataColumn("Rating") { DataType = typeof(string) };
+            var column5 = new DataColumn("Folder") { DataType = typeof(string) };
+            var column6 = new DataColumn("FolderName") { DataType = typeof(string) };
             _pickedListDataTable.Columns.Add(column1);
             _pickedListDataTable.Columns.Add(column2);
             _pickedListDataTable.Columns.Add(column3);

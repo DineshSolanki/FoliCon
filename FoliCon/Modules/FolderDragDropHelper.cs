@@ -14,7 +14,7 @@ namespace FoliCon.Modules
     {
         public static bool GetIsFileDragDropEnabled(DependencyObject obj)
         {
-            return (bool) obj.GetValue(IsFileDragDropEnabledProperty);
+            return (bool)obj.GetValue(IsFileDragDropEnabledProperty);
         }
 
         public static void SetIsFileDragDropEnabled(DependencyObject obj, bool value)
@@ -24,7 +24,7 @@ namespace FoliCon.Modules
 
         public static bool GetFileDragDropTarget(DependencyObject obj)
         {
-            return (bool) obj.GetValue(FileDragDropTargetProperty);
+            return (bool)obj.GetValue(FileDragDropTargetProperty);
         }
 
         public static void SetFileDragDropTarget(DependencyObject obj, bool value)
@@ -66,7 +66,7 @@ namespace FoliCon.Modules
                 // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
                 //  {
 
-                fileTarget.OnFileDrop((string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop), ((Control) sender).Name );
+                fileTarget.OnFileDrop((string[])dragEventArgs.Data.GetData(DataFormats.FileDrop), ((Control)sender).Name);
 
                 //  }
             }

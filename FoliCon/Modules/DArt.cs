@@ -86,7 +86,7 @@ namespace FoliCon.Modules
                       "&limit=20&access_token=" + ClientAccessToken;
             using var response = await Services.HttpC.GetAsync(new Uri(url));
             var jsonData = await response.Content.ReadAsStringAsync();
-            var serializerSettings = new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore};
+            var serializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
             var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, serializerSettings);
             return result;
         }

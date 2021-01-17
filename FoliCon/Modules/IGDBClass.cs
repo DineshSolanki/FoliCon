@@ -1,4 +1,7 @@
-﻿using System;
+﻿using FoliCon.Models;
+using IGDB;
+using IGDB.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -6,9 +9,6 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FoliCon.Models;
-using IGDB;
-using IGDB.Models;
 
 namespace FoliCon.Modules
 {
@@ -54,13 +54,13 @@ namespace FoliCon.Modules
         {
             var items = new ObservableCollection<ListItem>();
             foreach (var (mediaName, year, overview, poster) in from item in result
-                let mediaName = item.Name
-                let year = item.FirstReleaseDate != null ? item.FirstReleaseDate.Value.Year.ToString() : ""
-                let overview = item.Summary
-                let poster = item.Cover != null
-                    ? "https://" + ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720).Substring(2)
-                    : null
-                select (mediaName, year, overview, poster))
+                                                                let mediaName = item.Name
+                                                                let year = item.FirstReleaseDate != null ? item.FirstReleaseDate.Value.Year.ToString() : ""
+                                                                let overview = item.Summary
+                                                                let poster = item.Cover != null
+                                                                    ? "https://" + ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720).Substring(2)
+                                                                    : null
+                                                                select (mediaName, year, overview, poster))
             {
                 items.Add(new ListItem(mediaName, year, "", overview, poster));
             }

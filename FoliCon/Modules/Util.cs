@@ -1,4 +1,10 @@
-﻿using System;
+﻿using FoliCon.Models;
+using FoliCon.Views;
+using HandyControl.Controls;
+using HandyControl.Data;
+using IGDB.Models;
+using Ookii.Dialogs.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -15,12 +21,6 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using FoliCon.Models;
-using FoliCon.Views;
-using HandyControl.Controls;
-using HandyControl.Data;
-using IGDB.Models;
-using Ookii.Dialogs.Wpf;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using Vanara.PInvoke;
@@ -67,7 +67,7 @@ namespace FoliCon.Modules
                     Growl.InfoGlobal(info);
                 }
             }
-            else Growl.ErrorGlobal(new GrowlInfo {Message = "Network not available!", ShowDateTime = false});
+            else Growl.ErrorGlobal(new GrowlInfo { Message = "Network not available!", ShowDateTime = false });
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace FoliCon.Modules
                 WindowStyle = ProcessWindowStyle.Hidden,
                 UseShellExecute = true
             };
-            using var process = new Process {StartInfo = taskKill};
+            using var process = new Process { StartInfo = taskKill };
             process.Start();
             process.WaitForExit();
         }
@@ -173,7 +173,7 @@ namespace FoliCon.Modules
             }
             RefreshIconCache();
             // SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
-            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
+            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT, folderPath);
         }
 
         public static void DeleteIconsFromFolder(string folderPath)
@@ -199,7 +199,7 @@ namespace FoliCon.Modules
                 if (reply != null && reply.Status == IPStatus.Success)
                     result = true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 // ignored
             }
@@ -213,8 +213,8 @@ namespace FoliCon.Modules
             if (!string.IsNullOrEmpty(folderPath))
             {
                 folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
-                    where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
-                    select Path.GetFileName(folder));
+                                     where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
+                                     select Path.GetFileName(folder));
             }
 
             return folderNames;
@@ -264,14 +264,14 @@ namespace FoliCon.Modules
 
             if (result.MediaType == MediaTypes.Tv)
             {
-                var ob = (SearchContainer<SearchTv>) result.Result;
+                var ob = (SearchContainer<SearchTv>)result.Result;
                 source = Tmdb.ExtractTvDetailsIntoListItem(ob);
             }
-            else if (result.MediaType == MediaTypes.Movie)
+            else if (result.MediaType == MediaTypes.Movie || result.MediaType == MediaTypes.Collection)
             {
                 if (query.ToLower().Contains("collection"))
                 {
-                    var ob = (SearchContainer<SearchCollection>) result.Result;
+                    var ob = (SearchContainer<SearchCollection>)result.Result;
                     source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                 }
                 else
@@ -279,24 +279,24 @@ namespace FoliCon.Modules
                     dynamic ob;
                     try
                     {
-                        ob = (SearchContainer<SearchMovie>) result.Result;
+                        ob = (SearchContainer<SearchMovie>)result.Result;
                         source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
                     }
                     catch (Exception)
                     {
-                        ob = (SearchContainer<SearchCollection>) result.Result;
+                        ob = (SearchContainer<SearchCollection>)result.Result;
                         source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                     }
                 }
             }
             else if (result.MediaType == MediaTypes.Mtv)
             {
-                var ob = (SearchContainer<SearchBase>) result.Result;
+                var ob = (SearchContainer<SearchBase>)result.Result;
                 source = Tmdb.ExtractResourceDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Game)
             {
-                var ob = (Game[]) result.Result;
+                var ob = (Game[])result.Result;
                 source = IgdbClass.ExtractGameDetailsIntoListItem(ob);
             }
 
@@ -347,9 +347,9 @@ namespace FoliCon.Modules
         /// <returns>Bitmap object</returns>
         public static async Task<Bitmap> GetBitmapFromUrlAsync(string url)
         {
-            var myRequest = (HttpWebRequest) WebRequest.Create(new Uri(url));
+            var myRequest = (HttpWebRequest)WebRequest.Create(new Uri(url));
             myRequest.Method = "GET";
-            var myResponse = (HttpWebResponse) await myRequest.GetResponseAsync().ConfigureAwait(false);
+            var myResponse = (HttpWebResponse)await myRequest.GetResponseAsync().ConfigureAwait(false);
             var bmp = new Bitmap(myResponse.GetResponseStream());
             myResponse.Close();
             return bmp;
@@ -402,7 +402,7 @@ namespace FoliCon.Modules
                 SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
             }
             ApplyChanges(selectedFolder);
-            SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW,selectedFolder);
+            SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW, selectedFolder);
             return iconProcessedCount;
         }
 
@@ -484,7 +484,7 @@ namespace FoliCon.Modules
                 {
                     dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
                     pszIconFile = icoFile,
-                    dwSize =(uint) Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
+                    dwSize = (uint)Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
                     cchIconFile = 0
                 };
                 //FolderSettings.iIconIndex = 0;
@@ -505,8 +505,8 @@ namespace FoliCon.Modules
             // CultureInfo ci = new CultureInfo("en-US"); 
             // System.Threading.Thread.CurrentThread.CurrentCulture = ci
             //var pidl = ILCreateFromPath(folderPath);
-            
-            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW,folderPath);
+
+            SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW, folderPath);
         }
 
         #endregion IconUtil

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using FoliCon.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
-using FoliCon.Models;
 using TMDbLib.Client;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
@@ -83,25 +83,25 @@ namespace FoliCon.Modules
                 switch (mediaType)
                 {
                     case MediaType.Tv:
-                    {
-                        var res = (SearchTv) item;
-                        mediaName = res.Name;
-                        year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString() : "";
-                        rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
-                        overview = res.Overview;
-                        poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
-                        break;
-                    }
+                        {
+                            var res = (SearchTv)item;
+                            mediaName = res.Name;
+                            year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString() : "";
+                            rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                            overview = res.Overview;
+                            poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
+                            break;
+                        }
                     case MediaType.Movie:
-                    {
-                        var res = (SearchMovie) item;
-                        mediaName = res.Title;
-                        year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString() : "";
-                        rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
-                        overview = res.Overview;
-                        poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
-                        break;
-                    }
+                        {
+                            var res = (SearchMovie)item;
+                            mediaName = res.Title;
+                            year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString() : "";
+                            rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                            overview = res.Overview;
+                            poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
+                            break;
+                        }
                 }
 
                 items.Add(new ListItem(mediaName, year, rating, overview, poster));
@@ -145,7 +145,7 @@ namespace FoliCon.Modules
             string posterUrl = string.Concat(PosterBase, result.PosterPath);
             if (resultType == MediaTypes.Tv)
             {
-                var pickedResult = (SearchTv) result;
+                var pickedResult = (SearchTv)result;
                 var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                     pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
@@ -153,14 +153,14 @@ namespace FoliCon.Modules
             }
             else if (resultType == MediaTypes.Movie)
             {
-                var pickedResult = (SearchMovie) result;
+                var pickedResult = (SearchMovie)result;
                 var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Value.Year.ToString() : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                     pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName, year);
             }
             else if (resultType == MediaTypes.Collection)
             {
-                var searchResult = (SearchCollection) result;
+                var searchResult = (SearchCollection)result;
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, searchResult.Name, "", fullFolderPath,
                     folderName);
             }
@@ -170,27 +170,27 @@ namespace FoliCon.Modules
                 switch (mediaType)
                 {
                     case MediaType.Tv:
-                    {
-                        SearchTv pickedResult = result;
-                        var year = pickedResult.FirstAirDate != null
-                            ? pickedResult.FirstAirDate.Value.Year.ToString()
-                            : "";
-                        Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                            pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
-                            year);
-                        break;
-                    }
+                        {
+                            SearchTv pickedResult = result;
+                            var year = pickedResult.FirstAirDate != null
+                                ? pickedResult.FirstAirDate.Value.Year.ToString()
+                                : "";
+                            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
+                                pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
+                                year);
+                            break;
+                        }
                     case MediaType.Movie:
-                    {
-                        SearchMovie pickedResult = result;
-                        var year = pickedResult.ReleaseDate != null
-                            ? pickedResult.ReleaseDate.Value.Year.ToString()
-                            : "";
-                        Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                            pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
-                            year);
-                        break;
-                    }
+                        {
+                            SearchMovie pickedResult = result;
+                            var year = pickedResult.ReleaseDate != null
+                                ? pickedResult.ReleaseDate.Value.Year.ToString()
+                                : "";
+                            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
+                                pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
+                                year);
+                            break;
+                        }
                 }
             }
 

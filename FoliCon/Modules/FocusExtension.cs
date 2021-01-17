@@ -29,7 +29,7 @@ namespace FoliCon.Modules
     {
         public static bool GetIsFocused(DependencyObject depObj)
         {
-            return (bool) depObj.GetValue(IsFocusedProperty);
+            return (bool)depObj.GetValue(IsFocusedProperty);
         }
 
         public static void SetIsFocused(DependencyObject depObj, bool isFocused)
@@ -47,14 +47,14 @@ namespace FoliCon.Modules
         {
             if (!(depObj is UIElement element)) return;
             // Don't care about false values.
-            if (!(bool) args.NewValue) return;
+            if (!(bool)args.NewValue) return;
             // only focusable if these two are true
             // optional to raise exception if they aren't rather than just ignoring.
             //if (element.Focusable && element.IsVisible)
             if (!element.Focusable) return;
-            var action = new Action(() => element.Dispatcher.BeginInvoke((Action) (() => element.Focus())));
+            var action = new Action(() => element.Dispatcher.BeginInvoke((Action)(() => element.Focus())));
             Task.Factory.StartNew(action);
-            var action2 = new Action(() => element.Dispatcher.BeginInvoke((Action) (() => Keyboard.Focus(element))));
+            var action2 = new Action(() => element.Dispatcher.BeginInvoke((Action)(() => Keyboard.Focus(element))));
             Task.Factory.StartNew(action2);
             FocusManager.SetFocusedElement(FocusManager.GetFocusScope(element), element);
         }

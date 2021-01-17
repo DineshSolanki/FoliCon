@@ -57,6 +57,6 @@ namespace FoliCon.Modules
         {
             dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
         }
-        
+
     }
 }

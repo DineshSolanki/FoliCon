@@ -1,16 +1,16 @@
-﻿using System;
+﻿using FoliCon.Modules;
+using HandyControl.Controls;
+using HandyControl.Data;
+using Prism.Commands;
+using Prism.Mvvm;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using FoliCon.Modules;
-using HandyControl.Controls;
-using HandyControl.Data;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
 using static Vanara.PInvoke.Shell32;
 using MessageBox = HandyControl.Controls.MessageBox;
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
@@ -155,7 +155,7 @@ namespace FoliCon.ViewModels
         {
             var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Folder");
             var dialogResult = folderBrowserDialog.ShowDialog();
-            if (dialogResult != null && (bool) !dialogResult) return;
+            if (dialogResult != null && (bool)!dialogResult) return;
             _backupDirectories.Clear();
             SelectedDirectory = folderBrowserDialog.SelectedPath;
         }
@@ -164,7 +164,7 @@ namespace FoliCon.ViewModels
         {
             var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Icons Directory");
             var dialogResult = folderBrowserDialog.ShowDialog();
-            if (dialogResult != null && (bool) !dialogResult) return;
+            if (dialogResult != null && (bool)!dialogResult) return;
             _backupIcons.Clear();
             SelectedIconsDirectory = folderBrowserDialog.SelectedPath;
         }
@@ -252,7 +252,7 @@ namespace FoliCon.ViewModels
                 {
                     var icon = new ProIcon(iconPath).RenderToBitmap();
                     iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
-                    PngToIcoService.Convert(icon,iconPath );
+                    PngToIcoService.Convert(icon, iconPath);
                     icon.Dispose();
                 }
 

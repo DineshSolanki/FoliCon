@@ -8,7 +8,7 @@ namespace FoliCon.Models
     {
         private TwitchAccessToken _currentToken;
         private TwitchAccessToken CurrentToken { get => _currentToken; set => SetProperty(ref _currentToken, value); }
-       public IgdbJotTrackerStore()
+        public IgdbJotTrackerStore()
         {
             Services.Tracker.Configure<IgdbJotTrackerStore>()
                 .Property(p => p._currentToken)

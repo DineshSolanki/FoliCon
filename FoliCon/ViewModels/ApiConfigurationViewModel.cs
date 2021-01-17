@@ -36,13 +36,13 @@ namespace FoliCon.ViewModels
 
         private void SaveMethod()
         {
-            if (string.IsNullOrEmpty(TmdbKey) || string.IsNullOrEmpty(IgdbClientSecret) ||string.IsNullOrEmpty(IgdbClientId) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
+            if (string.IsNullOrEmpty(TmdbKey) || string.IsNullOrEmpty(IgdbClientSecret) || string.IsNullOrEmpty(IgdbClientId) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
             {
                 MessageBox.Error("All fields are required!", "Invalid Value");
             }
             else
             {
-                Util.WriteApiConfiguration(TmdbKey, IgdbClientId,IgdbClientSecret, DArtClient, DArtClientId);
+                Util.WriteApiConfiguration(TmdbKey, IgdbClientId, IgdbClientSecret, DArtClient, DArtClientId);
                 MessageBox.Success("API configuration Saved.", "Success");
                 CloseDialog("true");
             }

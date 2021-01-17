@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace FoliCon
 {
-    public class String2BooleanConvertor :ResourceDictionary, IValueConverter
+    public class String2BooleanConvertor : ResourceDictionary, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -14,7 +14,7 @@ namespace FoliCon
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null && (bool) value ? parameter : DependencyProperty.UnsetValue;
+            return value != null && (bool)value ? parameter : DependencyProperty.UnsetValue;
         }
     }
 }

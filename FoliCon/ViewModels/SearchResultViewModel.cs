@@ -105,7 +105,7 @@ namespace FoliCon.ViewModels
             _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
             _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
             _fullFolderPath = parameters.GetValue<string>("folderpath");
-            LoadData();
+            LoadData(SearchTitle);
         }
 
         private async void StartSearch(bool useBusy)
@@ -120,8 +120,8 @@ namespace FoliCon.ViewModels
             ResultResponse result;
             if (SearchMode == MediaTypes.Game)
             {
-                
-                result = await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\"," "));
+
+                result = await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "));
             }
             else
             {
@@ -132,24 +132,24 @@ namespace FoliCon.ViewModels
             {
                 IsBusy = false;
             }
-            LoadData();
+            LoadData(titleToSearch);
         }
 
-        private void LoadData()
+        private void LoadData(string _searchTitle)
         {
             if (SearchResult != null
                 && (SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
                 && (SearchMode == "Game" ? SearchResult?.Result.Length : SearchResult?.Result.TotalResults) != 0)
             {
-                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, SearchTitle);
-                if(ResultListViewData.Data.Count!=0)
+                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, _searchTitle);
+                if (ResultListViewData.Data.Count != 0)
                     ResultListViewData.SelectedItem = ResultListViewData.Data[0];
             }
             else
             {
                 IsSearchFocused = true;
             }
-            FileList = new ArrayList {Util.GetFileNamesFromFolder(_fullFolderPath)};
+            FileList = new ArrayList { Util.GetFileNamesFromFolder(_fullFolderPath) };
         }
 
         private void SearchAgainMethod()
