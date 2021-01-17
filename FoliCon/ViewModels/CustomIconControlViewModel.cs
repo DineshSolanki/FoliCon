@@ -21,10 +21,13 @@ namespace FoliCon.ViewModels
         private string _selectedIconsDirectory;
         private ObservableCollection<string> _directories;
         private ObservableCollection<string> _icons;
+        private bool _isUndoEnable;
         private bool _keepExactOnly;
         private bool _isBusy;
+       
         public string Title => "Custom icon setter";
 
+        private ObservableCollection<string> _undoDirectories = new ObservableCollection<string>();
         private ObservableCollection<string> _backupDirectories = new ObservableCollection<string>();
         private ObservableCollection<string> _backupIcons = new ObservableCollection<string>();
         private string _busyContent;
@@ -43,6 +46,11 @@ namespace FoliCon.ViewModels
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
+        }
+        public bool IsUndoEnable
+        {
+            get => _isUndoEnable;
+            set => SetProperty(ref _isUndoEnable, value);
         }
         public string SelectedDirectory
         {
@@ -91,6 +99,7 @@ namespace FoliCon.ViewModels
         public DelegateCommand LoadDirectory { get; set; }
         public DelegateCommand LoadIcons { get; set; }
         public DelegateCommand Apply { get; set; }
+        public DelegateCommand UndoIcons { get; set; }
         public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
         public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
         public string BusyContent { get => _busyContent; private set => SetProperty(ref _busyContent, value); }
@@ -105,8 +114,30 @@ namespace FoliCon.ViewModels
             LoadDirectory = new DelegateCommand(LoadDirectoryMethod);
             LoadIcons = new DelegateCommand(LoadIconsMethod);
             Apply = new DelegateCommand(StartProcessing);
+            UndoIcons = new DelegateCommand(UndoCreatedIcons);
             KeyPressFolderList = new DelegateCommand<dynamic>(FolderListKeyPress);
             KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
+        }
+
+        private void UndoCreatedIcons()
+        {
+            if (_undoDirectories.Count == 0) return;
+            foreach(string folder in _undoDirectories)
+            {
+                Util.DeleteIconsFromFolder(folder);
+            }
+            var info = new GrowlInfo
+            {
+                Message = $"Undo sucessfull",
+                ShowDateTime = false,
+                StaysOpen = false
+            };
+            Growl.SuccessGlobal(info);
+            Util.RefreshIconCache();
+            SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT
+                ,Directory.GetParent(_undoDirectories.First()).FullName);
+
+            IsUndoEnable = false;
         }
 
         private void LoadDirectoryMethod()
@@ -176,6 +207,9 @@ namespace FoliCon.ViewModels
                 ShowDateTime = false,
                 StaysOpen = false
             };
+            IsUndoEnable = true;
+            _undoDirectories.Clear();
+            _undoDirectories = Directories.Select(folder => Path.Combine(SelectedDirectory, folder)).ToObservableCollection();
             Growl.SuccessGlobal(info);
             switch (MessageBox.Ask("Note:The Icon may take some time to reload. " + Environment.NewLine +
                                    " To Force Reload, click on Restart Explorer " + Environment.NewLine +

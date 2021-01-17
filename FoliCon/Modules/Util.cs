@@ -165,22 +165,25 @@ namespace FoliCon.Modules
         /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
         /// </summary>
         /// <param name="folderPath">Path to delete Icons from</param>
-        public static void DeleteIconsFromPath(string folderPath)
+        public static void DeleteIconsFromSubfolders(string folderPath)
         {
-            foreach (var (icoFile, iniFile) in from string folder in Directory.EnumerateDirectories(folderPath)
-                let folderName = Path.GetFileName(folder)
-                let icoFile = Path.Combine(folder, folderName + ".ico")
-                let iniFile = Path.Combine(folder, "desktop.ini")
-                select (icoFile, iniFile))
+            foreach (string folder in Directory.EnumerateDirectories(folderPath))
             {
-                File.Delete(icoFile);
-                File.Delete(iniFile);
+                DeleteIconsFromFolder(folder);
             }
             RefreshIconCache();
             // SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
         }
 
+        public static void DeleteIconsFromFolder(string folderPath)
+        {
+            var folderName = Path.GetFileName(folderPath);
+            var icoFile = Path.Combine(folderPath, $"{folderName}.ico");
+            var iniFile = Path.Combine(folderPath, "desktop.ini");
+            File.Delete(icoFile);
+            File.Delete(iniFile);
+        }
         /// <summary>
         /// Checks if Web is accessible from This System
         /// </summary>

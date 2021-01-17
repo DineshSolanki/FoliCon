@@ -503,7 +503,7 @@ namespace FoliCon.ViewModels
                 if (MessageBox.Ask("Are you sure you want to delete all Icons?", "Confirm Icon Deletion") ==
                     System.Windows.MessageBoxResult.OK)
                 {
-                    Util.DeleteIconsFromPath(SelectedFolder);
+                    Util.DeleteIconsFromSubfolders(SelectedFolder);
                 }
             }
             else

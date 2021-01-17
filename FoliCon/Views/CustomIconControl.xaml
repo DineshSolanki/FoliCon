@@ -68,7 +68,7 @@
             </ListBox>
             <VirtualizingStackPanel Grid.Row="3" Grid.Column="0">
                 <CheckBox Content="only keep exact matches?" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
-                <Button Content="Undo" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding isUndoEnable}" Command="{Binding UndoIcons}"/>
+                <Button Content="Undo" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
             </VirtualizingStackPanel>
             
             <Button Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Height="80" Width="500" Content="Apply"
