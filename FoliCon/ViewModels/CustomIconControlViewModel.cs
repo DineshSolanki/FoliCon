@@ -13,12 +13,12 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using static Vanara.PInvoke.Shell32;
 using MessageBox = HandyControl.Controls.MessageBox;
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
 namespace FoliCon.ViewModels
 {
     public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
     {
-        //TODO: Fix png getting copied instead of created ICO
         private string _selectedDirectory;
         private string _selectedIconsDirectory;
         private ObservableCollection<string> _directories;
@@ -244,18 +244,19 @@ namespace FoliCon.ViewModels
             var count = 0;
             for (var i = 0; i < Directories.Count; ++i)
             {
+                if (i >= Icons.Count) break;
                 var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
                 var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
-                var newIconPath = Path.Combine(folderPath, Directories[i] + ".ico");
-                if (i >= Icons.Count) break;
+                var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
                 if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
                 {
                     var icon = new ProIcon(iconPath).RenderToBitmap();
-                    PngToIcoService.Convert(icon, iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico"));
+                    iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
+                    PngToIcoService.Convert(icon,iconPath );
                     icon.Dispose();
                 }
 
-                File.Copy(iconPath, newIconPath);
+                File.Move(iconPath, newIconPath);
                 if (File.Exists(newIconPath))
                 {
                     Util.HideIcons(newIconPath);

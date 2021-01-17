@@ -5,6 +5,7 @@
     <changelog>
 		whats new ?
             Added option to create/apply custom icons from png or ico.
+            Updated to .Net5, which brings various performance optimizations.
         whats fixed ? -
             fixed crash in Professional Mode.
 		Known issues -

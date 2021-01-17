@@ -262,7 +262,7 @@ namespace FoliCon.Modules
         {
             var source = new ObservableCollection<ListItem>();
 
-            if (result.MediaType == MediaTypes.TV)
+            if (result.MediaType == MediaTypes.Tv)
             {
                 var ob = (SearchContainer<SearchTv>) result.Result;
                 source = Tmdb.ExtractTvDetailsIntoListItem(ob);
@@ -289,7 +289,7 @@ namespace FoliCon.Modules
                     }
                 }
             }
-            else if (result.MediaType == MediaTypes.MTV)
+            else if (result.MediaType == MediaTypes.Mtv)
             {
                 var ob = (SearchContainer<SearchBase>) result.Result;
                 source = Tmdb.ExtractResourceDetailsIntoListItem(ob);
@@ -504,7 +504,7 @@ namespace FoliCon.Modules
         {
             // CultureInfo ci = new CultureInfo("en-US"); 
             // System.Threading.Thread.CurrentThread.CurrentCulture = ci
-            var pidl = ILCreateFromPath(folderPath);
+            //var pidl = ILCreateFromPath(folderPath);
             
             SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW,folderPath);
         }

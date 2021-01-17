@@ -145,10 +145,13 @@ namespace FoliCon.ViewModels
 
         public DelegateCommand RestartExCommand { get; } = new(delegate
         {
+            if (MessageBox.Ask("Are you sure you want to \nRestart Explorer and refresh Icon Cache?",
+                "Confirm Explorer Restart") != System.Windows.MessageBoxResult.OK) return;
             Util.RefreshIconCache();
             Util.RestartExplorer();
         });
-        public DelegateCommand CustomIconsCommand { get; private set;}
+
+        public DelegateCommand CustomIconsCommand { get; private set; }
         public DelegateCommand DeleteIconsCommand { get; private set; }
 
         public DelegateCommand HelpCommand { get; } = new(delegate
@@ -298,22 +301,26 @@ namespace FoliCon.ViewModels
                             }
                             else
                             {
-                                _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType, fullFolderPath);
+                                _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType,
+                                    fullFolderPath);
                             }
+
                             isAutoPicked = true;
                         }
                         catch (Exception ex)
                         {
                             if (ex.Message == "NoPoster")
                             {
-                                var p = new DialogParameters {
-                                    {"title","No Poster" }, {"message", "No poster found."}
+                                var p = new DialogParameters
+                                {
+                                    {"title", "No Poster"}, {"message", "No poster found."}
                                 };
                                 _dialogService.ShowDialog("MessageBox", p, _ => { });
                             }
 
                             isAutoPicked = false;
                         }
+
                         break;
                     }
                     default:
@@ -387,11 +394,11 @@ namespace FoliCon.ViewModels
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
             CustomIconsCommand = new DelegateCommand(delegate
-            {
-                _dialogService.ShowCustomIconWindow(
-                    _ => { }
-                    ); 
-            }
+                {
+                    _dialogService.ShowCustomIconWindow(
+                        _ => { }
+                    );
+                }
             );
             LoadCommand = new DelegateCommand(LoadMethod);
             SearchAndMakeCommand = new DelegateCommand(SearchAndMakeMethod);
@@ -543,7 +550,7 @@ namespace FoliCon.ViewModels
         {
             IsBusy = true;
             int iconProcessedCount;
-            if (IconMode == "Poster" && SearchMode !="Game")
+            if (IconMode == "Poster" && SearchMode != "Game")
             {
                 iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable,
                     IsRatingVisible, IsPosterMockupUsed);

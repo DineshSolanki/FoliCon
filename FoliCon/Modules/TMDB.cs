@@ -143,7 +143,7 @@ namespace FoliCon.Modules
             var folderName = Path.GetFileName(fullFolderPath);
             var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
             string posterUrl = string.Concat(PosterBase, result.PosterPath);
-            if (resultType == MediaTypes.TV)
+            if (resultType == MediaTypes.Tv)
             {
                 var pickedResult = (SearchTv) result;
                 var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
@@ -164,7 +164,7 @@ namespace FoliCon.Modules
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, searchResult.Name, "", fullFolderPath,
                     folderName);
             }
-            else if (resultType == MediaTypes.MTV)
+            else if (resultType == MediaTypes.Mtv)
             {
                 MediaType mediaType = result.MediaType;
                 switch (mediaType)
@@ -225,15 +225,15 @@ namespace FoliCon.Modules
                     mediaType = MediaTypes.Movie;
                 }
             }
-            else if (searchMode == MediaTypes.TV)
+            else if (searchMode == MediaTypes.Tv)
             {
                 r = _serviceClient.SearchTvShowAsync(query).Result;
-                mediaType = MediaTypes.TV;
+                mediaType = MediaTypes.Tv;
             }
-            else if (searchMode == MediaTypes.MTV)
+            else if (searchMode == MediaTypes.Mtv)
             {
                 r = _serviceClient.SearchMultiAsync(query).Result;
-                mediaType = MediaTypes.MTV;
+                mediaType = MediaTypes.Mtv;
             }
 
             var response = new ResultResponse
