@@ -82,7 +82,7 @@ namespace FoliCon.Modules
         {
             GetClientAccessTokenAsync();
             var url = "https://www.deviantart.com/api/v1/oauth2/browse/popular?timerange=alltime&offset=" + offset +
-                      "&category_path=customization%2ficons%2fos%2fwin&q=" + query + " folder icon" +
+                      "&q=" + query + " folder icon" +
                       "&limit=20&access_token=" + ClientAccessToken;
             using var response = await Services.HttpC.GetAsync(new Uri(url));
             var jsonData = await response.Content.ReadAsStringAsync();

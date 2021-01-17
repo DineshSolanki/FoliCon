@@ -7,7 +7,7 @@ namespace FoliCon.Modules
 {
     public interface IFileDragDropTarget
     {
-        void OnFileDrop(string[] filepaths);
+        void OnFileDrop(string[] filepaths, string senderName);
     }
 
     public class FolderDragDropHelper
@@ -43,7 +43,7 @@ namespace FoliCon.Modules
         private static void OnFileDragDropEnabled(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue == e.OldValue) return;
-            if (!(d is Control control)) return;
+            if (d is not Control control) return;
             control.Drop += OnDrop;
             control.DragOver += Control_DragOver;
         }
@@ -59,14 +59,14 @@ namespace FoliCon.Modules
 
         private static void OnDrop(object sender, DragEventArgs dragEventArgs)
         {
-            if (!(sender is DependencyObject d)) return;
+            if (sender is not DependencyObject d) return;
             var target = d.GetValue(FileDragDropTargetProperty);
             if (target is IFileDragDropTarget fileTarget)
             {
                 // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
                 //  {
 
-                fileTarget.OnFileDrop((string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop));
+                fileTarget.OnFileDrop((string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop), (sender as Control).Name );
 
                 //  }
             }

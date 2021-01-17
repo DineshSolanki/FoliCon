@@ -14,7 +14,7 @@ using static Vanara.PInvoke.Shell32;
 
 namespace FoliCon.ViewModels
 {
-    public class CustomIconControlViewModel : BindableBase, IDialogAware
+    public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
     {
         //TODO: Fix png getting copied instead of created ICO
         private string _selectedDirectory;
@@ -93,7 +93,7 @@ namespace FoliCon.ViewModels
         public DelegateCommand Apply { get; set; }
         public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
         public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
-        public string BusyContent { get => _busyContent; private set => SetProperty(ref _busyContent,value); }
+        public string BusyContent { get => _busyContent; private set => SetProperty(ref _busyContent, value); }
 
         #endregion
 
@@ -159,6 +159,16 @@ namespace FoliCon.ViewModels
         #endregion DialogMethods
         private void StartProcessing()
         {
+            if (Directories.Count <= 0)
+            {
+                MessageBox.Show("No folders Selected or folders already have icons.", "No folders to process");
+                return;
+            }
+            else if (Icons.Count <= 0)
+            {
+                MessageBox.Show("No icons selected", "No icons to apply");
+                return;
+            }
             var iconProcessedCount = MakeIcons();
             var info = new GrowlInfo
             {
@@ -246,6 +256,18 @@ namespace FoliCon.ViewModels
                 Icons.Remove(i);
             }
             KeepExactOnly = false;
+        }
+
+        public void OnFileDrop(string[] filepaths, string senderName)
+        {
+            if (senderName == "FolderButton" || senderName == "FoldersList")
+            {
+                SelectedDirectory = filepaths.GetValue(0)?.ToString();
+            }
+            else if (senderName == "IconButton" || senderName == "IconsList")
+            {
+                SelectedIconsDirectory = filepaths.GetValue(0)?.ToString();
+            }
         }
     }
 }

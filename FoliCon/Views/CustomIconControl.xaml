@@ -7,10 +7,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:CustomIconControlViewModel}"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+             prism:ViewModelLocator.AutoWireViewModel="True" AllowDrop="True" >
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="500" />
@@ -19,7 +20,7 @@
         </Style>
     </prism:Dialog.WindowStyle>
     <hc:BusyIndicator IsBusy="{Binding IsBusy}" BusyContent="{Binding BusyContent}">
-        <Grid Background="BurlyWood">
+        <Grid Background="WhiteSmoke">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70" />
                 <RowDefinition Height="50" />
@@ -30,20 +31,24 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Margin="10,10,10,10" Content="Browse Folder/Drop here"
+            <Button x:Name="FolderButton" Grid.Row="0" Grid.Column="0" Margin="10,10,10,10" Content="Browse Folder/Drop here"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto"
-                    Command="{Binding LoadDirectory }" />
-            <Button Grid.Row="0" Grid.Column="1" Margin="10,10,10,10" Content="Browse Icons/Drop here"
+                    Command="{Binding LoadDirectory }"  modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
+            modules:FolderDragDropHelper.FileDragDropTarget="{Binding}"/>
+            <Button x:Name="IconButton" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10" Content="Browse Icons/Drop here"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto"
-                    Command="{Binding LoadIcons}" />
+                    Command="{Binding LoadIcons}"  modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
+            modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" />
             <TextBlock Grid.Row="1" FontSize="20" Grid.Column="0" Text="Folders" HorizontalAlignment="Center"
                        Foreground="Black" />
             <TextBlock Grid.Row="1" FontSize="20" Grid.Column="1" Text="Icons" HorizontalAlignment="Center"
                        Foreground="Black" />
-            <ListBox x:Name="FoldersList" Grid.Row="2" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            <ListBox x:Name="FoldersList" Grid.Row="2" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
                      Grid.Column="0" IsManipulationEnabled="True" dd:DragDrop.IsDragSource="True"
                      dd:DragDrop.IsDropTarget="True" SelectionMode="Extended"
-                     ItemsSource="{Binding Path=Directories, UpdateSourceTrigger=PropertyChanged}">
+                     ItemsSource="{Binding Path=Directories, UpdateSourceTrigger=PropertyChanged}"
+                     modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
+                     modules:FolderDragDropHelper.FileDragDropTarget="{Binding}">
                 <i:Interaction.Triggers>
                     <i:KeyTrigger Key="Delete">
                         <i:InvokeCommandAction CommandParameter="{Binding ElementName=FoldersList, Path=SelectedItems}" Command="{Binding KeyPressFolderList}" />
@@ -52,14 +57,20 @@
             </ListBox>
             <ListBox x:Name="IconsList" Grid.Row="2" Grid.Column="1" Margin="10,0,10,0" IsManipulationEnabled="True"
                      dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" SelectionMode="Extended" 
-                     ItemsSource="{Binding Path=Icons, UpdateSourceTrigger=PropertyChanged}">
+                     ItemsSource="{Binding Path=Icons, UpdateSourceTrigger=PropertyChanged}"
+                     modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
+                     modules:FolderDragDropHelper.FileDragDropTarget="{Binding}">
                 <i:Interaction.Triggers>
                     <i:KeyTrigger Key="Delete">
                         <i:InvokeCommandAction CommandParameter="{Binding ElementName=IconsList, Path=SelectedItems}" Command="{Binding KeyPressIconsList}" />
                     </i:KeyTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-            <CheckBox Grid.Row="3" Grid.Column="0" Content="only keep exact matches?" IsChecked="{Binding KeepExactOnly}"/>
+            <VirtualizingStackPanel Grid.Row="3" Grid.Column="0">
+                <CheckBox Content="only keep exact matches?" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
+                <Button Content="Undo" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding isUndoEnable}" Command="{Binding UndoIcons}"/>
+            </VirtualizingStackPanel>
+            
             <Button Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" Height="80" Width="500" Content="Apply"
                      Command="{Binding Apply}" />
         </Grid>

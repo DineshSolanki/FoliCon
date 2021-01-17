@@ -623,7 +623,7 @@ namespace FoliCon.ViewModels
             _dialogService.ShowAboutBox(r => { });
         }
 
-        public void OnFileDrop(string[] filepaths)
+        public void OnFileDrop(string[] filepaths, string senderName)
         {
             SelectedFolder = filepaths.GetValue(0)?.ToString();
             StatusBarProperties.ResetData();
