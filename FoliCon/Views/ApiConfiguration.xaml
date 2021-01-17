@@ -7,11 +7,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              mc:Ignorable="d"
-             prism:ViewModelLocator.AutoWireViewModel="True" Height="330" Width="665.48"
+             prism:ViewModelLocator.AutoWireViewModel="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              d:DataContext="{d:DesignInstance viewModels:ApiConfigurationViewModel}">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="380" />
+            <Setter Property="Height" Value="400" />
             <Setter Property="Width" Value="665.48" />
             <Setter Property="ResizeMode" Value="NoResize" />
             <Setter Property="WindowStyle" Value="ToolWindow" />
@@ -23,8 +23,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <GroupBox Style="{StaticResource GroupBoxTab}" Header="DeviantArt Api" Grid.Row="0"
                   hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal">
@@ -52,11 +51,11 @@
         <hc:TextBox hc:InfoElement.Necessary="True"
                     Text="{Binding TmdbKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"
                     hc:InfoElement.Title="TMDB API Key :" Margin="8,7,8,0" />
-        <Button Grid.Row="4" Command="{Binding SaveCommand}" Content="Save" Style="{StaticResource ButtonPrimary}"
-                Height="44" Width="75" Margin="266,5,0,0" FontSize="18" HorizontalAlignment="Left"
-                VerticalAlignment="Top" IsDefault="True" />
-        <Button Grid.Row="4" Content="Close" Command="{Binding CloseDialogCommand}" CommandParameter="false"
+        <Button Grid.Row="3" Command="{Binding SaveCommand}" Content="Save" Style="{StaticResource ButtonPrimary}"
+                 Width="75" Margin="266,5,0,0" FontSize="16" HorizontalAlignment="Left"
+                VerticalAlignment="Top" IsDefault="True" TextOptions.TextRenderingMode="Aliased"/>
+        <Button Grid.Row="3" Content="Close" Command="{Binding CloseDialogCommand}" CommandParameter="false"
                 Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75"
-                Height="44" FontSize="18" VerticalAlignment="Top" IsCancel="True" />
+                FontSize="16" VerticalAlignment="Top" IsCancel="True" />
     </Grid>
 </UserControl>

@@ -72,7 +72,7 @@ namespace FoliCon.Modules
         {
             if (result.Cover == null)
             {
-                throw new Exception("NoPoster");
+                throw new InvalidDataException("NoPoster");
             }
 
             var folderName = Path.GetFileName(fullFolderPath);

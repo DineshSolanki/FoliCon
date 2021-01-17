@@ -66,13 +66,13 @@ namespace FoliCon.Modules
                 // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
                 //  {
 
-                fileTarget.OnFileDrop((string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop), (sender as Control).Name );
+                fileTarget.OnFileDrop((string[]) dragEventArgs.Data.GetData(DataFormats.FileDrop), ((Control) sender).Name );
 
                 //  }
             }
             else
             {
-                throw new Exception("FileDragDropTarget object must be of type IFileDragDropTarget");
+                throw new ArgumentException("FileDragDropTarget object must be of type IFileDragDropTarget");
             }
         }
     }

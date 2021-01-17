@@ -3,12 +3,13 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Globalization;
 
 namespace FoliCon.ViewModels
 {
     public class AboutBoxViewModel : BindableBase, IDialogAware
     {
-        private string _title = "Folicon v3.1";
+        private string _title = "Folicon v3.2";
         private string _logo = "/Resources/folicon Icon.png";
 
         private string _description = "FoliCon is more than just a typical folder Icon changer"
@@ -41,7 +42,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = parameter?.ToLower() switch
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
             {
                 "true" => ButtonResult.OK,
                 "false" => ButtonResult.Cancel,

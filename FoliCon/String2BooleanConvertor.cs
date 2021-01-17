@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-public class String2BooleanConvertor :ResourceDictionary, IValueConverter 
+
+namespace FoliCon
+{
+    public class String2BooleanConvertor :ResourceDictionary, IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -14,3 +19,4 @@ public class String2BooleanConvertor :ResourceDictionary, IValueConverter
             return value != null && (bool) value ? parameter : DependencyProperty.UnsetValue;
         }
     }
+}

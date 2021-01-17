@@ -14,8 +14,7 @@
            Icon="/Resources/folicon Icon.ico"
         modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
         modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" x:Name="mainWindow1"
-         >
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>

@@ -56,7 +56,7 @@ namespace FoliCon.Modules
             }
         }
 
-        public async Task<bool> IsTokenValidAsync(string clientAccessToken)
+        public static async Task<bool> IsTokenValidAsync(string clientAccessToken)
         {
             var url = "https://www.deviantart.com/api/v1/oauth2/placebo?access_token=" + clientAccessToken;
             using var response = await Services.HttpC.GetAsync(new Uri(url));

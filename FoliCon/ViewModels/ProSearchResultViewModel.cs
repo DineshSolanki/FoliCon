@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Threading.Tasks;
 
 namespace FoliCon.ViewModels
@@ -157,7 +158,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = parameter?.ToLower() switch
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
             {
                 "true" => ButtonResult.OK,
                 "false" => ButtonResult.Cancel,

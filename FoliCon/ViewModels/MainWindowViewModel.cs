@@ -14,7 +14,7 @@ using System.Net.NetworkInformation;
 
 namespace FoliCon.ViewModels
 {
-    public class MainWindowViewModel : BindableBase, IFileDragDropTarget
+    public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
     {
         #region Variables
 
@@ -41,8 +41,8 @@ namespace FoliCon.ViewModels
         private string _devClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
         private string _devClientId = GlobalDataHelper<AppConfig>.Config.DevClientId;
         private ListViewData _finalListViewData;
-        public List<ImageToDownload> ImgDownloadList;
-        public DataTable PickedListDataTable;
+        private List<ImageToDownload> _imgDownloadList;
+        private DataTable _pickedListDataTable;
         private bool IsObjectsInitialized { get; set; }
 
         public bool IsSearchModeVisible
@@ -143,7 +143,7 @@ namespace FoliCon.ViewModels
 
         #endregion SettingMenu
 
-        public DelegateCommand RestartExCommand { get; } = new DelegateCommand(delegate
+        public DelegateCommand RestartExCommand { get; } = new(delegate
         {
             Util.RefreshIconCache();
             Util.RestartExplorer();
@@ -151,13 +151,13 @@ namespace FoliCon.ViewModels
         public DelegateCommand CustomIconsCommand { get; private set;}
         public DelegateCommand DeleteIconsCommand { get; private set; }
 
-        public DelegateCommand HelpCommand { get; } = new DelegateCommand(delegate
+        public DelegateCommand HelpCommand { get; } = new(delegate
         {
             Util.StartProcess("https://github.com/DineshSolanki/FoliCon");
         });
 
         public DelegateCommand AboutCommand { get; private set; }
-        public DelegateCommand UpdateCommand { get; } = new DelegateCommand(Util.CheckForUpdate);
+        public DelegateCommand UpdateCommand { get; } = new(Util.CheckForUpdate);
 
         #endregion MenuItem Commands
 
@@ -235,9 +235,9 @@ namespace FoliCon.ViewModels
 
                     StatusBarProperties.ProcessedFolder = Fnames.Count;
                     StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
-                        StatusBarProperties.ProgressBarData.Max = ImgDownloadList.Count;
-                    BusyIndicatorProperties.Text = $"Downloading Icon 1/{ImgDownloadList.Count}...";
-                    if (ImgDownloadList.Count > 0)
+                        StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
+                    BusyIndicatorProperties.Text = $"Downloading Icon 1/{_imgDownloadList.Count}...";
+                    if (_imgDownloadList.Count > 0)
                         await StartDownloadingAsync();
                     else
                         IsMakeEnabled = true;
@@ -309,7 +309,7 @@ namespace FoliCon.ViewModels
                                 var p = new DialogParameters {
                                     {"title","No Poster" }, {"message", "No poster found."}
                                 };
-                                _dialogService.ShowDialog("MessageBox", p, result => { });
+                                _dialogService.ShowDialog("MessageBox", p, _ => { });
                             }
 
                             isAutoPicked = false;
@@ -345,10 +345,10 @@ namespace FoliCon.ViewModels
                 {
                     FinalListViewData.Data.Add(new ListItem
                     {
-                        Title = PickedListDataTable.Rows[^1]["Title"].ToString(),
-                        Year = PickedListDataTable.Rows[^1]["Year"].ToString(),
-                        Rating = PickedListDataTable.Rows[^1]["Rating"].ToString(),
-                        Folder = PickedListDataTable.Rows[^1]["Folder"].ToString()
+                        Title = _pickedListDataTable.Rows[^1]["Title"].ToString(),
+                        Year = _pickedListDataTable.Rows[^1]["Year"].ToString(),
+                        Rating = _pickedListDataTable.Rows[^1]["Rating"].ToString(),
+                        Folder = _pickedListDataTable.Rows[^1]["Folder"].ToString()
                     });
                     // TODO: Set cursor back to arrow here
                 }
@@ -364,11 +364,11 @@ namespace FoliCon.ViewModels
         {
             StatusBarProperties.AppStatus = "Searching...";
             //DialogParameters p=CreateProSearchParameters();
-            _dialogService.ShowProSearchResult(SelectedFolder, Fnames, PickedListDataTable, ImgDownloadList,
-                _dArtObject, r => { });
+            _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
+                _dArtObject, _ => { });
             //_dialogService.ShowDialog("ProSearchResult", p, r => { });
-            if (PickedListDataTable.Rows.Count <= 0) return;
-            foreach (DataRow v in PickedListDataTable.Rows)
+            if (_pickedListDataTable.Rows.Count <= 0) return;
+            foreach (DataRow v in _pickedListDataTable.Rows)
             {
                 FinalListViewData.Data.Add(new ListItem
                 {
@@ -382,14 +382,14 @@ namespace FoliCon.ViewModels
 
         private void InitializeDelegates()
         {
-            ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(r => { }); });
-            PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(r => { }); });
+            ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(_ => { }); });
+            PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
             CustomIconsCommand = new DelegateCommand(delegate
             {
                 _dialogService.ShowCustomIconWindow(
-                    r => { }
+                    _ => { }
                     ); 
             }
             );
@@ -438,8 +438,8 @@ namespace FoliCon.ViewModels
             };
             StatusBarProperties.ProgressBarData.Max = 100;
             StatusBarProperties.ProgressBarData.Value = 0;
-            ImgDownloadList = new List<ImageToDownload>();
-            PickedListDataTable = new DataTable();
+            _imgDownloadList = new List<ImageToDownload>();
+            _pickedListDataTable = new DataTable();
             if (Util.IsNetworkAvailable())
             {
                 InitializeClientObjects();
@@ -451,48 +451,26 @@ namespace FoliCon.ViewModels
 
         private void PrepareForSearch()
         {
-            ImgDownloadList.Clear();
+            _imgDownloadList.Clear();
             InitPickedListDataTable();
         }
 
         public void InitPickedListDataTable()
         {
-            PickedListDataTable.Columns.Clear();
-            PickedListDataTable.Rows.Clear();
-            var column1 = new DataColumn("Poster") {DataType = Type.GetType("System.String")};
-            var column2 = new DataColumn("Title") {DataType = Type.GetType("System.String")};
-            var column3 = new DataColumn("Year") {DataType = Type.GetType("System.String")};
-            var column4 = new DataColumn("Rating") {DataType = Type.GetType("System.String")};
-            var column5 = new DataColumn("Folder") {DataType = Type.GetType("System.String")};
-            var column6 = new DataColumn("FolderName") {DataType = Type.GetType("System.String")};
-            PickedListDataTable.Columns.Add(column1);
-            PickedListDataTable.Columns.Add(column2);
-            PickedListDataTable.Columns.Add(column3);
-            PickedListDataTable.Columns.Add(column4);
-            PickedListDataTable.Columns.Add(column5);
-            PickedListDataTable.Columns.Add(column6);
-        }
-
-        private DialogParameters CreateSearchResultParameters(string searchTitle, dynamic result, string folderPath)
-        {
-            var p = new DialogParameters
-            {
-                {"query", searchTitle}, {"result", result}, {"searchmode", SearchMode}, {"tmdbObject", _tmdbObject},
-                {"igdbObject", _igdbObject},
-                {"folderpath", folderPath}
-            };
-            return p;
-        }
-
-        private DialogParameters CreateProSearchParameters()
-        {
-            var p = new DialogParameters
-            {
-                {"dartobject", _dArtObject}, {"fnames", Fnames}, {"pickedtable", PickedListDataTable},
-                {"imglist", ImgDownloadList},
-                {"folderpath", SelectedFolder}
-            };
-            return p;
+            _pickedListDataTable.Columns.Clear();
+            _pickedListDataTable.Rows.Clear();
+            var column1 = new DataColumn("Poster") {DataType = typeof(string)};
+            var column2 = new DataColumn("Title") {DataType = typeof(string)};
+            var column3 = new DataColumn("Year") {DataType = typeof(string)};
+            var column4 = new DataColumn("Rating") {DataType = typeof(string)};
+            var column5 = new DataColumn("Folder") {DataType = typeof(string)};
+            var column6 = new DataColumn("FolderName") {DataType = typeof(string)};
+            _pickedListDataTable.Columns.Add(column1);
+            _pickedListDataTable.Columns.Add(column2);
+            _pickedListDataTable.Columns.Add(column3);
+            _pickedListDataTable.Columns.Add(column4);
+            _pickedListDataTable.Columns.Add(column5);
+            _pickedListDataTable.Columns.Add(column6);
         }
 
         private void DeleteIconsMethod()
@@ -534,7 +512,7 @@ namespace FoliCon.ViewModels
             StopIconDownload = false;
             IsBusy = true;
             var i = 0;
-            foreach (var img in ImgDownloadList)
+            foreach (var img in _imgDownloadList)
             {
                 if (StopIconDownload)
                 {
@@ -565,14 +543,14 @@ namespace FoliCon.ViewModels
         {
             IsBusy = true;
             int iconProcessedCount;
-            if (IconMode.Equals("Poster") && !SearchMode.Equals("Game"))
+            if (IconMode == "Poster" && SearchMode !="Game")
             {
-                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, PickedListDataTable,
+                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable,
                     IsRatingVisible, IsPosterMockupUsed);
             }
             else
             {
-                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, PickedListDataTable);
+                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable);
             }
 
             StatusBarProperties.ProcessedIcon = iconProcessedCount;
@@ -613,14 +591,14 @@ namespace FoliCon.ViewModels
                 out _devClientId);
             _tmdbClient = new TMDbLib.Client.TMDbClient(_tmdbapiKey);
             _igdbClient = new IGDB.IGDBClient(_igdbClientId, _igdbClientSecret, new IgdbJotTrackerStore());
-            _igdbObject = new IgdbClass(ref PickedListDataTable, ref _igdbClient, ref ImgDownloadList);
-            _tmdbObject = new Tmdb(ref _tmdbClient, ref PickedListDataTable, ref ImgDownloadList);
+            _igdbObject = new IgdbClass(ref _pickedListDataTable, ref _igdbClient, ref _imgDownloadList);
+            _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
             _dArtObject = new DArt(_devClientSecret, _devClientId);
         }
 
         private void AboutMethod()
         {
-            _dialogService.ShowAboutBox(r => { });
+            _dialogService.ShowAboutBox(_ => { });
         }
 
         public void OnFileDrop(string[] filepaths, string senderName)
@@ -628,6 +606,12 @@ namespace FoliCon.ViewModels
             SelectedFolder = filepaths.GetValue(0)?.ToString();
             StatusBarProperties.ResetData();
             IsMakeEnabled = true;
+        }
+
+        public void Dispose()
+        {
+            _tmdbClient?.Dispose();
+            _pickedListDataTable?.Dispose();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
+using System.Globalization;
 using Prism.Commands;
 
 namespace FoliCon.ViewModels
@@ -36,7 +37,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = parameter?.ToLower() switch
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
             {
                 "true" => ButtonResult.OK,
                 "false" => ButtonResult.Cancel,

@@ -167,7 +167,7 @@ namespace FoliCon.Modules
         /// <param name="folderPath">Path to delete Icons from</param>
         public static void DeleteIconsFromSubfolders(string folderPath)
         {
-            foreach (string folder in Directory.EnumerateDirectories(folderPath))
+            foreach (var folder in Directory.EnumerateDirectories(folderPath))
             {
                 DeleteIconsFromFolder(folder);
             }

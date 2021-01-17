@@ -1,12 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Controls;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for CustomIconControl
     /// </summary>
-    public partial class CustomIconControl : UserControl
+    public partial class CustomIconControl
     {
         public CustomIconControl()
         {

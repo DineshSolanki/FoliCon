@@ -1,16 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
-    <Version>3.0.2</Version>
+    <Version>3.2.0</Version>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
-    <PackageVersion>3.1.0</PackageVersion>
-    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <PackageVersion>3.2.0</PackageVersion>
+    <AssemblyVersion>3.2.0.0</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\folicon Icon.ico" />

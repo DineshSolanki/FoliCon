@@ -6,13 +6,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:modules="clr-namespace:FoliCon.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:global="clr-namespace:"
+             xmlns:foliCon="clr-namespace:FoliCon"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance modules:PosterIconConfigViewModel }">
     <UserControl.Resources>
         <ResourceDictionary>
-            <global:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
+            <foliCon:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
         </ResourceDictionary>
     </UserControl.Resources>
     <prism:Dialog.WindowStyle>

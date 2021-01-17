@@ -4,7 +4,7 @@ namespace FoliCon.Models
 {
     internal static class GlobalVariables
     {
-        public static bool SkipAll = false;
+        public static bool SkipAll;
 
         public static IconOverlay IconOverlayType = new PosterIconConfigViewModel().IconOverlay switch
         {

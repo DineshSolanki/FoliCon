@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Models
+﻿// ReSharper disable StringLiteralTypo
+// ReSharper disable IdentifierTypo
+namespace FoliCon.Models
 {
     using Newtonsoft.Json;
 

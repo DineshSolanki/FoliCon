@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -26,12 +26,12 @@ namespace FoliCon.ViewModels
         private bool _isUndoEnable;
         private bool _keepExactOnly;
         private bool _isBusy;
-       
+
         public string Title => "Custom icon setter";
 
-        private ObservableCollection<string> _undoDirectories = new ObservableCollection<string>();
-        private ObservableCollection<string> _backupDirectories = new ObservableCollection<string>();
-        private ObservableCollection<string> _backupIcons = new ObservableCollection<string>();
+        private ObservableCollection<string> _undoDirectories = new();
+        private ObservableCollection<string> _backupDirectories = new();
+        private ObservableCollection<string> _backupIcons = new();
         private string _busyContent;
 
         public bool KeepExactOnly
@@ -44,16 +44,19 @@ namespace FoliCon.ViewModels
                 else RestoreCollections();
             }
         }
+
         public bool IsBusy
         {
             get => _isBusy;
             set => SetProperty(ref _isBusy, value);
         }
+
         public bool IsUndoEnable
         {
             get => _isUndoEnable;
             set => SetProperty(ref _isUndoEnable, value);
         }
+
         public string SelectedDirectory
         {
             get => _selectedDirectory;
@@ -104,7 +107,12 @@ namespace FoliCon.ViewModels
         public DelegateCommand UndoIcons { get; set; }
         public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
         public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
-        public string BusyContent { get => _busyContent; private set => SetProperty(ref _busyContent, value); }
+
+        public string BusyContent
+        {
+            get => _busyContent;
+            private set => SetProperty(ref _busyContent, value);
+        }
 
         #endregion
 
@@ -124,20 +132,21 @@ namespace FoliCon.ViewModels
         private void UndoCreatedIcons()
         {
             if (_undoDirectories.Count == 0) return;
-            foreach(string folder in _undoDirectories)
+            foreach (var folder in _undoDirectories)
             {
                 Util.DeleteIconsFromFolder(folder);
             }
+
             var info = new GrowlInfo
             {
-                Message = $"Undo sucessfull",
+                Message = "Undo successful",
                 ShowDateTime = false,
                 StaysOpen = false
             };
             Growl.SuccessGlobal(info);
             Util.RefreshIconCache();
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT
-                ,Directory.GetParent(_undoDirectories.First()).FullName);
+                , Directory.GetParent(_undoDirectories.First())?.FullName);
 
             IsUndoEnable = false;
         }
@@ -146,7 +155,7 @@ namespace FoliCon.ViewModels
         {
             var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Folder");
             var dialogResult = folderBrowserDialog.ShowDialog();
-            if (dialogResult != null && (bool)!dialogResult) return;
+            if (dialogResult != null && (bool) !dialogResult) return;
             _backupDirectories.Clear();
             SelectedDirectory = folderBrowserDialog.SelectedPath;
         }
@@ -155,7 +164,7 @@ namespace FoliCon.ViewModels
         {
             var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Icons Directory");
             var dialogResult = folderBrowserDialog.ShowDialog();
-            if (dialogResult != null && (bool)!dialogResult) return;
+            if (dialogResult != null && (bool) !dialogResult) return;
             _backupIcons.Clear();
             SelectedIconsDirectory = folderBrowserDialog.SelectedPath;
         }
@@ -166,7 +175,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = parameter?.ToLower() switch
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
             {
                 "true" => ButtonResult.OK,
                 "false" => ButtonResult.Cancel,
@@ -190,6 +199,7 @@ namespace FoliCon.ViewModels
         }
 
         #endregion DialogMethods
+
         private void StartProcessing()
         {
             if (Directories.Count <= 0)
@@ -198,12 +208,14 @@ namespace FoliCon.ViewModels
                     , MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            else if (Icons.Count <= 0)
+
+            if (Icons.Count <= 0)
             {
                 MessageBox.Show("No icons selected", "No icons to apply"
                     , MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
             var iconProcessedCount = MakeIcons();
             var info = new GrowlInfo
             {
@@ -213,17 +225,19 @@ namespace FoliCon.ViewModels
             };
             IsUndoEnable = true;
             _undoDirectories.Clear();
-            _undoDirectories = Directories.Select(folder => Path.Combine(SelectedDirectory, folder)).ToObservableCollection();
+            _undoDirectories = Directories.Select(folder => Path.Combine(SelectedDirectory, folder))
+                .ToObservableCollection();
             Growl.SuccessGlobal(info);
             switch (MessageBox.Ask("Note:The Icon may take some time to reload. " + Environment.NewLine +
                                    " To Force Reload, click on Restart Explorer " + Environment.NewLine +
                                    "Click \"Confirm\" to open folder.", "Icon(s) Created"))
             {
-                case System.Windows.MessageBoxResult.OK:
+                case MessageBoxResult.OK:
                     Util.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
                     break;
             }
         }
+
         private int MakeIcons()
         {
             IsBusy = true;
@@ -234,12 +248,13 @@ namespace FoliCon.ViewModels
                 var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
                 var newIconPath = Path.Combine(folderPath, Directories[i] + ".ico");
                 if (i >= Icons.Count) break;
-                if (!Path.GetExtension(Icons[i]).ToLower().Equals(".ico"))
+                if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
                 {
                     var icon = new ProIcon(iconPath).RenderToBitmap();
-                    PngToIcoService.Convert(icon, iconPath.Replace(Path.GetExtension(Icons[i]), ".ico"));
+                    PngToIcoService.Convert(icon, iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico"));
                     icon.Dispose();
                 }
+
                 File.Copy(iconPath, newIconPath);
                 if (File.Exists(newIconPath))
                 {
@@ -247,13 +262,16 @@ namespace FoliCon.ViewModels
                     Util.SetFolderIcon(newIconPath, folderPath);
                     count++;
                 }
+
                 BusyContent = $"Creating icon {count}";
             }
+
             Util.ApplyChanges(SelectedDirectory);
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
             IsBusy = false;
             return count;
         }
+
         private void RemoveNotMatching()
         {
             _backupDirectories.Clear();
@@ -267,6 +285,7 @@ namespace FoliCon.ViewModels
             Directories = Directories.OrderBySequence(temp, name => name)
                 .ToObservableCollection();
         }
+
         private void RestoreCollections()
         {
             if (_backupIcons.Count == 0 || _backupDirectories.Count == 0) return;
@@ -277,6 +296,7 @@ namespace FoliCon.ViewModels
             _backupIcons.Clear();
             _backupDirectories.Clear();
         }
+
         private void FolderListKeyPress(dynamic selectedItems)
         {
             var temp = new List<object>(selectedItems);
@@ -284,8 +304,10 @@ namespace FoliCon.ViewModels
             {
                 Directories.Remove(i);
             }
+
             KeepExactOnly = false;
         }
+
         private void IconsListKeyPress(dynamic selectedItems)
         {
             var temp = new List<object>(selectedItems);
@@ -293,18 +315,22 @@ namespace FoliCon.ViewModels
             {
                 Icons.Remove(i);
             }
+
             KeepExactOnly = false;
         }
 
         public void OnFileDrop(string[] filepaths, string senderName)
         {
-            if (senderName == "FolderButton" || senderName == "FoldersList")
+            switch (senderName)
             {
-                SelectedDirectory = filepaths.GetValue(0)?.ToString();
-            }
-            else if (senderName == "IconButton" || senderName == "IconsList")
-            {
-                SelectedIconsDirectory = filepaths.GetValue(0)?.ToString();
+                case "FolderButton":
+                case "FoldersList":
+                    SelectedDirectory = filepaths.GetValue(0)?.ToString();
+                    break;
+                case "IconButton":
+                case "IconsList":
+                    SelectedIconsDirectory = filepaths.GetValue(0)?.ToString();
+                    break;
             }
         }
     }

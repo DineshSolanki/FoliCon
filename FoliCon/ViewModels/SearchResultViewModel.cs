@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections;
+using System.Globalization;
 
 namespace FoliCon.ViewModels
 {
@@ -72,7 +73,7 @@ namespace FoliCon.ViewModels
 
         protected virtual void CloseDialog(string parameter)
         {
-            var result = parameter?.ToLower() switch
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
             {
                 "true" => ButtonResult.OK,
                 "false" => ButtonResult.Cancel,
@@ -181,7 +182,7 @@ namespace FoliCon.ViewModels
                     var p = new DialogParameters {
                         {"title","No Poster" }, {"message", "No poster found."}
                     };
-                    _dialogService.ShowDialog("MessageBox", p, result => { });
+                    _dialogService.ShowDialog("MessageBox", p, _ => { });
                 }
             }
             CloseDialog("true");
