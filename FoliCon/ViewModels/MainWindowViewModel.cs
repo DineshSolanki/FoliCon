@@ -228,6 +228,7 @@ namespace FoliCon.ViewModels
 
                     StatusBarProperties.ResetData();
                     FinalListViewData.Data.Clear();
+                    StatusBarProperties.TotalFolders = Fnames.Count;
                     PrepareForSearch();
                     if (IconMode == "Poster")
                         await ProcessPosterModeAsync();
@@ -235,8 +236,6 @@ namespace FoliCon.ViewModels
                     {
                         ProcessProfessionalMode();
                     }
-
-                    StatusBarProperties.ProcessedFolder = Fnames.Count;
                     StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
                         StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
                     BusyIndicatorProperties.Text = $"Downloading Icon 1/{_imgDownloadList.Count}...";
@@ -359,7 +358,7 @@ namespace FoliCon.ViewModels
                     });
                     // TODO: Set cursor back to arrow here
                 }
-
+                StatusBarProperties.ProcessedFolder++;
                 if (GlobalVariables.SkipAll)
                     break;
             }
@@ -385,6 +384,7 @@ namespace FoliCon.ViewModels
                     Folder = v["Folder"].ToString()
                 });
             }
+            StatusBarProperties.ProcessedFolder = _pickedListDataTable.Rows.Count;
         }
 
         private void InitializeDelegates()

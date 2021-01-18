@@ -9,12 +9,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="714" Width="636" MinWidth="636" MinHeight="608"
+        Title="{Binding Title}" Height="714" Width="670" MinWidth="670" MinHeight="608"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
            Icon="/Resources/folicon Icon.ico"
         modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
         modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+    
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
@@ -187,7 +188,7 @@
                         <GridView>
                             <GridViewColumn Header="Title" Width="Auto" DisplayMemberBinding="{Binding Title}" />
                             <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
-                            <GridViewColumn Header="Rating" Width="60" DisplayMemberBinding="{Binding Rating}" />
+                            <GridViewColumn Header="Rating" Width="63" DisplayMemberBinding="{Binding Rating}" />
                             <GridViewColumn Header="Folder" Width="Auto" DisplayMemberBinding="{Binding Folder}" />
                         </GridView>
                     </ListView.View>
@@ -206,6 +207,8 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="auto" />
                                     <!--separator-->
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="auto" />
@@ -231,26 +234,32 @@
                     </StatusBarItem>
                     <Separator Grid.Column="3" />
                     <StatusBarItem Grid.Column="4">
-                        <Label Content="Folder Processed:" VerticalAlignment="Top" BorderThickness="0" />
+                        <Label Content="Folders Processed:" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="5">
                         <Label Content="{Binding ProcessedFolder}" VerticalAlignment="Top" />
                     </StatusBarItem>
-                    <Separator Grid.Column="6" />
+                    <StatusBarItem Grid.Column="6">
+                        <Label FontSize="12" Content="out of" VerticalAlignment="Top" BorderThickness="0" />
+                    </StatusBarItem>
                     <StatusBarItem Grid.Column="7">
+                        <Label Content="{Binding TotalFolders}" VerticalAlignment="Top" />
+                    </StatusBarItem>
+                    <Separator Grid.Column="8" />
+                    <StatusBarItem Grid.Column="9">
                         <Label Content="Icons Created :" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
-                    <StatusBarItem Grid.Column="8">
+                    <StatusBarItem Grid.Column="10">
                         <Label Content="{Binding ProcessedIcon}" />
                     </StatusBarItem>
-                    <StatusBarItem Grid.Column="9">
-                        <Label Content="out of" VerticalAlignment="Top" BorderThickness="0" />
+                    <StatusBarItem Grid.Column="11">
+                        <Label FontSize="12" Content="out of" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
-                    <StatusBarItem Grid.Column="10">
+                    <StatusBarItem Grid.Column="12">
                         <Label Content="{Binding TotalIcons}" VerticalAlignment="Top" />
                     </StatusBarItem>
-                    <Separator Grid.Column="11" />
-                    <StatusBarItem Grid.Column="12">
+                    <Separator Grid.Column="13" />
+                    <StatusBarItem Grid.Column="14">
                         <Image Source="{Binding NetIcon}" Stretch="Fill" Width="32" />
                     </StatusBarItem>
                 </StatusBar>
