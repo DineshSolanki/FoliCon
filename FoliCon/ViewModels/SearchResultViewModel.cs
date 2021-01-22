@@ -55,6 +55,7 @@ namespace FoliCon.ViewModels
         #region Commands
 
         public DelegateCommand PickCommand { get; }
+        public DelegateCommand SortResultCommand { get; }
         public DelegateCommand SkipCommand { get; }
         public DelegateCommand SkipAllCommand { get; }
         public DelegateCommand SearchAgainCommand { get; }
@@ -68,7 +69,13 @@ namespace FoliCon.ViewModels
             SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
             ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
             PickCommand = new DelegateCommand(PickMethod);
+            SortResultCommand = new DelegateCommand(SortResult);
             SkipAllCommand = new DelegateCommand(delegate { GlobalVariables.SkipAll = true; CloseDialog("false"); });
+        }
+
+        private void SortResult()
+        {
+            
         }
 
         protected virtual void CloseDialog(string parameter)

@@ -260,7 +260,7 @@ namespace FoliCon.ViewModels
                 if (File.Exists(newIconPath))
                 {
                     Util.HideIcons(newIconPath);
-                    Util.SetFolderIcon(newIconPath, folderPath);
+                    Util.SetFolderIcon($"{Directories[i]}.ico", folderPath);
                     count++;
                 }
 

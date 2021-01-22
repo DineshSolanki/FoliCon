@@ -48,11 +48,14 @@
                         Command="{Binding SkipCommand}" IsCancel="True" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding PickCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    <hc:Interaction.Triggers>
+                        <!--<hc:EventTrigger EventName="GridViewColumnHeader.Click">
+                            <hc:EventToCommand Command="{Binding SortResultCommand}" PassEventArgsToCommand="True"/>
+                        </hc:EventTrigger>-->
+                        <hc:EventTrigger EventName="MouseDoubleClick">
+                            <hc:InvokeCommandAction Command="{Binding PickCommand}" />
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto">
