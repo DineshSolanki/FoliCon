@@ -310,11 +310,7 @@ namespace FoliCon.ViewModels
                             {
                                 if (ex.Message == "NoPoster")
                                 {
-                                    var p = new DialogParameters
-                                {
-                                    {"title", "No Poster"}, {"message", "No poster found."}
-                                };
-                                    _dialogService.ShowDialog("MessageBox", p, _ => { });
+                                    MessageBox.Warning("No poster found.", itemTitle);
                                 }
 
                                 isAutoPicked = false;
