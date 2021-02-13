@@ -45,7 +45,7 @@ namespace FoliCon.Modules
 
         private static void OnIsFocusedPropertyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs args)
         {
-            if (!(depObj is UIElement element)) return;
+            if ((depObj is not UIElement element)) return;
             // Don't care about false values.
             if (!(bool)args.NewValue) return;
             // only focusable if these two are true

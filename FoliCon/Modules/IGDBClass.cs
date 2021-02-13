@@ -58,7 +58,7 @@ namespace FoliCon.Modules
                                                                 let year = item.FirstReleaseDate != null ? item.FirstReleaseDate.Value.Year.ToString() : ""
                                                                 let overview = item.Summary
                                                                 let poster = item.Cover != null
-                                                                    ? "https://" + ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720).Substring(2)
+                                                                    ? "https://" + ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720)[2..]
                                                                     : null
                                                                 select (mediaName, year, overview, poster))
             {
@@ -84,7 +84,7 @@ namespace FoliCon.Modules
             var tempImage = new ImageToDownload
             {
                 LocalPath = localPosterPath,
-                RemotePath = new Uri("https://" + posterUrl.Substring(2))
+                RemotePath = new Uri("https://" + posterUrl[2..])
             };
             _imgDownloadList.Add(tempImage);
         }

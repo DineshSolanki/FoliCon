@@ -5,6 +5,7 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:models="clr-namespace:FoliCon.Models"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
@@ -102,7 +103,7 @@
                 <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
                        Width="158" RenderOptions.BitmapScalingMode="HighQuality" />
                 <Image Grid.Row="1" Grid.Column="0"
-                       Source="{Binding SelectedItem.Poster, ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
+                       Source="{Binding SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
                        RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Height="198" Width="158"
                        Margin="0,0,0,2">
                     <Image.Effect>
@@ -110,7 +111,7 @@
                     </Image.Effect>
                 </Image>
                 <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
-                         Text="{Binding SelectedItem.Overview, ElementName=ListViewResult}" TextWrapping="Wrap"
+                         Text="{Binding SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
                 <ListBox Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"

@@ -33,16 +33,16 @@ namespace FoliCon.Modules
 {
     internal static class Util
     {
-        public static void CheckForUpdate()
+        public static async void CheckForUpdate()
         {
             if (IsNetworkAvailable())
             {
-                var ver = UpdateHelper.CheckForUpdate(
-                    "https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/FoliCon/Updater.xml");
+                var ver =await UpdateHelper.Instance.CheckUpdateAsync( "DineshSolanki", "FoliCon");
                 if (ver.IsExistNewVersion)
                 {
                     var info = new GrowlInfo
                     {
+
                         Message = $"New Version Found!\n Changelog:{ver.Changelog}",
                         ConfirmStr = "Update Now",
                         CancelStr = "Ignore",
@@ -50,7 +50,7 @@ namespace FoliCon.Modules
                         ActionBeforeClose = isConfirmed =>
                         {
                             if (isConfirmed)
-                                StartProcess(ver.Url);
+                                StartProcess(ver.ReleaseUrl);
                             return true;
                         }
                     };
@@ -91,7 +91,7 @@ namespace FoliCon.Modules
 
         public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
-            if (!(imageSource is BitmapSource bitmapSource)) return null;
+            if ((imageSource is not BitmapSource bitmapSource)) return null;
             encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
             using var stream = new MemoryStream();
@@ -106,7 +106,7 @@ namespace FoliCon.Modules
         /// <param name="listView"> list view to change width</param>
         public static void SetColumnWidth(ListView listView)
         {
-            if (!(listView.View is GridView gridView)) return;
+            if ((listView.View is not GridView gridView)) return;
             foreach (var column in gridView.Columns)
             {
                 if (double.IsNaN(column.Width))

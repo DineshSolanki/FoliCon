@@ -37,7 +37,7 @@
                 <ContentControl VerticalAlignment="Top">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding WebsiteClickCommand}" />
+                            <i:InvokeCommandAction Command="{Binding WebsiteClickCommand}"  />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <TextBlock Text="{Binding Website}" HorizontalAlignment="Stretch" FontStyle="Oblique" Foreground="Blue" Margin="0,4,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" />
