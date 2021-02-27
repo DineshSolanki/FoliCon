@@ -89,7 +89,7 @@ namespace FoliCon.ViewModels
             while (true)
             {
                 var searchResult = await DArtObject.Browse(query, offset);
-                if (searchResult.Results.Length > 0)
+                if (searchResult.Results?.Length > 0)
                 {
                     foreach (var item in searchResult.Results)
                     {

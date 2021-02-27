@@ -120,7 +120,8 @@ namespace FoliCon.Models
         [JsonProperty("next_offset")]
         public int NextOffset { get; set; }
 
+#nullable enable
         [JsonProperty("results")]
-        public Result[] Results { get; set; }
+        public Result[]? Results { get; set; }
     }
 }

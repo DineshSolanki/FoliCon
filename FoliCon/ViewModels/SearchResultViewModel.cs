@@ -14,8 +14,8 @@ namespace FoliCon.ViewModels
         #region Variables
 
         private string _title = "Search Result";
-        private string _searchTitle = " Night of the Day of the Dawn of the Son of the Bride of the Return of the Revenge of the Terror of the Attack of the Evil, Mutant, Hellbound, Flesh-Eating Subhumanoid Zombified Living Dead, Part 2: In Shocking ";
-        private string _busyContent = "searching";
+        private string _searchTitle;
+        private string _busyContent;
         private bool _isBusy;
         private string _searchMode;
         private ListViewData _resultListViewData;
@@ -142,13 +142,13 @@ namespace FoliCon.ViewModels
             LoadData(titleToSearch);
         }
 
-        private void LoadData(string _searchTitle)
+        private void LoadData(string searchTitle)
         {
             if (SearchResult != null
                 && (SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
                 && (SearchMode == "Game" ? SearchResult?.Result.Length : SearchResult?.Result.TotalResults) != 0)
             {
-                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, _searchTitle);
+                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle);
                 if (ResultListViewData.Data.Count != 0)
                     ResultListViewData.SelectedItem = ResultListViewData.Data[0];
             }

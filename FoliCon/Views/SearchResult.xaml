@@ -103,7 +103,7 @@
                 <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
                        Width="158" RenderOptions.BitmapScalingMode="HighQuality" />
                 <Image Grid.Row="1" Grid.Column="0"
-                       Source="{Binding SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
+                       Source="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
                        RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Height="198" Width="158"
                        Margin="0,0,0,2">
                     <Image.Effect>
@@ -111,7 +111,7 @@
                     </Image.Effect>
                 </Image>
                 <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
-                         Text="{Binding SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
+                         Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
                 <ListBox Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
