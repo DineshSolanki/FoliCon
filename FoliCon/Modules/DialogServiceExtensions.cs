@@ -57,6 +57,13 @@ namespace FoliCon.Modules
         {
             dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
         }
-
+        public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, ResultResponse result,int pickedIndex, Action<IDialogResult> callBack)
+        {
+            var p = new DialogParameters
+            {
+                {"pickedIndex", pickedIndex}, {"result", result}, {"tmdbObject",tmdbObject}
+            };
+            dialogService.ShowDialog("PosterPicker", p, callBack);
+        }
     }
 }

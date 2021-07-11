@@ -6,6 +6,9 @@ using Prism.Services.Dialogs;
 using System;
 using System.Collections;
 using System.Globalization;
+using System.Windows.Input;
+using TMDbLib.Objects.General;
+using TMDbLib.Objects.Search;
 
 namespace FoliCon.ViewModels
 {
@@ -194,5 +197,36 @@ namespace FoliCon.ViewModels
             }
             CloseDialog("true");
         }
+
+        private DelegateCommand mouseDoubleClickCommand;
+        public ICommand MouseDoubleClickCommand => mouseDoubleClickCommand ??= new DelegateCommand(MouseDoubleClick);
+
+
+        private void MouseDoubleClick()
+        {
+            if (ResultListViewData.SelectedItem == null) return;
+            var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
+            try
+            {
+                if (SearchMode != MediaTypes.Game)
+                {
+                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, r => { });
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "NoPoster")
+                {
+                    var p = new DialogParameters {
+                        {"title","No Poster" }, {"message", "No poster found."}
+                    };
+                    _dialogService.ShowDialog("MessageBox", p, _ => { });
+                }
+            }
+        }
+
+
+        
+
     }
 }

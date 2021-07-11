@@ -30,7 +30,7 @@ namespace FoliCon
             containerRegistry.RegisterDialog<CustomIconControl, CustomIconControlViewModel>("CustomIcon");
             containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
             containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
-            containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("PosterPicker");
+            containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
         }
     }
 }

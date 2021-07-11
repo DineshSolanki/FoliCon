@@ -106,6 +106,9 @@
                        Source="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
                        RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Height="198" Width="158"
                        Margin="0,0,0,2">
+                    <Image.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding MouseDoubleClickCommand}"/>
+                    </Image.InputBindings>
                     <Image.Effect>
                         <DropShadowEffect />
                     </Image.Effect>

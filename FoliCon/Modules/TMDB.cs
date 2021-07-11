@@ -33,7 +33,14 @@ namespace FoliCon.Modules
             _serviceClient = serviceClient;
             _imgDownloadList = imgDownloadList;
         }
-
+        public ImagesWithId SearchMovieImages(int movieId)
+        {
+            return _serviceClient.GetMovieImagesAsync(movieId).Result;
+        }
+        public ImagesWithId SearchTvImages(int movieId)
+        {
+            return _serviceClient.GetTvShowImagesAsync(movieId).Result;
+        }
         public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
             SearchContainer<SearchCollection> result)
         {
