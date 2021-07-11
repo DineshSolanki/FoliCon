@@ -5,6 +5,8 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
@@ -21,7 +23,8 @@ namespace FoliCon.ViewModels
         private bool _isBusy;
         public event Action<IDialogResult> RequestClose;
         private ResultResponse _result;
-
+        private const string PosterBase = "http://image.tmdb.org/t/p/original";
+        private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
         #endregion
 
         #region Properties
@@ -32,21 +35,40 @@ namespace FoliCon.ViewModels
         public ResultResponse Result { get => _result; set => SetProperty(ref _result, value); }
         public int PickedIndex { get; private set; }
         public Tmdb tmdbObject { get; private set; }
+        public ObservableCollection<DArtImageList> ImageUrl { get; set; }
+        public DelegateCommand StopSearchCommand { get; set; }
         #endregion
 
         public PosterPickerViewModel()
         {
-
+            ImageUrl = new ObservableCollection<DArtImageList>();
+            StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         }
 
-        public bool CanCloseDialog()
+        protected virtual void CloseDialog(string parameter)
         {
-            throw new NotImplementedException();
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
+
+            RaiseRequestClose(new DialogResult(result));
         }
 
-        public void OnDialogClosed()
+        public virtual void RaiseRequestClose(IDialogResult dialogResult)
         {
-            throw new NotImplementedException();
+            RequestClose?.Invoke(dialogResult);
+        }
+
+        public virtual bool CanCloseDialog()
+        {
+            return true;
+        }
+
+        public virtual void OnDialogClosed()
+        {
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
@@ -94,18 +116,30 @@ namespace FoliCon.ViewModels
             }
         }
 
-        private void LoadImages(ImagesWithId images)
+        private async void LoadImages(ImagesWithId images)
         {
-           if(images is not null)
+            StopSearch = false;
+            ImageUrl.Clear();
+            BusyContent = $"Loading posters...";
+            IsBusy = true;
+            if (images is not null)
             {
                 foreach (var image in images.Posters)
                 {
-                    if (image is not null and)
+                    if (image is not null)
                     {
-                        string posterPath = image.FilePath != null ? SmallPosterBase + item.PosterPath : null;
+                        string posterPath = image.FilePath != null ? PosterBase + image.FilePath : null;
+                        var bm = await Util.GetBitmapFromUrlAsync(posterPath);
+                        ImageUrl.Add(new DArtImageList(image.FilePath, Util.LoadBitmap(bm)));
+                        bm.Dispose();
+                    }
+                    if (_stopSearch)
+                    {
+                        break;
                     }
                 }
             }
+            IsBusy = false;
         }
     }
 }
