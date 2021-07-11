@@ -1,7 +1,7 @@
 ﻿using FoliCon.Modules;
 using FoliCon.ViewModels;
 using FoliCon.Views;
-using HandyControl.Controls;
+using HandyControl.Tools;
 using Prism.Ioc;
 
 namespace FoliCon
@@ -18,7 +18,7 @@ namespace FoliCon
 
         public App()
         {
-            GlobalDataHelper<AppConfig>.Init();
+            GlobalDataHelper.Load<AppConfig>();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -30,6 +30,7 @@ namespace FoliCon
             containerRegistry.RegisterDialog<CustomIconControl, CustomIconControlViewModel>("CustomIcon");
             containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
             containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
+            containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("PosterPicker");
         }
     }
 }

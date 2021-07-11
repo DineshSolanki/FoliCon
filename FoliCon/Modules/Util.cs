@@ -2,6 +2,7 @@
 using FoliCon.Views;
 using HandyControl.Controls;
 using HandyControl.Data;
+using HandyControl.Tools;
 using IGDB.Models;
 using Ookii.Dialogs.Wpf;
 using System;
@@ -35,9 +36,9 @@ namespace FoliCon.Modules
     {
         public static async void CheckForUpdate()
         {
-            if (IsNetworkAvailable())
+            if (ApplicationHelper.IsConnectedToInternet())
             {
-                var ver =await UpdateHelper.Instance.CheckUpdateAsync( "DineshSolanki", "FoliCon");
+                var ver = await UpdateHelper.CheckUpdateAsync("DineshSolanki", "FoliCon");
                 if (ver.IsExistNewVersion)
                 {
                     var info = new GrowlInfo
@@ -512,24 +513,26 @@ namespace FoliCon.Modules
         #endregion IconUtil
 
         public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
-            out string igdbClientSecret, out string dartClientSecret, out string dartId)
+             out string igdbClientSecret, out string dartClientSecret, out string dartId)
         {
-            tmdbkey = GlobalDataHelper<AppConfig>.Config.TmdbKey;
-            igdbClientId = GlobalDataHelper<AppConfig>.Config.IgdbClientId;
-            igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IgdbClientSecret;
-            dartClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
-            dartId = GlobalDataHelper<AppConfig>.Config.DevClientId;
+            var settings = GlobalDataHelper.Load<AppConfig>();
+            tmdbkey = settings.TmdbKey;
+            igdbClientId = settings.IgdbClientId;
+            igdbClientSecret = settings.IgdbClientSecret;
+            dartClientSecret = settings.DevClientSecret;
+            dartId = settings.DevClientId;
         }
 
         public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
             string dartClientSecret, string dartId)
         {
-            GlobalDataHelper<AppConfig>.Config.TmdbKey = tmdbkey;
-            GlobalDataHelper<AppConfig>.Config.IgdbClientId = igdbClientId;
-            GlobalDataHelper<AppConfig>.Config.IgdbClientSecret = igdbClientSecret;
-            GlobalDataHelper<AppConfig>.Config.DevClientId = dartId;
-            GlobalDataHelper<AppConfig>.Config.DevClientSecret = dartClientSecret;
-            GlobalDataHelper<AppConfig>.Save();
+            var settings = GlobalDataHelper.Load<AppConfig>();
+            settings.TmdbKey = tmdbkey;
+            settings.IgdbClientId = igdbClientId;
+            settings.IgdbClientSecret = igdbClientSecret;
+            settings.DevClientId = dartId;
+            settings.DevClientSecret = dartClientSecret;
+            settings.Save();
         }
     }
 }

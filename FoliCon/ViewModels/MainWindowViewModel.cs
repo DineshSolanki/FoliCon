@@ -2,6 +2,7 @@
 using FoliCon.Modules;
 using HandyControl.Controls;
 using HandyControl.Data;
+using HandyControl.Tools;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -35,11 +36,12 @@ namespace FoliCon.ViewModels
         private Tmdb _tmdbObject;
         private DArt _dArtObject;
 
-        private string _tmdbapiKey = GlobalDataHelper<AppConfig>.Config.TmdbKey;
-        private string _igdbClientId = GlobalDataHelper<AppConfig>.Config.IgdbClientId;
-        private string _igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IgdbClientSecret;
-        private string _devClientSecret = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
-        private string _devClientId = GlobalDataHelper<AppConfig>.Config.DevClientId;
+        AppConfig settings = GlobalDataHelper.Load<AppConfig>();
+        private string _tmdbapiKey;
+        private string _igdbClientId;
+        private string _igdbClientSecret;
+        private string _devClientSecret;
+        private string _devClientId;
         private ListViewData _finalListViewData;
         private List<ImageToDownload> _imgDownloadList;
         private DataTable _pickedListDataTable;
@@ -191,7 +193,7 @@ namespace FoliCon.ViewModels
         private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
         {
             StatusBarProperties.NetIcon =
-                Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png";
+                ApplicationHelper.IsConnectedToInternet() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png";
         }
 
         private void LoadMethod()
@@ -390,11 +392,11 @@ namespace FoliCon.ViewModels
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
             CustomIconsCommand = new DelegateCommand(delegate
-                {
-                    _dialogService.ShowCustomIconWindow(
-                        _ => { }
-                    );
-                }
+            {
+                _dialogService.ShowCustomIconWindow(
+                    _ => { }
+                );
+            }
             );
             LoadCommand = new DelegateCommand(LoadMethod);
             SearchAndMakeCommand = new DelegateCommand(SearchAndMakeMethod);
@@ -567,7 +569,7 @@ namespace FoliCon.ViewModels
             Growl.SuccessGlobal(info);
             switch (MessageBox.Ask("Note:The Icon may take some time to reload. " + Environment.NewLine +
                                    " To Force Reload, click on Restart Explorer " + Environment.NewLine +
-                                   "Click \"Confirm\" to open folder.", "Icon(s) Created"))
+                                   @"Click ""Confirm"" to open folder.", "Icon(s) Created"))
             {
                 case System.Windows.MessageBoxResult.OK:
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
@@ -577,6 +579,8 @@ namespace FoliCon.ViewModels
 
         private void InitializeClientObjects()
         {
+            Util.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
+                out _devClientId);
             if (string.IsNullOrEmpty(_tmdbapiKey)
                 || string.IsNullOrEmpty(_igdbClientId) || string.IsNullOrEmpty(_igdbClientSecret)
                 || string.IsNullOrEmpty(_devClientSecret) || string.IsNullOrEmpty(_devClientId))
@@ -589,9 +593,6 @@ namespace FoliCon.ViewModels
                     Environment.Exit(0);
                 });
             }
-
-            Util.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
-                out _devClientId);
             _tmdbClient = new TMDbLib.Client.TMDbClient(_tmdbapiKey);
             _igdbClient = new IGDB.IGDBClient(_igdbClientId, _igdbClientSecret, new IgdbJotTrackerStore());
             _igdbObject = new IgdbClass(ref _pickedListDataTable, ref _igdbClient, ref _imgDownloadList);

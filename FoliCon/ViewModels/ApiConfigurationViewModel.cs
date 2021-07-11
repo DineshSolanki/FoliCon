@@ -1,5 +1,6 @@
 ﻿using FoliCon.Modules;
 using HandyControl.Controls;
+using HandyControl.Tools;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -10,12 +11,13 @@ namespace FoliCon.ViewModels
 {
     public class ApiConfigurationViewModel : BindableBase, IDialogAware
     {
+        AppConfig settings = GlobalDataHelper.Load<AppConfig>();
         private string _title = "API Configuration";
-        private string _dartClient = GlobalDataHelper<AppConfig>.Config.DevClientSecret;
-        private string _dartClientId = GlobalDataHelper<AppConfig>.Config.DevClientId;
-        private string _tmdbKey = GlobalDataHelper<AppConfig>.Config.TmdbKey;
-        private string _igdbClientId = GlobalDataHelper<AppConfig>.Config.IgdbClientId;
-        private string _igdbClientSecret = GlobalDataHelper<AppConfig>.Config.IgdbClientSecret;
+        private string _dartClient;
+        private string _dartClientId;
+        private string _tmdbKey;
+        private string _igdbClientId;
+        private string _igdbClientSecret;
 
         public string Title { get => _title; set => SetProperty(ref _title, value); }
         public string DArtClient { get => _dartClient; set => SetProperty(ref _dartClient, value); }
@@ -32,6 +34,7 @@ namespace FoliCon.ViewModels
         public ApiConfigurationViewModel()
         {
             SaveCommand = new DelegateCommand(SaveMethod);
+            Util.ReadApiConfiguration(out _tmdbKey, out _igdbClientId, out _igdbClientSecret, out _dartClient, out _dartClientId);
         }
 
         private void SaveMethod()
