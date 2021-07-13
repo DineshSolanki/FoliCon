@@ -1,5 +1,6 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
+using HandyControl.Controls;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -80,22 +81,21 @@ namespace FoliCon.ViewModels
         }
         public void LoadData(dynamic result, string resultType)
         {
+            ImagesWithId images = new();
             if (resultType == MediaTypes.Tv)
             {
                 var pickedResult = (SearchTv)result;
-                ImagesWithId images = tmdbObject.SearchTvImages(pickedResult.Id);
-                LoadImages(images);
-                
+                images = tmdbObject.SearchTvImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Movie)
             {
                 var pickedResult = (SearchMovie)result;
-                ImagesWithId images = tmdbObject.SearchMovieImages(pickedResult.Id);
-                LoadImages(images);
+                images = tmdbObject.SearchMovieImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Collection)
             {
-                var searchResult = (SearchCollection)result;
+                var pickedResult = (SearchCollection)result;
+                images = tmdbObject.SearchCollectionImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Mtv)
             {
@@ -105,15 +105,18 @@ namespace FoliCon.ViewModels
                     case MediaType.Tv:
                         {
                             SearchTv pickedResult = result;
+                            images = tmdbObject.SearchTvImages(pickedResult.Id);
                             break;
                         }
                     case MediaType.Movie:
                         {
                             SearchMovie pickedResult = result;
+                            images = tmdbObject.SearchMovieImages(pickedResult.Id);
                             break;
                         }
                 }
             }
+            LoadImages(images);
         }
 
         private async void LoadImages(ImagesWithId images)
@@ -122,13 +125,13 @@ namespace FoliCon.ViewModels
             ImageUrl.Clear();
             BusyContent = $"Loading posters...";
             IsBusy = true;
-            if (images is not null)
+            if (images is not null && images.Posters.Count>=0)
             {
                 foreach (var image in images.Posters)
                 {
                     if (image is not null)
                     {
-                        string posterPath = image.FilePath != null ? PosterBase + image.FilePath : null;
+                        string posterPath = image.FilePath != null ? tmdbObject.GetClient().GetImageUrl(PosterSize.W342, image.FilePath).ToString() : null;
                         var bm = await Util.GetBitmapFromUrlAsync(posterPath);
                         ImageUrl.Add(new DArtImageList(image.FilePath, Util.LoadBitmap(bm)));
                         bm.Dispose();
@@ -138,6 +141,12 @@ namespace FoliCon.ViewModels
                         break;
                     }
                 }
+            }
+            else
+            {
+                IsBusy = false;
+                MessageBox.Warning("No posters found!", "No Result");
+                CloseDialog("true");
             }
             IsBusy = false;
         }

@@ -20,6 +20,11 @@ namespace FoliCon.Modules
         private readonly DataTable _listDataTable;
         private readonly TMDbClient _serviceClient;
 
+        public TMDbClient GetClient()
+        {
+            return _serviceClient;
+        }
+
         /// <summary>
         /// TMDB Helper Class for Working with IGDB API efficiently for this project.
         /// </summary>
@@ -32,15 +37,21 @@ namespace FoliCon.Modules
             _listDataTable = listDataTable;
             _serviceClient = serviceClient;
             _imgDownloadList = imgDownloadList;
+            _ = _serviceClient.GetConfigAsync().Result;
         }
-        public ImagesWithId SearchMovieImages(int movieId)
+        public ImagesWithId SearchMovieImages(int tvId)
         {
-            return _serviceClient.GetMovieImagesAsync(movieId).Result;
+            return _serviceClient.GetMovieImagesAsync(tvId).Result;
         }
         public ImagesWithId SearchTvImages(int movieId)
         {
             return _serviceClient.GetTvShowImagesAsync(movieId).Result;
         }
+        public ImagesWithId SearchCollectionImages(int collectionId)
+        {
+            return _serviceClient.GetCollectionImagesAsync(collectionId).Result;
+        }
+
         public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
             SearchContainer<SearchCollection> result)
         {
