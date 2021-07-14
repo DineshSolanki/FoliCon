@@ -41,7 +41,7 @@
                                 <Image.InputBindings>
                                     <MouseBinding MouseAction="LeftDoubleClick"
                                                   Command="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.PickCommand)}"
+                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:PosterPickerViewModel.PickCommand)}"
                                                   CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" />
                                 </Image.InputBindings>
                             </Image>

@@ -36,14 +36,19 @@ namespace FoliCon.ViewModels
         public ResultResponse Result { get => _result; set => SetProperty(ref _result, value); }
         public int PickedIndex { get; private set; }
         public Tmdb tmdbObject { get; private set; }
+
+        private ObservableCollection<ListItem> resultList;
+
         public ObservableCollection<DArtImageList> ImageUrl { get; set; }
         public DelegateCommand StopSearchCommand { get; set; }
+        public DelegateCommand<object> PickCommand { get; set; }
         #endregion
 
         public PosterPickerViewModel()
         {
             ImageUrl = new ObservableCollection<DArtImageList>();
             StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
+            PickCommand = new DelegateCommand<object>(PickMethod);
         }
 
         protected virtual void CloseDialog(string parameter)
@@ -77,6 +82,7 @@ namespace FoliCon.ViewModels
             Result = parameters.GetValue<ResultResponse>("result");
             PickedIndex = parameters.GetValue<int>("pickedIndex");
             tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
+            resultList = parameters.GetValue<ObservableCollection<ListItem>>("resultList");
             LoadData(Result.Result.Results[PickedIndex], Result.MediaType);
         }
         public void LoadData(dynamic result, string resultType)
@@ -133,7 +139,7 @@ namespace FoliCon.ViewModels
                     {
                         string posterPath = image.FilePath != null ? tmdbObject.GetClient().GetImageUrl(PosterSize.W342, image.FilePath).ToString() : null;
                         var bm = await Util.GetBitmapFromUrlAsync(posterPath);
-                        ImageUrl.Add(new DArtImageList(image.FilePath, Util.LoadBitmap(bm)));
+                        ImageUrl.Add(new DArtImageList(posterPath, Util.LoadBitmap(bm)));
                         bm.Dispose();
                     }
                     if (_stopSearch)
@@ -149,6 +155,13 @@ namespace FoliCon.ViewModels
                 CloseDialog("true");
             }
             IsBusy = false;
+        }
+        private void PickMethod(object parameter)
+        {
+            var link = (string)parameter;
+            Result.Result.Results[PickedIndex].PosterPath = link;
+            resultList[PickedIndex].Poster = link;
+            CloseDialog("true");
         }
     }
 }

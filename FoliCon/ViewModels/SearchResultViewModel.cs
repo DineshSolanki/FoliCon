@@ -210,7 +210,7 @@ namespace FoliCon.ViewModels
             {
                 if (SearchMode != MediaTypes.Game)
                 {
-                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, r => { });
+                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data, r => { });
                 }
             }
             catch (Exception ex)
