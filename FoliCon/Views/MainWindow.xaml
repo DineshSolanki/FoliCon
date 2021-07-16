@@ -9,7 +9,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="714" Width="670" MinWidth="670" MinHeight="608"
+        Title="{Binding Title}" Height="714" Width="752" MinWidth="752" MinHeight="608"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
            Icon="/Resources/folicon Icon.ico"
         modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
@@ -52,11 +52,14 @@
                     <MenuItem x:Name="ChkIsRatingVisible" Header="Show Rating badge"
                               IsChecked="{Binding IsRatingVisible}" IsCheckable="True"
                               ToolTip="Controls whether to hide or show Rating Shield" />
+                    <MenuItem x:Name="ChkPosterShown" Header="Always show poster window"
+                              IsChecked="{Binding IsPosterWindowShown}" IsCheckable="True"
+                              ToolTip="Show poster window even if exact title found.&#x0a; this overrides 'Ignore Ambiguous title' option" />
                     <MenuItem x:Name="ChkIsPosterOverlayVisible" Header="Use Poster overlay"
                               IsChecked="{Binding IsPosterMockupUsed}" IsCheckable="True"
                               ToolTip="Controls whether to use poster Overlay or Plain Posters" />
-                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="Ignore Ambiguous title"
-                              IsChecked="{Binding IsSkipAmbiguous}" IsCheckable="True"
+                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="Ignore Ambiguous title" IsCheckable="True"
+                              IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
                               ToolTip="Skip ambiguous titles from search" />
                     <Separator />
                     <MenuItem x:Name="MenuPosterIconConfigBtn" Header="_Change Poster Icon overlay"

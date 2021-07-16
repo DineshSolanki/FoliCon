@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoliCon", "FoliCon\FoliCon.csproj", "{B435C656-B334-4256-86A3-AE5D1A5DA99A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoliconTest", "FoliconTest\FoliconTest.csproj", "{844C051D-E321-431C-9E23-F8337D0195C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoliconTest", "FoliconTest\FoliconTest.csproj", "{844C051D-E321-431C-9E23-F8337D0195C4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F224D6C0-98A1-4658-94BD-97C316D6DE4D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

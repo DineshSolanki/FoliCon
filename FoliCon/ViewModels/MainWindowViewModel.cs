@@ -35,6 +35,7 @@ namespace FoliCon.ViewModels
         private IgdbClass _igdbObject;
         private Tmdb _tmdbObject;
         private DArt _dArtObject;
+        private bool isPosterWindowShown;
 
         AppConfig settings = GlobalDataHelper.Load<AppConfig>();
         private string _tmdbapiKey;
@@ -46,6 +47,16 @@ namespace FoliCon.ViewModels
         private List<ImageToDownload> _imgDownloadList;
         private DataTable _pickedListDataTable;
         private bool IsObjectsInitialized { get; set; }
+        public bool IsPosterWindowShown
+        {
+            get => isPosterWindowShown; set
+            {
+                IsSkipAmbiguousEnabled = !value;
+                SetProperty(ref isPosterWindowShown, value);
+            }
+        }
+        private bool isSkipAmbiguousEnabled;
+        public bool IsSkipAmbiguousEnabled { get => isSkipAmbiguousEnabled; set => SetProperty(ref isSkipAmbiguousEnabled, value); }
 
         public bool IsSearchModeVisible
         {
@@ -186,6 +197,7 @@ namespace FoliCon.ViewModels
             Services.Tracker.Configure<MainWindowViewModel>()
                 .Property(p => p.IsRatingVisible, true)
                 .Property(p => p.IsPosterMockupUsed, true)
+                .Property(p => p.IsPosterWindowShown)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
         }
@@ -292,7 +304,7 @@ namespace FoliCon.ViewModels
                                 };
                             });
                         break;
-                    case 1:
+                    case 1 when !IsPosterWindowShown:
                         {
                             try
                             {
@@ -322,9 +334,9 @@ namespace FoliCon.ViewModels
                         }
                     default:
                         {
-                            if (resultCount > 1)
+                            if (resultCount >= 1)
                             {
-                                if (!IsSkipAmbiguous)
+                                if (IsPosterWindowShown || !IsSkipAmbiguous)
                                 {
                                     _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
                                         response, _tmdbObject, _igdbObject,
@@ -347,13 +359,16 @@ namespace FoliCon.ViewModels
 
                 if (isAutoPicked || dialogResult)
                 {
-                    FinalListViewData.Data.Add(new ListItem
+                    if (_pickedListDataTable is not null && _pickedListDataTable.Rows.Count != 0)
                     {
-                        Title = _pickedListDataTable.Rows[^1]["Title"].ToString(),
-                        Year = _pickedListDataTable.Rows[^1]["Year"].ToString(),
-                        Rating = _pickedListDataTable.Rows[^1]["Rating"].ToString(),
-                        Folder = _pickedListDataTable.Rows[^1]["Folder"].ToString()
-                    });
+                        FinalListViewData.Data.Add(new ListItem
+                        {
+                            Title = _pickedListDataTable.Rows[^1]["Title"].ToString(),
+                            Year = _pickedListDataTable.Rows[^1]["Year"].ToString(),
+                            Rating = _pickedListDataTable.Rows[^1]["Rating"].ToString(),
+                            Folder = _pickedListDataTable.Rows[^1]["Folder"].ToString()
+                        });
+                    }
                     // TODO: Set cursor back to arrow here
                 }
                 StatusBarProperties.ProcessedFolder++;
@@ -617,5 +632,7 @@ namespace FoliCon.ViewModels
             _tmdbClient?.Dispose();
             _pickedListDataTable?.Dispose();
         }
+
+
     }
 }

@@ -30,6 +30,9 @@
     <None Remove="Resources\Strong-WiFi.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.3.2" />
     <PackageReference Include="HandyControls" Version="3.3.7" />
     <PackageReference Include="IGDB" Version="2.0.1" />
