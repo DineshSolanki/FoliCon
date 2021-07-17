@@ -1,6 +1,7 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -25,6 +26,8 @@ namespace FoliCon.ViewModels
         private DArt _dArtObject;
         private DataTable _listDataTable;
         private List<ImageToDownload> _imgDownloadList;
+        private int _index;
+        private int _totalPosters;
 
         public event Action<IDialogResult> RequestClose;
 
@@ -40,6 +43,8 @@ namespace FoliCon.ViewModels
         public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
         public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
         public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
+        public int Index { get => _index; set => SetProperty(ref _index, value); }
+        public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
 
         public bool IsSearchFocused
         {
@@ -86,25 +91,31 @@ namespace FoliCon.ViewModels
 
         private async Task Search(string query, int offset = 0)
         {
+            int lastIndex;
+            Index = 0;
             while (true)
             {
                 var searchResult = await DArtObject.Browse(query, offset);
+                lastIndex = Index;
                 if (searchResult.Results?.Length > 0)
                 {
-                    foreach (var item in searchResult.Results)
+                    TotalPosters = searchResult.Results.Length + offset;
+                    foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
                     {
-                        if (!item.IsDownloadable)
+                        Index = item.Index + lastIndex;
+                        if (!item.Value.IsDownloadable)
                             continue;
-                        var bm = await Util.GetBitmapFromUrlAsync(item.Thumbs[0].Src);
-                        ImageUrl.Add(new DArtImageList(item.Content.Src, Util.LoadBitmap(bm)));
-                        bm.Dispose();
+                        using (var bm = await Util.GetBitmapFromUrlAsync(item.Value.Thumbs[0].Src))
+                        {
+                            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, Util.LoadBitmap(bm)));
+                            bm.Dispose();
+                        }
                         if (_stopSearch)
                         {
                             return;
                         }
                     }
-
-                    if (searchResult.HasMore && searchResult.NextOffset <= 30)
+                    if (searchResult.HasMore)
                     {
                         offset = searchResult.NextOffset;
                         continue;

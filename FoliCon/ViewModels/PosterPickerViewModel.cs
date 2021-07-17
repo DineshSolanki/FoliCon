@@ -1,6 +1,7 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
@@ -137,9 +138,10 @@ namespace FoliCon.ViewModels
             {
                 TotalPosters = images.Posters.Count;
                 
-                foreach (var image in images.Posters)
+                foreach (var item in images.Posters.GetEnumeratorWithIndex())
                 {
-                    Index = images.Posters.IndexOf(image) + 1;
+                    var image = item.Value;
+                    Index = item.Index + 1;
                     if (image is not null)
                     {
                         string posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W342, image.FilePath).ToString() : null;

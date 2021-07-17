@@ -20,7 +20,15 @@
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContent>
             <StackPanel>
-                <TextBlock Text="{Binding BusyContent}" FontWeight="Bold" />
+                <TextBlock FontWeight="Bold">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}/{2}">
+                            <Binding Path="BusyContent" />
+                            <Binding Path="Index" />
+                            <Binding Path="TotalPosters"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
                 <Button Content="Stop Searching" HorizontalAlignment="Center" VerticalAlignment="Top"
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
