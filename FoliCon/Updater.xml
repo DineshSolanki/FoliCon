@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
   <AppVersion>
-    <version>3.2.0.0</version>
+    <version>3.3.0.0</version>
     <url>https://github.com/DineshSolanki/FoliCon/releases</url>
     <changelog>
 		whats new ?
-            Added option to create/apply custom icons from png or ico.
-            Updated to .Net5, which brings various performance optimizations.
-        whats fixed ? -
-            fixed crash in Professional Mode.
-		Known issues -
-		    Due to DeviantART changes, Professional Mode might give irrelevant results
-			or fewer results than before. This is being worked on.
+            User can now pick from multiple posters for a media title in Poster Mode.
+            Limit of 30 posters, removed from Professional mode.
+			All poster loading screen now autoscroll until user interferance. 
     </changelog>
   </AppVersion>
