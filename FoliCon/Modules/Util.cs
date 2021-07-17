@@ -44,7 +44,7 @@ namespace FoliCon.Modules
                     var info = new GrowlInfo
                     {
 
-                        Message = $"New Version({ver.CreatedAt}) Found!\n Changelog:{ver.Changelog}",
+                        Message = $"New Version({ver.TagName}) Found!\n Changelog:{ver.Changelog.Replace("\\n", Environment.NewLine)}",
                         ConfirmStr = "Update Now",
                         CancelStr = "Ignore",
                         ShowDateTime = false,
