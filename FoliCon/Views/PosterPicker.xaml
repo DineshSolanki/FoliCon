@@ -2,9 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:hc="https://handyorg.github.io/handycontrol"
-             xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
@@ -20,7 +18,15 @@
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContent>
             <StackPanel>
-                <TextBlock Text="{Binding BusyContent}" FontWeight="Bold" />
+                <TextBlock FontWeight="Bold">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}/{2}">
+                            <Binding Path="BusyContent" />
+                            <Binding Path="Index" />
+                            <Binding Path="TotalPosters"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
                 <Button Content="Stop Searching" HorizontalAlignment="Center" VerticalAlignment="Top"
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
@@ -30,9 +36,8 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding movieTitle}"/>
-            <hc:ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch">
+            <hc:ScrollViewer x:Name="scrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

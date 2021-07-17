@@ -52,8 +52,8 @@
                     </i:Interaction.Triggers>
                 </hc:SearchBar>
             </Grid>
-            <hc:ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch">
+            <hc:ScrollViewer x:Name="scrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

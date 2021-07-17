@@ -54,7 +54,7 @@
                               ToolTip="Controls whether to hide or show Rating Shield" />
                     <MenuItem x:Name="ChkPosterShown" Header="Always show poster window"
                               IsChecked="{Binding IsPosterWindowShown}" IsCheckable="True"
-                              ToolTip="Show poster window even if exact title found.&#x0a; this overrides 'Ignore Ambiguous title' option" />
+                              ToolTip="Show poster window even if exact title found.this would let you chose different poster for them also&#x0a; this overrides 'Ignore Ambiguous title' option" />
                     <MenuItem x:Name="ChkIsPosterOverlayVisible" Header="Use Poster overlay"
                               IsChecked="{Binding IsPosterMockupUsed}" IsCheckable="True"
                               ToolTip="Controls whether to use poster Overlay or Plain Posters" />
