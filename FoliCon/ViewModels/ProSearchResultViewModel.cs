@@ -135,7 +135,7 @@ namespace FoliCon.ViewModels
         private void PickMethod(object parameter)
         {
             var link = (string)parameter;
-            var currentPath = $"{_folderPath}\\{Fnames[_i]}";
+            var currentPath = $@"{_folderPath}\{Fnames[_i]}";
             var tempImage = new ImageToDownload
             {
                 LocalPath = $"{currentPath}\\{Fnames[_i]}.png",

@@ -86,7 +86,6 @@ namespace FoliCon.ViewModels
             PickedIndex = parameters.GetValue<int>("pickedIndex");
             TmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
             resultList = parameters.GetValue<ObservableCollection<ListItem>>("resultList");
-            Title = Result.Result.Results[PickedIndex].Title;
             LoadData(Result.Result.Results[PickedIndex], Result.MediaType);
         }
         public void LoadData(dynamic result, string resultType)
@@ -95,16 +94,19 @@ namespace FoliCon.ViewModels
             if (resultType == MediaTypes.Tv)
             {
                 var pickedResult = (SearchTv)result;
+                Title = pickedResult.Name;
                 images = TmdbObject.SearchTvImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Movie)
             {
                 var pickedResult = (SearchMovie)result;
+                Title = pickedResult.Title;
                 images = TmdbObject.SearchMovieImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Collection)
             {
                 var pickedResult = (SearchCollection)result;
+                Title = pickedResult.Name;
                 images = TmdbObject.SearchCollectionImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Mtv)
@@ -115,12 +117,14 @@ namespace FoliCon.ViewModels
                     case MediaType.Tv:
                         {
                             SearchTv pickedResult = result;
+                            Title = pickedResult.Name;
                             images = TmdbObject.SearchTvImages(pickedResult.Id);
                             break;
                         }
                     case MediaType.Movie:
                         {
                             SearchMovie pickedResult = result;
+                            Title = pickedResult.Title;
                             images = TmdbObject.SearchMovieImages(pickedResult.Id);
                             break;
                         }
@@ -134,10 +138,10 @@ namespace FoliCon.ViewModels
             StopSearch = false;
             ImageUrl.Clear();
             IsBusy = true;
-            if (images is not null && images.Posters.Count >= 0)
+            if (images is not null && images.Posters.Count > 0)
             {
                 TotalPosters = images.Posters.Count;
-                
+
                 foreach (var item in images.Posters.GetEnumeratorWithIndex())
                 {
                     var image = item.Value;

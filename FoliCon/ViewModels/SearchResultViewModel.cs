@@ -7,8 +7,6 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Windows.Input;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Search;
 
 namespace FoliCon.ViewModels
 {

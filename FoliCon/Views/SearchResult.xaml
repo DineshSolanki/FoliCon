@@ -89,7 +89,8 @@
             <Grid Grid.Row="1" Grid.Column="1" Margin="4,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -103,7 +104,7 @@
                 <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
                        Width="158" RenderOptions.BitmapScalingMode="HighQuality" />
                 <Image Grid.Row="1" Grid.Column="0"
-                       Source="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
+                       Source="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}" 
                        RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Height="198" Width="158"
                        Margin="0,0,0,2">
                     <Image.InputBindings>
@@ -113,11 +114,13 @@
                         <DropShadowEffect />
                     </Image.Effect>
                 </Image>
+                <Button Content="Show more..." Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}"/>
+                <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" hc:InfoElement.Placeholder="Enter custom rating here. [Coming soon]" Margin="5" IsEnabled="False"/>
                 <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
-                <ListBox Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
+                <ListBox Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
                          ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" />
             </Grid>
         </Grid>
