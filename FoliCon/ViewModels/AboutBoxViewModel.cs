@@ -9,7 +9,7 @@ namespace FoliCon.ViewModels
 {
     public class AboutBoxViewModel : BindableBase, IDialogAware
     {
-        private string _title = "Folicon v3.3";
+        private string _title = "Folicon v3.3.1";
         private string _logo = "/Resources/folicon Icon.png";
 
         private string _description = "FoliCon is more than just a typical folder Icon changer"
