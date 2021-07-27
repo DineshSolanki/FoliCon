@@ -48,7 +48,7 @@
                 <Button Content="Skip" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="Skip this title." />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
-                          SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1">
+                          SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true">
                     <hc:Interaction.Triggers>
                         <!--<hc:EventTrigger EventName="GridViewColumnHeader.Click">
                             <hc:EventToCommand Command="{Binding SortResultCommand}" PassEventArgsToCommand="True"/>
@@ -121,7 +121,7 @@
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
                 <ListBox Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
-                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" hc:Empty.ShowEmpty="true"/>
             </Grid>
         </Grid>
     </hc:BusyIndicator>

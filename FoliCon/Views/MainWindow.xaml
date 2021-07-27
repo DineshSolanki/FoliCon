@@ -181,7 +181,7 @@
                 <ListView x:Name="FinalList" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
                           ItemsSource="{Binding FinalListViewData.Data}"
                           SelectedItem="{Binding FinalListViewData.SelectedItem}"
-                          MouseDoubleClick="ListView_MouseDoubleClick">
+                          MouseDoubleClick="ListView_MouseDoubleClick" hc:Empty.ShowEmpty="true">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
                             <i:InvokeCommandAction Command="{Binding ListViewDoubleClickCommand}" />

@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Input;
 
@@ -21,7 +22,7 @@ namespace FoliCon.ViewModels
         private string _searchMode;
         private ListViewData _resultListViewData;
         private string _searchAgainTitle;
-        private ArrayList _fileList;
+        private List<string> _fileList;
         private ResultResponse _searchResult;
         private string _fullFolderPath;
         private readonly IDialogService _dialogService;
@@ -46,7 +47,7 @@ namespace FoliCon.ViewModels
         public ListViewData ResultListViewData { get => _resultListViewData; set => SetProperty(ref _resultListViewData, value); }
 
         public string SearchAgainTitle { get => _searchAgainTitle; set => SetProperty(ref _searchAgainTitle, value); }
-        public ArrayList FileList { get => _fileList; set => SetProperty(ref _fileList, value); }
+        public List<string> FileList { get => _fileList; set => SetProperty(ref _fileList, value); }
         public ResultResponse SearchResult { get => _searchResult; set => SetProperty(ref _searchResult, value); }
         public string SearchMode { get => _searchMode; set => SetProperty(ref _searchMode, value); }
         public bool IsSearchFocused { get => _isSearchFocused; set => SetProperty(ref _isSearchFocused, value); }
@@ -157,7 +158,7 @@ namespace FoliCon.ViewModels
             {
                 IsSearchFocused = true;
             }
-            FileList = new ArrayList { Util.GetFileNamesFromFolder(_fullFolderPath) };
+            FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
         }
 
         private void SearchAgainMethod()
