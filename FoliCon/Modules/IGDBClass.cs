@@ -41,7 +41,7 @@ namespace FoliCon.Modules
         {
             Contract.Assert(_serviceClient != null);
             var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
-                "search " + "\"" + query + "\"" + "; fields name,first_release_date,total_rating,summary,cover.*;");
+                $"search \"{query}\"; fields name,first_release_date,total_rating,summary,cover.*;");
             var response = new ResultResponse
             {
                 MediaType = MediaTypes.Game,
@@ -68,7 +68,7 @@ namespace FoliCon.Modules
             return items;
         }
 
-        public void ResultPicked(Game result, string fullFolderPath)
+        public void ResultPicked(Game result, string fullFolderPath, string rating = "")
         {
             if (result.Cover == null)
             {
@@ -79,7 +79,7 @@ namespace FoliCon.Modules
             var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
             var year = result.FirstReleaseDate != null ? result.FirstReleaseDate.Value.Year.ToString() : "";
             var posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720);
-            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, "", fullFolderPath, folderName,
+            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, rating, fullFolderPath, folderName,
                 year);
             var tempImage = new ImageToDownload
             {

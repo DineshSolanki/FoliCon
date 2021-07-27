@@ -570,7 +570,7 @@ namespace FoliCon.ViewModels
             }
             else
             {
-                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable);
+                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
             }
 
             StatusBarProperties.ProcessedIcon = iconProcessedCount;

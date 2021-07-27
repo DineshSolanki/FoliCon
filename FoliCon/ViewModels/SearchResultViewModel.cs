@@ -31,7 +31,7 @@ namespace FoliCon.ViewModels
 
         private Tmdb _tmdbObject;
         private IgdbClass _igdbObject;
-
+        private string customRating;
         #endregion Variables
 
         #region Properties
@@ -40,7 +40,7 @@ namespace FoliCon.ViewModels
         public string SearchTitle { get => _searchTitle; set => SetProperty(ref _searchTitle, value); }
         public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
         public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-
+        public string CustomRating { get => customRating; set => SetProperty(ref customRating, value); }
         //public string LoadingPoster { get; private set; } = @"\Resources\LoadingPosterImage.png";
         //public string NoPoster { get; private set; } = @"\Resources\NoPosterAvailable.png";
         public ListViewData ResultListViewData { get => _resultListViewData; set => SetProperty(ref _resultListViewData, value); }
@@ -172,15 +172,20 @@ namespace FoliCon.ViewModels
         {
             if (ResultListViewData.SelectedItem == null) return;
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
+            string rating="";
+            if (CustomRating is not null && customRating!= "_._")    
+            {
+                rating = CustomRating.Replace('_', '0');
+            }
             try
             {
                 if (SearchMode == MediaTypes.Game)
                 {
-                    _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath);
+                    _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath,rating);
                 }
                 else
                 {
-                    _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType, _fullFolderPath);
+                    _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType, _fullFolderPath, rating);
                 }
             }
             catch (Exception ex)
@@ -222,9 +227,5 @@ namespace FoliCon.ViewModels
                 }
             }
         }
-
-
-        
-
     }
 }

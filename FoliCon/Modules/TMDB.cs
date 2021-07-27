@@ -151,22 +151,25 @@ namespace FoliCon.Modules
         /// <param name="resultType">Type of search Response.</param>
         /// <param name="fullFolderPath">Full Path to the current Media Folder</param>
         /// TODO: Merge parameter response and resultType.
-        public void ResultPicked(dynamic result, string resultType, string fullFolderPath)
+        public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "")
         {
             if (result.PosterPath == null)
             {
                 throw new InvalidDataException("NoPoster");
             }
+            if (string.IsNullOrWhiteSpace(rating) && resultType != MediaTypes.Collection)
+            { rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture); }
 
             var folderName = Path.GetFileName(fullFolderPath);
             var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
             string posterUrl = string.Concat(PosterBase, result.PosterPath);
+
             if (resultType == MediaTypes.Tv)
             {
                 var pickedResult = (SearchTv)result;
                 var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                    pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
+                    rating, fullFolderPath, folderName,
                     year);
             }
             else if (resultType == MediaTypes.Movie)
@@ -174,12 +177,12 @@ namespace FoliCon.Modules
                 var pickedResult = (SearchMovie)result;
                 var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Value.Year.ToString() : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                    pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName, year);
+                    rating, fullFolderPath, folderName, year);
             }
             else if (resultType == MediaTypes.Collection)
             {
                 var searchResult = (SearchCollection)result;
-                Util.AddToPickedListDataTable(_listDataTable, localPosterPath, searchResult.Name, "", fullFolderPath,
+                Util.AddToPickedListDataTable(_listDataTable, localPosterPath, searchResult.Name, rating, fullFolderPath,
                     folderName);
             }
             else if (resultType == MediaTypes.Mtv)
@@ -194,7 +197,7 @@ namespace FoliCon.Modules
                                 ? pickedResult.FirstAirDate.Value.Year.ToString()
                                 : "";
                             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                                pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
+                                rating, fullFolderPath, folderName,
                                 year);
                             break;
                         }
@@ -205,7 +208,7 @@ namespace FoliCon.Modules
                                 ? pickedResult.ReleaseDate.Value.Year.ToString()
                                 : "";
                             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                                pickedResult.VoteAverage.ToString(CultureInfo.CurrentCulture), fullFolderPath, folderName,
+                                rating, fullFolderPath, folderName,
                                 year);
                             break;
                         }

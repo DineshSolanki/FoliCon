@@ -115,7 +115,7 @@
                     </Image.Effect>
                 </Image>
                 <Button Content="Show more..." Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}"/>
-                <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" hc:InfoElement.Placeholder="Enter custom rating here. [Coming soon]" Margin="5" IsEnabled="False"/>
+                <hc:MaskedTextBox Mask="0.0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="Custom rating: " Margin="5" Text="{Binding Path=CustomRating}"/>
                 <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
