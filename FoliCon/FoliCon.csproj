@@ -4,13 +4,13 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
-    <Version>3.3.1</Version>
+    <Version>3.4.0</Version>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
-    <PackageVersion>3.3.1</PackageVersion>
-    <AssemblyVersion>3.3.1.0</AssemblyVersion>
+    <PackageVersion>3.4.0</PackageVersion>
+    <AssemblyVersion>3.4.0.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>0</WarningLevel>
