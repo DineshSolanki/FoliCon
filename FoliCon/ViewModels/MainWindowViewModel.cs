@@ -1,5 +1,6 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
+using FoliCon.Properties.Langs;
 using HandyControl.Controls;
 using HandyControl.Data;
 using HandyControl.Tools;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Net.NetworkInformation;
 
@@ -632,7 +634,5 @@ namespace FoliCon.ViewModels
             _tmdbClient?.Dispose();
             _pickedListDataTable?.Dispose();
         }
-
-
     }
 }

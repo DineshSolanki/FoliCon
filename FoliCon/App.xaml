@@ -1,7 +1,8 @@
 ﻿<prism:PrismApplication x:Class="FoliCon.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/" xmlns:hc="https://handyorg.github.io/handycontrol">
+             xmlns:prism="http://prismlibrary.com/" xmlns:hc="https://handyorg.github.io/handycontrol" 
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -9,6 +10,7 @@
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Basic/Colors/Light.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <langs:LangProvider x:Key="DemoLangs"/>
         </ResourceDictionary>
         
     </Application.Resources>

@@ -5,6 +5,9 @@
         xmlns:hc="https://handyorg.github.io/handycontrol"
         xmlns:modules="clr-namespace:FoliCon.Modules"
         xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+        xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+        xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
+        xmlns:models="clr-namespace:FoliCon.Models"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
@@ -24,7 +27,7 @@
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
                 <StackPanel Margin="4">
-                    <TextBlock Text="Downloading Icons" FontWeight="Bold" HorizontalAlignment="Center" />
+                    <TextBlock Text="{ex:Lang Key={x:Static langs:LangKeys.DownloadingIcons}}" FontWeight="Bold" HorizontalAlignment="Center" />
                     <StackPanel Margin="4">
                         <TextBlock
                             Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
@@ -34,7 +37,7 @@
                                      Height="15" />
                     </StackPanel>
                     <Grid>
-                        <Button Content="Cancel" HorizontalAlignment="Center" Margin="2 0 0 0"
+                        <Button Content="{x:Static hc:Lang.Cancel}" HorizontalAlignment="Center" Margin="2 0 0 0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.DownloadCancelCommand}" />
                     </Grid>
@@ -49,38 +52,39 @@
         <Grid>
             <Menu IsMainMenu="True" Grid.Row="0">
                 <MenuItem Header="Settings">
-                    <MenuItem x:Name="ChkIsRatingVisible" Header="Show Rating badge"
+                    <MenuItem x:Name="ChkIsRatingVisible" Header="{ex:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
                               IsChecked="{Binding IsRatingVisible}" IsCheckable="True"
-                              ToolTip="Controls whether to hide or show Rating Shield" />
-                    <MenuItem x:Name="ChkPosterShown" Header="Always show poster window"
+                              ToolTip="{ex:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" />
+                    <MenuItem x:Name="ChkPosterShown" Header="{ex:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
                               IsChecked="{Binding IsPosterWindowShown}" IsCheckable="True"
-                              ToolTip="Show poster window even if exact title found.this would let you chose different poster for them and custom rating also&#x0a; this overrides 'Ignore Ambiguous title' option" />
-                    <MenuItem x:Name="ChkIsPosterOverlayVisible" Header="Use Poster overlay"
+                              ToolTip="{ex:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}" />
+                    <MenuItem x:Name="ChkIsPosterOverlayVisible" Header="{ex:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
                               IsChecked="{Binding IsPosterMockupUsed}" IsCheckable="True"
-                              ToolTip="Controls whether to use poster Overlay or Plain Posters" />
-                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="Ignore Ambiguous title" IsCheckable="True"
+                              ToolTip="{ex:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}" />
+                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="{ex:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}" IsCheckable="True"
                               IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
-                              ToolTip="Skip ambiguous titles from search" />
+                              ToolTip="{ex:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
                     <Separator />
-                    <MenuItem x:Name="MenuPosterIconConfigBtn" Header="_Change Poster Icon overlay"
+                    <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
                               Command="{Binding PosterIconConfigCommand}" />
-                    <MenuItem x:Name="MenuApiConfigBtn" Header="_API keys Configuration"
+                    <MenuItem x:Name="MenuApiConfigBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
                               Command="{Binding ApiConfigCommand}" />
                     <Separator />
+                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}" IsEditable="False" hc:Poptip.Content="Change Language" SelectedIndex="0" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
-                <MenuItem x:Name="MenuRExbtn" Header="Restart Explorer"
-                          ToolTip="This will close all Open folders and Restart Explorer"
+                <MenuItem x:Name="MenuRExbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
+                          ToolTip="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
                           Command="{Binding RestartExCommand}" />
-                <MenuItem x:Name="MenuDeleteIconsbtn" Header="Delete Icons"
-                          ToolTip="This will delete existing icons from all subFolders"
+                <MenuItem x:Name="MenuDeleteIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
+                          ToolTip="{ex:Lang Key={x:Static langs:LangKeys.DeleteIconsTooltip}}"
                           Command="{Binding DeleteIconsCommand}" />
-                <MenuItem x:Name="MenuCustomIconsbtn" Header="you already have icons?"
-                          ToolTip="Let you set your own icons(only png and ico allowed)."
+                <MenuItem x:Name="MenuCustomIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
+                          ToolTip="{ex:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
                 <MenuItem Header="Help">
-                    <MenuItem x:Name="MenubtnHelp" Header="Help Document" Command="{Binding HelpCommand}" />
-                    <MenuItem Header="Check for update" Command="{Binding UpdateCommand}" />
-                    <MenuItem Header="About" Command="{Binding AboutCommand}" />
+                    <MenuItem x:Name="MenubtnHelp" Header="{ex:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="{Binding HelpCommand}" />
+                    <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
+                    <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" />
                 </MenuItem>
             </Menu>
             <Grid Margin="0,0,0,1">
@@ -110,7 +114,7 @@
                         <RowDefinition Height="96" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <GroupBox hc:TitleElement.TitlePlacement="Top" Grid.Row="0" Header="Icon Mode"
+                    <GroupBox hc:TitleElement.TitlePlacement="Top" Grid.Row="0" Header="{ex:Lang Key={x:Static langs:LangKeys.IconMode}}"
                               Style="{StaticResource GroupBoxTab}" FontSize="18" FontFamily="Cambria"
                               hc:TitleElement.Background="WhiteSmoke" Foreground="BlueViolet" BorderThickness="0"
                               Background="WhiteSmoke">
@@ -121,12 +125,12 @@
                                 <ColumnDefinition SharedSizeGroup="second" />
                             </Grid.ColumnDefinitions>
 
-                            <RadioButton x:Name="RPoster" Content="Poster" Grid.Column="0"
+                            <RadioButton x:Name="RPoster" Content="{ex:Lang Key={x:Static langs:LangKeys.Poster}}" Grid.Column="0"
                                          Command="{Binding IconModeChangedCommand}"
                                          CommandParameter="{Binding ElementName=RPoster, Path=Content}"
                                          Margin="0,4,0,4" FontSize="16" VerticalAlignment="Stretch"
                                          HorizontalAlignment="Left" IsChecked="True" />
-                            <RadioButton x:Name="RProf" Content="Professional" Grid.Column="2"
+                            <RadioButton x:Name="RProf" Content="{ex:Lang Key={x:Static langs:LangKeys.Professional}}" Grid.Column="2"
                                          Command="{Binding IconModeChangedCommand}"
                                          CommandParameter="{Binding ElementName=RProf, Path=Content}" FontSize="16"
                                          HorizontalAlignment="Left" VerticalAlignment="Stretch" />
@@ -134,7 +138,7 @@
                     </GroupBox>
                     <GroupBox
                         Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                        hc:TitleElement.TitlePlacement="Top" Header="Search Mode" Style="{StaticResource GroupBoxTab}"
+                        hc:TitleElement.TitlePlacement="Top" Header="{ex:Lang Key={x:Static langs:LangKeys.SearchMode}}" Style="{StaticResource GroupBoxTab}"
                         Grid.Row="1" Margin="0,1,0,0" FontFamily="Cambria" FontSize="18"
                         hc:TitleElement.Background="WhiteSmoke" Foreground="BlueViolet" BorderThickness="0"
                         Background="WhiteSmoke">
@@ -148,16 +152,16 @@
                                 <ColumnDefinition Width="20" />
                                 <ColumnDefinition SharedSizeGroup="second" Width="250" />
                             </Grid.ColumnDefinitions>
-                            <RadioButton x:Name="RMovie" Content="Movie" Command="{Binding SearchModeChangedCommand}"
+                            <RadioButton x:Name="RMovie" Content="{ex:Lang Key={x:Static langs:LangKeys.Movie}}" Command="{Binding SearchModeChangedCommand}"
                                          CommandParameter="{Binding ElementName=RMovie, Path=Content}" FontSize="16"
                                          Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" IsChecked="True" />
-                            <RadioButton x:Name="RGame" Content="Game" Command="{Binding SearchModeChangedCommand}"
+                            <RadioButton x:Name="RGame" Content="{ex:Lang Key={x:Static langs:LangKeys.Game}}" Command="{Binding SearchModeChangedCommand}"
                                          CommandParameter="{Binding ElementName=RGame, Path=Content}" FontSize="16"
                                          Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" />
-                            <RadioButton x:Name="RTv" Content="TV" Command="{Binding SearchModeChangedCommand}"
+                            <RadioButton x:Name="RTv" Content="{ex:Lang Key={x:Static langs:LangKeys.TV}}" Command="{Binding SearchModeChangedCommand}"
                                          CommandParameter="{Binding ElementName=RTv, Path=Content}" FontSize="16"
                                          Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" />
-                            <RadioButton x:Name="RAuto" Content="Auto (Movies &amp; TV Shows)"
+                            <RadioButton x:Name="RAuto" Content="{ex:Lang Key={x:Static langs:LangKeys.Auto}}"
                                          Command="{Binding SearchModeChangedCommand}"
                                          CommandParameter="{Binding ElementName=RAuto, Path=Content}" FontSize="16"
                                          Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" />
@@ -172,9 +176,9 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Button Content="Load" Grid.Row="0" Command="{Binding LoadCommand}" HorizontalAlignment="Stretch"
+                    <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Load}}" Grid.Row="0" Command="{Binding LoadCommand}" HorizontalAlignment="Stretch"
                             VerticalAlignment="Bottom" Height="76" Margin="3,0,3,0" />
-                    <Button Content="Make Icons" Grid.Row="1" IsEnabled="{Binding IsMakeEnabled}"
+                    <Button Content="{ex:Lang Key={x:Static langs:LangKeys.MakeIcons}}" Grid.Row="1" IsEnabled="{Binding IsMakeEnabled}"
                             Command="{Binding SearchAndMakeCommand}" HorizontalAlignment="Stretch" Margin="3,0,3,0"
                             Height="76" />
                 </Grid>
@@ -189,10 +193,10 @@
                     </i:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Title" Width="Auto" DisplayMemberBinding="{Binding Title}" />
-                            <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
-                            <GridViewColumn Header="Rating" Width="63" DisplayMemberBinding="{Binding Rating}" />
-                            <GridViewColumn Header="Folder" Width="Auto" DisplayMemberBinding="{Binding Folder}" />
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Title}}" Width="Auto" DisplayMemberBinding="{Binding Title}" />
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}" />
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Rating}}" Width="63" DisplayMemberBinding="{Binding Rating}" />
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Folder}}" Width="Auto" DisplayMemberBinding="{Binding Folder}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -237,26 +241,26 @@
                     </StatusBarItem>
                     <Separator Grid.Column="3" />
                     <StatusBarItem Grid.Column="4">
-                        <Label Content="Folders Processed:" VerticalAlignment="Top" BorderThickness="0" />
+                        <Label Content="{ex:Lang Key={x:Static langs:LangKeys.FoldersProcessed}}" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="5">
                         <Label Content="{Binding ProcessedFolder}" VerticalAlignment="Top" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="6">
-                        <Label FontSize="12" Content="out of" VerticalAlignment="Top" BorderThickness="0" />
+                        <Label FontSize="12" Content="{ex:Lang Key={x:Static langs:LangKeys.OutOf}}" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="7">
                         <Label Content="{Binding TotalFolders}" VerticalAlignment="Top" />
                     </StatusBarItem>
                     <Separator Grid.Column="8" />
                     <StatusBarItem Grid.Column="9">
-                        <Label Content="Icons Created :" VerticalAlignment="Top" BorderThickness="0" />
+                        <Label Content="{ex:Lang Key={x:Static langs:LangKeys.IconsCreated}}" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="10">
                         <Label Content="{Binding ProcessedIcon}" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="11">
-                        <Label FontSize="12" Content="out of" VerticalAlignment="Top" BorderThickness="0" />
+                        <Label FontSize="12" Content="{ex:Lang Key={x:Static langs:LangKeys.OutOf}}" VerticalAlignment="Top" BorderThickness="0" />
                     </StatusBarItem>
                     <StatusBarItem Grid.Column="12">
                         <Label Content="{Binding TotalIcons}" VerticalAlignment="Top" />

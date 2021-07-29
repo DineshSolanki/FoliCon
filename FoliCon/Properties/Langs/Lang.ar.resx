@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>حول</value>
+  </data>
+  <data name="AlwaysShowPosterWindow" xml:space="preserve">
+    <value>اعرض دائمًا نافذة الملصق</value>
+  </data>
+  <data name="AmbiguousTitleTooltip" xml:space="preserve">
+    <value>تخطي العناوين الغامضة من البحث</value>
+  </data>
+  <data name="APIKeysConfiguration" xml:space="preserve">
+    <value>تكوين مفاتيح _API</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>تلقائي (أفلام وبرامج تلفزيونية)</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>يلغي</value>
+  </data>
+  <data name="ChangePosterOverlay" xml:space="preserve">
+    <value>_تغيير تراكب أيقونة الملصق</value>
+  </data>
+  <data name="CheckForUpdate" xml:space="preserve">
+    <value>فحص التحديثات</value>
+  </data>
+  <data name="DeleteIcons" xml:space="preserve">
+    <value>حذف الأيقونات</value>
+  </data>
+  <data name="DeleteIconsTooltip" xml:space="preserve">
+    <value>سيؤدي هذا إلى حذف الرموز الموجودة من جميع المجلدات الفرعية.</value>
+  </data>
+  <data name="DownloadingIcons" xml:space="preserve">
+    <value>تحميل الأيقونات</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>مجلد</value>
+  </data>
+  <data name="FoldersProcessed" xml:space="preserve">
+    <value>المجلدات التي تمت معالجتها:</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>لعبة</value>
+  </data>
+  <data name="HaveIcons" xml:space="preserve">
+    <value>لديك بالفعل رموز؟</value>
+  </data>
+  <data name="HaveIconsTooltip" xml:space="preserve">
+    <value>تتيح لك تعيين الرموز الخاصة بك (يسمح فقط بتنسيق png و ico).</value>
+  </data>
+  <data name="HelpDocument" xml:space="preserve">
+    <value>وثيقة المساعدة</value>
+  </data>
+  <data name="IconsCreated" xml:space="preserve">
+    <value>تم إنشاء الرموز:</value>
+  </data>
+  <data name="IgnoreAmbiguousTitle" xml:space="preserve">
+    <value>تجاهل العنوان الغامض</value>
+  </data>
+  <data name="LangComment" xml:space="preserve">
+    <value>س</value>
+    <comment>hgh</comment>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>حمل</value>
+  </data>
+  <data name="MakeIcons" xml:space="preserve">
+    <value>اصنع أيقونات</value>
+  </data>
+  <data name="Movie" xml:space="preserve">
+    <value>فيلم</value>
+  </data>
+  <data name="OutOf" xml:space="preserve">
+    <value>بعيدا عن المكان</value>
+  </data>
+  <data name="Poster" xml:space="preserve">
+    <value>ملصق</value>
+  </data>
+  <data name="PosterOverlayTooltip" xml:space="preserve">
+    <value>يتحكم في استخدام ملصق تراكب أو ملصقات عادية.</value>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>احترافي</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>تقييم</value>
+  </data>
+  <data name="RestartExplorer" xml:space="preserve">
+    <value>أعد تشغيل Explorer</value>
+  </data>
+  <data name="RestartExplorerTooltip" xml:space="preserve">
+    <value>سيؤدي هذا إلى إغلاق جميع المجلدات المفتوحة وإعادة تشغيل Explorer.</value>
+  </data>
+  <data name="ShowPosterWindowTooltip" xml:space="preserve">
+    <value>اعرض نافذة الملصق حتى إذا تم العثور على العنوان بالضبط ، فهذا سيتيح لك اختيار ملصق مختلف له وتقييم مخصص أيضًا
+ هذا يلغي خيار "تجاهل العنوان الغامض".</value>
+  </data>
+  <data name="ShowRatingBadge" xml:space="preserve">
+    <value>إظهار شارة التقييم</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>لقب</value>
+  </data>
+  <data name="TV" xml:space="preserve">
+    <value>تلفزيون</value>
+  </data>
+  <data name="UsePosterOverlay" xml:space="preserve">
+    <value>استخدم تراكب الملصق</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>عام</value>
+  </data>
+  <data name="ShowRatingBadgeTootip" xml:space="preserve">
+	  <value>يتحكم في ما إذا كان سيتم إخفاء أو إظهار درع التصنيف</value>
+  </data>
+</root>
