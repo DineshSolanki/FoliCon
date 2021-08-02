@@ -124,7 +124,7 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Auto (Movies &amp;amp; TV Shows).
+        ///   Looks up a localized string similar to Auto (Movies &amp; TV Shows).
         /// </summary>
         public static string Auto {
             get {
@@ -300,6 +300,15 @@ namespace FoliCon.Properties.Langs {
         public static string English {
             get {
                 return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please Enter Title here to search again..
+        /// </summary>
+        public static string EnterTitlePlaceholder {
+            get {
+                return ResourceManager.GetString("EnterTitlePlaceholder", resourceCulture);
             }
         }
         
@@ -557,11 +566,29 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Result Found.
+        ///   Looks up a localized string similar to No Result.
+        /// </summary>
+        public static string NoResult {
+            get {
+                return ResourceManager.GetString("NoResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Result Found..
         /// </summary>
         public static string NoResultFound {
             get {
                 return ResourceManager.GetString("NoResultFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No result Found, Try to search again with correct title..
+        /// </summary>
+        public static string NoResultFoundTryCorrectTitle {
+            get {
+                return ResourceManager.GetString("NoResultFoundTryCorrectTitle", resourceCulture);
             }
         }
         
@@ -586,11 +613,29 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ~ OR ~.
+        /// </summary>
+        public static string Or {
+            get {
+                return ResourceManager.GetString("Or", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to out of.
         /// </summary>
         public static string OutOf {
             get {
                 return ResourceManager.GetString("OutOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Icon for {0}.
+        /// </summary>
+        public static string PickIconWithName {
+            get {
+                return ResourceManager.GetString("PickIconWithName", resourceCulture);
             }
         }
         
@@ -686,11 +731,29 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Searching for {0}....
+        /// </summary>
+        public static string SearchingWithName {
+            get {
+                return ResourceManager.GetString("SearchingWithName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search Mode.
         /// </summary>
         public static string SearchMode {
             get {
                 return ResourceManager.GetString("SearchMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Result.
+        /// </summary>
+        public static string SearchResult {
+            get {
+                return ResourceManager.GetString("SearchResult", resourceCulture);
             }
         }
         
@@ -740,11 +803,29 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skip.
+        /// </summary>
+        public static string Skip {
+            get {
+                return ResourceManager.GetString("Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spanish.
         /// </summary>
         public static string Spanish {
             get {
                 return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop Searching.
+        /// </summary>
+        public static string StopSearching {
+            get {
+                return ResourceManager.GetString("StopSearching", resourceCulture);
             }
         }
         

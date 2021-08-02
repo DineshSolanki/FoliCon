@@ -66,6 +66,7 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(DownloadIt));
 			OnPropertyChanged(nameof(EmptyDirectory));
 			OnPropertyChanged(nameof(English));
+			OnPropertyChanged(nameof(EnterTitlePlaceholder));
 			OnPropertyChanged(nameof(Folder));
 			OnPropertyChanged(nameof(FolderDoesNotExist));
 			OnPropertyChanged(nameof(FolderError));
@@ -94,10 +95,14 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(NewVersionFound));
 			OnPropertyChanged(nameof(NoInternet));
 			OnPropertyChanged(nameof(NoPosterFound));
+			OnPropertyChanged(nameof(NoResult));
 			OnPropertyChanged(nameof(NoResultFound));
+			OnPropertyChanged(nameof(NoResultFoundTryCorrectTitle));
 			OnPropertyChanged(nameof(NothingFoundFor));
 			OnPropertyChanged(nameof(OK));
+			OnPropertyChanged(nameof(Or));
 			OnPropertyChanged(nameof(OutOf));
+			OnPropertyChanged(nameof(PickIconWithName));
 			OnPropertyChanged(nameof(Poster));
 			OnPropertyChanged(nameof(PosterOverlayTooltip));
 			OnPropertyChanged(nameof(Professional));
@@ -108,13 +113,17 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(Russian));
 			OnPropertyChanged(nameof(Searching));
 			OnPropertyChanged(nameof(SearchingWithCount));
+			OnPropertyChanged(nameof(SearchingWithName));
 			OnPropertyChanged(nameof(SearchMode));
+			OnPropertyChanged(nameof(SearchResult));
 			OnPropertyChanged(nameof(SelectFolder));
 			OnPropertyChanged(nameof(Settings));
 			OnPropertyChanged(nameof(ShowPosterWindowTooltip));
 			OnPropertyChanged(nameof(ShowRatingBadge));
 			OnPropertyChanged(nameof(ShowRatingBadgeTooltip));
+			OnPropertyChanged(nameof(Skip));
 			OnPropertyChanged(nameof(Spanish));
+			OnPropertyChanged(nameof(StopSearching));
 			OnPropertyChanged(nameof(ThisIsLatestVersion));
 			OnPropertyChanged(nameof(Title));
 			OnPropertyChanged(nameof(ToForceReload));
@@ -178,6 +187,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string English => Lang.English;
 
+		public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
+
 		public string Folder => Lang.Folder;
 
 		public string FolderDoesNotExist => Lang.FolderDoesNotExist;
@@ -234,13 +245,21 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string NoPosterFound => Lang.NoPosterFound;
 
+		public string NoResult => Lang.NoResult;
+
 		public string NoResultFound => Lang.NoResultFound;
+
+		public string NoResultFoundTryCorrectTitle => Lang.NoResultFoundTryCorrectTitle;
 
 		public string NothingFoundFor => Lang.NothingFoundFor;
 
 		public string OK => Lang.OK;
 
+		public string Or => Lang.Or;
+
 		public string OutOf => Lang.OutOf;
+
+		public string PickIconWithName => Lang.PickIconWithName;
 
 		public string Poster => Lang.Poster;
 
@@ -262,7 +281,11 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string SearchingWithCount => Lang.SearchingWithCount;
 
+		public string SearchingWithName => Lang.SearchingWithName;
+
 		public string SearchMode => Lang.SearchMode;
+
+		public string SearchResult => Lang.SearchResult;
 
 		public string SelectFolder => Lang.SelectFolder;
 
@@ -274,7 +297,11 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string ShowRatingBadgeTooltip => Lang.ShowRatingBadgeTooltip;
 
+		public string Skip => Lang.Skip;
+
 		public string Spanish => Lang.Spanish;
+
+		public string StopSearching => Lang.StopSearching;
 
 		public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
 
@@ -353,6 +380,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string English = nameof(English);
 
+		public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);
+
 		public static string Folder = nameof(Folder);
 
 		public static string FolderDoesNotExist = nameof(FolderDoesNotExist);
@@ -409,13 +438,21 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string NoPosterFound = nameof(NoPosterFound);
 
+		public static string NoResult = nameof(NoResult);
+
 		public static string NoResultFound = nameof(NoResultFound);
+
+		public static string NoResultFoundTryCorrectTitle = nameof(NoResultFoundTryCorrectTitle);
 
 		public static string NothingFoundFor = nameof(NothingFoundFor);
 
 		public static string OK = nameof(OK);
 
+		public static string Or = nameof(Or);
+
 		public static string OutOf = nameof(OutOf);
+
+		public static string PickIconWithName = nameof(PickIconWithName);
 
 		public static string Poster = nameof(Poster);
 
@@ -437,7 +474,11 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string SearchingWithCount = nameof(SearchingWithCount);
 
+		public static string SearchingWithName = nameof(SearchingWithName);
+
 		public static string SearchMode = nameof(SearchMode);
+
+		public static string SearchResult = nameof(SearchResult);
 
 		public static string SelectFolder = nameof(SelectFolder);
 
@@ -449,7 +490,11 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string ShowRatingBadgeTooltip = nameof(ShowRatingBadgeTooltip);
 
+		public static string Skip = nameof(Skip);
+
 		public static string Spanish = nameof(Spanish);
+
+		public static string StopSearching = nameof(StopSearching);
 
 		public static string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
 

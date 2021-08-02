@@ -272,7 +272,7 @@ namespace FoliCon.Modules
             }
             else if (result.MediaType == MediaTypes.Movie || result.MediaType == MediaTypes.Collection)
             {
-                if (query.ToLower().Contains("collection"))
+                if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
                 {
                     var ob = (SearchContainer<SearchCollection>)result.Result;
                     source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);

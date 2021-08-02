@@ -4,6 +4,8 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
              xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -29,7 +31,7 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="Stop Searching" HorizontalAlignment="Center" VerticalAlignment="Top"
+                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
         </hc:BusyIndicator.BusyContent>
@@ -44,14 +46,14 @@
                     <ColumnDefinition Width="107" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Skip" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                         Command="{Binding SkipCommand}" IsCancel="True" />
-                <Label Content="~OR~" Grid.Column="1" VerticalAlignment="Top" />
+                <Label Content="{ex:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Column="1" VerticalAlignment="Top" />
                 <hc:SearchBar
                     modules:FocusExtension.IsFocused="{Binding IsSearchFocused,UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="2" Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource SearchBarPlus}"
-                    hc:InfoElement.Placeholder="Please Enter Title here to search again" ShowClearButton="True"
+                    hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}" ShowClearButton="True"
                     VerticalAlignment="Top">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SearchStarted">

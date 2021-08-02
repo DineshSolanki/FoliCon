@@ -139,7 +139,7 @@
     <value>Arabic</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Auto (Movies &amp;amp; TV Shows)</value>
+    <value>Auto (Movies &amp; TV Shows)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -197,6 +197,9 @@
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+    <value>Please Enter Title here to search again.</value>
   </data>
   <data name="Folder" xml:space="preserve">
     <value>Folder</value>
@@ -283,8 +286,14 @@ Changelog:{1}</value>
   <data name="NoPosterFound" xml:space="preserve">
     <value>No poster found.</value>
   </data>
+  <data name="NoResult" xml:space="preserve">
+    <value>No Result</value>
+  </data>
   <data name="NoResultFound" xml:space="preserve">
-    <value>No Result Found</value>
+    <value>No Result Found.</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+    <value>No result Found, Try to search again with correct title.</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
     <value>Nothing found for {0}
@@ -294,8 +303,14 @@ Try Searching with Other Title
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
+  <data name="Or" xml:space="preserve">
+    <value>~ OR ~</value>
+  </data>
   <data name="OutOf" xml:space="preserve">
     <value>out of</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+    <value>Pick Icon for {0}</value>
   </data>
   <data name="Poster" xml:space="preserve">
     <value>Poster</value>
@@ -328,8 +343,14 @@ and refresh Icon Cache?</value>
   <data name="SearchingWithCount" xml:space="preserve">
     <value>Searching...{0}</value>
   </data>
+  <data name="SearchingWithName" xml:space="preserve">
+    <value>Searching for {0}...</value>
+  </data>
   <data name="SearchMode" xml:space="preserve">
     <value>Search Mode</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>Search Result</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
     <value>Select Folder</value>
@@ -346,8 +367,14 @@ and refresh Icon Cache?</value>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
     <value>Controls whether to hide or show Rating Shield</value>
   </data>
+  <data name="Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
   <data name="Spanish" xml:space="preserve">
     <value>Spanish</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+    <value>Stop Searching</value>
   </data>
   <data name="ThisIsLatestVersion" xml:space="preserve">
     <value>Great! you are using the latest version.</value>

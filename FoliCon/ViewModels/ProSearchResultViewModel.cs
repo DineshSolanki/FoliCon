@@ -11,17 +11,18 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
 using System.Threading.Tasks;
+using FoliCon.Properties.Langs;
 
 namespace FoliCon.ViewModels
 {
     public class ProSearchResultViewModel : BindableBase, IDialogAware
     {
-        private string _title = "Search Result";
+        private string _title = LangProvider.GetLang("SearchResult");
         private bool _stopSearch;
         private string _searchTitle;
         private string _searchAgainTitle;
         private int _i;
-        private string _busyContent = "searching";
+        private string _busyContent = LangProvider.GetLang("Searching");
         private bool _isBusy;
         private DArt _dArtObject;
         private DataTable _listDataTable;
@@ -81,9 +82,9 @@ namespace FoliCon.ViewModels
             ImageUrl.Clear();
             SearchTitle = null;
             SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.Clean(Fnames[_i]);
-            BusyContent = $"Searching for {SearchTitle}...";
+            BusyContent = LangProvider.GetLang("SearchingWithName").Format(SearchTitle);
             IsBusy = true;
-            Title = $"Pick Icon for {SearchTitle}";
+            Title = LangProvider.GetLang("PickIconWithName").Format(SearchTitle);
             await Search(SearchTitle);
             SearchAgainTitle = null;
             IsBusy = false;
@@ -124,7 +125,8 @@ namespace FoliCon.ViewModels
                 else
                 {
                     IsBusy = false;
-                    MessageBox.Warning("No result Found, Try to search again with correct title", "No Result"); //TODO: Solve exception here
+                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
+                        LangProvider.GetLang("NoResult")));
                     IsSearchFocused = true;
                 }
 

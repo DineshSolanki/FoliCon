@@ -26,8 +26,8 @@
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
-                <StackPanel Margin="4">
-                    <TextBlock Text="{ex:Lang Key={x:Static langs:LangKeys.DownloadingIcons}}" FontWeight="Bold" HorizontalAlignment="Center" />
+                <StackPanel Margin="4" HorizontalAlignment="Stretch">
+                    <TextBlock Text="{ex:Lang Key={x:Static langs:LangKeys.DownloadingIcons}}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
                     <StackPanel Margin="4">
                         <TextBlock
                             Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
@@ -37,7 +37,7 @@
                                      Height="15" />
                     </StackPanel>
                     <Grid>
-                        <Button Content="{x:Static hc:Lang.Cancel}" HorizontalAlignment="Center" Margin="2 0 0 0"
+                        <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Cancel}}" HorizontalAlignment="Center" Margin="2 0 0 0"
                                 Command="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.DownloadCancelCommand}" />
                     </Grid>

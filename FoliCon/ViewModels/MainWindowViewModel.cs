@@ -578,7 +578,7 @@ namespace FoliCon.ViewModels
                 CustomMessageBox.Ask($"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
                     LangProvider.GetLang("IconCreated"))))
             {
-                case System.Windows.MessageBoxResult.OK:
+                case System.Windows.MessageBoxResult.Yes:
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                     break;
             }
