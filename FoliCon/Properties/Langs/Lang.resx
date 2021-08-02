@@ -246,6 +246,9 @@
   <data name="Idle" xml:space="preserve">
     <value>Idle</value>
   </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>Ignore</value>
+  </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
     <value>Ignore Ambiguous title</value>
   </data>
@@ -267,11 +270,15 @@
   <data name="NetworkError" xml:space="preserve">
     <value>Network Error</value>
   </data>
+  <data name="NetworkNotAvailable" xml:space="preserve">
+    <value>Network not available!</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>New Version({0}) Found!
+Changelog:{1}</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>Sorry, Internet is Not available.</value>
-  </data>
-  <data name="NoPoster" xml:space="preserve">
-    <value>NoPoster</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
     <value>No poster found.</value>
@@ -342,6 +349,9 @@ and refresh Icon Cache?</value>
   <data name="Spanish" xml:space="preserve">
     <value>Spanish</value>
   </data>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>Great! you are using the latest version.</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Title</value>
   </data>
@@ -350,6 +360,9 @@ and refresh Icon Cache?</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>TV</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Update Now</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
     <value>Use Poster overlay</value>

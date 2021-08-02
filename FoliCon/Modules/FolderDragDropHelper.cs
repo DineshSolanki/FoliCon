@@ -7,7 +7,7 @@ namespace FoliCon.Modules
 {
     public interface IFileDragDropTarget
     {
-        void OnFileDrop(string[] filepaths, string senderName);
+        void OnFileDrop(string[] filePaths, string senderName);
     }
 
     public class FolderDragDropHelper

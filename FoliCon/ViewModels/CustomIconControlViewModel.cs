@@ -320,17 +320,17 @@ namespace FoliCon.ViewModels
             KeepExactOnly = false;
         }
 
-        public void OnFileDrop(string[] filepaths, string senderName)
+        public void OnFileDrop(string[] filePaths, string senderName)
         {
             switch (senderName)
             {
                 case "FolderButton":
                 case "FoldersList":
-                    SelectedDirectory = filepaths.GetValue(0)?.ToString();
+                    SelectedDirectory = filePaths.GetValue(0)?.ToString();
                     break;
                 case "IconButton":
                 case "IconsList":
-                    SelectedIconsDirectory = filepaths.GetValue(0)?.ToString();
+                    SelectedIconsDirectory = filePaths.GetValue(0)?.ToString();
                     break;
             }
         }

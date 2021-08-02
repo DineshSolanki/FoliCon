@@ -178,6 +178,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Explorer Restart.
         /// </summary>
         public static string ConfirmExplorerRestart {
@@ -439,6 +448,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ignore.
+        /// </summary>
+        public static string Ignore {
+            get {
+                return ResourceManager.GetString("Ignore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignore Ambiguous title.
         /// </summary>
         public static string IgnoreAmbiguousTitle {
@@ -502,20 +520,30 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network not available!.
+        /// </summary>
+        public static string NetworkNotAvailable {
+            get {
+                return ResourceManager.GetString("NetworkNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Version({0}) Found!
+        ///Changelog:{1}.
+        /// </summary>
+        public static string NewVersionFound {
+            get {
+                return ResourceManager.GetString("NewVersionFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, Internet is Not available..
         /// </summary>
         public static string NoInternet {
             get {
                 return ResourceManager.GetString("NoInternet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NoPoster.
-        /// </summary>
-        public static string NoPoster {
-            get {
-                return ResourceManager.GetString("NoPoster", resourceCulture);
             }
         }
         
@@ -538,11 +566,22 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nothing found for {0}\n Try Searching with Other Title\n or check Search Mode&quot;.
+        ///   Looks up a localized string similar to Nothing found for {0}
+        ///Try Searching with Other Title
+        /// or check Search Mode.
         /// </summary>
         public static string NothingFoundFor {
             get {
                 return ResourceManager.GetString("NothingFoundFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
             }
         }
         
@@ -601,7 +640,8 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to \nRestart Explorer and refresh Icon Cache?.
+        ///   Looks up a localized string similar to Are you sure you want to Restart Explorer 
+        ///and refresh Icon Cache?.
         /// </summary>
         public static string RestartExplorerConfirmation {
             get {
@@ -709,6 +749,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Great! you are using the latest version..
+        /// </summary>
+        public static string ThisIsLatestVersion {
+            get {
+                return ResourceManager.GetString("ThisIsLatestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string Title {
@@ -732,6 +781,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         public static string TV {
             get {
                 return ResourceManager.GetString("TV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Now.
+        /// </summary>
+        public static string UpdateNow {
+            get {
+                return ResourceManager.GetString("UpdateNow", resourceCulture);
             }
         }
         

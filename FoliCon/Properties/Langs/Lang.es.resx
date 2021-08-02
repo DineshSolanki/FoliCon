@@ -130,7 +130,7 @@
     <value>_ Configuración de claves de API</value>
   </data>
   <data name="APIKeysNotProvided" xml:space="preserve">
-    <value>Claves de API no proporcionadas</value>
+    <value>No se proporcionan claves de API</value>
   </data>
   <data name="AppWillClose" xml:space="preserve">
     <value>La aplicación se cerrará.</value>
@@ -155,6 +155,9 @@
   </data>
   <data name="ClosingApplication" xml:space="preserve">
     <value>Solicitud de cierre</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
     <value>Confirmar el reinicio del explorador</value>
@@ -235,13 +238,16 @@
     <value>Nota: El icono puede tardar un tiempo en recargarse.</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
-    <value>La carpeta ya tiene iconos o está vacía.</value>
+    <value>La carpeta ya tiene íconos o está vacía.</value>
   </data>
   <data name="IconsCreated" xml:space="preserve">
     <value>Iconos creados:</value>
   </data>
   <data name="Idle" xml:space="preserve">
     <value>Inactivo</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>Ignorar</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
     <value>Ignorar título ambiguo</value>
@@ -264,11 +270,15 @@
   <data name="NetworkError" xml:space="preserve">
     <value>Error de red</value>
   </data>
+  <data name="NetworkNotAvailable" xml:space="preserve">
+    <value>¡Red no disponible!</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>Se ha encontrado una nueva versión ({0}).
+Registro de cambios: {1}</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>Lo sentimos, Internet no está disponible.</value>
-  </data>
-  <data name="NoPoster" xml:space="preserve">
-    <value>NoPoster</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
     <value>No se encontró ningún póster.</value>
@@ -277,9 +287,12 @@
     <value>No se han encontrado resultados</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>No se ha encontrado nada para {0}
+    <value>No se encontró nada para {0}
 Intente buscar con otro título
- o marque el modo de búsqueda</value>
+ o comprobar el modo de búsqueda</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+	  <value>si</value>
   </data>
   <data name="OutOf" xml:space="preserve">
     <value>fuera de</value>
@@ -300,8 +313,8 @@ Intente buscar con otro título
     <value>Reiniciar el explorador</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>¿Está seguro de que desea
-Reiniciar el Explorador y actualizar la caché de iconos?</value>
+    <value>¿Está seguro de que desea reiniciar el Explorador?
+y actualizar la caché de iconos?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
     <value>Esto cerrará todas las carpetas abiertas y reiniciará el explorador.</value>
@@ -337,14 +350,20 @@ Reiniciar el Explorador y actualizar la caché de iconos?</value>
   <data name="Spanish" xml:space="preserve">
     <value>Español</value>
   </data>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>¡Genial! está utilizando la última versión.</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Título</value>
   </data>
   <data name="ToForceReload" xml:space="preserve">
-    <value>Para forzar la recarga, haga clic en Reiniciar Explorer.</value>
+    <value>Para forzar la recarga, haga clic en Reiniciar el explorador.</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>televisor</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Actualizar ahora</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
     <value>Usar superposición de póster</value>

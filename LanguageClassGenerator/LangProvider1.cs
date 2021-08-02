@@ -52,6 +52,7 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(ChangePosterOverlay));
 			OnPropertyChanged(nameof(CheckForUpdate));
 			OnPropertyChanged(nameof(ClosingApplication));
+			OnPropertyChanged(nameof(Confirm));
 			OnPropertyChanged(nameof(ConfirmExplorerRestart));
 			OnPropertyChanged(nameof(ConfirmIconDeletion));
 			OnPropertyChanged(nameof(ConfirmToOpenFolder));
@@ -81,6 +82,7 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(IconsAlready));
 			OnPropertyChanged(nameof(IconsCreated));
 			OnPropertyChanged(nameof(Idle));
+			OnPropertyChanged(nameof(Ignore));
 			OnPropertyChanged(nameof(IgnoreAmbiguousTitle));
 			OnPropertyChanged(nameof(InvalidPath));
 			OnPropertyChanged(nameof(LangComment));
@@ -88,11 +90,13 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(MakeIcons));
 			OnPropertyChanged(nameof(Movie));
 			OnPropertyChanged(nameof(NetworkError));
+			OnPropertyChanged(nameof(NetworkNotAvailable));
+			OnPropertyChanged(nameof(NewVersionFound));
 			OnPropertyChanged(nameof(NoInternet));
-			OnPropertyChanged(nameof(NoPoster));
 			OnPropertyChanged(nameof(NoPosterFound));
 			OnPropertyChanged(nameof(NoResultFound));
 			OnPropertyChanged(nameof(NothingFoundFor));
+			OnPropertyChanged(nameof(OK));
 			OnPropertyChanged(nameof(OutOf));
 			OnPropertyChanged(nameof(Poster));
 			OnPropertyChanged(nameof(PosterOverlayTooltip));
@@ -111,9 +115,11 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(ShowRatingBadge));
 			OnPropertyChanged(nameof(ShowRatingBadgeTooltip));
 			OnPropertyChanged(nameof(Spanish));
+			OnPropertyChanged(nameof(ThisIsLatestVersion));
 			OnPropertyChanged(nameof(Title));
 			OnPropertyChanged(nameof(ToForceReload));
 			OnPropertyChanged(nameof(TV));
+			OnPropertyChanged(nameof(UpdateNow));
 			OnPropertyChanged(nameof(UsePosterOverlay));
 			OnPropertyChanged(nameof(Year));
         }
@@ -143,6 +149,8 @@ namespace HandyControlDemo.Properties.Langs
 		public string CheckForUpdate => Lang.CheckForUpdate;
 
 		public string ClosingApplication => Lang.ClosingApplication;
+
+		public string Confirm => Lang.Confirm;
 
 		public string ConfirmExplorerRestart => Lang.ConfirmExplorerRestart;
 
@@ -202,6 +210,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string Idle => Lang.Idle;
 
+		public string Ignore => Lang.Ignore;
+
 		public string IgnoreAmbiguousTitle => Lang.IgnoreAmbiguousTitle;
 
 		public string InvalidPath => Lang.InvalidPath;
@@ -216,15 +226,19 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string NetworkError => Lang.NetworkError;
 
-		public string NoInternet => Lang.NoInternet;
+		public string NetworkNotAvailable => Lang.NetworkNotAvailable;
 
-		public string NoPoster => Lang.NoPoster;
+		public string NewVersionFound => Lang.NewVersionFound;
+
+		public string NoInternet => Lang.NoInternet;
 
 		public string NoPosterFound => Lang.NoPosterFound;
 
 		public string NoResultFound => Lang.NoResultFound;
 
 		public string NothingFoundFor => Lang.NothingFoundFor;
+
+		public string OK => Lang.OK;
 
 		public string OutOf => Lang.OutOf;
 
@@ -262,11 +276,15 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string Spanish => Lang.Spanish;
 
+		public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
+
 		public string Title => Lang.Title;
 
 		public string ToForceReload => Lang.ToForceReload;
 
 		public string TV => Lang.TV;
+
+		public string UpdateNow => Lang.UpdateNow;
 
 		public string UsePosterOverlay => Lang.UsePosterOverlay;
 
@@ -306,6 +324,8 @@ namespace HandyControlDemo.Properties.Langs
 		public static string CheckForUpdate = nameof(CheckForUpdate);
 
 		public static string ClosingApplication = nameof(ClosingApplication);
+
+		public static string Confirm = nameof(Confirm);
 
 		public static string ConfirmExplorerRestart = nameof(ConfirmExplorerRestart);
 
@@ -365,6 +385,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string Idle = nameof(Idle);
 
+		public static string Ignore = nameof(Ignore);
+
 		public static string IgnoreAmbiguousTitle = nameof(IgnoreAmbiguousTitle);
 
 		public static string InvalidPath = nameof(InvalidPath);
@@ -379,15 +401,19 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string NetworkError = nameof(NetworkError);
 
-		public static string NoInternet = nameof(NoInternet);
+		public static string NetworkNotAvailable = nameof(NetworkNotAvailable);
 
-		public static string NoPoster = nameof(NoPoster);
+		public static string NewVersionFound = nameof(NewVersionFound);
+
+		public static string NoInternet = nameof(NoInternet);
 
 		public static string NoPosterFound = nameof(NoPosterFound);
 
 		public static string NoResultFound = nameof(NoResultFound);
 
 		public static string NothingFoundFor = nameof(NothingFoundFor);
+
+		public static string OK = nameof(OK);
 
 		public static string OutOf = nameof(OutOf);
 
@@ -425,11 +451,15 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string Spanish = nameof(Spanish);
 
+		public static string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
+
 		public static string Title = nameof(Title);
 
 		public static string ToForceReload = nameof(ToForceReload);
 
 		public static string TV = nameof(TV);
+
+		public static string UpdateNow = nameof(UpdateNow);
 
 		public static string UsePosterOverlay = nameof(UsePosterOverlay);
 

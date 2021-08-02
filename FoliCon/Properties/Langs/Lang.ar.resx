@@ -156,6 +156,9 @@
   <data name="ClosingApplication" xml:space="preserve">
     <value>طلب الإغلاق</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>يتأكد</value>
+  </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
     <value>قم بتأكيد إعادة تشغيل Explorer</value>
   </data>
@@ -243,6 +246,9 @@
   <data name="Idle" xml:space="preserve">
     <value>عاطل</value>
   </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>يتجاهل</value>
+  </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
     <value>تجاهل العنوان الغامض</value>
   </data>
@@ -264,11 +270,15 @@
   <data name="NetworkError" xml:space="preserve">
     <value>خطأ في الشبكة</value>
   </data>
+  <data name="NetworkNotAvailable" xml:space="preserve">
+    <value>الشبكة غير متاحة!</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>تم العثور على إصدار جديد ({0})!
+سجل التغيير: {1}</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>عذرا ، الإنترنت غير متوفر.</value>
-  </data>
-  <data name="NoPoster" xml:space="preserve">
-    <value>NoPoster</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
     <value>لم يتم العثور على ملصق.</value>
@@ -277,7 +287,12 @@
     <value>لم يتم العثور على نتائج</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>لم يتم العثور على شيء لـ {0} \ n حاول البحث بعنوان آخر \ n أو حدد وضع البحث "</value>
+    <value>لم يتم العثور على شيء لـ {0}
+حاول البحث بعنوان آخر
+ أو تحقق من وضع البحث</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>حسنا</value>
   </data>
   <data name="OutOf" xml:space="preserve">
     <value>بعيدا عن المكان</value>
@@ -298,7 +313,8 @@
     <value>أعد تشغيل Explorer</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>هل تريد بالتأكيد \ n إعادة تشغيل Explorer وتحديث ذاكرة التخزين المؤقت للرموز؟</value>
+    <value>هل أنت متأكد أنك تريد إعادة تشغيل Explorer
+وتحديث Icon Cache؟</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
     <value>سيؤدي هذا إلى إغلاق جميع المجلدات المفتوحة وإعادة تشغيل Explorer.</value>
@@ -334,6 +350,9 @@
   <data name="Spanish" xml:space="preserve">
     <value>الأسبانية</value>
   </data>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>رائعة! أنت تستخدم أحدث إصدار.</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>لقب</value>
   </data>
@@ -342,6 +361,9 @@
   </data>
   <data name="TV" xml:space="preserve">
     <value>تلفزيون</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>تحديث الان</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
     <value>استخدم تراكب الملصق</value>

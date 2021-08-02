@@ -448,6 +448,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ignore.
+        /// </summary>
+        public static string Ignore {
+            get {
+                return ResourceManager.GetString("Ignore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignore Ambiguous title.
         /// </summary>
         public static string IgnoreAmbiguousTitle {
@@ -511,20 +520,30 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network not available!.
+        /// </summary>
+        public static string NetworkNotAvailable {
+            get {
+                return ResourceManager.GetString("NetworkNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Version({0}) Found!
+        ///Changelog:{1}.
+        /// </summary>
+        public static string NewVersionFound {
+            get {
+                return ResourceManager.GetString("NewVersionFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, Internet is Not available..
         /// </summary>
         public static string NoInternet {
             get {
                 return ResourceManager.GetString("NoInternet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to NoPoster.
-        /// </summary>
-        public static string NoPoster {
-            get {
-                return ResourceManager.GetString("NoPoster", resourceCulture);
             }
         }
         
@@ -730,6 +749,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Great! you are using the latest version..
+        /// </summary>
+        public static string ThisIsLatestVersion {
+            get {
+                return ResourceManager.GetString("ThisIsLatestVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string Title {
@@ -753,6 +781,15 @@ namespace FoliCon.Properties.Langs {
         public static string TV {
             get {
                 return ResourceManager.GetString("TV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Now.
+        /// </summary>
+        public static string UpdateNow {
+            get {
+                return ResourceManager.GetString("UpdateNow", resourceCulture);
             }
         }
         

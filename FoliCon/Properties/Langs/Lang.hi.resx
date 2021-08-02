@@ -156,6 +156,9 @@
   <data name="ClosingApplication" xml:space="preserve">
     <value>समापन आवेदन</value>
   </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>पुष्टि करें</value>
+  </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
     <value>एक्सप्लोरर पुनरारंभ की पुष्टि करें</value>
   </data>
@@ -229,7 +232,7 @@
     <value>{0} चिह्न बनाया गया</value>
   </data>
   <data name="IconMode" xml:space="preserve">
-    <value>आइकन मोड</value>
+    <value>चिह्न मोड</value>
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
     <value>नोट: आइकन को पुनः लोड होने में कुछ समय लग सकता है।</value>
@@ -242,6 +245,9 @@
   </data>
   <data name="Idle" xml:space="preserve">
     <value>बेकार</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>नज़रअंदाज़ करना</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
     <value>अस्पष्ट शीर्षक पर ध्यान न दें</value>
@@ -264,11 +270,15 @@
   <data name="NetworkError" xml:space="preserve">
     <value>नेटवर्क त्रुटि</value>
   </data>
+  <data name="NetworkNotAvailable" xml:space="preserve">
+    <value>नेटवर्क उपलब्ध नहीं!</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>नया संस्करण({0}) मिला!
+चेंजलॉग:{1}</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>क्षमा करें, इंटरनेट उपलब्ध नहीं है।</value>
-  </data>
-  <data name="NoPoster" xml:space="preserve">
-    <value>नो पोस्टर</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
     <value>कोई पोस्टर नहीं मिला।</value>
@@ -277,8 +287,12 @@
     <value>कोई परिणाम नहीं मिला</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>{0}\n अन्य शीर्षक के साथ खोजने का प्रयास करें
- या खोज मोड जांचें के लिए कुछ नहीं मिला</value>
+    <value>{0} के लिए कुछ नहीं मिला
+अन्य शीर्षक के साथ खोजने का प्रयास करें
+ या खोज मोड की जाँच करें</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>ठीक है</value>
   </data>
   <data name="OutOf" xml:space="preserve">
     <value>से बाहर</value>
@@ -299,8 +313,8 @@
     <value>एक्सप्लोरर को पुनरारंभ करें</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>क्या आप वाकई
-एक्स्प्लोरर को पुनरारंभ करना और चिह्न कैश रीफ़्रेश करना चाहते हैं?</value>
+    <value>क्या आप वाकई एक्सप्लोरर को पुनरारंभ करना चाहते हैं
+और आइकन कैश रीफ्रेश करें?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
     <value>यह सभी ओपन फोल्डर और रीस्टार्ट एक्सप्लोरर को बंद कर देगा।</value>
@@ -336,6 +350,9 @@
   <data name="Spanish" xml:space="preserve">
     <value>स्पेनिश</value>
   </data>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>महान! आप नवीनतम संस्करण का उपयोग कर रहे हैं।</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>शीर्षक</value>
   </data>
@@ -344,6 +361,9 @@
   </data>
   <data name="TV" xml:space="preserve">
     <value>टीवी</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>अभी अद्यतन करें</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
     <value>पोस्टर ओवरले का प्रयोग करें</value>

@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,6 +23,8 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using FoliCon.Properties.Langs;
+using HandyControl.Tools.Extension;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using Vanara.PInvoke;
@@ -44,9 +47,9 @@ namespace FoliCon.Modules
                     var info = new GrowlInfo
                     {
 
-                        Message = $"New Version({ver.TagName}) Found!\n Changelog:{ver.Changelog.Replace("\\n", Environment.NewLine)}",
-                        ConfirmStr = "Update Now",
-                        CancelStr = "Ignore",
+                        Message = LangProvider.GetLang("NewVersionFound").Format(ver.TagName, ver.Changelog.Replace("\\n", Environment.NewLine)),
+                        ConfirmStr = LangProvider.GetLang("UpdateNow"),
+                        CancelStr = LangProvider.GetLang("Ignore"),
                         ShowDateTime = false,
                         ActionBeforeClose = isConfirmed =>
                         {
@@ -61,14 +64,14 @@ namespace FoliCon.Modules
                 {
                     var info = new GrowlInfo
                     {
-                        Message = "Great! you are using the latest version",
+                        Message = LangProvider.GetLang("ThisIsLatestVersion"),
                         ShowDateTime = false,
                         StaysOpen = false
                     };
                     Growl.InfoGlobal(info);
                 }
             }
-            else Growl.ErrorGlobal(new GrowlInfo { Message = "Network not available!", ShowDateTime = false });
+            else Growl.ErrorGlobal(new GrowlInfo { Message = LangProvider.GetLang("NetworkNotAvailable"), ShowDateTime = false });
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace FoliCon.Modules
 
         public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
-            if ((imageSource is not BitmapSource bitmapSource)) return null;
+            if (imageSource is not BitmapSource bitmapSource) return null;
             encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
             using var stream = new MemoryStream();
@@ -107,7 +110,7 @@ namespace FoliCon.Modules
         /// <param name="listView"> list view to change width</param>
         public static void SetColumnWidth(ListView listView)
         {
-            if ((listView.View is not GridView gridView)) return;
+            if (listView.View is not GridView gridView) return;
             foreach (var column in gridView.Columns)
             {
                 if (double.IsNaN(column.Width))
@@ -173,7 +176,6 @@ namespace FoliCon.Modules
                 DeleteIconsFromFolder(folder);
             }
             RefreshIconCache();
-            // SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW | SHCNF.SHCNF_FLUSHNOWAIT,folderPath);
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT, folderPath);
         }
 
@@ -197,7 +199,7 @@ namespace FoliCon.Modules
             try
             {
                 var reply = p.Send(host, 5000, new byte[32], new PingOptions { DontFragment = true, Ttl = 32 });
-                if (reply != null && reply.Status == IPStatus.Success)
+                if (reply is { Status: IPStatus.Success })
                     result = true;
             }
             catch (Exception)
@@ -384,23 +386,23 @@ namespace FoliCon.Modules
             foreach (var i in fNames)
             {
                 var tempI = i;
-                var targetFile = selectedFolder + "\\" + i + "\\" + i + ".ico";
-                if (File.Exists(selectedFolder + "\\" + i + "\\" + i + ".png") && !File.Exists(targetFile))
+                var targetFile = $@"{selectedFolder}\{i}\{i}.ico";
+                if (File.Exists($@"{selectedFolder}\{i}\{i}.png") && !File.Exists(targetFile))
                 {
                     var rating = pickedListDataTable.AsEnumerable()
                         .Where(p => p["FolderName"].Equals(tempI))
                         .Select(p => p["Rating"].ToString())
                         .FirstOrDefault();
 
-                    BuildFolderIco(iconMode, selectedFolder + "\\" + i + "\\" + i + ".png", rating, ratingVisibility,
+                    BuildFolderIco(iconMode, $@"{selectedFolder}\{i}\{i}.png", rating, ratingVisibility,
                         mockupVisibility);
                     iconProcessedCount += 1;
-                    File.Delete(selectedFolder + "\\" + i + "\\" + i + ".png"); //<--IO Exception here
+                    File.Delete($@"{selectedFolder}\{i}\{i}.png"); //<--IO Exception here
                 }
 
                 if (!File.Exists(targetFile)) continue;
                 HideIcons(targetFile);
-                SetFolderIcon(i + ".ico", selectedFolder + "\\" + i);
+                SetFolderIcon($"{i}.ico", $@"{selectedFolder}\{i}");
             }
             ApplyChanges(selectedFolder);
             SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW, selectedFolder);
@@ -436,7 +438,6 @@ namespace FoliCon.Modules
             }
             else
             {
-                //TODO: Change here
                 using var task = GlobalVariables.IconOverlayType switch
                 {
                     IconOverlay.Legacy => StaTask.Start(() =>
@@ -489,9 +490,8 @@ namespace FoliCon.Modules
                     cchIconFile = 0
                 };
                 //FolderSettings.iIconIndex = 0;
-                var pszPath = folderPath;
                 var unused =
-                    SHGetSetFolderCustomSettings(ref folderSettings, pszPath, FCS.FCS_FORCEWRITE);
+                    SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
             }
             catch (Exception e)
             {
@@ -503,10 +503,6 @@ namespace FoliCon.Modules
 
         public static void ApplyChanges(string folderPath)
         {
-            // CultureInfo ci = new CultureInfo("en-US"); 
-            // System.Threading.Thread.CurrentThread.CurrentCulture = ci
-            //var pidl = ILCreateFromPath(folderPath);
-
             SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW, folderPath);
         }
 

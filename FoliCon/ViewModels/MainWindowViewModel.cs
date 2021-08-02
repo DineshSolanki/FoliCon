@@ -323,7 +323,7 @@ namespace FoliCon.ViewModels
                             }
                             catch (Exception ex)
                             {
-                                if (ex.Message == LangProvider.GetLang("NoPoster"))
+                                if (ex.Message == "NoPoster")
                                 {
                                     MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
                                 }
@@ -506,7 +506,7 @@ namespace FoliCon.ViewModels
             else
             {
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
-                    LangProvider.GetLang("Empty Directory")));
+                    LangProvider.GetLang("EmptyDirectory")));
             }
         }
 
@@ -613,9 +613,9 @@ namespace FoliCon.ViewModels
             _dialogService.ShowAboutBox(_ => { });
         }
 
-        public void OnFileDrop(string[] filepaths, string senderName)
+        public void OnFileDrop(string[] filePaths, string senderName)
         {
-            SelectedFolder = filepaths.GetValue(0)?.ToString();
+            SelectedFolder = filePaths.GetValue(0)?.ToString();
             StatusBarProperties.ResetData();
             IsMakeEnabled = true;
         }
