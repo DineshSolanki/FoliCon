@@ -51,7 +51,7 @@
         </hc:BusyIndicator.ProgressBarStyle>
         <Grid>
             <Menu IsMainMenu="True" Grid.Row="0">
-                <MenuItem Header="Settings">
+                <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.Settings}}">
                     <MenuItem x:Name="ChkIsRatingVisible" Header="{ex:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
                               IsChecked="{Binding IsRatingVisible}" IsCheckable="True"
                               ToolTip="{ex:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" />
@@ -70,7 +70,7 @@
                     <MenuItem x:Name="MenuApiConfigBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
                               Command="{Binding ApiConfigCommand}" />
                     <Separator />
-                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}" IsEditable="False" hc:Poptip.Content="Change Language" SelectedIndex="0" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
+                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}" IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedIndex="0" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuRExbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
@@ -81,7 +81,7 @@
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
-                <MenuItem Header="Help">
+                <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.Help}}">
                     <MenuItem x:Name="MenubtnHelp" Header="{ex:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="{Binding HelpCommand}" />
                     <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
                     <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" />
@@ -127,12 +127,12 @@
 
                             <RadioButton x:Name="RPoster" Content="{ex:Lang Key={x:Static langs:LangKeys.Poster}}" Grid.Column="0"
                                          Command="{Binding IconModeChangedCommand}"
-                                         CommandParameter="{Binding ElementName=RPoster, Path=Content}"
+                                         CommandParameter="Poster" GroupName="IconMode"
                                          Margin="0,4,0,4" FontSize="16" VerticalAlignment="Stretch"
                                          HorizontalAlignment="Left" IsChecked="True" />
                             <RadioButton x:Name="RProf" Content="{ex:Lang Key={x:Static langs:LangKeys.Professional}}" Grid.Column="2"
-                                         Command="{Binding IconModeChangedCommand}"
-                                         CommandParameter="{Binding ElementName=RProf, Path=Content}" FontSize="16"
+                                         Command="{Binding IconModeChangedCommand}" GroupName="IconMode"
+                                         CommandParameter="Professional" FontSize="16"
                                          HorizontalAlignment="Left" VerticalAlignment="Stretch" />
                         </Grid>
                     </GroupBox>
@@ -150,20 +150,20 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="20" />
-                                <ColumnDefinition SharedSizeGroup="second" Width="250" />
+                                <ColumnDefinition SharedSizeGroup="second" Width="*" />
                             </Grid.ColumnDefinitions>
                             <RadioButton x:Name="RMovie" Content="{ex:Lang Key={x:Static langs:LangKeys.Movie}}" Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="{Binding ElementName=RMovie, Path=Content}" FontSize="16"
+                                         CommandParameter="Movie" FontSize="16"
                                          Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" IsChecked="True" />
                             <RadioButton x:Name="RGame" Content="{ex:Lang Key={x:Static langs:LangKeys.Game}}" Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="{Binding ElementName=RGame, Path=Content}" FontSize="16"
+                                         CommandParameter="Game" FontSize="16"
                                          Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" />
                             <RadioButton x:Name="RTv" Content="{ex:Lang Key={x:Static langs:LangKeys.TV}}" Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="{Binding ElementName=RTv, Path=Content}" FontSize="16"
+                                         CommandParameter="TV" FontSize="16"
                                          Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" />
                             <RadioButton x:Name="RAuto" Content="{ex:Lang Key={x:Static langs:LangKeys.Auto}}"
                                          Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="{Binding ElementName=RAuto, Path=Content}" FontSize="16"
+                                         CommandParameter="Auto (Movies &amp; TV Shows)" FontSize="16"
                                          Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" />
                         </Grid>
                     </GroupBox>
@@ -232,7 +232,7 @@
                         </ItemsPanelTemplate>
                     </StatusBar.ItemsPanel>
                     <StatusBarItem Grid.Column="0">
-                        <Label Content="{Binding AppStatus}" BorderThickness="0" />
+                        <Label Content="{ex:Lang Key={Binding AppStatus}}" BorderThickness="0" />
                     </StatusBarItem>
                     <Separator Grid.Column="1" />
                     <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Stretch">

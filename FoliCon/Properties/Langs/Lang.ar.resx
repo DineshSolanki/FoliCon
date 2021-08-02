@@ -129,11 +129,23 @@
   <data name="APIKeysConfiguration" xml:space="preserve">
     <value>تكوين مفاتيح _API</value>
   </data>
+  <data name="APIKeysNotProvided" xml:space="preserve">
+    <value>لم يتم توفير مفاتيح API</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>سيتم إغلاق التطبيق.</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>عربى</value>
+  </data>
   <data name="Auto" xml:space="preserve">
     <value>تلقائي (أفلام وبرامج تلفزيونية)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>يلغي</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>تغيير اللغة</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
     <value>_تغيير تراكب أيقونة الملصق</value>
@@ -141,17 +153,56 @@
   <data name="CheckForUpdate" xml:space="preserve">
     <value>فحص التحديثات</value>
   </data>
+  <data name="ClosingApplication" xml:space="preserve">
+    <value>طلب الإغلاق</value>
+  </data>
+  <data name="ConfirmExplorerRestart" xml:space="preserve">
+    <value>قم بتأكيد إعادة تشغيل Explorer</value>
+  </data>
+  <data name="ConfirmIconDeletion" xml:space="preserve">
+    <value>تأكيد حذف الرمز</value>
+  </data>
+  <data name="ConfirmToOpenFolder" xml:space="preserve">
+    <value>انقر فوق "تأكيد" لفتح المجلد.</value>
+  </data>
+  <data name="CreatingIcons" xml:space="preserve">
+    <value>جاري إنشاء أيقونات ...</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>حذف الأيقونات</value>
+  </data>
+  <data name="DeleteIconsConfirmation" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف كافة الأيقونات؟</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
     <value>سيؤدي هذا إلى حذف الرموز الموجودة من جميع المجلدات الفرعية.</value>
   </data>
+  <data name="DirectoryIsEmpty" xml:space="preserve">
+    <value>الدليل فارغ</value>
+  </data>
   <data name="DownloadingIcons" xml:space="preserve">
     <value>تحميل الأيقونات</value>
   </data>
+  <data name="DownloadingIconWithCount" xml:space="preserve">
+    <value>جارٍ تنزيل الرمز {0} / {1} ...</value>
+  </data>
+  <data name="DownloadIt" xml:space="preserve">
+    <value>تنزيله</value>
+  </data>
+  <data name="EmptyDirectory" xml:space="preserve">
+    <value>دليل فارغ</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>إنجليزي</value>
+  </data>
   <data name="Folder" xml:space="preserve">
     <value>مجلد</value>
+  </data>
+  <data name="FolderDoesNotExist" xml:space="preserve">
+    <value>المجلد غير موجود!</value>
+  </data>
+  <data name="FolderError" xml:space="preserve">
+    <value>خطأ في المجلد</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
     <value>المجلدات التي تمت معالجتها:</value>
@@ -163,20 +214,43 @@
     <value>لديك بالفعل رموز؟</value>
   </data>
   <data name="HaveIconsTooltip" xml:space="preserve">
-    <value>تتيح لك تعيين الرموز الخاصة بك (يسمح فقط بتنسيق png و ico).</value>
+    <value>تتيح لك تعيين الرموز الخاصة بك (يُسمح فقط بتنسيق png و ico).</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>يساعد</value>
   </data>
   <data name="HelpDocument" xml:space="preserve">
     <value>وثيقة المساعدة</value>
   </data>
+  <data name="IconCreated" xml:space="preserve">
+    <value>تم إنشاء الرمز (الرموز)</value>
+  </data>
+  <data name="IconCreatedWithCount" xml:space="preserve">
+    <value>{0} تم إنشاء الرمز</value>
+  </data>
+  <data name="IconMode" xml:space="preserve">
+    <value>وضع الأيقونة</value>
+  </data>
+  <data name="IconReloadMayTakeTime" xml:space="preserve">
+    <value>ملاحظة: قد يستغرق الرمز بعض الوقت لإعادة التحميل.</value>
+  </data>
+  <data name="IconsAlready" xml:space="preserve">
+    <value>يحتوي المجلد بالفعل على أيقونات أو أنه فارغ!</value>
+  </data>
   <data name="IconsCreated" xml:space="preserve">
     <value>تم إنشاء الرموز:</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>عاطل</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
     <value>تجاهل العنوان الغامض</value>
   </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>مسار غير صالح</value>
+  </data>
   <data name="LangComment" xml:space="preserve">
     <value>س</value>
-    <comment>hgh</comment>
   </data>
   <data name="Load" xml:space="preserve">
     <value>حمل</value>
@@ -186,6 +260,24 @@
   </data>
   <data name="Movie" xml:space="preserve">
     <value>فيلم</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>خطأ في الشبكة</value>
+  </data>
+  <data name="NoInternet" xml:space="preserve">
+    <value>عذرا ، الإنترنت غير متوفر.</value>
+  </data>
+  <data name="NoPoster" xml:space="preserve">
+    <value>NoPoster</value>
+  </data>
+  <data name="NoPosterFound" xml:space="preserve">
+    <value>لم يتم العثور على ملصق.</value>
+  </data>
+  <data name="NoResultFound" xml:space="preserve">
+    <value>لم يتم العثور على نتائج</value>
+  </data>
+  <data name="NothingFoundFor" xml:space="preserve">
+    <value>لم يتم العثور على شيء لـ {0} \ n حاول البحث بعنوان آخر \ n أو حدد وضع البحث "</value>
   </data>
   <data name="OutOf" xml:space="preserve">
     <value>بعيدا عن المكان</value>
@@ -205,8 +297,29 @@
   <data name="RestartExplorer" xml:space="preserve">
     <value>أعد تشغيل Explorer</value>
   </data>
+  <data name="RestartExplorerConfirmation" xml:space="preserve">
+    <value>هل تريد بالتأكيد \ n إعادة تشغيل Explorer وتحديث ذاكرة التخزين المؤقت للرموز؟</value>
+  </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
     <value>سيؤدي هذا إلى إغلاق جميع المجلدات المفتوحة وإعادة تشغيل Explorer.</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>الروسية</value>
+  </data>
+  <data name="Searching" xml:space="preserve">
+    <value>يبحث...</value>
+  </data>
+  <data name="SearchingWithCount" xml:space="preserve">
+    <value>جاري البحث ... {0}</value>
+  </data>
+  <data name="SearchMode" xml:space="preserve">
+    <value>وضع البحث</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>اختر مجلد</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>إعدادات</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
     <value>اعرض نافذة الملصق حتى إذا تم العثور على العنوان بالضبط ، فهذا سيتيح لك اختيار ملصق مختلف له وتقييم مخصص أيضًا
@@ -215,8 +328,17 @@
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>إظهار شارة التقييم</value>
   </data>
+  <data name="ShowRatingBadgeTooltip" xml:space="preserve">
+    <value>يتحكم في ما إذا كان سيتم إخفاء أو إظهار درع التصنيف</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>الأسبانية</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>لقب</value>
+  </data>
+  <data name="ToForceReload" xml:space="preserve">
+    <value>لفرض إعادة التحميل ، انقر فوق إعادة تشغيل Explorer.</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>تلفزيون</value>
@@ -226,8 +348,5 @@
   </data>
   <data name="Year" xml:space="preserve">
     <value>عام</value>
-  </data>
-  <data name="ShowRatingBadgeTootip" xml:space="preserve">
-	  <value>يتحكم في ما إذا كان سيتم إخفاء أو إظهار درع التصنيف</value>
   </data>
 </root>

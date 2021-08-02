@@ -118,9 +118,238 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>acerca de</value>
+    <value>Acerca de</value>
+  </data>
+  <data name="AlwaysShowPosterWindow" xml:space="preserve">
+    <value>Mostrar siempre la ventana del póster</value>
+  </data>
+  <data name="AmbiguousTitleTooltip" xml:space="preserve">
+    <value>Omitir títulos ambiguos de la búsqueda</value>
+  </data>
+  <data name="APIKeysConfiguration" xml:space="preserve">
+    <value>_ Configuración de claves de API</value>
+  </data>
+  <data name="APIKeysNotProvided" xml:space="preserve">
+    <value>Claves de API no proporcionadas</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>La aplicación se cerrará.</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arábica</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Automático (películas y programas de televisión)</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Cambiar idioma</value>
+  </data>
+  <data name="ChangePosterOverlay" xml:space="preserve">
+    <value>_Cambiar la superposición del icono de póster</value>
+  </data>
+  <data name="CheckForUpdate" xml:space="preserve">
+    <value>Buscar actualizaciones</value>
+  </data>
+  <data name="ClosingApplication" xml:space="preserve">
+    <value>Solicitud de cierre</value>
+  </data>
+  <data name="ConfirmExplorerRestart" xml:space="preserve">
+    <value>Confirmar el reinicio del explorador</value>
+  </data>
+  <data name="ConfirmIconDeletion" xml:space="preserve">
+    <value>Confirmar la eliminación del icono</value>
+  </data>
+  <data name="ConfirmToOpenFolder" xml:space="preserve">
+    <value>Haga clic en "Confirmar" para abrir la carpeta.</value>
+  </data>
+  <data name="CreatingIcons" xml:space="preserve">
+    <value>Creación de iconos ...</value>
+  </data>
+  <data name="DeleteIcons" xml:space="preserve">
+    <value>Eliminar iconos</value>
+  </data>
+  <data name="DeleteIconsConfirmation" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar todos los iconos?</value>
+  </data>
+  <data name="DeleteIconsTooltip" xml:space="preserve">
+    <value>Esto eliminará los iconos existentes de todas las subcarpetas.</value>
+  </data>
+  <data name="DirectoryIsEmpty" xml:space="preserve">
+    <value>El directorio está vacío</value>
+  </data>
+  <data name="DownloadingIcons" xml:space="preserve">
+    <value>Descarga de iconos</value>
+  </data>
+  <data name="DownloadingIconWithCount" xml:space="preserve">
+    <value>Descargando ícono {0} / {1} ...</value>
+  </data>
+  <data name="DownloadIt" xml:space="preserve">
+    <value>Descargalo</value>
+  </data>
+  <data name="EmptyDirectory" xml:space="preserve">
+    <value>Directorio vacío</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>inglés</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Carpeta</value>
+  </data>
+  <data name="FolderDoesNotExist" xml:space="preserve">
+    <value>¡La carpeta no existe!</value>
+  </data>
+  <data name="FolderError" xml:space="preserve">
+    <value>Error de carpeta</value>
+  </data>
+  <data name="FoldersProcessed" xml:space="preserve">
+    <value>Carpetas procesadas:</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>Juego</value>
+  </data>
+  <data name="HaveIcons" xml:space="preserve">
+    <value>ya tienes iconos?</value>
+  </data>
+  <data name="HaveIconsTooltip" xml:space="preserve">
+    <value>Le permite configurar sus propios iconos (solo se permiten png e ico).</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ayuda</value>
+  </data>
+  <data name="HelpDocument" xml:space="preserve">
+    <value>Documento de ayuda</value>
+  </data>
+  <data name="IconCreated" xml:space="preserve">
+    <value>Icono (s) creado (s)</value>
+  </data>
+  <data name="IconCreatedWithCount" xml:space="preserve">
+    <value>{0} Icono creado</value>
+  </data>
+  <data name="IconMode" xml:space="preserve">
+    <value>Modo de icono</value>
+  </data>
+  <data name="IconReloadMayTakeTime" xml:space="preserve">
+    <value>Nota: El icono puede tardar un tiempo en recargarse.</value>
+  </data>
+  <data name="IconsAlready" xml:space="preserve">
+    <value>La carpeta ya tiene iconos o está vacía.</value>
+  </data>
+  <data name="IconsCreated" xml:space="preserve">
+    <value>Iconos creados:</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>Inactivo</value>
+  </data>
+  <data name="IgnoreAmbiguousTitle" xml:space="preserve">
+    <value>Ignorar título ambiguo</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Ruta no válida</value>
+  </data>
+  <data name="LangComment" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Carga</value>
+  </data>
+  <data name="MakeIcons" xml:space="preserve">
+    <value>Hacer iconos</value>
+  </data>
+  <data name="Movie" xml:space="preserve">
+    <value>Película</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>Error de red</value>
+  </data>
+  <data name="NoInternet" xml:space="preserve">
+    <value>Lo sentimos, Internet no está disponible.</value>
+  </data>
+  <data name="NoPoster" xml:space="preserve">
+    <value>NoPoster</value>
+  </data>
+  <data name="NoPosterFound" xml:space="preserve">
+    <value>No se encontró ningún póster.</value>
+  </data>
+  <data name="NoResultFound" xml:space="preserve">
+    <value>No se han encontrado resultados</value>
+  </data>
+  <data name="NothingFoundFor" xml:space="preserve">
+    <value>No se ha encontrado nada para {0}
+Intente buscar con otro título
+ o marque el modo de búsqueda</value>
+  </data>
+  <data name="OutOf" xml:space="preserve">
+    <value>fuera de</value>
+  </data>
+  <data name="Poster" xml:space="preserve">
+    <value>Póster</value>
+  </data>
+  <data name="PosterOverlayTooltip" xml:space="preserve">
+    <value>Controla si se utiliza la superposición de póster o pósters sencillos.</value>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>Profesional</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Clasificación</value>
+  </data>
+  <data name="RestartExplorer" xml:space="preserve">
+    <value>Reiniciar el explorador</value>
+  </data>
+  <data name="RestartExplorerConfirmation" xml:space="preserve">
+    <value>¿Está seguro de que desea
+Reiniciar el Explorador y actualizar la caché de iconos?</value>
+  </data>
+  <data name="RestartExplorerTooltip" xml:space="preserve">
+    <value>Esto cerrará todas las carpetas abiertas y reiniciará el explorador.</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>ruso</value>
+  </data>
+  <data name="Searching" xml:space="preserve">
+    <value>Buscando...</value>
+  </data>
+  <data name="SearchingWithCount" xml:space="preserve">
+    <value>Buscando ... {0}</value>
+  </data>
+  <data name="SearchMode" xml:space="preserve">
+    <value>Modo de búsqueda</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Seleccione la carpeta</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Ajustes</value>
+  </data>
+  <data name="ShowPosterWindowTooltip" xml:space="preserve">
+    <value>Mostrar la ventana del póster incluso si se encuentra el título exacto.Esto le permitirá elegir un póster diferente para ellos y una calificación personalizada también
+ esto anula la opción 'Ignorar título ambiguo'.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Mostrar insignia de calificación</value>
+  </data>
+  <data name="ShowRatingBadgeTooltip" xml:space="preserve">
+    <value>Controla si ocultar o mostrar el Escudo de clasificación</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Español</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="ToForceReload" xml:space="preserve">
+    <value>Para forzar la recarga, haga clic en Reiniciar Explorer.</value>
+  </data>
+  <data name="TV" xml:space="preserve">
+    <value>televisor</value>
+  </data>
+  <data name="UsePosterOverlay" xml:space="preserve">
+    <value>Usar superposición de póster</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Año</value>
   </data>
 </root>

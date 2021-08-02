@@ -56,11 +56,22 @@ namespace FoliCon.Views
                     LangProvider.Culture = new CultureInfo("ar");
                     break;
                 case Languages.Russian:
-                    break;
-                default:
                     ConfigHelper.Instance.SetLang("ru");
                     LangProvider.Culture = new CultureInfo("ru");
                     break;
+                case Languages.Hindi:
+                    ConfigHelper.Instance.SetLang("hi");
+                    LangProvider.Culture = new CultureInfo("hi");
+                    break;
+                default:
+                    ConfigHelper.Instance.SetLang("en");
+                    LangProvider.Culture = new CultureInfo("en");
+                    break;
+            }
+
+            if (FinalList is not null)
+            {
+                Util.SetColumnWidth(FinalList);
             }
 
         }

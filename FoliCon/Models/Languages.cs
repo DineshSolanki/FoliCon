@@ -11,6 +11,7 @@ namespace FoliCon.Models
         English,
         Spanish,
         Arabic,
-        Russian
+        Russian,
+        Hindi
     }
 }

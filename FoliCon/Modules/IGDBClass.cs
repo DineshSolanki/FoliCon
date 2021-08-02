@@ -9,6 +9,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using FoliCon.Properties.Langs;
 
 namespace FoliCon.Modules
 {
@@ -72,7 +73,7 @@ namespace FoliCon.Modules
         {
             if (result.Cover == null)
             {
-                throw new InvalidDataException("NoPoster");
+                throw new InvalidDataException(LangProvider.GetLang("NoPoster"));
             }
 
             var folderName = Path.GetFileName(fullFolderPath);

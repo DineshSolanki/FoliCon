@@ -112,240 +112,243 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>के बारे में</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
-    <value>Always show poster window</value>
+    <value>हमेशा पोस्टर विंडो दिखाएं</value>
   </data>
   <data name="AmbiguousTitleTooltip" xml:space="preserve">
-    <value>Skip ambiguous titles from search</value>
+    <value>खोज से अस्पष्ट शीर्षक छोड़ें</value>
   </data>
   <data name="APIKeysConfiguration" xml:space="preserve">
-    <value>_API keys Configuration</value>
+    <value>_API कुंजियाँ कॉन्फ़िगरेशन</value>
   </data>
   <data name="APIKeysNotProvided" xml:space="preserve">
-    <value>API keys not provided</value>
+    <value>API कुंजियाँ प्रदान नहीं की गईं</value>
   </data>
   <data name="AppWillClose" xml:space="preserve">
-    <value>The Application will close.</value>
+    <value>आवेदन बंद हो जाएगा।</value>
   </data>
   <data name="Arabic" xml:space="preserve">
-    <value>Arabic</value>
+    <value>अरबी</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Auto (Movies &amp;amp; TV Shows)</value>
+    <value>ऑटो (फिल्में और टीवी शो)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>रद्द करना</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Change Language</value>
+    <value>भाषा बदलो</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
-    <value>_Change Poster Icon overlay</value>
+    <value>_पोस्टर आइकन ओवरले बदलें</value>
   </data>
   <data name="CheckForUpdate" xml:space="preserve">
-    <value>Check for update</value>
+    <value>अपडेट के लिये जांचें</value>
   </data>
   <data name="ClosingApplication" xml:space="preserve">
-    <value>Closing Application</value>
+    <value>समापन आवेदन</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
-    <value>Confirm Explorer Restart</value>
+    <value>एक्सप्लोरर पुनरारंभ की पुष्टि करें</value>
   </data>
   <data name="ConfirmIconDeletion" xml:space="preserve">
-    <value>Confirm Icon Deletion</value>
+    <value>आइकन हटाने की पुष्टि करें</value>
   </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
-    <value>Click "Confirm" to open folder.</value>
+    <value>फ़ोल्डर खोलने के लिए "पुष्टि करें" पर क्लिक करें।</value>
   </data>
   <data name="CreatingIcons" xml:space="preserve">
-    <value>Creating Icons...</value>
+    <value>प्रतीक बनाए जा रहे हैं...</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
-    <value>Delete Icons</value>
+    <value>चिह्न हटाएं</value>
   </data>
   <data name="DeleteIconsConfirmation" xml:space="preserve">
-    <value>Are you sure you want to delete all Icons?</value>
+    <value>क्या आप वाकई सभी चिह्न हटाना चाहते हैं?</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
-    <value>This will delete existing icons from all subFolders.</value>
+    <value>यह सभी सबफ़ोल्डर्स से मौजूदा आइकन हटा देगा।</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
-    <value>Directory is Empty</value>
+    <value>निर्देशिका खाली है</value>
   </data>
   <data name="DownloadingIcons" xml:space="preserve">
-    <value>Downloading Icons</value>
+    <value>डाउनलोडिंग प्रतीक</value>
   </data>
   <data name="DownloadingIconWithCount" xml:space="preserve">
-    <value>Downloading Icon {0}/{1}...</value>
+    <value>आइकन डाउनलोड हो रहा है {0}/{1}...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
-    <value>Download it</value>
+    <value>डाउनलोड करो</value>
   </data>
   <data name="EmptyDirectory" xml:space="preserve">
-    <value>Empty Directory</value>
+    <value>खाली निर्देशिका</value>
   </data>
   <data name="English" xml:space="preserve">
-    <value>English</value>
+    <value>अंग्रेज़ी</value>
   </data>
   <data name="Folder" xml:space="preserve">
-    <value>Folder</value>
+    <value>फ़ोल्डर</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
-    <value>Folder does not exist!</value>
+    <value>फ़ोल्डर मौजूद नहीं है!</value>
   </data>
   <data name="FolderError" xml:space="preserve">
-    <value>Folder Error</value>
+    <value>फ़ोल्डर त्रुटि</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
-    <value>Folders Processed:</value>
+    <value>संसाधित किए गए फ़ोल्डर:</value>
   </data>
   <data name="Game" xml:space="preserve">
-    <value>Game</value>
+    <value>खेल</value>
   </data>
   <data name="HaveIcons" xml:space="preserve">
-    <value>you already have icons?</value>
+    <value>आपके पास पहले से ही आइकन हैं?</value>
   </data>
   <data name="HaveIconsTooltip" xml:space="preserve">
-    <value>Let you set your own icons(only png and ico allowed).</value>
+    <value>आपको अपना खुद का आइकन सेट करने दें (केवल पीएनजी और आईसीओ की अनुमति है)।</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>मदद</value>
   </data>
   <data name="HelpDocument" xml:space="preserve">
-    <value>Help Document</value>
+    <value>सहायता दस्तावेज़</value>
   </data>
   <data name="IconCreated" xml:space="preserve">
-    <value>Icon(s) Created</value>
+    <value>आइकन बनाया गया</value>
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
-    <value>{0} Icon created</value>
+    <value>{0} चिह्न बनाया गया</value>
   </data>
   <data name="IconMode" xml:space="preserve">
-    <value>Icon Mode</value>
+    <value>आइकन मोड</value>
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
-    <value>Note:The Icon may take some time to reload.</value>
+    <value>नोट: आइकन को पुनः लोड होने में कुछ समय लग सकता है।</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
-    <value>Folder already have Icons or is Empty!</value>
+    <value>फ़ोल्डर में पहले से ही चिह्न हैं या खाली है!</value>
   </data>
   <data name="IconsCreated" xml:space="preserve">
-    <value>Icons Created :</value>
+    <value>बनाए गए चिह्न:</value>
   </data>
   <data name="Idle" xml:space="preserve">
-    <value>Idle</value>
+    <value>बेकार</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
-    <value>Ignore Ambiguous title</value>
+    <value>अस्पष्ट शीर्षक पर ध्यान न दें</value>
   </data>
   <data name="InvalidPath" xml:space="preserve">
-    <value>Invalid Path</value>
+    <value>अवैध मार्ग</value>
   </data>
   <data name="LangComment" xml:space="preserve">
-    <value>s</value>
+    <value>एस</value>
   </data>
   <data name="Load" xml:space="preserve">
-    <value>Load</value>
+    <value>भार</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
-    <value>Make Icons</value>
+    <value>प्रतीक बनाएं</value>
   </data>
   <data name="Movie" xml:space="preserve">
-    <value>Movie</value>
+    <value>चलचित्र</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Network Error</value>
+    <value>नेटवर्क त्रुटि</value>
   </data>
   <data name="NoInternet" xml:space="preserve">
-    <value>Sorry, Internet is Not available.</value>
+    <value>क्षमा करें, इंटरनेट उपलब्ध नहीं है।</value>
   </data>
   <data name="NoPoster" xml:space="preserve">
-    <value>NoPoster</value>
+    <value>नो पोस्टर</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
-    <value>No poster found.</value>
+    <value>कोई पोस्टर नहीं मिला।</value>
   </data>
   <data name="NoResultFound" xml:space="preserve">
-    <value>No Result Found</value>
+    <value>कोई परिणाम नहीं मिला</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>Nothing found for {0}\n Try Searching with Other Title\n or check Search Mode"</value>
+    <value>{0}\n अन्य शीर्षक के साथ खोजने का प्रयास करें
+ या खोज मोड जांचें के लिए कुछ नहीं मिला</value>
   </data>
   <data name="OutOf" xml:space="preserve">
-    <value>out of</value>
+    <value>से बाहर</value>
   </data>
   <data name="Poster" xml:space="preserve">
-    <value>Poster</value>
+    <value>पोस्टर</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
-    <value>Controls whether to use poster Overlay or Plain Posters.</value>
+    <value>नियंत्रित करता है कि पोस्टर ओवरले या प्लेन पोस्टर का उपयोग करना है या नहीं।</value>
   </data>
   <data name="Professional" xml:space="preserve">
-    <value>Professional</value>
+    <value>पेशेवर</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Rating</value>
+    <value>रेटिंग</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
-    <value>Restart Explorer</value>
+    <value>एक्सप्लोरर को पुनरारंभ करें</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>Are you sure you want to \nRestart Explorer and refresh Icon Cache?</value>
+    <value>क्या आप वाकई
+एक्स्प्लोरर को पुनरारंभ करना और चिह्न कैश रीफ़्रेश करना चाहते हैं?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
-    <value>This will close all Open folders and Restart Explorer.</value>
+    <value>यह सभी ओपन फोल्डर और रीस्टार्ट एक्सप्लोरर को बंद कर देगा।</value>
   </data>
   <data name="Russian" xml:space="preserve">
-    <value>Russian</value>
+    <value>रूसी</value>
   </data>
   <data name="Searching" xml:space="preserve">
-    <value>Searching...</value>
+    <value>खोज कर...</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
-    <value>Searching...{0}</value>
+    <value>खोजा जा रहा है...{0}</value>
   </data>
   <data name="SearchMode" xml:space="preserve">
-    <value>Search Mode</value>
+    <value>खोज मोड</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
-    <value>Select Folder</value>
+    <value>फोल्डर का चयन करें</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>समायोजन</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>सटीक शीर्षक मिलने पर भी पोस्टर विंडो दिखाएं। इससे आप उनके लिए अलग पोस्टर और कस्टम रेटिंग भी चुन सकेंगे
+ यह 'अस्पष्ट शीर्षक को अनदेखा करें' विकल्प को ओवरराइड करता है।</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
-    <value>Show Rating badge</value>
+    <value>रेटिंग बैज दिखाएं</value>
   </data>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
-    <value>Controls whether to hide or show Rating Shield</value>
+    <value>नियंत्रित करता है कि रेटिंग शील्ड को छिपाना है या दिखाना है</value>
   </data>
   <data name="Spanish" xml:space="preserve">
-    <value>Spanish</value>
+    <value>स्पेनिश</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Title</value>
+    <value>शीर्षक</value>
   </data>
   <data name="ToForceReload" xml:space="preserve">
-    <value>To Force Reload, click on Restart Explorer.</value>
+    <value>फोर्स रीलोड करने के लिए, रीस्टार्ट एक्सप्लोरर पर क्लिक करें।</value>
   </data>
   <data name="TV" xml:space="preserve">
-    <value>TV</value>
+    <value>टीवी</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
-    <value>Use Poster overlay</value>
+    <value>पोस्टर ओवरले का प्रयोग करें</value>
   </data>
   <data name="Year" xml:space="preserve">
-    <value>Year</value>
+    <value>वर्ष</value>
   </data>
 </root>

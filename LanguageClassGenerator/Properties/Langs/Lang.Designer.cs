@@ -97,6 +97,33 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API keys not provided.
+        /// </summary>
+        public static string APIKeysNotProvided {
+            get {
+                return ResourceManager.GetString("APIKeysNotProvided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Application will close..
+        /// </summary>
+        public static string AppWillClose {
+            get {
+                return ResourceManager.GetString("AppWillClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arabic.
+        /// </summary>
+        public static string Arabic {
+            get {
+                return ResourceManager.GetString("Arabic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto (Movies &amp;amp; TV Shows).
         /// </summary>
         public static string Auto {
@@ -111,6 +138,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Language.
+        /// </summary>
+        public static string ChangeLanguage {
+            get {
+                return ResourceManager.GetString("ChangeLanguage", resourceCulture);
             }
         }
         
@@ -133,11 +169,65 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Closing Application.
+        /// </summary>
+        public static string ClosingApplication {
+            get {
+                return ResourceManager.GetString("ClosingApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Explorer Restart.
+        /// </summary>
+        public static string ConfirmExplorerRestart {
+            get {
+                return ResourceManager.GetString("ConfirmExplorerRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Icon Deletion.
+        /// </summary>
+        public static string ConfirmIconDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmIconDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click &quot;Confirm&quot; to open folder..
+        /// </summary>
+        public static string ConfirmToOpenFolder {
+            get {
+                return ResourceManager.GetString("ConfirmToOpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating Icons....
+        /// </summary>
+        public static string CreatingIcons {
+            get {
+                return ResourceManager.GetString("CreatingIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Icons.
         /// </summary>
         public static string DeleteIcons {
             get {
                 return ResourceManager.GetString("DeleteIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete all Icons?.
+        /// </summary>
+        public static string DeleteIconsConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteIconsConfirmation", resourceCulture);
             }
         }
         
@@ -151,6 +241,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Directory is Empty.
+        /// </summary>
+        public static string DirectoryIsEmpty {
+            get {
+                return ResourceManager.GetString("DirectoryIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading Icons.
         /// </summary>
         public static string DownloadingIcons {
@@ -160,11 +259,65 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading Icon {0}/{1}....
+        /// </summary>
+        public static string DownloadingIconWithCount {
+            get {
+                return ResourceManager.GetString("DownloadingIconWithCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download it.
+        /// </summary>
+        public static string DownloadIt {
+            get {
+                return ResourceManager.GetString("DownloadIt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty Directory.
+        /// </summary>
+        public static string EmptyDirectory {
+            get {
+                return ResourceManager.GetString("EmptyDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folder.
         /// </summary>
         public static string Folder {
             get {
                 return ResourceManager.GetString("Folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder does not exist!.
+        /// </summary>
+        public static string FolderDoesNotExist {
+            get {
+                return ResourceManager.GetString("FolderDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder Error.
+        /// </summary>
+        public static string FolderError {
+            get {
+                return ResourceManager.GetString("FolderError", resourceCulture);
             }
         }
         
@@ -205,11 +358,65 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        public static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help Document.
         /// </summary>
         public static string HelpDocument {
             get {
                 return ResourceManager.GetString("HelpDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon(s) Created.
+        /// </summary>
+        public static string IconCreated {
+            get {
+                return ResourceManager.GetString("IconCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Icon created.
+        /// </summary>
+        public static string IconCreatedWithCount {
+            get {
+                return ResourceManager.GetString("IconCreatedWithCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Icon Mode.
+        /// </summary>
+        public static string IconMode {
+            get {
+                return ResourceManager.GetString("IconMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note:The Icon may take some time to reload..
+        /// </summary>
+        public static string IconReloadMayTakeTime {
+            get {
+                return ResourceManager.GetString("IconReloadMayTakeTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder already have Icons or is Empty!.
+        /// </summary>
+        public static string IconsAlready {
+            get {
+                return ResourceManager.GetString("IconsAlready", resourceCulture);
             }
         }
         
@@ -223,11 +430,29 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Idle.
+        /// </summary>
+        public static string Idle {
+            get {
+                return ResourceManager.GetString("Idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ignore Ambiguous title.
         /// </summary>
         public static string IgnoreAmbiguousTitle {
             get {
                 return ResourceManager.GetString("IgnoreAmbiguousTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Path.
+        /// </summary>
+        public static string InvalidPath {
+            get {
+                return ResourceManager.GetString("InvalidPath", resourceCulture);
             }
         }
         
@@ -264,6 +489,60 @@ namespace LanguageClassGenerator.Properties.Langs {
         public static string Movie {
             get {
                 return ResourceManager.GetString("Movie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network Error.
+        /// </summary>
+        public static string NetworkError {
+            get {
+                return ResourceManager.GetString("NetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, Internet is Not available..
+        /// </summary>
+        public static string NoInternet {
+            get {
+                return ResourceManager.GetString("NoInternet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NoPoster.
+        /// </summary>
+        public static string NoPoster {
+            get {
+                return ResourceManager.GetString("NoPoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No poster found..
+        /// </summary>
+        public static string NoPosterFound {
+            get {
+                return ResourceManager.GetString("NoPosterFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Result Found.
+        /// </summary>
+        public static string NoResultFound {
+            get {
+                return ResourceManager.GetString("NoResultFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing found for {0}\n Try Searching with Other Title\n or check Search Mode&quot;.
+        /// </summary>
+        public static string NothingFoundFor {
+            get {
+                return ResourceManager.GetString("NothingFoundFor", resourceCulture);
             }
         }
         
@@ -322,6 +601,15 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to \nRestart Explorer and refresh Icon Cache?.
+        /// </summary>
+        public static string RestartExplorerConfirmation {
+            get {
+                return ResourceManager.GetString("RestartExplorerConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This will close all Open folders and Restart Explorer..
         /// </summary>
         public static string RestartExplorerTooltip {
@@ -331,7 +619,61 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show poster window even if exact title found.this would let you chose different poster for them and custom rating also&amp;#x0a; this overrides &apos;Ignore Ambiguous title&apos; option..
+        ///   Looks up a localized string similar to Russian.
+        /// </summary>
+        public static string Russian {
+            get {
+                return ResourceManager.GetString("Russian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching....
+        /// </summary>
+        public static string Searching {
+            get {
+                return ResourceManager.GetString("Searching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Searching...{0}.
+        /// </summary>
+        public static string SearchingWithCount {
+            get {
+                return ResourceManager.GetString("SearchingWithCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Mode.
+        /// </summary>
+        public static string SearchMode {
+            get {
+                return ResourceManager.GetString("SearchMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Folder.
+        /// </summary>
+        public static string SelectFolder {
+            get {
+                return ResourceManager.GetString("SelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides &apos;Ignore Ambiguous title&apos; option..
         /// </summary>
         public static string ShowPosterWindowTooltip {
             get {
@@ -358,11 +700,29 @@ namespace LanguageClassGenerator.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spanish.
+        /// </summary>
+        public static string Spanish {
+            get {
+                return ResourceManager.GetString("Spanish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Force Reload, click on Restart Explorer..
+        /// </summary>
+        public static string ToForceReload {
+            get {
+                return ResourceManager.GetString("ToForceReload", resourceCulture);
             }
         }
         

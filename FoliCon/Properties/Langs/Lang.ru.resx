@@ -112,240 +112,244 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>О</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
-    <value>Always show poster window</value>
+    <value>Всегда показывать окно плаката</value>
   </data>
   <data name="AmbiguousTitleTooltip" xml:space="preserve">
-    <value>Skip ambiguous titles from search</value>
+    <value>Пропускать неоднозначные заголовки из поиска</value>
   </data>
   <data name="APIKeysConfiguration" xml:space="preserve">
-    <value>_API keys Configuration</value>
+    <value>_API-ключи Конфигурация</value>
   </data>
   <data name="APIKeysNotProvided" xml:space="preserve">
-    <value>API keys not provided</value>
+    <value>Ключи API не предоставлены</value>
   </data>
   <data name="AppWillClose" xml:space="preserve">
-    <value>The Application will close.</value>
+    <value>Приложение закроется.</value>
   </data>
   <data name="Arabic" xml:space="preserve">
-    <value>Arabic</value>
+    <value>арабский</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Auto (Movies &amp;amp; TV Shows)</value>
+    <value>Авто (фильмы и телешоу)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Отмена</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Change Language</value>
+    <value>Изменить язык</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
-    <value>_Change Poster Icon overlay</value>
+    <value>_Изменить наложение значка плаката</value>
   </data>
   <data name="CheckForUpdate" xml:space="preserve">
-    <value>Check for update</value>
+    <value>Проверить обновления</value>
   </data>
   <data name="ClosingApplication" xml:space="preserve">
-    <value>Closing Application</value>
+    <value>Закрытие приложения</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
-    <value>Confirm Explorer Restart</value>
+    <value>Подтвердите перезапуск проводника</value>
   </data>
   <data name="ConfirmIconDeletion" xml:space="preserve">
-    <value>Confirm Icon Deletion</value>
+    <value>Подтвердить удаление значка</value>
   </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
-    <value>Click "Confirm" to open folder.</value>
+    <value>Нажмите «Подтвердить», чтобы открыть папку.</value>
   </data>
   <data name="CreatingIcons" xml:space="preserve">
-    <value>Creating Icons...</value>
+    <value>Создание значков ...</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
-    <value>Delete Icons</value>
+    <value>Удалить значки</value>
   </data>
   <data name="DeleteIconsConfirmation" xml:space="preserve">
-    <value>Are you sure you want to delete all Icons?</value>
+    <value>Вы уверены, что хотите удалить все значки?</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
-    <value>This will delete existing icons from all subFolders.</value>
+    <value>Это удалит существующие значки из всех вложенных папок.</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
-    <value>Directory is Empty</value>
+    <value>Каталог пуст</value>
   </data>
   <data name="DownloadingIcons" xml:space="preserve">
-    <value>Downloading Icons</value>
+    <value>Скачивание иконок</value>
   </data>
   <data name="DownloadingIconWithCount" xml:space="preserve">
-    <value>Downloading Icon {0}/{1}...</value>
+    <value>Скачивание значка {0} / {1} ...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
-    <value>Download it</value>
+    <value>Скачать это</value>
   </data>
   <data name="EmptyDirectory" xml:space="preserve">
-    <value>Empty Directory</value>
+    <value>Пустой каталог</value>
   </data>
   <data name="English" xml:space="preserve">
-    <value>English</value>
+    <value>английский</value>
   </data>
   <data name="Folder" xml:space="preserve">
-    <value>Folder</value>
+    <value>Папка</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
-    <value>Folder does not exist!</value>
+    <value>Папка не существует!</value>
   </data>
   <data name="FolderError" xml:space="preserve">
-    <value>Folder Error</value>
+    <value>Ошибка папки</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
-    <value>Folders Processed:</value>
+    <value>Обработанные папки:</value>
   </data>
   <data name="Game" xml:space="preserve">
-    <value>Game</value>
+    <value>Игра</value>
   </data>
   <data name="HaveIcons" xml:space="preserve">
-    <value>you already have icons?</value>
+    <value>у вас уже есть иконки?</value>
   </data>
   <data name="HaveIconsTooltip" xml:space="preserve">
-    <value>Let you set your own icons(only png and ico allowed).</value>
+    <value>Позволяет вам устанавливать свои собственные значки (разрешены только png и ico).</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>Помощь</value>
   </data>
   <data name="HelpDocument" xml:space="preserve">
-    <value>Help Document</value>
+    <value>Справочный документ</value>
   </data>
   <data name="IconCreated" xml:space="preserve">
-    <value>Icon(s) Created</value>
+    <value>Иконки созданы</value>
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
-    <value>{0} Icon created</value>
+    <value>{0} Значок создан</value>
   </data>
   <data name="IconMode" xml:space="preserve">
-    <value>Icon Mode</value>
+    <value>Режим значков</value>
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
-    <value>Note:The Icon may take some time to reload.</value>
+    <value>Примечание. Для перезагрузки значка может потребоваться некоторое время.</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
-    <value>Folder already have Icons or is Empty!</value>
+    <value>В папке уже есть значки или она пуста!</value>
   </data>
   <data name="IconsCreated" xml:space="preserve">
-    <value>Icons Created :</value>
+    <value>Иконки созданы:</value>
   </data>
   <data name="Idle" xml:space="preserve">
-    <value>Idle</value>
+    <value>Праздный</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
-    <value>Ignore Ambiguous title</value>
+    <value>Игнорировать неоднозначное название</value>
   </data>
   <data name="InvalidPath" xml:space="preserve">
-    <value>Invalid Path</value>
+    <value>Неверный путь</value>
   </data>
   <data name="LangComment" xml:space="preserve">
     <value>s</value>
   </data>
   <data name="Load" xml:space="preserve">
-    <value>Load</value>
+    <value>Нагрузка</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
-    <value>Make Icons</value>
+    <value>Сделать значки</value>
   </data>
   <data name="Movie" xml:space="preserve">
-    <value>Movie</value>
+    <value>Фильм</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Network Error</value>
+    <value>Сетевая ошибка</value>
   </data>
   <data name="NoInternet" xml:space="preserve">
-    <value>Sorry, Internet is Not available.</value>
+    <value>Извините, Интернет недоступен.</value>
   </data>
   <data name="NoPoster" xml:space="preserve">
     <value>NoPoster</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
-    <value>No poster found.</value>
+    <value>Плакатов не найдено.</value>
   </data>
   <data name="NoResultFound" xml:space="preserve">
-    <value>No Result Found</value>
+    <value>Результатов не найдено</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>Nothing found for {0}\n Try Searching with Other Title\n or check Search Mode"</value>
+    <value>Ничего не найдено для {0} 
+Попробуйте выполнить поиск с другим заголовком
+или проверьте режим поиска</value>
   </data>
   <data name="OutOf" xml:space="preserve">
-    <value>out of</value>
+    <value>снаружи</value>
   </data>
   <data name="Poster" xml:space="preserve">
-    <value>Poster</value>
+    <value>Плакат</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
-    <value>Controls whether to use poster Overlay or Plain Posters.</value>
+    <value>Определяет, следует ли использовать наложение плаката или простые плакаты.</value>
   </data>
   <data name="Professional" xml:space="preserve">
-    <value>Professional</value>
+    <value>Профессиональный</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Rating</value>
+    <value>Рейтинг</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
-    <value>Restart Explorer</value>
+    <value>Перезапустите проводник</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>Are you sure you want to \nRestart Explorer and refresh Icon Cache?</value>
+    <value>Вы уверены, что хотите
+Перезапустить Explorer и обновить кэш значков?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
-    <value>This will close all Open folders and Restart Explorer.</value>
+    <value>Это закроет все открытые папки и перезапустит проводник.</value>
   </data>
   <data name="Russian" xml:space="preserve">
-    <value>Russian</value>
+    <value>русский</value>
   </data>
   <data name="Searching" xml:space="preserve">
-    <value>Searching...</value>
+    <value>Ищем ...</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
-    <value>Searching...{0}</value>
+    <value>Поиск ... {0}</value>
   </data>
   <data name="SearchMode" xml:space="preserve">
-    <value>Search Mode</value>
+    <value>Режим поиска</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
-    <value>Select Folder</value>
+    <value>Выберите папку</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Настройки</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>Показывать окно плаката, даже если найден точный заголовок. Это позволит вам выбрать для них другой плакат, а также пользовательский рейтинг
+ это отменяет опцию «Игнорировать неоднозначное название».</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
-    <value>Show Rating badge</value>
+    <value>Показать значок рейтинга</value>
   </data>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
-    <value>Controls whether to hide or show Rating Shield</value>
+    <value>Управляет отображением или скрытием рейтингового щита.</value>
   </data>
   <data name="Spanish" xml:space="preserve">
-    <value>Spanish</value>
+    <value>испанский язык</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Title</value>
+    <value>Заголовок</value>
   </data>
   <data name="ToForceReload" xml:space="preserve">
-    <value>To Force Reload, click on Restart Explorer.</value>
+    <value>Чтобы принудительно перезагрузить, нажмите «Перезапустить проводник».</value>
   </data>
   <data name="TV" xml:space="preserve">
-    <value>TV</value>
+    <value>Телевизор</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
-    <value>Use Poster overlay</value>
+    <value>Использовать наложение плаката</value>
   </data>
   <data name="Year" xml:space="preserve">
-    <value>Year</value>
+    <value>Год</value>
   </data>
 </root>

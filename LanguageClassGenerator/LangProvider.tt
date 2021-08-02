@@ -9,13 +9,7 @@
 	var resourceType = typeof(Lang);
     var propertyNameList = resourceType.GetProperties().Where(item => item.PropertyType == typeof(string)).Select(item => item.Name);
     var langDic = new Dictionary<string, string>();
-    foreach(var item in propertyNameList)
-    {
-        langDic[item] = 
-        @$"/// <summary>
-        ///   {string.Format(Lang.LangComment, Lang.ResourceManager.GetString(item, Lang.Culture))}
-        /// </summary>";
-    }
+   
 #>
 using System.ComponentModel;
 using System.Globalization;
@@ -47,12 +41,14 @@ namespace HandyControlDemo.Properties.Langs
 
         public static string GetLang(string key) => Lang.ResourceManager.GetString(key, Culture);
 
-        public static void SetLang(DependencyObject dependencyObject, DependencyProperty dependencyProperty, string key) =>
+        public static void SetLang(DependencyObject dependencyObject, DependencyProperty dependencyProperty, string key)
+        {
             BindingOperations.SetBinding(dependencyObject, dependencyProperty, new Binding(key)
             {
                 Source = Instance,
                 Mode = BindingMode.OneWay
             });
+        }
 
 		private void UpdateLangs()
         {
@@ -62,7 +58,6 @@ namespace HandyControlDemo.Properties.Langs
         }
 
 <#foreach(var item in propertyNameList){#>
-        <#=langDic[item]#>
 		public string <#=item#> => Lang.<#=item#>;
 
 <#}#>
@@ -76,7 +71,6 @@ namespace HandyControlDemo.Properties.Langs
     public class LangKeys
     {
 <#foreach(var item in propertyNameList){#>
-        <#=langDic[item]#>
 		public static string <#=item#> = nameof(<#=item#>);
 
 <#}#>

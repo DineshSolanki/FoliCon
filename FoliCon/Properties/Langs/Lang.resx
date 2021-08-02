@@ -129,11 +129,23 @@
   <data name="APIKeysConfiguration" xml:space="preserve">
     <value>_API keys Configuration</value>
   </data>
+  <data name="APIKeysNotProvided" xml:space="preserve">
+    <value>API keys not provided</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>The Application will close.</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto (Movies &amp;amp; TV Shows)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Change Language</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
     <value>_Change Poster Icon overlay</value>
@@ -141,17 +153,59 @@
   <data name="CheckForUpdate" xml:space="preserve">
     <value>Check for update</value>
   </data>
+  <data name="ClosingApplication" xml:space="preserve">
+    <value>Closing Application</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConfirmExplorerRestart" xml:space="preserve">
+    <value>Confirm Explorer Restart</value>
+  </data>
+  <data name="ConfirmIconDeletion" xml:space="preserve">
+    <value>Confirm Icon Deletion</value>
+  </data>
+  <data name="ConfirmToOpenFolder" xml:space="preserve">
+    <value>Click "Confirm" to open folder.</value>
+  </data>
+  <data name="CreatingIcons" xml:space="preserve">
+    <value>Creating Icons...</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>Delete Icons</value>
+  </data>
+  <data name="DeleteIconsConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete all Icons?</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
     <value>This will delete existing icons from all subFolders.</value>
   </data>
+  <data name="DirectoryIsEmpty" xml:space="preserve">
+    <value>Directory is Empty</value>
+  </data>
   <data name="DownloadingIcons" xml:space="preserve">
     <value>Downloading Icons</value>
   </data>
+  <data name="DownloadingIconWithCount" xml:space="preserve">
+    <value>Downloading Icon {0}/{1}...</value>
+  </data>
+  <data name="DownloadIt" xml:space="preserve">
+    <value>Download it</value>
+  </data>
+  <data name="EmptyDirectory" xml:space="preserve">
+    <value>Empty Directory</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
   <data name="Folder" xml:space="preserve">
     <value>Folder</value>
+  </data>
+  <data name="FolderDoesNotExist" xml:space="preserve">
+    <value>Folder does not exist!</value>
+  </data>
+  <data name="FolderError" xml:space="preserve">
+    <value>Folder Error</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
     <value>Folders Processed:</value>
@@ -165,21 +219,41 @@
   <data name="HaveIconsTooltip" xml:space="preserve">
     <value>Let you set your own icons(only png and ico allowed).</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="HelpDocument" xml:space="preserve">
     <value>Help Document</value>
+  </data>
+  <data name="IconCreated" xml:space="preserve">
+    <value>Icon(s) Created</value>
+  </data>
+  <data name="IconCreatedWithCount" xml:space="preserve">
+    <value>{0} Icon created</value>
   </data>
   <data name="IconMode" xml:space="preserve">
     <value>Icon Mode</value>
   </data>
+  <data name="IconReloadMayTakeTime" xml:space="preserve">
+    <value>Note:The Icon may take some time to reload.</value>
+  </data>
+  <data name="IconsAlready" xml:space="preserve">
+    <value>Folder already have Icons or is Empty!</value>
+  </data>
   <data name="IconsCreated" xml:space="preserve">
     <value>Icons Created :</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>Idle</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
     <value>Ignore Ambiguous title</value>
   </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Invalid Path</value>
+  </data>
   <data name="LangComment" xml:space="preserve">
     <value>s</value>
-    <comment>hgh</comment>
   </data>
   <data name="Load" xml:space="preserve">
     <value>Load</value>
@@ -189,6 +263,29 @@
   </data>
   <data name="Movie" xml:space="preserve">
     <value>Movie</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>Network Error</value>
+  </data>
+  <data name="NoInternet" xml:space="preserve">
+    <value>Sorry, Internet is Not available.</value>
+  </data>
+  <data name="NoPoster" xml:space="preserve">
+    <value>NoPoster</value>
+  </data>
+  <data name="NoPosterFound" xml:space="preserve">
+    <value>No poster found.</value>
+  </data>
+  <data name="NoResultFound" xml:space="preserve">
+    <value>No Result Found</value>
+  </data>
+  <data name="NothingFoundFor" xml:space="preserve">
+    <value>Nothing found for {0}
+Try Searching with Other Title
+ or check Search Mode</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="OutOf" xml:space="preserve">
     <value>out of</value>
@@ -208,23 +305,48 @@
   <data name="RestartExplorer" xml:space="preserve">
     <value>Restart Explorer</value>
   </data>
+  <data name="RestartExplorerConfirmation" xml:space="preserve">
+    <value>Are you sure you want to Restart Explorer 
+and refresh Icon Cache?</value>
+  </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
     <value>This will close all Open folders and Restart Explorer.</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>Russian</value>
+  </data>
+  <data name="Searching" xml:space="preserve">
+    <value>Searching...</value>
+  </data>
+  <data name="SearchingWithCount" xml:space="preserve">
+    <value>Searching...{0}</value>
   </data>
   <data name="SearchMode" xml:space="preserve">
     <value>Search Mode</value>
   </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Select Folder</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also&amp;#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides 'Ignore Ambiguous title' option.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Show Rating badge</value>
   </data>
-  <data name="ShowRatingBadgeTootip" xml:space="preserve">
+  <data name="ShowRatingBadgeTooltip" xml:space="preserve">
     <value>Controls whether to hide or show Rating Shield</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Spanish</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Title</value>
+  </data>
+  <data name="ToForceReload" xml:space="preserve">
+    <value>To Force Reload, click on Restart Explorer.</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>TV</value>

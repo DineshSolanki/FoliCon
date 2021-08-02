@@ -11,9 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Net.NetworkInformation;
+using HandyControl.Tools.Extension;
 
 namespace FoliCon.ViewModels
 {
@@ -37,9 +37,9 @@ namespace FoliCon.ViewModels
         private IgdbClass _igdbObject;
         private Tmdb _tmdbObject;
         private DArt _dArtObject;
-        private bool isPosterWindowShown;
+        private bool _isPosterWindowShown;
 
-        AppConfig settings = GlobalDataHelper.Load<AppConfig>();
+        AppConfig _settings = GlobalDataHelper.Load<AppConfig>();
         private string _tmdbapiKey;
         private string _igdbClientId;
         private string _igdbClientSecret;
@@ -51,14 +51,14 @@ namespace FoliCon.ViewModels
         private bool IsObjectsInitialized { get; set; }
         public bool IsPosterWindowShown
         {
-            get => isPosterWindowShown; set
+            get => _isPosterWindowShown; set
             {
                 IsSkipAmbiguousEnabled = !value;
-                SetProperty(ref isPosterWindowShown, value);
+                SetProperty(ref _isPosterWindowShown, value);
             }
         }
-        private bool isSkipAmbiguousEnabled;
-        public bool IsSkipAmbiguousEnabled { get => isSkipAmbiguousEnabled; set => SetProperty(ref isSkipAmbiguousEnabled, value); }
+        private bool _isSkipAmbiguousEnabled;
+        public bool IsSkipAmbiguousEnabled { get => _isSkipAmbiguousEnabled; set => SetProperty(ref _isSkipAmbiguousEnabled, value); }
 
         public bool IsSearchModeVisible
         {
@@ -160,8 +160,8 @@ namespace FoliCon.ViewModels
 
         public DelegateCommand RestartExCommand { get; } = new(delegate
         {
-            if (MessageBox.Ask("Are you sure you want to \nRestart Explorer and refresh Icon Cache?",
-                "Confirm Explorer Restart") != System.Windows.MessageBoxResult.OK) return;
+            if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
+                LangProvider.GetLang("ConfirmExplorerRestart"))) != System.Windows.MessageBoxResult.Yes) return;
             Util.RefreshIconCache();
             Util.RestartExplorer();
         });
@@ -212,7 +212,7 @@ namespace FoliCon.ViewModels
 
         private void LoadMethod()
         {
-            var folderBrowserDialog = Util.NewFolderBrowserDialog("Select Folder");
+            var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult != null && (bool)!dialogResult) return;
             SelectedFolder = folderBrowserDialog.SelectedPath;
@@ -228,7 +228,7 @@ namespace FoliCon.ViewModels
             }
             else
             {
-                MessageBox.Error("Folder does not exist!", "Invalid Path");
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"), LangProvider.GetLang("InvalidPath")));
                 return;
             }
 
@@ -254,7 +254,7 @@ namespace FoliCon.ViewModels
                     }
                     StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
                         StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
-                    BusyIndicatorProperties.Text = $"Downloading Icon 1/{_imgDownloadList.Count}...";
+                    BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
                     if (_imgDownloadList.Count > 0)
                         await StartDownloadingAsync();
                     else
@@ -262,13 +262,12 @@ namespace FoliCon.ViewModels
                 }
                 else
                 {
-                    MessageBox.Error("Sorry, Internet is Not available.", "Network Error");
+                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"), LangProvider.GetLang("NetworkError")));
                 }
             }
             else
             {
-                MessageBox.Warning("Folder already have Icons or is Empty!", "Folder Error");
-                //TODO: Handy Exception here
+                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"), LangProvider.GetLang("FolderError")));
             }
         }
 
@@ -280,7 +279,7 @@ namespace FoliCon.ViewModels
             {
                 var fullFolderPath = SelectedFolder + "\\" + itemTitle;
                 var dialogResult = false;
-                StatusBarProperties.AppStatus = $"Searching...{itemTitle}";
+                StatusBarProperties.AppStatus = LangProvider.GetLang("SearchingWithCount").Format(itemTitle);
                 // TODO: Set cursor to WAIT.
                 var isAutoPicked = false;
                 var searchTitle = TitleCleaner.Clean(itemTitle);
@@ -291,8 +290,8 @@ namespace FoliCon.ViewModels
                 switch (resultCount)
                 {
                     case 0:
-                        MessageBox.Info($"Nothing found for {itemTitle}\n Try Searching with Other Title\n" +
-                                        " or check Search Mode", "No Result Found");
+                        MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
+                            LangProvider.GetLang("NoResultFound")));
                         _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response,
                             _tmdbObject, _igdbObject,
                             r =>
@@ -324,9 +323,9 @@ namespace FoliCon.ViewModels
                             }
                             catch (Exception ex)
                             {
-                                if (ex.Message == "NoPoster")
+                                if (ex.Message == LangProvider.GetLang("NoPoster"))
                                 {
-                                    MessageBox.Warning("No poster found.", itemTitle);
+                                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
                                 }
 
                                 isAutoPicked = false;
@@ -383,11 +382,9 @@ namespace FoliCon.ViewModels
 
         private void ProcessProfessionalMode()
         {
-            StatusBarProperties.AppStatus = "Searching...";
-            //DialogParameters p=CreateProSearchParameters();
+            StatusBarProperties.AppStatus = "Searching";
             _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
-            //_dialogService.ShowDialog("ProSearchResult", p, r => { });
             if (_pickedListDataTable.Rows.Count <= 0) return;
             foreach (DataRow v in _pickedListDataTable.Rows)
             {
@@ -444,13 +441,13 @@ namespace FoliCon.ViewModels
             {
                 Max = 100,
                 Value = 0,
-                Text = "Download it"
+                Text = LangProvider.GetLang("DownloadIt")
             };
             StatusBarProperties = new StatusBarData
             {
                 NetIcon = Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
                 TotalIcons = 0,
-                AppStatus = "IDLE"
+                AppStatus = "Idle"
             };
             FinalListViewData = new ListViewData
             {
@@ -500,15 +497,16 @@ namespace FoliCon.ViewModels
             if (Directory.Exists(SelectedFolder))
             {
                 //TODO: Replace with DialogService if efficient.
-                if (MessageBox.Ask("Are you sure you want to delete all Icons?", "Confirm Icon Deletion") ==
-                    System.Windows.MessageBoxResult.OK)
+                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
+                        LangProvider.GetLang("ConfirmIconDeletion"))) == System.Windows.MessageBoxResult.Yes)
                 {
                     Util.DeleteIconsFromSubfolders(SelectedFolder);
                 }
             }
             else
             {
-                MessageBox.Error("Directory is Empty", "Empty Directory");
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
+                    LangProvider.GetLang("Empty Directory")));
             }
         }
 
@@ -524,9 +522,9 @@ namespace FoliCon.ViewModels
         private async System.Threading.Tasks.Task StartDownloadingAsync()
         {
             IsMakeEnabled = false;
-            StatusBarProperties.AppStatus = "Creating Icons...";
+            StatusBarProperties.AppStatus = LangProvider.GetLang("Creating Icons");
             await DownloadAndMakeIconsAsync();
-            StatusBarProperties.AppStatus = "IDLE";
+            StatusBarProperties.AppStatus = "Idle";
         }
 
         private async System.Threading.Tasks.Task DownloadAndMakeIconsAsync()
@@ -546,7 +544,8 @@ namespace FoliCon.ViewModels
 
                 await Util.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
                 i += 1;
-                BusyIndicatorProperties.Text = "Downloading Icon " + i + "/" + BusyIndicatorProperties.Max + "...";
+                BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount")
+                    .Format(i, BusyIndicatorProperties.Max);
                 BusyIndicatorProperties.Value = i;
                 StatusBarProperties.ProgressBarData.Value = i;
             }
@@ -564,29 +563,20 @@ namespace FoliCon.ViewModels
         private void MakeIcons()
         {
             IsBusy = true;
-            int iconProcessedCount;
-            if (IconMode == "Poster" && SearchMode != "Game")
-            {
-                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable,
-                    IsRatingVisible, IsPosterMockupUsed);
-            }
-            else
-            {
-                iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
-            }
-
+            var iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
             StatusBarProperties.ProcessedIcon = iconProcessedCount;
             IsBusy = false;
             var info = new GrowlInfo
             {
-                Message = $"{iconProcessedCount} Icon created",
+                Message = LangProvider.GetLang("IconCreatedWithCount").Format(iconProcessedCount),
                 ShowDateTime = false,
-                StaysOpen = false
+                StaysOpen = false,
+                ConfirmStr = LangProvider.GetLang("Confirm")
             };
             Growl.SuccessGlobal(info);
-            switch (MessageBox.Ask("Note:The Icon may take some time to reload. " + Environment.NewLine +
-                                   " To Force Reload, click on Restart Explorer " + Environment.NewLine +
-                                   @"Click ""Confirm"" to open folder.", "Icon(s) Created"))
+            switch (MessageBox.Show(
+                CustomMessageBox.Ask($"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
+                    LangProvider.GetLang("IconCreated"))))
             {
                 case System.Windows.MessageBoxResult.OK:
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
@@ -605,8 +595,9 @@ namespace FoliCon.ViewModels
                 _dialogService.ShowApiConfig(r =>
                 {
                     if (r.Result != ButtonResult.Cancel) return;
-                    MessageBox.Error($"API keys not provided{Environment.NewLine}" +
-                                     "The Application will close.", "Closing Application");
+                    MessageBox.Show(CustomMessageBox.Error($"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}" +
+                                     LangProvider.GetLang("AppWillClose"),
+                        LangProvider.GetLang("ClosingApplication")));
                     Environment.Exit(0);
                 });
             }

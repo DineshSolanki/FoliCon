@@ -5,3 +5,6 @@ csharp_prefer_braces = when_multiline
 
 # IDE0008: Use explicit type
 dotnet_diagnostic.IDE0008.severity = none
+
+# IDE0011: Add braces
+dotnet_diagnostic.IDE0011.severity = suggestion

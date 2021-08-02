@@ -12,6 +12,5 @@
             </ResourceDictionary.MergedDictionaries>
             <langs:LangProvider x:Key="DemoLangs"/>
         </ResourceDictionary>
-        
     </Application.Resources>
 </prism:PrismApplication>
