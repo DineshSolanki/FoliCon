@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
              xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:models="clr-namespace:FoliCon.Models"
@@ -43,10 +45,10 @@
                     <RowDefinition Height="35" />
                     <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
-                <Button Content="Pick Selected" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonPrimary}"
+                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.PickSelected}}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonPrimary}"
                         Command="{Binding PickCommand}" IsDefault="True"/>
-                <Button Content="Skip" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
-                        Command="{Binding SkipCommand}" IsCancel="True" ToolTip="Skip this title." />
+                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
+                        Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true">
                     <hc:Interaction.Triggers>
@@ -65,19 +67,19 @@
                                         <TextBlock Text="{Binding Title}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
-                                <GridViewColumnHeader Tag="Title" Content="Title" />
+                                <GridViewColumnHeader Tag="Title" Content="{ex:Lang Key={x:Static langs:LangKeys.Title}}" />
                             </GridViewColumn>
-                            <GridViewColumn Header="Year" Width="60" DisplayMemberBinding="{Binding Year}" />
-                            <GridViewColumn Header="Rating" Width="60" DisplayMemberBinding="{Binding Rating}" />
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}" />
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Label Content="~OR~" Grid.Row="2" />
+                <Label Content="{ex:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Row="2" />
                 <hc:SearchBar modules:FocusExtension.IsFocused="{Binding IsSearchFocused}" x:Name="SearchBar"
                               Grid.Row="3"
                               Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                               Style="{StaticResource SearchBarPlus}"
-                              hc:InfoElement.Placeholder="Please Enter Title here to search again"
+                              hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
                               ShowClearButton="True" VerticalAlignment="Bottom" IsRealTime="True">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SearchStarted">
@@ -97,14 +99,14 @@
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="ALL"
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="Skip this and all remaining titles." />
+                <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{ex:Lang Key={x:Static langs:LangKeys.All}}"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisPlaceholder}}" />
                 <hc:PreviewSlider x:Name="SizeSlider" Grid.Row="0" Grid.Column="1" Minimum="12" Maximum="25" Value="15"
                                   VerticalAlignment="Center" Height="18" />
                 <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
                        Width="158" RenderOptions.BitmapScalingMode="HighQuality" />
                 <Image Grid.Row="1" Grid.Column="0"
-                       Source="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}" 
+                       Source="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" 
                        RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Height="198" Width="158"
                        Margin="0,0,0,2">
                     <Image.InputBindings>
@@ -114,8 +116,8 @@
                         <DropShadowEffect />
                     </Image.Effect>
                 </Image>
-                <Button Content="Show more..." Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="See more posters/covers."/>
-                <hc:MaskedTextBox Mask="0.0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="Custom rating: " Margin="5" Text="{Binding Path=CustomRating}" ToolTip="This lets you set your own rating instead of one fetched by FoliCon."/>
+                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.ShowMore}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"/>
+                <hc:MaskedTextBox Mask="0.0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/>
                 <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"

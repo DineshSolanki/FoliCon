@@ -8,6 +8,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Input;
+using FoliCon.Properties.Langs;
+using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 
 namespace FoliCon.ViewModels
 {
@@ -15,7 +18,7 @@ namespace FoliCon.ViewModels
     {
         #region Variables
 
-        private string _title = "Search Result";
+        private string _title = LangProvider.GetLang("SearchResult");
         private string _searchTitle;
         private string _busyContent;
         private bool _isBusy;
@@ -42,8 +45,6 @@ namespace FoliCon.ViewModels
         public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
         public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
         public string CustomRating { get => customRating; set => SetProperty(ref customRating, value); }
-        //public string LoadingPoster { get; private set; } = @"\Resources\LoadingPosterImage.png";
-        //public string NoPoster { get; private set; } = @"\Resources\NoPosterAvailable.png";
         public ListViewData ResultListViewData { get => _resultListViewData; set => SetProperty(ref _resultListViewData, value); }
 
         public string SearchAgainTitle { get => _searchAgainTitle; set => SetProperty(ref _searchAgainTitle, value); }
@@ -125,17 +126,10 @@ namespace FoliCon.ViewModels
             }
 
             var titleToSearch = SearchAgainTitle ?? SearchTitle;
-            BusyContent = "Searching for " + titleToSearch + "...";
-            ResultResponse result;
-            if (SearchMode == MediaTypes.Game)
-            {
-
-                result = await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "));
-            }
-            else
-            {
-                result = await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
-            }
+            BusyContent = LangProvider.GetLang("SearchingWithName").Format(titleToSearch);
+            var result = SearchMode == MediaTypes.Game
+                ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
+                : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
             SearchResult = result;
             if (useBusy)
             {
@@ -173,8 +167,8 @@ namespace FoliCon.ViewModels
         {
             if (ResultListViewData.SelectedItem == null) return;
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
-            string rating="";
-            if (CustomRating is not null && customRating!= "_._")    
+            var rating="";
+            if (CustomRating is not null && customRating != "_._")
             {
                 rating = CustomRating.Replace('_', '0');
             }
@@ -193,10 +187,7 @@ namespace FoliCon.ViewModels
             {
                 if (ex.Message == "NoPoster")
                 {
-                    var p = new DialogParameters {
-                        {"title","No Poster" }, {"message", "No poster found."}
-                    };
-                    _dialogService.ShowDialog("MessageBox", p, _ => { });
+                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
                 }
             }
             CloseDialog("true");
@@ -221,10 +212,7 @@ namespace FoliCon.ViewModels
             {
                 if (ex.Message == "NoPoster")
                 {
-                    var p = new DialogParameters {
-                        {"title","No Poster" }, {"message", "No poster found."}
-                    };
-                    _dialogService.ShowDialog("MessageBox", p, _ => { });
+                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
                 }
             }
         }

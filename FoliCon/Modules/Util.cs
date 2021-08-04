@@ -37,7 +37,7 @@ namespace FoliCon.Modules
 {
     internal static class Util
     {
-        public static async void CheckForUpdate()
+        public static async void CheckForUpdate(bool onlyShowIfUpdateAvailable = false)
         {
             if (ApplicationHelper.IsConnectedToInternet())
             {
@@ -62,6 +62,7 @@ namespace FoliCon.Modules
                 }
                 else
                 {
+                    if (onlyShowIfUpdateAvailable is not false) return;
                     var info = new GrowlInfo
                     {
                         Message = LangProvider.GetLang("ThisIsLatestVersion"),

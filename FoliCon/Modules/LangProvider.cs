@@ -38,6 +38,7 @@ namespace FoliCon.Properties.Langs
         private void UpdateLangs()
         {
             OnPropertyChanged(nameof(About));
+            OnPropertyChanged(nameof(All));
             OnPropertyChanged(nameof(AlwaysShowPosterWindow));
             OnPropertyChanged(nameof(AmbiguousTitleTooltip));
             OnPropertyChanged(nameof(APIKeysConfiguration));
@@ -55,6 +56,8 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(ConfirmIconDeletion));
             OnPropertyChanged(nameof(ConfirmToOpenFolder));
             OnPropertyChanged(nameof(CreatingIcons));
+            OnPropertyChanged(nameof(CustomRating));
+            OnPropertyChanged(nameof(CustomRatingTooltip));
             OnPropertyChanged(nameof(DeleteIcons));
             OnPropertyChanged(nameof(DeleteIconsConfirmation));
             OnPropertyChanged(nameof(DeleteIconsTooltip));
@@ -84,7 +87,6 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(Ignore));
             OnPropertyChanged(nameof(IgnoreAmbiguousTitle));
             OnPropertyChanged(nameof(InvalidPath));
-            OnPropertyChanged(nameof(LangComment));
             OnPropertyChanged(nameof(Load));
             OnPropertyChanged(nameof(MakeIcons));
             OnPropertyChanged(nameof(Movie));
@@ -101,6 +103,7 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(Or));
             OnPropertyChanged(nameof(OutOf));
             OnPropertyChanged(nameof(PickIconWithName));
+            OnPropertyChanged(nameof(PickSelected));
             OnPropertyChanged(nameof(Poster));
             OnPropertyChanged(nameof(PosterOverlayTooltip));
             OnPropertyChanged(nameof(Professional));
@@ -114,12 +117,15 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(SearchingWithName));
             OnPropertyChanged(nameof(SearchMode));
             OnPropertyChanged(nameof(SearchResult));
+            OnPropertyChanged(nameof(SeeMorePosters));
             OnPropertyChanged(nameof(SelectFolder));
             OnPropertyChanged(nameof(Settings));
+            OnPropertyChanged(nameof(ShowMore));
             OnPropertyChanged(nameof(ShowPosterWindowTooltip));
             OnPropertyChanged(nameof(ShowRatingBadge));
             OnPropertyChanged(nameof(ShowRatingBadgeTooltip));
             OnPropertyChanged(nameof(Skip));
+            OnPropertyChanged(nameof(SkipThisPlaceholder));
             OnPropertyChanged(nameof(Spanish));
             OnPropertyChanged(nameof(StopSearching));
             OnPropertyChanged(nameof(ThisIsLatestVersion));
@@ -129,9 +135,13 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(UpdateNow));
             OnPropertyChanged(nameof(UsePosterOverlay));
             OnPropertyChanged(nameof(Year));
+            OnPropertyChanged(nameof(SkipThisTitle));
+            OnPropertyChanged(nameof(LoadingPosters));
         }
 
         public string About => Lang.About;
+
+        public string All => Lang.All;
 
         public string AlwaysShowPosterWindow => Lang.AlwaysShowPosterWindow;
 
@@ -166,6 +176,10 @@ namespace FoliCon.Properties.Langs
         public string ConfirmToOpenFolder => Lang.ConfirmToOpenFolder;
 
         public string CreatingIcons => Lang.CreatingIcons;
+
+        public string CustomRating => Lang.CustomRating;
+
+        public string CustomRatingTooltip => Lang.CustomRatingTooltip;
 
         public string DeleteIcons => Lang.DeleteIcons;
 
@@ -225,8 +239,6 @@ namespace FoliCon.Properties.Langs
 
         public string InvalidPath => Lang.InvalidPath;
 
-        public string LangComment => Lang.LangComment;
-
         public string Load => Lang.Load;
 
         public string MakeIcons => Lang.MakeIcons;
@@ -259,6 +271,8 @@ namespace FoliCon.Properties.Langs
 
         public string PickIconWithName => Lang.PickIconWithName;
 
+        public string PickSelected => Lang.PickSelected;
+
         public string Poster => Lang.Poster;
 
         public string PosterOverlayTooltip => Lang.PosterOverlayTooltip;
@@ -285,9 +299,13 @@ namespace FoliCon.Properties.Langs
 
         public string SearchResult => Lang.SearchResult;
 
+        public string SeeMorePosters => Lang.SeeMorePosters;
+
         public string SelectFolder => Lang.SelectFolder;
 
         public string Settings => Lang.Settings;
+
+        public string ShowMore => Lang.ShowMore;
 
         public string ShowPosterWindowTooltip => Lang.ShowPosterWindowTooltip;
 
@@ -296,6 +314,8 @@ namespace FoliCon.Properties.Langs
         public string ShowRatingBadgeTooltip => Lang.ShowRatingBadgeTooltip;
 
         public string Skip => Lang.Skip;
+
+        public string SkipThisPlaceholder => Lang.SkipThisPlaceholder;
 
         public string Spanish => Lang.Spanish;
 
@@ -314,6 +334,8 @@ namespace FoliCon.Properties.Langs
         public string UsePosterOverlay => Lang.UsePosterOverlay;
 
         public string Year => Lang.Year;
+        public string SkipThisTitle => Lang.SkipThisTitle;
+        public string LoadingPosters => Lang.LoadingPosters;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -325,6 +347,8 @@ namespace FoliCon.Properties.Langs
     public class LangKeys
     {
         public static string About = nameof(About);
+
+        public static string All = nameof(All);
 
         public static string AlwaysShowPosterWindow = nameof(AlwaysShowPosterWindow);
 
@@ -359,6 +383,10 @@ namespace FoliCon.Properties.Langs
         public static string ConfirmToOpenFolder = nameof(ConfirmToOpenFolder);
 
         public static string CreatingIcons = nameof(CreatingIcons);
+
+        public static string CustomRating = nameof(CustomRating);
+
+        public static string CustomRatingTooltip = nameof(CustomRatingTooltip);
 
         public static string DeleteIcons = nameof(DeleteIcons);
 
@@ -418,8 +446,6 @@ namespace FoliCon.Properties.Langs
 
         public static string InvalidPath = nameof(InvalidPath);
 
-        public static string LangComment = nameof(LangComment);
-
         public static string Load = nameof(Load);
 
         public static string MakeIcons = nameof(MakeIcons);
@@ -452,6 +478,8 @@ namespace FoliCon.Properties.Langs
 
         public static string PickIconWithName = nameof(PickIconWithName);
 
+        public static string PickSelected = nameof(PickSelected);
+
         public static string Poster = nameof(Poster);
 
         public static string PosterOverlayTooltip = nameof(PosterOverlayTooltip);
@@ -478,9 +506,13 @@ namespace FoliCon.Properties.Langs
 
         public static string SearchResult = nameof(SearchResult);
 
+        public static string SeeMorePosters = nameof(SeeMorePosters);
+
         public static string SelectFolder = nameof(SelectFolder);
 
         public static string Settings = nameof(Settings);
+
+        public static string ShowMore = nameof(ShowMore);
 
         public static string ShowPosterWindowTooltip = nameof(ShowPosterWindowTooltip);
 
@@ -489,6 +521,8 @@ namespace FoliCon.Properties.Langs
         public static string ShowRatingBadgeTooltip = nameof(ShowRatingBadgeTooltip);
 
         public static string Skip = nameof(Skip);
+
+        public static string SkipThisPlaceholder = nameof(SkipThisPlaceholder);
 
         public static string Spanish = nameof(Spanish);
 
@@ -507,6 +541,9 @@ namespace FoliCon.Properties.Langs
         public static string UsePosterOverlay = nameof(UsePosterOverlay);
 
         public static string Year = nameof(Year);
+        public static string SkipThisTitle = nameof(SkipThisTitle);
+
+        public static string LoadingPosters = nameof(LoadingPosters);
 
     }
 }

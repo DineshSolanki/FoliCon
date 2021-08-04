@@ -255,9 +255,6 @@
   <data name="InvalidPath" xml:space="preserve">
     <value>अवैध मार्ग</value>
   </data>
-  <data name="LangComment" xml:space="preserve">
-    <value>एस</value>
-  </data>
   <data name="Load" xml:space="preserve">
     <value>भार</value>
   </data>
@@ -370,5 +367,59 @@
   </data>
   <data name="Year" xml:space="preserve">
     <value>वर्ष</value>
+  </data>
+  <data name="All" xml:space="preserve">
+	  <value>सभी</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+	  <value>कस्टम रेटिंग:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+	  <value>यह आपको FoliCon द्वारा प्राप्त की गई रेटिंग के बजाय अपनी स्वयं की रेटिंग सेट करने देता है।</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+	  <value>कृपया फिर से खोजने के लिए यहां शीर्षक दर्ज करें।</value>
+  </data>
+  <data name="NoResult" xml:space="preserve">
+	  <value>कोई परिणाम नही</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+	  <value>कोई परिणाम नहीं मिला, सही शीर्षक के साथ फिर से खोजने का प्रयास करें।</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+	  <value>~ या ~</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+	  <value>{0} के लिए आइकन चुनें</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+	  <value>चयनित चुनें</value>
+  </data>
+  <data name="SearchingWithName" xml:space="preserve">
+	  <value>{0} की खोज की जा रही है...</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+	  <value>परिणाम खोजें</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+	  <value>अधिक पोस्टर/कवर देखें।</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+	  <value>और दिखाओ...</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+	  <value>छोड़ें</value>
+  </data>
+  <data name="SkipThisPlaceholder" xml:space="preserve">
+	  <value>इसे और शेष सभी शीर्षकों को छोड़ दें।</value>
+  </data>
+  <data name="SkipThisTitle" xml:space="preserve">
+	  <value>इस शीर्षक को छोड़ दें।</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+	  <value>खोजना बंद करो</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+	  <value>पोस्टर लोड हो रहे हैं...</value>
   </data>
 </root>

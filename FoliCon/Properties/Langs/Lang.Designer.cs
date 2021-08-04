@@ -70,6 +70,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Always show poster window.
         /// </summary>
         public static string AlwaysShowPosterWindow {
@@ -219,6 +228,24 @@ namespace FoliCon.Properties.Langs {
         public static string CreatingIcons {
             get {
                 return ResourceManager.GetString("CreatingIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom rating: .
+        /// </summary>
+        public static string CustomRating {
+            get {
+                return ResourceManager.GetString("CustomRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This lets you set your own rating instead of one fetched by FoliCon..
+        /// </summary>
+        public static string CustomRatingTooltip {
+            get {
+                return ResourceManager.GetString("CustomRatingTooltip", resourceCulture);
             }
         }
         
@@ -484,20 +511,20 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to s.
-        /// </summary>
-        public static string LangComment {
-            get {
-                return ResourceManager.GetString("LangComment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Load.
         /// </summary>
         public static string Load {
             get {
                 return ResourceManager.GetString("Load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading posters....
+        /// </summary>
+        public static string LoadingPosters {
+            get {
+                return ResourceManager.GetString("LoadingPosters", resourceCulture);
             }
         }
         
@@ -640,6 +667,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick Selected.
+        /// </summary>
+        public static string PickSelected {
+            get {
+                return ResourceManager.GetString("PickSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Poster.
         /// </summary>
         public static string Poster {
@@ -758,6 +794,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to See more posters/covers..
+        /// </summary>
+        public static string SeeMorePosters {
+            get {
+                return ResourceManager.GetString("SeeMorePosters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select Folder.
         /// </summary>
         public static string SelectFolder {
@@ -772,6 +817,15 @@ namespace FoliCon.Properties.Langs {
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show more....
+        /// </summary>
+        public static string ShowMore {
+            get {
+                return ResourceManager.GetString("ShowMore", resourceCulture);
             }
         }
         
@@ -808,6 +862,24 @@ namespace FoliCon.Properties.Langs {
         public static string Skip {
             get {
                 return ResourceManager.GetString("Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip this and all remaining titles..
+        /// </summary>
+        public static string SkipThisPlaceholder {
+            get {
+                return ResourceManager.GetString("SkipThisPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip this title..
+        /// </summary>
+        public static string SkipThisTitle {
+            get {
+                return ResourceManager.GetString("SkipThisTitle", resourceCulture);
             }
         }
         

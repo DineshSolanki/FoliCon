@@ -255,9 +255,6 @@
   <data name="InvalidPath" xml:space="preserve">
     <value>مسار غير صالح</value>
   </data>
-  <data name="LangComment" xml:space="preserve">
-    <value>س</value>
-  </data>
   <data name="Load" xml:space="preserve">
     <value>حمل</value>
   </data>
@@ -370,5 +367,59 @@
   </data>
   <data name="Year" xml:space="preserve">
     <value>عام</value>
+  </data>
+  <data name="All" xml:space="preserve">
+	  <value>الجميع</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+	  <value>التصنيف المخصص:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+	  <value>يتيح لك هذا تعيين التقييم الخاص بك بدلاً من التقييم الذي يجلبه FoliCon.</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+	  <value>الرجاء إدخال العنوان هنا للبحث مرة أخرى.</value>
+  </data>
+  <data name="NoResult" xml:space="preserve">
+	  <value>لا نتيجة</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+	  <value>لم يتم العثور على نتيجة ، حاول البحث مرة أخرى بالعنوان الصحيح.</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+	  <value>~ أو ~</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+	  <value>اختر رمزًا لـ {0}</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+	  <value>اختر المحدد</value>
+  </data>
+  <data name="SearchingWithName" xml:space="preserve">
+	  <value>البحث عن {0} ...</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+	  <value>نتيجة البحث</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+	  <value>شاهد المزيد من الملصقات / الأغلفة.</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+	  <value>أظهر المزيد...</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+	  <value>تخطى</value>
+  </data>
+  <data name="SkipThisPlaceholder" xml:space="preserve">
+	  <value>تخطي هذا وجميع العناوين المتبقية.</value>
+  </data>
+  <data name="SkipThisTitle" xml:space="preserve">
+	  <value>تخطي هذا العنوان.</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+	  <value>توقف عن البحث</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+	  <value>جارٍ تحميل الملصقات ...</value>
   </data>
 </root>

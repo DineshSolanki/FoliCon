@@ -5,7 +5,10 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
+             mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:PosterPickerViewModel }">
     <prism:Dialog.WindowStyle>
@@ -27,7 +30,7 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="Stop Searching" HorizontalAlignment="Center" VerticalAlignment="Top"
+                <Button Content="{langExtension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
         </hc:BusyIndicator.BusyContent>

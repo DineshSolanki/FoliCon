@@ -255,9 +255,6 @@
   <data name="InvalidPath" xml:space="preserve">
     <value>Ruta no válida</value>
   </data>
-  <data name="LangComment" xml:space="preserve">
-    <value>s</value>
-  </data>
   <data name="Load" xml:space="preserve">
     <value>Carga</value>
   </data>
@@ -370,5 +367,59 @@ y actualizar la caché de iconos?</value>
   </data>
   <data name="Year" xml:space="preserve">
     <value>Año</value>
+  </data>
+  <data name="All" xml:space="preserve">
+	  <value>Todos</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+	  <value>Calificación personalizada:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+	  <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+	  <value>Ingrese el título aquí para buscar nuevamente.</value>
+  </data>
+  <data name="NoResult" xml:space="preserve">
+	  <value>Sin resultados</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+	  <value>No se ha encontrado ningún resultado. Intente buscar de nuevo con el título correcto.</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+	  <value>~ O ~</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+	  <value>Elegir ícono para {0}</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+	  <value>Elegir seleccionado</value>
+  </data>
+  <data name="SearchingWithName" xml:space="preserve">
+	  <value>Buscando {0} ...</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+	  <value>Resultado de búsqueda</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+	  <value>Ver más carteles / portadas.</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+	  <value>Mostrar más...</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+	  <value>Saltar</value>
+  </data>
+  <data name="SkipThisPlaceholder" xml:space="preserve">
+	  <value>Omita este y todos los títulos restantes.</value>
+  </data>
+  <data name="SkipThisTitle" xml:space="preserve">
+	  <value>Omita este título.</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+	  <value>Deja de buscar</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+	  <value>Cargando carteles ...</value>
   </data>
 </root>

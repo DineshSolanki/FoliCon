@@ -255,9 +255,6 @@
   <data name="InvalidPath" xml:space="preserve">
     <value>Неверный путь</value>
   </data>
-  <data name="LangComment" xml:space="preserve">
-    <value>s</value>
-  </data>
   <data name="Load" xml:space="preserve">
     <value>Нагрузка</value>
   </data>
@@ -370,5 +367,59 @@
   </data>
   <data name="Year" xml:space="preserve">
     <value>Год</value>
+  </data>
+  <data name="All" xml:space="preserve">
+	  <value>Все</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+	  <value>Пользовательский рейтинг:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+	  <value>Это позволяет вам установить свой собственный рейтинг вместо рейтинга, полученного FoliCon.</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+	  <value>Пожалуйста, введите здесь заголовок для повторного поиска.</value>
+  </data>
+  <data name="NoResult" xml:space="preserve">
+	  <value>Безрезультатно</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+	  <value>Ничего не найдено. Попробуйте снова выполнить поиск с правильным заголовком.</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+	  <value>~ ИЛИ ~</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+	  <value>Выберите значок для {0}</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+	  <value>Выбрать выбранное</value>
+  </data>
+  <data name="SearchingWithName" xml:space="preserve">
+	  <value>Поиск {0} ...</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+	  <value>Результат поиска</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+	  <value>Смотрите больше постеров / обложек.</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+	  <value>Показать больше...</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+	  <value>Пропускать</value>
+  </data>
+  <data name="SkipThisPlaceholder" xml:space="preserve">
+	  <value>Пропустите этот и все остальные заголовки.</value>
+  </data>
+  <data name="SkipThisTitle" xml:space="preserve">
+	  <value>Пропустите этот заголовок.</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+	  <value>Прекратить поиск</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+	  <value>Загрузка плакатов ...</value>
   </data>
 </root>

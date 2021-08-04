@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using FoliCon.Properties.Langs;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 
@@ -21,12 +22,10 @@ namespace FoliCon.ViewModels
         private string _title = "";
         private bool _stopSearch;
         private int _index;
-        private string _busyContent = "Loading posters...";
+        private string _busyContent = LangProvider.GetLang("LoadingPosters");
         private bool _isBusy;
         public event Action<IDialogResult> RequestClose;
         private ResultResponse _result;
-        private const string PosterBase = "http://image.tmdb.org/t/p/original";
-        private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
         private int _totalPosters;
         #endregion
 
@@ -46,7 +45,6 @@ namespace FoliCon.ViewModels
         public DelegateCommand StopSearchCommand { get; set; }
         public DelegateCommand<object> PickCommand { get; set; }
         #endregion
-
         public PosterPickerViewModel()
         {
             ImageUrl = new ObservableCollection<DArtImageList>();
@@ -135,6 +133,7 @@ namespace FoliCon.ViewModels
 
         private async void LoadImages(ImagesWithId images)
         {
+            
             StopSearch = false;
             ImageUrl.Clear();
             IsBusy = true;
@@ -148,7 +147,7 @@ namespace FoliCon.ViewModels
                     Index = item.Index + 1;
                     if (image is not null)
                     {
-                        string posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W342, image.FilePath).ToString() : null;
+                        var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W342, image.FilePath).ToString() : null;
                         var bm = await Util.GetBitmapFromUrlAsync(posterPath);
                         ImageUrl.Add(new DArtImageList(posterPath, Util.LoadBitmap(bm)));
                         bm.Dispose();
@@ -162,8 +161,7 @@ namespace FoliCon.ViewModels
             else
             {
                 IsBusy = false;
-                MessageBox.Warning("No posters found!", "No Result");
-                CloseDialog("true");
+                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
             }
             IsBusy = false;
         }

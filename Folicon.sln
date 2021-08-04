@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageClassGenerator", "LanguageClassGenerator\LanguageClassGenerator.csproj", "{73E11BBB-CBCA-4549-BA10-736E51234B83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LangsGenerator", "LangsGenerator\LangsGenerator.csproj", "{5B058833-696A-46EE-BA04-F0987BC315C2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +32,6 @@ Global
 		{73E11BBB-CBCA-4549-BA10-736E51234B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73E11BBB-CBCA-4549-BA10-736E51234B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73E11BBB-CBCA-4549-BA10-736E51234B83}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B058833-696A-46EE-BA04-F0987BC315C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B058833-696A-46EE-BA04-F0987BC315C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B058833-696A-46EE-BA04-F0987BC315C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B058833-696A-46EE-BA04-F0987BC315C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

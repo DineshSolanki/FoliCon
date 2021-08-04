@@ -169,13 +169,11 @@ namespace FoliCon.ViewModels
         public DelegateCommand CustomIconsCommand { get; private set; }
         public DelegateCommand DeleteIconsCommand { get; private set; }
 
-        public DelegateCommand HelpCommand { get; } = new(delegate
-        {
-            Util.StartProcess("https://github.com/DineshSolanki/FoliCon");
-        });
+        public DelegateCommand HelpCommand { get; } = new(() =>
+            Util.StartProcess("https://github.com/DineshSolanki/FoliCon"));
 
         public DelegateCommand AboutCommand { get; private set; }
-        public DelegateCommand UpdateCommand { get; } = new(Util.CheckForUpdate);
+        public DelegateCommand UpdateCommand { get; } = new(() => Util.CheckForUpdate());
 
         #endregion MenuItem Commands
 
@@ -202,6 +200,7 @@ namespace FoliCon.ViewModels
                 .Property(p => p.IsPosterWindowShown)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
+            Util.CheckForUpdate(true);
         }
 
         private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)

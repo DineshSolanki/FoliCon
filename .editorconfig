@@ -7,4 +7,4 @@ csharp_prefer_braces = when_multiline
 dotnet_diagnostic.IDE0008.severity = none
 
 # IDE0011: Add braces
-dotnet_diagnostic.IDE0011.severity = suggestion
+dotnet_diagnostic.IDE0011.severity = silent
