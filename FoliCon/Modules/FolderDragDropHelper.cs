@@ -63,12 +63,7 @@ namespace FoliCon.Modules
             var target = d.GetValue(FileDragDropTargetProperty);
             if (target is IFileDragDropTarget fileTarget)
             {
-                // if (_dragEventArgs.Data.GetDataPresent(DataFormats.FileDrop))
-                //  {
-
                 fileTarget.OnFileDrop((string[])dragEventArgs.Data.GetData(DataFormats.FileDrop), ((Control)sender).Name);
-
-                //  }
             }
             else
             {

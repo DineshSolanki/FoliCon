@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using FoliCon.Properties.Langs;
 using HandyControl.Data;
 
@@ -13,7 +8,7 @@ namespace FoliCon.Modules
     {
         public static MessageBoxInfo Ask(string messageBoxText, string caption)
         {
-            return new()
+            return new MessageBoxInfo
             {
                 Message = messageBoxText,
                 Caption = caption,
@@ -26,7 +21,7 @@ namespace FoliCon.Modules
         }
         public static MessageBoxInfo Error(string messageBoxText, string caption)
         {
-            return new()
+            return new MessageBoxInfo
             {
                 Message = messageBoxText,
                 Caption = caption,
@@ -38,7 +33,7 @@ namespace FoliCon.Modules
         }
         public static MessageBoxInfo Warning(string messageBoxText, string caption)
         {
-            return new()
+            return new MessageBoxInfo
             {
                 Message = messageBoxText,
                 Caption = caption,
@@ -50,7 +45,7 @@ namespace FoliCon.Modules
         }
         public static MessageBoxInfo Info(string messageBoxText, string caption)
         {
-            return new()
+            return new MessageBoxInfo
             {
                 Message = messageBoxText,
                 Caption = caption,
