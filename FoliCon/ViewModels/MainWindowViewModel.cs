@@ -32,6 +32,7 @@ namespace FoliCon.ViewModels
         private string _searchMode = "Movie";
         private bool _isSearchModeVisible = true;
         private bool _stopIconDownload;
+        private Languages _appLanguage;
         private TMDbLib.Client.TMDbClient _tmdbClient;
         private IGDB.IGDBClient _igdbClient;
         private IgdbClass _igdbObject;
@@ -145,6 +146,11 @@ namespace FoliCon.ViewModels
             set => SetProperty(ref _isBusy, value);
         }
 
+        public Languages AppLanguage
+        {
+            get => _appLanguage;
+            set => SetProperty(ref _appLanguage, value);
+        }
         #endregion GetterSetters
 
         #region DelegateCommands
@@ -197,7 +203,8 @@ namespace FoliCon.ViewModels
             Services.Tracker.Configure<MainWindowViewModel>()
                 .Property(p => p.IsRatingVisible, true)
                 .Property(p => p.IsPosterMockupUsed, true)
-                .Property(p => p.IsPosterWindowShown)
+                .Property(p => p.IsPosterWindowShown, false)
+                .Property(p =>p.AppLanguage, Languages.English)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
             Util.CheckForUpdate(true);
@@ -276,7 +283,7 @@ namespace FoliCon.ViewModels
             GlobalVariables.SkipAll = false;
             foreach (var itemTitle in Fnames)
             {
-                var fullFolderPath = SelectedFolder + "\\" + itemTitle;
+                var fullFolderPath = $@"{SelectedFolder}\{itemTitle}";
                 var dialogResult = false;
                 StatusBarProperties.AppStatus = LangProvider.GetLang("SearchingWithCount").Format(itemTitle);
                 // TODO: Set cursor to WAIT.

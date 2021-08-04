@@ -70,7 +70,7 @@
                     <MenuItem x:Name="MenuApiConfigBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
                               Command="{Binding ApiConfigCommand}" />
                     <Separator />
-                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}" IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedIndex="0" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
+                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}" IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuRExbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
