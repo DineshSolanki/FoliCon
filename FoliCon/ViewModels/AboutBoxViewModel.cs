@@ -10,7 +10,7 @@ namespace FoliCon.ViewModels
 {
     public class AboutBoxViewModel : BindableBase, IDialogAware
     {
-        private string _title = "Folicon v3.4";
+        private string _title = "Folicon v3.5";
         private string _logo = "/Resources/folicon Icon.png";
 
         private string _description = LangProvider.GetLang("FoliConDescription");
