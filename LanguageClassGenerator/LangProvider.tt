@@ -21,9 +21,9 @@ namespace HandyControlDemo.Properties.Langs
 {
     public class LangProvider : INotifyPropertyChanged
     {
-        internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("DemoLangs");
+        internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("FoliConLangs");
 
-        private static string CultureInfoStr;
+        private static string _cultureInfoStr;
 
         public static CultureInfo Culture
         {
@@ -31,9 +31,9 @@ namespace HandyControlDemo.Properties.Langs
             set
             {
                 if (value == null) return;
-                if (Equals(CultureInfoStr, value.EnglishName)) return;
+                if (Equals(_cultureInfoStr, value.EnglishName)) return;
                 Lang.Culture = value;
-                CultureInfoStr = value.EnglishName;
+                _cultureInfoStr = value.EnglishName;
 
                 Instance.UpdateLangs();
             }

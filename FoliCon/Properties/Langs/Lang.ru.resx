@@ -369,57 +369,131 @@
     <value>Год</value>
   </data>
   <data name="All" xml:space="preserve">
-	  <value>Все</value>
+    <value>Все</value>
   </data>
   <data name="CustomRating" xml:space="preserve">
-	  <value>Пользовательский рейтинг:</value>
+    <value>Пользовательский рейтинг:</value>
   </data>
   <data name="CustomRatingTooltip" xml:space="preserve">
-	  <value>Это позволяет вам установить свой собственный рейтинг вместо рейтинга, полученного FoliCon.</value>
+    <value>Это позволяет вам установить свой собственный рейтинг вместо рейтинга, полученного FoliCon.</value>
   </data>
   <data name="EnterTitlePlaceholder" xml:space="preserve">
-	  <value>Пожалуйста, введите здесь заголовок для повторного поиска.</value>
+    <value>Пожалуйста, введите здесь заголовок для повторного поиска.</value>
   </data>
   <data name="NoResult" xml:space="preserve">
-	  <value>Безрезультатно</value>
+    <value>Безрезультатно</value>
   </data>
   <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-	  <value>Ничего не найдено. Попробуйте снова выполнить поиск с правильным заголовком.</value>
+    <value>Ничего не найдено. Попробуйте снова выполнить поиск с правильным заголовком.</value>
   </data>
   <data name="Or" xml:space="preserve">
-	  <value>~ ИЛИ ~</value>
+    <value>~ ИЛИ ~</value>
   </data>
   <data name="PickIconWithName" xml:space="preserve">
-	  <value>Выберите значок для {0}</value>
+    <value>Выберите значок для {0}</value>
   </data>
   <data name="PickSelected" xml:space="preserve">
-	  <value>Выбрать выбранное</value>
+    <value>Выбрать выбранное</value>
   </data>
   <data name="SearchingWithName" xml:space="preserve">
-	  <value>Поиск {0} ...</value>
+    <value>Поиск {0} ...</value>
   </data>
   <data name="SearchResult" xml:space="preserve">
-	  <value>Результат поиска</value>
+    <value>Результат поиска</value>
   </data>
   <data name="SeeMorePosters" xml:space="preserve">
-	  <value>Смотрите больше постеров / обложек.</value>
+    <value>Смотрите больше постеров / обложек.</value>
   </data>
   <data name="ShowMore" xml:space="preserve">
-	  <value>Показать больше...</value>
+    <value>Показать больше...</value>
   </data>
   <data name="Skip" xml:space="preserve">
-	  <value>Пропускать</value>
+    <value>Пропускать</value>
   </data>
   <data name="SkipThisPlaceholder" xml:space="preserve">
-	  <value>Пропустите этот и все остальные заголовки.</value>
+    <value>Пропустите этот и все остальные заголовки.</value>
   </data>
   <data name="SkipThisTitle" xml:space="preserve">
-	  <value>Пропустите этот заголовок.</value>
+    <value>Пропустите этот заголовок.</value>
   </data>
   <data name="StopSearching" xml:space="preserve">
-	  <value>Прекратить поиск</value>
+    <value>Прекратить поиск</value>
   </data>
   <data name="LoadingPosters" xml:space="preserve">
-	  <value>Загрузка плакатов ...</value>
+    <value>Загрузка плакатов ...</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Применять</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>Просмотреть папку / перетащить сюда</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>Просмотр иконок / Перетащите сюда</value>
+  </data>
+  <data name="Folders" xml:space="preserve">
+    <value>Папки</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>Иконки</value>
+  </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>Сохранять только точные совпадения?</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>Секрет клиента:</value>
+  </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>ID клиента :</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Закрывать</value>
+  </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>Настраиваемый набор иконок</value>
+  </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>Нет папок Выбранные или папки уже имеют значки.</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>Нет папок для обработки</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>Значки не выбраны</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>Нет значков для применения</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>Выберите каталог значков</value>
+  </data>
+  <data name="TMDBAPIKey" xml:space="preserve">
+    <value>Ключ API TMDB:</value>
+  </data>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>Отменить успешно</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+	  <value>Отменить</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+	  <value>Разработал Динеш Соланки.</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+	  <value>FoliCon - это больше, чем просто средство смены значков папок
+Он в большей степени автоматизирует эту задачу, имеет два разных режима для разных дизайнов значков папок,
+и он может получать «Игры, фильмы и шоу» и почти любые значки медиа-папок.</value>
+  </data>
+  <data name="License" xml:space="preserve">
+	  <value>Лицензия:</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+	  <value>Стандартная общественная лицензия GNU v3.0</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+	  <value>Версия:</value>
   </data>
 </root>

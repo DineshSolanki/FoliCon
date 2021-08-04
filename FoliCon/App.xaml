@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Basic/Colors/Light.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <langs:LangProvider x:Key="DemoLangs"/>
+            <langs:LangProvider x:Key="FoliConLangs"/>
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

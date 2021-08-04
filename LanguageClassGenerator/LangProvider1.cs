@@ -8,9 +8,9 @@ namespace HandyControlDemo.Properties.Langs
 {
     public class LangProvider : INotifyPropertyChanged
     {
-        internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("DemoLangs");
+        internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("FoliConLangs");
 
-        private static string CultureInfoStr;
+        private static string _cultureInfoStr;
 
         public static CultureInfo Culture
         {
@@ -18,9 +18,9 @@ namespace HandyControlDemo.Properties.Langs
             set
             {
                 if (value == null) return;
-                if (Equals(CultureInfoStr, value.EnglishName)) return;
+                if (Equals(_cultureInfoStr, value.EnglishName)) return;
                 Lang.Culture = value;
-                CultureInfoStr = value.EnglishName;
+                _cultureInfoStr = value.EnglishName;
 
                 Instance.UpdateLangs();
             }
@@ -45,24 +45,32 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(AmbiguousTitleTooltip));
 			OnPropertyChanged(nameof(APIKeysConfiguration));
 			OnPropertyChanged(nameof(APIKeysNotProvided));
+			OnPropertyChanged(nameof(Apply));
 			OnPropertyChanged(nameof(AppWillClose));
 			OnPropertyChanged(nameof(Arabic));
 			OnPropertyChanged(nameof(Auto));
+			OnPropertyChanged(nameof(BrowseFolderDropHere));
+			OnPropertyChanged(nameof(BrowseIconsDropHere));
 			OnPropertyChanged(nameof(Cancel));
 			OnPropertyChanged(nameof(ChangeLanguage));
 			OnPropertyChanged(nameof(ChangePosterOverlay));
 			OnPropertyChanged(nameof(CheckForUpdate));
+			OnPropertyChanged(nameof(ClientID));
+			OnPropertyChanged(nameof(ClientSecret));
+			OnPropertyChanged(nameof(Close));
 			OnPropertyChanged(nameof(ClosingApplication));
 			OnPropertyChanged(nameof(Confirm));
 			OnPropertyChanged(nameof(ConfirmExplorerRestart));
 			OnPropertyChanged(nameof(ConfirmIconDeletion));
 			OnPropertyChanged(nameof(ConfirmToOpenFolder));
 			OnPropertyChanged(nameof(CreatingIcons));
+			OnPropertyChanged(nameof(CustomIconSetter));
 			OnPropertyChanged(nameof(CustomRating));
 			OnPropertyChanged(nameof(CustomRatingTooltip));
 			OnPropertyChanged(nameof(DeleteIcons));
 			OnPropertyChanged(nameof(DeleteIconsConfirmation));
 			OnPropertyChanged(nameof(DeleteIconsTooltip));
+			OnPropertyChanged(nameof(DevelopedByDinesh));
 			OnPropertyChanged(nameof(DirectoryIsEmpty));
 			OnPropertyChanged(nameof(DownloadingIcons));
 			OnPropertyChanged(nameof(DownloadingIconWithCount));
@@ -73,7 +81,9 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(Folder));
 			OnPropertyChanged(nameof(FolderDoesNotExist));
 			OnPropertyChanged(nameof(FolderError));
+			OnPropertyChanged(nameof(Folders));
 			OnPropertyChanged(nameof(FoldersProcessed));
+			OnPropertyChanged(nameof(FoliConDescription));
 			OnPropertyChanged(nameof(Game));
 			OnPropertyChanged(nameof(HaveIcons));
 			OnPropertyChanged(nameof(HaveIconsTooltip));
@@ -83,19 +93,26 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(IconCreatedWithCount));
 			OnPropertyChanged(nameof(IconMode));
 			OnPropertyChanged(nameof(IconReloadMayTakeTime));
+			OnPropertyChanged(nameof(Icons));
 			OnPropertyChanged(nameof(IconsAlready));
 			OnPropertyChanged(nameof(IconsCreated));
 			OnPropertyChanged(nameof(Idle));
 			OnPropertyChanged(nameof(Ignore));
 			OnPropertyChanged(nameof(IgnoreAmbiguousTitle));
 			OnPropertyChanged(nameof(InvalidPath));
-			OnPropertyChanged(nameof(LangComment));
+			OnPropertyChanged(nameof(License));
+			OnPropertyChanged(nameof(LicenseInfo));
 			OnPropertyChanged(nameof(Load));
+			OnPropertyChanged(nameof(LoadingPosters));
 			OnPropertyChanged(nameof(MakeIcons));
 			OnPropertyChanged(nameof(Movie));
 			OnPropertyChanged(nameof(NetworkError));
 			OnPropertyChanged(nameof(NetworkNotAvailable));
 			OnPropertyChanged(nameof(NewVersionFound));
+			OnPropertyChanged(nameof(NoFolderOrIconAlready));
+			OnPropertyChanged(nameof(NoFoldersToProcess));
+			OnPropertyChanged(nameof(NoIconsSelected));
+			OnPropertyChanged(nameof(NoIconsToApply));
 			OnPropertyChanged(nameof(NoInternet));
 			OnPropertyChanged(nameof(NoPosterFound));
 			OnPropertyChanged(nameof(NoResult));
@@ -103,6 +120,7 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(NoResultFoundTryCorrectTitle));
 			OnPropertyChanged(nameof(NothingFoundFor));
 			OnPropertyChanged(nameof(OK));
+			OnPropertyChanged(nameof(OnlyKeepExactMatches));
 			OnPropertyChanged(nameof(Or));
 			OnPropertyChanged(nameof(OutOf));
 			OnPropertyChanged(nameof(PickIconWithName));
@@ -115,6 +133,7 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(RestartExplorerConfirmation));
 			OnPropertyChanged(nameof(RestartExplorerTooltip));
 			OnPropertyChanged(nameof(Russian));
+			OnPropertyChanged(nameof(Save));
 			OnPropertyChanged(nameof(Searching));
 			OnPropertyChanged(nameof(SearchingWithCount));
 			OnPropertyChanged(nameof(SearchingWithName));
@@ -122,6 +141,7 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(SearchResult));
 			OnPropertyChanged(nameof(SeeMorePosters));
 			OnPropertyChanged(nameof(SelectFolder));
+			OnPropertyChanged(nameof(SelectIconsDirectory));
 			OnPropertyChanged(nameof(Settings));
 			OnPropertyChanged(nameof(ShowMore));
 			OnPropertyChanged(nameof(ShowPosterWindowTooltip));
@@ -129,14 +149,19 @@ namespace HandyControlDemo.Properties.Langs
 			OnPropertyChanged(nameof(ShowRatingBadgeTooltip));
 			OnPropertyChanged(nameof(Skip));
 			OnPropertyChanged(nameof(SkipThisPlaceholder));
+			OnPropertyChanged(nameof(SkipThisTitle));
 			OnPropertyChanged(nameof(Spanish));
 			OnPropertyChanged(nameof(StopSearching));
 			OnPropertyChanged(nameof(ThisIsLatestVersion));
 			OnPropertyChanged(nameof(Title));
+			OnPropertyChanged(nameof(TMDBAPIKey));
 			OnPropertyChanged(nameof(ToForceReload));
 			OnPropertyChanged(nameof(TV));
+			OnPropertyChanged(nameof(Undo));
+			OnPropertyChanged(nameof(UndoSuccessful));
 			OnPropertyChanged(nameof(UpdateNow));
 			OnPropertyChanged(nameof(UsePosterOverlay));
+			OnPropertyChanged(nameof(Version));
 			OnPropertyChanged(nameof(Year));
         }
 
@@ -152,11 +177,17 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string APIKeysNotProvided => Lang.APIKeysNotProvided;
 
+		public string Apply => Lang.Apply;
+
 		public string AppWillClose => Lang.AppWillClose;
 
 		public string Arabic => Lang.Arabic;
 
 		public string Auto => Lang.Auto;
+
+		public string BrowseFolderDropHere => Lang.BrowseFolderDropHere;
+
+		public string BrowseIconsDropHere => Lang.BrowseIconsDropHere;
 
 		public string Cancel => Lang.Cancel;
 
@@ -165,6 +196,12 @@ namespace HandyControlDemo.Properties.Langs
 		public string ChangePosterOverlay => Lang.ChangePosterOverlay;
 
 		public string CheckForUpdate => Lang.CheckForUpdate;
+
+		public string ClientID => Lang.ClientID;
+
+		public string ClientSecret => Lang.ClientSecret;
+
+		public string Close => Lang.Close;
 
 		public string ClosingApplication => Lang.ClosingApplication;
 
@@ -178,6 +215,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string CreatingIcons => Lang.CreatingIcons;
 
+		public string CustomIconSetter => Lang.CustomIconSetter;
+
 		public string CustomRating => Lang.CustomRating;
 
 		public string CustomRatingTooltip => Lang.CustomRatingTooltip;
@@ -187,6 +226,8 @@ namespace HandyControlDemo.Properties.Langs
 		public string DeleteIconsConfirmation => Lang.DeleteIconsConfirmation;
 
 		public string DeleteIconsTooltip => Lang.DeleteIconsTooltip;
+
+		public string DevelopedByDinesh => Lang.DevelopedByDinesh;
 
 		public string DirectoryIsEmpty => Lang.DirectoryIsEmpty;
 
@@ -208,7 +249,11 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string FolderError => Lang.FolderError;
 
+		public string Folders => Lang.Folders;
+
 		public string FoldersProcessed => Lang.FoldersProcessed;
+
+		public string FoliConDescription => Lang.FoliConDescription;
 
 		public string Game => Lang.Game;
 
@@ -228,6 +273,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string IconReloadMayTakeTime => Lang.IconReloadMayTakeTime;
 
+		public string Icons => Lang.Icons;
+
 		public string IconsAlready => Lang.IconsAlready;
 
 		public string IconsCreated => Lang.IconsCreated;
@@ -240,9 +287,13 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string InvalidPath => Lang.InvalidPath;
 
-		public string LangComment => Lang.LangComment;
+		public string License => Lang.License;
+
+		public string LicenseInfo => Lang.LicenseInfo;
 
 		public string Load => Lang.Load;
+
+		public string LoadingPosters => Lang.LoadingPosters;
 
 		public string MakeIcons => Lang.MakeIcons;
 
@@ -253,6 +304,14 @@ namespace HandyControlDemo.Properties.Langs
 		public string NetworkNotAvailable => Lang.NetworkNotAvailable;
 
 		public string NewVersionFound => Lang.NewVersionFound;
+
+		public string NoFolderOrIconAlready => Lang.NoFolderOrIconAlready;
+
+		public string NoFoldersToProcess => Lang.NoFoldersToProcess;
+
+		public string NoIconsSelected => Lang.NoIconsSelected;
+
+		public string NoIconsToApply => Lang.NoIconsToApply;
 
 		public string NoInternet => Lang.NoInternet;
 
@@ -267,6 +326,8 @@ namespace HandyControlDemo.Properties.Langs
 		public string NothingFoundFor => Lang.NothingFoundFor;
 
 		public string OK => Lang.OK;
+
+		public string OnlyKeepExactMatches => Lang.OnlyKeepExactMatches;
 
 		public string Or => Lang.Or;
 
@@ -292,6 +353,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string Russian => Lang.Russian;
 
+		public string Save => Lang.Save;
+
 		public string Searching => Lang.Searching;
 
 		public string SearchingWithCount => Lang.SearchingWithCount;
@@ -305,6 +368,8 @@ namespace HandyControlDemo.Properties.Langs
 		public string SeeMorePosters => Lang.SeeMorePosters;
 
 		public string SelectFolder => Lang.SelectFolder;
+
+		public string SelectIconsDirectory => Lang.SelectIconsDirectory;
 
 		public string Settings => Lang.Settings;
 
@@ -320,6 +385,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string SkipThisPlaceholder => Lang.SkipThisPlaceholder;
 
+		public string SkipThisTitle => Lang.SkipThisTitle;
+
 		public string Spanish => Lang.Spanish;
 
 		public string StopSearching => Lang.StopSearching;
@@ -328,13 +395,21 @@ namespace HandyControlDemo.Properties.Langs
 
 		public string Title => Lang.Title;
 
+		public string TMDBAPIKey => Lang.TMDBAPIKey;
+
 		public string ToForceReload => Lang.ToForceReload;
 
 		public string TV => Lang.TV;
 
+		public string Undo => Lang.Undo;
+
+		public string UndoSuccessful => Lang.UndoSuccessful;
+
 		public string UpdateNow => Lang.UpdateNow;
 
 		public string UsePosterOverlay => Lang.UsePosterOverlay;
+
+		public string Version => Lang.Version;
 
 		public string Year => Lang.Year;
 
@@ -359,11 +434,17 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string APIKeysNotProvided = nameof(APIKeysNotProvided);
 
+		public static string Apply = nameof(Apply);
+
 		public static string AppWillClose = nameof(AppWillClose);
 
 		public static string Arabic = nameof(Arabic);
 
 		public static string Auto = nameof(Auto);
+
+		public static string BrowseFolderDropHere = nameof(BrowseFolderDropHere);
+
+		public static string BrowseIconsDropHere = nameof(BrowseIconsDropHere);
 
 		public static string Cancel = nameof(Cancel);
 
@@ -372,6 +453,12 @@ namespace HandyControlDemo.Properties.Langs
 		public static string ChangePosterOverlay = nameof(ChangePosterOverlay);
 
 		public static string CheckForUpdate = nameof(CheckForUpdate);
+
+		public static string ClientID = nameof(ClientID);
+
+		public static string ClientSecret = nameof(ClientSecret);
+
+		public static string Close = nameof(Close);
 
 		public static string ClosingApplication = nameof(ClosingApplication);
 
@@ -385,6 +472,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string CreatingIcons = nameof(CreatingIcons);
 
+		public static string CustomIconSetter = nameof(CustomIconSetter);
+
 		public static string CustomRating = nameof(CustomRating);
 
 		public static string CustomRatingTooltip = nameof(CustomRatingTooltip);
@@ -394,6 +483,8 @@ namespace HandyControlDemo.Properties.Langs
 		public static string DeleteIconsConfirmation = nameof(DeleteIconsConfirmation);
 
 		public static string DeleteIconsTooltip = nameof(DeleteIconsTooltip);
+
+		public static string DevelopedByDinesh = nameof(DevelopedByDinesh);
 
 		public static string DirectoryIsEmpty = nameof(DirectoryIsEmpty);
 
@@ -415,7 +506,11 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string FolderError = nameof(FolderError);
 
+		public static string Folders = nameof(Folders);
+
 		public static string FoldersProcessed = nameof(FoldersProcessed);
+
+		public static string FoliConDescription = nameof(FoliConDescription);
 
 		public static string Game = nameof(Game);
 
@@ -435,6 +530,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string IconReloadMayTakeTime = nameof(IconReloadMayTakeTime);
 
+		public static string Icons = nameof(Icons);
+
 		public static string IconsAlready = nameof(IconsAlready);
 
 		public static string IconsCreated = nameof(IconsCreated);
@@ -447,9 +544,13 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string InvalidPath = nameof(InvalidPath);
 
-		public static string LangComment = nameof(LangComment);
+		public static string License = nameof(License);
+
+		public static string LicenseInfo = nameof(LicenseInfo);
 
 		public static string Load = nameof(Load);
+
+		public static string LoadingPosters = nameof(LoadingPosters);
 
 		public static string MakeIcons = nameof(MakeIcons);
 
@@ -460,6 +561,14 @@ namespace HandyControlDemo.Properties.Langs
 		public static string NetworkNotAvailable = nameof(NetworkNotAvailable);
 
 		public static string NewVersionFound = nameof(NewVersionFound);
+
+		public static string NoFolderOrIconAlready = nameof(NoFolderOrIconAlready);
+
+		public static string NoFoldersToProcess = nameof(NoFoldersToProcess);
+
+		public static string NoIconsSelected = nameof(NoIconsSelected);
+
+		public static string NoIconsToApply = nameof(NoIconsToApply);
 
 		public static string NoInternet = nameof(NoInternet);
 
@@ -474,6 +583,8 @@ namespace HandyControlDemo.Properties.Langs
 		public static string NothingFoundFor = nameof(NothingFoundFor);
 
 		public static string OK = nameof(OK);
+
+		public static string OnlyKeepExactMatches = nameof(OnlyKeepExactMatches);
 
 		public static string Or = nameof(Or);
 
@@ -499,6 +610,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string Russian = nameof(Russian);
 
+		public static string Save = nameof(Save);
+
 		public static string Searching = nameof(Searching);
 
 		public static string SearchingWithCount = nameof(SearchingWithCount);
@@ -512,6 +625,8 @@ namespace HandyControlDemo.Properties.Langs
 		public static string SeeMorePosters = nameof(SeeMorePosters);
 
 		public static string SelectFolder = nameof(SelectFolder);
+
+		public static string SelectIconsDirectory = nameof(SelectIconsDirectory);
 
 		public static string Settings = nameof(Settings);
 
@@ -527,6 +642,8 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string SkipThisPlaceholder = nameof(SkipThisPlaceholder);
 
+		public static string SkipThisTitle = nameof(SkipThisTitle);
+
 		public static string Spanish = nameof(Spanish);
 
 		public static string StopSearching = nameof(StopSearching);
@@ -535,13 +652,21 @@ namespace HandyControlDemo.Properties.Langs
 
 		public static string Title = nameof(Title);
 
+		public static string TMDBAPIKey = nameof(TMDBAPIKey);
+
 		public static string ToForceReload = nameof(ToForceReload);
 
 		public static string TV = nameof(TV);
 
+		public static string Undo = nameof(Undo);
+
+		public static string UndoSuccessful = nameof(UndoSuccessful);
+
 		public static string UpdateNow = nameof(UpdateNow);
 
 		public static string UsePosterOverlay = nameof(UsePosterOverlay);
+
+		public static string Version = nameof(Version);
 
 		public static string Year = nameof(Year);
 

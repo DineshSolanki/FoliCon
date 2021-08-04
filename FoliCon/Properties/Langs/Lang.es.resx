@@ -289,7 +289,7 @@ Intente buscar con otro título
  o comprobar el modo de búsqueda</value>
   </data>
   <data name="OK" xml:space="preserve">
-	  <value>si</value>
+    <value>si</value>
   </data>
   <data name="OutOf" xml:space="preserve">
     <value>fuera de</value>
@@ -369,57 +369,131 @@ y actualizar la caché de iconos?</value>
     <value>Año</value>
   </data>
   <data name="All" xml:space="preserve">
-	  <value>Todos</value>
+    <value>Todos</value>
   </data>
   <data name="CustomRating" xml:space="preserve">
-	  <value>Calificación personalizada:</value>
+    <value>Calificación personalizada:</value>
   </data>
   <data name="CustomRatingTooltip" xml:space="preserve">
-	  <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
+    <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
   </data>
   <data name="EnterTitlePlaceholder" xml:space="preserve">
-	  <value>Ingrese el título aquí para buscar nuevamente.</value>
+    <value>Ingrese el título aquí para buscar nuevamente.</value>
   </data>
   <data name="NoResult" xml:space="preserve">
-	  <value>Sin resultados</value>
+    <value>Sin resultados</value>
   </data>
   <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-	  <value>No se ha encontrado ningún resultado. Intente buscar de nuevo con el título correcto.</value>
+    <value>No se ha encontrado ningún resultado. Intente buscar de nuevo con el título correcto.</value>
   </data>
   <data name="Or" xml:space="preserve">
-	  <value>~ O ~</value>
+    <value>~ O ~</value>
   </data>
   <data name="PickIconWithName" xml:space="preserve">
-	  <value>Elegir ícono para {0}</value>
+    <value>Elegir ícono para {0}</value>
   </data>
   <data name="PickSelected" xml:space="preserve">
-	  <value>Elegir seleccionado</value>
+    <value>Elegir seleccionado</value>
   </data>
   <data name="SearchingWithName" xml:space="preserve">
-	  <value>Buscando {0} ...</value>
+    <value>Buscando {0} ...</value>
   </data>
   <data name="SearchResult" xml:space="preserve">
-	  <value>Resultado de búsqueda</value>
+    <value>Resultado de búsqueda</value>
   </data>
   <data name="SeeMorePosters" xml:space="preserve">
-	  <value>Ver más carteles / portadas.</value>
+    <value>Ver más carteles / portadas.</value>
   </data>
   <data name="ShowMore" xml:space="preserve">
-	  <value>Mostrar más...</value>
+    <value>Mostrar más...</value>
   </data>
   <data name="Skip" xml:space="preserve">
-	  <value>Saltar</value>
+    <value>Saltar</value>
   </data>
   <data name="SkipThisPlaceholder" xml:space="preserve">
-	  <value>Omita este y todos los títulos restantes.</value>
+    <value>Omita este y todos los títulos restantes.</value>
   </data>
   <data name="SkipThisTitle" xml:space="preserve">
-	  <value>Omita este título.</value>
+    <value>Omita este título.</value>
   </data>
   <data name="StopSearching" xml:space="preserve">
-	  <value>Deja de buscar</value>
+    <value>Deja de buscar</value>
   </data>
   <data name="LoadingPosters" xml:space="preserve">
-	  <value>Cargando carteles ...</value>
+    <value>Cargando carteles ...</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Solicitar</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>Examinar carpeta / Soltar aquí</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>Examinar iconos / soltar aquí</value>
+  </data>
+  <data name="Folders" xml:space="preserve">
+    <value>Carpetas</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>Iconos</value>
+  </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>¿Conserva solo coincidencias exactas?</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>Secreto del cliente:</value>
+  </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>Identificación del cliente :</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>Establecedor de iconos personalizados</value>
+  </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>No hay carpetas seleccionadas o las carpetas ya tienen iconos.</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>No hay carpetas para procesar</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>No se seleccionaron iconos</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>No hay iconos para aplicar</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>Seleccionar directorio de iconos</value>
+  </data>
+  <data name="TMDBAPIKey" xml:space="preserve">
+    <value>Clave de API de TMDB:</value>
+  </data>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>Deshacer exitosamente</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+	  <value>Deshacer</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+	  <value>Desarrollado por Dinesh Solanki.</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+	  <value>FoliCon es más que un típico cambiador de iconos de carpetas
+Automatiza esta tarea en mayor medida, tiene dos modos diferentes para diferentes diseños de iconos de carpetas,
+y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpeta multimedia.</value>
+  </data>
+  <data name="License" xml:space="preserve">
+	  <value>Licencia:</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+	  <value>Licencia pública general GNU v3.0</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+	  <value>Versión :</value>
   </data>
 </root>

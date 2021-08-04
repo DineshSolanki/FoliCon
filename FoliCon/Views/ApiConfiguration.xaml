@@ -6,6 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              d:DataContext="{d:DesignInstance viewModels:ApiConfigurationViewModel}">
@@ -30,10 +32,10 @@
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <hc:TextBox hc:InfoElement.Necessary="True"
                             Text="{Binding DArtClient, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :" />
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
                 <hc:TextBox hc:InfoElement.Necessary="True"
                             Text="{Binding DArtClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :" />
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
             </StackPanel>
         </GroupBox>
         <GroupBox Style="{StaticResource GroupBoxTab}" Header="IGDB(Twitch) Api" Grid.Row="1"
@@ -42,19 +44,19 @@
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <hc:TextBox hc:InfoElement.Necessary="True"
                             Text="{Binding IgdbClientSecret, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client Secret :" />
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
                 <hc:TextBox hc:InfoElement.Necessary="True"
                             Text="{Binding IgdbClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="Client ID :" />
+                            Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
             </StackPanel>
         </GroupBox>
         <hc:TextBox hc:InfoElement.Necessary="True"
                     Text="{Binding TmdbKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"
-                    hc:InfoElement.Title="TMDB API Key :" Margin="8,7,8,0" />
-        <Button Grid.Row="3" Command="{Binding SaveCommand}" Content="Save" Style="{StaticResource ButtonPrimary}"
+                    hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.TMDBAPIKey}}" Margin="8,7,8,0" />
+        <Button Grid.Row="3" Command="{Binding SaveCommand}" Content="{langExtension:Lang Key={x:Static langs:LangKeys.Save}}" Style="{StaticResource ButtonPrimary}"
                  Width="75" Margin="266,5,0,0" FontSize="16" HorizontalAlignment="Left"
                 VerticalAlignment="Top" IsDefault="True" TextOptions.TextRenderingMode="Aliased"/>
-        <Button Grid.Row="3" Content="Close" Command="{Binding CloseDialogCommand}" CommandParameter="false"
+        <Button Grid.Row="3" Content="{langExtension:Lang Key={x:Static langs:LangKeys.Close}}" Command="{Binding CloseDialogCommand}" CommandParameter="false"
                 Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75"
                 FontSize="16" VerticalAlignment="Top" IsCancel="True" />
     </Grid>

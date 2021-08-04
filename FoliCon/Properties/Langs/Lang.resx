@@ -135,6 +135,9 @@
   <data name="APIKeysNotProvided" xml:space="preserve">
     <value>API keys not provided</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
   <data name="AppWillClose" xml:space="preserve">
     <value>The Application will close.</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto (Movies &amp; TV Shows)</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>Browse Folder/Drop here</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>Browse Icons/Drop here</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -155,6 +164,15 @@
   </data>
   <data name="CheckForUpdate" xml:space="preserve">
     <value>Check for update</value>
+  </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>Client ID :</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>Client Secret  :</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
   </data>
   <data name="ClosingApplication" xml:space="preserve">
     <value>Closing Application</value>
@@ -174,6 +192,9 @@
   <data name="CreatingIcons" xml:space="preserve">
     <value>Creating Icons...</value>
   </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>Custom icon setter</value>
+  </data>
   <data name="CustomRating" xml:space="preserve">
     <value>Custom rating: </value>
   </data>
@@ -188,6 +209,9 @@
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
     <value>This will delete existing icons from all subFolders.</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+    <value>Developed By Dinesh Solanki.</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
     <value>Directory is Empty</value>
@@ -219,8 +243,16 @@
   <data name="FolderError" xml:space="preserve">
     <value>Folder Error</value>
   </data>
+  <data name="Folders" xml:space="preserve">
+    <value>Folders</value>
+  </data>
   <data name="FoldersProcessed" xml:space="preserve">
     <value>Folders Processed:</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+    <value>FoliCon is more than just a typical folder Icon changer
+It automates this task to a greater extent, it has two different modes for different designs of folder Icons,
+and it can fetch 'Games,Movies, and shows' and almost any media folder icons.</value>
   </data>
   <data name="Game" xml:space="preserve">
     <value>Game</value>
@@ -249,6 +281,9 @@
   <data name="IconReloadMayTakeTime" xml:space="preserve">
     <value>Note:The Icon may take some time to reload.</value>
   </data>
+  <data name="Icons" xml:space="preserve">
+    <value>Icons</value>
+  </data>
   <data name="IconsAlready" xml:space="preserve">
     <value>Folder already have Icons or is Empty!</value>
   </data>
@@ -266,6 +301,12 @@
   </data>
   <data name="InvalidPath" xml:space="preserve">
     <value>Invalid Path</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>License :</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+    <value>GNU General Public License v3.0</value>
   </data>
   <data name="Load" xml:space="preserve">
     <value>Load</value>
@@ -289,6 +330,18 @@
     <value>New Version({0}) Found!
 Changelog:{1}</value>
   </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>No folders Selected or folders already have icons.</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>No folders to process</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>No icons selected</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>No icons to apply</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>Sorry, Internet is Not available.</value>
   </data>
@@ -311,6 +364,9 @@ Try Searching with Other Title
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
+  </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>Only keep exact matches?</value>
   </data>
   <data name="Or" xml:space="preserve">
     <value>~ OR ~</value>
@@ -349,6 +405,9 @@ and refresh Icon Cache?</value>
   <data name="Russian" xml:space="preserve">
     <value>Russian</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="Searching" xml:space="preserve">
     <value>Searching...</value>
   </data>
@@ -369,6 +428,9 @@ and refresh Icon Cache?</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
     <value>Select Folder</value>
+  </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>Select Icons Directory</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
@@ -406,17 +468,29 @@ and refresh Icon Cache?</value>
   <data name="Title" xml:space="preserve">
     <value>Title</value>
   </data>
+  <data name="TMDBAPIKey" xml:space="preserve">
+    <value>TMDB API Key :</value>
+  </data>
   <data name="ToForceReload" xml:space="preserve">
     <value>To Force Reload, click on Restart Explorer.</value>
   </data>
   <data name="TV" xml:space="preserve">
     <value>TV</value>
   </data>
+  <data name="Undo" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>Undo successful</value>
+  </data>
   <data name="UpdateNow" xml:space="preserve">
     <value>Update Now</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
     <value>Use Poster overlay</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version :</value>
   </data>
   <data name="Year" xml:space="preserve">
     <value>Year</value>

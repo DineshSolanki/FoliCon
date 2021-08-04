@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Globalization;
+using FoliCon.Properties.Langs;
 
 namespace FoliCon.ViewModels
 {
@@ -12,13 +13,11 @@ namespace FoliCon.ViewModels
         private string _title = "Folicon v3.4";
         private string _logo = "/Resources/folicon Icon.png";
 
-        private string _description = "FoliCon is more than just a typical folder Icon changer"
-            + Environment.NewLine + "It automates this task to a greater extent, it has two different modes for different designs of folder Icons,"
-            + Environment.NewLine + "and it can fetch 'Games,Movies, and shows' and almost any media folder icons.";
+        private string _description = LangProvider.GetLang("FoliConDescription");
 
         private string _website = "https://aprogrammers.wordpress.com";
-        private string _additionalNotes = "Developed By Dinesh Solanki";
-        private string _license = "GNU General Public License v3.0";
+        private string _additionalNotes = LangProvider.GetLang("DevelopedByDinesh");
+        private string _license = LangProvider.GetLang("LicenseInfo");
         private string _version = AssemblyInfo.GetVersion();
 
         //These properties can also be initialized from Parameters for better re-usability. or From assembly
