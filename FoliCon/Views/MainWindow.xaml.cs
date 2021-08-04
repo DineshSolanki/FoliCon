@@ -1,5 +1,4 @@
-﻿using System;
-using FoliCon.Modules;
+﻿using FoliCon.Modules;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Threading;
