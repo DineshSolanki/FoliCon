@@ -190,7 +190,7 @@
     <value>आइकन डाउनलोड हो रहा है {0}/{1}...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
-    <value>डाउनलोड करो</value>
+    <value>डाउनलोड करे</value>
   </data>
   <data name="EmptyDirectory" xml:space="preserve">
     <value>खाली फोल्डर</value>
@@ -332,11 +332,11 @@
     <value>फोल्डर का चयन करें</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>समायोजन</value>
+    <value>विभिन्न विकल्प</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
     <value>सटीक शीर्षक मिलने पर भी पोस्टर विंडो दिखाएं। इससे आप उनके लिए अलग पोस्टर और कस्टम रेटिंग भी चुन सकेंगे
- यह 'अस्पष्ट शीर्षक को अनदेखा करें' विकल्प को ओवरराइड करता है।</value>
+ यह 'अस्पष्ट मीडिया पर ध्यान न दें' विकल्प को ओवरराइड करता है।</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>रेटिंग बैज दिखाएं</value>
