@@ -76,7 +76,7 @@ namespace FoliCon.Modules
             foreach (var item in result.Results)
             {
                 var mediaName = item.Title;
-                var year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString() : "";
+                var year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
                 var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
@@ -104,7 +104,7 @@ namespace FoliCon.Modules
                         {
                             var res = (SearchTv)item;
                             mediaName = res.Name;
-                            year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString() : "";
+                            year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                             rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
                             overview = res.Overview;
                             poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
@@ -114,7 +114,7 @@ namespace FoliCon.Modules
                         {
                             var res = (SearchMovie)item;
                             mediaName = res.Title;
-                            year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString() : "";
+                            year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                             rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
                             overview = res.Overview;
                             poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
@@ -134,7 +134,7 @@ namespace FoliCon.Modules
             foreach (var item in result.Results)
             {
                 var mediaName = item.Name;
-                var year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString() : "";
+                var year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
                 var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
@@ -167,7 +167,7 @@ namespace FoliCon.Modules
             if (resultType == MediaTypes.Tv)
             {
                 var pickedResult = (SearchTv)result;
-                var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString() : "";
+                var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                     rating, fullFolderPath, folderName,
                     year);
@@ -175,7 +175,7 @@ namespace FoliCon.Modules
             else if (resultType == MediaTypes.Movie)
             {
                 var pickedResult = (SearchMovie)result;
-                var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Value.Year.ToString() : "";
+                var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                     rating, fullFolderPath, folderName, year);
             }
@@ -194,7 +194,7 @@ namespace FoliCon.Modules
                         {
                             SearchTv pickedResult = result;
                             var year = pickedResult.FirstAirDate != null
-                                ? pickedResult.FirstAirDate.Value.Year.ToString()
+                                ? pickedResult.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture)
                                 : "";
                             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                                 rating, fullFolderPath, folderName,
@@ -205,7 +205,7 @@ namespace FoliCon.Modules
                         {
                             SearchMovie pickedResult = result;
                             var year = pickedResult.ReleaseDate != null
-                                ? pickedResult.ReleaseDate.Value.Year.ToString()
+                                ? pickedResult.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture)
                                 : "";
                             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                                 rating, fullFolderPath, folderName,

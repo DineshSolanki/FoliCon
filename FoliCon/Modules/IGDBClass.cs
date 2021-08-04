@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using FoliCon.Properties.Langs;
 
 namespace FoliCon.Modules
 {
@@ -56,7 +56,7 @@ namespace FoliCon.Modules
             var items = new ObservableCollection<ListItem>();
             foreach (var (mediaName, year, overview, poster) in from item in result
                                                                 let mediaName = item.Name
-                                                                let year = item.FirstReleaseDate != null ? item.FirstReleaseDate.Value.Year.ToString() : ""
+                                                                let year = item.FirstReleaseDate != null ? item.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : ""
                                                                 let overview = item.Summary
                                                                 let poster = item.Cover != null
                                                                     ? "https://" + ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720)[2..]
@@ -78,7 +78,7 @@ namespace FoliCon.Modules
 
             var folderName = Path.GetFileName(fullFolderPath);
             var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
-            var year = result.FirstReleaseDate != null ? result.FirstReleaseDate.Value.Year.ToString() : "";
+            var year = result.FirstReleaseDate != null ? result.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
             var posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720);
             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, rating, fullFolderPath, folderName,
                 year);
