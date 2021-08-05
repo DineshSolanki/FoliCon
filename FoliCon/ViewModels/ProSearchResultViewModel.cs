@@ -92,12 +92,11 @@ namespace FoliCon.ViewModels
 
         private async Task Search(string query, int offset = 0)
         {
-            int lastIndex;
             Index = 0;
             while (true)
             {
                 var searchResult = await DArtObject.Browse(query, offset);
-                lastIndex = Index;
+                var lastIndex = Index;
                 if (searchResult.Results?.Length > 0)
                 {
                     TotalPosters = searchResult.Results.Length + offset;

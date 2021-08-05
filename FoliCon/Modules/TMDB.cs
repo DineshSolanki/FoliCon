@@ -150,6 +150,7 @@ namespace FoliCon.Modules
         /// <param name="result">Search Response</param>
         /// <param name="resultType">Type of search Response.</param>
         /// <param name="fullFolderPath">Full Path to the current Media Folder</param>
+        /// <param name="rating">Rating for media</param>
         /// TODO: Merge parameter response and resultType.
         public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "")
         {

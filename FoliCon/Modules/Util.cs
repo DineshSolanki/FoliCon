@@ -531,5 +531,39 @@ namespace FoliCon.Modules
             settings.DevClientSecret = dartClientSecret;
             settings.Save();
         }
+
+        public static CultureInfo GetCultureInfoByLanguage(Languages language)
+        {
+            CultureInfo cultureInfo;
+            switch (language)
+            {
+                case Languages.English:
+                    ConfigHelper.Instance.SetLang("en");
+                    cultureInfo = new CultureInfo("en-US");
+                    break;
+                case Languages.Spanish:
+                    ConfigHelper.Instance.SetLang("es");
+                    cultureInfo = new CultureInfo("es-MX");
+                    break;
+                case Languages.Arabic:
+                    ConfigHelper.Instance.SetLang("ar");
+                    cultureInfo = new CultureInfo("ar-SA");
+                    break;
+                case Languages.Russian:
+                    ConfigHelper.Instance.SetLang("ru");
+                    cultureInfo = new CultureInfo("ru-RU");
+                    break;
+                case Languages.Hindi:
+                    ConfigHelper.Instance.SetLang("hi");
+                    cultureInfo = new CultureInfo("hi-IN");
+                    break;
+                default:
+                    ConfigHelper.Instance.SetLang("en");
+                    cultureInfo = new CultureInfo("en-US");
+                    break;
+            }
+
+            return cultureInfo;
+        }
     }
 }

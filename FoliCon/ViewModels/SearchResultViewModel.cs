@@ -4,7 +4,6 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Input;

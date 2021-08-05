@@ -11,8 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Net.NetworkInformation;
+using System.Threading;
 using HandyControl.Tools.Extension;
 
 namespace FoliCon.ViewModels
@@ -228,52 +230,61 @@ namespace FoliCon.ViewModels
 
         private async void SearchAndMakeMethod()
         {
-            if (Directory.Exists(SelectedFolder))
+            try
             {
-                Fnames = Util.GetFolderNames(SelectedFolder);
-            }
-            else
-            {
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"), LangProvider.GetLang("InvalidPath")));
-                return;
-            }
-
-            if (Fnames.Count != 0)
-            {
-                if (Util.IsNetworkAvailable())
+                if (Directory.Exists(SelectedFolder))
                 {
-                    if (!IsObjectsInitialized)
-                    {
-                        InitializeClientObjects();
-                        IsObjectsInitialized = true;
-                    }
-
-                    StatusBarProperties.ResetData();
-                    FinalListViewData.Data.Clear();
-                    StatusBarProperties.TotalFolders = Fnames.Count;
-                    PrepareForSearch();
-                    if (IconMode == "Poster")
-                        await ProcessPosterModeAsync();
-                    else
-                    {
-                        ProcessProfessionalMode();
-                    }
-                    StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
-                        StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
-                    BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
-                    if (_imgDownloadList.Count > 0)
-                        await StartDownloadingAsync();
-                    else
-                        IsMakeEnabled = true;
+                    Fnames = Util.GetFolderNames(SelectedFolder);
                 }
                 else
                 {
-                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"), LangProvider.GetLang("NetworkError")));
+                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"), LangProvider.GetLang("InvalidPath")));
+                    return;
+                }
+
+                if (Fnames.Count != 0)
+                {
+                    if (Util.IsNetworkAvailable())
+                    {
+                        if (!IsObjectsInitialized)
+                        {
+                            InitializeClientObjects();
+                            IsObjectsInitialized = true;
+                        }
+
+                        StatusBarProperties.ResetData();
+                        FinalListViewData.Data.Clear();
+                        StatusBarProperties.TotalFolders = Fnames.Count;
+                        PrepareForSearch();
+                        if (IconMode == "Poster")
+                            await ProcessPosterModeAsync();
+                        else
+                        {
+                            ProcessProfessionalMode();
+                        }
+                        StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
+                            StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
+                        BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
+                        if (_imgDownloadList.Count > 0)
+                            await StartDownloadingAsync();
+                        else
+                            IsMakeEnabled = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"), LangProvider.GetLang("NetworkError")));
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"), LangProvider.GetLang("FolderError")));
                 }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"), LangProvider.GetLang("FolderError")));
+                MessageBox.Show(CustomMessageBox.Error(e.Message, "Exception Occurred"));
+                StatusBarProperties.ResetData();
+                IsMakeEnabled = true;
             }
         }
 
