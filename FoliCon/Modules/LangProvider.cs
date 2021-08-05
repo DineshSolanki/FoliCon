@@ -161,6 +161,7 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(UsePosterOverlay));
             OnPropertyChanged(nameof(Version));
             OnPropertyChanged(nameof(Year));
+            OnPropertyChanged(nameof(ExceptionOccurred));
         }
 
         public string About => Lang.About;
@@ -410,6 +411,7 @@ namespace FoliCon.Properties.Langs
         public string Version => Lang.Version;
 
         public string Year => Lang.Year;
+        public string ExceptionOccurred => Lang.ExceptionOccurred;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -667,6 +669,8 @@ namespace FoliCon.Properties.Langs
         public static string Version = nameof(Version);
 
         public static string Year = nameof(Year);
+
+        public static string ExceptionOccurred = nameof(ExceptionOccurred);
 
     }
 }

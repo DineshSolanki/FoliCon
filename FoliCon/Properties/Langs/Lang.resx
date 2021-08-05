@@ -234,6 +234,9 @@
   <data name="EnterTitlePlaceholder" xml:space="preserve">
     <value>Please Enter Title here to search again.</value>
   </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+    <value>Exception Occurred</value>
+  </data>
   <data name="Folder" xml:space="preserve">
     <value>Folder</value>
   </data>

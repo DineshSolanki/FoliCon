@@ -496,4 +496,7 @@
   <data name="Version" xml:space="preserve">
 	  <value>Версия:</value>
   </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+	  <value>Произошло исключение</value>
+  </data>
 </root>

@@ -282,7 +282,7 @@ namespace FoliCon.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show(CustomMessageBox.Error(e.Message, "Exception Occurred"));
+                MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
                 StatusBarProperties.ResetData();
                 IsMakeEnabled = true;
             }

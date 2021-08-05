@@ -220,7 +220,6 @@ namespace FoliCon.Modules
                                      where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
                                      select Path.GetFileName(folder));
             }
-
             return folderNames;
         }
 
@@ -315,8 +314,16 @@ namespace FoliCon.Modules
         public static List<string> GetFileNamesFromFolder(string folder)
         {
             var itemList = new List<string>();
-            if (string.IsNullOrEmpty(folder)) return itemList;
-            itemList.AddRange(Directory.GetFiles(folder).Select(Path.GetFileName));
+            try
+            {
+                if (string.IsNullOrEmpty(folder)) return itemList;
+                itemList.AddRange(Directory.GetFiles(folder).Select(Path.GetFileName));
+            }
+            catch (Exception e)
+            {
+                itemList.Add($"Error accessing files: {e.Message}");
+            }
+
             return itemList;
         }
 

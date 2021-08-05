@@ -496,4 +496,7 @@ y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpe
   <data name="Version" xml:space="preserve">
 	  <value>Versión :</value>
   </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+	  <value>Ocurrió una excepción</value>
+  </data>
 </root>
