@@ -29,7 +29,7 @@ namespace FoliCon.ViewModels
         private string _fullFolderPath;
         private readonly IDialogService _dialogService;
         private bool _isSearchFocused;
-
+        private bool _isPickedById;
         public event Action<IDialogResult> RequestClose;
 
         private Tmdb _tmdbObject;
@@ -114,6 +114,7 @@ namespace FoliCon.ViewModels
             _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
             _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
             _fullFolderPath = parameters.GetValue<string>("folderpath");
+            _isPickedById = parameters.GetValue<bool>("isPickedById");
             LoadData(SearchTitle);
         }
 
@@ -140,10 +141,10 @@ namespace FoliCon.ViewModels
         private void LoadData(string searchTitle)
         {
             if (SearchResult != null
-                && (SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
-                && (SearchMode == "Game" ? SearchResult?.Result.Length : SearchResult?.Result.TotalResults) != 0)
+                && (_isPickedById ? SearchResult.Result != null ? 1 : null : SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
+                && (_isPickedById ? SearchResult.Result != null ? 1 : 0 : SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
             {
-                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle);
+                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle,_isPickedById);
                 if (ResultListViewData.Data.Count != 0)
                     ResultListViewData.SelectedItem = ResultListViewData.Data[0];
             }
@@ -204,7 +205,7 @@ namespace FoliCon.ViewModels
             {
                 if (SearchMode != MediaTypes.Game)
                 {
-                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data, r => { });
+                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,_isPickedById, r => { });
                 }
             }
             catch (Exception ex)

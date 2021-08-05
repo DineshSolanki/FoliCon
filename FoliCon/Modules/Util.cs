@@ -26,10 +26,13 @@ using System.Windows.Media.Imaging;
 using FoliCon.Properties.Langs;
 using HandyControl.Tools.Extension;
 using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
+using TMDbLib.Objects.TvShows;
 using Vanara.PInvoke;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
+using Collection = TMDbLib.Objects.Collections.Collection;
 using MessageBox = HandyControl.Controls.MessageBox;
 using PosterIcon = FoliCon.Models.PosterIcon;
 
@@ -244,7 +247,7 @@ namespace FoliCon.Modules
         /// <param name="folderName">Short Folder Name</param>
         /// <param name="year">Media Year</param>
         public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating,
-            string fullFolderPath, string folderName, string year = "")
+            string fullFolderPath, string folderName, string year = "", int id = 0)
         {
             if (rating == "0")
             {
@@ -261,20 +264,20 @@ namespace FoliCon.Modules
             dataTable.Rows.Add(nRow);
         }
 
-        public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query)
+        public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query, bool isPickedById)
         {
             var source = new ObservableCollection<ListItem>();
 
             if (result.MediaType == MediaTypes.Tv)
             {
-                var ob = (SearchContainer<SearchTv>)result.Result;
+                dynamic ob = isPickedById ? (TvShow) result.Result : (SearchContainer<SearchTv>)result.Result;
                 source = Tmdb.ExtractTvDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Movie || result.MediaType == MediaTypes.Collection)
             {
                 if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
                 {
-                    var ob = (SearchContainer<SearchCollection>)result.Result;
+                    dynamic ob = isPickedById ? (Collection) result.Result : (SearchContainer<SearchCollection>)result.Result;
                     source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                 }
                 else
@@ -282,12 +285,12 @@ namespace FoliCon.Modules
                     dynamic ob;
                     try
                     {
-                        ob = (SearchContainer<SearchMovie>)result.Result;
+                        ob = isPickedById ? (Movie) result.Result : (SearchContainer<SearchMovie>)result.Result;
                         source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
                     }
                     catch (Exception)
                     {
-                        ob = (SearchContainer<SearchCollection>)result.Result;
+                        ob = isPickedById ? (Collection) result.Result : (SearchContainer<SearchCollection>)result.Result;
                         source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                     }
                 }
@@ -571,6 +574,22 @@ namespace FoliCon.Modules
             }
 
             return cultureInfo;
+        }
+
+        public static void SaveMediaInfo(int id, string mediaType, string folderPath)
+        {
+            var filePath = $@"{folderPath}\folicon.folicon";
+            InIHelper.AddValue("ID", id.ToString(),null,filePath);
+            InIHelper.AddValue("MediaType", mediaType,null,filePath);
+        }
+
+        public static (string ID, string MediaType) ReadMediaInfo(string folderPath)
+        {
+            var filePath = $@"{folderPath}\folicon.folicon";
+            var id = File.Exists(filePath) ? InIHelper.ReadValue("ID", null, filePath) : null;
+            var mediaType = File.Exists(filePath) ? InIHelper.ReadValue("MediaType", null, filePath) : null;
+            var mediaInfo = (ID:id, MediaType:mediaType);
+            return mediaInfo;
         }
     }
 }

@@ -15,14 +15,15 @@ namespace FoliCon.Modules
         }
 
         public static void ShowSearchResult(this IDialogService dialogService, string searchMode, string query,
-            string folderPath, ResultResponse result, Tmdb tmdbObject, IgdbClass igdbObject,
+            string folderPath, ResultResponse result, Tmdb tmdbObject, IgdbClass igdbObject, bool isPickedById,
             Action<IDialogResult> callBack)
         {
             var p = new DialogParameters
             {
                 {"query", query}, {"result", result}, {"searchmode", searchMode}, {"tmdbObject", tmdbObject},
                 {"igdbObject", igdbObject},
-                {"folderpath", folderPath}
+                {"folderpath", folderPath},
+                {"isPickedById" , isPickedById}
             };
             dialogService.ShowDialog("SearchResult", p, callBack);
         }
@@ -57,11 +58,12 @@ namespace FoliCon.Modules
         {
             dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
         }
-        public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, ResultResponse result,int pickedIndex, System.Collections.ObjectModel.ObservableCollection<ListItem> resultData, Action<IDialogResult> callBack)
+        public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, ResultResponse result,int pickedIndex, System.Collections.ObjectModel.ObservableCollection<ListItem> resultData, bool isPickedById, Action<IDialogResult> callBack)
         {
             var p = new DialogParameters
             {
-                {"pickedIndex", pickedIndex}, {"result", result}, {"tmdbObject",tmdbObject} , {"resultList", resultData}
+                {"pickedIndex", pickedIndex}, {"result", result}, {"tmdbObject",tmdbObject} , {"resultList", resultData},
+                {"isPickedById" , isPickedById}
             };
             dialogService.ShowDialog("PosterPicker", p, callBack);
         }
