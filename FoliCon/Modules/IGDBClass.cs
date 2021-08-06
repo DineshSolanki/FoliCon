@@ -54,7 +54,7 @@ namespace FoliCon.Modules
         {
             Contract.Assert(_serviceClient != null);
             var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
-                $"fields name,first_release_date,total_rating,summary,cover.*; where id = {id}");
+                $"fields name,first_release_date,total_rating,summary,cover.*; where id = {id};");
             var response = new ResultResponse
             {
                 MediaType = MediaTypes.Game,

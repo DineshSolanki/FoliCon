@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using FoliCon.Properties.Langs;
 
@@ -99,10 +100,10 @@ namespace FoliCon.ViewModels
                 var lastIndex = Index;
                 if (searchResult.Results?.Length > 0)
                 {
-                    TotalPosters = searchResult.Results.Length + offset;
+                    TotalPosters = searchResult.Results.Count( result => result.IsDownloadable) + offset;
                     foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
                     {
-                        Index = item.Index + lastIndex;
+                        Index += lastIndex;
                         if (!item.Value.IsDownloadable)
                             continue;
                         using (var bm = await Util.GetBitmapFromUrlAsync(item.Value.Thumbs[0].Src))
@@ -114,6 +115,8 @@ namespace FoliCon.ViewModels
                         {
                             return;
                         }
+
+                        Index++;
                     }
                     if (searchResult.HasMore)
                     {

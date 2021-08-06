@@ -35,22 +35,76 @@ namespace FoliCon.ViewModels
         private Tmdb _tmdbObject;
         private IgdbClass _igdbObject;
         private string customRating;
+
         #endregion Variables
 
         #region Properties
 
-        public string Title { get => _title; set => SetProperty(ref _title, value); }
-        public string SearchTitle { get => _searchTitle; set => SetProperty(ref _searchTitle, value); }
-        public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
-        public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-        public string CustomRating { get => customRating; set => SetProperty(ref customRating, value); }
-        public ListViewData ResultListViewData { get => _resultListViewData; set => SetProperty(ref _resultListViewData, value); }
+        public string Title
+        {
+            get => _title;
+            set => SetProperty(ref _title, value);
+        }
 
-        public string SearchAgainTitle { get => _searchAgainTitle; set => SetProperty(ref _searchAgainTitle, value); }
-        public List<string> FileList { get => _fileList; set => SetProperty(ref _fileList, value); }
-        public ResultResponse SearchResult { get => _searchResult; set => SetProperty(ref _searchResult, value); }
-        public string SearchMode { get => _searchMode; set => SetProperty(ref _searchMode, value); }
-        public bool IsSearchFocused { get => _isSearchFocused; set => SetProperty(ref _isSearchFocused, value); }
+        public string SearchTitle
+        {
+            get => _searchTitle;
+            set => SetProperty(ref _searchTitle, value);
+        }
+
+        public string BusyContent
+        {
+            get => _busyContent;
+            set => SetProperty(ref _busyContent, value);
+        }
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetProperty(ref _isBusy, value);
+        }
+
+        public string CustomRating
+        {
+            get => customRating;
+            set => SetProperty(ref customRating, value);
+        }
+
+        public ListViewData ResultListViewData
+        {
+            get => _resultListViewData;
+            set => SetProperty(ref _resultListViewData, value);
+        }
+
+        public string SearchAgainTitle
+        {
+            get => _searchAgainTitle;
+            set => SetProperty(ref _searchAgainTitle, value);
+        }
+
+        public List<string> FileList
+        {
+            get => _fileList;
+            set => SetProperty(ref _fileList, value);
+        }
+
+        public ResultResponse SearchResult
+        {
+            get => _searchResult;
+            set => SetProperty(ref _searchResult, value);
+        }
+
+        public string SearchMode
+        {
+            get => _searchMode;
+            set => SetProperty(ref _searchMode, value);
+        }
+
+        public bool IsSearchFocused
+        {
+            get => _isSearchFocused;
+            set => SetProperty(ref _isSearchFocused, value);
+        }
 
         #endregion Properties
 
@@ -72,12 +126,15 @@ namespace FoliCon.ViewModels
             ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
             PickCommand = new DelegateCommand(PickMethod);
             SortResultCommand = new DelegateCommand(SortResult);
-            SkipAllCommand = new DelegateCommand(delegate { GlobalVariables.SkipAll = true; CloseDialog("false"); });
+            SkipAllCommand = new DelegateCommand(delegate
+            {
+                GlobalVariables.SkipAll = true;
+                CloseDialog("false");
+            });
         }
 
         private void SortResult()
         {
-            
         }
 
         protected virtual void CloseDialog(string parameter)
@@ -135,16 +192,21 @@ namespace FoliCon.ViewModels
             {
                 IsBusy = false;
             }
+
             LoadData(titleToSearch);
         }
 
         private void LoadData(string searchTitle)
         {
             if (SearchResult != null
-                && (_isPickedById ? SearchResult.Result != null ? 1 : null : SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
-                && (_isPickedById ? SearchResult.Result != null ? 1 : 0 : SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
+                && (_isPickedById ? SearchResult.Result != null ? 1 :
+                    null :
+                    SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
+                && (_isPickedById ? SearchResult.Result != null ? 1 :
+                    0 :
+                    SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
             {
-                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle,_isPickedById);
+                ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
                 if (ResultListViewData.Data.Count != 0)
                     ResultListViewData.SelectedItem = ResultListViewData.Data[0];
             }
@@ -152,6 +214,7 @@ namespace FoliCon.ViewModels
             {
                 IsSearchFocused = true;
             }
+
             FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
         }
 
@@ -167,20 +230,34 @@ namespace FoliCon.ViewModels
         {
             if (ResultListViewData.SelectedItem == null) return;
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
-            var rating="";
+            var rating = "";
             if (CustomRating is not null && customRating != "_._")
             {
                 rating = CustomRating.Replace('_', '0');
             }
+
             try
             {
-                if (SearchMode == MediaTypes.Game)
+                if (_isPickedById)
                 {
-                    _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath,rating);
+                    if (SearchResult.MediaType == MediaTypes.Game)
+                    {
+                        _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath, rating);
+                    }
+                    else
+                    {
+                        _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType,
+                            _fullFolderPath, rating);
+                    }
+                }
+                else if (SearchMode == MediaTypes.Game)
+                {
+                    _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath, rating);
                 }
                 else
                 {
-                    _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType, _fullFolderPath, rating);
+                    _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType,
+                        _fullFolderPath, rating);
                 }
             }
             catch (Exception ex)
@@ -190,6 +267,7 @@ namespace FoliCon.ViewModels
                     MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
                 }
             }
+
             CloseDialog("true");
         }
 
@@ -203,9 +281,15 @@ namespace FoliCon.ViewModels
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
             try
             {
-                if (SearchMode != MediaTypes.Game)
+                if (_isPickedById)
                 {
-                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,_isPickedById, r => { });
+                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
+                        _isPickedById, r => { });
+                }
+                else if (SearchMode != MediaTypes.Game)
+                {
+                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
+                        _isPickedById, r => { });
                 }
             }
             catch (Exception ex)
