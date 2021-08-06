@@ -161,7 +161,10 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(UsePosterOverlay));
             OnPropertyChanged(nameof(Version));
             OnPropertyChanged(nameof(Year));
-            OnPropertyChanged(nameof(ExceptionOccurred));
+            OnPropertyChanged(nameof(DeleteMediaInfo));
+            OnPropertyChanged(nameof(DeleteMediaInfoTooltip));
+            OnPropertyChanged(nameof(DeleteMediaInfoConfirmation));
+            OnPropertyChanged(nameof(ConfirmMediaInfoDeletion));
         }
 
         public string About => Lang.About;
@@ -412,6 +415,10 @@ namespace FoliCon.Properties.Langs
 
         public string Year => Lang.Year;
         public string ExceptionOccurred => Lang.ExceptionOccurred;
+        public string ConfirmMediaInfoDeletion => Lang.ConfirmMediaInfoDeletion;
+        public string DeleteMediaInfoConfirmation => Lang.DeleteMediaInfoConfirmation;
+        public string DeleteMediaInfoTooltip => Lang.DeleteMediaInfoTooltip;
+        public string DeleteMediaInfo => Lang.DeleteMediaInfo;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -671,6 +678,9 @@ namespace FoliCon.Properties.Langs
         public static string Year = nameof(Year);
 
         public static string ExceptionOccurred = nameof(ExceptionOccurred);
-
+        public static string ConfirmMediaInfoDeletion = nameof(ConfirmMediaInfoDeletion);
+        public static string DeleteMediaInfoConfirmation = nameof(DeleteMediaInfoConfirmation);
+        public static string DeleteMediaInfoTooltip = nameof(DeleteMediaInfoTooltip);
+        public static string DeleteMediaInfo = nameof(DeleteMediaInfo);
     }
 }

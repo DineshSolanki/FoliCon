@@ -12,5 +12,7 @@ namespace FoliCon.Models
             "Alternate" => IconOverlay.Alternate,
             _ => IconOverlay.Alternate
         };
+
+        public static string MediaInfoFile = "info.folicon";
     }
 }

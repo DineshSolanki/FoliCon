@@ -261,7 +261,7 @@ namespace FoliCon.ViewModels
 
                 File.Move(iconPath, newIconPath);
                 if (!File.Exists(newIconPath)) continue;
-                Util.HideIcons(newIconPath);
+                Util.HideFile(newIconPath);
                 Util.SetFolderIcon($"{Directories[i]}.ico", folderPath);
                 Index++;
                 if (StopSearch)

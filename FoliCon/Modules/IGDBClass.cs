@@ -50,6 +50,18 @@ namespace FoliCon.Modules
             };
             return response;
         }
+        public async Task<ResultResponse> SearchGameByIdAsync(string id)
+        {
+            Contract.Assert(_serviceClient != null);
+            var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
+                $"fields name,first_release_date,total_rating,summary,cover.*; where id = {id};");
+            var response = new ResultResponse
+            {
+                MediaType = MediaTypes.Game,
+                Result = r
+            };
+            return response;
+        }
 
         public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(Game[] result)
         {
@@ -81,7 +93,8 @@ namespace FoliCon.Modules
             var year = result.FirstReleaseDate != null ? result.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
             var posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720);
             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, rating, fullFolderPath, folderName,
-                year);
+                year, (int)(result.Id ?? 0));
+            if (result.Id != null) Util.SaveMediaInfo((int)result.Id, "Game", fullFolderPath);
             var tempImage = new ImageToDownload
             {
                 LocalPath = localPosterPath,

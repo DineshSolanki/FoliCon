@@ -9,8 +9,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using FoliCon.Properties.Langs;
+using TMDbLib.Objects.Collections;
 using TMDbLib.Objects.General;
+using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.Search;
+using TMDbLib.Objects.TvShows;
 
 namespace FoliCon.ViewModels
 {
@@ -25,6 +28,7 @@ namespace FoliCon.ViewModels
         public event Action<IDialogResult> RequestClose;
         private ResultResponse _result;
         private int _totalPosters;
+        private bool _isPickedById;
         #endregion
 
         #region Properties
@@ -82,26 +86,27 @@ namespace FoliCon.ViewModels
             PickedIndex = parameters.GetValue<int>("pickedIndex");
             TmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
             resultList = parameters.GetValue<ObservableCollection<ListItem>>("resultList");
-            LoadData(Result.Result.Results[PickedIndex], Result.MediaType);
+            _isPickedById = parameters.GetValue<bool>("isPickedById");
+            LoadData(_isPickedById ? Result.Result : Result.Result.Results[PickedIndex], Result.MediaType);
         }
         public void LoadData(dynamic result, string resultType)
         {
             ImagesWithId images = new();
             if (resultType == MediaTypes.Tv)
             {
-                var pickedResult = (SearchTv)result;
+                dynamic pickedResult = _isPickedById ? (TvShow)result : (SearchTv)result;
                 Title = pickedResult.Name;
                 images = TmdbObject.SearchTvImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Movie)
             {
-                var pickedResult = (SearchMovie)result;
+                dynamic pickedResult = _isPickedById ? (Movie)result : (SearchMovie)result;
                 Title = pickedResult.Title;
                 images = TmdbObject.SearchMovieImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Collection)
             {
-                var pickedResult = (SearchCollection)result;
+                dynamic pickedResult = _isPickedById ? (Collection)result : (SearchCollection)result;
                 Title = pickedResult.Name;
                 images = TmdbObject.SearchCollectionImages(pickedResult.Id);
             }
@@ -166,7 +171,8 @@ namespace FoliCon.ViewModels
         private void PickMethod(object parameter)
         {
             var link = (string)parameter;
-            Result.Result.Results[PickedIndex].PosterPath = link;
+            var result = _isPickedById ? Result.Result : Result.Result.Results[PickedIndex];
+            result.PosterPath = link;
             resultList[PickedIndex].Poster = link;
             CloseDialog("true");
         }

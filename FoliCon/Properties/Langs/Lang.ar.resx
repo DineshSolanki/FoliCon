@@ -499,4 +499,17 @@
   <data name="ExceptionOccurred" xml:space="preserve">
 	  <value>حدث استثناء</value>
   </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+	  <value>تأكيد حذف ملفات معلومات الوسائط</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+	  <value>حذف معلومات الوسائط</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+	  <value>هل أنت متأكد أنك تريد حذف ملفات معلومات وسائط فوليكون؟</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+	  <value>سيؤدي هذا إلى حذف ملفات معلومات الوسائط التي يستخدمها فوليكون لتخزين معرف الوسائط بعد تحديد العنوان لأول مرة.
+يساعد هذا فوليكون في التعرف على الوسائط دون الحاجة إلى الاختيار من بين العناوين الغامضة.</value>
+  </data>
 </root>

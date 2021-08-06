@@ -499,4 +499,17 @@
   <data name="ExceptionOccurred" xml:space="preserve">
 	  <value>Произошло исключение</value>
   </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+	  <value>Подтвердите удаление файлов Media Info</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+	  <value>Удалить информацию о мультимедиа</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+	  <value>Вы уверены, что хотите удалить информационные файлы мультимедиа Folicon?</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+	  <value>Это приведет к удалению файлов информации о мультимедиа, используемых folicon для хранения идентификатора мультимедиа после выбора заголовка в первый раз.
+Это помогает фоликону идентифицировать носители без необходимости выбирать из двусмысленных названий.</value>
+  </data>
 </root>

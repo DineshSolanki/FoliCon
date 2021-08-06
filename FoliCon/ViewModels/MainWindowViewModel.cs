@@ -176,6 +176,7 @@ namespace FoliCon.ViewModels
 
         public DelegateCommand CustomIconsCommand { get; private set; }
         public DelegateCommand DeleteIconsCommand { get; private set; }
+        public DelegateCommand DeleteMediaInfoCommand { get; private set; }
 
         public DelegateCommand HelpCommand { get; } = new(() =>
             Util.StartProcess("https://github.com/DineshSolanki/FoliCon"));
@@ -300,17 +301,28 @@ namespace FoliCon.ViewModels
                 // TODO: Set cursor to WAIT.
                 var isAutoPicked = false;
                 var searchTitle = TitleCleaner.Clean(itemTitle);
-                var response = SearchMode == "Game"
-                    ? await _igdbObject.SearchGameAsync(searchTitle)
-                    : await _tmdbObject.SearchAsync(searchTitle, SearchMode);
-                int resultCount = SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+                var (id, mediaType) = Util.ReadMediaInfo(fullFolderPath);
+                var isPickedById = false;
+                ResultResponse response;
+                if (id != null && mediaType != null )
+                {
+                    isPickedById = true;
+                    response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+                }
+                else
+                {
+                    response = SearchMode == "Game"
+                        ? await _igdbObject.SearchGameAsync(searchTitle)
+                        : await _tmdbObject.SearchAsync(searchTitle, SearchMode);
+                }
+                int resultCount = isPickedById ? response.Result != null ? 1 : 0 : SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
                 switch (resultCount)
                 {
                     case 0:
                         MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
                             LangProvider.GetLang("NoResultFound")));
                         _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response,
-                            _tmdbObject, _igdbObject,
+                            _tmdbObject, _igdbObject,isPickedById,
                             r =>
                             {
                                 dialogResult = r.Result switch
@@ -328,23 +340,27 @@ namespace FoliCon.ViewModels
                             {
                                 if (SearchMode == "Game")
                                 {
-                                    _igdbObject.ResultPicked(response.Result[0], fullFolderPath);
+                                    var result = isPickedById
+                                        ? response.Result
+                                        : response.Result[0];
+                                    _igdbObject.ResultPicked(result, fullFolderPath);
                                 }
                                 else
                                 {
-                                    _tmdbObject.ResultPicked(response.Result.Results[0], response.MediaType,
-                                        fullFolderPath);
+                                    var result = isPickedById
+                                        ? response.Result
+                                        : response.Result.Results[0];
+                                    _tmdbObject.ResultPicked(result, response.MediaType,
+                                        fullFolderPath, "", isPickedById);
                                 }
 
                                 isAutoPicked = true;
                             }
                             catch (Exception ex)
                             {
-                                if (ex.Message == "NoPoster")
-                                {
-                                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
-                                }
-
+                                MessageBox.Show(ex.Message == "NoPoster"
+                                    ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle)
+                                    : CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
                                 isAutoPicked = false;
                             }
 
@@ -357,7 +373,7 @@ namespace FoliCon.ViewModels
                                 if (IsPosterWindowShown || !IsSkipAmbiguous)
                                 {
                                     _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
-                                        response, _tmdbObject, _igdbObject,
+                                        response, _tmdbObject, _igdbObject, isPickedById,
                                         r =>
                                         {
                                             dialogResult = r.Result switch
@@ -422,6 +438,7 @@ namespace FoliCon.ViewModels
             PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
+            DeleteMediaInfoCommand = new DelegateCommand(DeleteMediaInfo);
             CustomIconsCommand = new DelegateCommand(delegate
             {
                 _dialogService.ShowCustomIconWindow(
@@ -449,6 +466,23 @@ namespace FoliCon.ViewModels
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                 }
             });
+        }
+
+        private void DeleteMediaInfo()
+        {
+            if (Directory.Exists(SelectedFolder))
+            {
+                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
+                    LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == System.Windows.MessageBoxResult.Yes)
+                {
+                    Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
+                }
+            }
+            else
+            {
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
+                    LangProvider.GetLang("EmptyDirectory")));
+            }
         }
 
         private void InitializeProperties()

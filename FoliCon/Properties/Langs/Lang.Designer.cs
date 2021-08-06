@@ -268,6 +268,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm Media Info files deletion.
+        /// </summary>
+        public static string ConfirmMediaInfoDeletion {
+            get {
+                return ResourceManager.GetString("ConfirmMediaInfoDeletion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Click &quot;Confirm&quot; to open folder..
         /// </summary>
         public static string ConfirmToOpenFolder {
@@ -336,6 +345,34 @@ namespace FoliCon.Properties.Langs {
         public static string DeleteIconsTooltip {
             get {
                 return ResourceManager.GetString("DeleteIconsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete media info.
+        /// </summary>
+        public static string DeleteMediaInfo {
+            get {
+                return ResourceManager.GetString("DeleteMediaInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete folicon media info files ?.
+        /// </summary>
+        public static string DeleteMediaInfoConfirmation {
+            get {
+                return ResourceManager.GetString("DeleteMediaInfoConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This will delete media info files used by folicon to store media id after a title is selected for the first time.
+        ///This helps folicon identify media without having to chose from ambigous titles..
+        /// </summary>
+        public static string DeleteMediaInfoTooltip {
+            get {
+                return ResourceManager.GetString("DeleteMediaInfoTooltip", resourceCulture);
             }
         }
         
