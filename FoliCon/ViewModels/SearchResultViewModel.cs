@@ -280,17 +280,16 @@ namespace FoliCon.ViewModels
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
             try
             {
-                if (_isPickedById && SearchResult.MediaType != MediaTypes.Game)
+                if (SearchResult.MediaType == MediaTypes.Game)
                 {
-
-                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
-                        _isPickedById, r => { });
+                    if (SearchResult.Result[pickedIndex].Artworks is null)
+                    {
+                        MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
+                        return;
+                    }
                 }
-                else if (SearchResult.MediaType != MediaTypes.Game)
-                {
-                    _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
+                _dialogService.ShowPosterPicker(_tmdbObject,_igdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
                         _isPickedById, r => { });
-                }
             }
             catch (Exception ex)
             {
