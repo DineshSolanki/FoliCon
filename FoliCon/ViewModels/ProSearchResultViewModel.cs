@@ -65,6 +65,7 @@ namespace FoliCon.ViewModels
 
         public DelegateCommand SkipCommand { get; set; }
         public DelegateCommand<object> PickCommand { get; set; }
+        public DelegateCommand<object> OpenImageCommand { get; set; }
         public DelegateCommand SearchAgainCommand { get; set; }
         public DelegateCommand StopSearchCommand { get; set; }
 
@@ -73,8 +74,17 @@ namespace FoliCon.ViewModels
             ImageUrl = new ObservableCollection<DArtImageList>();
             StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
             PickCommand = new DelegateCommand<object>(PickMethod);
+            OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
             SkipCommand = new DelegateCommand(SkipMethod);
             SearchAgainCommand = new DelegateCommand(PrepareForSearch);
+        }
+
+        private void OpenImageMethod(object parameter)
+        {
+            var link = (string)parameter;
+            var browser = new ImageBrowser(link);
+            browser.IsFullScreen = true;
+            browser.Show();
         }
 
         private async void PrepareForSearch()

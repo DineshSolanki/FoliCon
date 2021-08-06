@@ -50,12 +50,22 @@ namespace FoliCon.ViewModels
         public ObservableCollection<DArtImageList> ImageUrl { get; set; }
         public DelegateCommand StopSearchCommand { get; set; }
         public DelegateCommand<object> PickCommand { get; set; }
+        public DelegateCommand<object> OpenImageCommand { get; set; }
         #endregion
         public PosterPickerViewModel()
         {
             ImageUrl = new ObservableCollection<DArtImageList>();
             StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
             PickCommand = new DelegateCommand<object>(PickMethod);
+            OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+        }
+
+        private void OpenImageMethod(object parameter)
+        {
+            var link = (string)parameter;
+            new ImageBrowser(Result.MediaType == MediaTypes.Game 
+                ? $"https://{ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..]}"
+                : link).Show();
         }
 
         protected virtual void CloseDialog(string parameter)

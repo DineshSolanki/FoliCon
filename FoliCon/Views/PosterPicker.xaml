@@ -51,6 +51,10 @@
                                                   Command="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.(viewModels:PosterPickerViewModel.PickCommand)}"
                                                   CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" />
+                                    <MouseBinding MouseAction="LeftClick"
+                                                  Command="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:PosterPickerViewModel.OpenImageCommand)}"
+                                                  CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" />
                                 </Image.InputBindings>
                             </Image>
                         </DataTemplate>
