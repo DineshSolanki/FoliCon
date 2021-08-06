@@ -412,7 +412,7 @@ namespace FoliCon.Modules
                 }
 
                 if (!File.Exists(targetFile)) continue;
-                HideIcons(targetFile);
+                HideFile(targetFile);
                 SetFolderIcon($"{i}.ico", $@"{selectedFolder}\{i}");
             }
             ApplyChanges(selectedFolder);
@@ -469,15 +469,15 @@ namespace FoliCon.Modules
             icon.Dispose();
         }
 
-        public static void HideIcons(string icoFile)
+        public static void HideFile(string icoFile)
         {
-            // Set icon file attribute to "Hidden"
+            // Set file attribute to "Hidden"
             if ((File.GetAttributes(icoFile) & FileAttributes.Hidden) != FileAttributes.Hidden)
             {
                 File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.Hidden);
             }
 
-            // Set icon file attribute to "System"
+            // Set file attribute to "System"
             if ((File.GetAttributes(icoFile) & FileAttributes.System) != FileAttributes.System)
             {
                 File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
@@ -581,6 +581,7 @@ namespace FoliCon.Modules
             var filePath = $@"{folderPath}\folicon.folicon";
             InIHelper.AddValue("ID", id.ToString(),null,filePath);
             InIHelper.AddValue("MediaType", mediaType,null,filePath);
+            Util.HideFile(filePath);
         }
 
         public static (string ID, string MediaType) ReadMediaInfo(string folderPath)

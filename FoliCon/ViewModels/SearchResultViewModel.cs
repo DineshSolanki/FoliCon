@@ -246,8 +246,8 @@ namespace FoliCon.ViewModels
                     }
                     else
                     {
-                        _tmdbObject.ResultPicked(SearchResult.Result.Results[pickedIndex], SearchResult.MediaType,
-                            _fullFolderPath, rating);
+                        _tmdbObject.ResultPicked(SearchResult.Result, SearchResult.MediaType,
+                            _fullFolderPath, rating,_isPickedById);
                     }
                 }
                 else if (SearchMode == MediaTypes.Game)
@@ -262,10 +262,9 @@ namespace FoliCon.ViewModels
             }
             catch (Exception ex)
             {
-                if (ex.Message == "NoPoster")
-                {
-                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
-                }
+                MessageBox.Show(ex.Message == "NoPoster"
+                    ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle)
+                    : CustomMessageBox.Error(ex.Message, SearchTitle));
             }
 
             CloseDialog("true");
@@ -281,12 +280,13 @@ namespace FoliCon.ViewModels
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
             try
             {
-                if (_isPickedById)
+                if (_isPickedById && SearchResult.MediaType != MediaTypes.Game)
                 {
+
                     _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
                         _isPickedById, r => { });
                 }
-                else if (SearchMode != MediaTypes.Game)
+                else if (SearchResult.MediaType != MediaTypes.Game)
                 {
                     _dialogService.ShowPosterPicker(_tmdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
                         _isPickedById, r => { });
