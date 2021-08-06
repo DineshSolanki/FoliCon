@@ -78,6 +78,9 @@
                 <MenuItem x:Name="MenuDeleteIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.DeleteIconsTooltip}}"
                           Command="{Binding DeleteIconsCommand}" />
+                <MenuItem x:Name="MenuDeleteMediaInfoBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.DeleteMediaInfo}}"
+                          ToolTip="{ex:Lang Key={x:Static langs:LangKeys.DeleteMediaInfoTooltip}}"
+                          Command="{Binding DeleteMediaInfoCommand}" />
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />

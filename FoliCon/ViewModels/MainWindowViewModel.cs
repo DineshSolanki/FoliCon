@@ -176,6 +176,7 @@ namespace FoliCon.ViewModels
 
         public DelegateCommand CustomIconsCommand { get; private set; }
         public DelegateCommand DeleteIconsCommand { get; private set; }
+        public DelegateCommand DeleteMediaInfoCommand { get; private set; }
 
         public DelegateCommand HelpCommand { get; } = new(() =>
             Util.StartProcess("https://github.com/DineshSolanki/FoliCon"));
@@ -437,6 +438,7 @@ namespace FoliCon.ViewModels
             PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
+            DeleteMediaInfoCommand = new DelegateCommand(DeleteMediaInfo);
             CustomIconsCommand = new DelegateCommand(delegate
             {
                 _dialogService.ShowCustomIconWindow(
@@ -464,6 +466,23 @@ namespace FoliCon.ViewModels
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                 }
             });
+        }
+
+        private void DeleteMediaInfo()
+        {
+            if (Directory.Exists(SelectedFolder))
+            {
+                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
+                    LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == System.Windows.MessageBoxResult.Yes)
+                {
+                    Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
+                }
+            }
+            else
+            {
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
+                    LangProvider.GetLang("EmptyDirectory")));
+            }
         }
 
         private void InitializeProperties()

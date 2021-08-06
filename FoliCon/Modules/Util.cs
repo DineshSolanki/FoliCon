@@ -191,6 +191,15 @@ namespace FoliCon.Modules
             File.Delete(icoFile);
             File.Delete(iniFile);
         }
+
+        public static void DeleteMediaInfoFromSubfolders(string folderPath)
+        {
+            foreach (var folder in Directory.EnumerateDirectories(folderPath))
+            {
+                var icoFile = Path.Combine(folder, GlobalVariables.MediaInfoFile);
+                File.Delete(icoFile);
+            }
+        }
         /// <summary>
         /// Checks if Web is accessible from This System
         /// </summary>
@@ -578,15 +587,15 @@ namespace FoliCon.Modules
 
         public static void SaveMediaInfo(int id, string mediaType, string folderPath)
         {
-            var filePath = $@"{folderPath}\folicon.folicon";
-            InIHelper.AddValue("ID", id.ToString(),null,filePath);
+            var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
+            InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture),null,filePath);
             InIHelper.AddValue("MediaType", mediaType,null,filePath);
-            Util.HideFile(filePath);
+            HideFile(filePath);
         }
 
         public static (string ID, string MediaType) ReadMediaInfo(string folderPath)
         {
-            var filePath = $@"{folderPath}\folicon.folicon";
+            var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
             var id = File.Exists(filePath) ? InIHelper.ReadValue("ID", null, filePath) : null;
             var mediaType = File.Exists(filePath) ? InIHelper.ReadValue("MediaType", null, filePath) : null;
             var mediaInfo = (ID:id, MediaType:mediaType);

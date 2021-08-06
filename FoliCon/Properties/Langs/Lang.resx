@@ -186,6 +186,9 @@
   <data name="ConfirmIconDeletion" xml:space="preserve">
     <value>Confirm Icon Deletion</value>
   </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+    <value>Confirm Media Info files deletion</value>
+  </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
     <value>Click "Confirm" to open folder.</value>
   </data>
@@ -209,6 +212,16 @@
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
     <value>This will delete existing icons from all subFolders.</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+    <value>Delete media info</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+    <value>Are you sure you want to delete folicon media info files ?</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+    <value>This will delete media info files used by folicon to store media id after a title is selected for the first time.
+This helps folicon identify media without having to chose from ambigous titles.</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
     <value>Developed By Dinesh Solanki.</value>

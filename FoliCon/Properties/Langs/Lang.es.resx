@@ -499,4 +499,17 @@ y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpe
   <data name="ExceptionOccurred" xml:space="preserve">
 	  <value>Ocurrió una excepción</value>
   </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+	  <value>Confirmar la eliminación de archivos de información multimedia</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+	  <value>Eliminar información multimedia</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+	  <value>¿Está seguro de que desea eliminar los archivos de información de medios de folicon?</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+	  <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
+Esto ayuda a folicon a identificar los medios sin tener que elegir entre títulos ambiguos.</value>
+  </data>
 </root>
