@@ -63,9 +63,12 @@ namespace FoliCon.ViewModels
         private void OpenImageMethod(object parameter)
         {
             var link = (string)parameter;
-            new ImageBrowser(Result.MediaType == MediaTypes.Game 
+            var browser = new ImageBrowser(Result.MediaType == MediaTypes.Game 
                 ? $"https://{ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..]}"
-                : link).Show();
+                : link);
+            browser.ShowTitle = false;
+            browser.IsFullScreen = true;
+            browser.Show();
         }
 
         protected virtual void CloseDialog(string parameter)

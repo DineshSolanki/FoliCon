@@ -182,6 +182,7 @@ namespace FoliCon.ViewModels
                 IsBusy = true;
             }
 
+            _isPickedById = false;
             var titleToSearch = SearchAgainTitle ?? SearchTitle;
             BusyContent = LangProvider.GetLang("SearchingWithName").Format(titleToSearch);
             var result = SearchMode == MediaTypes.Game

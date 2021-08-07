@@ -82,8 +82,11 @@ namespace FoliCon.ViewModels
         private void OpenImageMethod(object parameter)
         {
             var link = (string)parameter;
-            var browser = new ImageBrowser(link);
-            browser.IsFullScreen = true;
+            var browser = new ImageBrowser(link)
+            {
+                ShowTitle = false,
+                IsFullScreen = true
+            };
             browser.Show();
         }
 
@@ -113,7 +116,6 @@ namespace FoliCon.ViewModels
                     TotalPosters = searchResult.Results.Count( result => result.IsDownloadable) + offset;
                     foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
                     {
-                        Index += lastIndex;
                         if (!item.Value.IsDownloadable)
                             continue;
                         using (var bm = await Util.GetBitmapFromUrlAsync(item.Value.Thumbs[0].Src))
