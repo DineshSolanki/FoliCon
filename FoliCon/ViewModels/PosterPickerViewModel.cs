@@ -113,7 +113,7 @@ namespace FoliCon.ViewModels
             var resultType = Result.MediaType;
             var response = _isPickedById
                 ? resultType == MediaTypes.Game ? Result.Result[0] : Result.Result
-                : resultType == MediaTypes.Game ? Result.Result : Result.Result.Results[PickedIndex];
+                : resultType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
 
             if (resultType != MediaTypes.Game)
             {
@@ -240,7 +240,7 @@ namespace FoliCon.ViewModels
             var link = (string)parameter;
             var result = _isPickedById
                 ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
-                : Result.MediaType == MediaTypes.Game ? Result.Result : Result.Result.Results[PickedIndex];
+                : Result.MediaType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
             if (Result.MediaType == MediaTypes.Game)
             {
                 result.Cover.Value.ImageId = link;

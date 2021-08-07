@@ -248,7 +248,7 @@ namespace FoliCon.ViewModels
                     else
                     {
                         _tmdbObject.ResultPicked(SearchResult.Result, SearchResult.MediaType,
-                            _fullFolderPath, rating,_isPickedById);
+                            _fullFolderPath, rating, _isPickedById);
                     }
                 }
                 else if (SearchMode == MediaTypes.Game)
@@ -289,15 +289,16 @@ namespace FoliCon.ViewModels
                         return;
                     }
                 }
-                _dialogService.ShowPosterPicker(_tmdbObject,_igdbObject, SearchResult, pickedIndex, ResultListViewData.Data,
-                        _isPickedById, r => { });
+
+                _dialogService.ShowPosterPicker(_tmdbObject, _igdbObject, SearchResult, pickedIndex,
+                    ResultListViewData.Data,
+                    _isPickedById, r => { });
             }
             catch (Exception ex)
             {
-                if (ex.Message == "NoPoster")
-                {
-                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
-                }
+                MessageBox.Show(ex.Message == "NoPoster"
+                    ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle)
+                    : CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
             }
         }
     }
