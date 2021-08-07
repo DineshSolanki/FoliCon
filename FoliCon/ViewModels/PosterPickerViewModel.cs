@@ -182,9 +182,11 @@ namespace FoliCon.ViewModels
                     Index = item.Index + 1;
                     if (image is not null)
                     {
-                        var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W342, image.FilePath).ToString() : null;
+                        var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W92, image.FilePath).ToString() : null;
+                        var qualityPath = TmdbObject.GetClient().GetImageUrl(PosterSize.W500, image.FilePath)
+                            .ToString(); //TODO: give user option to set quality of preview.
                         var bm = await Util.GetBitmapFromUrlAsync(posterPath);
-                        ImageUrl.Add(new DArtImageList(posterPath, Util.LoadBitmap(bm)));
+                        ImageUrl.Add(new DArtImageList(qualityPath, Util.LoadBitmap(bm)));
                         bm.Dispose();
                     }
                     if (_stopSearch)

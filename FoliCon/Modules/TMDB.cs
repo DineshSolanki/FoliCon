@@ -209,7 +209,8 @@ namespace FoliCon.Modules
 
             var folderName = Path.GetFileName(fullFolderPath);
             var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
-            string posterUrl = string.Concat(PosterBase, result.PosterPath);
+
+            string posterUrl = string.Concat(PosterBase, result.PosterPath.Replace("http://image.tmdb.org/t/p/w500",""));
 
             if (resultType == MediaTypes.Tv)
             {
