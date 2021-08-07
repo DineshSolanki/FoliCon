@@ -53,7 +53,7 @@ DeviantArt API [Get it](https://www.deviantart.com/developers/register)
 * [DeviantArt](https://www.deviantart.com/) - Professional Mode searching
 * [IGDB](https://www.igdb.com/) - Games searching
 * [IconLib](https://www.codeproject.com/Articles/16178/IconLib-Icons-Unfolded-MultiIcon-and-Windows-Vista) - To make Icons from viewModel
-* [Extended WPF Toolkit™](https://github.com/xceedsoftware/wpftoolkit) - For Custom Controls
+* [Handy Controls](https://github.com/ghost1372/HandyControls) - For Custom Controls
 * [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) - For File Dialogs
 
 ## Authors
