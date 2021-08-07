@@ -43,6 +43,7 @@ namespace FoliCon.Modules
             Contract.Assert(_serviceClient != null);
             var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
                 $"search \"{query}\"; fields artworks.image_id, name,first_release_date,total_rating,summary,cover.*;");
+
             var response = new ResultResponse
             {
                 MediaType = MediaTypes.Game,
@@ -65,9 +66,9 @@ namespace FoliCon.Modules
 
         public async Task<Artwork[]> GetArtworksByGameIdAsync(string id)
         {
-            var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
-                $"fields id, artworks.image_id; where id = {id};");
-            return r.First().Artworks.Values;
+            var r = await _serviceClient.QueryAsync<Artwork>(IGDBClient.Endpoints.Artworks,
+                $"fields image_id; where game = {id};");
+            return r;
         }
         public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(Game[] result)
         {
