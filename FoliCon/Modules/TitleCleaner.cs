@@ -16,7 +16,8 @@ namespace FoliCon.Modules
             // p?i? \)? --Not needed. To emphasize removal of 1080i, closing bracket etc, but not needed due to the last part
             // .* --Remove all trailing information after having found year or resolution as junk usually follows
             var cleanTitle = Regex.Replace(normalizedTitle, "\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-            cleanTitle = Regex.Replace(cleanTitle, " {2,}", " ");
+            cleanTitle = Regex.Replace(cleanTitle, @"\[.*\]", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            cleanTitle = Regex.Replace(cleanTitle, " {2,}", " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             return string.IsNullOrWhiteSpace(cleanTitle) ? normalizedTitle : cleanTitle;
         }
     }
