@@ -296,9 +296,13 @@ namespace FoliCon.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message == "NoPoster"
-                    ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle)
-                    : CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+                if (ex.Message == "NoPoster")
+                {
+                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
+                }
+#if DEBUG
+                MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+#endif
             }
         }
     }

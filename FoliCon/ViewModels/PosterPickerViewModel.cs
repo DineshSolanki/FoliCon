@@ -8,7 +8,6 @@ using Prism.Services.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.IO;
 using FoliCon.Properties.Langs;
 using IGDB;
 using IGDB.Models;
@@ -65,9 +64,11 @@ namespace FoliCon.ViewModels
             var link = (string)parameter;
             var browser = new ImageBrowser(Result.MediaType == MediaTypes.Game 
                 ? $"https://{ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..]}"
-                : link);
-            browser.ShowTitle = false;
-            browser.IsFullScreen = true;
+                : link)
+            {
+                ShowTitle = false,
+                IsFullScreen = true
+            };
             browser.Show();
         }
 
@@ -108,7 +109,7 @@ namespace FoliCon.ViewModels
             LoadData();
             
         }
-        public async void LoadData()
+        public void LoadData()
         {
             var resultType = Result.MediaType;
             var response = _isPickedById
