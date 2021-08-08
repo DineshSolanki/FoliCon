@@ -338,11 +338,9 @@ namespace FoliCon.ViewModels
                         {
                             try
                             {
-                                if (SearchMode == "Game")
+                                if (isPickedById ? mediaType == "Game" : SearchMode == "Game")
                                 {
-                                    var result = isPickedById
-                                        ? response.Result
-                                        : response.Result[0];
+                                    var result = response.Result[0];
                                     _igdbObject.ResultPicked(result, fullFolderPath);
                                 }
                                 else
@@ -358,9 +356,13 @@ namespace FoliCon.ViewModels
                             }
                             catch (Exception ex)
                             {
-                                MessageBox.Show(ex.Message == "NoPoster"
-                                    ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle)
-                                    : CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+                                 if (ex.Message == "NoPoster")
+                {
+                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
+                }
+#if DEBUG
+                MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+#endif
                                 isAutoPicked = false;
                             }
 
