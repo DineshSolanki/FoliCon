@@ -31,6 +31,12 @@ dineshsolanki.github.io/folicon/</Description>
     <None Remove="Resources\PosterMockup.png" />
     <None Remove="Resources\shield.png" />
     <None Remove="Resources\Strong-WiFi.png" />
+    <None Remove="Resources\TitleBlacklist.folicon" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\TitleBlacklist.folicon">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
