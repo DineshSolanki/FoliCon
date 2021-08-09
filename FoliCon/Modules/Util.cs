@@ -49,8 +49,8 @@ namespace FoliCon.Modules
                 {
                     var info = new GrowlInfo
                     {
-
-                        Message = LangProvider.GetLang("NewVersionFound").Format(ver.TagName, ver.Changelog.Replace("\\n", Environment.NewLine)),
+                        Message = LangProvider.GetLang("NewVersionFound").Format(ver.TagName,
+                            ver.Changelog.Replace("\\n", Environment.NewLine)),
                         ConfirmStr = LangProvider.GetLang("UpdateNow"),
                         CancelStr = LangProvider.GetLang("Ignore"),
                         ShowDateTime = false,
@@ -75,7 +75,9 @@ namespace FoliCon.Modules
                     Growl.InfoGlobal(info);
                 }
             }
-            else Growl.ErrorGlobal(new GrowlInfo { Message = LangProvider.GetLang("NetworkNotAvailable"), ShowDateTime = false });
+            else
+                Growl.ErrorGlobal(new GrowlInfo
+                    { Message = LangProvider.GetLang("NetworkNotAvailable"), ShowDateTime = false });
         }
 
         /// <summary>
@@ -179,6 +181,7 @@ namespace FoliCon.Modules
             {
                 DeleteIconsFromFolder(folder);
             }
+
             RefreshIconCache();
             SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT, folderPath);
         }
@@ -200,6 +203,7 @@ namespace FoliCon.Modules
                 File.Delete(icoFile);
             }
         }
+
         /// <summary>
         /// Checks if Web is accessible from This System
         /// </summary>
@@ -229,9 +233,10 @@ namespace FoliCon.Modules
             if (!string.IsNullOrEmpty(folderPath))
             {
                 folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
-                                     where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
-                                     select Path.GetFileName(folder));
+                    where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
+                    select Path.GetFileName(folder));
             }
+
             return folderNames;
         }
 
@@ -273,20 +278,23 @@ namespace FoliCon.Modules
             dataTable.Rows.Add(nRow);
         }
 
-        public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query, bool isPickedById)
+        public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query,
+            bool isPickedById)
         {
             var source = new ObservableCollection<ListItem>();
 
             if (result.MediaType == MediaTypes.Tv)
             {
-                dynamic ob = isPickedById ? (TvShow) result.Result : (SearchContainer<SearchTv>)result.Result;
+                dynamic ob = isPickedById ? (TvShow)result.Result : (SearchContainer<SearchTv>)result.Result;
                 source = Tmdb.ExtractTvDetailsIntoListItem(ob);
             }
             else if (result.MediaType == MediaTypes.Movie || result.MediaType == MediaTypes.Collection)
             {
                 if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
                 {
-                    dynamic ob = isPickedById ? (Collection) result.Result : (SearchContainer<SearchCollection>)result.Result;
+                    dynamic ob = isPickedById
+                        ? (Collection)result.Result
+                        : (SearchContainer<SearchCollection>)result.Result;
                     source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                 }
                 else
@@ -294,12 +302,14 @@ namespace FoliCon.Modules
                     dynamic ob;
                     try
                     {
-                        ob = isPickedById ? (Movie) result.Result : (SearchContainer<SearchMovie>)result.Result;
+                        ob = isPickedById ? (Movie)result.Result : (SearchContainer<SearchMovie>)result.Result;
                         source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
                     }
                     catch (Exception)
                     {
-                        ob = isPickedById ? (Collection) result.Result : (SearchContainer<SearchCollection>)result.Result;
+                        ob = isPickedById
+                            ? (Collection)result.Result
+                            : (SearchContainer<SearchCollection>)result.Result;
                         source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
                     }
                 }
@@ -424,6 +434,7 @@ namespace FoliCon.Modules
                 HideFile(targetFile);
                 SetFolderIcon($"{i}.ico", $@"{selectedFolder}\{i}");
             }
+
             ApplyChanges(selectedFolder);
             SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW, selectedFolder);
             return iconProcessedCount;
@@ -466,6 +477,12 @@ namespace FoliCon.Modules
                     IconOverlay.Alternate => StaTask.Start(() =>
                         new PosterIconAlt(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap()),
+                    IconOverlay.Liaher => StaTask.Start(() =>
+                        new PosterIconLiaher(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                            .RenderToBitmap()),
+                    IconOverlay.Faelpessoal => StaTask.Start(() => new PosterIconFaelpessoal(new PosterIcon(
+                        filmFolderPath, rating,
+                        ratingVisibility, mockupVisibility)).RenderToBitmap()),
                     _ => StaTask.Start(() =>
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap())
@@ -529,7 +546,7 @@ namespace FoliCon.Modules
         #endregion IconUtil
 
         public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
-             out string igdbClientSecret, out string dartClientSecret, out string dartId)
+            out string igdbClientSecret, out string dartClientSecret, out string dartId)
         {
             var settings = GlobalDataHelper.Load<AppConfig>();
             tmdbkey = settings.TmdbKey;
@@ -588,8 +605,8 @@ namespace FoliCon.Modules
         public static void SaveMediaInfo(int id, string mediaType, string folderPath)
         {
             var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
-            InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture),null,filePath);
-            InIHelper.AddValue("MediaType", mediaType,null,filePath);
+            InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture), null, filePath);
+            InIHelper.AddValue("MediaType", mediaType, null, filePath);
             HideFile(filePath);
         }
 
@@ -598,7 +615,7 @@ namespace FoliCon.Modules
             var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
             var id = File.Exists(filePath) ? InIHelper.ReadValue("ID", null, filePath) : null;
             var mediaType = File.Exists(filePath) ? InIHelper.ReadValue("MediaType", null, filePath) : null;
-            var mediaInfo = (ID:id, MediaType:mediaType);
+            var mediaInfo = (ID: id, MediaType: mediaType);
             return mediaInfo;
         }
     }

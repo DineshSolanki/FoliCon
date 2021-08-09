@@ -26,11 +26,18 @@ dineshsolanki.github.io/folicon/</Description>
     <None Remove="Resources\Mockup faelpessoal base.png" />
     <None Remove="Resources\mockup faelpessoal front.png" />
     <None Remove="Resources\mockup liaher base.png" />
+    <None Remove="Resources\mockup liaher front.png" />
     <None Remove="Resources\mockup2base.png" />
     <None Remove="Resources\No-WiFi.png" />
     <None Remove="Resources\NoPosterAvailable.png" />
     <None Remove="Resources\PosterIcon.ico" />
     <None Remove="Resources\PosterIconAlt.ico" />
+    <None Remove="Resources\PosterIconFaelpessoal 2.ico" />
+    <None Remove="Resources\PosterIconFaelpessoal.ico" />
+    <None Remove="Resources\PosterIconFaelpessoalHorizontal.ico" />
+    <None Remove="Resources\PosterIconFaelpessoalHorizontal2.ico" />
+    <None Remove="Resources\PosterIconLiaher.ico" />
+    <None Remove="Resources\PosterIconLiaher2.ico" />
     <None Remove="Resources\PosterMockup.png" />
     <None Remove="Resources\shield.png" />
     <None Remove="Resources\Strong-WiFi.png" />
@@ -50,13 +57,20 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\PosterIconFaelpessoal 2.ico" />
+    <Resource Include="Resources\PosterIconFaelpessoalHorizontal2.ico" />
+    <Resource Include="Resources\PosterIconFaelpessoal.ico" />
+    <Resource Include="Resources\PosterIconFaelpessoalHorizontal.ico" />
     <Resource Include="Resources\folicon Icon.ico" />
     <Resource Include="Resources\folicon Icon.png" />
+    <Resource Include="Resources\PosterIconLiaher2.ico" />
+    <Resource Include="Resources\PosterIconLiaher.ico" />
     <Resource Include="Resources\LoadingPosterImage.png" />
     <Resource Include="Resources\mockup cover cropped.png" />
     <Resource Include="Resources\Mockup faelpessoal base.png" />
     <Resource Include="Resources\mockup faelpessoal front.png" />
     <Resource Include="Resources\mockup liaher base.png" />
+    <Resource Include="Resources\mockup liaher front.png" />
     <Resource Include="Resources\mockup2base.png" />
     <Resource Include="Resources\No-WiFi.png" />
     <Resource Include="Resources\NoPosterAvailable.png" />
