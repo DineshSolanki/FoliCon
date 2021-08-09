@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace FoliCon.Views
 {
     /// <summary>
-    /// Interaction logic for PosterIconFaelessoal.xaml
+    /// Interaction logic for PosterIconFaelpessoal.xaml
     /// </summary>
-    public partial class PosterIconFaelessoal : UserControl
+    public partial class PosterIconFaelpessoal : UserControl
     {
-        public PosterIconFaelessoal()
+        public PosterIconFaelpessoal()
         {
             InitializeComponent();
         }
