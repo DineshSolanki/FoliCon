@@ -486,6 +486,9 @@ namespace FoliCon.Modules
                     IconOverlay.Faelpessoal => StaTask.Start(() => new PosterIconFaelpessoal(new PosterIcon(
                         filmFolderPath, rating,
                         ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
+                    IconOverlay.FaelpessoalHorizontal => StaTask.Start(() => new PosterIconFaelpessoalHorizontal(new PosterIcon(
+                        filmFolderPath, rating,
+                        ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
                     _ => StaTask.Start(() =>
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap())

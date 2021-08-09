@@ -515,4 +515,10 @@
   <data name="PosterIconOverlay" xml:space="preserve">
 	  <value>पोस्टर आइकन ओवरले</value>
   </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+	  <value>क्षैतिज छवियों के लिए सबसे उपयुक्त, जैसे कि गेम आर्टवर्क।</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+	  <value>पोस्टर आइकन ओवरले का चयन करें</value>
+  </data>
 </root>

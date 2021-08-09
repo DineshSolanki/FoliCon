@@ -5,6 +5,7 @@
         Legacy,
         Alternate,
         Liaher,
-        Faelpessoal
+        Faelpessoal,
+        FaelpessoalHorizontal
     }
 }

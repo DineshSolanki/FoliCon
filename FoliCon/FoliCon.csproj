@@ -23,6 +23,7 @@ dineshsolanki.github.io/folicon/</Description>
     <None Remove="Resources\folicon Icon.png" />
     <None Remove="Resources\LoadingPosterImage.png" />
     <None Remove="Resources\mockup cover cropped.png" />
+    <None Remove="Resources\mockup faelpessoal base horizontal.png" />
     <None Remove="Resources\Mockup faelpessoal base.png" />
     <None Remove="Resources\mockup faelpessoal front.png" />
     <None Remove="Resources\mockup liaher base.png" />
@@ -57,6 +58,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\mockup faelpessoal base horizontal.png" />
     <Resource Include="Resources\PosterIconFaelpessoal 2.ico" />
     <Resource Include="Resources\PosterIconFaelpessoalHorizontal2.ico" />
     <Resource Include="Resources\PosterIconFaelpessoal.ico" />

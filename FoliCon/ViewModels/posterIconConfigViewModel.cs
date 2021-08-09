@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Globalization;
+using FoliCon.Properties.Langs;
 
 namespace FoliCon.ViewModels
 {
@@ -17,7 +18,7 @@ namespace FoliCon.ViewModels
                 .Property(p => p.IconOverlay, defaultValue: "Alternate")
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
-            IconOverlayChangedCommand = new DelegateCommand<object>(delegate (object parameter)
+            IconOverlayChangedCommand = new DelegateCommand<object>(delegate(object parameter)
             {
                 IconOverlay = (string)parameter;
             });
@@ -29,7 +30,7 @@ namespace FoliCon.ViewModels
             set => SetProperty(ref _iconOverlay, value);
         }
 
-        public string Title => "Select Poster Icon overlay";
+        public string Title => LangProvider.GetLang("SelectPosterIconOverlay");
 
         #region DialogMethods
 

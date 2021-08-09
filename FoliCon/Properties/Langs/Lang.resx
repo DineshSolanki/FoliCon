@@ -147,6 +147,9 @@
   <data name="Auto" xml:space="preserve">
     <value>Auto (Movies &amp; TV Shows)</value>
   </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+    <value>Best suited for horizontal images, such as game artworks.</value>
+  </data>
   <data name="BrowseFolderDropHere" xml:space="preserve">
     <value>Browse Folder/Drop here</value>
   </data>
@@ -450,6 +453,9 @@ and refresh Icon Cache?</value>
   </data>
   <data name="SelectIconsDirectory" xml:space="preserve">
     <value>Select Icons Directory</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+    <value>Select Poster Icon overlay</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>

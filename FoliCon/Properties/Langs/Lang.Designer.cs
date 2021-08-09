@@ -151,6 +151,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Best suited for horizontal images, such as game artworks..
+        /// </summary>
+        public static string BestSuitedForHorizontal {
+            get {
+                return ResourceManager.GetString("BestSuitedForHorizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Browse Folder/Drop here.
         /// </summary>
         public static string BrowseFolderDropHere {
@@ -1045,6 +1054,15 @@ namespace FoliCon.Properties.Langs {
         public static string SelectIconsDirectory {
             get {
                 return ResourceManager.GetString("SelectIconsDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Poster Icon overlay.
+        /// </summary>
+        public static string SelectPosterIconOverlay {
+            get {
+                return ResourceManager.GetString("SelectPosterIconOverlay", resourceCulture);
             }
         }
         

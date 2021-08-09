@@ -14,6 +14,7 @@ namespace FoliCon.Models
                 "Alternate" => IconOverlay.Alternate,
                 "Liaher" => IconOverlay.Liaher,
                 "Faelpessoal" => IconOverlay.Faelpessoal,
+                "FaelpessoalHorizontal" => IconOverlay.FaelpessoalHorizontal,
                 _ => IconOverlay.Alternate
             };
         }

@@ -515,4 +515,10 @@
   <data name="PosterIconOverlay" xml:space="preserve">
 	  <value>Наложение значка плаката</value>
   </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+	  <value>Лучше всего подходит для горизонтальных изображений, таких как игровые иллюстрации.</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+	  <value>Выберите наложение значка плаката</value>
+  </data>
 </root>

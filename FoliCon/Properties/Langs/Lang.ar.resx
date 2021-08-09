@@ -515,4 +515,10 @@
   <data name="PosterIconOverlay" xml:space="preserve">
 	  <value>تراكب أيقونة الملصق</value>
   </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+	  <value>الأنسب للصور الأفقية ، مثل الأعمال الفنية للعبة.</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+	  <value>حدد تراكب أيقونة الملصق</value>
+  </data>
 </root>

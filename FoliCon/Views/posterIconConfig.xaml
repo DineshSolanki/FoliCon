@@ -21,7 +21,7 @@
         <Style TargetType="Window">
             <Setter Property="Height" Value="300" />
             <Setter Property="MaxHeight" Value="300"></Setter>
-            <!--<Setter Property="Width" Value="430" />-->
+            <Setter Property="Width" Value="1066" />
             <!--<Setter Property="ResizeMode" Value="NoResize" />-->
             <Setter Property="WindowStyle" Value="ToolWindow" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
@@ -30,10 +30,9 @@
     <GroupBox hc:TitleElement.TitlePlacement="Top" Header="{langExtension:Lang Key={x:Static langs:LangKeys.PosterIconOverlay}}"
               Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
               hc:TitleElement.Background="CornflowerBlue" Foreground="Black" BorderThickness="0"
-              Background="Transparent" Width="843">
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              Background="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch">
+        <Grid Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
@@ -68,6 +67,7 @@
                     <Image Source="/Resources/PosterIconFaelpessoal.ico" />
                 </RadioButton.Content>
             </RadioButton>
+
             <RadioButton x:Name="RPosterLiaher"  Grid.Column="3" GroupName="PosterOverlay"
                          Command="{Binding IconOverlayChangedCommand}"
                          CommandParameter="Liaher" FontSize="16"
@@ -75,6 +75,15 @@
                          IsChecked="{Binding IconOverlay, ConverterParameter= Liaher, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
                     <Image Source="/Resources/PosterIconLiaher.ico" />
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton x:Name="RPosterFaelpessoalHorizontal"  Grid.Column="4" GroupName="PosterOverlay" ToolTip="{langExtension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
+                         Command="{Binding IconOverlayChangedCommand}"
+                         CommandParameter="FaelpessoalHorizontal" FontSize="16"
+                         HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                         IsChecked="{Binding IconOverlay, ConverterParameter= FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
+                <RadioButton.Content>
+                    <Image Source="/Resources/PosterIconFaelpessoalHorizontal.ico" />
                 </RadioButton.Content>
             </RadioButton>
         </Grid>
