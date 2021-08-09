@@ -521,4 +521,7 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="SelectPosterIconOverlay" xml:space="preserve">
 	  <value>Seleccionar superposición de icono de póster</value>
   </data>
+  <data name="Hindi" xml:space="preserve">
+	  <value>Hindi</value>
+  </data>
 </root>

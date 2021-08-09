@@ -521,4 +521,7 @@
   <data name="SelectPosterIconOverlay" xml:space="preserve">
 	  <value>حدد تراكب أيقونة الملصق</value>
   </data>
+  <data name="Hindi" xml:space="preserve">
+	  <value>هندي</value>
+  </data>
 </root>

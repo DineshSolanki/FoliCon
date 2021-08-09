@@ -568,6 +568,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hindi.
+        /// </summary>
+        public static string Hindi {
+            get {
+                return ResourceManager.GetString("Hindi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Icon(s) Created.
         /// </summary>
         public static string IconCreated {

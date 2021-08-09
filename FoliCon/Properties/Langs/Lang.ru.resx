@@ -521,4 +521,7 @@
   <data name="SelectPosterIconOverlay" xml:space="preserve">
 	  <value>Выберите наложение значка плаката</value>
   </data>
+  <data name="Hindi" xml:space="preserve">
+	  <value>хинди</value>
+  </data>
 </root>

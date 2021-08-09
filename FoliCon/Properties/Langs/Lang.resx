@@ -288,6 +288,9 @@ and it can fetch 'Games,Movies, and shows' and almost any media folder icons.</v
   <data name="HelpDocument" xml:space="preserve">
     <value>Help Document</value>
   </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>Hindi</value>
+  </data>
   <data name="IconCreated" xml:space="preserve">
     <value>Icon(s) Created</value>
   </data>
