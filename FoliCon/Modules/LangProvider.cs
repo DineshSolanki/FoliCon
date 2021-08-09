@@ -165,6 +165,7 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(DeleteMediaInfoTooltip));
             OnPropertyChanged(nameof(DeleteMediaInfoConfirmation));
             OnPropertyChanged(nameof(ConfirmMediaInfoDeletion));
+            OnPropertyChanged(nameof(PosterIconOverlay));
         }
 
         public string About => Lang.About;
@@ -419,6 +420,7 @@ namespace FoliCon.Properties.Langs
         public string DeleteMediaInfoConfirmation => Lang.DeleteMediaInfoConfirmation;
         public string DeleteMediaInfoTooltip => Lang.DeleteMediaInfoTooltip;
         public string DeleteMediaInfo => Lang.DeleteMediaInfo;
+        public string PosterIconOverlay => Lang.PosterIconOverlay;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -682,5 +684,6 @@ namespace FoliCon.Properties.Langs
         public static string DeleteMediaInfoConfirmation = nameof(DeleteMediaInfoConfirmation);
         public static string DeleteMediaInfoTooltip = nameof(DeleteMediaInfoTooltip);
         public static string DeleteMediaInfo = nameof(DeleteMediaInfo);
+        public static string PosterIconOverlay = nameof(PosterIconOverlay);
     }
 }

@@ -399,6 +399,9 @@ Try Searching with Other Title
   <data name="Poster" xml:space="preserve">
     <value>Poster</value>
   </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+    <value>Poster Icon Overlay</value>
+  </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
     <value>Controls whether to use poster Overlay or Plain Posters.</value>
   </data>

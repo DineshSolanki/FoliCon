@@ -3,6 +3,8 @@
     public enum IconOverlay
     {
         Legacy,
-        Alternate
+        Alternate,
+        Liaher,
+        Faelpessoal
     }
 }

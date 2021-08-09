@@ -23,8 +23,8 @@ dineshsolanki.github.io/folicon/</Description>
     <None Remove="Resources\folicon Icon.png" />
     <None Remove="Resources\LoadingPosterImage.png" />
     <None Remove="Resources\mockup cover cropped.png" />
-    <None Remove="Resources\Mockup faelessoal base.png" />
-    <None Remove="Resources\mockup faelessoal front.png" />
+    <None Remove="Resources\Mockup faelpessoal base.png" />
+    <None Remove="Resources\mockup faelpessoal front.png" />
     <None Remove="Resources\mockup liaher base.png" />
     <None Remove="Resources\mockup2base.png" />
     <None Remove="Resources\No-WiFi.png" />
@@ -54,8 +54,8 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\folicon Icon.png" />
     <Resource Include="Resources\LoadingPosterImage.png" />
     <Resource Include="Resources\mockup cover cropped.png" />
-    <Resource Include="Resources\Mockup faelessoal base.png" />
-    <Resource Include="Resources\mockup faelessoal front.png" />
+    <Resource Include="Resources\Mockup faelpessoal base.png" />
+    <Resource Include="Resources\mockup faelpessoal front.png" />
     <Resource Include="Resources\mockup liaher base.png" />
     <Resource Include="Resources\mockup2base.png" />
     <Resource Include="Resources\No-WiFi.png" />

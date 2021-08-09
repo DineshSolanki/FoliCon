@@ -512,4 +512,7 @@
   <data name="ExceptionOccurred" xml:space="preserve">
 	  <value>त्रुटी</value>
   </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+	  <value>पोस्टर आइकन ओवरले</value>
+  </data>
 </root>

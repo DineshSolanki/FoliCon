@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoliCon.Views.PosterIconFaelessoal"
+﻿<UserControl x:Class="FoliCon.Views.PosterIconFaelpessoal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance Type=model:PosterIcon, IsDesignTimeCreatable=True}">
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
-        <Image Source="/Resources/Mockup faelessoal base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
+        <Image Source="/Resources/Mockup faelpessoal base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
         <Border CornerRadius="7,7,7,7" Grid.Row="0"  Margin="27,4,54,27">
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" />
@@ -18,7 +18,7 @@
         </Border>
 
         <!--<Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="34,10,42,21" />-->
-        <Image Source="/Resources/mockup faelessoal front.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="0,-4,8,9" Visibility="{Binding MockupVisibility}"/>
+        <Image Source="/Resources/mockup faelpessoal front.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="0,-4,8,9" Visibility="{Binding MockupVisibility}"/>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

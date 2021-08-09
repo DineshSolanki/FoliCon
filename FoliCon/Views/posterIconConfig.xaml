@@ -7,6 +7,8 @@
              xmlns:modules="clr-namespace:FoliCon.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:foliCon="clr-namespace:FoliCon"
+             xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance modules:PosterIconConfigViewModel }">
@@ -24,7 +26,7 @@
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <GroupBox hc:TitleElement.TitlePlacement="Top" Header="Poster Icon Overlay"
+    <GroupBox hc:TitleElement.TitlePlacement="Top" Header="{langExtension:Lang Key={x:Static langs:LangKeys.PosterIconOverlay}}"
               Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
               hc:TitleElement.Background="CornflowerBlue" Foreground="Black" BorderThickness="0"
               Background="CornflowerBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

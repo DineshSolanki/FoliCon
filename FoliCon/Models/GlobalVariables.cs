@@ -10,6 +10,8 @@ namespace FoliCon.Models
         {
             "Legacy" => IconOverlay.Legacy,
             "Alternate" => IconOverlay.Alternate,
+            "Liaher" => IconOverlay.Liaher,
+            "Faelpessoal" => IconOverlay.Faelpessoal,
             _ => IconOverlay.Alternate
         };
 

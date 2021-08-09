@@ -512,4 +512,7 @@ y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpe
 	  <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
 Esto ayuda a folicon a identificar los medios sin tener que elegir entre títulos ambiguos.</value>
   </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+	  <value>Superposición de icono de póster</value>
+  </data>
 </root>
