@@ -11,6 +11,7 @@ namespace FoliCon.Models
         public string RatingVisibility { get; set; }
         public string Rating { get; set; }
         public string MockupVisibility { get; set; }
+        public string MediaTitle { get; set; }
 
         public PosterIcon()
         {
@@ -24,6 +25,7 @@ namespace FoliCon.Models
             Rating = "7.8";
             MockupVisibility = "visible";
             RatingVisibility = "visible";
+            MediaTitle = "Made with ♥ by FoliCon";
         }
 
         public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility)
@@ -33,6 +35,17 @@ namespace FoliCon.Models
             MockupVisibility = mockupVisibility;
             var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
             FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
+            //byte[] bytes = Util.ImageSourceToBytes(new PngBitmapEncoder(), FolderJpg);
+            //string base64string = System.Convert.ToBase64String(bytes);
+        }
+        public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle="FoliCon")
+        {
+            RatingVisibility = ratingVisibility;
+            Rating = rating;
+            MockupVisibility = mockupVisibility;
+            var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
+            FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
+            MediaTitle = mediaTitle;
             //byte[] bytes = Util.ImageSourceToBytes(new PngBitmapEncoder(), FolderJpg);
             //string base64string = System.Convert.ToBase64String(bytes);
         }

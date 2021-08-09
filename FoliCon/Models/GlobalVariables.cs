@@ -6,14 +6,17 @@ namespace FoliCon.Models
     {
         public static bool SkipAll;
 
-        public static IconOverlay IconOverlayType = new PosterIconConfigViewModel().IconOverlay switch
+        public static IconOverlay IconOverlayType()
         {
-            "Legacy" => IconOverlay.Legacy,
-            "Alternate" => IconOverlay.Alternate,
-            "Liaher" => IconOverlay.Liaher,
-            "Faelpessoal" => IconOverlay.Faelpessoal,
-            _ => IconOverlay.Alternate
-        };
+            return new PosterIconConfigViewModel().IconOverlay switch
+            {
+                "Legacy" => IconOverlay.Legacy,
+                "Alternate" => IconOverlay.Alternate,
+                "Liaher" => IconOverlay.Liaher,
+                "Faelpessoal" => IconOverlay.Faelpessoal,
+                _ => IconOverlay.Alternate
+            };
+        }
 
         public static string MediaInfoFile = "info.folicon";
     }

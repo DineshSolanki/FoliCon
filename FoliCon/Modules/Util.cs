@@ -423,9 +423,12 @@ namespace FoliCon.Modules
                         .Where(p => p["FolderName"].Equals(tempI))
                         .Select(p => p["Rating"].ToString())
                         .FirstOrDefault();
-
+                    var mediaTitle = pickedListDataTable.AsEnumerable()
+                        .Where(p => p["FolderName"].Equals(tempI))
+                        .Select(p => p["Title"].ToString())
+                        .FirstOrDefault();
                     BuildFolderIco(iconMode, $@"{selectedFolder}\{i}\{i}.png", rating, ratingVisibility,
-                        mockupVisibility);
+                        mockupVisibility, mediaTitle);
                     iconProcessedCount += 1;
                     File.Delete($@"{selectedFolder}\{i}\{i}.png"); //<--IO Exception here
                 }
@@ -449,7 +452,7 @@ namespace FoliCon.Modules
         /// <param name="ratingVisibility">Show rating or NOT</param>
         /// <param name="mockupVisibility">Is Cover Mockup visible. </param>
         public static void BuildFolderIco(string iconMode, string filmFolderPath, string rating,
-            string ratingVisibility, string mockupVisibility)
+            string ratingVisibility, string mockupVisibility, string mediaTitle)
         {
             if (!File.Exists(filmFolderPath))
             {
@@ -469,7 +472,7 @@ namespace FoliCon.Modules
             }
             else
             {
-                using var task = GlobalVariables.IconOverlayType switch
+                using var task = GlobalVariables.IconOverlayType() switch
                 {
                     IconOverlay.Legacy => StaTask.Start(() =>
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
@@ -482,7 +485,7 @@ namespace FoliCon.Modules
                             .RenderToBitmap()),
                     IconOverlay.Faelpessoal => StaTask.Start(() => new PosterIconFaelpessoal(new PosterIcon(
                         filmFolderPath, rating,
-                        ratingVisibility, mockupVisibility)).RenderToBitmap()),
+                        ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
                     _ => StaTask.Start(() =>
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap())

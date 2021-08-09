@@ -25,6 +25,16 @@
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
+            <TextBlock Text="{Binding MediaTitle}" TextWrapping="Wrap" Foreground="White" FontFamily="Cormorant" TextTrimming="WordEllipsis" Margin="190,14,-2,53" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
             <Image x:Name="Shield" Source="../Resources/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
                    Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding RatingVisibility}" Grid.Row="1" Grid.RowSpan="2" />
             <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
