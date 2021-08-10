@@ -6,13 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using FoliCon.Properties.Langs;
 using HandyControl.Tools.Extension;
 using DelegateCommand = Prism.Commands.DelegateCommand;
 using MessageBox = HandyControl.Controls.MessageBox;
-using HandyControl.Tools.Command;
 using Prism.Commands;
 
 namespace FoliCon.ViewModels
@@ -114,8 +112,7 @@ namespace FoliCon.ViewModels
 
         #region Commands
 
-        public DelegateCommand PickCommand { get; }
-        public DelegateCommand<RoutedEventArgs> SortResultCommand => new(SortResult);
+        public DelegateCommand<MouseButtonEventArgs> PickCommand { get; }
         public DelegateCommand SkipCommand { get; }
         public DelegateCommand SkipAllCommand { get; }
         public DelegateCommand SearchAgainCommand { get; }
@@ -128,18 +125,12 @@ namespace FoliCon.ViewModels
             SearchAgainCommand = new DelegateCommand(SearchAgainMethod);
             SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
             ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
-            PickCommand = new DelegateCommand(PickMethod);
+            PickCommand = new DelegateCommand<MouseButtonEventArgs>(PickMethod);
             SkipAllCommand = new DelegateCommand(delegate
             {
                 GlobalVariables.SkipAll = true;
                 CloseDialog("false");
             });
-        }
-
-        private void SortResult(RoutedEventArgs e)
-        {
-            string clickedHeader = (e.OriginalSource as GridViewColumnHeader)?.Column.Header.ToString();
-            MessageBox.Show(clickedHeader);
         }
 
         protected virtual void CloseDialog(string parameter)
@@ -178,6 +169,7 @@ namespace FoliCon.ViewModels
             _fullFolderPath = parameters.GetValue<string>("folderpath");
             _isPickedById = parameters.GetValue<bool>("isPickedById");
             LoadData(SearchTitle);
+            FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
         }
 
         private async void StartSearch(bool useBusy)
@@ -193,6 +185,7 @@ namespace FoliCon.ViewModels
             var result = SearchMode == MediaTypes.Game
                 ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
                 : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
+            if (Util.GetResultCount(_isPickedById, result.Result, SearchMode) == 0) return;
             SearchResult = result;
             if (useBusy)
             {
@@ -220,8 +213,6 @@ namespace FoliCon.ViewModels
             {
                 IsSearchFocused = true;
             }
-
-            FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
         }
 
         private void SearchAgainMethod()
@@ -232,8 +223,14 @@ namespace FoliCon.ViewModels
             }
         }
 
-        private void PickMethod()
+        private void PickMethod(MouseButtonEventArgs eventArgs)
         {
+            if (eventArgs is not null)
+            {
+                var dataContext = ((FrameworkElement)eventArgs.OriginalSource).DataContext;
+                if (dataContext is not ListItem) return;
+            }
+
             if (ResultListViewData.SelectedItem == null) return;
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
             var rating = "";

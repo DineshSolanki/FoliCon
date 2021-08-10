@@ -189,12 +189,12 @@
                 <ListView x:Name="FinalList" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
                           ItemsSource="{Binding FinalListViewData.Data}"
                           SelectedItem="{Binding FinalListViewData.SelectedItem}"
-                          MouseDoubleClick="ListView_MouseDoubleClick" hc:Empty.ShowEmpty="true">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding ListViewDoubleClickCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                          hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="FinalList_OnClick" >
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="MouseDoubleClick">
+                            <hc:LaunchUriOrFileAction Path="{Binding FinalListViewData.SelectedItem.Folder}" />
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Title}}" Width="Auto" DisplayMemberBinding="{Binding Title}" />

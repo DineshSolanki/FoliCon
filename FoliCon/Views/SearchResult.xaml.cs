@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
+using FoliCon.Models;
 
 namespace FoliCon.Views
 {
@@ -67,6 +69,16 @@ namespace FoliCon.Views
             var sd = new SortDescription(sortBy, direction);
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
+        }
+
+        private void ListViewResult_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var dataContext = ((FrameworkElement)e.OriginalSource).DataContext;
+
+            if (dataContext is ListItem)
+            {
+                MessageBox.Show("Item's Double Click handled!");
+            }
         }
     }
 }

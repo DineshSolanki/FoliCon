@@ -54,7 +54,7 @@
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
-                            <hc:InvokeCommandAction Command="{Binding PickCommand}" />
+                            <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
                     <ListView.View>

@@ -1,8 +1,11 @@
 ﻿using FoliCon.Modules;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Globalization;
 using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using FoliCon.Models;
 using FoliCon.Properties.Langs;
 using HandyControl.Tools;
@@ -15,14 +18,12 @@ namespace FoliCon.Views
     /// </summary>
     public partial class MainWindow
     {
+        private GridViewColumnHeader _lastHeaderClicked;
+        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
         public MainWindow()
         {
             InitializeComponent();
             ((INotifyCollectionChanged)FinalList.Items).CollectionChanged += ListView_CollectionChanged;
-        }
-
-        private void ListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
         }
 
         private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -52,6 +53,43 @@ namespace FoliCon.Views
                 Util.SetColumnWidth(FinalList);
             }
 
+        }
+
+        private void FinalList_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (e.OriginalSource is not GridViewColumnHeader headerClicked) return;
+            if (headerClicked.Role == GridViewColumnHeaderRole.Padding) return;
+            var direction = headerClicked != _lastHeaderClicked
+                ? ListSortDirection.Ascending
+                : _lastDirection == ListSortDirection.Ascending
+                    ? ListSortDirection.Descending
+                    : ListSortDirection.Ascending;
+            var header = headerClicked.Column.Header as string;
+            Sort(header, direction);
+
+            headerClicked.Column.HeaderTemplate = direction == ListSortDirection.Ascending
+                ? Application.Current.Resources["HeaderTemplateArrowUp"] as DataTemplate
+                : Application.Current.Resources["HeaderTemplateArrowDown"] as DataTemplate;
+
+            // Remove arrow from previously sorted header
+            if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
+            {
+                _lastHeaderClicked.Column.HeaderTemplate = null;
+            }
+
+
+            _lastHeaderClicked = headerClicked;
+            _lastDirection = direction;
+        }
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            var dataView =
+                CollectionViewSource.GetDefaultView(FinalList.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            var sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
         }
     }
 }

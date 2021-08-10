@@ -624,5 +624,10 @@ namespace FoliCon.Modules
             var mediaInfo = (ID: id, MediaType: mediaType);
             return mediaInfo;
         }
+
+        public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
+        {
+           return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
+        }
     }
 }
