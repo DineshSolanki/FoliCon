@@ -37,11 +37,11 @@
                 <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Foreground="RoyalBlue" ScrollViewer.CanContentScroll="True" />
                 <TextBlock Text="{Binding AdditionalNotes}" Margin="0,5,0,0" />
                 <ContentControl VerticalAlignment="Top">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseLeftButtonDown">
-                            <i:InvokeCommandAction Command="{Binding WebsiteClickCommand}"  />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="MouseLeftButtonDown">
+                            <hc:LaunchUriOrFileAction Path="{Binding Website}" />
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
                     <TextBlock Text="{Binding Website}" HorizontalAlignment="Stretch" FontStyle="Oblique" Foreground="Blue" Margin="0,4,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" />
                 </ContentControl>
             </StackPanel>

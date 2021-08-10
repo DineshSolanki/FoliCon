@@ -70,15 +70,5 @@ namespace FoliCon.Views
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
         }
-
-        private void ListViewResult_OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var dataContext = ((FrameworkElement)e.OriginalSource).DataContext;
-
-            if (dataContext is ListItem)
-            {
-                MessageBox.Show("Item's Double Click handled!");
-            }
-        }
     }
 }

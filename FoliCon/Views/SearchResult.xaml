@@ -113,8 +113,14 @@
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
-                <ListBox Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
-                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" hc:Empty.ShowEmpty="true"/>
+                <ListBox x:Name="LstFolderContent" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
+                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" hc:Empty.ShowEmpty="true">
+                    <!--<hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="MouseDoubleClick">
+                            <hc:LaunchUriOrFileAction Path="{Binding ElementName=LstFolderContent, Path=SelectedItem}"/>
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>-->
+                </ListBox>
             </Grid>
         </Grid>
     </hc:BusyIndicator>

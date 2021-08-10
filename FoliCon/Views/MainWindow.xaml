@@ -8,7 +8,6 @@
         xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
         xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
         xmlns:models="clr-namespace:FoliCon.Models"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
@@ -85,8 +84,14 @@
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
                 <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.Help}}">
-                    <MenuItem x:Name="MenubtnHelp" Header="{ex:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="{Binding HelpCommand}" />
-                    <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
+                    <MenuItem x:Name="MenubtnHelp" Header="{ex:Lang Key={x:Static langs:LangKeys.HelpDocument}}" >
+                        <hc:Interaction.Triggers>
+                            <hc:EventTrigger EventName="Click">
+                                <hc:LaunchUriOrFileAction Path="https://github.com/DineshSolanki/FoliCon" />
+                            </hc:EventTrigger>
+                        </hc:Interaction.Triggers>
+                    </MenuItem>
+                        <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
                     <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" />
                 </MenuItem>
             </Menu>
@@ -103,11 +108,11 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <ContentControl Grid.Row="1" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Top">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding SelectedFolderDClickCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="MouseDoubleClick">
+                            <hc:LaunchUriOrFileAction Path="{Binding SelectedFolder}" />
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
                     <TextBlock Text="{Binding SelectedFolder}" HorizontalAlignment="Center" VerticalAlignment="Top"
                                FontStyle="Italic" Foreground="Black">
                         </TextBlock>

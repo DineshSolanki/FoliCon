@@ -86,11 +86,9 @@ namespace FoliCon.Modules
         /// <param name="path">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
         public static void StartProcess(string path)
         {
-            Process.Start(new ProcessStartInfo
+            Process.Start(new ProcessStartInfo(path)
             {
-                FileName = path,
-                UseShellExecute = true,
-                Verb = "open"
+                UseShellExecute = true
             });
         }
 
@@ -486,9 +484,10 @@ namespace FoliCon.Modules
                     IconOverlay.Faelpessoal => StaTask.Start(() => new PosterIconFaelpessoal(new PosterIcon(
                         filmFolderPath, rating,
                         ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
-                    IconOverlay.FaelpessoalHorizontal => StaTask.Start(() => new PosterIconFaelpessoalHorizontal(new PosterIcon(
-                        filmFolderPath, rating,
-                        ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
+                    IconOverlay.FaelpessoalHorizontal => StaTask.Start(() => new PosterIconFaelpessoalHorizontal(
+                        new PosterIcon(
+                            filmFolderPath, rating,
+                            ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
                     _ => StaTask.Start(() =>
                         new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                             .RenderToBitmap())
@@ -627,7 +626,7 @@ namespace FoliCon.Modules
 
         public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
         {
-           return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
+            return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
         }
     }
 }
