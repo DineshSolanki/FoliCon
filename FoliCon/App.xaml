@@ -5,12 +5,13 @@
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs">
     <Application.Resources>
         <ResourceDictionary>
+            <langs:LangProvider x:Key="FoliConLangs"/>
             <ResourceDictionary.MergedDictionaries>
                 <hc:ThemeResources UsingSystemTheme="True"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Basic/Colors/Light.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <langs:LangProvider x:Key="FoliConLangs"/>
         </ResourceDictionary>
     </Application.Resources>
 </prism:PrismApplication>

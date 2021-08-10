@@ -13,6 +13,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }">
+
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="514.5" />
@@ -50,7 +51,10 @@
                 <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
-                          SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true">
+                          SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
+                    <i:Interaction.Behaviors>
+                        <modules:ListViewGridSortableBehavior/>
+                    </i:Interaction.Behaviors>
                     <hc:Interaction.Triggers>
                         <!--<hc:EventTrigger EventName="GridViewColumnHeader.Click">
                             <hc:EventToCommand Command="{Binding SortResultCommand}" PassEventArgsToCommand="True"/>
@@ -61,16 +65,16 @@
                     </hc:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto">
-                                <GridViewColumn.CellTemplate>
+                            <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto" Header="{ex:Lang Key={x:Static langs:LangKeys.Title}}"/>
+                                <!--<GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Title}" />
                                     </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                                <GridViewColumnHeader Tag="Title" Content="{ex:Lang Key={x:Static langs:LangKeys.Title}}" />
-                            </GridViewColumn>
-                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}" />
-                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}" />
+                                </GridViewColumn.CellTemplate>-->
+                                <!--<GridViewColumnHeader />-->
+                            
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}"/>
+                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>

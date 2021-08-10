@@ -1,15 +1,19 @@
 ﻿using FoliCon.Models;
 using FoliCon.Modules;
-using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using FoliCon.Properties.Langs;
-using HandyControl.Controls;
 using HandyControl.Tools.Extension;
+using DelegateCommand = Prism.Commands.DelegateCommand;
+using MessageBox = HandyControl.Controls.MessageBox;
+using HandyControl.Tools.Command;
+using Prism.Commands;
 
 namespace FoliCon.ViewModels
 {
@@ -111,7 +115,7 @@ namespace FoliCon.ViewModels
         #region Commands
 
         public DelegateCommand PickCommand { get; }
-        public DelegateCommand SortResultCommand { get; }
+        public DelegateCommand<RoutedEventArgs> SortResultCommand => new(SortResult);
         public DelegateCommand SkipCommand { get; }
         public DelegateCommand SkipAllCommand { get; }
         public DelegateCommand SearchAgainCommand { get; }
@@ -125,7 +129,6 @@ namespace FoliCon.ViewModels
             SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
             ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
             PickCommand = new DelegateCommand(PickMethod);
-            SortResultCommand = new DelegateCommand(SortResult);
             SkipAllCommand = new DelegateCommand(delegate
             {
                 GlobalVariables.SkipAll = true;
@@ -133,8 +136,10 @@ namespace FoliCon.ViewModels
             });
         }
 
-        private void SortResult()
+        private void SortResult(RoutedEventArgs e)
         {
+            string clickedHeader = (e.OriginalSource as GridViewColumnHeader)?.Column.Header.ToString();
+            MessageBox.Show(clickedHeader);
         }
 
         protected virtual void CloseDialog(string parameter)
