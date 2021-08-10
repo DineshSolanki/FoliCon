@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Xaml.Behaviors;
-using Prism.Commands;
 
 namespace FoliCon.Modules
 {

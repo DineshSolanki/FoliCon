@@ -114,8 +114,7 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
                     <TextBlock Text="{Binding SelectedFolder}" HorizontalAlignment="Center" VerticalAlignment="Top"
-                               FontStyle="Italic" Foreground="Black">
-                        </TextBlock>
+                               FontStyle="Italic" Foreground="Black" />
                 </ContentControl>
 
                 <Grid Grid.Column="0" Grid.Row="2" Grid.IsSharedSizeScope="True" Background="WhiteSmoke">

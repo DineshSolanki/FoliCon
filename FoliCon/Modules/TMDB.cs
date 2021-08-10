@@ -187,6 +187,7 @@ namespace FoliCon.Modules
 
             return items;
         }
+
         /// <summary>
         /// Prepares the Selected Result for Download And final List View
         /// </summary>
@@ -194,6 +195,7 @@ namespace FoliCon.Modules
         /// <param name="resultType">Type of search Response.</param>
         /// <param name="fullFolderPath">Full Path to the current Media Folder</param>
         /// <param name="rating">Rating for media</param>
+        /// <param name="isPickedById"> identifies if Title was picked by media ID.</param>
         /// TODO: Merge parameter response and resultType.
         public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "",bool isPickedById = false)
         {
@@ -218,7 +220,7 @@ namespace FoliCon.Modules
                 var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture) : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                     rating, fullFolderPath, folderName,
-                    year, pickedResult.Id);
+                    year);
                 id = pickedResult.Id;
             }
             else if (resultType == MediaTypes.Movie)
@@ -226,14 +228,14 @@ namespace FoliCon.Modules
                 dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
                 var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture) : "";
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                    rating, fullFolderPath, folderName, year, pickedResult.Id);
+                    rating, fullFolderPath, folderName, year);
                 id = pickedResult.Id;
             }
             else if (resultType == MediaTypes.Collection)
             {
                 dynamic pickedResult = isPickedById ? (Collection)result : (SearchCollection)result;
                 Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name, rating, fullFolderPath,
-                    folderName, "", pickedResult.Id);
+                    folderName, "");
                 id = pickedResult.Id;
             }
             else if (resultType == MediaTypes.Mtv)
@@ -250,7 +252,7 @@ namespace FoliCon.Modules
                                 : "";
                             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                                 rating, fullFolderPath, folderName,
-                                year, pickedResult.Id);
+                                year);
                             id = pickedResult.Id;
                             break;
                         }
@@ -263,7 +265,7 @@ namespace FoliCon.Modules
                                 : "";
                             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                                 rating, fullFolderPath, folderName,
-                                year, pickedResult.Id);
+                                year);
                             id = pickedResult.Id;
                             break;
                         }
@@ -323,11 +325,10 @@ namespace FoliCon.Modules
             };
             return response;
         }
+
         /// <summary>
-        /// Searches TMDB for a query in Specified search mode
+        /// Searches TMDB media by ID as per media Type.
         /// </summary>
-        /// <param name="query">Title to search</param>
-        /// <param name="mediaTypee">Search Mode such as Movie,TV</param>
         /// <returns>Returns Search result with its Media Type</returns>
         public ResultResponse SearchByIdAsync(int id, string mediaType)
         {

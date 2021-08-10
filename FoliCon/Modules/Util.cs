@@ -259,7 +259,7 @@ namespace FoliCon.Modules
         /// <param name="folderName">Short Folder Name</param>
         /// <param name="year">Media Year</param>
         public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating,
-            string fullFolderPath, string folderName, string year = "", int id = 0)
+            string fullFolderPath, string folderName, string year = "")
         {
             if (rating == "0")
             {
@@ -449,7 +449,8 @@ namespace FoliCon.Modules
         /// <param name="rating"> if Wants to Include rating on Icon</param>
         /// <param name="ratingVisibility">Show rating or NOT</param>
         /// <param name="mockupVisibility">Is Cover Mockup visible. </param>
-        public static void BuildFolderIco(string iconMode, string filmFolderPath, string rating,
+        /// <param name="mediaTitle">Title of the media.</param>
+        private static void BuildFolderIco(string iconMode, string filmFolderPath, string rating,
             string ratingVisibility, string mockupVisibility, string mediaTitle)
         {
             if (!File.Exists(filmFolderPath))

@@ -100,7 +100,7 @@ namespace FoliCon.Modules
             var year = result.FirstReleaseDate != null ? result.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
             var posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720);
             Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, rating, fullFolderPath, folderName,
-                year, (int)(result.Id ?? 0));
+                year);
             if (result.Id != null) Util.SaveMediaInfo((int)result.Id, "Game", fullFolderPath);
             var tempImage = new ImageToDownload
             {

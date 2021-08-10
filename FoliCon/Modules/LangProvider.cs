@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using HandyControl.Tools;
+// ReSharper disable InconsistentNaming
 
 namespace FoliCon.Properties.Langs
 {

@@ -5,7 +5,7 @@
     /// </summary>
     public partial class ProSearchResult
     {
-        private bool AutoScroll = true;
+        private bool _autoScroll = true;
 
         public ProSearchResult()
         {
@@ -17,11 +17,11 @@
             if (e.ExtentHeightChange == 0)
             {
                 
-                AutoScroll = scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight;
+                _autoScroll = scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight;
             }
 
 
-            if (AutoScroll && e.ExtentHeightChange != 0)
+            if (_autoScroll && e.ExtentHeightChange != 0)
             {
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
             }
