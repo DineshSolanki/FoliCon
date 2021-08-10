@@ -52,13 +52,7 @@
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
-                    <i:Interaction.Behaviors>
-                        <modules:ListViewGridSortableBehavior/>
-                    </i:Interaction.Behaviors>
                     <hc:Interaction.Triggers>
-                        <!--<hc:EventTrigger EventName="GridViewColumnHeader.Click">
-                            <hc:EventToCommand Command="{Binding SortResultCommand}" PassEventArgsToCommand="True"/>
-                        </hc:EventTrigger>-->
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:InvokeCommandAction Command="{Binding PickCommand}" />
                         </hc:EventTrigger>
@@ -66,13 +60,6 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto" Header="{ex:Lang Key={x:Static langs:LangKeys.Title}}"/>
-                                <!--<GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Title}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>-->
-                                <!--<GridViewColumnHeader />-->
-                            
                             <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}"/>
                             <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}"/>
                         </GridView>
