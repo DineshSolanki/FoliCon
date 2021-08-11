@@ -169,6 +169,7 @@ namespace FoliCon.ViewModels
             _fullFolderPath = parameters.GetValue<string>("folderpath");
             _isPickedById = parameters.GetValue<bool>("isPickedById");
             LoadData(SearchTitle);
+            SearchAgainTitle = SearchTitle;
             FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
         }
 

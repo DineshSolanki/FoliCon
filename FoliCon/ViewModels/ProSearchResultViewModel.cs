@@ -100,7 +100,7 @@ namespace FoliCon.ViewModels
             IsBusy = true;
             Title = LangProvider.GetLang("PickIconWithName").Format(SearchTitle);
             await Search(SearchTitle);
-            SearchAgainTitle = null;
+            SearchAgainTitle = SearchTitle;
             IsBusy = false;
         }
 
@@ -150,6 +150,7 @@ namespace FoliCon.ViewModels
 
         private void PickMethod(object parameter)
         {
+            SearchAgainTitle = null;
             var link = (string)parameter;
             var currentPath = $@"{_folderPath}\{Fnames[_i]}";
             var tempImage = new ImageToDownload
@@ -173,6 +174,7 @@ namespace FoliCon.ViewModels
         private void SkipMethod()
         {
             _i++;
+            SearchAgainTitle = null;
             if (!(_i > Fnames.Count - 1))
             {
                 PrepareForSearch();
