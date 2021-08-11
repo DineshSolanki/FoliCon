@@ -69,6 +69,7 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 
 * A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
 * Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming) for His Poster design used as an alternate Poster Icon design starting with v3.1.
+* Thanks to [Faelpessoal](https://www.deviantart.com/faelpessoal) and [Liaher](https://www.deviantart.com/liaher) for their Poster design used as an alternate Poster Icon design starting with v3.7.
 * <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/tmdbblack.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
 * All Professional Mode icons are fetched from publicly available galaries of DeviantArt, and all rights reserves to their respective owners.
