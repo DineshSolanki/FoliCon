@@ -621,6 +621,11 @@ namespace FoliCon.Modules
             var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
             var id = File.Exists(filePath) ? InIHelper.ReadValue("ID", null, filePath) : null;
             var mediaType = File.Exists(filePath) ? InIHelper.ReadValue("MediaType", null, filePath) : null;
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                id = null;
+                mediaType = null;
+            }
             var mediaInfo = (ID: id, MediaType: mediaType);
             return mediaInfo;
         }
