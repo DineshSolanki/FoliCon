@@ -949,6 +949,16 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This feature requires admin rights, use it when running as admin.
+        ///Do you want to restart Folicon as admin ?.
+        /// </summary>
+        public static string RestartAsAdmin {
+            get {
+                return ResourceManager.GetString("RestartAsAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart Explorer.
         /// </summary>
         public static string RestartExplorer {

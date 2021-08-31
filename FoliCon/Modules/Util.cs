@@ -77,7 +77,7 @@ namespace FoliCon.Modules
             }
             else
                 Growl.ErrorGlobal(new GrowlInfo
-                    { Message = LangProvider.GetLang("NetworkNotAvailable"), ShowDateTime = false });
+                { Message = LangProvider.GetLang("NetworkNotAvailable"), ShowDateTime = false });
         }
 
         /// <summary>
@@ -231,8 +231,8 @@ namespace FoliCon.Modules
             if (!string.IsNullOrEmpty(folderPath))
             {
                 folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
-                    where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
-                    select Path.GetFileName(folder));
+                                     where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
+                                     select Path.GetFileName(folder));
             }
 
             return folderNames;
@@ -646,20 +646,69 @@ namespace FoliCon.Modules
             }
             return arguments;
         }
+
+        public static bool IfNotAdminRestartAsAdmin()
+        {
+            if (ApplicationHelper.IsAdministrator())
+                return false;
+            if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
+                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
+
+            var elevated = new ProcessStartInfo(Path.ChangeExtension(System.Reflection.Assembly.GetEntryAssembly()?.Location ?? AppPath,"exe")!)
+            {
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+            Process.Start(elevated);
+            Environment.Exit(0);
+            return true;
+        }
         public static void AddToContextMenu()
         {
-            var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1""";
-            ApplicationHelper.RegisterContextMenuToDirectory("Merge Subtitles", commandS);
-            commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%V""";
-            ApplicationHelper.RegisterContextMenuToBackground("Merge Subtitles", commandS);
+            IfNotAdminRestartAsAdmin();
+            var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Professional";
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Professional Mode", commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Professional Mode", commandS.Replace("%1", "%V"));
+
+
+            commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Movie";
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Movie Mode", commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Movie Mode", commandS.Replace("%1", "%V"));
+
+            commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode TV";
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "TV Mode", commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "TV Mode", commandS.Replace("%1", "%V"));
+
+            commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Game";
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Game Mode", commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Game Mode", commandS.Replace("%1", "%V"));
+
+            commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode ""Auto (Movies & TV Shows)""";
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Auto (Movies & TV Shows)", commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Auto (Movies & TV Shows)", commandS.Replace("%1", "%V"));
             //Growl.SuccessGlobal("Merge Subtitle option added to context menu!");
         }
 
         public static void RemoveFromContextMenu()
         {
-            ApplicationHelper.UnRegisterContextMenuFromDirectory("Merge Subtitles");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Merge Subtitles");
+            IfNotAdminRestartAsAdmin();
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "Professional Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon","Professional Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "Movie Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "Movie Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "TV Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "TV Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "Game Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "Game Mode");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon",
+                "Auto (Movies & TV Shows)");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon",
+                "Auto (Movies & TV Shows)");
+            ApplicationHelper.UnRegisterContextMenuFromDirectory("Create Icons with FoliCon");
+            ApplicationHelper.UnRegisterContextMenuFromBackground("Create Icons with FoliCon");
+
             //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
         }
+        public static string AppPath => System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase!;
     }
 }

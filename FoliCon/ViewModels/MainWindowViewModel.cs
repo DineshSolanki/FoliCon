@@ -205,7 +205,7 @@ namespace FoliCon.ViewModels
                 .Property(p => p.IsRatingVisible, true)
                 .Property(p => p.IsPosterMockupUsed, true)
                 .Property(p => p.IsPosterWindowShown, false)
-                .Property(p =>p.AppLanguage, Languages.English)
+                .Property(p => p.AppLanguage, Languages.English)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
             Util.CheckForUpdate(true);
@@ -318,7 +318,7 @@ namespace FoliCon.ViewModels
                 var (id, mediaType) = Util.ReadMediaInfo(fullFolderPath);
                 var isPickedById = false;
                 ResultResponse response;
-                if (id != null && mediaType != null )
+                if (id != null && mediaType != null)
                 {
                     isPickedById = true;
                     response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
@@ -336,7 +336,7 @@ namespace FoliCon.ViewModels
                         MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
                             LangProvider.GetLang("NoResultFound")));
                         _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response,
-                            _tmdbObject, _igdbObject,isPickedById,
+                            _tmdbObject, _igdbObject, isPickedById,
                             r =>
                             {
                                 dialogResult = r.Result switch
@@ -370,12 +370,12 @@ namespace FoliCon.ViewModels
                             }
                             catch (Exception ex)
                             {
-                                 if (ex.Message == "NoPoster")
-                {
-                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
-                }
+                                if (ex.Message == "NoPoster")
+                                {
+                                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
+                                }
 #if DEBUG
-                MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+                                MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
 #endif
                                 isAutoPicked = false;
                             }

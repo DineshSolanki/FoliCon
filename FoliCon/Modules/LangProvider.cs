@@ -170,6 +170,7 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(SelectPosterIconOverlay));
             OnPropertyChanged(nameof(BestSuitedForHorizontal));
             OnPropertyChanged(nameof(Hindi));
+            OnPropertyChanged(nameof(RestartAsAdmin));
         }
 
         public string About => Lang.About;
@@ -428,6 +429,7 @@ namespace FoliCon.Properties.Langs
         public string SelectPosterIconOverlay => Lang.SelectPosterIconOverlay;
         public string BestSuitedForHorizontal => Lang.BestSuitedForHorizontal;
         public string Hindi => Lang.Hindi;
+        public string RestartAsAdmin => Lang.RestartAsAdmin;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -695,5 +697,6 @@ namespace FoliCon.Properties.Langs
         public static string SelectPosterIconOverlay = nameof(SelectPosterIconOverlay);
         public static string BestSuitedForHorizontal = nameof(BestSuitedForHorizontal);
         public static string Hindi = nameof(Hindi);
+        public static string RestartAsAdmin = nameof(RestartAsAdmin);
     }
 }

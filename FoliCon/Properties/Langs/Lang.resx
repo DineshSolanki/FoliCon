@@ -417,6 +417,10 @@ Try Searching with Other Title
   <data name="Rating" xml:space="preserve">
     <value>Rating</value>
   </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+    <value>This feature requires admin rights, use it when running as admin.
+Do you want to restart Folicon as admin ?</value>
+  </data>
   <data name="RestartExplorer" xml:space="preserve">
     <value>Restart Explorer</value>
   </data>
