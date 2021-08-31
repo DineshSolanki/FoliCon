@@ -524,4 +524,17 @@
   <data name="Hindi" xml:space="preserve">
 	  <value>хинди</value>
   </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+	  <value>Добавить в контекстное меню</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+	  <value>Интеграция с проводником (меню, вызываемое правой кнопкой мыши)</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+	  <value>Удалить из контекстного меню</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+	  <value>Эта функция требует прав администратора, используйте ее при работе от имени администратора.
+Вы хотите перезапустить Folicon от имени администратора?</value>
+  </data>
 </root>

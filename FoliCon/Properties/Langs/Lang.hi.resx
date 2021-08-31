@@ -497,31 +497,44 @@
     <value>संस्करण :</value>
   </data>
   <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-	  <value>मीडिया इन्फो फ़ाइलों को हटाने की पुष्टि करें</value>
+    <value>मीडिया इन्फो फ़ाइलों को हटाने की पुष्टि करें</value>
   </data>
   <data name="DeleteMediaInfo" xml:space="preserve">
-	  <value>मीडिया जानकारी हटाएं</value>
+    <value>मीडिया जानकारी हटाएं</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-	  <value>क्या आप वाकई फ़ॉलिकॉन मीडिया जानकारी फ़ाइलें हटाना चाहते हैं?</value>
+    <value>क्या आप वाकई फ़ॉलिकॉन मीडिया जानकारी फ़ाइलें हटाना चाहते हैं?</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-	  <value>यह पहली बार किसी शीर्षक के चयन के बाद मीडिया आईडी को स्टोर करने के लिए फॉलिकॉन द्वारा उपयोग की जाने वाली मीडिया जानकारी फ़ाइलों को हटा देगा।
+    <value>यह पहली बार किसी शीर्षक के चयन के बाद मीडिया आईडी को स्टोर करने के लिए फॉलिकॉन द्वारा उपयोग की जाने वाली मीडिया जानकारी फ़ाइलों को हटा देगा।
 यह अस्पष्ट शीर्षकों में से चुने बिना फॉलिकॉन को मीडिया की पहचान करने में मदद करता है।</value>
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
-	  <value>त्रुटी</value>
+    <value>त्रुटी</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
-	  <value>पोस्टर आइकन ओवरले</value>
+    <value>पोस्टर आइकन ओवरले</value>
   </data>
   <data name="BestSuitedForHorizontal" xml:space="preserve">
-	  <value>क्षैतिज छवियों के लिए सबसे उपयुक्त, जैसे कि गेम आर्टवर्क।</value>
+    <value>क्षैतिज छवियों के लिए सबसे उपयुक्त, जैसे कि गेम आर्टवर्क।</value>
   </data>
   <data name="SelectPosterIconOverlay" xml:space="preserve">
-	  <value>पोस्टर आइकन ओवरले का चयन करें</value>
+    <value>पोस्टर आइकन ओवरले का चयन करें</value>
   </data>
   <data name="Hindi" xml:space="preserve">
-	  <value>हिंदी</value>
+    <value>हिंदी</value>
+  </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+    <value>कॉन्टेक्स्ट मेनू में जोड़ें</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+    <value>एक्सप्लोरर एकीकरण (राइट क्लिक मेनू)</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+    <value>कॉन्टेक्स्ट मेनू से निकालें</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+    <value>इस सुविधा के लिए एडमिन अधिकारों की आवश्यकता है, एडमिन  के रूप में चलाते समय इसका उपयोग करें।
+क्या आप Folicon को एडमिनके रूप में पुनः आरंभ करना चाहते हैं?</value>
   </data>
 </root>

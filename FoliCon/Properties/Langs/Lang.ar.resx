@@ -524,4 +524,17 @@
   <data name="Hindi" xml:space="preserve">
 	  <value>هندي</value>
   </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+	  <value>أضف إلى قائمة السياق</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+	  <value>تكامل المستكشف (انقر بزر الماوس الأيمن فوق القائمة)</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+	  <value>إزالة من قائمة السياق</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+	  <value>تتطلب هذه الميزة حقوق المسؤول ، استخدمها عند التشغيل كمسؤول.
+هل تريد إعادة تشغيل Folicon كمسؤول؟</value>
+  </data>
 </root>

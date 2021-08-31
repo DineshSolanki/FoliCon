@@ -524,4 +524,17 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="Hindi" xml:space="preserve">
 	  <value>Hindi</value>
   </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+	  <value>Agregar al menú contextual</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+	  <value>Integración del explorador (menú contextual)</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+	  <value>Eliminar del menú contextual</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+	  <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
+¿Quieres reiniciar Folicon como administrador?</value>
+  </data>
 </root>

@@ -210,7 +210,6 @@ namespace FoliCon.ViewModels
                 .Property(p => p.AppLanguage, Languages.English)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
-            Util.CheckForUpdate(true);
             var cmdArgs = Util.GetCmdArgs();
             if (!cmdArgs.ContainsKey("path")) return;
             SelectedFolder = cmdArgs["path"];
