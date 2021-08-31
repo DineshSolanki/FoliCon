@@ -240,7 +240,7 @@
                         </ItemsPanelTemplate>
                     </StatusBar.ItemsPanel>
                     <StatusBarItem Grid.Column="0">
-                        <Label Content="{ex:Lang Key={Binding AppStatus}}" BorderThickness="0" />
+                        <Label Content="{Binding AppStatus}" BorderThickness="0" />
                     </StatusBarItem>
                     <Separator Grid.Column="1" />
                     <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Stretch">

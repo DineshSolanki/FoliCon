@@ -634,5 +634,32 @@ namespace FoliCon.Modules
         {
             return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
         }
+        public static IDictionary<string, string> GetCmdArgs()
+        {
+            IDictionary<string, string> arguments = new Dictionary<string, string>();
+            var args = Environment.GetCommandLineArgs();
+
+            for (var index = 1; index < args.Length; index += 2)
+            {
+                var arg = args[index].Replace("--", "");
+                arguments.Add(arg, args[index + 1]);
+            }
+            return arguments;
+        }
+        public static void AddToContextMenu()
+        {
+            var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1""";
+            ApplicationHelper.RegisterContextMenuToDirectory("Merge Subtitles", commandS);
+            commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%V""";
+            ApplicationHelper.RegisterContextMenuToBackground("Merge Subtitles", commandS);
+            //Growl.SuccessGlobal("Merge Subtitle option added to context menu!");
+        }
+
+        public static void RemoveFromContextMenu()
+        {
+            ApplicationHelper.UnRegisterContextMenuFromDirectory("Merge Subtitles");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Merge Subtitles");
+            //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
+        }
     }
 }

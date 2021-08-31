@@ -209,6 +209,22 @@ namespace FoliCon.ViewModels
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
             Util.CheckForUpdate(true);
+            var cmdArgs = Util.GetCmdArgs();
+            if (!cmdArgs.ContainsKey("path")) return;
+            SelectedFolder = cmdArgs["path"];
+            var mode = cmdArgs["mode"];
+            if (mode != "Professional" && new List<string>()
+                {"Auto (Movies & TV Shows)","TV","Movie","Game"}.Contains(mode))
+            {
+                IconMode = "Poster";
+                SearchMode = mode;
+            }
+            else
+            {
+                IconMode = "Professional";
+            }
+            SearchAndMakeMethod();
+
         }
 
         private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
