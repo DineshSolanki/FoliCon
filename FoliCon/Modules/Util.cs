@@ -554,24 +554,22 @@ namespace FoliCon.Modules
         public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
             out string igdbClientSecret, out string dartClientSecret, out string dartId)
         {
-            var settings = GlobalDataHelper.Load<AppConfig>();
-            tmdbkey = settings.TmdbKey;
-            igdbClientId = settings.IgdbClientId;
-            igdbClientSecret = settings.IgdbClientSecret;
-            dartClientSecret = settings.DevClientSecret;
-            dartId = settings.DevClientId;
+            tmdbkey = Services.Settings.TmdbKey;
+            igdbClientId = Services.Settings.IgdbClientId;
+            igdbClientSecret = Services.Settings.IgdbClientSecret;
+            dartClientSecret = Services.Settings.DevClientSecret;
+            dartId = Services.Settings.DevClientId;
         }
 
         public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
             string dartClientSecret, string dartId)
         {
-            var settings = GlobalDataHelper.Load<AppConfig>();
-            settings.TmdbKey = tmdbkey;
-            settings.IgdbClientId = igdbClientId;
-            settings.IgdbClientSecret = igdbClientSecret;
-            settings.DevClientId = dartId;
-            settings.DevClientSecret = dartClientSecret;
-            settings.Save();
+            Services.Settings.TmdbKey = tmdbkey;
+            Services.Settings.IgdbClientId = igdbClientId;
+            Services.Settings.IgdbClientSecret = igdbClientSecret;
+            Services.Settings.DevClientId = dartId;
+            Services.Settings.DevClientSecret = dartClientSecret;
+            Services.Settings.Save();
         }
 
         public static CultureInfo GetCultureInfoByLanguage(Languages language)
@@ -647,32 +645,33 @@ namespace FoliCon.Modules
             return arguments;
         }
 
-        public static bool IfNotAdminRestartAsAdmin(string args="")
+        public static void IfNotAdminRestartAsAdmin()
         {
             if (ApplicationHelper.IsAdministrator())
-                return false;
+                return;
             if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
-                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
+                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return;
 
-            StartAppAsAdmin(args);
-            Environment.Exit(0);
-            return true;
+            StartAppAsAdmin();
         }
 
-        public static void StartAppAsAdmin(string args="")
+        public static void StartAppAsAdmin()
         {
-            var elevated =
-                new ProcessStartInfo(Path.ChangeExtension(System.Reflection.Assembly.GetEntryAssembly()?.Location ?? AppPath,
-                    "exe")!,args)
-                {
-                    UseShellExecute = true,
-                    Verb = "runas"
-                };
+            var elevated = new ProcessStartInfo(Path.ChangeExtension(
+                System.Reflection.Assembly.GetEntryAssembly()?.Location ?? AppPath,
+                "exe")!)
+            {
+                UseShellExecute = true,
+                Verb = "runas"
+            };
+
             Process.Start(elevated);
+            Environment.Exit(0);
         }
 
         public static void AddToContextMenu()
         {
+            IfNotAdminRestartAsAdmin();
             var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Professional";
             ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Professional Mode", commandS);
             ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Professional Mode", commandS.Replace("%1", "%V"));
@@ -698,8 +697,9 @@ namespace FoliCon.Modules
 
         public static void RemoveFromContextMenu()
         {
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon","");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon","");
+            IfNotAdminRestartAsAdmin();
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "");
 
             //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
         }

@@ -171,6 +171,9 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(BestSuitedForHorizontal));
             OnPropertyChanged(nameof(Hindi));
             OnPropertyChanged(nameof(RestartAsAdmin));
+            OnPropertyChanged(nameof(AddToContextMenu));
+            OnPropertyChanged(nameof(ExplorerIntegration));
+            OnPropertyChanged(nameof(RemoveFromContextMenu));
         }
 
         public string About => Lang.About;
@@ -430,6 +433,9 @@ namespace FoliCon.Properties.Langs
         public string BestSuitedForHorizontal => Lang.BestSuitedForHorizontal;
         public string Hindi => Lang.Hindi;
         public string RestartAsAdmin => Lang.RestartAsAdmin;
+        public string RemoveFromContextMenu => Lang.RemoveFromContextMenu;
+        public string AddToContextMenu => Lang.AddToContextMenu;
+        public string ExplorerIntegration => Lang.ExplorerIntegration;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -698,5 +704,8 @@ namespace FoliCon.Properties.Langs
         public static string BestSuitedForHorizontal = nameof(BestSuitedForHorizontal);
         public static string Hindi = nameof(Hindi);
         public static string RestartAsAdmin = nameof(RestartAsAdmin);
+        public static string RemoveFromContextMenu = nameof(RemoveFromContextMenu);
+        public static string AddToContextMenu = nameof(AddToContextMenu);
+        public static string ExplorerIntegration = nameof(ExplorerIntegration);
     }
 }

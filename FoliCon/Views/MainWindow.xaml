@@ -69,7 +69,13 @@
                     <MenuItem x:Name="MenuApiConfigBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
                               Command="{Binding ApiConfigCommand}" />
                     <Separator />
-                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
+                    <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
+                        <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
+                                  Command="{Binding ExploreIntegrationCommand}" CommandParameter="True" />
+                        <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
+                                  Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
+                    </MenuItem>
+                        <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuRExbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
@@ -83,7 +89,6 @@
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
-                <ToggleButton Margin="0,6,0,0" IsChecked="{Binding IsExplorerIntegrationEnabled}" Style="{StaticResource ToggleButtonSwitch}"/>
                 <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.Help}}">
                     <MenuItem x:Name="MenubtnHelp" Header="{ex:Lang Key={x:Static langs:LangKeys.HelpDocument}}" >
                         <hc:Interaction.Triggers>

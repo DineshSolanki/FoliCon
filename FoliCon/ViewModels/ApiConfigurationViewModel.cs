@@ -11,7 +11,6 @@ namespace FoliCon.ViewModels
 {
     public class ApiConfigurationViewModel : BindableBase, IDialogAware
     {
-        AppConfig settings = GlobalDataHelper.Load<AppConfig>();
         private string _title = "API Configuration";
         private string _dartClient;
         private string _dartClientId;

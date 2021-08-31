@@ -70,6 +70,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add to context menu.
+        /// </summary>
+        public static string AddToContextMenu {
+            get {
+                return ResourceManager.GetString("AddToContextMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string All {
@@ -463,6 +472,15 @@ namespace FoliCon.Properties.Langs {
         public static string ExceptionOccurred {
             get {
                 return ResourceManager.GetString("ExceptionOccurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explorer Integration (Right click menu).
+        /// </summary>
+        public static string ExplorerIntegration {
+            get {
+                return ResourceManager.GetString("ExplorerIntegration", resourceCulture);
             }
         }
         
@@ -945,6 +963,15 @@ namespace FoliCon.Properties.Langs {
         public static string Rating {
             get {
                 return ResourceManager.GetString("Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove from context menu.
+        /// </summary>
+        public static string RemoveFromContextMenu {
+            get {
+                return ResourceManager.GetString("RemoveFromContextMenu", resourceCulture);
             }
         }
         

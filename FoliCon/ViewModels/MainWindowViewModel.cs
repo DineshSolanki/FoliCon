@@ -40,8 +40,6 @@ namespace FoliCon.ViewModels
         private DArt _dArtObject;
         private bool _isPosterWindowShown;
 
-        AppConfig _settings = GlobalDataHelper.Load<AppConfig>();
-        private bool? _isExploreIntegrationEnabled;
         private string _tmdbapiKey;
         private string _igdbClientId;
         private string _igdbClientSecret;
@@ -51,43 +49,6 @@ namespace FoliCon.ViewModels
         private List<ImageToDownload> _imgDownloadList;
         private DataTable _pickedListDataTable;
         private bool IsObjectsInitialized { get; set; }
-
-        public bool? IsExplorerIntegrationEnabled
-        {
-            get => _isExploreIntegrationEnabled;
-            set
-            {
-                if (value == null)
-                {
-                    SetProperty(ref _isExploreIntegrationEnabled, false);
-                    return;
-                }
-                if(value == _isExploreIntegrationEnabled)
-                    return;
-                var oldValue = _isExploreIntegrationEnabled;
-                SetProperty(ref _isExploreIntegrationEnabled, value);
-                if (ApplicationHelper.IsAdministrator())
-                {
-                    if ((bool)value)
-                    {
-                        Util.AddToContextMenu();
-                    }
-                    else
-                    {
-                        Util.RemoveFromContextMenu();
-                    }
-                }
-                else
-                {
-                    var op = (bool)value ? "AddToContext" : "RemoveFromContext";
-                    if (!Util.IfNotAdminRestartAsAdmin($"--op {op}"))
-                    {
-                        SetProperty(ref _isExploreIntegrationEnabled, oldValue);
-                    }
-                }
-                
-            }
-        }
 
         public bool IsPosterWindowShown
         {
@@ -215,6 +176,8 @@ namespace FoliCon.ViewModels
         public DelegateCommand DeleteIconsCommand { get; private set; }
         public DelegateCommand DeleteMediaInfoCommand { get; private set; }
 
+        public DelegateCommand<string> ExploreIntegrationCommand { get; private set; }
+
         public DelegateCommand HelpCommand { get; } = new(() =>
             Util.StartProcess("https://github.com/DineshSolanki/FoliCon"));
 
@@ -245,28 +208,15 @@ namespace FoliCon.ViewModels
                 .Property(p => p.IsPosterMockupUsed, true)
                 .Property(p => p.IsPosterWindowShown, false)
                 .Property(p => p.AppLanguage, Languages.English)
-                .Property(p => p.IsExplorerIntegrationEnabled)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
             Util.CheckForUpdate(true);
             var cmdArgs = Util.GetCmdArgs();
-            if (cmdArgs.ContainsKey("op"))
-            {
-                switch (cmdArgs["op"])
-                {
-                    case "AddToContext":
-                        Util.AddToContextMenu();
-                        break;
-                    case "RemoveFromContext":
-                        Util.RemoveFromContextMenu();
-                        break;
-                }
-            }
             if (!cmdArgs.ContainsKey("path")) return;
             SelectedFolder = cmdArgs["path"];
             var mode = cmdArgs["mode"];
-            if (mode != "Professional" && new List<string>()
-                {"Auto (Movies & TV Shows)","TV","Movie","Game"}.Contains(mode))
+            if (mode != "Professional" &&
+                new List<string> { "Auto (Movies & TV Shows)", "TV", "Movie", "Game" }.Contains(mode))
             {
                 IconMode = "Poster";
                 SearchMode = mode;
@@ -507,6 +457,7 @@ namespace FoliCon.ViewModels
             AboutCommand = new DelegateCommand(AboutMethod);
             DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
             DeleteMediaInfoCommand = new DelegateCommand(DeleteMediaInfo);
+            ExploreIntegrationCommand = new DelegateCommand<string>(ExplorerIntegrationMethod);
             CustomIconsCommand = new DelegateCommand(delegate
             {
                 _dialogService.ShowCustomIconWindow(
@@ -534,6 +485,13 @@ namespace FoliCon.ViewModels
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                 }
             });
+        }
+
+        private static void ExplorerIntegrationMethod(string isIntegrationEnabled)
+        {
+            var value = Convert.ToBoolean(isIntegrationEnabled);
+            if (value) Util.AddToContextMenu();
+            else Util.RemoveFromContextMenu();
         }
 
         private void DeleteMediaInfo()

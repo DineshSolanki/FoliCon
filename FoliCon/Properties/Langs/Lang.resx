@@ -120,6 +120,9 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+    <value>Add to context menu</value>
+  </data>
   <data name="All" xml:space="preserve">
     <value>All</value>
   </data>
@@ -252,6 +255,9 @@ This helps folicon identify media without having to chose from ambigous titles.<
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
     <value>Exception Occurred</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+    <value>Explorer Integration (Right click menu)</value>
   </data>
   <data name="Folder" xml:space="preserve">
     <value>Folder</value>
@@ -416,6 +422,9 @@ Try Searching with Other Title
   </data>
   <data name="Rating" xml:space="preserve">
     <value>Rating</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+    <value>Remove from context menu</value>
   </data>
   <data name="RestartAsAdmin" xml:space="preserve">
     <value>This feature requires admin rights, use it when running as admin.
