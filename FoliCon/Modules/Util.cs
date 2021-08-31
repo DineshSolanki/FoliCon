@@ -692,20 +692,8 @@ namespace FoliCon.Modules
         public static void RemoveFromContextMenu()
         {
             IfNotAdminRestartAsAdmin();
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "Professional Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon","Professional Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "Movie Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "Movie Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "TV Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "TV Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "Game Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "Game Mode");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon",
-                "Auto (Movies & TV Shows)");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon",
-                "Auto (Movies & TV Shows)");
-            ApplicationHelper.UnRegisterContextMenuFromDirectory("Create Icons with FoliCon");
-            ApplicationHelper.UnRegisterContextMenuFromBackground("Create Icons with FoliCon");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon","");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon","");
 
             //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
         }
