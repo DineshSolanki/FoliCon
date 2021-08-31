@@ -657,8 +657,7 @@ namespace FoliCon.Modules
 
         public static void StartAppAsAdmin()
         {
-            var elevated = new ProcessStartInfo(Path.ChangeExtension(
-                System.Reflection.Assembly.GetEntryAssembly()?.Location ?? AppPath,
+            var elevated = new ProcessStartInfo(Path.ChangeExtension(AppPath,
                 "exe")!)
             {
                 UseShellExecute = true,
@@ -703,6 +702,6 @@ namespace FoliCon.Modules
 
             //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
         }
-        public static string AppPath => System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase!;
+        public static string AppPath => ApplicationHelper.GetExecutablePathNative();
     }
 }
