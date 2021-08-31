@@ -41,6 +41,7 @@ namespace FoliCon.ViewModels
         private bool _isPosterWindowShown;
 
         AppConfig _settings = GlobalDataHelper.Load<AppConfig>();
+        private bool? _isExploreIntegrationEnabled;
         private string _tmdbapiKey;
         private string _igdbClientId;
         private string _igdbClientSecret;
@@ -50,6 +51,44 @@ namespace FoliCon.ViewModels
         private List<ImageToDownload> _imgDownloadList;
         private DataTable _pickedListDataTable;
         private bool IsObjectsInitialized { get; set; }
+
+        public bool? IsExplorerIntegrationEnabled
+        {
+            get => _isExploreIntegrationEnabled;
+            set
+            {
+                if (value == null)
+                {
+                    SetProperty(ref _isExploreIntegrationEnabled, false);
+                    return;
+                }
+                if(value == _isExploreIntegrationEnabled)
+                    return;
+                var oldValue = _isExploreIntegrationEnabled;
+                SetProperty(ref _isExploreIntegrationEnabled, value);
+                if (ApplicationHelper.IsAdministrator())
+                {
+                    if ((bool)value)
+                    {
+                        Util.AddToContextMenu();
+                    }
+                    else
+                    {
+                        Util.RemoveFromContextMenu();
+                    }
+                }
+                else
+                {
+                    var op = (bool)value ? "AddToContext" : "RemoveFromContext";
+                    if (!Util.IfNotAdminRestartAsAdmin($"--op {op}"))
+                    {
+                        SetProperty(ref _isExploreIntegrationEnabled, oldValue);
+                    }
+                }
+                
+            }
+        }
+
         public bool IsPosterWindowShown
         {
             get => _isPosterWindowShown; set
@@ -206,10 +245,23 @@ namespace FoliCon.ViewModels
                 .Property(p => p.IsPosterMockupUsed, true)
                 .Property(p => p.IsPosterWindowShown, false)
                 .Property(p => p.AppLanguage, Languages.English)
+                .Property(p => p.IsExplorerIntegrationEnabled)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
             Util.CheckForUpdate(true);
             var cmdArgs = Util.GetCmdArgs();
+            if (cmdArgs.ContainsKey("op"))
+            {
+                switch (cmdArgs["op"])
+                {
+                    case "AddToContext":
+                        Util.AddToContextMenu();
+                        break;
+                    case "RemoveFromContext":
+                        Util.RemoveFromContextMenu();
+                        break;
+                }
+            }
             if (!cmdArgs.ContainsKey("path")) return;
             SelectedFolder = cmdArgs["path"];
             var mode = cmdArgs["mode"];

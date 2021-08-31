@@ -647,25 +647,32 @@ namespace FoliCon.Modules
             return arguments;
         }
 
-        public static bool IfNotAdminRestartAsAdmin()
+        public static bool IfNotAdminRestartAsAdmin(string args="")
         {
             if (ApplicationHelper.IsAdministrator())
                 return false;
             if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
                 LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
 
-            var elevated = new ProcessStartInfo(Path.ChangeExtension(System.Reflection.Assembly.GetEntryAssembly()?.Location ?? AppPath,"exe")!)
-            {
-                UseShellExecute = true,
-                Verb = "runas"
-            };
-            Process.Start(elevated);
+            StartAppAsAdmin(args);
             Environment.Exit(0);
             return true;
         }
+
+        public static void StartAppAsAdmin(string args="")
+        {
+            var elevated =
+                new ProcessStartInfo(Path.ChangeExtension(System.Reflection.Assembly.GetEntryAssembly()?.Location ?? AppPath,
+                    "exe")!,args)
+                {
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+            Process.Start(elevated);
+        }
+
         public static void AddToContextMenu()
         {
-            IfNotAdminRestartAsAdmin();
             var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Professional";
             ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Professional Mode", commandS);
             ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Professional Mode", commandS.Replace("%1", "%V"));
@@ -691,7 +698,6 @@ namespace FoliCon.Modules
 
         public static void RemoveFromContextMenu()
         {
-            IfNotAdminRestartAsAdmin();
             ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon","");
             ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon","");
 

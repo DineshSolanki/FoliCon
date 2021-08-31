@@ -17,11 +17,11 @@
         modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
         modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
-    
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
-   
+
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
@@ -83,6 +83,7 @@
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
+                <ToggleButton Margin="0,6,0,0" IsChecked="{Binding IsExplorerIntegrationEnabled}" Style="{StaticResource ToggleButtonSwitch}"/>
                 <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.Help}}">
                     <MenuItem x:Name="MenubtnHelp" Header="{ex:Lang Key={x:Static langs:LangKeys.HelpDocument}}" >
                         <hc:Interaction.Triggers>
@@ -91,7 +92,7 @@
                             </hc:EventTrigger>
                         </hc:Interaction.Triggers>
                     </MenuItem>
-                        <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
+                    <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
                     <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" />
                 </MenuItem>
             </Menu>
