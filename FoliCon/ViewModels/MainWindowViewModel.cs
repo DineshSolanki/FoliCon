@@ -13,7 +13,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Net.NetworkInformation;
+using System.Threading;
 using HandyControl.Tools.Extension;
+using Vanara.PInvoke;
 
 namespace FoliCon.ViewModels
 {
@@ -199,10 +201,6 @@ namespace FoliCon.ViewModels
         public MainWindowViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
-            InitializeProperties();
-            InitializeDelegates();
-            NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
-
             Services.Tracker.Configure<MainWindowViewModel>()
                 .Property(p => p.IsRatingVisible, true)
                 .Property(p => p.IsPosterMockupUsed, true)
@@ -210,6 +208,17 @@ namespace FoliCon.ViewModels
                 .Property(p => p.AppLanguage, Languages.English)
                 .PersistOn(nameof(PropertyChanged));
             Services.Tracker.Track(this);
+            var selectedLanguage = AppLanguage;
+            var cultureInfo = Util.GetCultureInfoByLanguage(selectedLanguage);
+            LangProvider.Culture = cultureInfo;
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
+            InitializeProperties();
+            InitializeDelegates();
+            NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
+
+            
             var cmdArgs = Util.GetCmdArgs();
             if (!cmdArgs.ContainsKey("path")) return;
             SelectedFolder = cmdArgs["path"];
@@ -312,7 +321,8 @@ namespace FoliCon.ViewModels
             {
                 var fullFolderPath = $@"{SelectedFolder}\{itemTitle}";
                 var dialogResult = false;
-                StatusBarProperties.AppStatus = LangProvider.GetLang("SearchingWithCount").Format(itemTitle);
+                StatusBarProperties.AppStatus = "Searching";
+                StatusBarProperties.AppStatusAdditional = itemTitle;
                 // TODO: Set cursor to WAIT.
                 var isAutoPicked = false;
                 var searchTitle = TitleCleaner.Clean(itemTitle);
@@ -428,6 +438,7 @@ namespace FoliCon.ViewModels
             }
 
             StatusBarProperties.AppStatus = "Idle";
+            StatusBarProperties.AppStatusAdditional = "";
         }
 
         private void ProcessProfessionalMode()
@@ -523,7 +534,8 @@ namespace FoliCon.ViewModels
             {
                 NetIcon = Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
                 TotalIcons = 0,
-                AppStatus = "Idle"
+                AppStatus = "Idle",
+                AppStatusAdditional = ""
             };
             FinalListViewData = new ListViewData
             {
@@ -601,6 +613,7 @@ namespace FoliCon.ViewModels
             StatusBarProperties.AppStatus = LangProvider.GetLang("Creating Icons");
             await DownloadAndMakeIconsAsync();
             StatusBarProperties.AppStatus = "Idle";
+            StatusBarProperties.AppStatusAdditional = "";
         }
 
         private async System.Threading.Tasks.Task DownloadAndMakeIconsAsync()

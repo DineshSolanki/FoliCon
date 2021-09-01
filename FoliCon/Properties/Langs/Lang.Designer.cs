@@ -304,6 +304,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create icons with FoliCon.
+        /// </summary>
+        public static string CreateIconsWithFoliCon {
+            get {
+                return ResourceManager.GetString("CreateIconsWithFoliCon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating Icons....
         /// </summary>
         public static string CreatingIcons {

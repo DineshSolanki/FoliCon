@@ -537,4 +537,7 @@
 	  <value>Эта функция требует прав администратора, используйте ее при работе от имени администратора.
 Вы хотите перезапустить Folicon от имени администратора?</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+	  <value>Создавайте иконки с FoliCon</value>
+  </data>
 </root>

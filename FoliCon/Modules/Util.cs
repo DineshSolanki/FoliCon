@@ -554,11 +554,12 @@ namespace FoliCon.Modules
         public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
             out string igdbClientSecret, out string dartClientSecret, out string dartId)
         {
-            tmdbkey = Services.Settings.TmdbKey;
-            igdbClientId = Services.Settings.IgdbClientId;
-            igdbClientSecret = Services.Settings.IgdbClientSecret;
-            dartClientSecret = Services.Settings.DevClientSecret;
-            dartId = Services.Settings.DevClientId;
+            var settings = GlobalDataHelper.Load<AppConfig>();
+            tmdbkey = settings.TmdbKey;
+            igdbClientId = settings.IgdbClientId;
+            igdbClientSecret = settings.IgdbClientSecret;
+            dartClientSecret = settings.DevClientSecret;
+            dartId = settings.DevClientId;
         }
 
         public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
@@ -645,14 +646,15 @@ namespace FoliCon.Modules
             return arguments;
         }
 
-        public static void IfNotAdminRestartAsAdmin()
+        public static bool? IfNotAdminRestartAsAdmin()
         {
             if (ApplicationHelper.IsAdministrator())
-                return;
+                return null;
             if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
-                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return;
+                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
 
             StartAppAsAdmin();
+            return true;
         }
 
         public static void StartAppAsAdmin()
@@ -670,35 +672,49 @@ namespace FoliCon.Modules
 
         public static void AddToContextMenu()
         {
-            IfNotAdminRestartAsAdmin();
+            if (IfNotAdminRestartAsAdmin() == false) return;
+            switch (Services.Settings.IsExplorerIntegrated)
+            {
+                case true when Services.Settings.ContextEntryName == LangProvider.GetLang("CreateIconsWithFoliCon"):
+                    return;
+                case true when Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"):
+                    RemoveFromContextMenu();
+                    break;
+            }
+            Services.Settings.ContextEntryName = LangProvider.GetLang("CreateIconsWithFoliCon");
+            Services.Settings.IsExplorerIntegrated = true;
+            Services.Settings.Save();
             var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Professional";
-            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Professional Mode", commandS);
-            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Professional Mode", commandS.Replace("%1", "%V"));
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Professional"), commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Professional"), commandS.Replace("%1", "%V"));
 
 
             commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Movie";
-            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Movie Mode", commandS);
-            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Movie Mode", commandS.Replace("%1", "%V"));
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Movie"), commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Movie"), commandS.Replace("%1", "%V"));
 
             commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode TV";
-            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "TV Mode", commandS);
-            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "TV Mode", commandS.Replace("%1", "%V"));
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("TV"), commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("TV"), commandS.Replace("%1", "%V"));
 
             commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Game";
-            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Game Mode", commandS);
-            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Game Mode", commandS.Replace("%1", "%V"));
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Game"), commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Game"), commandS.Replace("%1", "%V"));
 
             commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode ""Auto (Movies & TV Shows)""";
-            ApplicationHelper.RegisterCascadeContextMenuToDirectory("Create Icons with FoliCon", "Auto (Movies & TV Shows)", commandS);
-            ApplicationHelper.RegisterCascadeContextMenuToBackground("Create Icons with FoliCon", "Auto (Movies & TV Shows)", commandS.Replace("%1", "%V"));
+            ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Auto"), commandS);
+            ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Auto"), commandS.Replace("%1", "%V"));
+            
             //Growl.SuccessGlobal("Merge Subtitle option added to context menu!");
         }
 
         public static void RemoveFromContextMenu()
         {
-            IfNotAdminRestartAsAdmin();
-            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory("Create Icons with FoliCon", "");
-            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground("Create Icons with FoliCon", "");
+            if (IfNotAdminRestartAsAdmin() == false) return;
+            Services.Settings.IsExplorerIntegrated = false;
+            Services.Settings.Save();
+            ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory(Services.Settings.ContextEntryName, "");
+            ApplicationHelper.UnRegisterCascadeContextMenuFromBackground(Services.Settings.ContextEntryName, "");
 
             //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
         }

@@ -537,4 +537,7 @@
 	  <value>تتطلب هذه الميزة حقوق المسؤول ، استخدمها عند التشغيل كمسؤول.
 هل تريد إعادة تشغيل Folicon كمسؤول؟</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+	  <value>قم بإنشاء أيقونات باستخدام FoliCon</value>
+  </data>
 </root>

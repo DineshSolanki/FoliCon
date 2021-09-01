@@ -198,6 +198,9 @@
   <data name="ConfirmToOpenFolder" xml:space="preserve">
     <value>Click "Confirm" to open folder.</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+    <value>Create icons with FoliCon</value>
+  </data>
   <data name="CreatingIcons" xml:space="preserve">
     <value>Creating Icons...</value>
   </data>

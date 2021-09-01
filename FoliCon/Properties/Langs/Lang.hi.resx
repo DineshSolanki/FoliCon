@@ -537,4 +537,7 @@
     <value>इस सुविधा के लिए एडमिन अधिकारों की आवश्यकता है, एडमिन  के रूप में चलाते समय इसका उपयोग करें।
 क्या आप Folicon को एडमिनके रूप में पुनः आरंभ करना चाहते हैं?</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+	  <value>FoliCon के साथ आइकन बनाएं</value>
+  </data>
 </root>

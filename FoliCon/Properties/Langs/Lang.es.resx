@@ -537,4 +537,7 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
 	  <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
 ¿Quieres reiniciar Folicon como administrador?</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+	  <value>Crea iconos con FoliCon</value>
+  </data>
 </root>

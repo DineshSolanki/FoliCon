@@ -246,7 +246,14 @@
                         </ItemsPanelTemplate>
                     </StatusBar.ItemsPanel>
                     <StatusBarItem Grid.Column="0">
-                        <Label Content="{Binding AppStatus}" BorderThickness="0" />
+                        <Label BorderThickness="0">
+                            <Label.Content>
+                                <hc:SimpleStackPanel Orientation="Horizontal">
+                                    <Label BorderThickness="0" Content="{ex:Lang Key={Binding AppStatus}}"/>
+                                    <Label BorderThickness="0"  Content="{Binding AppStatusAdditional}"/>
+                                </hc:SimpleStackPanel>
+                            </Label.Content>
+                        </Label>
                     </StatusBarItem>
                     <Separator Grid.Column="1" />
                     <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Stretch">
