@@ -54,7 +54,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="4.0.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="TMDbLib" Version="1.8.1" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.3.13" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.3.14" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
