@@ -49,7 +49,7 @@ dineshsolanki.github.io/folicon/</Description>
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="2.4.3" />
     <PackageReference Include="HandyControls" Version="3.3.8.1" />
-    <PackageReference Include="IGDB" Version="2.0.1" />
+    <PackageReference Include="IGDB" Version="2.2.0" />
     <PackageReference Include="Jot" Version="2.1.11" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="4.0.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
