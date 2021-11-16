@@ -246,6 +246,8 @@ namespace FoliCon.ViewModels
         private void LoadMethod()
         {
             var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+            if (!SelectedFolder.IsNullOrEmpty())
+                folderBrowserDialog.SelectedPath = SelectedFolder;
             var dialogResult = folderBrowserDialog.ShowDialog();
             if (dialogResult != null && (bool)!dialogResult) return;
             SelectedFolder = folderBrowserDialog.SelectedPath;
