@@ -1,11 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Microsoft.Xaml.Behaviors;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public class ClickBehavior : Behavior<Image>
     {

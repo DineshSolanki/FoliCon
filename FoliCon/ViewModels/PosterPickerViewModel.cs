@@ -1,21 +1,4 @@
-﻿using FoliCon.Models;
-using FoliCon.Modules;
-using HandyControl.Controls;
-using HandyControl.Tools.Extension;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using FoliCon.Properties.Langs;
-using IGDB;
-using IGDB.Models;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Movies;
-using TMDbLib.Objects.Search;
-using TMDbLib.Objects.TvShows;
-using Collection = TMDbLib.Objects.Collections.Collection;
+﻿using Collection = TMDbLib.Objects.Collections.Collection;
 
 namespace FoliCon.ViewModels
 {

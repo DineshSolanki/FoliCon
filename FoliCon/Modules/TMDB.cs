@@ -1,19 +1,4 @@
-﻿using FoliCon.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Threading.Tasks;
-using TMDbLib.Client;
-using TMDbLib.Objects.Collections;
-using TMDbLib.Objects.General;
-using TMDbLib.Objects.Movies;
-using TMDbLib.Objects.Search;
-using TMDbLib.Objects.TvShows;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public class Tmdb
     {

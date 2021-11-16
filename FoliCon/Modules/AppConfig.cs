@@ -1,9 +1,4 @@
-﻿using HandyControl.Tools;
-using System;
-using System.IO;
-using System.Text.Json;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public class AppConfig : GlobalDataHelper
     {

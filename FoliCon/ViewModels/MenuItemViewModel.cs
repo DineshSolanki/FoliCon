@@ -1,8 +1,4 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System.Collections.ObjectModel;
-
-namespace FoliCon.ViewModels
+﻿namespace FoliCon.ViewModels
 {
     public class MenuItemViewModel : BindableBase
     {

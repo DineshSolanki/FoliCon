@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     //Taken from-https://stackoverflow.com/a/16722767/8076598
     public static class StaTask

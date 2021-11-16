@@ -1,8 +1,4 @@
-﻿using Prism.Mvvm;
-using System;
-using System.Windows.Media.Imaging;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class DArtImageList : BindableBase
     {

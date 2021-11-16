@@ -1,8 +1,4 @@
-﻿using IGDB;
-using Prism.Mvvm;
-using System.Threading.Tasks;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class IgdbJotTrackerStore : BindableBase, ITokenStore
     {

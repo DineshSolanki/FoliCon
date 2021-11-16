@@ -1,10 +1,4 @@
-﻿using FoliCon.Models;
-using Newtonsoft.Json;
-using Prism.Mvvm;
-using System;
-using System.Threading.Tasks;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public class DArt : BindableBase
     {

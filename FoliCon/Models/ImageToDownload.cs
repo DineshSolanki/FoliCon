@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class ImageToDownload
     {

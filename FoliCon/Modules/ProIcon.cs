@@ -1,8 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
-using System.Windows.Media.Imaging;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public class ProIcon
     {

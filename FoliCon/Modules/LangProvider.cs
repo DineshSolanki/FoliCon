@@ -1,10 +1,4 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using HandyControl.Tools;
-// ReSharper disable InconsistentNaming
-
+﻿// ReSharper disable InconsistentNaming
 namespace FoliCon.Properties.Langs
 {
     public class LangProvider : INotifyPropertyChanged

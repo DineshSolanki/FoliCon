@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class DArtTokenResponse
     {

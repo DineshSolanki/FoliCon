@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public static class NativeMethods
     {

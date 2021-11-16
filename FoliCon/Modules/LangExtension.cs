@@ -1,6 +1,4 @@
-﻿using FoliCon.Properties.Langs;
-
-namespace FoliCon.Modules.LangExtension
+﻿namespace FoliCon.Modules.LangExtension
 {
     public class LangExtension : HandyControl.Tools.Extension.LangExtension
     {

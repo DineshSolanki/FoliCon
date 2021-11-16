@@ -1,11 +1,4 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Globalization;
-using FoliCon.Properties.Langs;
-
-namespace FoliCon.ViewModels
+﻿namespace FoliCon.ViewModels
 {
     public class PosterIconConfigViewModel : BindableBase, IDialogAware
     {

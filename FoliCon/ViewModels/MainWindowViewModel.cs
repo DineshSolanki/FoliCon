@@ -1,23 +1,4 @@
-﻿using FoliCon.Models;
-using FoliCon.Modules;
-using FoliCon.Properties.Langs;
-using HandyControl.Controls;
-using HandyControl.Data;
-using HandyControl.Tools;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading;
-using HandyControl.Tools.Extension;
-using Vanara.PInvoke;
-
-namespace FoliCon.ViewModels
+﻿namespace FoliCon.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
     {

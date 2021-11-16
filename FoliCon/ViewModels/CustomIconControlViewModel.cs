@@ -1,21 +1,4 @@
-﻿using FoliCon.Modules;
-using HandyControl.Controls;
-using HandyControl.Data;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using FoliCon.Properties.Langs;
-using HandyControl.Tools.Extension;
-using static Vanara.PInvoke.Shell32;
-using MessageBox = HandyControl.Controls.MessageBox;
-// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
 namespace FoliCon.ViewModels
 {

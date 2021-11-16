@@ -1,20 +1,4 @@
-﻿using FoliCon.Models;
-using FoliCon.Modules;
-using HandyControl.Controls;
-using HandyControl.Tools.Extension;
-using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using FoliCon.Properties.Langs;
-
-namespace FoliCon.ViewModels
+﻿namespace FoliCon.ViewModels
 {
     public class ProSearchResultViewModel : BindableBase, IDialogAware
     {

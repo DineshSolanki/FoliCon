@@ -1,7 +1,4 @@
-﻿using FoliCon.Modules;
-using FoliCon.ViewModels;
-using FoliCon.Views;
-using HandyControl.Tools;
+﻿using FoliCon.ViewModels;
 using Prism.Ioc;
 
 namespace FoliCon

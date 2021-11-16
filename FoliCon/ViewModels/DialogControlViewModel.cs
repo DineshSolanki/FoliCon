@@ -1,10 +1,4 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Globalization;
-
-namespace FoliCon.ViewModels
+﻿namespace FoliCon.ViewModels
 {
     public class DialogControlViewModel : BindableBase, IDialogAware
     {

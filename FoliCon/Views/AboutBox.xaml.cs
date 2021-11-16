@@ -1,6 +1,4 @@
-﻿using System.Windows.Input;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for AboutBox

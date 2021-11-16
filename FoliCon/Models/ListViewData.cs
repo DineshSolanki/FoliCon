@@ -1,7 +1,4 @@
-﻿using Prism.Mvvm;
-using System.Collections.ObjectModel;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class ListViewData : BindableBase
     {

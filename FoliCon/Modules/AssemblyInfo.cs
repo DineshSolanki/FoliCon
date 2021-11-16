@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     internal static class AssemblyInfo
     {

@@ -1,11 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for PosterIconFaelpessoalHorizontal.xaml

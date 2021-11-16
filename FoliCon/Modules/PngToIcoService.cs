@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.IconLib;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public static class PngToIcoService
     {

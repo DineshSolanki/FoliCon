@@ -1,17 +1,4 @@
-﻿using FoliCon.Models;
-using IGDB;
-using IGDB.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public class IgdbClass
     {

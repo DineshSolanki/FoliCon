@@ -1,9 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     /// <summary>
     /// This class registers an attached property that can be set to trigger

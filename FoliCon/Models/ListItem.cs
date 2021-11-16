@@ -1,6 +1,4 @@
-﻿using Prism.Mvvm;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class ListItem : BindableBase
     {

@@ -1,7 +1,4 @@
-﻿using FoliCon.Properties.Langs;
-using Prism.Mvvm;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class StatusBarData : BindableBase
     {

@@ -1,8 +1,4 @@
-﻿using System.Windows;
-using FoliCon.Properties.Langs;
-using HandyControl.Data;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     class CustomMessageBox
     {

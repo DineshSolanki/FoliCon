@@ -1,17 +1,4 @@
-﻿using FoliCon.Models;
-using FoliCon.Modules;
-using Prism.Mvvm;
-using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Input;
-using FoliCon.Properties.Langs;
-using HandyControl.Tools.Extension;
-using DelegateCommand = Prism.Commands.DelegateCommand;
-using MessageBox = HandyControl.Controls.MessageBox;
-using Prism.Commands;
+﻿using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace FoliCon.ViewModels
 {

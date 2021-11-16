@@ -1,9 +1,4 @@
-﻿using Jot;
-using System.Net.Http;
-using FoliCon.Modules;
-using HandyControl.Tools;
-
-namespace FoliCon
+﻿namespace FoliCon
 {
     public static class Services
     {

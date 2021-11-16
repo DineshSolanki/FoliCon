@@ -1,9 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public interface IFileDragDropTarget
     {

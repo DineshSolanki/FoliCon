@@ -1,10 +1,4 @@
-﻿using FoliCon.Models;
-using Prism.Services.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     public static class DialogServiceExtensions
     {

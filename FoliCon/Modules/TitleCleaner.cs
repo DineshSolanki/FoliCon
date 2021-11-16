@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace FoliCon.Modules
+﻿namespace FoliCon.Modules
 {
     internal static class TitleCleaner
     {

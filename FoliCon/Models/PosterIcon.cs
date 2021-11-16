@@ -1,9 +1,4 @@
-﻿using FoliCon.Modules;
-using System;
-using System.IO;
-using System.Windows.Media;
-
-namespace FoliCon.Models
+﻿namespace FoliCon.Models
 {
     public class PosterIcon
     {

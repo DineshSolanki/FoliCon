@@ -1,13 +1,4 @@
-﻿using FoliCon.Modules;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using FoliCon.Models;
-using FoliCon.Properties.Langs;
-using Vanara.PInvoke;
+﻿using System.Collections.Specialized;
 
 namespace FoliCon.Views
 {

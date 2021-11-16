@@ -1,11 +1,4 @@
-﻿using FoliCon.Modules;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for SearchResult
