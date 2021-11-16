@@ -16,9 +16,9 @@
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <!--<Setter Property="Height" Value="514.5" />
-            <Setter Property="Width" Value="1061.5" />
-            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="Height" Value="700" />
+            <Setter Property="Width" Value="1023" />
+            <!--<Setter Property="ResizeMode" Value="NoResize" />
             <Setter Property="WindowStyle" Value="ToolWindow" />-->
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
@@ -84,11 +84,11 @@
                     <RowDefinition Height="35" />
                     <RowDefinition Height="200" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{ex:Lang Key={x:Static langs:LangKeys.All}}"
@@ -122,7 +122,7 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>-->
                 </ListBox>
-                <views:HtmlBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult}"/>
+                <views:HtmlBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult}" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
             </Grid>
         </Grid>
     </hc:BusyIndicator>
