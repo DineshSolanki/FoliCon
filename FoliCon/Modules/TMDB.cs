@@ -66,7 +66,7 @@ namespace FoliCon.Modules
                 const string rating = "";
                 const string overview = "";
                 var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null, CultureInfo.InvariantCulture);
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id));
             }
 
             return items;
@@ -83,7 +83,7 @@ namespace FoliCon.Modules
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
                 var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id));
             }
 
             return items;
@@ -98,6 +98,7 @@ namespace FoliCon.Modules
             var rating = "";
             var overview = "";
             string poster = null;
+            int id = 0;
             foreach (var item in result.Results)
             {
                 var mediaType = item.MediaType;
@@ -106,6 +107,7 @@ namespace FoliCon.Modules
                     case MediaType.Tv:
                         {
                             var res = (SearchTv)item;
+                            id = res.Id;
                             mediaName = res.Name;
                             year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                             rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
@@ -116,6 +118,7 @@ namespace FoliCon.Modules
                     case MediaType.Movie:
                         {
                             var res = (SearchMovie)item;
+                            id = res.Id;
                             mediaName = res.Title;
                             year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
                             rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
@@ -125,7 +128,7 @@ namespace FoliCon.Modules
                         }
                 }
 
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id));
             }
 
             return items;
@@ -139,7 +142,7 @@ namespace FoliCon.Modules
                 var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = result.Overview;
                 var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster,"",result.Id));
 
                 return items;
         }
@@ -153,7 +156,7 @@ namespace FoliCon.Modules
                 const string rating = "";
                 const string overview = "";
                 var poster = Convert.ToString(result.PosterPath != null ? SmallPosterBase + result.PosterPath : null, CultureInfo.InvariantCulture);
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id));
 
                 return items;
         }
@@ -167,7 +170,7 @@ namespace FoliCon.Modules
                 var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = result.Overview;
                 var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id));
 
                 return items;
         }
@@ -182,7 +185,7 @@ namespace FoliCon.Modules
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
                 var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id));
             }
 
             return items;

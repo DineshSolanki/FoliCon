@@ -10,16 +10,16 @@
              xmlns:models="clr-namespace:FoliCon.Models"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views" mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="514.5" />
+            <!--<Setter Property="Height" Value="514.5" />
             <Setter Property="Width" Value="1061.5" />
             <Setter Property="ResizeMode" Value="NoResize" />
-            <Setter Property="WindowStyle" Value="ToolWindow" />
+            <Setter Property="WindowStyle" Value="ToolWindow" />-->
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
@@ -89,6 +89,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{ex:Lang Key={x:Static langs:LangKeys.All}}"
                         HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisPlaceholder}}" />
@@ -121,6 +122,7 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>-->
                 </ListBox>
+                <views:HtmlBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult}"/>
             </Grid>
         </Grid>
     </hc:BusyIndicator>

@@ -171,6 +171,7 @@ namespace FoliCon.ViewModels
             LoadData(SearchTitle);
             SearchAgainTitle = SearchTitle;
             FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
+            ResultListViewData.tmdb = _tmdbObject;
         }
 
         private async void StartSearch(bool useBusy)
@@ -273,7 +274,6 @@ namespace FoliCon.ViewModels
 
             CloseDialog("true");
         }
-
         private DelegateCommand mouseDoubleClickCommand;
         public ICommand MouseDoubleClickCommand => mouseDoubleClickCommand ??= new DelegateCommand(MouseDoubleClick);
 
