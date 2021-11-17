@@ -68,5 +68,10 @@ namespace FoliCon.Views
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WebBox.browser.Dispose();
+        }
     }
 }

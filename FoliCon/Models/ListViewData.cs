@@ -2,6 +2,9 @@
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
+
+using TMDbLib.Objects.General;
+
 namespace FoliCon.Models
 {
     public class ListViewData : BindableBase
@@ -17,16 +20,27 @@ namespace FoliCon.Models
                 SetProperty(ref _selectedItem, value);
                 if(tmdb != null &&  value != null && SelectedItem.TrailerKey != "")
                 {
-                    var task = tmdb.GetClient().GetMovieVideosAsync(value.Id).Result;
-                    if (task.Results.Any())
+                    var task = tmdb.GetClient().GetMovieVideosAsync(value.Id).ContinueWith(x =>
                     {
-                        var i = task.Results.First(i => i.Type == "Trailer");
-                        if (i != null)
+                        Video i;
+                        if (x.Result.Results.Any())
                         {
-                            value.TrailerKey = i.Key;
-                            value.Trailer = new System.Uri("https://www.youtube.com/embed/" + i.Key);
+                            if (x.Result.Results.Any(i => i.Type == "Trailer"))
+                            {
+                                i = x.Result.Results.First(i => i.Type == "Trailer");
+                            }
+                            else
+                            {
+                                i = x.Result.Results.First();
+                            }
+                            if (i != null)
+                            {
+                                value.TrailerKey = i.Key;
+                                value.Trailer = new System.Uri("https://www.youtube.com/embed/" + i.Key);
+                            }
                         }
-                    }
+                    });
+                    
                 }
                     
 
