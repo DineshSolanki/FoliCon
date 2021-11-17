@@ -2,7 +2,7 @@
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
-
+using HandyControl.Tools.Extension;
 using TMDbLib.Objects.General;
 
 namespace FoliCon.Models
@@ -18,7 +18,7 @@ namespace FoliCon.Models
             set
             {
                 SetProperty(ref _selectedItem, value);
-                if(tmdb != null &&  value != null && SelectedItem.TrailerKey != "")
+                if(tmdb != null &&  value != null && SelectedItem.TrailerKey.IsNullOrEmpty())
                 {
                     var task = tmdb.GetClient().GetMovieVideosAsync(value.Id).ContinueWith(x =>
                     {

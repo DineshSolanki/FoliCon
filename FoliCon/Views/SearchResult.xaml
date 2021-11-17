@@ -122,7 +122,7 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>-->
                 </ListBox>
-                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult}" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='video not found'}" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
             </Grid>
         </Grid>
     </hc:BusyIndicator>
