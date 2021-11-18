@@ -1,40 +1,34 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Windows;
-using System.Windows.Data;
-using HandyControl.Tools;
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
+namespace FoliCon.Properties.Langs;
 
-namespace FoliCon.Properties.Langs
+public class LangProvider : INotifyPropertyChanged
 {
-    public class LangProvider : INotifyPropertyChanged
+    private static string _cultureInfoStr;
+    internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("FoliConLangs");
+    public static string GetLang(string key) => Lang.ResourceManager.GetString(key, Culture);
+
+    public static void SetLang(DependencyObject dependencyObject, DependencyProperty dependencyProperty, string key)
     {
-        private static string _cultureInfoStr;
-        internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("FoliConLangs");
-        public static string GetLang(string key) => Lang.ResourceManager.GetString(key, Culture);
-
-        public static void SetLang(DependencyObject dependencyObject, DependencyProperty dependencyProperty, string key)
+        BindingOperations.SetBinding(dependencyObject, dependencyProperty, new Binding(key)
         {
-            BindingOperations.SetBinding(dependencyObject, dependencyProperty, new Binding(key)
-            {
-                Source = Instance,
-                Mode = BindingMode.OneWay
-            });
-        }
+            Source = Instance,
+            Mode = BindingMode.OneWay
+        });
+    }
 
-        public static CultureInfo Culture
+    public static CultureInfo Culture
+    {
+        get => Lang.Culture;
+        set
         {
-            get => Lang.Culture;
-            set
-            {
-                if (value == null) return;
-                if (Equals(_cultureInfoStr, value.EnglishName)) return;
-                Lang.Culture = value;
-                _cultureInfoStr = value.EnglishName;
+            if (value == null) return;
+            if (Equals(_cultureInfoStr, value.EnglishName)) return;
+            Lang.Culture = value;
+            _cultureInfoStr = value.EnglishName;
 
-                Instance.UpdateLangs();
-            }
+            Instance.UpdateLangs();
         }
+    }
 
         private void UpdateLangs()
         {
@@ -177,251 +171,251 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(VideoUnavailable));
         }
 
-        public string About => Lang.About;
+    public string About => Lang.About;
 
-        public string All => Lang.All;
+    public string All => Lang.All;
 
-        public string AlwaysShowPosterWindow => Lang.AlwaysShowPosterWindow;
+    public string AlwaysShowPosterWindow => Lang.AlwaysShowPosterWindow;
 
-        public string AmbiguousTitleTooltip => Lang.AmbiguousTitleTooltip;
+    public string AmbiguousTitleTooltip => Lang.AmbiguousTitleTooltip;
 
-        public string APIKeysConfiguration => Lang.APIKeysConfiguration;
+    public string APIKeysConfiguration => Lang.APIKeysConfiguration;
 
-        public string APIKeysNotProvided => Lang.APIKeysNotProvided;
+    public string APIKeysNotProvided => Lang.APIKeysNotProvided;
 
-        public string Apply => Lang.Apply;
+    public string Apply => Lang.Apply;
 
-        public string AppWillClose => Lang.AppWillClose;
+    public string AppWillClose => Lang.AppWillClose;
 
-        public string Arabic => Lang.Arabic;
+    public string Arabic => Lang.Arabic;
 
-        public string Auto => Lang.Auto;
+    public string Auto => Lang.Auto;
 
-        public string BrowseFolderDropHere => Lang.BrowseFolderDropHere;
+    public string BrowseFolderDropHere => Lang.BrowseFolderDropHere;
 
-        public string BrowseIconsDropHere => Lang.BrowseIconsDropHere;
+    public string BrowseIconsDropHere => Lang.BrowseIconsDropHere;
 
-        public string Cancel => Lang.Cancel;
+    public string Cancel => Lang.Cancel;
 
-        public string ChangeLanguage => Lang.ChangeLanguage;
+    public string ChangeLanguage => Lang.ChangeLanguage;
 
-        public string ChangePosterOverlay => Lang.ChangePosterOverlay;
+    public string ChangePosterOverlay => Lang.ChangePosterOverlay;
 
-        public string CheckForUpdate => Lang.CheckForUpdate;
+    public string CheckForUpdate => Lang.CheckForUpdate;
 
-        public string ClientID => Lang.ClientID;
+    public string ClientID => Lang.ClientID;
 
-        public string ClientSecret => Lang.ClientSecret;
+    public string ClientSecret => Lang.ClientSecret;
 
-        public string Close => Lang.Close;
+    public string Close => Lang.Close;
 
-        public string ClosingApplication => Lang.ClosingApplication;
+    public string ClosingApplication => Lang.ClosingApplication;
 
-        public string Confirm => Lang.Confirm;
+    public string Confirm => Lang.Confirm;
 
-        public string ConfirmExplorerRestart => Lang.ConfirmExplorerRestart;
+    public string ConfirmExplorerRestart => Lang.ConfirmExplorerRestart;
 
-        public string ConfirmIconDeletion => Lang.ConfirmIconDeletion;
+    public string ConfirmIconDeletion => Lang.ConfirmIconDeletion;
 
-        public string ConfirmToOpenFolder => Lang.ConfirmToOpenFolder;
+    public string ConfirmToOpenFolder => Lang.ConfirmToOpenFolder;
 
-        public string CreatingIcons => Lang.CreatingIcons;
+    public string CreatingIcons => Lang.CreatingIcons;
 
-        public string CustomIconSetter => Lang.CustomIconSetter;
+    public string CustomIconSetter => Lang.CustomIconSetter;
 
-        public string CustomRating => Lang.CustomRating;
+    public string CustomRating => Lang.CustomRating;
 
-        public string CustomRatingTooltip => Lang.CustomRatingTooltip;
+    public string CustomRatingTooltip => Lang.CustomRatingTooltip;
 
-        public string DeleteIcons => Lang.DeleteIcons;
+    public string DeleteIcons => Lang.DeleteIcons;
 
-        public string DeleteIconsConfirmation => Lang.DeleteIconsConfirmation;
+    public string DeleteIconsConfirmation => Lang.DeleteIconsConfirmation;
 
-        public string DeleteIconsTooltip => Lang.DeleteIconsTooltip;
+    public string DeleteIconsTooltip => Lang.DeleteIconsTooltip;
 
-        public string DevelopedByDinesh => Lang.DevelopedByDinesh;
+    public string DevelopedByDinesh => Lang.DevelopedByDinesh;
 
-        public string DirectoryIsEmpty => Lang.DirectoryIsEmpty;
+    public string DirectoryIsEmpty => Lang.DirectoryIsEmpty;
 
-        public string DownloadingIcons => Lang.DownloadingIcons;
+    public string DownloadingIcons => Lang.DownloadingIcons;
 
-        public string DownloadingIconWithCount => Lang.DownloadingIconWithCount;
+    public string DownloadingIconWithCount => Lang.DownloadingIconWithCount;
 
-        public string DownloadIt => Lang.DownloadIt;
+    public string DownloadIt => Lang.DownloadIt;
 
-        public string EmptyDirectory => Lang.EmptyDirectory;
+    public string EmptyDirectory => Lang.EmptyDirectory;
 
-        public string English => Lang.English;
+    public string English => Lang.English;
 
-        public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
+    public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
 
-        public string Folder => Lang.Folder;
+    public string Folder => Lang.Folder;
 
-        public string FolderDoesNotExist => Lang.FolderDoesNotExist;
+    public string FolderDoesNotExist => Lang.FolderDoesNotExist;
 
-        public string FolderError => Lang.FolderError;
+    public string FolderError => Lang.FolderError;
 
-        public string Folders => Lang.Folders;
+    public string Folders => Lang.Folders;
 
-        public string FoldersProcessed => Lang.FoldersProcessed;
+    public string FoldersProcessed => Lang.FoldersProcessed;
 
-        public string FoliConDescription => Lang.FoliConDescription;
+    public string FoliConDescription => Lang.FoliConDescription;
 
-        public string Game => Lang.Game;
+    public string Game => Lang.Game;
 
-        public string HaveIcons => Lang.HaveIcons;
+    public string HaveIcons => Lang.HaveIcons;
 
-        public string HaveIconsTooltip => Lang.HaveIconsTooltip;
+    public string HaveIconsTooltip => Lang.HaveIconsTooltip;
 
-        public string Help => Lang.Help;
+    public string Help => Lang.Help;
 
-        public string HelpDocument => Lang.HelpDocument;
+    public string HelpDocument => Lang.HelpDocument;
 
-        public string IconCreated => Lang.IconCreated;
+    public string IconCreated => Lang.IconCreated;
 
-        public string IconCreatedWithCount => Lang.IconCreatedWithCount;
+    public string IconCreatedWithCount => Lang.IconCreatedWithCount;
 
-        public string IconMode => Lang.IconMode;
+    public string IconMode => Lang.IconMode;
 
-        public string IconReloadMayTakeTime => Lang.IconReloadMayTakeTime;
+    public string IconReloadMayTakeTime => Lang.IconReloadMayTakeTime;
 
-        public string Icons => Lang.Icons;
+    public string Icons => Lang.Icons;
 
-        public string IconsAlready => Lang.IconsAlready;
+    public string IconsAlready => Lang.IconsAlready;
 
-        public string IconsCreated => Lang.IconsCreated;
+    public string IconsCreated => Lang.IconsCreated;
 
-        public string Idle => Lang.Idle;
+    public string Idle => Lang.Idle;
 
-        public string Ignore => Lang.Ignore;
+    public string Ignore => Lang.Ignore;
 
-        public string IgnoreAmbiguousTitle => Lang.IgnoreAmbiguousTitle;
+    public string IgnoreAmbiguousTitle => Lang.IgnoreAmbiguousTitle;
 
-        public string InvalidPath => Lang.InvalidPath;
+    public string InvalidPath => Lang.InvalidPath;
 
-        public string License => Lang.License;
+    public string License => Lang.License;
 
-        public string LicenseInfo => Lang.LicenseInfo;
+    public string LicenseInfo => Lang.LicenseInfo;
 
-        public string Load => Lang.Load;
+    public string Load => Lang.Load;
 
-        public string LoadingPosters => Lang.LoadingPosters;
+    public string LoadingPosters => Lang.LoadingPosters;
 
-        public string MakeIcons => Lang.MakeIcons;
+    public string MakeIcons => Lang.MakeIcons;
 
-        public string Movie => Lang.Movie;
+    public string Movie => Lang.Movie;
 
-        public string NetworkError => Lang.NetworkError;
+    public string NetworkError => Lang.NetworkError;
 
-        public string NetworkNotAvailable => Lang.NetworkNotAvailable;
+    public string NetworkNotAvailable => Lang.NetworkNotAvailable;
 
-        public string NewVersionFound => Lang.NewVersionFound;
+    public string NewVersionFound => Lang.NewVersionFound;
 
-        public string NoFolderOrIconAlready => Lang.NoFolderOrIconAlready;
+    public string NoFolderOrIconAlready => Lang.NoFolderOrIconAlready;
 
-        public string NoFoldersToProcess => Lang.NoFoldersToProcess;
+    public string NoFoldersToProcess => Lang.NoFoldersToProcess;
 
-        public string NoIconsSelected => Lang.NoIconsSelected;
+    public string NoIconsSelected => Lang.NoIconsSelected;
 
-        public string NoIconsToApply => Lang.NoIconsToApply;
+    public string NoIconsToApply => Lang.NoIconsToApply;
 
-        public string NoInternet => Lang.NoInternet;
+    public string NoInternet => Lang.NoInternet;
 
-        public string NoPosterFound => Lang.NoPosterFound;
+    public string NoPosterFound => Lang.NoPosterFound;
 
-        public string NoResult => Lang.NoResult;
+    public string NoResult => Lang.NoResult;
 
-        public string NoResultFound => Lang.NoResultFound;
+    public string NoResultFound => Lang.NoResultFound;
 
-        public string NoResultFoundTryCorrectTitle => Lang.NoResultFoundTryCorrectTitle;
+    public string NoResultFoundTryCorrectTitle => Lang.NoResultFoundTryCorrectTitle;
 
-        public string NothingFoundFor => Lang.NothingFoundFor;
+    public string NothingFoundFor => Lang.NothingFoundFor;
 
-        public string OK => Lang.OK;
+    public string OK => Lang.OK;
 
-        public string OnlyKeepExactMatches => Lang.OnlyKeepExactMatches;
+    public string OnlyKeepExactMatches => Lang.OnlyKeepExactMatches;
 
-        public string Or => Lang.Or;
+    public string Or => Lang.Or;
 
-        public string OutOf => Lang.OutOf;
+    public string OutOf => Lang.OutOf;
 
-        public string PickIconWithName => Lang.PickIconWithName;
+    public string PickIconWithName => Lang.PickIconWithName;
 
-        public string PickSelected => Lang.PickSelected;
+    public string PickSelected => Lang.PickSelected;
 
-        public string Poster => Lang.Poster;
+    public string Poster => Lang.Poster;
 
-        public string PosterOverlayTooltip => Lang.PosterOverlayTooltip;
+    public string PosterOverlayTooltip => Lang.PosterOverlayTooltip;
 
-        public string Professional => Lang.Professional;
+    public string Professional => Lang.Professional;
 
-        public string Rating => Lang.Rating;
+    public string Rating => Lang.Rating;
 
-        public string RestartExplorer => Lang.RestartExplorer;
+    public string RestartExplorer => Lang.RestartExplorer;
 
-        public string RestartExplorerConfirmation => Lang.RestartExplorerConfirmation;
+    public string RestartExplorerConfirmation => Lang.RestartExplorerConfirmation;
 
-        public string RestartExplorerTooltip => Lang.RestartExplorerTooltip;
+    public string RestartExplorerTooltip => Lang.RestartExplorerTooltip;
 
-        public string Russian => Lang.Russian;
+    public string Russian => Lang.Russian;
 
-        public string Save => Lang.Save;
+    public string Save => Lang.Save;
 
-        public string Searching => Lang.Searching;
+    public string Searching => Lang.Searching;
 
-        public string SearchingWithCount => Lang.SearchingWithCount;
+    public string SearchingWithCount => Lang.SearchingWithCount;
 
-        public string SearchingWithName => Lang.SearchingWithName;
+    public string SearchingWithName => Lang.SearchingWithName;
 
-        public string SearchMode => Lang.SearchMode;
+    public string SearchMode => Lang.SearchMode;
 
-        public string SearchResult => Lang.SearchResult;
+    public string SearchResult => Lang.SearchResult;
 
-        public string SeeMorePosters => Lang.SeeMorePosters;
+    public string SeeMorePosters => Lang.SeeMorePosters;
 
-        public string SelectFolder => Lang.SelectFolder;
+    public string SelectFolder => Lang.SelectFolder;
 
-        public string SelectIconsDirectory => Lang.SelectIconsDirectory;
+    public string SelectIconsDirectory => Lang.SelectIconsDirectory;
 
-        public string Settings => Lang.Settings;
+    public string Settings => Lang.Settings;
 
-        public string ShowMore => Lang.ShowMore;
+    public string ShowMore => Lang.ShowMore;
 
-        public string ShowPosterWindowTooltip => Lang.ShowPosterWindowTooltip;
+    public string ShowPosterWindowTooltip => Lang.ShowPosterWindowTooltip;
 
-        public string ShowRatingBadge => Lang.ShowRatingBadge;
+    public string ShowRatingBadge => Lang.ShowRatingBadge;
 
-        public string ShowRatingBadgeTooltip => Lang.ShowRatingBadgeTooltip;
+    public string ShowRatingBadgeTooltip => Lang.ShowRatingBadgeTooltip;
 
-        public string Skip => Lang.Skip;
+    public string Skip => Lang.Skip;
 
-        public string SkipThisPlaceholder => Lang.SkipThisPlaceholder;
+    public string SkipThisPlaceholder => Lang.SkipThisPlaceholder;
 
-        public string SkipThisTitle => Lang.SkipThisTitle;
+    public string SkipThisTitle => Lang.SkipThisTitle;
 
-        public string Spanish => Lang.Spanish;
+    public string Spanish => Lang.Spanish;
 
-        public string StopSearching => Lang.StopSearching;
+    public string StopSearching => Lang.StopSearching;
 
-        public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
+    public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
 
-        public string Title => Lang.Title;
+    public string Title => Lang.Title;
 
-        public string TMDBAPIKey => Lang.TMDBAPIKey;
+    public string TMDBAPIKey => Lang.TMDBAPIKey;
 
-        public string ToForceReload => Lang.ToForceReload;
+    public string ToForceReload => Lang.ToForceReload;
 
-        public string TV => Lang.TV;
+    public string TV => Lang.TV;
 
-        public string Undo => Lang.Undo;
+    public string Undo => Lang.Undo;
 
-        public string UndoSuccessful => Lang.UndoSuccessful;
+    public string UndoSuccessful => Lang.UndoSuccessful;
 
-        public string UpdateNow => Lang.UpdateNow;
+    public string UpdateNow => Lang.UpdateNow;
 
-        public string UsePosterOverlay => Lang.UsePosterOverlay;
+    public string UsePosterOverlay => Lang.UsePosterOverlay;
 
-        public string Version => Lang.Version;
+    public string Version => Lang.Version;
 
         public string Year => Lang.Year;
         public string ExceptionOccurred => Lang.ExceptionOccurred;
@@ -440,261 +434,261 @@ namespace FoliCon.Properties.Langs
         public string VideoUnavailable => Lang.VideoUnavailable;
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    protected virtual void OnPropertyChanged(string propertyName) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+}
 
-    public class LangKeys
-    {
-        public static string About = nameof(About);
+public class LangKeys
+{
+    public static string About = nameof(About);
 
-        public static string All = nameof(All);
+    public static string All = nameof(All);
 
-        public static string AlwaysShowPosterWindow = nameof(AlwaysShowPosterWindow);
+    public static string AlwaysShowPosterWindow = nameof(AlwaysShowPosterWindow);
 
-        public static string AmbiguousTitleTooltip = nameof(AmbiguousTitleTooltip);
+    public static string AmbiguousTitleTooltip = nameof(AmbiguousTitleTooltip);
 
-        public static string APIKeysConfiguration = nameof(APIKeysConfiguration);
+    public static string APIKeysConfiguration = nameof(APIKeysConfiguration);
 
-        public static string APIKeysNotProvided = nameof(APIKeysNotProvided);
+    public static string APIKeysNotProvided = nameof(APIKeysNotProvided);
 
-        public static string Apply = nameof(Apply);
+    public static string Apply = nameof(Apply);
 
-        public static string AppWillClose = nameof(AppWillClose);
+    public static string AppWillClose = nameof(AppWillClose);
 
-        public static string Arabic = nameof(Arabic);
+    public static string Arabic = nameof(Arabic);
 
-        public static string Auto = nameof(Auto);
+    public static string Auto = nameof(Auto);
 
-        public static string BrowseFolderDropHere = nameof(BrowseFolderDropHere);
+    public static string BrowseFolderDropHere = nameof(BrowseFolderDropHere);
 
-        public static string BrowseIconsDropHere = nameof(BrowseIconsDropHere);
+    public static string BrowseIconsDropHere = nameof(BrowseIconsDropHere);
 
-        public static string Cancel = nameof(Cancel);
+    public static string Cancel = nameof(Cancel);
 
-        public static string ChangeLanguage = nameof(ChangeLanguage);
+    public static string ChangeLanguage = nameof(ChangeLanguage);
 
-        public static string ChangePosterOverlay = nameof(ChangePosterOverlay);
+    public static string ChangePosterOverlay = nameof(ChangePosterOverlay);
 
-        public static string CheckForUpdate = nameof(CheckForUpdate);
+    public static string CheckForUpdate = nameof(CheckForUpdate);
 
-        public static string ClientID = nameof(ClientID);
+    public static string ClientID = nameof(ClientID);
 
-        public static string ClientSecret = nameof(ClientSecret);
+    public static string ClientSecret = nameof(ClientSecret);
 
-        public static string Close = nameof(Close);
+    public static string Close = nameof(Close);
 
-        public static string ClosingApplication = nameof(ClosingApplication);
+    public static string ClosingApplication = nameof(ClosingApplication);
 
-        public static string Confirm = nameof(Confirm);
+    public static string Confirm = nameof(Confirm);
 
-        public static string ConfirmExplorerRestart = nameof(ConfirmExplorerRestart);
+    public static string ConfirmExplorerRestart = nameof(ConfirmExplorerRestart);
 
-        public static string ConfirmIconDeletion = nameof(ConfirmIconDeletion);
+    public static string ConfirmIconDeletion = nameof(ConfirmIconDeletion);
 
-        public static string ConfirmToOpenFolder = nameof(ConfirmToOpenFolder);
+    public static string ConfirmToOpenFolder = nameof(ConfirmToOpenFolder);
 
-        public static string CreatingIcons = nameof(CreatingIcons);
+    public static string CreatingIcons = nameof(CreatingIcons);
 
-        public static string CustomIconSetter = nameof(CustomIconSetter);
+    public static string CustomIconSetter = nameof(CustomIconSetter);
 
-        public static string CustomRating = nameof(CustomRating);
+    public static string CustomRating = nameof(CustomRating);
 
-        public static string CustomRatingTooltip = nameof(CustomRatingTooltip);
+    public static string CustomRatingTooltip = nameof(CustomRatingTooltip);
 
-        public static string DeleteIcons = nameof(DeleteIcons);
+    public static string DeleteIcons = nameof(DeleteIcons);
 
-        public static string DeleteIconsConfirmation = nameof(DeleteIconsConfirmation);
+    public static string DeleteIconsConfirmation = nameof(DeleteIconsConfirmation);
 
-        public static string DeleteIconsTooltip = nameof(DeleteIconsTooltip);
+    public static string DeleteIconsTooltip = nameof(DeleteIconsTooltip);
 
-        public static string DevelopedByDinesh = nameof(DevelopedByDinesh);
+    public static string DevelopedByDinesh = nameof(DevelopedByDinesh);
 
-        public static string DirectoryIsEmpty = nameof(DirectoryIsEmpty);
+    public static string DirectoryIsEmpty = nameof(DirectoryIsEmpty);
 
-        public static string DownloadingIcons = nameof(DownloadingIcons);
+    public static string DownloadingIcons = nameof(DownloadingIcons);
 
-        public static string DownloadingIconWithCount = nameof(DownloadingIconWithCount);
+    public static string DownloadingIconWithCount = nameof(DownloadingIconWithCount);
 
-        public static string DownloadIt = nameof(DownloadIt);
+    public static string DownloadIt = nameof(DownloadIt);
 
-        public static string EmptyDirectory = nameof(EmptyDirectory);
+    public static string EmptyDirectory = nameof(EmptyDirectory);
 
-        public static string English = nameof(English);
+    public static string English = nameof(English);
 
-        public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);
+    public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);
 
-        public static string Folder = nameof(Folder);
+    public static string Folder = nameof(Folder);
 
-        public static string FolderDoesNotExist = nameof(FolderDoesNotExist);
+    public static string FolderDoesNotExist = nameof(FolderDoesNotExist);
 
-        public static string FolderError = nameof(FolderError);
+    public static string FolderError = nameof(FolderError);
 
-        public static string Folders = nameof(Folders);
+    public static string Folders = nameof(Folders);
 
-        public static string FoldersProcessed = nameof(FoldersProcessed);
+    public static string FoldersProcessed = nameof(FoldersProcessed);
 
-        public static string FoliConDescription = nameof(FoliConDescription);
+    public static string FoliConDescription = nameof(FoliConDescription);
 
-        public static string Game = nameof(Game);
+    public static string Game = nameof(Game);
 
-        public static string HaveIcons = nameof(HaveIcons);
+    public static string HaveIcons = nameof(HaveIcons);
 
-        public static string HaveIconsTooltip = nameof(HaveIconsTooltip);
+    public static string HaveIconsTooltip = nameof(HaveIconsTooltip);
 
-        public static string Help = nameof(Help);
+    public static string Help = nameof(Help);
 
-        public static string HelpDocument = nameof(HelpDocument);
+    public static string HelpDocument = nameof(HelpDocument);
 
-        public static string IconCreated = nameof(IconCreated);
+    public static string IconCreated = nameof(IconCreated);
 
-        public static string IconCreatedWithCount = nameof(IconCreatedWithCount);
+    public static string IconCreatedWithCount = nameof(IconCreatedWithCount);
 
-        public static string IconMode = nameof(IconMode);
+    public static string IconMode = nameof(IconMode);
 
-        public static string IconReloadMayTakeTime = nameof(IconReloadMayTakeTime);
+    public static string IconReloadMayTakeTime = nameof(IconReloadMayTakeTime);
 
-        public static string Icons = nameof(Icons);
+    public static string Icons = nameof(Icons);
 
-        public static string IconsAlready = nameof(IconsAlready);
+    public static string IconsAlready = nameof(IconsAlready);
 
-        public static string IconsCreated = nameof(IconsCreated);
+    public static string IconsCreated = nameof(IconsCreated);
 
-        public static string Idle = nameof(Idle);
+    public static string Idle = nameof(Idle);
 
-        public static string Ignore = nameof(Ignore);
+    public static string Ignore = nameof(Ignore);
 
-        public static string IgnoreAmbiguousTitle = nameof(IgnoreAmbiguousTitle);
+    public static string IgnoreAmbiguousTitle = nameof(IgnoreAmbiguousTitle);
 
-        public static string InvalidPath = nameof(InvalidPath);
+    public static string InvalidPath = nameof(InvalidPath);
 
-        public static string License = nameof(License);
+    public static string License = nameof(License);
 
-        public static string LicenseInfo = nameof(LicenseInfo);
+    public static string LicenseInfo = nameof(LicenseInfo);
 
-        public static string Load = nameof(Load);
+    public static string Load = nameof(Load);
 
-        public static string LoadingPosters = nameof(LoadingPosters);
+    public static string LoadingPosters = nameof(LoadingPosters);
 
-        public static string MakeIcons = nameof(MakeIcons);
+    public static string MakeIcons = nameof(MakeIcons);
 
-        public static string Movie = nameof(Movie);
+    public static string Movie = nameof(Movie);
 
-        public static string NetworkError = nameof(NetworkError);
+    public static string NetworkError = nameof(NetworkError);
 
-        public static string NetworkNotAvailable = nameof(NetworkNotAvailable);
+    public static string NetworkNotAvailable = nameof(NetworkNotAvailable);
 
-        public static string NewVersionFound = nameof(NewVersionFound);
+    public static string NewVersionFound = nameof(NewVersionFound);
 
-        public static string NoFolderOrIconAlready = nameof(NoFolderOrIconAlready);
+    public static string NoFolderOrIconAlready = nameof(NoFolderOrIconAlready);
 
-        public static string NoFoldersToProcess = nameof(NoFoldersToProcess);
+    public static string NoFoldersToProcess = nameof(NoFoldersToProcess);
 
-        public static string NoIconsSelected = nameof(NoIconsSelected);
+    public static string NoIconsSelected = nameof(NoIconsSelected);
 
-        public static string NoIconsToApply = nameof(NoIconsToApply);
+    public static string NoIconsToApply = nameof(NoIconsToApply);
 
-        public static string NoInternet = nameof(NoInternet);
+    public static string NoInternet = nameof(NoInternet);
 
-        public static string NoPosterFound = nameof(NoPosterFound);
+    public static string NoPosterFound = nameof(NoPosterFound);
 
-        public static string NoResult = nameof(NoResult);
+    public static string NoResult = nameof(NoResult);
 
-        public static string NoResultFound = nameof(NoResultFound);
+    public static string NoResultFound = nameof(NoResultFound);
 
-        public static string NoResultFoundTryCorrectTitle = nameof(NoResultFoundTryCorrectTitle);
+    public static string NoResultFoundTryCorrectTitle = nameof(NoResultFoundTryCorrectTitle);
 
-        public static string NothingFoundFor = nameof(NothingFoundFor);
+    public static string NothingFoundFor = nameof(NothingFoundFor);
 
-        public static string OK = nameof(OK);
+    public static string OK = nameof(OK);
 
-        public static string OnlyKeepExactMatches = nameof(OnlyKeepExactMatches);
+    public static string OnlyKeepExactMatches = nameof(OnlyKeepExactMatches);
 
-        public static string Or = nameof(Or);
+    public static string Or = nameof(Or);
 
-        public static string OutOf = nameof(OutOf);
+    public static string OutOf = nameof(OutOf);
 
-        public static string PickIconWithName = nameof(PickIconWithName);
+    public static string PickIconWithName = nameof(PickIconWithName);
 
-        public static string PickSelected = nameof(PickSelected);
+    public static string PickSelected = nameof(PickSelected);
 
-        public static string Poster = nameof(Poster);
+    public static string Poster = nameof(Poster);
 
-        public static string PosterOverlayTooltip = nameof(PosterOverlayTooltip);
+    public static string PosterOverlayTooltip = nameof(PosterOverlayTooltip);
 
-        public static string Professional = nameof(Professional);
+    public static string Professional = nameof(Professional);
 
-        public static string Rating = nameof(Rating);
+    public static string Rating = nameof(Rating);
 
-        public static string RestartExplorer = nameof(RestartExplorer);
+    public static string RestartExplorer = nameof(RestartExplorer);
 
-        public static string RestartExplorerConfirmation = nameof(RestartExplorerConfirmation);
+    public static string RestartExplorerConfirmation = nameof(RestartExplorerConfirmation);
 
-        public static string RestartExplorerTooltip = nameof(RestartExplorerTooltip);
+    public static string RestartExplorerTooltip = nameof(RestartExplorerTooltip);
 
-        public static string Russian = nameof(Russian);
+    public static string Russian = nameof(Russian);
 
-        public static string Save = nameof(Save);
+    public static string Save = nameof(Save);
 
-        public static string Searching = nameof(Searching);
+    public static string Searching = nameof(Searching);
 
-        public static string SearchingWithCount = nameof(SearchingWithCount);
+    public static string SearchingWithCount = nameof(SearchingWithCount);
 
-        public static string SearchingWithName = nameof(SearchingWithName);
+    public static string SearchingWithName = nameof(SearchingWithName);
 
-        public static string SearchMode = nameof(SearchMode);
+    public static string SearchMode = nameof(SearchMode);
 
-        public static string SearchResult = nameof(SearchResult);
+    public static string SearchResult = nameof(SearchResult);
 
-        public static string SeeMorePosters = nameof(SeeMorePosters);
+    public static string SeeMorePosters = nameof(SeeMorePosters);
 
-        public static string SelectFolder = nameof(SelectFolder);
+    public static string SelectFolder = nameof(SelectFolder);
 
-        public static string SelectIconsDirectory = nameof(SelectIconsDirectory);
+    public static string SelectIconsDirectory = nameof(SelectIconsDirectory);
 
-        public static string Settings = nameof(Settings);
+    public static string Settings = nameof(Settings);
 
-        public static string ShowMore = nameof(ShowMore);
+    public static string ShowMore = nameof(ShowMore);
 
-        public static string ShowPosterWindowTooltip = nameof(ShowPosterWindowTooltip);
+    public static string ShowPosterWindowTooltip = nameof(ShowPosterWindowTooltip);
 
-        public static string ShowRatingBadge = nameof(ShowRatingBadge);
+    public static string ShowRatingBadge = nameof(ShowRatingBadge);
 
-        public static string ShowRatingBadgeTooltip = nameof(ShowRatingBadgeTooltip);
+    public static string ShowRatingBadgeTooltip = nameof(ShowRatingBadgeTooltip);
 
-        public static string Skip = nameof(Skip);
+    public static string Skip = nameof(Skip);
 
-        public static string SkipThisPlaceholder = nameof(SkipThisPlaceholder);
+    public static string SkipThisPlaceholder = nameof(SkipThisPlaceholder);
 
-        public static string SkipThisTitle = nameof(SkipThisTitle);
+    public static string SkipThisTitle = nameof(SkipThisTitle);
 
-        public static string Spanish = nameof(Spanish);
+    public static string Spanish = nameof(Spanish);
 
-        public static string StopSearching = nameof(StopSearching);
+    public static string StopSearching = nameof(StopSearching);
 
-        public static string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
+    public static string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
 
-        public static string Title = nameof(Title);
+    public static string Title = nameof(Title);
 
-        public static string TMDBAPIKey = nameof(TMDBAPIKey);
+    public static string TMDBAPIKey = nameof(TMDBAPIKey);
 
-        public static string ToForceReload = nameof(ToForceReload);
+    public static string ToForceReload = nameof(ToForceReload);
 
-        public static string TV = nameof(TV);
+    public static string TV = nameof(TV);
 
-        public static string Undo = nameof(Undo);
+    public static string Undo = nameof(Undo);
 
-        public static string UndoSuccessful = nameof(UndoSuccessful);
+    public static string UndoSuccessful = nameof(UndoSuccessful);
 
-        public static string UpdateNow = nameof(UpdateNow);
+    public static string UpdateNow = nameof(UpdateNow);
 
-        public static string UsePosterOverlay = nameof(UsePosterOverlay);
+    public static string UsePosterOverlay = nameof(UsePosterOverlay);
 
-        public static string Version = nameof(Version);
+    public static string Version = nameof(Version);
 
-        public static string Year = nameof(Year);
+    public static string Year = nameof(Year);
 
         public static string ExceptionOccurred = nameof(ExceptionOccurred);
         public static string ConfirmMediaInfoDeletion = nameof(ConfirmMediaInfoDeletion);

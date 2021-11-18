@@ -1,24 +1,23 @@
 ﻿using FoliCon.ViewModels;
 
-namespace FoliCon.Models
+namespace FoliCon.Models;
+
+internal static class GlobalVariables
 {
-    internal static class GlobalVariables
+    public static bool SkipAll;
+
+    public static IconOverlay IconOverlayType()
     {
-        public static bool SkipAll;
-
-        public static IconOverlay IconOverlayType()
+        return new PosterIconConfigViewModel().IconOverlay switch
         {
-            return new PosterIconConfigViewModel().IconOverlay switch
-            {
-                "Legacy" => IconOverlay.Legacy,
-                "Alternate" => IconOverlay.Alternate,
-                "Liaher" => IconOverlay.Liaher,
-                "Faelpessoal" => IconOverlay.Faelpessoal,
-                "FaelpessoalHorizontal" => IconOverlay.FaelpessoalHorizontal,
-                _ => IconOverlay.Alternate
-            };
-        }
-
-        public static string MediaInfoFile = "info.folicon";
+            "Legacy" => IconOverlay.Legacy,
+            "Alternate" => IconOverlay.Alternate,
+            "Liaher" => IconOverlay.Liaher,
+            "Faelpessoal" => IconOverlay.Faelpessoal,
+            "FaelpessoalHorizontal" => IconOverlay.FaelpessoalHorizontal,
+            _ => IconOverlay.Alternate
+        };
     }
+
+    public static string MediaInfoFile = "info.folicon";
 }

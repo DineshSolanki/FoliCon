@@ -1,5 +1,4 @@
-﻿using Prism.Mvvm;
-using System;
+﻿namespace FoliCon.Models;
 
 namespace FoliCon.Models
 {
@@ -35,8 +34,7 @@ namespace FoliCon.Models
             
         }
 
-        public ListItem()
-        {
-        }
+    public ListItem()
+    {
     }
 }

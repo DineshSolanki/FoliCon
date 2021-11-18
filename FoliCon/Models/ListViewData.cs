@@ -1,9 +1,4 @@
-﻿using FoliCon.Modules;
-using Prism.Mvvm;
-using System.Collections.ObjectModel;
-using System.Linq;
-using HandyControl.Tools.Extension;
-using TMDbLib.Objects.General;
+﻿namespace FoliCon.Models;
 
 namespace FoliCon.Models
 {

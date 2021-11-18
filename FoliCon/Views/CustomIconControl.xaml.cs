@@ -1,13 +1,12 @@
-﻿namespace FoliCon.Views
+﻿namespace FoliCon.Views;
+
+/// <summary>
+/// Interaction logic for CustomIconControl
+/// </summary>
+public partial class CustomIconControl
 {
-    /// <summary>
-    /// Interaction logic for CustomIconControl
-    /// </summary>
-    public partial class CustomIconControl
+    public CustomIconControl()
     {
-        public CustomIconControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
