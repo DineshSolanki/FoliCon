@@ -282,7 +282,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
             _dialogService.ShowPosterPicker(_tmdbObject, _igdbObject, SearchResult, pickedIndex,
                 ResultListViewData.Data,
-                _isPickedById, r => { });
+                _isPickedById, _ => { });
         }
         catch (Exception ex)
         {

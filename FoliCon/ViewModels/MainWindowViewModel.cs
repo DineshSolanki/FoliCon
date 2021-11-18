@@ -161,9 +161,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public DelegateCommand<string> ExploreIntegrationCommand { get; private set; }
 
-    public DelegateCommand HelpCommand { get; } = new(() =>
-        Util.StartProcess("https://github.com/DineshSolanki/FoliCon"));
-
     public DelegateCommand AboutCommand { get; private set; }
     public DelegateCommand UpdateCommand { get; } = new(() => Util.CheckForUpdate());
 

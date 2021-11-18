@@ -55,7 +55,6 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Threading;
 
 global using TMDbLib.Client;
-global using TMDbLib.Objects.Collections;
 global using TMDbLib.Objects.General;
 global using TMDbLib.Objects.Movies;
 global using TMDbLib.Objects.Search;
