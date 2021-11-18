@@ -705,4 +705,3 @@ public class LangKeys
         public static string ExplorerIntegration = nameof(ExplorerIntegration);
         public static string VideoUnavailable = nameof(VideoUnavailable);
     }
-}

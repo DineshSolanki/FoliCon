@@ -67,4 +67,3 @@ public partial class SearchResult
             WebBox.browser.Dispose();
         }
     }
-}

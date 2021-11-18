@@ -1,7 +1,5 @@
 ﻿namespace FoliCon.Models;
 
-namespace FoliCon.Models
-{
     public class ListViewData : BindableBase
     {
         public Tmdb Tmdb { get; set; }
@@ -43,4 +41,3 @@ namespace FoliCon.Models
         }
         public int SelectedCount { get => _selectedCount; set => SetProperty(ref _selectedCount, value); }
     }
-}
