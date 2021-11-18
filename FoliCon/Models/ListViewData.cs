@@ -9,7 +9,7 @@ namespace FoliCon.Models
 {
     public class ListViewData : BindableBase
     {
-        public Tmdb tmdb { get; set; }
+        public Tmdb Tmdb { get; set; }
         private ObservableCollection<ListItem> _data;
         private ListItem _selectedItem;
         private int _selectedCount;
@@ -18,9 +18,9 @@ namespace FoliCon.Models
             set
             {
                 SetProperty(ref _selectedItem, value);
-                if(tmdb != null &&  value != null && SelectedItem.TrailerKey.IsNullOrEmpty())
+                if(Tmdb != null &&  value != null && SelectedItem.TrailerKey.IsNullOrEmpty())
                 {
-                    var task = tmdb.GetClient().GetMovieVideosAsync(value.Id).ContinueWith(x =>
+                    var task = Tmdb.GetClient().GetMovieVideosAsync(value.Id).ContinueWith(x =>
                     {
                         Video i;
                         if (x.Result.Results.Any())

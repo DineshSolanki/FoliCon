@@ -174,6 +174,7 @@ namespace FoliCon.Properties.Langs
             OnPropertyChanged(nameof(AddToContextMenu));
             OnPropertyChanged(nameof(ExplorerIntegration));
             OnPropertyChanged(nameof(RemoveFromContextMenu));
+            OnPropertyChanged(nameof(VideoUnavailable));
         }
 
         public string About => Lang.About;
@@ -436,6 +437,7 @@ namespace FoliCon.Properties.Langs
         public string RemoveFromContextMenu => Lang.RemoveFromContextMenu;
         public string AddToContextMenu => Lang.AddToContextMenu;
         public string ExplorerIntegration => Lang.ExplorerIntegration;
+        public string VideoUnavailable => Lang.VideoUnavailable;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -707,5 +709,6 @@ namespace FoliCon.Properties.Langs
         public static string RemoveFromContextMenu = nameof(RemoveFromContextMenu);
         public static string AddToContextMenu = nameof(AddToContextMenu);
         public static string ExplorerIntegration = nameof(ExplorerIntegration);
+        public static string VideoUnavailable = nameof(VideoUnavailable);
     }
 }

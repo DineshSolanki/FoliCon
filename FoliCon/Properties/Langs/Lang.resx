@@ -536,6 +536,9 @@ and refresh Icon Cache?</value>
   <data name="Version" xml:space="preserve">
     <value>Version :</value>
   </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>Video not available!</value>
+  </data>
   <data name="Year" xml:space="preserve">
     <value>Year</value>
   </data>

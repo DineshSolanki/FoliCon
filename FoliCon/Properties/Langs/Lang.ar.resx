@@ -477,67 +477,70 @@
     <value>تم التراجع بنجاح</value>
   </data>
   <data name="Undo" xml:space="preserve">
-	  <value>الغاء التحميل</value>
+    <value>الغاء التحميل</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
-	  <value>طوره دينيش سولانكي.</value>
+    <value>طوره دينيش سولانكي.</value>
   </data>
   <data name="FoliConDescription" xml:space="preserve">
-	  <value>FoliCon هو أكثر من مجرد مغير أيقونة مجلد نموذجي
+    <value>FoliCon هو أكثر من مجرد مغير أيقونة مجلد نموذجي
 تقوم بأتمتة هذه المهمة إلى حد كبير ، ولديها وضعان مختلفان للتصميمات المختلفة لأيقونات المجلدات ،
 ويمكنه جلب "الألعاب والأفلام والعروض" وتقريبًا أي رموز مجلد وسائط.</value>
   </data>
   <data name="License" xml:space="preserve">
-	  <value>رخصة :</value>
+    <value>رخصة :</value>
   </data>
   <data name="LicenseInfo" xml:space="preserve">
-	  <value>رخصة جنو العمومية v3.0</value>
+    <value>رخصة جنو العمومية v3.0</value>
   </data>
   <data name="Version" xml:space="preserve">
-	  <value>إصدار :</value>
+    <value>إصدار :</value>
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
-	  <value>حدث استثناء</value>
+    <value>حدث استثناء</value>
   </data>
   <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-	  <value>تأكيد حذف ملفات معلومات الوسائط</value>
+    <value>تأكيد حذف ملفات معلومات الوسائط</value>
   </data>
   <data name="DeleteMediaInfo" xml:space="preserve">
-	  <value>حذف معلومات الوسائط</value>
+    <value>حذف معلومات الوسائط</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-	  <value>هل أنت متأكد أنك تريد حذف ملفات معلومات وسائط فوليكون؟</value>
+    <value>هل أنت متأكد أنك تريد حذف ملفات معلومات وسائط فوليكون؟</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-	  <value>سيؤدي هذا إلى حذف ملفات معلومات الوسائط التي يستخدمها فوليكون لتخزين معرف الوسائط بعد تحديد العنوان لأول مرة.
+    <value>سيؤدي هذا إلى حذف ملفات معلومات الوسائط التي يستخدمها فوليكون لتخزين معرف الوسائط بعد تحديد العنوان لأول مرة.
 يساعد هذا فوليكون في التعرف على الوسائط دون الحاجة إلى الاختيار من بين العناوين الغامضة.</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
-	  <value>تراكب أيقونة الملصق</value>
+    <value>تراكب أيقونة الملصق</value>
   </data>
   <data name="BestSuitedForHorizontal" xml:space="preserve">
-	  <value>الأنسب للصور الأفقية ، مثل الأعمال الفنية للعبة.</value>
+    <value>الأنسب للصور الأفقية ، مثل الأعمال الفنية للعبة.</value>
   </data>
   <data name="SelectPosterIconOverlay" xml:space="preserve">
-	  <value>حدد تراكب أيقونة الملصق</value>
+    <value>حدد تراكب أيقونة الملصق</value>
   </data>
   <data name="Hindi" xml:space="preserve">
-	  <value>هندي</value>
+    <value>هندي</value>
   </data>
   <data name="AddToContextMenu" xml:space="preserve">
-	  <value>أضف إلى قائمة السياق</value>
+    <value>أضف إلى قائمة السياق</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
-	  <value>تكامل المستكشف (انقر بزر الماوس الأيمن فوق القائمة)</value>
+    <value>تكامل المستكشف (انقر بزر الماوس الأيمن فوق القائمة)</value>
   </data>
   <data name="RemoveFromContextMenu" xml:space="preserve">
-	  <value>إزالة من قائمة السياق</value>
+    <value>إزالة من قائمة السياق</value>
   </data>
   <data name="RestartAsAdmin" xml:space="preserve">
-	  <value>تتطلب هذه الميزة حقوق المسؤول ، استخدمها عند التشغيل كمسؤول.
+    <value>تتطلب هذه الميزة حقوق المسؤول ، استخدمها عند التشغيل كمسؤول.
 هل تريد إعادة تشغيل Folicon كمسؤول؟</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-	  <value>قم بإنشاء أيقونات باستخدام FoliCon</value>
+    <value>قم بإنشاء أيقونات باستخدام FoliCon</value>
+  </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>الفيديو غير متوفر!</value>
   </data>
 </root>

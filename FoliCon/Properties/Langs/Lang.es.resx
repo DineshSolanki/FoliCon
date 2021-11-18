@@ -477,67 +477,70 @@ y actualizar la caché de iconos?</value>
     <value>Deshacer exitosamente</value>
   </data>
   <data name="Undo" xml:space="preserve">
-	  <value>Deshacer</value>
+    <value>Deshacer</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
-	  <value>Desarrollado por Dinesh Solanki.</value>
+    <value>Desarrollado por Dinesh Solanki.</value>
   </data>
   <data name="FoliConDescription" xml:space="preserve">
-	  <value>FoliCon es más que un típico cambiador de iconos de carpetas
+    <value>FoliCon es más que un típico cambiador de iconos de carpetas
 Automatiza esta tarea en mayor medida, tiene dos modos diferentes para diferentes diseños de iconos de carpetas,
 y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpeta multimedia.</value>
   </data>
   <data name="License" xml:space="preserve">
-	  <value>Licencia:</value>
+    <value>Licencia:</value>
   </data>
   <data name="LicenseInfo" xml:space="preserve">
-	  <value>Licencia pública general GNU v3.0</value>
+    <value>Licencia pública general GNU v3.0</value>
   </data>
   <data name="Version" xml:space="preserve">
-	  <value>Versión :</value>
+    <value>Versión :</value>
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
-	  <value>Ocurrió una excepción</value>
+    <value>Ocurrió una excepción</value>
   </data>
   <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-	  <value>Confirmar la eliminación de archivos de información multimedia</value>
+    <value>Confirmar la eliminación de archivos de información multimedia</value>
   </data>
   <data name="DeleteMediaInfo" xml:space="preserve">
-	  <value>Eliminar información multimedia</value>
+    <value>Eliminar información multimedia</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-	  <value>¿Está seguro de que desea eliminar los archivos de información de medios de folicon?</value>
+    <value>¿Está seguro de que desea eliminar los archivos de información de medios de folicon?</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-	  <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
+    <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
 Esto ayuda a folicon a identificar los medios sin tener que elegir entre títulos ambiguos.</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
-	  <value>Superposición de icono de póster</value>
+    <value>Superposición de icono de póster</value>
   </data>
   <data name="BestSuitedForHorizontal" xml:space="preserve">
-	  <value>Más adecuado para imágenes horizontales, como obras de arte de juegos.</value>
+    <value>Más adecuado para imágenes horizontales, como obras de arte de juegos.</value>
   </data>
   <data name="SelectPosterIconOverlay" xml:space="preserve">
-	  <value>Seleccionar superposición de icono de póster</value>
+    <value>Seleccionar superposición de icono de póster</value>
   </data>
   <data name="Hindi" xml:space="preserve">
-	  <value>Hindi</value>
+    <value>Hindi</value>
   </data>
   <data name="AddToContextMenu" xml:space="preserve">
-	  <value>Agregar al menú contextual</value>
+    <value>Agregar al menú contextual</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
-	  <value>Integración del explorador (menú contextual)</value>
+    <value>Integración del explorador (menú contextual)</value>
   </data>
   <data name="RemoveFromContextMenu" xml:space="preserve">
-	  <value>Eliminar del menú contextual</value>
+    <value>Eliminar del menú contextual</value>
   </data>
   <data name="RestartAsAdmin" xml:space="preserve">
-	  <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
+    <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
 ¿Quieres reiniciar Folicon como administrador?</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-	  <value>Crea iconos con FoliCon</value>
+    <value>Crea iconos con FoliCon</value>
+  </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>¡Video no disponible!</value>
   </data>
 </root>
