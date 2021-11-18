@@ -57,7 +57,7 @@
             var jsonData = await response.Content.ReadAsStringAsync();
             var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
-            return tokenResponse.Status == "success";
+            return tokenResponse?.Status == "success";
         }
 
         private async Task<string> GenerateNewAccessToken()
@@ -68,7 +68,7 @@
             using var response = await Services.HttpC.GetAsync(new Uri(url));
             var jsonData = await response.Content.ReadAsStringAsync();
             var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
-            var clientAccessToken = tokenResponse.AccessToken;
+            var clientAccessToken = tokenResponse?.AccessToken;
             return clientAccessToken;
         }
 

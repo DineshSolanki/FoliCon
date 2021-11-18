@@ -94,7 +94,6 @@
             while (true)
             {
                 var searchResult = await DArtObject.Browse(query, offset);
-                var lastIndex = Index;
                 if (searchResult.Results?.Length > 0)
                 {
                     TotalPosters = searchResult.Results.Count( result => result.IsDownloadable) + offset;

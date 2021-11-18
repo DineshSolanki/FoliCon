@@ -16,8 +16,8 @@
         private bool _isSearchModeVisible = true;
         private bool _stopIconDownload;
         private Languages _appLanguage;
-        private TMDbLib.Client.TMDbClient _tmdbClient;
-        private IGDB.IGDBClient _igdbClient;
+        private TMDbClient _tmdbClient;
+        private IGDBClient _igdbClient;
         private IgdbClass _igdbObject;
         private Tmdb _tmdbObject;
         private DArt _dArtObject;
@@ -150,7 +150,7 @@
         public DelegateCommand RestartExCommand { get; } = new(delegate
         {
             if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
-                LangProvider.GetLang("ConfirmExplorerRestart"))) != System.Windows.MessageBoxResult.Yes) return;
+                LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes) return;
             Util.RefreshIconCache();
             Util.RestartExplorer();
         });
@@ -296,7 +296,7 @@
             }
         }
 
-        private async System.Threading.Tasks.Task ProcessPosterModeAsync()
+        private async Task ProcessPosterModeAsync()
         {
             IsMakeEnabled = false;
             GlobalVariables.SkipAll = false;
@@ -492,7 +492,7 @@
             if (Directory.Exists(SelectedFolder))
             {
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
-                    LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == System.Windows.MessageBoxResult.Yes)
+                    LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == MessageBoxResult.Yes)
                 {
                     Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
                 }
@@ -569,7 +569,7 @@
             {
                 //TODO: Replace with DialogService if efficient.
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
-                        LangProvider.GetLang("ConfirmIconDeletion"))) == System.Windows.MessageBoxResult.Yes)
+                        LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
                 {
                     Util.DeleteIconsFromSubfolders(SelectedFolder);
                 }
@@ -590,7 +590,7 @@
             }
         }
 
-        private async System.Threading.Tasks.Task StartDownloadingAsync()
+        private async Task StartDownloadingAsync()
         {
             IsMakeEnabled = false;
             StatusBarProperties.AppStatus = LangProvider.GetLang("Creating Icons");
@@ -599,7 +599,7 @@
             StatusBarProperties.AppStatusAdditional = "";
         }
 
-        private async System.Threading.Tasks.Task DownloadAndMakeIconsAsync()
+        private async Task DownloadAndMakeIconsAsync()
         {
             StopIconDownload = false;
             IsBusy = true;
@@ -650,7 +650,7 @@
                 CustomMessageBox.Ask($"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
                     LangProvider.GetLang("IconCreated"))))
             {
-                case System.Windows.MessageBoxResult.Yes:
+                case MessageBoxResult.Yes:
                     Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                     break;
             }
@@ -673,8 +673,8 @@
                     Environment.Exit(0);
                 });
             }
-            _tmdbClient = new TMDbLib.Client.TMDbClient(_tmdbapiKey);
-            _igdbClient = new IGDB.IGDBClient(_igdbClientId, _igdbClientSecret, new IgdbJotTrackerStore());
+            _tmdbClient = new TMDbClient(_tmdbapiKey);
+            _igdbClient = new IGDBClient(_igdbClientId, _igdbClientSecret, new IgdbJotTrackerStore());
             _igdbObject = new IgdbClass(ref _pickedListDataTable, ref _igdbClient, ref _imgDownloadList);
             _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
             _dArtObject = new DArt(_devClientSecret, _devClientId);

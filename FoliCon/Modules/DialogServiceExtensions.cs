@@ -52,7 +52,7 @@
         {
             dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
         }
-        public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, IgdbClass igdbObject, ResultResponse result,int pickedIndex, System.Collections.ObjectModel.ObservableCollection<ListItem> resultData, bool isPickedById, Action<IDialogResult> callBack)
+        public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, IgdbClass igdbObject, ResultResponse result,int pickedIndex, ObservableCollection<ListItem> resultData, bool isPickedById, Action<IDialogResult> callBack)
         {
             var p = new DialogParameters
             {

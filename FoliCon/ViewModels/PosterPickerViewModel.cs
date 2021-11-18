@@ -27,7 +27,7 @@ namespace FoliCon.ViewModels
         public Tmdb TmdbObject { get; private set; }
         public IgdbClass IgdbObject { get; private set; }
         public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
-        private ObservableCollection<ListItem> resultList;
+        private ObservableCollection<ListItem> _resultList;
 
         public ObservableCollection<DArtImageList> ImageUrl { get; set; }
         public DelegateCommand StopSearchCommand { get; set; }
@@ -87,7 +87,7 @@ namespace FoliCon.ViewModels
             PickedIndex = parameters.GetValue<int>("pickedIndex");
             TmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
             IgdbObject = parameters.GetValue<IgdbClass>("igdbObject");
-            resultList = parameters.GetValue<ObservableCollection<ListItem>>("resultList");
+            _resultList = parameters.GetValue<ObservableCollection<ListItem>>("resultList");
             _isPickedById = parameters.GetValue<bool>("isPickedById");
             LoadData();
             
@@ -228,12 +228,12 @@ namespace FoliCon.ViewModels
             if (Result.MediaType == MediaTypes.Game)
             {
                 result.Cover.Value.ImageId = link;
-                resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..];
+                _resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..];
             }
             else
             {
                 result.PosterPath = link;
-                resultList[PickedIndex].Poster = link;
+                _resultList[PickedIndex].Poster = link;
             }
             CloseDialog("true");
         }

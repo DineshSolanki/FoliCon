@@ -41,7 +41,7 @@
                 <RowDefinition Height="40" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <hc:ScrollViewer x:Name="scrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
+            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>

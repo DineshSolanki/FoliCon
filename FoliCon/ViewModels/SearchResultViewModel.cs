@@ -23,7 +23,7 @@ namespace FoliCon.ViewModels
 
         private Tmdb _tmdbObject;
         private IgdbClass _igdbObject;
-        private string customRating;
+        private string _customRating;
 
         #endregion Variables
 
@@ -55,8 +55,8 @@ namespace FoliCon.ViewModels
 
         public string CustomRating
         {
-            get => customRating;
-            set => SetProperty(ref customRating, value);
+            get => _customRating;
+            set => SetProperty(ref _customRating, value);
         }
 
         public ListViewData ResultListViewData
@@ -189,7 +189,7 @@ namespace FoliCon.ViewModels
                 && (_isPickedById ? SearchResult.Result != null ? 1 :
                     null :
                     SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
-                && (_isPickedById ? SearchResult.Result != null ? 1 :
+                && (_isPickedById ? SearchResult?.Result != null ? 1 :
                     0 :
                     SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
             {
@@ -222,7 +222,7 @@ namespace FoliCon.ViewModels
             if (ResultListViewData.SelectedItem == null) return;
             var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
             var rating = "";
-            if (CustomRating is not null && customRating != "_._")
+            if (CustomRating is not null && _customRating != "_._")
             {
                 rating = CustomRating.Replace('_', '0');
             }
@@ -261,8 +261,8 @@ namespace FoliCon.ViewModels
             CloseDialog("true");
         }
 
-        private DelegateCommand mouseDoubleClickCommand;
-        public ICommand MouseDoubleClickCommand => mouseDoubleClickCommand ??= new DelegateCommand(MouseDoubleClick);
+        private DelegateCommand _mouseDoubleClickCommand;
+        public ICommand MouseDoubleClickCommand => _mouseDoubleClickCommand ??= new DelegateCommand(MouseDoubleClick);
 
 
         private void MouseDoubleClick()

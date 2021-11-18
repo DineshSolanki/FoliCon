@@ -12,18 +12,18 @@
             InitializeComponent();
         }
 
-        private void ScrollViewer_ScrollChanged(object sender, System.Windows.Controls.ScrollChangedEventArgs e)
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.ExtentHeightChange == 0)
             {
                 
-                _autoScroll = scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight;
+                _autoScroll = ScrollViewer.VerticalOffset == ScrollViewer.ScrollableHeight;
             }
 
 
             if (_autoScroll && e.ExtentHeightChange != 0)
             {
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
+                ScrollViewer.ScrollToVerticalOffset(ScrollViewer.ExtentHeight);
             }
         }
     }

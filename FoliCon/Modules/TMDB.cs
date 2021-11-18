@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Modules
+﻿using Collection = TMDbLib.Objects.Collections.Collection;
+
+namespace FoliCon.Modules
 {
     public class Tmdb
     {

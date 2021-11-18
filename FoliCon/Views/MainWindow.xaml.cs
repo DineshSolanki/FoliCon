@@ -1,6 +1,4 @@
-﻿using System.Collections.Specialized;
-
-namespace FoliCon.Views
+﻿namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

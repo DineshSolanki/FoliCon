@@ -1,6 +1,6 @@
 ﻿namespace FoliCon.Modules
 {
-    public class ClickBehavior : Behavior<Image>
+    public class ClickBehavior : Behavior<System.Windows.Controls.Image>
     {
         private readonly DispatcherTimer _timer = new();
 
