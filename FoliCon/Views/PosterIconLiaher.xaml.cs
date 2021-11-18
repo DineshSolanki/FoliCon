@@ -1,44 +1,43 @@
-﻿namespace FoliCon.Views
+﻿namespace FoliCon.Views;
+
+/// <summary>
+/// Interaction logic for PosterIconLiaher.xaml
+/// </summary>
+public partial class PosterIconLiaher : UserControl
 {
-    /// <summary>
-    /// Interaction logic for PosterIconLiaher.xaml
-    /// </summary>
-    public partial class PosterIconLiaher : UserControl
+    public PosterIconLiaher()
     {
-        public PosterIconLiaher()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public PosterIconLiaher(object dataContext)
-        {
-            DataContext = dataContext;
-            InitializeComponent();
-        }
-        public Bitmap RenderToBitmap()
-        {
-            return RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
-        }
+    public PosterIconLiaher(object dataContext)
+    {
+        DataContext = dataContext;
+        InitializeComponent();
+    }
+    public Bitmap RenderToBitmap()
+    {
+        return RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
+    }
 
-        private RenderTargetBitmap AsRenderTargetBitmap()
-        {
-            var size = new System.Windows.Size(256, 256);
-            Measure(size);
-            Arrange(new Rect(size));
+    private RenderTargetBitmap AsRenderTargetBitmap()
+    {
+        var size = new System.Windows.Size(256, 256);
+        Measure(size);
+        Arrange(new Rect(size));
 
-            var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
-            rtb.Render(this);
+        var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
+        rtb.Render(this);
 
-            return rtb;
-        }
+        return rtb;
+    }
 
-        private static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)
-        {
-            var stream = new MemoryStream();
-            BitmapEncoder encoder = new PngBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(rtb));
-            encoder.Save(stream);
-            return new Bitmap(stream);
-        }
+    private static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)
+    {
+        var stream = new MemoryStream();
+        BitmapEncoder encoder = new PngBitmapEncoder();
+        encoder.Frames.Add(BitmapFrame.Create(rtb));
+        encoder.Save(stream);
+        return new Bitmap(stream);
     }
 }

@@ -1,13 +1,12 @@
-﻿namespace FoliCon.Views
+﻿namespace FoliCon.Views;
+
+/// <summary>
+/// Interaction logic for posterIconConfig
+/// </summary>
+public partial class PosterIconConfig
 {
-    /// <summary>
-    /// Interaction logic for posterIconConfig
-    /// </summary>
-    public partial class PosterIconConfig
+    public PosterIconConfig()
     {
-        public PosterIconConfig()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

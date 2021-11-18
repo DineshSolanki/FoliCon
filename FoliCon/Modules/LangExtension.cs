@@ -1,10 +1,9 @@
-﻿namespace FoliCon.Modules.LangExtension
+﻿namespace FoliCon.Modules.LangExtension;
+
+public class LangExtension : HandyControl.Tools.Extension.LangExtension
 {
-    public class LangExtension : HandyControl.Tools.Extension.LangExtension
+    public LangExtension()
     {
-        public LangExtension()
-        {
-            Source = LangProvider.Instance;
-        }
+        Source = LangProvider.Instance;
     }
 }
