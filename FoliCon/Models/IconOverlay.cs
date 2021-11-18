@@ -1,11 +1,10 @@
-﻿namespace FoliCon.Models
+﻿namespace FoliCon.Models;
+
+public enum IconOverlay
 {
-    public enum IconOverlay
-    {
-        Legacy,
-        Alternate,
-        Liaher,
-        Faelpessoal,
-        FaelpessoalHorizontal
-    }
+    Legacy,
+    Alternate,
+    Liaher,
+    Faelpessoal,
+    FaelpessoalHorizontal
 }

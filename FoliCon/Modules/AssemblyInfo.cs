@@ -1,12 +1,9 @@
-﻿using System.Reflection;
+﻿namespace FoliCon.Modules;
 
-namespace FoliCon.Modules
+internal static class AssemblyInfo
 {
-    internal static class AssemblyInfo
+    public static string GetVersion()
     {
-        public static string GetVersion()
-        {
-            return Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
-        }
+        return Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
     }
 }

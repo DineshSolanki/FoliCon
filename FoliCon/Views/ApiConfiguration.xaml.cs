@@ -1,13 +1,12 @@
-﻿namespace FoliCon.Views
+﻿namespace FoliCon.Views;
+
+/// <summary>
+/// Interaction logic for ApiConfiguration
+/// </summary>
+public partial class ApiConfiguration
 {
-    /// <summary>
-    /// Interaction logic for ApiConfiguration
-    /// </summary>
-    public partial class ApiConfiguration
+    public ApiConfiguration()
     {
-        public ApiConfiguration()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

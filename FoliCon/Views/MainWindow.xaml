@@ -11,7 +11,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="714" Width="752" MinWidth="752" MinHeight="608"
+        Title="{Binding Title}" Height="714" Width="851" MinWidth="850" MinHeight="630"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
            Icon="/Resources/folicon Icon.ico"
         modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
