@@ -1,7 +1,4 @@
-﻿using Prism.Commands;
-using DelegateCommand = Prism.Commands.DelegateCommand;
-using System.Windows.Input;
-using ImTools;
+﻿using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace FoliCon.ViewModels;
 
@@ -304,8 +301,8 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private DelegateCommand selectionChanged;
-    public ICommand SelectionChanged => selectionChanged ??= new DelegateCommand(PerformSelectionChanged);
+    private DelegateCommand _selectionChanged;
+    public ICommand SelectionChanged => _selectionChanged ??= new DelegateCommand(PerformSelectionChanged);
 
     private async void PerformSelectionChanged()
     {
