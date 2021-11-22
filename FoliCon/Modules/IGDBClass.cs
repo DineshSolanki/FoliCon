@@ -6,6 +6,10 @@ public class IgdbClass
     private readonly IGDBClient _serviceClient;
     private readonly List<ImageToDownload> _imgDownloadList;
 
+    public IGDBClient GetClient()
+    {
+        return _serviceClient;
+    }
     /// <summary>
     /// IGDB Helper Class for Working with IGDB API efficiently for thi project.
     /// </summary>
@@ -38,6 +42,14 @@ public class IgdbClass
         };
         return response;
     }
+
+    public async Task<GameVideo[]> GetGameVideo(string id)
+    {
+        Contract.Assert(_serviceClient != null);
+        var r = await _serviceClient.QueryAsync<GameVideo>(IGDBClient.Endpoints.GameVideos,
+            $"fields game,name,video_id; where game = {id};");
+        return r;
+    }
     public async Task<ResultResponse> SearchGameByIdAsync(string id)
     {
         Contract.Assert(_serviceClient != null);
@@ -60,16 +72,17 @@ public class IgdbClass
     public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(Game[] result)
     {
         var items = new ObservableCollection<ListItem>();
-        foreach (var (mediaName, year, overview, poster) in from item in result
+        foreach (var (mediaName, year, overview, poster,id) in from item in result
                  let mediaName = item.Name
+                 let id = item.Id
                  let year = item.FirstReleaseDate != null ? item.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : ""
                  let overview = item.Summary
                  let poster = item.Cover != null
                      ? "https://" + ImageHelper.GetImageUrl(item.Cover.Value.ImageId, ImageSize.HD720)[2..]
                      : null
-                 select (mediaName, year, overview, poster))
+                 select (mediaName, year, overview, poster,id))
         {
-            items.Add(new ListItem(mediaName, year, "", overview, poster));
+            items.Add(new ListItem(mediaName, year, "", overview, poster,"",id.ToString()));
         }
 
         return items;

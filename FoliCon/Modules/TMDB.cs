@@ -42,135 +42,138 @@ public class Tmdb
         return _serviceClient.GetCollectionImagesAsync(collectionId).Result;
     }
 
-    public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
-        SearchContainer<SearchCollection> result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        foreach (var item in result.Results)
+        public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
+            SearchContainer<SearchCollection> result)
         {
-            var mediaName = item.Name;
-            const string year = "";
-            const string rating = "";
-            const string overview = "";
-            var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null, CultureInfo.InvariantCulture);
-            items.Add(new ListItem(mediaName, year, rating, overview, poster));
-        }
-
-        return items;
-    }
-
-    public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
-        SearchContainer<SearchMovie> result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        foreach (var item in result.Results)
-        {
-            var mediaName = item.Title;
-            var year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
-            var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
-            var overview = item.Overview;
-            var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-            items.Add(new ListItem(mediaName, year, rating, overview, poster));
-        }
-
-        return items;
-    }
-
-    public static ObservableCollection<ListItem> ExtractResourceDetailsIntoListItem(
-        SearchContainer<SearchBase> result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        var mediaName = "";
-        var year = "";
-        var rating = "";
-        var overview = "";
-        string poster = null;
-        foreach (var item in result.Results)
-        {
-            var mediaType = item.MediaType;
-            switch (mediaType)
+            var items = new ObservableCollection<ListItem>();
+            foreach (var item in result.Results)
             {
-                case MediaType.Tv:
-                {
-                    var res = (SearchTv)item;
-                    mediaName = res.Name;
-                    year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
-                    rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
-                    overview = res.Overview;
-                    poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
-                    break;
-                }
-                case MediaType.Movie:
-                {
-                    var res = (SearchMovie)item;
-                    mediaName = res.Title;
-                    year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
-                    rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
-                    overview = res.Overview;
-                    poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
-                    break;
-                }
+                var mediaName = item.Name;
+                const string year = "";
+                const string rating = "";
+                const string overview = "";
+                var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null, CultureInfo.InvariantCulture);
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
             }
 
-            items.Add(new ListItem(mediaName, year, rating, overview, poster));
-        }
-
         return items;
     }
 
-    public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(TvShow result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        var mediaName = result.Name;
-        var year = result.FirstAirDate != null ? result.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
-        var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
-        var overview = result.Overview;
-        var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-        items.Add(new ListItem(mediaName, year, rating, overview, poster));
-
-        return items;
-    }
-
-    public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
-        Collection result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        var mediaName = result.Name;
-        const string year = "";
-        const string rating = "";
-        const string overview = "";
-        var poster = Convert.ToString(result.PosterPath != null ? SmallPosterBase + result.PosterPath : null, CultureInfo.InvariantCulture);
-        items.Add(new ListItem(mediaName, year, rating, overview, poster));
-
-        return items;
-    }
-
-    public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
-        Movie result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        var mediaName = result.Title;
-        var year = result.ReleaseDate != null ? result.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
-        var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
-        var overview = result.Overview;
-        var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-        items.Add(new ListItem(mediaName, year, rating, overview, poster));
-
-        return items;
-    }
-
-    public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(SearchContainer<SearchTv> result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        foreach (var item in result.Results)
+        public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
+            SearchContainer<SearchMovie> result)
         {
-            var mediaName = item.Name;
-            var year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
-            var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
-            var overview = item.Overview;
-            var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-            items.Add(new ListItem(mediaName, year, rating, overview, poster));
-        }
+            var items = new ObservableCollection<ListItem>();
+            foreach (var item in result.Results)
+            {
+                var mediaName = item.Title;
+                var year = item.ReleaseDate != null ? item.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
+                var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                var overview = item.Overview;
+                var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
+            }
+
+        return items;
+    }
+
+        public static ObservableCollection<ListItem> ExtractResourceDetailsIntoListItem(
+            SearchContainer<SearchBase> result)
+        {
+            var items = new ObservableCollection<ListItem>();
+            var mediaName = "";
+            var year = "";
+            var rating = "";
+            var overview = "";
+            string poster = null;
+            int id = 0;
+            foreach (var item in result.Results)
+            {
+                var mediaType = item.MediaType;
+                switch (mediaType)
+                {
+                    case MediaType.Tv:
+                        {
+                            var res = (SearchTv)item;
+                            id = res.Id;
+                            mediaName = res.Name;
+                            year = res.FirstAirDate != null ? res.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
+                            rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                            overview = res.Overview;
+                            poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
+                            break;
+                        }
+                    case MediaType.Movie:
+                        {
+                            var res = (SearchMovie)item;
+                            id = res.Id;
+                            mediaName = res.Title;
+                            year = res.ReleaseDate != null ? res.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
+                            rating = res.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                            overview = res.Overview;
+                            poster = res.PosterPath != null ? SmallPosterBase + res.PosterPath : null;
+                            break;
+                        }
+                }
+
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id.ToString()));
+            }
+
+        return items;
+    }
+
+        public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(TvShow result)
+        {
+            var items = new ObservableCollection<ListItem>();
+            var mediaName = result.Name;
+                var year = result.FirstAirDate != null ? result.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
+                var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                var overview = result.Overview;
+                var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
+                items.Add(new ListItem(mediaName, year, rating, overview, poster,"",result.Id.ToString()));
+
+        return items;
+    }
+
+        public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
+            Collection result)
+        {
+            var items = new ObservableCollection<ListItem>();
+            var mediaName = result.Name;
+                const string year = "";
+                const string rating = "";
+                const string overview = "";
+                var poster = Convert.ToString(result.PosterPath != null ? SmallPosterBase + result.PosterPath : null, CultureInfo.InvariantCulture);
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
+
+        return items;
+    }
+
+        public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
+            Movie result)
+        {
+            var items = new ObservableCollection<ListItem>();
+            var mediaName = result.Title;
+                var year = result.ReleaseDate != null ? result.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
+                var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                var overview = result.Overview;
+                var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
+
+        return items;
+    }
+
+        public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(SearchContainer<SearchTv> result)
+        {
+            var items = new ObservableCollection<ListItem>();
+            foreach (var item in result.Results)
+            {
+                var mediaName = item.Name;
+                var year = item.FirstAirDate != null ? item.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture) : "";
+                var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
+                var overview = item.Overview;
+                var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
+            }
 
         return items;
     }

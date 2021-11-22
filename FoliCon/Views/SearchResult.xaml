@@ -10,16 +10,16 @@
              xmlns:models="clr-namespace:FoliCon.Models"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views" mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }">
+             d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="514.5" />
-            <Setter Property="Width" Value="1061.5" />
-            <Setter Property="ResizeMode" Value="NoResize" />
-            <Setter Property="WindowStyle" Value="ToolWindow" />
+            <Setter Property="Height" Value="700" />
+            <Setter Property="Width" Value="1023" />
+            <!--<Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="WindowStyle" Value="ToolWindow" />-->
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
@@ -51,10 +51,13 @@
                 <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
-                          SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
+                          SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
+                        </hc:EventTrigger>
+                        <hc:EventTrigger EventName="SelectionChanged">
+                            <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True"></hc:EventToCommand>
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
                     <ListView.View>
@@ -84,6 +87,7 @@
                     <RowDefinition Height="35" />
                     <RowDefinition Height="200" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="60"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -114,13 +118,14 @@
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
                 <ListBox x:Name="LstFolderContent" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
-                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" hc:Empty.ShowEmpty="true">
+                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <!--<hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:LaunchUriOrFileAction Path="{Binding ElementName=LstFolderContent, Path=SelectedItem}"/>
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>-->
                 </ListBox>
+                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
             </Grid>
         </Grid>
     </hc:BusyIndicator>

@@ -477,67 +477,70 @@
     <value>Отменить успешно</value>
   </data>
   <data name="Undo" xml:space="preserve">
-	  <value>Отменить</value>
+    <value>Отменить</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
-	  <value>Разработал Динеш Соланки.</value>
+    <value>Разработал Динеш Соланки.</value>
   </data>
   <data name="FoliConDescription" xml:space="preserve">
-	  <value>FoliCon - это больше, чем просто средство смены значков папок
+    <value>FoliCon - это больше, чем просто средство смены значков папок
 Он в большей степени автоматизирует эту задачу, имеет два разных режима для разных дизайнов значков папок,
 и он может получать «Игры, фильмы и шоу» и почти любые значки медиа-папок.</value>
   </data>
   <data name="License" xml:space="preserve">
-	  <value>Лицензия:</value>
+    <value>Лицензия:</value>
   </data>
   <data name="LicenseInfo" xml:space="preserve">
-	  <value>Стандартная общественная лицензия GNU v3.0</value>
+    <value>Стандартная общественная лицензия GNU v3.0</value>
   </data>
   <data name="Version" xml:space="preserve">
-	  <value>Версия:</value>
+    <value>Версия:</value>
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
-	  <value>Произошло исключение</value>
+    <value>Произошло исключение</value>
   </data>
   <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-	  <value>Подтвердите удаление файлов Media Info</value>
+    <value>Подтвердите удаление файлов Media Info</value>
   </data>
   <data name="DeleteMediaInfo" xml:space="preserve">
-	  <value>Удалить информацию о мультимедиа</value>
+    <value>Удалить информацию о мультимедиа</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-	  <value>Вы уверены, что хотите удалить информационные файлы мультимедиа Folicon?</value>
+    <value>Вы уверены, что хотите удалить информационные файлы мультимедиа Folicon?</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-	  <value>Это приведет к удалению файлов информации о мультимедиа, используемых folicon для хранения идентификатора мультимедиа после выбора заголовка в первый раз.
+    <value>Это приведет к удалению файлов информации о мультимедиа, используемых folicon для хранения идентификатора мультимедиа после выбора заголовка в первый раз.
 Это помогает фоликону идентифицировать носители без необходимости выбирать из двусмысленных названий.</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
-	  <value>Наложение значка плаката</value>
+    <value>Наложение значка плаката</value>
   </data>
   <data name="BestSuitedForHorizontal" xml:space="preserve">
-	  <value>Лучше всего подходит для горизонтальных изображений, таких как игровые иллюстрации.</value>
+    <value>Лучше всего подходит для горизонтальных изображений, таких как игровые иллюстрации.</value>
   </data>
   <data name="SelectPosterIconOverlay" xml:space="preserve">
-	  <value>Выберите наложение значка плаката</value>
+    <value>Выберите наложение значка плаката</value>
   </data>
   <data name="Hindi" xml:space="preserve">
-	  <value>хинди</value>
+    <value>хинди</value>
   </data>
   <data name="AddToContextMenu" xml:space="preserve">
-	  <value>Добавить в контекстное меню</value>
+    <value>Добавить в контекстное меню</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
-	  <value>Интеграция с проводником (меню, вызываемое правой кнопкой мыши)</value>
+    <value>Интеграция с проводником (меню, вызываемое правой кнопкой мыши)</value>
   </data>
   <data name="RemoveFromContextMenu" xml:space="preserve">
-	  <value>Удалить из контекстного меню</value>
+    <value>Удалить из контекстного меню</value>
   </data>
   <data name="RestartAsAdmin" xml:space="preserve">
-	  <value>Эта функция требует прав администратора, используйте ее при работе от имени администратора.
+    <value>Эта функция требует прав администратора, используйте ее при работе от имени администратора.
 Вы хотите перезапустить Folicon от имени администратора?</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-	  <value>Создавайте иконки с FoliCon</value>
+    <value>Создавайте иконки с FoliCon</value>
+  </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>Видео недоступно!</value>
   </data>
 </root>

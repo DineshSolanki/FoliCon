@@ -56,9 +56,14 @@ public partial class SearchResult
         var dataView =
             CollectionViewSource.GetDefaultView(ListViewResult.ItemsSource);
 
-        dataView.SortDescriptions.Clear();
-        var sd = new SortDescription(sortBy, direction);
-        dataView.SortDescriptions.Add(sd);
-        dataView.Refresh();
-    }
+            dataView.SortDescriptions.Clear();
+            var sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            WebBox.browser.Dispose();
+        }
 }

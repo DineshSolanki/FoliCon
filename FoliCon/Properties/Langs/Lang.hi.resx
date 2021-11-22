@@ -538,6 +538,9 @@
 क्या आप Folicon को एडमिनके रूप में पुनः आरंभ करना चाहते हैं?</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-	  <value>FoliCon के साथ आइकन बनाएं</value>
+    <value>FoliCon के साथ आइकन बनाएं</value>
+  </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>वीडियो उपलब्ध नहीं है!</value>
   </data>
 </root>

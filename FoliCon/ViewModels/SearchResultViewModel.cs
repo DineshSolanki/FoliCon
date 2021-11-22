@@ -1,4 +1,7 @@
-﻿using DelegateCommand = Prism.Commands.DelegateCommand;
+﻿using Prism.Commands;
+using DelegateCommand = Prism.Commands.DelegateCommand;
+using System.Windows.Input;
+using ImTools;
 
 namespace FoliCon.ViewModels;
 
@@ -146,19 +149,19 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     {
     }
 
-    public virtual void OnDialogOpened(IDialogParameters parameters)
-    {
-        SearchTitle = parameters.GetValue<string>("query");
-        SearchResult = parameters.GetValue<ResultResponse>("result");
-        SearchMode = parameters.GetValue<string>("searchmode");
-        _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
-        _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
-        _fullFolderPath = parameters.GetValue<string>("folderpath");
-        _isPickedById = parameters.GetValue<bool>("isPickedById");
-        LoadData(SearchTitle);
-        SearchAgainTitle = SearchTitle;
-        FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
-    }
+        public virtual void OnDialogOpened(IDialogParameters parameters)
+        {
+            SearchTitle = parameters.GetValue<string>("query");
+            SearchResult = parameters.GetValue<ResultResponse>("result");
+            SearchMode = parameters.GetValue<string>("searchmode");
+            _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
+            _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
+            _fullFolderPath = parameters.GetValue<string>("folderpath");
+            _isPickedById = parameters.GetValue<bool>("isPickedById");
+            LoadData(SearchTitle);
+            SearchAgainTitle = SearchTitle;
+            FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
+        }
 
     private async void StartSearch(bool useBusy)
     {
@@ -195,7 +198,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
             if (ResultListViewData.Data.Count != 0)
+            {
                 ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+                PerformSelectionChanged();
+            }
+
+
         }
         else
         {
@@ -293,6 +301,55 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 #if DEBUG
             MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
 #endif
+        }
+    }
+
+    private DelegateCommand selectionChanged;
+    public ICommand SelectionChanged => selectionChanged ??= new DelegateCommand(PerformSelectionChanged);
+
+    private async void PerformSelectionChanged()
+    {
+        if(ResultListViewData.SelectedItem == null && !ResultListViewData.SelectedItem!.TrailerKey.IsNullOrEmpty()) return;
+        var itemId = ResultListViewData.SelectedItem.Id;
+        if (SearchResult.MediaType == MediaTypes.Game)
+        {
+            var r = await _igdbObject.GetGameVideo(itemId);
+            if (r == null || r.Length == 0) return;
+            if (r.Any(v => v.Name == "Trailer"))
+            {
+                var key = r.First(v => v.Name == "Trailer");
+                ResultListViewData.SelectedItem.TrailerKey = key.VideoId;
+                ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + key.VideoId);
+            }
+        }
+        else
+        {
+            if (SearchResult.MediaType == MediaTypes.Movie)
+            {
+                await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+                {
+                    if (item.Result == null) return;
+                    if (!item.Result.Results.Any()) return;
+                    var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
+                    if (i == null) return;
+                    ResultListViewData.SelectedItem.TrailerKey = i.Key;
+                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+                });
+            }
+            else if (SearchResult.MediaType == MediaTypes.Tv)
+            {
+                await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+                {
+                    if (item.Result == null) return;
+                    if (!item.Result.Results.Any()) return;
+                    var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
+                    if (i == null) return;
+                    ResultListViewData.SelectedItem.TrailerKey = i.Key;
+                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+                });
+            }
+            
+            
         }
     }
 }
