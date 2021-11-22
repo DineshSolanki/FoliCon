@@ -51,7 +51,7 @@
                 <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
-                          SelectedItem="{Binding ResultListViewData.SelectedItem}" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
+                          SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
@@ -118,7 +118,7 @@
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
                 <ListBox x:Name="LstFolderContent" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
-                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" hc:Empty.ShowEmpty="true">
+                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto">
                     <!--<hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:LaunchUriOrFileAction Path="{Binding ElementName=LstFolderContent, Path=SelectedItem}"/>

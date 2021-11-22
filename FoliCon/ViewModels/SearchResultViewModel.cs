@@ -198,7 +198,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
             if (ResultListViewData.Data.Count != 0)
+            {
                 ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+                PerformSelectionChanged();
+            }
+
+
         }
         else
         {
@@ -309,26 +314,42 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         if (SearchResult.MediaType == MediaTypes.Game)
         {
             var r = await _igdbObject.GetGameVideo(itemId);
-            if (r != null && r.Length != 0)
+            if (r == null || r.Length == 0) return;
+            if (r.Any(v => v.Name == "Trailer"))
             {
-                if (r.Any(v => v.Name == "Trailer"))
-                {
-                    var key = r.First(v => v.Name == "Trailer");
-                    ResultListViewData.SelectedItem.TrailerKey = key.VideoId;
-                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + key.VideoId);
-                }
+                var key = r.First(v => v.Name == "Trailer");
+                ResultListViewData.SelectedItem.TrailerKey = key.VideoId;
+                ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + key.VideoId);
             }
         }
         else
         {
-            var task = _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+            if (SearchResult.MediaType == MediaTypes.Movie)
             {
-                if (!item.Result.Results.Any()) return;
-                var i = item.Result.Results.Any(i => i.Type == "Trailer") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
-                if (i == null) return;
-                ResultListViewData.SelectedItem.TrailerKey = i.Key;
-                ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
-            });
+                await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+                {
+                    if (item.Result == null) return;
+                    if (!item.Result.Results.Any()) return;
+                    var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
+                    if (i == null) return;
+                    ResultListViewData.SelectedItem.TrailerKey = i.Key;
+                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+                });
+            }
+            else if (SearchResult.MediaType == MediaTypes.Tv)
+            {
+                await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+                {
+                    if (item.Result == null) return;
+                    if (!item.Result.Results.Any()) return;
+                    var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
+                    if (i == null) return;
+                    ResultListViewData.SelectedItem.TrailerKey = i.Key;
+                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+                });
+            }
+            
+            
         }
     }
 }
