@@ -53,7 +53,7 @@ public class Tmdb
                 const string rating = "";
                 const string overview = "";
                 var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null, CultureInfo.InvariantCulture);
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
             }
 
         return items;
@@ -70,7 +70,7 @@ public class Tmdb
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
                 var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
             }
 
         return items;
@@ -115,7 +115,7 @@ public class Tmdb
                         }
                 }
 
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id.ToString()));
             }
 
         return items;
@@ -129,7 +129,7 @@ public class Tmdb
                 var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = result.Overview;
                 var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster,"",result.Id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster,"",result.Id.ToString()));
 
         return items;
     }
@@ -143,7 +143,7 @@ public class Tmdb
                 const string rating = "";
                 const string overview = "";
                 var poster = Convert.ToString(result.PosterPath != null ? SmallPosterBase + result.PosterPath : null, CultureInfo.InvariantCulture);
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
 
         return items;
     }
@@ -157,7 +157,7 @@ public class Tmdb
                 var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = result.Overview;
                 var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
 
         return items;
     }
@@ -172,7 +172,7 @@ public class Tmdb
                 var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
                 var overview = item.Overview;
                 var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
             }
 
         return items;

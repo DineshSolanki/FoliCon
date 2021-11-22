@@ -56,6 +56,9 @@
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
                         </hc:EventTrigger>
+                        <hc:EventTrigger EventName="SelectionChanged">
+                            <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True"></hc:EventToCommand>
+                        </hc:EventTrigger>
                     </hc:Interaction.Triggers>
                     <ListView.View>
                         <GridView>

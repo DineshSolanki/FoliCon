@@ -1,4 +1,7 @@
-﻿using DelegateCommand = Prism.Commands.DelegateCommand;
+﻿using Prism.Commands;
+using DelegateCommand = Prism.Commands.DelegateCommand;
+using System.Windows.Input;
+using ImTools;
 
 namespace FoliCon.ViewModels;
 
@@ -294,6 +297,39 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 #if DEBUG
             MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
 #endif
+        }
+    }
+
+    private DelegateCommand selectionChanged;
+    public ICommand SelectionChanged => selectionChanged ??= new DelegateCommand(PerformSelectionChanged);
+
+    private async void PerformSelectionChanged()
+    {
+        if(ResultListViewData.SelectedItem == null && !ResultListViewData.SelectedItem!.TrailerKey.IsNullOrEmpty()) return;
+        var itemId = ResultListViewData.SelectedItem.Id;
+        if (SearchResult.MediaType == MediaTypes.Game)
+        {
+            var r = await _igdbObject.GetGameVideo(itemId);
+            if (r != null && r.Length != 0)
+            {
+                if (r.Any(v => v.Name == "Trailer"))
+                {
+                    var key = r.First(v => v.Name == "Trailer");
+                    ResultListViewData.SelectedItem.TrailerKey = key.VideoId;
+                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + key.VideoId);
+                }
+            }
+        }
+        else
+        {
+            var task = _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+            {
+                if (!item.Result.Results.Any()) return;
+                var i = item.Result.Results.Any(i => i.Type == "Trailer") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
+                if (i == null) return;
+                ResultListViewData.SelectedItem.TrailerKey = i.Key;
+                ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+            });
         }
     }
 }

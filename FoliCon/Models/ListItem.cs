@@ -10,7 +10,7 @@ public class ListItem : BindableBase
     private string _poster;
     private string _trailerKey;
     private Uri _trailerLink;
-    private int _id;
+    private string _id;
 
     public string Title
     {
@@ -60,14 +60,14 @@ public class ListItem : BindableBase
         set => SetProperty(ref _trailerKey, value);
     }
 
-    public int Id
+    public string Id
     {
         get => _id;
         set => SetProperty(ref _id, value);
     }
 
     public ListItem(string title, string year, string rating, string overview = null, string poster = null,
-        string folder = "", int id = 0)
+        string folder = "", string id = "")
     {
         Title = title;
         Year = year;
