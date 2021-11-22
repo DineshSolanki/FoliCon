@@ -108,6 +108,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     public SearchResultViewModel(IDialogService dialogService)
     {
+        //TODO:Localize 'Video Not Available' string
         _dialogService = dialogService;
         SearchAgainCommand = new DelegateCommand(SearchAgainMethod);
         SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
