@@ -2,7 +2,6 @@
 
     public class ListViewData : BindableBase
     {
-        public Tmdb Tmdb { get; set; }
         private ObservableCollection<ListItem> _data;
         private ListItem _selectedItem;
         private int _selectedCount;

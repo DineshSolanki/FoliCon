@@ -158,7 +158,6 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
             _fullFolderPath = parameters.GetValue<string>("folderpath");
             _isPickedById = parameters.GetValue<bool>("isPickedById");
-            ResultListViewData.Tmdb = _tmdbObject;
             LoadData(SearchTitle);
             SearchAgainTitle = SearchTitle;
             FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
