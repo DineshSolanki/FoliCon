@@ -47,7 +47,7 @@ dineshsolanki.github.io/folicon/</Description>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="gong-wpf-dragdrop" Version="2.4.3" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.0.0" />
     <PackageReference Include="HandyControls" Version="3.3.9" />
     <PackageReference Include="IGDB" Version="2.2.0" />
     <PackageReference Include="Jot" Version="2.1.11" />
