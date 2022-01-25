@@ -494,6 +494,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File is already in use..
+        /// </summary>
+        public static string FileIsInUse {
+            get {
+                return ResourceManager.GetString("FileIsInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folder.
         /// </summary>
         public static string Folder {
@@ -1253,6 +1262,15 @@ namespace FoliCon.Properties.Langs {
         public static string TV {
             get {
                 return ResourceManager.GetString("TV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The file could not be accessed..
+        /// </summary>
+        public static string UnauthorizedAccess {
+            get {
+                return ResourceManager.GetString("UnauthorizedAccess", resourceCulture);
             }
         }
         

@@ -169,6 +169,8 @@ public class LangProvider : INotifyPropertyChanged
             OnPropertyChanged(nameof(ExplorerIntegration));
             OnPropertyChanged(nameof(RemoveFromContextMenu));
             OnPropertyChanged(nameof(VideoUnavailable));
+            OnPropertyChanged(nameof(FileIsInUse));
+            OnPropertyChanged(nameof(UnauthorizedAccess));
         }
 
     public string About => Lang.About;
@@ -432,6 +434,8 @@ public class LangProvider : INotifyPropertyChanged
         public string AddToContextMenu => Lang.AddToContextMenu;
         public string ExplorerIntegration => Lang.ExplorerIntegration;
         public string VideoUnavailable => Lang.VideoUnavailable;
+        public string FileIsInUse => Lang.FileIsInUse;
+        public string UnauthorizedAccess => Lang.UnauthorizedAccess;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -704,4 +708,6 @@ public class LangKeys
         public static string AddToContextMenu = nameof(AddToContextMenu);
         public static string ExplorerIntegration = nameof(ExplorerIntegration);
         public static string VideoUnavailable = nameof(VideoUnavailable);
+        public static string FileIsInUse = nameof(FileIsInUse);
+        public static string UnauthorizedAccess = nameof(UnauthorizedAccess);
     }

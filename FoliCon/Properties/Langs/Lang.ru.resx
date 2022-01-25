@@ -543,4 +543,10 @@
   <data name="VideoUnavailable" xml:space="preserve">
     <value>Видео недоступно!</value>
   </data>
+  <data name="FileIsInUse" xml:space="preserve">
+    <value>Файл уже используется.</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>Не удалось получить доступ к файлу</value>
+  </data>
 </root>

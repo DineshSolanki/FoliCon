@@ -543,4 +543,10 @@
   <data name="VideoUnavailable" xml:space="preserve">
     <value>الفيديو غير متوفر!</value>
   </data>
+  <data name="FileIsInUse" xml:space="preserve">
+    <value>الملف قيد الاستخدام بالفعل.</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>تعذر الوصول إلى الملف</value>
+  </data>
 </root>

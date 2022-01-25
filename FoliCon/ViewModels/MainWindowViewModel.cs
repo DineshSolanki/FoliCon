@@ -486,19 +486,27 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void DeleteMediaInfo()
     {
-        if (Directory.Exists(SelectedFolder))
+        try
         {
-            if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
-                    LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == MessageBoxResult.Yes)
+            if (Directory.Exists(SelectedFolder))
             {
-                Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
+                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
+                        LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == MessageBoxResult.Yes)
+                {
+                    Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
+                }
+            }
+            else
+            {
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
+                    LangProvider.GetLang("EmptyDirectory")));
             }
         }
-        else
+        catch (Exception e)
         {
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
-                LangProvider.GetLang("EmptyDirectory")));
+            MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
         }
+        
     }
 
     private void InitializeProperties()
@@ -562,20 +570,32 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void DeleteIconsMethod()
     {
-        if (Directory.Exists(SelectedFolder))
+        try
         {
-            //TODO: Replace with DialogService if efficient.
-            if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
-                    LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
+            if (Directory.Exists(SelectedFolder))
             {
-                Util.DeleteIconsFromSubfolders(SelectedFolder);
+                //TODO: Replace with DialogService if efficient.
+                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
+                        LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
+                {
+                    Util.DeleteIconsFromSubfolders(SelectedFolder);
+                }
+            }
+            else
+            {
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
+                    LangProvider.GetLang("EmptyDirectory")));
             }
         }
-        else
+        catch (UnauthorizedAccessException e)
         {
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
-                LangProvider.GetLang("EmptyDirectory")));
+            Util.HandleUnauthorizedAccessException(e);
         }
+        catch (Exception e)
+        {
+            MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang(" ")));
+        }
+       
     }
 
     private void ListViewDoubleClickMethod()

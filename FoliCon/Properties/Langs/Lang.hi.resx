@@ -543,4 +543,7 @@
   <data name="VideoUnavailable" xml:space="preserve">
     <value>वीडियो उपलब्ध नहीं है!</value>
   </data>
+  <data name="FileIsInUse" xml:space="preserve">
+    <value>फ़ाइल पहले से उपयोग में है।</value>
+  </data>
 </root>

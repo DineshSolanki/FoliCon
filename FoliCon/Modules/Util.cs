@@ -94,7 +94,7 @@ internal static class Util
     /// <summary>
     /// Terminates Explorer.exe Process.
     /// </summary>
-    public static void KillExplorer()
+    private static void KillExplorer()
     {
         var taskKill = new ProcessStartInfo("taskkill", "/F /IM explorer.exe")
         {
@@ -158,6 +158,17 @@ internal static class Util
         File.Delete(iniFile);
     }
 
+    //Handle UnauthorizedAccessException
+    public static void HandleUnauthorizedAccessException(UnauthorizedAccessException ex)
+    {
+        CustomMessageBox.Error(
+            ex.Message.Contains("The process cannot access the file")
+                ? LangProvider.GetLang("FileIsInUse")
+                : LangProvider.GetLang("UnauthorizedAccess"), LangProvider.GetLang("ExceptionOccurred"));
+    }
+    
+    
+    
     public static void DeleteMediaInfoFromSubfolders(string folderPath)
     {
         foreach (var folder in Directory.EnumerateDirectories(folderPath))
@@ -341,14 +352,10 @@ internal static class Util
     /// </summary>
     /// <param name="url">Url of image</param>
     /// <returns>Bitmap object</returns>
-    public static async Task<Bitmap> GetBitmapFromUrlAsync(string url)
+    public static Task<Bitmap> GetBitmapFromUrlAsync(string url)
     {
-        var myRequest = (HttpWebRequest)WebRequest.Create(new Uri(url));
-        myRequest.Method = "GET";
-        var myResponse = (HttpWebResponse)await myRequest.GetResponseAsync().ConfigureAwait(false);
-        var bmp = new Bitmap(myResponse.GetResponseStream());
-        myResponse.Close();
-        return bmp;
+        var myResponse = Services.HttpC.GetStreamAsync(new Uri(url));
+        return myResponse.ContinueWith(t => new Bitmap(t.Result));
     }
 
     /// <summary>
@@ -622,7 +629,7 @@ internal static class Util
         return true;
     }
 
-    public static void StartAppAsAdmin()
+    private static void StartAppAsAdmin()
     {
         var elevated = new ProcessStartInfo(Path.ChangeExtension(AppPath,
             "exe")!)
