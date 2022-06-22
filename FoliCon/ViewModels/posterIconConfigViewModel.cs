@@ -8,7 +8,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
     public PosterIconConfigViewModel()
     {
         Services.Tracker.Configure<PosterIconConfigViewModel>()
-            .Property(p => p.IconOverlay, defaultValue: "Alternate")
+            .Property(p => p.IconOverlay, defaultValue: "Liaher")
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         IconOverlayChangedCommand = new DelegateCommand<object>(delegate(object parameter)
