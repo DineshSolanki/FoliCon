@@ -2,7 +2,7 @@
 
 public class AboutBoxViewModel : BindableBase, IDialogAware
 {
-    private string _title = "Folicon v3.9";
+    private string _title = "Folicon v3.9.1";
     private string _logo = "/Resources/folicon Icon.png";
 
     private string _description = LangProvider.GetLang("FoliConDescription");
