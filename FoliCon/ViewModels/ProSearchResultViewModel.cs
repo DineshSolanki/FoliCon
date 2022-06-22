@@ -101,7 +101,10 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                 {
                     if (!item.Value.IsDownloadable)
                         continue;
-                    using (var bm = await Util.GetBitmapFromUrlAsync(item.Value.Thumbs[0].Src))
+                    var response = await Services.HttpC.GetAsync(item.Value.Thumbs[0].Src);
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                        continue;
+                    using (var bm = await response.GetBitmap())
                     {
                         ImageUrl.Add(new DArtImageList(item.Value.Content.Src, Util.LoadBitmap(bm)));
                         bm.Dispose();

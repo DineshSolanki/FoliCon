@@ -355,7 +355,11 @@ internal static class Util
     public static Task<Bitmap> GetBitmapFromUrlAsync(string url)
     {
         var myResponse = Services.HttpC.GetStreamAsync(new Uri(url));
-        return myResponse.ContinueWith(t => new Bitmap(t.Result));
+        return myResponse.ContinueWith(t =>
+        {
+            Bitmap bitmap = new Bitmap(t.Result);
+            return bitmap;
+        });
     }
 
     /// <summary>

@@ -30,4 +30,12 @@ public static class Extensions
     {
         return new ObservableCollection<T>(col);
     }
+    public static Task<Bitmap> GetBitmap(this HttpResponseMessage responseMessage)
+    {
+        return responseMessage.Content.ReadAsStreamAsync().ContinueWith(t =>
+        {
+            Bitmap bitmap = new(t.Result);
+            return bitmap;
+        });
+    }
 }

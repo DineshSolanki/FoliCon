@@ -168,8 +168,11 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                 {
                     var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W92, image.FilePath).ToString() : null;
                     var qualityPath = TmdbObject.GetClient().GetImageUrl(PosterSize.W500, image.FilePath)
-                        .ToString(); //TODO: give user option to set quality of preview.
-                    var bm = await Util.GetBitmapFromUrlAsync(posterPath);
+                        .ToString(); //TODO: give user option to set quality of preview.-
+                    var response = await Services.HttpC.GetAsync(posterPath);
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                        continue;
+                    var bm = await response.GetBitmap();
                     ImageUrl.Add(new DArtImageList(qualityPath, Util.LoadBitmap(bm)));
                     bm.Dispose();
                 }
@@ -202,7 +205,10 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                 if (image is not null)
                 {
                     var posterPath = image.ImageId != null ? "https://" + ImageHelper.GetImageUrl(item.Value.ImageId, ImageSize.ScreenshotMed)[2..] : null;
-                    var bm = await Util.GetBitmapFromUrlAsync(posterPath);
+                    var response = await Services.HttpC.GetAsync(posterPath);
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                        continue;
+                    var bm = await response.GetBitmap();
                     ImageUrl.Add(new DArtImageList(image.ImageId, Util.LoadBitmap(bm)));
                     bm.Dispose();
                 }
