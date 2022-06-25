@@ -140,6 +140,7 @@ internal static class Util
     /// <param name="folderPath">Path to delete Icons from</param>
     public static void DeleteIconsFromSubfolders(string folderPath)
     {
+        DeleteIconsFromFolder(folderPath);
         foreach (var folder in Directory.EnumerateDirectories(folderPath))
         {
             DeleteIconsFromFolder(folder);
@@ -171,9 +172,11 @@ internal static class Util
     
     public static void DeleteMediaInfoFromSubfolders(string folderPath)
     {
+        var icoFile = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
+        File.Delete(icoFile);
         foreach (var folder in Directory.EnumerateDirectories(folderPath))
         {
-            var icoFile = Path.Combine(folder, GlobalVariables.MediaInfoFile);
+            icoFile = Path.Combine(folder, GlobalVariables.MediaInfoFile);
             File.Delete(icoFile);
         }
     }
