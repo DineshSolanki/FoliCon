@@ -52,8 +52,8 @@
                 <hc:SearchBar
                     modules:FocusExtension.IsFocused="{Binding IsSearchFocused,UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="2" Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource SearchBarPlus}"
-                    hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}" ShowClearButton="True"
+                    Style="{StaticResource SearchBarPlusBaseStyle}"
+                    hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
                     VerticalAlignment="Top">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SearchStarted">

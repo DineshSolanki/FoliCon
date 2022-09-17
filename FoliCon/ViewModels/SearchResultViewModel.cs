@@ -23,7 +23,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
-    private string _customRating;
+    private double _customRating = 0;
 
     #endregion Variables
 
@@ -53,7 +53,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         set => SetProperty(ref _isBusy, value);
     }
 
-    public string CustomRating
+    public double CustomRating
     {
         get => _customRating;
         set => SetProperty(ref _customRating, value);
@@ -228,9 +228,9 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         if (ResultListViewData.SelectedItem == null) return;
         var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
         var rating = "";
-        if (CustomRating is not null && _customRating != "_._")
+        if (CustomRating is not 0)
         {
-            rating = CustomRating.Replace('_', '0');
+            rating = CustomRating.ToString();
         }
 
         try

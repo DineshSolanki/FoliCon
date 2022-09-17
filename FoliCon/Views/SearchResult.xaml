@@ -74,7 +74,7 @@
                               Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                               Style="{StaticResource SearchBarPlus}"
                               hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
-                              ShowClearButton="True" VerticalAlignment="Bottom" IsRealTime="True">
+                              VerticalAlignment="Bottom" IsRealTime="True">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SearchStarted">
                             <i:InvokeCommandAction Command="{Binding SearchAgainCommand}" />
@@ -112,7 +112,8 @@
                     </Image.Effect>
                 </Image>
                 <Button Content="{ex:Lang Key={x:Static langs:LangKeys.ShowMore}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"/>
-                <hc:MaskedTextBox Mask="0.0" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/>
+                <hc:Rate Grid.Row="2" Grid.Column="1" Count="10" AllowHalf="True" Margin="5" Foreground="{DynamicResource WarningBrush}" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}" Value="{Binding Path=CustomRating, Mode=TwoWay}" AllowClear="True"/>
+                <!-- <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/> -->
                 <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
