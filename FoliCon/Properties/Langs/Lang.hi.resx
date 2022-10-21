@@ -546,4 +546,7 @@
   <data name="FileIsInUse" xml:space="preserve">
     <value>फ़ाइल पहले से उपयोग में है।</value>
   </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>फाइल एक्सेस नही की जा सकी</value>
+  </data>
 </root>
