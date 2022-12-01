@@ -549,4 +549,10 @@
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>Не удалось получить доступ к файлу</value>
   </data>
+  <data name="UseSystemTheme" xml:space="preserve">
+    <value>Использовать системную тему</value>
+  </data>
+  <data name="UsingSystemThemeTooltip" xml:space="preserve">
+    <value>Фоликон будет следовать системной теме.</value>
+  </data>
 </root>

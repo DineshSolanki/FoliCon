@@ -1,4 +1,7 @@
-﻿namespace FoliCon.ViewModels;
+﻿using HandyControl.Themes;
+using Theme = HandyControl.Themes.Theme;
+
+namespace FoliCon.ViewModels;
 
 public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
@@ -11,6 +14,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private bool _isBusy;
     private bool _isMakeEnabled;
     private bool _isSkipAmbiguous;
+    private bool _isUsingSystemTheme;
     private string _iconMode = "Poster";
     private string _searchMode = "Movie";
     private bool _isSearchModeVisible = true;
@@ -57,6 +61,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     }
 
     private readonly IDialogService _dialogService;
+    private ApplicationTheme _theme;
     public StatusBarData StatusBarProperties { get; set; }
     public ProgressBarData BusyIndicatorProperties { get; set; }
     public List<string> Fnames { get; set; }
@@ -71,6 +76,15 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         get => _isSkipAmbiguous;
         set => SetProperty(ref _isSkipAmbiguous, value);
+    }
+    public bool IsUsingSystemTheme
+    {
+        get => _isUsingSystemTheme;
+        set
+        {
+            SetProperty(ref _isUsingSystemTheme, value);
+            ThemeManager.Current.UsingSystemTheme = value;
+        }
     }
 
     public bool StopIconDownload
@@ -134,6 +148,17 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         get => _appLanguage;
         set => SetProperty(ref _appLanguage, value);
     }
+    public ApplicationTheme Theme
+    {
+        get => _theme;
+        set
+        {
+            SetProperty(ref _theme, value);
+            IsUsingSystemTheme = false;
+            ThemeManager.Current.ApplicationTheme = value;
+        }
+    }
+
     #endregion GetterSetters
 
     #region DelegateCommands
@@ -184,6 +209,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             .Property(p => p.IsPosterMockupUsed, true)
             .Property(p => p.IsPosterWindowShown, false)
             .Property(p => p.AppLanguage, Languages.English)
+            .Property(p => p.Theme, ApplicationTheme.Light)
+            .Property(p => p.IsUsingSystemTheme, true)
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         var selectedLanguage = AppLanguage;

@@ -549,4 +549,10 @@
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>फाइल एक्सेस नही की जा सकी</value>
   </data>
+  <data name="UseSystemTheme" xml:space="preserve">
+    <value>सिस्टम थीम का प्रयोग करें</value>
+  </data>
+  <data name="UsingSystemThemeTooltip" xml:space="preserve">
+    <value>फोलिकॉन सिस्टम थीम का पालन करेगा।</value>
+  </data>
 </root>

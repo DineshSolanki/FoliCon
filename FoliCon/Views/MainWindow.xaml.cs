@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Views;
+﻿using HandyControl.Themes;
+
+namespace FoliCon.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
