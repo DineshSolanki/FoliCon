@@ -19,6 +19,7 @@
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="300" />
+            <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
             <Setter Property="MaxHeight" Value="300" />
             <Setter Property="Width" Value="1066" />
             <!--<Setter Property="ResizeMode" Value="NoResize" />-->
@@ -29,7 +30,7 @@
     <GroupBox 
               Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
                Foreground="Transparent" BorderThickness="0"
-              Background="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+              Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
         <Grid Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
