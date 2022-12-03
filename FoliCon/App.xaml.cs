@@ -1,6 +1,7 @@
 ﻿using FoliCon.ViewModels;
 using NLog;
 using Prism.Ioc;
+using System.Windows.Controls.Ribbon;
 using Sentry;
 using Logger = NLog.Logger;
 
@@ -36,6 +37,7 @@ public partial class App
         containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
         containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
+        containerRegistry.RegisterDialogWindow<HandyWindow>("HandyWindow");
     }
     
     void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -1,5 +1,7 @@
 ﻿using NLog;
 
+using HandyControl.Themes;
+
 namespace FoliCon.ViewModels;
 
 public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
