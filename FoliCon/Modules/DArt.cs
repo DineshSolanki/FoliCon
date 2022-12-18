@@ -75,7 +75,7 @@ public class DArt : BindableBase
     public async Task<DArtBrowseResult> Browse(string query, int offset = 0)
     {
         GetClientAccessTokenAsync();
-        var url = "https://www.deviantart.com/api/v1/oauth2/browse/popular?timerange=alltime&offset=" + offset +
+        var url = "https://www.deviantart.com/api/v1/oauth2/browse/newest?timerange=alltime&offset=" + offset +
                   "&q=" + query + " folder icon" +
                   "&limit=20&access_token=" + ClientAccessToken;
         using var response = await Services.HttpC.GetAsync(new Uri(url));
