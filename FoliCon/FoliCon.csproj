@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
-    <Version>3.9.2</Version>
+    <Version>3.9.3</Version>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	  <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
-    <PackageVersion>3.9.2</PackageVersion>
-    <AssemblyVersion>3.9.2.0</AssemblyVersion>
+    <PackageVersion>3.9.3</PackageVersion>
+    <AssemblyVersion>3.9.3.0</AssemblyVersion>
     <Company>Dinesh Solanki</Company>
     <Description>Creates Folder icons for Movies, Serials, Music, and Games Folders
 dineshsolanki.github.io/folicon/</Description>
