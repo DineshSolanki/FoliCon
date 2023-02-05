@@ -1,4 +1,4 @@
-﻿using Collection = TMDbLib.Objects.Collections.Collection;
+using Collection = TMDbLib.Objects.Collections.Collection;
 using PosterIcon = FoliCon.Models.PosterIcon;
 
 namespace FoliCon.Modules;
@@ -440,7 +440,7 @@ internal static class Util
         ratingVisibility = string.IsNullOrEmpty(rating) ? "Hidden" : ratingVisibility;
         if (!string.IsNullOrEmpty(rating) && rating != "10")
         {
-            rating = !rating.Contains(".") ? rating + ".0" : rating;
+            rating = !rating.Contains('.') ? rating + ".0" : rating;
         }
 
         Bitmap icon;
