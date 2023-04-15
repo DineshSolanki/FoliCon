@@ -9,7 +9,10 @@
 Folicon is a Folder icon changer which works for movie,music, games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, inspired From [Raticon](https://github.com/Jamedjo/Raticon)
 
 :star: Star us on GitHub — it helps!
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=DineshSolanki/FoliCon&type=Date)](https://star-history.com/#DineshSolanki/FoliCon&Date)
+--
 [OLD Repo](https://github.com/DineshSolanki/FoliCon/tree/f2cfc75414dcb8953793f2af833ed49fd496064e)
 
 [<img height=100  alt="Download" src="https://user-images.githubusercontent.com/15937452/61147148-51575280-a4f9-11e9-953e-3989e58ed067.png" />](https://github.com/dinesh-solanki/Folicon/releases/latest) [![Download Folicon](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/folicon/files/latest/download)
