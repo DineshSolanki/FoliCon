@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -50,7 +50,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="HandyControls" Version="3.4.5" />
     <PackageReference Include="IGDB" Version="2.3.1" />
-    <PackageReference Include="Jot" Version="2.1.13" />
+    <PackageReference Include="Jot" Version="2.1.15" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="TMDbLib" Version="2.0.0" />
