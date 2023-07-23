@@ -63,9 +63,6 @@
                     <MenuItem x:Name="ChkIgnoreAmbiguous" Header="{ex:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}" IsCheckable="True"
                               IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
                               ToolTip="{ex:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
-                    <MenuItem x:Name="ChkUseSystemTheme" Header="{ex:Lang Key={x:Static langs:LangKeys.UseSystemTheme}}" IsCheckable="True"
-                              IsChecked="{Binding IsUsingSystemTheme}"
-                              ToolTip="{ex:Lang Key={x:Static langs:LangKeys.UsingSystemThemeTooltip}}" />
                     <Separator />
                     <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{ex:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
                               Command="{Binding PosterIconConfigCommand}" />
@@ -78,8 +75,7 @@
                         <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
                                   Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
                     </MenuItem>
-                    <hc:ComboBox x:Name="CmbTheme" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type hc:ApplicationTheme}}}"  IsEditable="False" SelectedItem ="{Binding Path=Theme}" hc:TitleElement.Title="Theme: " hc:TitleElement.TitlePlacement="Left"/>
-                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
+                        <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuRExbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"

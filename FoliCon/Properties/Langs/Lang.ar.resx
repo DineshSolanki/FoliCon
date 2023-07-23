@@ -549,10 +549,4 @@
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>تعذر الوصول إلى الملف</value>
   </data>
-  <data name="UseSystemTheme" xml:space="preserve">
-    <value>استخدم موضوع النظام</value>
-  </data>
-  <data name="UsingSystemThemeTooltip" xml:space="preserve">
-    <value>سيتبع Folicon موضوع النظام.</value>
-  </data>
 </root>

@@ -549,10 +549,4 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>No se pudo acceder al archivo</value>
   </data>
-  <data name="UseSystemTheme" xml:space="preserve">
-    <value>Usar tema del sistema</value>
-  </data>
-  <data name="UsingSystemThemeTooltip" xml:space="preserve">
-    <value>Folicon seguirá el tema del sistema.</value>
-  </data>
 </root>

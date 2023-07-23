@@ -7,8 +7,7 @@
         <ResourceDictionary>
             <langs:LangProvider x:Key="FoliConLangs"/>
             <ResourceDictionary.MergedDictionaries>
-                <hc:ThemeResources/>
-                <hc:Theme/>
+                <hc:ThemeResources UsingSystemTheme="True"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Basic/Colors/Light.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"/>

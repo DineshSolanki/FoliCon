@@ -548,10 +548,4 @@ and refresh Icon Cache?</value>
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>The file could not be accessed.</value>
   </data>
-  <data name="UseSystemTheme" xml:space="preserve">
-    <value>Use sytem theme</value>
-  </data>
-  <data name="UsingSystemThemeTooltip" xml:space="preserve">
-    <value>Folicon will follow system theme.</value>
-  </data>
 </root>
