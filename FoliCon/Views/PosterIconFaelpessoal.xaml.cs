@@ -27,6 +27,8 @@ public partial class PosterIconFaelpessoal : UserControl
         Arrange(new Rect(size));
 
         var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
+        RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+        RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         rtb.Render(this);
 
         return rtb;

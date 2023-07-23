@@ -26,7 +26,9 @@ public partial class PosterIconLiaher : UserControl
         Measure(size);
         Arrange(new Rect(size));
 
-        var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
+        var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Pbgra32);
+        RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
+        RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         rtb.Render(this);
 
         return rtb;
