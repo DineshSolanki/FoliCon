@@ -4,7 +4,8 @@
 
 # Folicon - The ultimate movie, show, music, games folder icon customizer
 
-<img src="https://img.shields.io/github/commits-since/DineshSolanki/Folicon/latest/master"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/downloads/dineshsolanki/FoliCon/total?color=blue&style=plastic"> <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon"> <img alt="GitHub Closed Issues" src="https://img.shields.io/github/issues-closed/DineshSolanki/FoliCon" />
+<img src="https://img.shields.io/github/commits-since/DineshSolanki/Folicon/latest/master"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/downloads/dineshsolanki/FoliCon/total?color=blue&style=plastic"> ![SourceForge Downloads](https://img.shields.io/sourceforge/dt/FoliCon)
+ <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon"> <img alt="GitHub Closed Issues" src="https://img.shields.io/github/issues-closed/DineshSolanki/FoliCon" /> ![Lines of code](https://sloc.xyz/github/DineshSolanki/FoliCon)
 
 Folicon is a Folder icon changer which works for movie,music, games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, inspired From [Raticon](https://github.com/Jamedjo/Raticon)
 
