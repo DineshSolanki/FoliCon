@@ -2,6 +2,7 @@
 
 public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
     #region Variables
 
     private string _selectedFolder;
@@ -178,6 +179,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public MainWindowViewModel(IDialogService dialogService)
     {
+        Logger.Info("Application Started");
         _dialogService = dialogService;
         Services.Tracker.Configure<MainWindowViewModel>()
             .Property(p => p.IsRatingVisible, true)
