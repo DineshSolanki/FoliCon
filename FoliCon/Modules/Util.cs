@@ -1,5 +1,6 @@
 using NLog;
 using NLog.Config;
+using NLog.Fluent;
 using NLog.Layouts;
 using NLog.Targets;
 using Sentry.NLog;
@@ -14,11 +15,13 @@ internal static class Util
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static async void CheckForUpdate(bool onlyShowIfUpdateAvailable = false)
     {
+        Logger.Debug("Checking for Update");
         if (ApplicationHelper.IsConnectedToInternet())
         {
             var ver = await UpdateHelper.CheckUpdateAsync("DineshSolanki", "FoliCon");
             if (ver.IsExistNewVersion)
             {
+                Logger.Debug("New Version Found: {}", ver.TagName);
                 var info = new GrowlInfo
                 {
                     Message = LangProvider.GetLang("NewVersionFound").Format(ver.TagName,
@@ -28,8 +31,14 @@ internal static class Util
                     ShowDateTime = false,
                     ActionBeforeClose = isConfirmed =>
                     {
-                        if (isConfirmed)
-                            StartProcess(ver.ReleaseUrl);
+                        switch (isConfirmed)
+                        {
+                            case true:
+                                Logger.Debug("Update Confirmed. Starting Update Process");
+                                StartProcess(ver.ReleaseUrl);
+                                break;
+                        }
+
                         return true;
                     }
                 };
@@ -37,6 +46,7 @@ internal static class Util
             }
             else
             {
+                Logger.Debug("No New Version Found");
                 if (onlyShowIfUpdateAvailable is not false) return;
                 var info = new GrowlInfo
                 {
@@ -58,28 +68,23 @@ internal static class Util
     /// <param name="path">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
     public static void StartProcess(string path)
     {
+        Logger.Debug("Starting Process: {}", path);
         Process.Start(new ProcessStartInfo(path)
         {
             UseShellExecute = true
         });
     }
 
-    public static bool IsPngOrIco(string f) =>
-        f != null && (
-            f.EndsWith(".png", StringComparison.Ordinal) ||
-            f.EndsWith(".ico", StringComparison.Ordinal));
-
-    public static byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
+    private static bool EndsIn(string value, IEnumerable<string> fileExtensions)
     {
-        if (imageSource is not BitmapSource bitmapSource) return null;
-        encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-
-        using var stream = new MemoryStream();
-        encoder.Save(stream);
-        var bytes = stream.ToArray();
-        return bytes;
+        return fileExtensions.Any(fileExtension => value.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase));
     }
 
+    
+    public static bool IsPngOrIco(string fileName) =>
+        fileName != null &&
+        EndsIn(fileName, new[] { ".png", ".ico" });
+    
     /// <summary>
     /// Set Column width of list view to fit content
     /// </summary>
@@ -103,14 +108,17 @@ internal static class Util
     /// </summary>
     private static void KillExplorer()
     {
+        Logger.Debug("Killing Explorer.exe");
         var taskKill = new ProcessStartInfo("taskkill", "/F /IM explorer.exe")
         {
             WindowStyle = ProcessWindowStyle.Hidden,
             UseShellExecute = true
         };
-        using var process = new Process { StartInfo = taskKill };
+        using var process = new Process();
+        process.StartInfo = taskKill;
         process.Start();
         process.WaitForExit();
+        Logger.Debug("Explorer.exe Killed");
     }
 
     /// <summary>
@@ -120,10 +128,12 @@ internal static class Util
     {
         KillExplorer();
         Process.Start("explorer.exe");
+        Logger.Debug("Explorer.exe Restarted");
     }
 
     public static void RefreshIconCache()
     {
+        Logger.Debug("Refreshing Icon Cache");
         _ = Kernel32.Wow64DisableWow64FsRedirection(out _);
         var objProcess = new Process
         {
@@ -138,6 +148,7 @@ internal static class Util
         objProcess.Start();
         objProcess.WaitForExit();
         objProcess.Close();
+        Logger.Debug("Icon Cache Refreshed");
         Kernel32.Wow64EnableWow64FsRedirection(true);
     }
 
@@ -147,6 +158,7 @@ internal static class Util
     /// <param name="folderPath">Path to delete Icons from</param>
     public static void DeleteIconsFromSubfolders(string folderPath)
     {
+        Logger.Debug("Deleting Icons from Subfolders of: {FolderPath}", folderPath);
         DeleteIconsFromFolder(folderPath);
         foreach (var folder in Directory.EnumerateDirectories(folderPath))
         {
@@ -154,31 +166,35 @@ internal static class Util
         }
 
         RefreshIconCache();
+        Logger.Debug("Icons Deleted from Subfolders of: {FolderPath}", folderPath);
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT, folderPath);
     }
 
     public static void DeleteIconsFromFolder(string folderPath)
     {
+        Logger.Debug("Deleting Icons from: {FolderPath}", folderPath);
         var folderName = Path.GetFileName(folderPath);
         var icoFile = Path.Combine(folderPath, $"{folderName}.ico");
         var iniFile = Path.Combine(folderPath, "desktop.ini");
         File.Delete(icoFile);
         File.Delete(iniFile);
+        Logger.Debug("Icons Deleted from: {FolderPath}", folderPath);
     }
 
     //Handle UnauthorizedAccessException
     public static void HandleUnauthorizedAccessException(UnauthorizedAccessException ex)
     {
+        Logger.ForErrorEvent().Message("UnauthorizedAccessException Occurred: {Message}", ex.Message)
+            .Exception(ex).Log();
         CustomMessageBox.Error(
             ex.Message.Contains("The process cannot access the file")
                 ? LangProvider.GetLang("FileIsInUse")
                 : LangProvider.GetLang("UnauthorizedAccess"), LangProvider.GetLang("ExceptionOccurred"));
     }
     
-    
-    
     public static void DeleteMediaInfoFromSubfolders(string folderPath)
     {
+        Logger.Debug("Deleting MediaInfo from Subfolders of: {FolderPath}", folderPath);
         var icoFile = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
         File.Delete(icoFile);
         foreach (var folder in Directory.EnumerateDirectories(folderPath))
@@ -186,6 +202,7 @@ internal static class Util
             icoFile = Path.Combine(folder, GlobalVariables.MediaInfoFile);
             File.Delete(icoFile);
         }
+        Logger.Debug("MediaInfo Deleted from Subfolders of: {FolderPath}", folderPath);
     }
 
     /// <summary>
@@ -194,20 +211,26 @@ internal static class Util
     /// <returns> Returns true if Web is accessible</returns>
     public static bool IsNetworkAvailable()
     {
+        Logger.ForDebugEvent().Message("Network Availability Check Started").Log();
         const string host = "8.8.8.8";
         var result = false;
         using var p = new Ping();
         try
         {
+            Logger.Debug("Pinging {Host}", host);
             var reply = p.Send(host, 5000, new byte[32], new PingOptions { DontFragment = true, Ttl = 32 });
             if (reply is { Status: IPStatus.Success })
+            {
                 result = true;
+            }
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Logger.ForErrorEvent().Message("Error Occurred while checking Network Availability : {Message}", e.Message)
+                .Exception(e).Log();
             // ignored
         }
-
+        Logger.Debug("Network availability: {}", result);
         return result;
     }
 
@@ -226,6 +249,7 @@ internal static class Util
 
     public static VistaFolderBrowserDialog NewFolderBrowserDialog(string description)
     {
+        Logger.Debug("Creating New Folder Browser Dialog");
         var folderBrowser = new VistaFolderBrowserDialog
         {
             Description = description,
@@ -247,6 +271,7 @@ internal static class Util
     public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating,
         string fullFolderPath, string folderName, string year = "")
     {
+        Logger.Debug("Adding Data to PickedListDataTable");
         if (rating == "0")
         {
             rating = "";
@@ -260,11 +285,15 @@ internal static class Util
         nRow["Folder"] = fullFolderPath;
         nRow["FolderName"] = folderName;
         dataTable.Rows.Add(nRow);
+        Logger.Trace("Data Added to PickedListDataTable: {@Row}",nRow);
     }
 
     public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query,
         bool isPickedById)
     {
+        Logger.Debug(
+            "Fetching and Adding Details to ListView, Result: {@Result}, Query: {Query}, isPickedById: {IsPickedById}",
+            result, query, isPickedById);
         var source = new ObservableCollection<ListItem>();
 
         if (result.MediaType == MediaTypes.Tv)
@@ -289,8 +318,10 @@ internal static class Util
                     ob = isPickedById ? (Movie)result.Result : (SearchContainer<SearchMovie>)result.Result;
                     source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Logger.ForErrorEvent().Message("Error Occurred while Fetching Movie Details, treating as collection")
+                        .Exception(e).Log();
                     ob = isPickedById
                         ? (Collection)result.Result
                         : (SearchContainer<SearchCollection>)result.Result;
@@ -308,7 +339,7 @@ internal static class Util
             var ob = (Game[])result.Result;
             source = IgdbClass.ExtractGameDetailsIntoListItem(ob);
         }
-
+        Logger.Trace("Details Added to ListView: {@Source}", source);
         return source;
     }
 
@@ -319,6 +350,7 @@ internal static class Util
     /// <returns>ArrayList with file Names.</returns>
     public static List<string> GetFileNamesFromFolder(string folder)
     {
+        Logger.Debug("Getting File Names from Folder: {Folder}", folder);
         var itemList = new List<string>();
         try
         {
@@ -327,6 +359,8 @@ internal static class Util
         }
         catch (Exception e)
         {
+            Logger.ForErrorEvent().Message("Error Occurred while Getting File Names from Folder: {Folder}", folder)
+                .Exception(e).Log();
             itemList.Add($"Error accessing files: {e.Message}");
         }
 
@@ -340,6 +374,7 @@ internal static class Util
     /// <returns></returns>
     public static BitmapSource LoadBitmap(Bitmap source)
     {
+        Logger.Debug("Converting Bitmap to BitmapSource");
         var ip = source.GetHbitmap();
         BitmapSource bs;
 
@@ -354,24 +389,10 @@ internal static class Util
             // _ = NativeMethods.DeleteObject(ip);
         }
 
+        Logger.Debug("Bitmap Converted to BitmapSource");
         return bs;
     }
-
-    /// <summary>
-    /// Get Bitmap from URL
-    /// </summary>
-    /// <param name="url">Url of image</param>
-    /// <returns>Bitmap object</returns>
-    public static Task<Bitmap> GetBitmapFromUrlAsync(string url)
-    {
-        var myResponse = Services.HttpC.GetStreamAsync(new Uri(url));
-        return myResponse.ContinueWith(t =>
-        {
-            Bitmap bitmap = new Bitmap(t.Result);
-            return bitmap;
-        });
-    }
-
+    
     /// <summary>
     /// Async function That can Download image from any URL and save to local path
     /// </summary>
@@ -379,8 +400,10 @@ internal static class Util
     /// <param name="saveFileName">The Local Path Of Downloaded Image</param>
     public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
     {
+        Logger.Info("Downloading Image from URL: {Url} to Path: {SaveFileName}", url, saveFileName);
         var response = await Services.HttpC.GetAsync(url);
         await using var fs = new FileStream(saveFileName, FileMode.Create);
+        Logger.Info("Saving Image to Path: {SaveFileName}", saveFileName);
         await response.Content.CopyToAsync(fs);
     }
 
@@ -392,6 +415,10 @@ internal static class Util
     public static int MakeIco(string iconMode, string selectedFolder, DataTable pickedListDataTable,
         bool isRatingVisible = false, bool isMockupVisible = true)
     {
+        Logger.Debug(
+            "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}",
+            iconMode, selectedFolder, isRatingVisible, isMockupVisible);
+        
         var iconProcessedCount = 0;
         var ratingVisibility = isRatingVisible ? "visible" : "hidden";
         var mockupVisibility = isMockupVisible ? "visible" : "hidden";
@@ -401,7 +428,8 @@ internal static class Util
         {
             var tempI = i;
             var targetFile = $@"{selectedFolder}\{i}\{i}.ico";
-            if (File.Exists($@"{selectedFolder}\{i}\{i}.png") && !File.Exists(targetFile))
+            var pngFilePath = $@"{selectedFolder}\{i}\{i}.png";
+            if (File.Exists(pngFilePath) && !File.Exists(targetFile))
             {
                 var rating = pickedListDataTable.AsEnumerable()
                     .Where(p => p["FolderName"].Equals(tempI))
@@ -411,10 +439,14 @@ internal static class Util
                     .Where(p => p["FolderName"].Equals(tempI))
                     .Select(p => p["Title"].ToString())
                     .FirstOrDefault();
-                BuildFolderIco(iconMode, $@"{selectedFolder}\{i}\{i}.png", rating, ratingVisibility,
+                BuildFolderIco(iconMode, pngFilePath, rating, ratingVisibility,
                     mockupVisibility, mediaTitle);
                 iconProcessedCount += 1;
-                File.Delete($@"{selectedFolder}\{i}\{i}.png"); //<--IO Exception here
+                
+                Logger.Info("Icon Created for Folder: {Folder}", i);
+                Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
+                
+                File.Delete(pngFilePath); //<--IO Exception here
             }
 
             if (!File.Exists(targetFile)) continue;
@@ -439,15 +471,21 @@ internal static class Util
     private static void BuildFolderIco(string iconMode, string filmFolderPath, string rating,
         string ratingVisibility, string mockupVisibility, string mediaTitle)
     {
+        Logger.Debug("Converting From PNG to ICO, Icon Mode: {IconMode}, Film Folder Path: {FilmFolderPath}," +
+                     " Rating: {Rating}, Rating Visibility: {RatingVisibility}, Mockup Visibility: {MockupVisibility}," +
+                     " Media Title: {MediaTitle}",
+            iconMode, filmFolderPath, rating, ratingVisibility, mockupVisibility, mediaTitle);
+        
         if (!File.Exists(filmFolderPath))
         {
+            Logger.Warn("PNG File Not Found: {FilmFolderPath}", filmFolderPath);
             return;
         }
 
         ratingVisibility = string.IsNullOrEmpty(rating) ? "Hidden" : ratingVisibility;
         if (!string.IsNullOrEmpty(rating) && rating != "10")
         {
-            rating = !rating.Contains('.') ? rating + ".0" : rating;
+            rating = !rating.Contains('.') ? $"{rating}.0" : rating;
         }
 
         Bitmap icon;
@@ -482,22 +520,31 @@ internal static class Util
             task.Wait();
             icon = task.Result;
         }
-
+        Logger.Info("Converting PNG to ICO for Folder: {FilmFolderPath}", filmFolderPath);
         PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));
         icon.Dispose();
+        Logger.Debug("Icon Created for Folder: {Folder}", filmFolderPath);
     }
 
     public static void HideFile(string icoFile)
     {
+        Logger.Debug("Hiding File: {IcoFile}", icoFile);
+        if (!File.Exists(icoFile))
+        {
+            Logger.ForErrorEvent().Message("File Not Found: {IcoFile}", icoFile).Log();
+            return;
+        }
         // Set file attribute to "Hidden"
         if ((File.GetAttributes(icoFile) & FileAttributes.Hidden) != FileAttributes.Hidden)
         {
+            Logger.Debug("Setting File Attribute to Hidden");
             File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.Hidden);
         }
 
         // Set file attribute to "System"
         if ((File.GetAttributes(icoFile) & FileAttributes.System) != FileAttributes.System)
         {
+            Logger.Debug("Setting File Attribute to System");
             File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
         }
     }
@@ -509,6 +556,7 @@ internal static class Util
     /// <param name="folderPath">path to the folder</param>
     public static void SetFolderIcon(string icoFile, string folderPath)
     {
+        Logger.Debug("Setting Folder Icon, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath);
         try
         {
             var folderSettings = new SHFOLDERCUSTOMSETTINGS
@@ -521,9 +569,12 @@ internal static class Util
             //FolderSettings.iIconIndex = 0;
             var unused =
                 SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
+            Logger.Info("Folder Icon Set, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath);
         }
         catch (Exception e)
         {
+            Logger.ForErrorEvent().Message("Error Occurred while Setting Folder Icon, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath)
+                .Exception(e).Log();
             MessageBox.Error(e.Message);
         }
 
@@ -532,6 +583,7 @@ internal static class Util
 
     public static void ApplyChanges(string folderPath)
     {
+        Logger.Debug("Applying Changes to Folder: {FolderPath}", folderPath);
         SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW, folderPath);
     }
 
@@ -561,6 +613,7 @@ internal static class Util
 
     public static CultureInfo GetCultureInfoByLanguage(Languages language)
     {
+        Logger.Debug("Getting CultureInfo by Language: {Language}", language);
         CultureInfo cultureInfo;
         switch (language)
         {
@@ -595,6 +648,8 @@ internal static class Util
 
     public static void SaveMediaInfo(int id, string mediaType, string folderPath)
     {
+        Logger.Debug("Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
+            mediaType, folderPath);
         var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
         InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture), null, filePath);
         InIHelper.AddValue("MediaType", mediaType, null, filePath);
@@ -612,6 +667,7 @@ internal static class Util
             mediaType = null;
         }
         var mediaInfo = (ID: id, MediaType: mediaType);
+        Logger.Debug("Media Info Read: {@MediaInfo}", mediaInfo);
         return mediaInfo;
     }
 
@@ -621,6 +677,7 @@ internal static class Util
     }
     public static IDictionary<string, string> GetCmdArgs()
     {
+        Logger.Info("Getting Command Line Arguments");
         IDictionary<string, string> arguments = new Dictionary<string, string>();
         var args = Environment.GetCommandLineArgs();
 
@@ -629,68 +686,104 @@ internal static class Util
             var arg = args[index].Replace("--", "");
             arguments.Add(arg, args[index + 1]);
         }
+        Logger.Info("Command Line Arguments: {@Arguments}", arguments);
         return arguments;
     }
 
     public static bool? IfNotAdminRestartAsAdmin()
     {
         if (ApplicationHelper.IsAdministrator())
+        {
+            Logger.Info("Application is running as Administrator");
             return null;
+        }
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
                 LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
-
+        
         StartAppAsAdmin();
         return true;
     }
 
     private static void StartAppAsAdmin()
     {
-        var elevated = new ProcessStartInfo(Path.ChangeExtension(AppPath,
-            "exe")!)
+        Logger.Info("Starting Application as Administrator");
+
+        var appPath = Path.ChangeExtension(AppPath, "exe");
+
+        if (string.IsNullOrWhiteSpace(appPath))
+        {
+            Logger.Error("AppPath: {AppPath} is not valid", appPath);
+            return;
+        }
+
+        var elevated = new ProcessStartInfo(appPath)
         {
             UseShellExecute = true,
             Verb = "runas"
         };
 
-        Process.Start(elevated);
+        try
+        {
+            using var process = Process.Start(elevated);
+        }
+        catch (Exception ex)
+        {
+            Logger.ForErrorEvent().Message("Failed to start process with elevated rights {Message}",
+                ex.Message).Exception(ex).Log();
+        }
+
         Environment.Exit(0);
     }
 
     public static void AddToContextMenu()
     {
+        Logger.Info("Modifying Context Menu");
         if (IfNotAdminRestartAsAdmin() == false) return;
         switch (Services.Settings.IsExplorerIntegrated)
         {
             case true when Services.Settings.ContextEntryName == LangProvider.GetLang("CreateIconsWithFoliCon"):
                 return;
             case true when Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"):
+            {
+                Logger.Info("Removing Old Context Menu Entry");
                 RemoveFromContextMenu();
                 break;
+            }
         }
         Services.Settings.ContextEntryName = LangProvider.GetLang("CreateIconsWithFoliCon");
         Services.Settings.IsExplorerIntegrated = true;
         Services.Settings.Save();
-        var commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Professional";
+        var commandS = $"""
+                        "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode Professional
+                        """;
         ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Professional"), commandS);
         ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Professional"), commandS.Replace("%1", "%V"));
 
 
-        commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Movie";
+        commandS = $"""
+                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode Movie
+                    """;
         ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Movie"), commandS);
         ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Movie"), commandS.Replace("%1", "%V"));
 
-        commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode TV";
+        commandS = $"""
+                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode TV
+                    """;
         ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("TV"), commandS);
         ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("TV"), commandS.Replace("%1", "%V"));
 
-        commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode Game";
+        commandS = $"""
+                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode Game
+                    """;
         ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Game"), commandS);
         ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Game"), commandS.Replace("%1", "%V"));
 
-        commandS = $@"""{Process.GetCurrentProcess().MainModule?.FileName}"" --path ""%1"" --mode ""Auto (Movies & TV Shows)""";
+        commandS = $"""
+                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode "Auto (Movies & TV Shows)"
+                    """;
         ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Auto"), commandS);
         ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Auto"), commandS.Replace("%1", "%V"));
-            
+        Logger.Info("Context Menu Modified");
         //Growl.SuccessGlobal("Merge Subtitle option added to context menu!");
     }
 
@@ -707,6 +800,7 @@ internal static class Util
 
     public static LoggingConfiguration GetNLogConfig()
     {
+        Logger.Info("Getting NLog Configuration");
         LogManager.Setup().LoadConfigurationFromFile();
         var config = new LoggingConfiguration();
         
@@ -746,8 +840,8 @@ internal static class Util
         config.AddRule(fileLogLevel, LogLevel.Fatal, fileTarget);
         config.AddRuleForAllLevels(sentryTarget);
         config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
-
+        Logger.Info("NLog configuration loaded");
         return config;
     }
-    public static string AppPath => ApplicationHelper.GetExecutablePathNative();
+    private static string AppPath { get; } = ApplicationHelper.GetExecutablePathNative();
 }
