@@ -1,10 +1,17 @@
+using NLog;
+using NLog.Config;
+using NLog.Layouts;
+using NLog.Targets;
+using Sentry.NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
+using Logger = NLog.Logger;
 using PosterIcon = FoliCon.Models.PosterIcon;
 
 namespace FoliCon.Modules;
 
 internal static class Util
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static async void CheckForUpdate(bool onlyShowIfUpdateAvailable = false)
     {
         if (ApplicationHelper.IsConnectedToInternet())
@@ -696,6 +703,51 @@ internal static class Util
         ApplicationHelper.UnRegisterCascadeContextMenuFromBackground(Services.Settings.ContextEntryName, "");
 
         //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
+    }
+
+    public static LoggingConfiguration GetNLogConfig()
+    {
+        LogManager.Setup().LoadConfigurationFromFile();
+        var config = new LoggingConfiguration();
+        
+        var logPath = LogManager.Configuration.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
+        var fileLogLevel = LogLevel.FromString(LogManager.Configuration.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()));
+        // Targets
+        var sentryTarget = new SentryTarget
+        {
+            Name = "sentry",
+            Dsn =  Environment.GetEnvironmentVariable("SENTRY_DSN"),
+            Layout =  "${message} ${exception:format=tostring}",
+            BreadcrumbLayout = "${message}",
+            Environment = "Development",
+            MinimumBreadcrumbLevel = LogLevel.Debug.ToString()!,
+            MinimumEventLevel = LogLevel.Error.ToString()!,
+            Options = { SendDefaultPii = true, ShutdownTimeoutSeconds = 5, Debug = false, User = new SentryNLogUser { Username = Environment.MachineName}},
+            IncludeEventDataOnBreadcrumbs = true
+        };
+        sentryTarget.Tags.Add(new TargetPropertyWithContext("exception", "${exception:format=shorttype}"));
+        sentryTarget.ContextProperties.Add(new TargetPropertyWithContext("threadid", "${threadid}"));
+
+        var fileTarget = new FileTarget
+        {
+            Name = "fileTarget",
+            FileName = logPath,
+            Layout = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}"
+        };
+
+        var consoleTarget = new ColoredConsoleTarget
+        {
+            Name = "consoleTarget",
+            UseDefaultRowHighlightingRules = true,
+            EnableAnsiOutput = true,
+            Layout = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}"
+        };
+
+        config.AddRule(fileLogLevel, LogLevel.Fatal, fileTarget);
+        config.AddRuleForAllLevels(sentryTarget);
+        config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
+
+        return config;
     }
     public static string AppPath => ApplicationHelper.GetExecutablePathNative();
 }

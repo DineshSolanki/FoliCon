@@ -20,17 +20,8 @@ public partial class App
 
     public App()
     {
-        LogManager.Setup().LoadConfigurationFromFile();
-        LogManager.Configuration
-            .AddSentry(o =>
-            {
-                // The NLog integration will initialize the SDK if DSN is set:
-                o.Dsn = Environment.GetEnvironmentVariable("SENTRY_DSN");
-                o.User = new SentryNLogUser()
-                {
-                    Username = Environment.MachineName
-                };
-            });
+        
+        LogManager.Configuration = Util.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
         _logger.Info("FoliCon Initilized");
