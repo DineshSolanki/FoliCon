@@ -18,7 +18,7 @@ public static class DialogServiceExtensions
         string folderPath, ResultResponse result, Tmdb tmdbObject, IgdbClass igdbObject, bool isPickedById,
         Action<IDialogResult> callBack)
     {
-        Logger.Debug("ShowSearchResult called with query: {Query} and result: {@Result}", query, result);
+        Logger.Trace("ShowSearchResult called with query: {Query} and result: {@Result}", query, result);
         var p = new DialogParameters
         {
             {"query", query}, {"result", result}, {"searchmode", searchMode}, {"tmdbObject", tmdbObject},
@@ -30,7 +30,7 @@ public static class DialogServiceExtensions
     }
     public static void ShowCustomIconWindow(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
-        Logger.Debug("ShowCustomIconWindow called");
+        Logger.Trace("ShowCustomIconWindow called");
         dialogService.ShowDialog("CustomIcon", new DialogParameters(), callBack);
     }
 
@@ -38,7 +38,7 @@ public static class DialogServiceExtensions
         List<string> fnames, DataTable pickedTable, List<ImageToDownload> imgList, DArt dartObject,
         Action<IDialogResult> callBack)
     {
-        Logger.Debug("ShowProSearchResult called with folderPath: {FolderPath} and fnames: {@Fnames}", folderPath,
+        Logger.Trace("ShowProSearchResult called with folderPath: {FolderPath} and fnames: {@Fnames}", folderPath,
             fnames);
         var p = new DialogParameters
         {
@@ -55,18 +55,18 @@ public static class DialogServiceExtensions
     }
     public static void ShowPosterIconConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
-        Logger.Debug("ShowPosterIconConfig called");
+        Logger.Trace("ShowPosterIconConfig called");
         dialogService.ShowDialog("PosterIconConfig", new DialogParameters(), callBack);
     }
 
     public static void ShowAboutBox(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
-        Logger.Debug("ShowAboutBox called");
+        Logger.Trace("ShowAboutBox called");
         dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
     }
     public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, IgdbClass igdbObject, ResultResponse result,int pickedIndex, ObservableCollection<ListItem> resultData, bool isPickedById, Action<IDialogResult> callBack)
     {
-        Logger.Debug("ShowPosterPicker called with result: {@Result}", result);
+        Logger.Trace("ShowPosterPicker called with result: {@Result}", result);
         var p = new DialogParameters
         {
             {"pickedIndex", pickedIndex}, {"result", result}, {"tmdbObject",tmdbObject}, {"igdbObject", igdbObject} , {"resultList", resultData},

@@ -291,7 +291,7 @@ internal static class Util
     public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query,
         bool isPickedById)
     {
-        Logger.Debug(
+        Logger.Trace(
             "Fetching and Adding Details to ListView, Result: {@Result}, Query: {Query}, isPickedById: {IsPickedById}",
             result, query, isPickedById);
         var source = new ObservableCollection<ListItem>();
@@ -374,7 +374,7 @@ internal static class Util
     /// <returns></returns>
     public static BitmapSource LoadBitmap(Bitmap source)
     {
-        Logger.Debug("Converting Bitmap to BitmapSource");
+        Logger.Trace("Converting Bitmap to BitmapSource");
         var ip = source.GetHbitmap();
         BitmapSource bs;
 
@@ -389,7 +389,7 @@ internal static class Util
             // _ = NativeMethods.DeleteObject(ip);
         }
 
-        Logger.Debug("Bitmap Converted to BitmapSource");
+        Logger.Trace("Bitmap Converted to BitmapSource");
         return bs;
     }
     
