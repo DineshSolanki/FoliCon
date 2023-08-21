@@ -1,7 +1,11 @@
-﻿namespace FoliCon.ViewModels;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.ViewModels;
 
 public class AboutBoxViewModel : BindableBase, IDialogAware
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _title = "Folicon v3.9.3";
     private string _logo = "/Resources/folicon Icon.png";
 
@@ -15,7 +19,11 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
     //These properties can also be initialized from Parameters for better re-usability. or From assembly
     public AboutBoxViewModel()
     {
-        WebsiteClickCommand = new DelegateCommand(delegate { Util.StartProcess(Website); });
+        WebsiteClickCommand = new DelegateCommand(delegate
+        {
+            Logger.Debug("Opening {Website}",Website);
+            Util.StartProcess(Website);
+        });
     }
 
     public string Title { get => _title; set => SetProperty(ref _title, value); }
