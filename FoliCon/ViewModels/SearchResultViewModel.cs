@@ -1,9 +1,12 @@
-﻿using DelegateCommand = Prism.Commands.DelegateCommand;
+﻿using NLog;
+using DelegateCommand = Prism.Commands.DelegateCommand;
+using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;
 
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
 
     private string _title = LangProvider.GetLang("SearchResult");
@@ -147,22 +150,23 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     {
     }
 
-        public virtual void OnDialogOpened(IDialogParameters parameters)
-        {
-            SearchTitle = parameters.GetValue<string>("query");
-            SearchResult = parameters.GetValue<ResultResponse>("result");
-            SearchMode = parameters.GetValue<string>("searchmode");
-            _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
-            _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
-            _fullFolderPath = parameters.GetValue<string>("folderpath");
-            _isPickedById = parameters.GetValue<bool>("isPickedById");
-            LoadData(SearchTitle);
-            SearchAgainTitle = SearchTitle;
-            FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
-        }
+    public virtual void OnDialogOpened(IDialogParameters parameters)
+    {
+        SearchTitle = parameters.GetValue<string>("query");
+        SearchResult = parameters.GetValue<ResultResponse>("result");
+        SearchMode = parameters.GetValue<string>("searchmode");
+        _tmdbObject = parameters.GetValue<Tmdb>("tmdbObject");
+        _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
+        _fullFolderPath = parameters.GetValue<string>("folderpath");
+        _isPickedById = parameters.GetValue<bool>("isPickedById");
+        LoadData(SearchTitle);
+        SearchAgainTitle = SearchTitle;
+        FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
+    }
 
     private async void StartSearch(bool useBusy)
     {
+        Logger.Debug("StartSearch called, show loader: {UseBusy}", useBusy);
         if (useBusy)
         {
             IsBusy = true;
@@ -170,6 +174,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         _isPickedById = false;
         var titleToSearch = SearchAgainTitle ?? SearchTitle;
+        Logger.Info("Searching for {TitleToSearch}", titleToSearch);
         BusyContent = LangProvider.GetLang("SearchingWithName").Format(titleToSearch);
         var result = SearchMode == MediaTypes.Game
             ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
@@ -194,14 +199,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 0 :
                 SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
         {
+            Logger.Info("Search result found for {SearchTitle}", searchTitle);
             ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
-            if (ResultListViewData.Data.Count != 0)
-            {
-                ResultListViewData.SelectedItem = ResultListViewData.Data[0];
-                PerformSelectionChanged();
-            }
-
-
+            if (ResultListViewData.Data.Count == 0) return;
+            ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+            PerformSelectionChanged();
+            
         }
         else
         {
@@ -219,18 +222,24 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private void PickMethod(MouseButtonEventArgs eventArgs)
     {
+        Logger.Trace("PickMethod called with {@EventArgs}", eventArgs);
         if (eventArgs is not null)
         {
             var dataContext = ((FrameworkElement)eventArgs.OriginalSource).DataContext;
             if (dataContext is not ListItem) return;
         }
 
-        if (ResultListViewData.SelectedItem == null) return;
+        if (ResultListViewData.SelectedItem == null)
+        {
+            Logger.Warn("No Item selected");
+            return;
+        }
         var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
         var rating = "";
         if (CustomRating is not 0)
         {
-            rating = CustomRating.ToString();
+            rating = CustomRating.ToString(CultureInfo.InvariantCulture);
+            Logger.Info("Custom rating {Rating} selected", rating);
         }
 
         try
@@ -259,6 +268,9 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
         catch (Exception ex)
         {
+            Logger.ForErrorEvent().Message("Exception occurred while picking result, {Message}", ex.Message)
+                .Exception(ex)
+                .Log();
             MessageBox.Show(ex.Message == "NoPoster"
                 ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle)
                 : CustomMessageBox.Error(ex.Message, SearchTitle));
@@ -273,6 +285,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private void MouseDoubleClick()
     {
+        Logger.Debug("MouseDoubleClick called with {@SelectedItem}", ResultListViewData.SelectedItem);
         if (ResultListViewData.SelectedItem == null) return;
         var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
         try
@@ -281,6 +294,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             {
                 if (SearchResult.Result[pickedIndex].Artworks is null)
                 {
+                    Logger.Warn("No more poster found for {SearchTitle}", SearchTitle);
                     MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
                     return;
                 }
@@ -292,13 +306,13 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
         catch (Exception ex)
         {
+            Logger.ForErrorEvent().Message("Exception occurred while showing more poster, {Message}", ex.Message)
+                .Exception(ex)
+                .Log();
             if (ex.Message == "NoPoster")
             {
                 MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
             }
-#if DEBUG
-            MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
-#endif
         }
     }
 
@@ -318,6 +332,8 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 var key = r.First(v => v.Name == "Trailer");
                 ResultListViewData.SelectedItem.TrailerKey = key.VideoId;
                 ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + key.VideoId);
+                Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
+                    ResultListViewData.SelectedItem.Trailer);
             }
         }
         else
@@ -329,9 +345,15 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                     if (item.Result == null) return;
                     if (!item.Result.Results.Any()) return;
                     var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
-                    if (i == null) return;
+                    if (i == null)
+                    {
+                        Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
+                        return;
+                    }
                     ResultListViewData.SelectedItem.TrailerKey = i.Key;
                     ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+                    Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
+                        ResultListViewData.SelectedItem.Trailer);
                 });
             }
             else if (SearchResult.MediaType == MediaTypes.Tv)
@@ -341,13 +363,17 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                     if (item.Result == null) return;
                     if (!item.Result.Results.Any()) return;
                     var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
-                    if (i == null) return;
+                    if (i == null)
+                    {
+                        Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
+                        return;
+                    }
                     ResultListViewData.SelectedItem.TrailerKey = i.Key;
                     ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
+                    Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
+                        ResultListViewData.SelectedItem.Trailer);
                 });
             }
-            
-            
         }
     }
 }
