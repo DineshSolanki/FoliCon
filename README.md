@@ -59,6 +59,8 @@ DeviantArt API [Get it](https://www.deviantart.com/developers/register)
 * [IconLib](https://www.codeproject.com/Articles/16178/IconLib-Icons-Unfolded-MultiIcon-and-Windows-Vista) - To make Icons from viewModel
 * [Handy Controls](https://github.com/ghost1372/HandyControls) - For Custom Controls
 * [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) - For File Dialogs
+* [NLog](https://nlog-project.org/) - For Logging
+* [Sentry](https://sentry.io) -  For Error Tracking
 
 ## Authors
 
