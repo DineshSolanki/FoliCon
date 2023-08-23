@@ -543,6 +543,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             else
             {
+                Logger.Debug("DeleteMediaInfoMethod: Directory does not exist: {SelectedFolder}", SelectedFolder);
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
                     LangProvider.GetLang("EmptyDirectory")));
             }
@@ -634,6 +635,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             else
             {
+                Logger.Debug("DeleteIconsMethod: Directory does not exist: {SelectedFolder}", SelectedFolder);
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
                     LangProvider.GetLang("EmptyDirectory")));
             }
