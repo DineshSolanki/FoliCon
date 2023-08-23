@@ -1,7 +1,11 @@
-﻿namespace FoliCon.Modules;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.Modules;
 
 public class IgdbClass
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly DataTable _listDataTable;
     private readonly IGDBClient _serviceClient;
     private readonly List<ImageToDownload> _imgDownloadList;
@@ -31,6 +35,7 @@ public class IgdbClass
     /// <returns>Returns Search result with its Media Type</returns>
     public async Task<ResultResponse> SearchGameAsync(string query)
     {
+        Logger.Debug("Searching IGDB for {Query}", query);
         Contract.Assert(_serviceClient != null);
         var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
             $"search \"{query}\"; fields artworks.image_id, name,first_release_date,total_rating,summary,cover.*;");
@@ -45,6 +50,7 @@ public class IgdbClass
 
     public async Task<GameVideo[]> GetGameVideo(string id)
     {
+        Logger.Debug("Searching IGDB video by title id: {Id}", id);
         Contract.Assert(_serviceClient != null);
         var r = await _serviceClient.QueryAsync<GameVideo>(IGDBClient.Endpoints.GameVideos,
             $"fields game,name,video_id; where game = {id};");
@@ -52,6 +58,7 @@ public class IgdbClass
     }
     public async Task<ResultResponse> SearchGameByIdAsync(string id)
     {
+        Logger.Debug("Searching IGDB for {Id}", id);
         Contract.Assert(_serviceClient != null);
         var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
             $"fields artworks.image_id, name,first_release_date,total_rating,summary,cover.*; where id = {id};");
@@ -92,6 +99,7 @@ public class IgdbClass
     {
         if (result.Cover == null)
         {
+            Logger.Warn("No Poster Found for {Name}", result.Name);
             throw new InvalidDataException("NoPoster");
         }
 
