@@ -1,9 +1,13 @@
 ﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
+using NLog;
+using Logger = NLog.Logger;
+
 namespace FoliCon.ViewModels;
 
 public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _selectedDirectory;
     private string _selectedIconsDirectory;
     private ObservableCollection<string> _directories;
@@ -64,6 +68,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set
         {
             SetProperty(ref _selectedIconsDirectory, value);
+            Logger.Debug("Selecting PNG and ICO files from {Value}", value);
             KeepExactOnly = false;
             Icons.Clear();
             foreach (var file in Util.GetFileNamesFromFolder(value).Where(Util.IsPngOrIco))
@@ -120,6 +125,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void UndoCreatedIcons()
     {
+        Logger.Debug("Deleting created icons from {Count} folders", _undoDirectories.Count);
         if (_undoDirectories.Count == 0) return;
         foreach (var folder in _undoDirectories)
         {
@@ -147,6 +153,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         if (dialogResult != null && (bool)!dialogResult) return;
         _backupDirectories.Clear();
         SelectedDirectory = folderBrowserDialog.SelectedPath;
+        Logger.Debug("Selected directory: {SelectedDirectory}", SelectedDirectory);
     }
 
     private void LoadIconsMethod()
@@ -156,6 +163,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         if (dialogResult != null && (bool)!dialogResult) return;
         _backupIcons.Clear();
         SelectedIconsDirectory = folderBrowserDialog.SelectedPath;
+        Logger.Debug("Selected icons directory: {SelectedIconsDirectory}", SelectedIconsDirectory);
     }
 
     #region DialogMethods
@@ -191,8 +199,10 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void StartProcessing()
     {
+        Logger.Debug("Directories count: {Count}, Icons count: {IconCount}", Directories.Count, Icons.Count);
         if (Directories.Count <= 0)
         {
+            Logger.Warn("No folders to process");
             MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoFolderOrIconAlready"), LangProvider.GetLang("NoFoldersToProcess")));
             return;
         }
@@ -234,23 +244,28 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
             var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
             var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
+            
+            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}", 
+                folderPath, iconPath, newIconPath);
+            
             if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
             {
+                Logger.Info("Converting {Icon} to .ico", iconPath);
                 var icon = new ProIcon(iconPath).RenderToBitmap();
                 iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
                 PngToIcoService.Convert(icon, iconPath);
                 icon.Dispose();
+                Logger.Info("Converted {Icon} to .ico", iconPath);
             }
-
+            Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
             File.Move(iconPath, newIconPath);
             if (!File.Exists(newIconPath)) continue;
             Util.HideFile(newIconPath);
             Util.SetFolderIcon($"{Directories[i]}.ico", folderPath);
             Index++;
-            if (StopSearch)
-            {
-                break;
-            }
+            if (!StopSearch) continue;
+            Logger.Warn("User stopped search");
+            break;
 
         }
 
@@ -262,6 +277,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void RemoveNotMatching()
     {
+        Logger.Debug("Removing unmatching icons");
         _backupDirectories.Clear();
         _backupIcons.Clear();
         _backupIcons = Icons;
@@ -276,6 +292,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void RestoreCollections()
     {
+        Logger.Debug("Restoring collections from backup icon count: {Count}, backup directory count: {DirectoryCount}", 
+            _backupIcons.Count, _backupDirectories.Count);
+        
         if (_backupIcons.Count == 0 || _backupDirectories.Count == 0) return;
         Icons.Clear();
         Directories.Clear();
@@ -287,6 +306,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void FolderListKeyPress(dynamic selectedItems)
     {
+        Logger.Debug("Removing {Count} items from folder list", selectedItems.Count);
         var temp = new List<object>(selectedItems);
         foreach (string i in temp)
         {
@@ -294,10 +314,12 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
 
         KeepExactOnly = false;
+        Logger.Debug("Removed {@SelectedItems} from folder list", selectedItems);
     }
 
     private void IconsListKeyPress(dynamic selectedItems)
     {
+        Logger.Debug("Removing {Count} items from icons list", selectedItems.Count);
         var temp = new List<object>(selectedItems);
         foreach (string i in temp)
         {
@@ -305,10 +327,12 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
 
         KeepExactOnly = false;
+        Logger.Debug("Removed {@SelectedItems} from icons list", selectedItems);
     }
 
     public void OnFileDrop(string[] filePaths, string senderName)
     {
+        Logger.Debug("File dropped on {SenderName}", senderName);
         switch (senderName)
         {
             case "FolderButton":

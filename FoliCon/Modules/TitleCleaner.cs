@@ -1,7 +1,11 @@
-﻿namespace FoliCon.Modules;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.Modules;
 
 internal static class TitleCleaner
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static string Clean(string title)
     {
         var normalizedTitle = title.Replace('-', ' ').Replace('_', ' ').Replace('.', ' ');
@@ -16,6 +20,9 @@ internal static class TitleCleaner
         var cleanTitle = Regex.Replace(normalizedTitle, "\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         cleanTitle = Regex.Replace(cleanTitle, @"\[.*\]", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         cleanTitle = Regex.Replace(cleanTitle, " {2,}", " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        return string.IsNullOrWhiteSpace(cleanTitle) ? normalizedTitle : cleanTitle;
+        var clean = string.IsNullOrWhiteSpace(cleanTitle) ? normalizedTitle : cleanTitle;
+        
+        Logger.Debug("Cleaned title: {Clean}, Original title: {Title}", clean, title);
+        return clean;
     }
 }

@@ -1,7 +1,11 @@
-﻿namespace FoliCon.ViewModels;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.ViewModels;
 
 public class DialogControlViewModel : BindableBase, IDialogAware
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private DelegateCommand<string> _closeDialogCommand;
 
     public DelegateCommand<string> CloseDialogCommand =>
@@ -27,6 +31,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
 
     protected virtual void CloseDialog(string parameter)
     {
+        Logger.Info("CloseDialog: {ShouldClose}", parameter);
         var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
         {
             "true" => ButtonResult.OK,
@@ -53,6 +58,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
 
     public virtual void OnDialogOpened(IDialogParameters parameters)
     {
+        Logger.Info("OnDialogOpened: {Parameters}", parameters);
         Message = parameters.GetValue<string>("message");
         Title = parameters.GetValue<string>("title");
     }

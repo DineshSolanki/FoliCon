@@ -1,7 +1,11 @@
-﻿namespace FoliCon.Modules;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.Modules;
 
 public static class Extensions
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static string WithoutExt(this string str)
     {
         return Path.GetFileNameWithoutExtension(str);
@@ -32,9 +36,11 @@ public static class Extensions
     }
     public static Task<Bitmap> GetBitmap(this HttpResponseMessage responseMessage)
     {
+        Logger.Trace("GetBitmap from HttpResponseMessage");
         return responseMessage.Content.ReadAsStreamAsync().ContinueWith(t =>
         {
             Bitmap bitmap = new(t.Result);
+            Logger.Trace("GetBitmap from HttpResponseMessage - done");
             return bitmap;
         });
     }

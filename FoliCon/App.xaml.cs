@@ -1,5 +1,9 @@
 ﻿using FoliCon.ViewModels;
+using NLog;
 using Prism.Ioc;
+using Sentry;
+using Sentry.NLog;
+using Logger = NLog.Logger;
 
 namespace FoliCon;
 
@@ -8,6 +12,7 @@ namespace FoliCon;
 /// </summary>
 public partial class App
 {
+    private static Logger _logger = LogManager.GetCurrentClassLogger();
     protected override System.Windows.Window CreateShell()
     {
         return Container.Resolve<MainWindow>();
@@ -15,7 +20,11 @@ public partial class App
 
     public App()
     {
+        
+        LogManager.Configuration = Util.GetNLogConfig();
+        DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
+        _logger.Info("FoliCon Initilized");
     }
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -28,5 +37,13 @@ public partial class App
         containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
         containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
+    }
+    
+    void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        SentrySdk.CaptureException(e.Exception);
+
+        // If you want to avoid the application from crashing:
+        e.Handled = true;
     }
 }

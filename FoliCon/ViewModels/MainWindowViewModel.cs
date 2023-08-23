@@ -1,7 +1,10 @@
-﻿namespace FoliCon.ViewModels;
+﻿using NLog;
+
+namespace FoliCon.ViewModels;
 
 public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
+    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
 
     private string _selectedFolder;
@@ -178,6 +181,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public MainWindowViewModel(IDialogService dialogService)
     {
+        Logger.Info("Application Started, Initilizing MainWindowViewModel.");
         _dialogService = dialogService;
         Services.Tracker.Configure<MainWindowViewModel>()
             .Property(p => p.IsRatingVisible, true)
@@ -199,6 +203,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             
         var cmdArgs = Util.GetCmdArgs();
         if (!cmdArgs.ContainsKey("path")) return;
+        
+        Logger.Info("Command Line Argument Found, Initializing with Command Line Argument.");
+        
         SelectedFolder = cmdArgs["path"];
         var mode = cmdArgs["mode"];
         if (mode != "Professional" &&
@@ -211,12 +218,15 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             IconMode = "Professional";
         }
+        Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
+            SelectedFolder, IconMode);
         SearchAndMakeMethod();
 
     }
 
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
     {
+        Logger.Debug("Network Availability Changed, Updating StatusBar.");
         StatusBarProperties.NetIcon =
             ApplicationHelper.IsConnectedToInternet() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png";
     }
@@ -225,16 +235,21 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
         if (!SelectedFolder.IsNullOrEmpty())
+        {
             folderBrowserDialog.SelectedPath = SelectedFolder;
+            Logger.Debug("LoadMethod:Already Selected Folder: {SelectedFolder}", SelectedFolder);
+        }
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult) return;
         SelectedFolder = folderBrowserDialog.SelectedPath;
+        Logger.Debug("LoadMethod:Selected Folder: {SelectedFolder}", SelectedFolder);
         StatusBarProperties.ResetData();
         IsMakeEnabled = true;
     }
 
     private async void SearchAndMakeMethod()
     {
+        Logger.Debug("SearchAndMakeMethod Called.");
         try
         {
             if (Directory.Exists(SelectedFolder))
@@ -243,6 +258,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             else
             {
+                Logger.Error("Folder does not exist: {SelectedFolder}", SelectedFolder);
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"), LangProvider.GetLang("InvalidPath")));
                 return;
             }
@@ -253,8 +269,10 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 {
                     if (!IsObjectsInitialized)
                     {
+                        Logger.Warn("SearchAndMakeMethod: Client Objects not initialized, Initializing now.");
                         InitializeClientObjects();
                         IsObjectsInitialized = true;
+                        Logger.Info("SearchAndMakeMethod: Client Objects Initialized.");
                     }
 
                     StatusBarProperties.ResetData();
@@ -270,6 +288,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
                         StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
                     BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
+                    Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}", _imgDownloadList.Count);
                     if (_imgDownloadList.Count > 0)
                         await StartDownloadingAsync();
                     else
@@ -282,11 +301,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             else
             {
+                Logger.Warn("SearchAndMakeMethod: Folder is empty: {SelectedFolder}", SelectedFolder);
                 MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"), LangProvider.GetLang("FolderError")));
             }
         }
         catch (Exception e)
         {
+            Logger.ForErrorEvent().Message("SearchAndMakeMethod: Exception Occurred. message: {Message}", e.Message)
+                .Exception(e).Log();
             MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
             StatusBarProperties.ResetData();
             IsMakeEnabled = true;
@@ -295,11 +317,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private async Task ProcessPosterModeAsync()
     {
+        Logger.Debug("Entered ProcessPosterModeAsync method");
         IsMakeEnabled = false;
         GlobalVariables.SkipAll = false;
         foreach (var itemTitle in Fnames)
         {
             var fullFolderPath = $@"{SelectedFolder}\{itemTitle}";
+            
+            Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
             var dialogResult = false;
             StatusBarProperties.AppStatus = "Searching";
             StatusBarProperties.AppStatusAdditional = itemTitle;
@@ -311,19 +336,23 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             ResultResponse response;
             if (id != null && mediaType != null)
             {
+                Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
                 isPickedById = true;
                 response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
             }
             else
             {
+                Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
                 response = SearchMode == "Game"
                     ? await _igdbObject.SearchGameAsync(searchTitle)
                     : await _tmdbObject.SearchAsync(searchTitle, SearchMode);
             }
             int resultCount = isPickedById ? response.Result != null ? 1 : 0 : SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+            Logger.Info("Search Result Count: {ResultCount}", resultCount);
             switch (resultCount)
             {
                 case 0:
+                    Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
                     MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
                         LangProvider.GetLang("NoResultFound")));
                     _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response,
@@ -341,6 +370,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     break;
                 case 1 when !IsPosterWindowShown:
                 {
+                    Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
+                        itemTitle, SearchMode);
                     try
                     {
                         if (isPickedById ? mediaType == "Game" : SearchMode == "Game")
@@ -361,6 +392,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     }
                     catch (Exception ex)
                     {
+                        Logger.ForErrorEvent().Message("ProcessPosterModeAsync: Exception Occurred. message: {Message}", ex.Message)
+                            .Exception(ex).Log();
                         if (ex.Message == "NoPoster")
                         {
                             MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
@@ -379,6 +412,10 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     {
                         if (IsPosterWindowShown || !IsSkipAmbiguous)
                         {
+                            Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
+                                         "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
+                                         " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
+                            
                             _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
                                 response, _tmdbObject, _igdbObject, isPickedById,
                                 r =>
@@ -400,6 +437,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             if (isAutoPicked || dialogResult)
             {
+                Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
+                             "adding to final list", isAutoPicked, dialogResult, itemTitle);
                 if (_pickedListDataTable is not null && _pickedListDataTable.Rows.Count != 0)
                 {
                     FinalListViewData.Data.Add(new ListItem
@@ -413,8 +452,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 // TODO: Set cursor back to arrow here
             }
             StatusBarProperties.ProcessedFolder++;
-            if (GlobalVariables.SkipAll)
-                break;
+            if (!GlobalVariables.SkipAll) continue;
+            Logger.Debug("Skip All selected, breaking loop");
+            break;
         }
 
         StatusBarProperties.AppStatus = "Idle";
@@ -423,10 +463,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void ProcessProfessionalMode()
     {
+        Logger.Debug("Entered ProcessProfessionalMode method");
         StatusBarProperties.AppStatus = "Searching";
         _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
             _dArtObject, _ => { });
         if (_pickedListDataTable.Rows.Count <= 0) return;
+        Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
         foreach (DataRow v in _pickedListDataTable.Rows)
         {
             FinalListViewData.Data.Add(new ListItem
@@ -442,6 +484,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void InitializeDelegates()
     {
+        Logger.Debug("Initializing Delegates for MainWindow.");
         ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(_ => { }); });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
         AboutCommand = new DelegateCommand(AboutMethod);
@@ -475,6 +518,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
             }
         });
+        Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
     }
 
     private static void ExplorerIntegrationMethod(string isIntegrationEnabled)
@@ -486,6 +530,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void DeleteMediaInfo()
     {
+        Logger.Debug("DeleteMediaInfoMethod Called.");
         try
         {
             if (Directory.Exists(SelectedFolder))
@@ -498,12 +543,15 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             else
             {
+                Logger.Debug("DeleteMediaInfoMethod: Directory does not exist: {SelectedFolder}", SelectedFolder);
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
                     LangProvider.GetLang("EmptyDirectory")));
             }
         }
         catch (Exception e)
         {
+            Logger.ForErrorEvent().Message("DeleteMediaInfoMethod: Exception Occurred. message: {Message}", e.Message)
+                .Exception(e).Log();
             MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
         }
         
@@ -511,6 +559,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void InitializeProperties()
     {
+        Logger.Debug("Initializing Properties for MainWindow.");
         Fnames = new List<string>();
         BusyIndicatorProperties = new ProgressBarData
         {
@@ -552,6 +601,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public void InitPickedListDataTable()
     {
+        Logger.Debug("Initializing PickedListDataTable.");
         _pickedListDataTable.Columns.Clear();
         _pickedListDataTable.Rows.Clear();
         var column1 = new DataColumn("Poster") { DataType = typeof(string) };
@@ -566,10 +616,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         _pickedListDataTable.Columns.Add(column4);
         _pickedListDataTable.Columns.Add(column5);
         _pickedListDataTable.Columns.Add(column6);
+        Logger.Debug("PickedListDataTable Initialized.");
     }
 
     private void DeleteIconsMethod()
     {
+        Logger.Debug("DeleteIconsMethod Called.");
         try
         {
             if (Directory.Exists(SelectedFolder))
@@ -583,16 +635,22 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             else
             {
+                Logger.Debug("DeleteIconsMethod: Directory does not exist: {SelectedFolder}", SelectedFolder);
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
                     LangProvider.GetLang("EmptyDirectory")));
             }
         }
         catch (UnauthorizedAccessException e)
         {
+            Logger.ForErrorEvent().Message("DeleteIconsMethod: UnauthorizedAccessException Occurred. message: {Message}",
+                    e.Message)
+                .Exception(e).Log();
             Util.HandleUnauthorizedAccessException(e);
         }
         catch (Exception e)
         {
+            Logger.ForErrorEvent().Message("DeleteIconsMethod: Exception Occurred. message: {Message}", e.Message)
+                .Exception(e).Log();
             MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang(" ")));
         }
        
@@ -600,10 +658,20 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void ListViewDoubleClickMethod()
     {
-        if (FinalListViewData.SelectedItem.Folder == null) return;
-        if (Directory.Exists(FinalListViewData.SelectedItem.Folder))
+        var selectedItem = FinalListViewData.SelectedItem;
+
+        if (selectedItem == null)
         {
-            Util.StartProcess(FinalListViewData.SelectedItem.Folder + Path.DirectorySeparatorChar);
+            Logger.Warn("No item was selected in the ListView.");
+            return;
+        }
+        
+        var folder = selectedItem.Folder;
+        Logger.Info("Double Clicked on ListView, selected folder: {SelectedFolder}",SelectedFolder);
+        if (folder == null) return;
+        if (Directory.Exists(folder))
+        {
+            Util.StartProcess(folder + Path.DirectorySeparatorChar);
         }
     }
 
@@ -621,10 +689,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StopIconDownload = false;
         IsBusy = true;
         var i = 0;
+        Logger.Debug("Start Downloading Icons. Total Icons: {ImgDownloadCount}", _imgDownloadList.Count);
         foreach (var img in _imgDownloadList)
         {
             if (StopIconDownload)
             {
+                Logger.Debug("StopIconDownload is true, breaking loop and making icons.");
                 MakeIcons();
                 IsMakeEnabled = true;
                 StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
@@ -642,6 +712,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         IsBusy = false;
         if (StatusBarProperties.ProgressBarData.Value == StatusBarProperties.ProgressBarData.Max)
         {
+            Logger.Debug("All Icons Downloaded, Making Icons.");
             IsBusy = true;
             MakeIcons();
         }
@@ -675,18 +746,21 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void InitializeClientObjects()
     {
+        Logger.Debug("Initializing Client Objects.");
         Util.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
             out _devClientId);
         if (string.IsNullOrEmpty(_tmdbapiKey)
             || string.IsNullOrEmpty(_igdbClientId) || string.IsNullOrEmpty(_igdbClientSecret)
             || string.IsNullOrEmpty(_devClientSecret) || string.IsNullOrEmpty(_devClientId))
         {
+            Logger.Warn("API Keys not provided, Showing API Config Window.");
             _dialogService.ShowApiConfig(r =>
             {
                 if (r.Result != ButtonResult.Cancel) return;
                 MessageBox.Show(CustomMessageBox.Error($"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}" +
                                                        LangProvider.GetLang("AppWillClose"),
                     LangProvider.GetLang("ClosingApplication")));
+                Logger.Warn("API Keys not provided, Closing Application.");
                 Environment.Exit(0);
             });
         }
@@ -695,6 +769,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         _igdbObject = new IgdbClass(ref _pickedListDataTable, ref _igdbClient, ref _imgDownloadList);
         _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
         _dArtObject = new DArt(_devClientSecret, _devClientId);
+        Logger.Debug("Client Objects Initialized.");
     }
 
     private void AboutMethod()
@@ -707,6 +782,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         SelectedFolder = filePaths.GetValue(0)?.ToString();
         StatusBarProperties.ResetData();
         IsMakeEnabled = true;
+        Logger.Debug("Folder Dropped on MainWindow: {SelectedFolder}", SelectedFolder);
     }
 
     public void Dispose()

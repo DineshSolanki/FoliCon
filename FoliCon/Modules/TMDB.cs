@@ -1,9 +1,12 @@
-﻿using Collection = TMDbLib.Objects.Collections.Collection;
+﻿using NLog;
+using Collection = TMDbLib.Objects.Collections.Collection;
+using Logger = NLog.Logger;
 
 namespace FoliCon.Modules;
 
 public class Tmdb
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string PosterBase = "http://image.tmdb.org/t/p/original";
     private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
     private readonly List<ImageToDownload> _imgDownloadList;
@@ -24,10 +27,12 @@ public class Tmdb
     public Tmdb(ref TMDbClient serviceClient, ref DataTable listDataTable,
         ref List<ImageToDownload> imgDownloadList)
     {
+        Logger.Debug("Initializing TMDB Helper Class");
         _listDataTable = listDataTable;
         _serviceClient = serviceClient;
         _imgDownloadList = imgDownloadList;
         _ = _serviceClient.GetConfigAsync().Result;
+        Logger.Debug("Initialized TMDB Helper Class");
     }
     public ImagesWithId SearchMovieImages(int tvId)
     {
@@ -79,6 +84,7 @@ public class Tmdb
         public static ObservableCollection<ListItem> ExtractResourceDetailsIntoListItem(
             SearchContainer<SearchBase> result)
         {
+            Logger.Debug("Extracting Resource Details into List Item");
             var items = new ObservableCollection<ListItem>();
             var mediaName = "";
             var year = "";
@@ -89,6 +95,8 @@ public class Tmdb
             foreach (var item in result.Results)
             {
                 var mediaType = item.MediaType;
+                
+                Logger.Debug("Media Type: {MediaType}", mediaType);
                 switch (mediaType)
                 {
                     case MediaType.Tv:
@@ -114,8 +122,10 @@ public class Tmdb
                             break;
                         }
                 }
-
+                Logger.Trace("Media Name: {MediaName}, Year: {Year}, Rating: {Rating}, Overview:{Pverview}, PosterPath: {Poster}",
+                    mediaName, year, rating, overview, poster);
                 items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id.ToString()));
+                Logger.Info("Added {MediaName} to List", mediaName);
             }
 
         return items;
@@ -189,15 +199,22 @@ public class Tmdb
     /// TODO: Merge parameter response and resultType.
     public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "",bool isPickedById = false)
     {
+        Logger.Debug("Preparing the Selected Result for Download And final List View");
         if (result.PosterPath == null)
         {
+            Logger.Warn("No Poster Found, path - {Folder}", fullFolderPath );
             throw new InvalidDataException("NoPoster");
         }
-
+        
+        Logger.Debug("Rating: {Rating}, Result Type: {ResultType}", rating, resultType);
         var id = 0;
         var type = resultType;
         if (string.IsNullOrWhiteSpace(rating) && resultType != MediaTypes.Collection)
-        { rating = result.VoteAverage.ToString(CultureInfo.InvariantCulture); }
+        {
+            Logger.Debug("Rating is null or empty, getting rating from result");
+            rating = result.VoteAverage.ToString(CultureInfo.InvariantCulture);
+            Logger.Debug("Rating: {Rating}", rating);
+        }
 
         var folderName = Path.GetFileName(fullFolderPath);
         var localPosterPath = fullFolderPath + @"\" + folderName + ".png";
@@ -282,6 +299,7 @@ public class Tmdb
     /// <returns>Returns Search result with its Media Type</returns>
     public async Task<ResultResponse> SearchAsync(string query, string searchMode)
     {
+        Logger.Info("Searching for {Query} in {SearchMode}", query, searchMode);
         object r = null;
         var mediaType = "";
         if (searchMode == MediaTypes.Movie)
@@ -322,6 +340,7 @@ public class Tmdb
     /// <returns>Returns Search result with its Media Type</returns>
     public ResultResponse SearchByIdAsync(int id, string mediaType)
     {
+        Logger.Info("Searching for {Id} in {MediaType}", id, mediaType);
         object r = null;
         if (mediaType == MediaTypes.Movie)
         {

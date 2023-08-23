@@ -1,4 +1,7 @@
-﻿namespace FoliCon.Modules;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.Modules;
 
 /// <summary>
 /// This class registers an attached property that can be set to trigger
@@ -22,6 +25,7 @@
 /// </example>
 public static class FocusExtension
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static bool GetIsFocused(DependencyObject depObj)
     {
         return (bool)depObj.GetValue(IsFocusedProperty);
@@ -40,17 +44,30 @@ public static class FocusExtension
 
     private static void OnIsFocusedPropertyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs args)
     {
-        if (depObj is not UIElement element) return;
+        if (depObj is not UIElement element)
+        {
+            Logger.Warn("OnIsFocusedPropertyChanged: depObj is not UIElement");
+            return;
+        }
         // Don't care about false values.
-        if (!(bool)args.NewValue) return;
+        if (!(bool)args.NewValue)
+        {
+            Logger.Warn("OnIsFocusedPropertyChanged: NewValue is false");
+            return;
+        }
         // only focusable if these two are true
         // optional to raise exception if they aren't rather than just ignoring.
         //if (element.Focusable && element.IsVisible)
-        if (!element.Focusable) return;
+        if (!element.Focusable)
+        {
+            Logger.Warn("OnIsFocusedPropertyChanged: element is not focusable");
+            return;
+        }
         var action = new Action(() => element.Dispatcher.BeginInvoke((Action)(() => element.Focus())));
         Task.Factory.StartNew(action);
         var action2 = new Action(() => element.Dispatcher.BeginInvoke((Action)(() => Keyboard.Focus(element))));
         Task.Factory.StartNew(action2);
         FocusManager.SetFocusedElement(FocusManager.GetFocusScope(element), element);
+        Logger.Trace("OnIsFocusedPropertyChanged: element is focused");
     }
 }

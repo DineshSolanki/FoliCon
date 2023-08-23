@@ -1,19 +1,27 @@
-﻿namespace FoliCon.ViewModels;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.ViewModels;
 
 public class PosterIconConfigViewModel : BindableBase, IDialogAware
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _iconOverlay;
     public DelegateCommand<object> IconOverlayChangedCommand { get; }
 
     public PosterIconConfigViewModel()
     {
+        Logger.Debug("PosterIconConfigViewModel created");
         Services.Tracker.Configure<PosterIconConfigViewModel>()
             .Property(p => p.IconOverlay, defaultValue: "Liaher")
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
+        Logger.Info("Current IconOverlay is {IconOverlay}", IconOverlay);
         IconOverlayChangedCommand = new DelegateCommand<object>(delegate(object parameter)
         {
+            Logger.Info("Icon overlay changed to {Parameter}", parameter);
             IconOverlay = (string)parameter;
+            
         });
     }
 
@@ -31,6 +39,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
     protected virtual void CloseDialog(string parameter)
     {
+        Logger.Info("CloseDialog called with parameter {Parameter}", parameter);
         var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
         {
             "true" => ButtonResult.OK,

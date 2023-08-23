@@ -1,9 +1,12 @@
-﻿using Collection = TMDbLib.Objects.Collections.Collection;
+﻿using NLog;
+using Collection = TMDbLib.Objects.Collections.Collection;
+using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;
 
 public class PosterPickerViewModel : BindableBase, IDialogAware
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
     private string _title = "";
     private bool _stopSearch;
@@ -44,10 +47,13 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
 
     private void OpenImageMethod(object parameter)
     {
+        Logger.Info("Open Image Method called with parameter: {Parameter}, MediaType: {MediaType}",parameter, Result.MediaType );
         var link = (string)parameter;
-        var browser = new ImageBrowser(Result.MediaType == MediaTypes.Game 
+        link = Result.MediaType == MediaTypes.Game
             ? $"https://{ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..]}"
-            : link)
+            : link;
+        Logger.Info("Opening Image: {Link}", link);
+        var browser = new ImageBrowser(link)
         {
             ShowTitle = false,
             IsFullScreen = true
@@ -57,6 +63,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
 
     protected virtual void CloseDialog(string parameter)
     {
+        Logger.Info("Close Dialog called with parameter: {Parameter}", parameter);
         var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
         {
             "true" => ButtonResult.OK,
@@ -145,6 +152,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         }
         else
         {
+            Logger.Debug("Media Type is Game, loading images from IGDB");
             Artwork[] images =response.Artworks.Values;
             LoadImages(images);
         }
@@ -159,7 +167,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         if (images is not null && images.Posters.Count > 0)
         {
             TotalPosters = images.Posters.Count;
-
+            Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
             foreach (var item in images.Posters.GetEnumeratorWithIndex())
             {
                 var image = item.Value;
@@ -169,21 +177,31 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W92, image.FilePath).ToString() : null;
                     var qualityPath = TmdbObject.GetClient().GetImageUrl(PosterSize.W500, image.FilePath)
                         .ToString(); //TODO: give user option to set quality of preview.-
+                    
+                    Logger.Info("Poster Path: {PosterPath}", posterPath);
+                    Logger.Info("Quality Path: {QualityPath}", qualityPath);
                     var response = await Services.HttpC.GetAsync(posterPath);
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        Logger.ForErrorEvent().Message("Error getting poster from TMDb: {StatusCode}",
+                                response.StatusCode)
+                            .Property("Response", response).Log();
+                        
                         continue;
+                    }
                     var bm = await response.GetBitmap();
                     ImageUrl.Add(new DArtImageList(qualityPath, Util.LoadBitmap(bm)));
                     bm.Dispose();
                 }
-                if (_stopSearch)
-                {
-                    break;
-                }
+
+                if (!_stopSearch) continue;
+                Logger.Trace("Stop Search is true, breaking loop");
+                break;
             }
         }
         else
         {
+            Logger.Warn("No posters found for {Title}", Title);
             IsBusy = false;
             MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
         }
@@ -197,7 +215,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         if (images is not null && images.Length > 0)
         {
             TotalPosters = images.Length;
-
+            Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
             foreach (var item in images.GetEnumeratorWithIndex())
             {
                 var image = item.Value;
@@ -205,21 +223,28 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                 if (image is not null)
                 {
                     var posterPath = image.ImageId != null ? "https://" + ImageHelper.GetImageUrl(item.Value.ImageId, ImageSize.ScreenshotMed)[2..] : null;
+                    Logger.Info("Poster Path: {PosterPath}", posterPath);
                     var response = await Services.HttpC.GetAsync(posterPath);
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        Logger.ForErrorEvent().Message("Error getting poster from IGDB: {StatusCode}",
+                                response.StatusCode)
+                            .Property("Response", response).Log();
                         continue;
+                    }
                     var bm = await response.GetBitmap();
                     ImageUrl.Add(new DArtImageList(image.ImageId, Util.LoadBitmap(bm)));
                     bm.Dispose();
                 }
-                if (_stopSearch)
-                {
-                    break;
-                }
+
+                if (!_stopSearch) continue;
+                Logger.Trace("Stop Search is true, breaking loop");
+                break;
             }
         }
         else
         {
+            Logger.Warn("No posters found for {Title}", Title);
             IsBusy = false;
             MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
         }
@@ -227,6 +252,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     }
     private void PickMethod(object parameter)
     {
+        Logger.Info("Pick Method called with parameter: {Parameter}", parameter);
         var link = (string)parameter;
         var result = _isPickedById
             ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
@@ -235,11 +261,13 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         {
             result.Cover.Value.ImageId = link;
             _resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..];
+            Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
         }
         else
         {
             result.PosterPath = link;
             _resultList[PickedIndex].Poster = link;
+            Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
         }
         CloseDialog("true");
     }

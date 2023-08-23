@@ -1,7 +1,11 @@
-﻿namespace FoliCon.ViewModels;
+﻿using NLog;
+using Logger = NLog.Logger;
+
+namespace FoliCon.ViewModels;
 
 public class ProSearchResultViewModel : BindableBase, IDialogAware
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _title = LangProvider.GetLang("SearchResult");
     private bool _stopSearch;
     private string _searchTitle;
@@ -55,6 +59,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     public ProSearchResultViewModel()
     {
+        Logger.Debug("ProSearchResultViewModel Constructor");
         ImageUrl = new ObservableCollection<DArtImageList>();
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<object>(PickMethod);
@@ -65,6 +70,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private void OpenImageMethod(object parameter)
     {
+        Logger.Debug("Opening Image {Image}", parameter);
         var link = (string)parameter;
         var browser = new ImageBrowser(link)
         {
@@ -90,20 +96,30 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private async Task Search(string query, int offset = 0)
     {
+        Logger.Trace("Search Started for {Query}, offset: {Offset}", query, offset);
         Index = 0;
         while (true)
         {
             var searchResult = await DArtObject.Browse(query, offset);
+            Logger.Trace("Search Result for {Query} is {@SearchResult}", query, searchResult);
             if (searchResult.Results?.Length > 0)
             {
                 TotalPosters = searchResult.Results.Count( result => result.IsDownloadable) + offset;
+                Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
                 foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
                 {
                     if (!item.Value.IsDownloadable)
+                    {
+                        Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
                         continue;
+                    }
                     var response = await Services.HttpC.GetAsync(item.Value.Thumbs[0].Src);
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        Logger.ForErrorEvent().Message("Could not download image {Image}", item.Value.Thumbs[0].Src)
+                            .Property("Response", response).Log();
                         continue;
+                    }
                     using (var bm = await response.GetBitmap())
                     {
                         ImageUrl.Add(new DArtImageList(item.Value.Content.Src, Util.LoadBitmap(bm)));
@@ -111,6 +127,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                     }
                     if (_stopSearch)
                     {
+                        Logger.Debug("Search Stopped by user at {Index}", Index);
                         return;
                     }
 
@@ -118,12 +135,14 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                 }
                 if (searchResult.HasMore)
                 {
+                    Logger.Debug("Search Result has more items, offset: {Offset}", searchResult.NextOffset);
                     offset = searchResult.NextOffset;
                     continue;
                 }
             }
             else
             {
+                Logger.Warn("No Result Found for {Query}", query);
                 IsBusy = false;
                 MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
                     LangProvider.GetLang("NoResult")));
@@ -136,6 +155,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private void PickMethod(object parameter)
     {
+        Logger.Debug("Picking Image {Image}", parameter);
         SearchAgainTitle = null;
         var link = (string)parameter;
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
@@ -144,29 +164,35 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             LocalPath = $"{currentPath}\\{Fnames[_i]}.png",
             RemotePath = new Uri(link)
         };
+        Logger.Debug("Adding Image to Download List {@Image}", tempImage);
         Util.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
         if (!(_i > Fnames.Count - 1))
         {
+            Logger.Info("Some titles are left, processed: {Processed}, total: {Total}", _i, Fnames.Count);
             PrepareForSearch();
         }
         else
         {
+            Logger.Info("All titles are processed, processed: {Processed}, total: {Total}", _i, Fnames.Count);
             CloseDialog("true");
         }
     }
 
     private void SkipMethod()
     {
+        Logger.Debug("Skipping title");
         _i++;
         SearchAgainTitle = null;
         if (!(_i > Fnames.Count - 1))
         {
+            Logger.Info("Some titles are left, processed: {Processed}, total: {Total}", _i, Fnames.Count);
             PrepareForSearch();
         }
         else
         {
+            Logger.Info("All titles are processed, processed: {Processed}, total: {Total}", _i, Fnames.Count);
             CloseDialog("false");
         }
     }
