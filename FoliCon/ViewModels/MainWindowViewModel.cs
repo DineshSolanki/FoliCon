@@ -312,6 +312,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
             StatusBarProperties.ResetData();
             IsMakeEnabled = true;
+            IsBusy = false;
         }
     }
 
