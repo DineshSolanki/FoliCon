@@ -548,4 +548,10 @@ and refresh Icon Cache?</value>
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>The file could not be accessed.</value>
   </data>
+  <data name="FailedFileAccessAt" xml:space="preserve">
+    <value>Failed to access file at {0}. You may not have permission to access this file.</value>
+  </data>
+  <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
+    <value>Failed to save media info at {0}, Please check access permissions</value>
+  </data>
 </root>

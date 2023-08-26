@@ -1,8 +1,7 @@
 using NLog;
 using NLog.Config;
-using NLog.Fluent;
-using NLog.Layouts;
 using NLog.Targets;
+using Polly;
 using Sentry.NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
@@ -176,20 +175,36 @@ internal static class Util
         var folderName = Path.GetFileName(folderPath);
         var icoFile = Path.Combine(folderPath, $"{folderName}.ico");
         var iniFile = Path.Combine(folderPath, "desktop.ini");
-        File.Delete(icoFile);
-        File.Delete(iniFile);
+        try
+        {
+            if (File.Exists(icoFile))
+                File.Delete(icoFile);
+            else
+                Logger.Debug("ICO File Not Found: {IcoFile}", icoFile);
+
+            if (File.Exists(iniFile))
+                File.Delete(iniFile);
+            else
+                Logger.Debug("INI File Not Found: {IniFile}", iniFile);
+
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            Logger.ForErrorEvent().Message("DeleteIconsFromFolder: UnauthorizedAccessException Occurred. message: {Message}",
+                    e.Message)
+                .Exception(e).Log();
+            HandleUnauthorizedAccessException(e,folderPath);
+        }
         Logger.Debug("Icons Deleted from: {FolderPath}", folderPath);
     }
 
     //Handle UnauthorizedAccessException
-    public static void HandleUnauthorizedAccessException(UnauthorizedAccessException ex)
+    public static void HandleUnauthorizedAccessException(UnauthorizedAccessException ex, string path)
     {
-        Logger.ForErrorEvent().Message("UnauthorizedAccessException Occurred: {Message}", ex.Message)
-            .Exception(ex).Log();
-        CustomMessageBox.Error(
+        MessageBox.Show(CustomMessageBox.Error(
             ex.Message.Contains("The process cannot access the file")
                 ? LangProvider.GetLang("FileIsInUse")
-                : LangProvider.GetLang("UnauthorizedAccess"), LangProvider.GetLang("ExceptionOccurred"));
+                : LangProvider.GetLang("FailedFileAccessAt").Format(path), LangProvider.GetLang("ExceptionOccurred")));
     }
     
     public static void DeleteMediaInfoFromSubfolders(string folderPath)
@@ -400,10 +415,33 @@ internal static class Util
     /// <param name="saveFileName">The Local Path Of Downloaded Image</param>
     public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
     {
-        Logger.Info("Downloading Image from URL: {Url} to Path: {SaveFileName}", url, saveFileName);
-        var response = await Services.HttpC.GetAsync(url);
+        const int maxRetry = 2;
+    
+        var retryPolicy = Policy
+            .Handle<HttpRequestException>()
+            .WaitAndRetryAsync(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), 
+                (exception, retryCount, context) => 
+                {
+                    Logger.Warn(exception, $"Failed to download image from URL: {url}. Retrying... Attempt {retryCount}");
+                });
+
+        var fallbackPolicy = Policy
+            .Handle<HttpRequestException>()
+            .FallbackAsync(async ct => 
+            { 
+                Logger.Error($"All attempts to download image from URL: {url} have failed.");
+                throw new HttpRequestException($"Failed to download the image after {maxRetry} attempts");
+            });
+
+        await fallbackPolicy.WrapAsync(retryPolicy).ExecuteAsync(async () => await DownloadAndSaveImageAsync(url, saveFileName));
+    }
+
+    private static async Task DownloadAndSaveImageAsync(Uri url, string saveFileName)
+    {
+        Logger.Info($"Downloading Image from URL: {url}");
+        using var response = await Services.HttpC.GetAsync(url);
         await using var fs = new FileStream(saveFileName, FileMode.Create);
-        Logger.Info("Saving Image to Path: {SaveFileName}", saveFileName);
+        Logger.Info("Saving Image to Path: {Path}", saveFileName);
         await response.Content.CopyToAsync(fs);
     }
 
@@ -651,9 +689,28 @@ internal static class Util
         Logger.Debug("Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
             mediaType, folderPath);
         var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
-        InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture), null, filePath);
-        InIHelper.AddValue("MediaType", mediaType, null, filePath);
-        HideFile(filePath);
+        try
+        {
+            File.Create(filePath);
+            InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture), null, filePath);
+            InIHelper.AddValue("MediaType", mediaType, null, filePath);
+            HideFile(filePath);
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            Logger.ForExceptionEvent(e, LogLevel.Error).Message("Error Occurred while Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
+                mediaType, filePath).Log();
+            MessageBox.Show(CustomMessageBox.Error(
+                e.Message.Contains("The process cannot access the file")
+                    ? LangProvider.GetLang("FileIsInUse")
+                    : LangProvider.GetLang("FailedToSaveMediaInfoAt").Format(filePath), LangProvider.GetLang("UnauthorizedAccess")));
+        }
+        catch (Exception e)
+        {
+            Logger.ForExceptionEvent(e, LogLevel.Error).Message("Error Occurred while Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
+                mediaType, folderPath).Log();
+            CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred"));
+        }
     }
 
     public static (string ID, string MediaType) ReadMediaInfo(string folderPath)

@@ -641,13 +641,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     LangProvider.GetLang("EmptyDirectory")));
             }
         }
-        catch (UnauthorizedAccessException e)
-        {
-            Logger.ForErrorEvent().Message("DeleteIconsMethod: UnauthorizedAccessException Occurred. message: {Message}",
-                    e.Message)
-                .Exception(e).Log();
-            Util.HandleUnauthorizedAccessException(e);
-        }
         catch (Exception e)
         {
             Logger.ForErrorEvent().Message("DeleteIconsMethod: Exception Occurred. message: {Message}", e.Message)
@@ -702,7 +695,20 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 return;
             }
 
-            await Util.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+            try
+            {
+                await Util.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                Logger.ForExceptionEvent(e).Message("UnauthorizedAccessException Occurred while downloading image from url." +
+                                                    " message: {Message}", e.Message)
+                    .Property("Image", img)
+                    .Log();
+                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FailedFileAccessAt").Format(Directory.GetParent(img.LocalPath)),
+                    LangProvider.GetLang("UnauthorizedAccess")));
+                continue;
+            }
             i += 1;
             BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount")
                 .Format(i, BusyIndicatorProperties.Max);

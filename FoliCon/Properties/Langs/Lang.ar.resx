@@ -549,4 +549,10 @@
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>تعذر الوصول إلى الملف</value>
   </data>
+  <data name="FailedFileAccessAt" xml:space="preserve">
+    <value>فشل في الوصول إلى الملف في {0}. قد لا يكون لديك إذن للوصول إلى هذا الملف.</value>
+  </data>
+  <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
+    <value>فشل في حفظ معلومات الوسائط في {0}، يرجى التحقق من أذونات الوصول</value>
+  </data>
 </root>

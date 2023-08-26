@@ -71,6 +71,8 @@ public class LangProvider : INotifyPropertyChanged
             OnPropertyChanged(nameof(EmptyDirectory));
             OnPropertyChanged(nameof(English));
             OnPropertyChanged(nameof(EnterTitlePlaceholder));
+            OnPropertyChanged(nameof(FailedFileAccessAt));
+            OnPropertyChanged(nameof(FailedToSaveMediaInfoAt));
             OnPropertyChanged(nameof(Folder));
             OnPropertyChanged(nameof(FolderDoesNotExist));
             OnPropertyChanged(nameof(FolderError));
@@ -250,6 +252,8 @@ public class LangProvider : INotifyPropertyChanged
     public string English => Lang.English;
 
     public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
+    public string FailedFileAccessAt => Lang.FailedFileAccessAt;
+    public string FailedToSaveMediaInfoAt => Lang.FailedToSaveMediaInfoAt;
 
     public string Folder => Lang.Folder;
 
@@ -523,7 +527,10 @@ public class LangKeys
     public static string English = nameof(English);
 
     public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);
-
+    
+    public static string FailedFileAccessAt = nameof(FailedFileAccessAt);
+    public static string FailedToSaveMediaInfoAt = nameof(FailedToSaveMediaInfoAt);
+    
     public static string Folder = nameof(Folder);
 
     public static string FolderDoesNotExist = nameof(FolderDoesNotExist);
