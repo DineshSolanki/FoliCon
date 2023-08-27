@@ -69,6 +69,8 @@ public class LangProvider : INotifyPropertyChanged
             OnPropertyChanged(nameof(DownloadingIconWithCount));
             OnPropertyChanged(nameof(DownloadIt));
             OnPropertyChanged(nameof(EmptyDirectory));
+            OnPropertyChanged(nameof(EnableErrorReporting));
+            OnPropertyChanged(nameof(EnableErrorReportingTip));
             OnPropertyChanged(nameof(English));
             OnPropertyChanged(nameof(EnterTitlePlaceholder));
             OnPropertyChanged(nameof(FailedFileAccessAt));
@@ -250,7 +252,8 @@ public class LangProvider : INotifyPropertyChanged
     public string DownloadIt => Lang.DownloadIt;
 
     public string EmptyDirectory => Lang.EmptyDirectory;
-
+    public string EnableErrorReporting => Lang.EnableErrorReporting;
+    public string EnableErrorReportingTip => Lang.EnableErrorReportingTip;
     public string English => Lang.English;
 
     public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
@@ -527,7 +530,9 @@ public class LangKeys
     public static string DownloadIt = nameof(DownloadIt);
 
     public static string EmptyDirectory = nameof(EmptyDirectory);
-
+    public static string EnableErrorReporting = nameof(EnableErrorReporting);
+    public static string EnableErrorReportingTip = nameof(EnableErrorReportingTip);
+    
     public static string English = nameof(English);
 
     public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);

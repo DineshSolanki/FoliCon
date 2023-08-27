@@ -561,4 +561,10 @@
   <data name="WritePermissionNotAllowed" xml:space="preserve">
     <value>फोल्डर एक्सेस प्राप्त नही</value>
   </data>
+  <data name="EnableErrorReporting" xml:space="preserve">
+    <value>त्रुटि रिपोर्टिंग शुरू करें</value>
+  </data>
+  <data name="EnableErrorReportingTip" xml:space="preserve">
+    <value>FoliCon को बेहतर बनाने में मदद के लिए त्रुटि रिपोर्ट भेजें</value>
+  </data>
 </root>

@@ -457,6 +457,24 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable Error reporting.
+        /// </summary>
+        public static string EnableErrorReporting {
+            get {
+                return ResourceManager.GetString("EnableErrorReporting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send error reports to help improve FoliCon.
+        /// </summary>
+        public static string EnableErrorReportingTip {
+            get {
+                return ResourceManager.GetString("EnableErrorReportingTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string English {

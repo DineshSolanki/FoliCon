@@ -562,4 +562,12 @@
     <value>Нет разрешения на запись
 </value>
   </data>
+  <data name="EnableErrorReporting" xml:space="preserve">
+    <value>Включить отчеты об ошибках
+</value>
+  </data>
+  <data name="EnableErrorReportingTip" xml:space="preserve">
+    <value>Отправлять отчеты об ошибках, чтобы помочь улучшить FoliCon
+</value>
+  </data>
 </root>

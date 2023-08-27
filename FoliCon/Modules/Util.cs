@@ -2,6 +2,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using Polly;
+using Sentry;
 using Sentry.NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
@@ -863,22 +864,7 @@ internal static class Util
         
         var logPath = LogManager.Configuration.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
         var fileLogLevel = LogLevel.FromString(LogManager.Configuration.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()));
-        // Targets
-        var sentryTarget = new SentryTarget
-        {
-            Name = "sentry",
-            Dsn =  Environment.GetEnvironmentVariable("SENTRY_DSN"),
-            Layout =  "${message} ${exception:format=tostring}",
-            BreadcrumbLayout = "${message}",
-            Environment = "Development",
-            MinimumBreadcrumbLevel = LogLevel.Debug.ToString()!,
-            MinimumEventLevel = LogLevel.Error.ToString()!,
-            Options = { SendDefaultPii = true, ShutdownTimeoutSeconds = 5, Debug = false, User = new SentryNLogUser { Username = Environment.MachineName}},
-            IncludeEventDataOnBreadcrumbs = true
-        };
-        sentryTarget.Tags.Add(new TargetPropertyWithContext("exception", "${exception:format=shorttype}"));
-        sentryTarget.ContextProperties.Add(new TargetPropertyWithContext("threadid", "${threadid}"));
-
+        
         var fileTarget = new FileTarget
         {
             Name = "fileTarget",
@@ -895,12 +881,35 @@ internal static class Util
         };
 
         config.AddRule(fileLogLevel, LogLevel.Fatal, fileTarget);
-        config.AddRuleForAllLevels(sentryTarget);
         config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
         Logger.Info("NLog configuration loaded");
         return config;
     }
-    
+
+    internal static SentryTarget GetSentryTarget()
+    {
+        var sentryTarget = new SentryTarget
+        {
+            Name = "sentry",
+            Dsn = Environment.GetEnvironmentVariable("SENTRY_DSN"),
+            Layout = "${message} ${exception:format=tostring}",
+            BreadcrumbLayout = "${message}",
+            Environment = "Development",
+            MinimumBreadcrumbLevel = LogLevel.Debug.ToString()!,
+            MinimumEventLevel = LogLevel.Error.ToString()!,
+            Options =
+            {
+                SendDefaultPii = true, ShutdownTimeoutSeconds = 5, Debug = false, IsGlobalModeEnabled = true,
+                AutoSessionTracking = true,
+                User = new SentryNLogUser { Username = Environment.MachineName }
+            },
+            IncludeEventDataOnBreadcrumbs = true,
+        };
+        sentryTarget.Options.AddExceptionFilterForType<UnauthorizedAccessException>();
+        sentryTarget.Tags.Add(new TargetPropertyWithContext("exception", "${exception:format=shorttype}"));
+        return sentryTarget;
+    }
+
     public static DirectoryPermissionsResult CheckDirectoryPermissions(string dirPath)
     {
         var result = new DirectoryPermissionsResult

@@ -2,7 +2,6 @@
 using NLog;
 using Prism.Ioc;
 using Sentry;
-using Sentry.NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon;
@@ -12,7 +11,7 @@ namespace FoliCon;
 /// </summary>
 public partial class App
 {
-    private static Logger _logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     protected override System.Windows.Window CreateShell()
     {
         return Container.Resolve<MainWindow>();
@@ -24,7 +23,7 @@ public partial class App
         LogManager.Configuration = Util.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
-        _logger.Info("FoliCon Initilized");
+        Logger.Info("FoliCon Initilized");
     }
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)

@@ -102,6 +102,8 @@
                         </hc:Interaction.Triggers>
                     </MenuItem>
                     <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}" />
+                    <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}" Command="{Binding }"
+                              IsCheckable="True" IsChecked="{Binding EnableErrorReporting}"/>
                     <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" />
                 </MenuItem>
             </Menu>
