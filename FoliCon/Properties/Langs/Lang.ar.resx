@@ -555,4 +555,10 @@
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
     <value>فشل في حفظ معلومات الوسائط في {0}، يرجى التحقق من أذونات الوصول</value>
   </data>
+  <data name="WritePermissionAllowed" xml:space="preserve">
+    <value>تم السماح بإذن الكتابة</value>
+  </data>
+  <data name="WritePermissionNotAllowed" xml:space="preserve">
+    <value>لا يوجد إذن كتابة</value>
+  </data>
 </root>

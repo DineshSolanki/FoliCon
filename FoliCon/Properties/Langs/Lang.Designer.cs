@@ -493,7 +493,7 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to access file at {0}. You may not have permission to access this file..
+        ///   Looks up a localized string similar to Failed to access file at {0}. You may not have permission to access this file. Try running as admin..
         /// </summary>
         public static string FailedFileAccessAt {
             get {
@@ -1342,6 +1342,24 @@ namespace FoliCon.Properties.Langs {
         public static string VideoUnavailable {
             get {
                 return ResourceManager.GetString("VideoUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write Permission Allowed.
+        /// </summary>
+        public static string WritePermissionAllowed {
+            get {
+                return ResourceManager.GetString("WritePermissionAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Write Permission.
+        /// </summary>
+        public static string WritePermissionNotAllowed {
+            get {
+                return ResourceManager.GetString("WritePermissionNotAllowed", resourceCulture);
             }
         }
         

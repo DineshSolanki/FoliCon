@@ -60,6 +60,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     }
 
     private readonly IDialogService _dialogService;
+    private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
     public ProgressBarData BusyIndicatorProperties { get; set; }
     public List<string> Fnames { get; set; }
@@ -105,7 +106,20 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public string SelectedFolder
     {
         get => _selectedFolder;
-        set => SetProperty(ref _selectedFolder, value);
+        set
+        {
+            SetProperty(ref _selectedFolder, value);
+            if (value != null)
+            {
+                DirectoryPermissionsResult = Util.CheckDirectoryPermissions(value);
+            }
+        }
+    }
+
+    public DirectoryPermissionsResult DirectoryPermissionsResult
+    {
+        get => _directoryPermissionResult; 
+        set => SetProperty(ref _directoryPermissionResult, value);
     }
 
     public string Title

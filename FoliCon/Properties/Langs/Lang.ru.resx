@@ -555,4 +555,11 @@
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
     <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
   </data>
+  <data name="WritePermissionAllowed" xml:space="preserve">
+    <value>Предоставлено разрешение на запись</value>
+  </data>
+  <data name="WritePermissionNotAllowed" xml:space="preserve">
+    <value>Нет разрешения на запись
+</value>
+  </data>
 </root>

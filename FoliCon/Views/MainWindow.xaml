@@ -9,7 +9,9 @@
         xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
         xmlns:models="clr-namespace:FoliCon.Models"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
+        mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="714" Width="851" MinWidth="850" MinHeight="630"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
@@ -19,6 +21,8 @@
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
 
     <Window.Resources>
+        <convertor:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <convertor:BoolToPermissionTextConverter x:Key="BoolToPermissionTextConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
 
@@ -113,14 +117,24 @@
                     <RowDefinition Height="291*" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <ContentControl Grid.Row="1" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Top">
+                <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" VerticalAlignment="Top">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:LaunchUriOrFileAction Path="{Binding SelectedFolder}" />
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
-                    <TextBlock Text="{Binding SelectedFolder}" HorizontalAlignment="Center" VerticalAlignment="Top"
-                               FontStyle="Italic" Foreground="Black" />
+                    <Grid HorizontalAlignment="Stretch" >
+                        <TextBlock Text="{Binding SelectedFolder}" FontStyle="Italic" Foreground="Black"
+                                   HorizontalAlignment="Center" VerticalAlignment="Top" />
+                        
+                        <Path Data="M8,5C4.699219,5 2,7.699219 2,11 2,13.171875 3.261719,14.949219 5,16L5,24.40625 5.28125,24.71875 7.28125,26.71875 8,27.40625 8.71875,26.71875 10.71875,24.71875 11,24.40625 11,16C12.738281,14.949219 14,13.171875 14,11 14,7.699219 11.300781,5 8,5z M8,7C10.21875,7 12,8.78125 12,11 12,12.648438 11.003906,14.039063 9.59375,14.65625L9,14.9375 9,17 8,17 8,19 9,19 9,20 8,20 8,22 9,22 9,23.5625 8,24.5625 7,23.5625 7,14.9375 6.40625,14.65625C4.996094,14.039063 4,12.648438 4,11 4,8.78125 5.78125,7 8,7z M8,9C6.894531,9,6,9.894531,6,11L10,11C10,9.894531,9.105469,9,8,9z M16,9L16,15 30,15 30,9z M18,11L28,11 28,13 18,13z M16,16L16,22 30,22 30,16z M18,18L28,18 28,20 18,20z"
+                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="15,0"
+                              Fill="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToColorConverter}}">
+                            <Path.ToolTip>
+                                <TextBlock Text="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToPermissionTextConverter}}" />
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
                 </ContentControl>
 
                 <Grid Grid.Column="0" Grid.Row="2" Grid.IsSharedSizeScope="True" Background="WhiteSmoke">

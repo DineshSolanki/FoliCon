@@ -900,5 +900,45 @@ internal static class Util
         Logger.Info("NLog configuration loaded");
         return config;
     }
+    
+    public static DirectoryPermissionsResult CheckDirectoryPermissions(string dirPath)
+    {
+        var result = new DirectoryPermissionsResult
+        {
+            CanRead = false,
+            CanWrite = false
+        };
+
+        if (!Directory.Exists(dirPath)) return result;
+        try
+        {
+            // Attempt to open.txt with read permissions
+            using var stream = File.OpenRead(Path.Combine(dirPath, "test.txt"));
+            result.CanRead = true;
+        }
+        catch
+        {
+            // Ignore any exception, it means we don't have read permissions
+        }
+
+        try
+        {
+            // Attempt to open a new file with write permissions
+            using (var stream = File.Create(Path.Combine(dirPath, "test.tmp")))
+            {
+                result.CanWrite = true;
+            }
+
+            // Successfully created file, try to delete it
+            File.Delete(Path.Combine(dirPath, "test.tmp"));
+        }
+        catch
+        {
+            // Ignore any exception, it means we don't have write permissions
+        }
+        Logger.Debug("Path: {Path};Directory Permissions Checked: {@Result}",dirPath, result);
+        return result;
+    }
+    
     private static string AppPath { get; } = ApplicationHelper.GetExecutablePathNative();
 }

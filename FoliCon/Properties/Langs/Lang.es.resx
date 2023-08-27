@@ -555,4 +555,10 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
     <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
   </data>
+  <data name="WritePermissionAllowed" xml:space="preserve">
+    <value>Permiso de escritura habilitado</value>
+  </data>
+  <data name="WritePermissionNotAllowed" xml:space="preserve">
+    <value>Sin permiso de escritura</value>
+  </data>
 </root>

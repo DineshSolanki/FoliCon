@@ -555,4 +555,10 @@
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
     <value>{0} पर मीडिया जानकारी सहेजने में विफल, कृपया एक्सेस अनुमतियों की जांच करें</value>
   </data>
+  <data name="WritePermissionAllowed" xml:space="preserve">
+    <value>फोल्डर परमिशन प्राप्त</value>
+  </data>
+  <data name="WritePermissionNotAllowed" xml:space="preserve">
+    <value>फोल्डर एक्सेस प्राप्त नही</value>
+  </data>
 </root>

@@ -554,4 +554,10 @@ and refresh Icon Cache?</value>
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
     <value>Failed to save media info at {0}, Please check access permissions</value>
   </data>
+  <data name="WritePermissionAllowed" xml:space="preserve">
+    <value>Write Permission Allowed</value>
+  </data>
+  <data name="WritePermissionNotAllowed" xml:space="preserve">
+    <value>No Write Permission</value>
+  </data>
 </root>

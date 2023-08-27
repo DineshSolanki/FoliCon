@@ -173,6 +173,8 @@ public class LangProvider : INotifyPropertyChanged
             OnPropertyChanged(nameof(VideoUnavailable));
             OnPropertyChanged(nameof(FileIsInUse));
             OnPropertyChanged(nameof(UnauthorizedAccess));
+            OnPropertyChanged(nameof(WritePermissionNotAllowed));
+            OnPropertyChanged(nameof(WritePermissionAllowed));
         }
 
     public string About => Lang.About;
@@ -440,6 +442,8 @@ public class LangProvider : INotifyPropertyChanged
         public string VideoUnavailable => Lang.VideoUnavailable;
         public string FileIsInUse => Lang.FileIsInUse;
         public string UnauthorizedAccess => Lang.UnauthorizedAccess;
+        public string WritePermissionAllowed => Lang.WritePermissionAllowed;
+        public string WritePermissionNotAllowed => Lang.WritePermissionNotAllowed;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -717,4 +721,7 @@ public class LangKeys
         public static string VideoUnavailable = nameof(VideoUnavailable);
         public static string FileIsInUse = nameof(FileIsInUse);
         public static string UnauthorizedAccess = nameof(UnauthorizedAccess);
+        public static string WritePermissionNotAllowed = nameof(WritePermissionNotAllowed);
+        public static string WritePermissionAllowed = nameof(WritePermissionAllowed);
+        
     }
