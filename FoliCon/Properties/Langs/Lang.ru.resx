@@ -549,4 +549,10 @@
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>Не удалось получить доступ к файлу</value>
   </data>
+  <data name="FailedFileAccessAt" xml:space="preserve">
+    <value>Не удалось получить доступ к файлу по адресу {0}. Возможно, у вас нет разрешения на доступ к этому файлу</value>
+  </data>
+  <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
+    <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
+  </data>
 </root>

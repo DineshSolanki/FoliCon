@@ -549,4 +549,10 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="UnauthorizedAccess" xml:space="preserve">
     <value>No se pudo acceder al archivo</value>
   </data>
+  <data name="FailedFileAccessAt" xml:space="preserve">
+    <value>No se pudo acceder al archivo en {0}. Es posible que no tenga permiso para acceder a este archivo.</value>
+  </data>
+  <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
+    <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
+  </data>
 </root>
