@@ -943,13 +943,17 @@ internal static class Util
     public static string GetResourcePath(string resource)
     {
         var path = Path.Combine(Path.GetTempPath(), resource);
-
+        Logger.Debug("Getting Resource Path, Resource: {Resource}, Path: {Path}", resource, path);
         if (File.Exists(path)) return path;
 
         var resourceUri = new Uri($"pack://application:,,,/FoliCon;component/Resources/{resource}");
         var resourceStream = Application.GetResourceStream(resourceUri);
 
-        if (resourceStream == null) throw new InvalidOperationException($"Resource {resource} cannot be found.");
+        if (resourceStream == null)
+        {
+            Logger.Warn("Resource {Resource} cannot be found");
+            throw new InvalidOperationException($"Resource {resource} cannot be found.");
+        }
         using var input = resourceStream.Stream;
         using Stream output = File.Create(path);
         input.CopyTo(output);
