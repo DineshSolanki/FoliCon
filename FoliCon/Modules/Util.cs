@@ -940,5 +940,21 @@ internal static class Util
         return result;
     }
     
+    public static string GetResourcePath(string resource)
+    {
+        var path = Path.Combine(Path.GetTempPath(), resource);
+
+        if (File.Exists(path)) return path;
+
+        var resourceUri = new Uri($"pack://application:,,,/FoliCon;component/Resources/{resource}");
+        var resourceStream = Application.GetResourceStream(resourceUri);
+
+        if (resourceStream == null) throw new InvalidOperationException($"Resource {resource} cannot be found.");
+        using var input = resourceStream.Stream;
+        using Stream output = File.Create(path);
+        input.CopyTo(output);
+        return path;
+
+    }
     private static string AppPath { get; } = ApplicationHelper.GetExecutablePathNative();
 }

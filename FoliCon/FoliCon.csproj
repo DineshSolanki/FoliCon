@@ -88,6 +88,8 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\PosterMockup.png" />
     <Resource Include="Resources\shield.png" />
     <Resource Include="Resources\Strong-WiFi.png" />
+    <None Remove="Resources\video-unavailable.png" />
+    <Resource Include="Resources\video-unavailable.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Langs\Lang.Designer.cs">
