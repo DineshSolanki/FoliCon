@@ -561,4 +561,10 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="WritePermissionNotAllowed" xml:space="preserve">
     <value>Sin permiso de escritura</value>
   </data>
+  <data name="EnableErrorReporting" xml:space="preserve">
+    <value>Habilitar informes de errores</value>
+  </data>
+  <data name="EnableErrorReportingTip" xml:space="preserve">
+    <value>Enviar informes de error para ayudar a mejorar FoliCon</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using NLog.Config;
 using Logger = NLog.Logger;
 
 namespace FoliCon.Modules;
@@ -43,5 +44,25 @@ public static class Extensions
             Logger.Trace("GetBitmap from HttpResponseMessage - done");
             return bitmap;
         });
+    }
+
+    public static void SentryConfig(this LoggingConfiguration config, bool enableSentry)
+    {
+        var target = config.AllTargets.FirstOrDefault(t => t.Name.Equals("sentry", StringComparison.OrdinalIgnoreCase));
+        if (enableSentry && target is null)
+        {
+            var sentryTarget = Util.GetSentryTarget();
+            config.AddTarget(sentryTarget);
+            config.AddRuleForAllLevels(sentryTarget);
+            LogManager.Configuration = config;
+            Logger.Debug("Sentry enabled");
+        }
+        else
+        {
+            if (target == null) return;
+            config.RemoveTarget("sentry");
+            LogManager.Configuration = config;
+            Logger.Debug("Sentry disabled");
+        }
     }
 }

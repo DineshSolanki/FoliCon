@@ -560,4 +560,10 @@ and refresh Icon Cache?</value>
   <data name="WritePermissionNotAllowed" xml:space="preserve">
     <value>No Write Permission</value>
   </data>
+  <data name="EnableErrorReporting" xml:space="preserve">
+    <value>Enable Error reporting</value>
+  </data>
+  <data name="EnableErrorReportingTip" xml:space="preserve">
+    <value>Send error reports to help improve FoliCon</value>
+  </data>
 </root>

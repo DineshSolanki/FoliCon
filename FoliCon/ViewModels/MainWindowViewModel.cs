@@ -25,6 +25,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private Tmdb _tmdbObject;
     private DArt _dArtObject;
     private bool _isPosterWindowShown;
+    private bool _enableErrorReporting;
 
     private string _tmdbapiKey;
     private string _igdbClientId;
@@ -46,6 +47,15 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     }
     private bool _isSkipAmbiguousEnabled;
     public bool IsSkipAmbiguousEnabled { get => _isSkipAmbiguousEnabled; set => SetProperty(ref _isSkipAmbiguousEnabled, value); }
+    public bool EnableErrorReporting
+    {
+        get => _enableErrorReporting;
+        set
+        {
+            LogManager.Configuration.SentryConfig(value);
+            SetProperty(ref _enableErrorReporting, value);
+        }
+    }
 
     public bool IsSearchModeVisible
     {
@@ -202,6 +212,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             .Property(p => p.IsPosterMockupUsed, true)
             .Property(p => p.IsPosterWindowShown, false)
             .Property(p => p.AppLanguage, Languages.English)
+            .Property(p => p.EnableErrorReporting, false)
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         var selectedLanguage = AppLanguage;
