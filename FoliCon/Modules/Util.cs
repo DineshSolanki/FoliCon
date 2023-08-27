@@ -924,7 +924,7 @@ internal static class Util
         try
         {
             // Attempt to open a new file with write permissions
-            using (var stream = File.Create(Path.Combine(dirPath, "test.tmp")))
+            using (File.Create(Path.Combine(dirPath, "test.tmp")))
             {
                 result.CanWrite = true;
             }
