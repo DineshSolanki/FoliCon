@@ -550,7 +550,7 @@
     <value>फाइल एक्सेस नही की जा सकी</value>
   </data>
   <data name="FailedFileAccessAt" xml:space="preserve">
-    <value>फ़ाइल {0} एक्सेस विफल, कृपया फ़ाइल की परमिशन की जाँच करें।</value>
+    <value>फ़ाइल {0} एक्सेस विफल, कृपया फ़ाइल की परमिशन की जाँच करें या एडमिन से रन करे।</value>
   </data>
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
     <value>{0} पर मीडिया जानकारी सहेजने में विफल, कृपया एक्सेस अनुमतियों की जांच करें</value>
