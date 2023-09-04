@@ -37,7 +37,7 @@ public partial class App
         containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
         containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
-        containerRegistry.RegisterDialogWindow<HandyWindow>("HandyWindow");
+        containerRegistry.RegisterDialogWindow<HandyWindow>();
     }
     
     void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
