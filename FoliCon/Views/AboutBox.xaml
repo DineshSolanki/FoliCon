@@ -22,7 +22,7 @@
             <Setter Property="Title" Value="{Binding Title}" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <ContentControl Background="White" Style="{StaticResource LiveStyle}" Margin="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <ContentControl Background="{DynamicResource RegionBrush}" Style="{StaticResource LiveStyle}" Margin="10"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid Width="580" Height="256">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -41,7 +41,7 @@
                             <hc:LaunchUriOrFileAction Path="{Binding Website}" />
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
-                    <TextBlock Text="{Binding Website}" HorizontalAlignment="Stretch" FontStyle="Oblique" Foreground="Blue" Margin="0,4,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" />
+                    <TextBlock Text="{Binding Website}" HorizontalAlignment="Stretch" FontStyle="Oblique" Foreground="RoyalBlue" Margin="0,4,0,0" MouseEnter="TextBlock_MouseEnter" MouseLeave="TextBlock_MouseLeave" />
                 </ContentControl>
             </StackPanel>
         </Grid>

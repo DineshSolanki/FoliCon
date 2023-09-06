@@ -10,17 +10,18 @@
              xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             Background="{DynamicResource RegionBrush}"
              d:DataContext="{d:DesignInstance viewModels:ApiConfigurationViewModel}">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="400" />
-            <Setter Property="Width" Value="665.48" />
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="MaxWidth" Value="665.48" />
             <Setter Property="ResizeMode" Value="NoResize" />
             <Setter Property="WindowStyle" Value="ToolWindow" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <Grid Background="WhiteSmoke">
+    <Grid Background="{DynamicResource RegionBrush}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -54,10 +55,10 @@
                     Text="{Binding TmdbKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"
                     hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.TMDBAPIKey}}" Margin="8,7,8,0" />
         <Button Grid.Row="3" Command="{Binding SaveCommand}" Content="{langExtension:Lang Key={x:Static langs:LangKeys.Save}}" Style="{StaticResource ButtonPrimary}"
-                 Width="75" Margin="266,5,0,0" FontSize="16" HorizontalAlignment="Left"
+                 Width="75" Margin="266,5,0,0" FontSize="16" HorizontalAlignment="Left" Height="auto"
                 VerticalAlignment="Top" IsDefault="True" TextOptions.TextRenderingMode="Aliased"/>
         <Button Grid.Row="3" Content="{langExtension:Lang Key={x:Static langs:LangKeys.Close}}" Command="{Binding CloseDialogCommand}" CommandParameter="false"
-                Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75"
+                Style="{StaticResource ButtonDanger}" HorizontalAlignment="Left" Margin="372,5,0,0" Width="75" Height="auto"
                 FontSize="16" VerticalAlignment="Top" IsCancel="True" />
     </Grid>
 </UserControl>
