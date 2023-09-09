@@ -38,7 +38,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Text="{Binding SearchTitle}" VerticalAlignment="Top" Grid.ColumnSpan="2"
-                       HorizontalAlignment="Center" Foreground="Black" />
+                       HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}" />
             <Grid Grid.Column="0" Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
@@ -50,7 +50,7 @@
                         Command="{Binding PickCommand}" IsDefault="True"/>
                 <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
-                <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}"
+                <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}" Background="{DynamicResource PrimaryRegionBrush}"
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
@@ -114,7 +114,7 @@
                 <Button Content="{ex:Lang Key={x:Static langs:LangKeys.ShowMore}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"/>
                 <hc:Rate Grid.Row="2" Grid.Column="1" Count="10" AllowHalf="True" Margin="5" Foreground="{DynamicResource WarningBrush}" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}" Value="{Binding Path=CustomRating, Mode=TwoWay}" AllowClear="True"/>
                 <!-- <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/> -->
-                <TextBox Foreground="Black" Grid.Row="1" Grid.Column="1"
+                <TextBox Foreground="{DynamicResource PrimaryTextBrush}" Grid.Row="1" Grid.Column="1"
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />

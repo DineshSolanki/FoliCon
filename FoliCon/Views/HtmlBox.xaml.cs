@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Views
+﻿using HandyControl.Themes;
+
+namespace FoliCon.Views
 {
     /// <summary>
     /// Interaction logic for HtmlBox.xaml
@@ -6,10 +8,20 @@
     public partial class HtmlBox : System.Windows.Controls.UserControl
     {
         private readonly string _imagePath = Util.GetResourcePath("video-unavailable.png");
+
         public HtmlBox()
         {
             InitializeComponent();
+            var theme = ThemeManager.Current.ApplicationTheme;
+            var htmlText = "<style>body{ background-color: #FFFFFF; color: #202020; }</style>";
+            if (theme == ApplicationTheme.Dark)
+            {
+                htmlText = "<style>body{ background-color: #202020; color: #FFFFFF; }</style>";
+            }
+            
+            browser.NavigateToString(htmlText);
         }
+
         public static readonly DependencyProperty HtmlTextProperty = DependencyProperty.Register("HtmlText", typeof(string), typeof(HtmlBox));
 
         public string HtmlText
