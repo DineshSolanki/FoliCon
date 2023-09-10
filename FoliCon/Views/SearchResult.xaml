@@ -10,7 +10,9 @@
              xmlns:models="clr-namespace:FoliCon.Models"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views"
+             xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
+             mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded">
 
@@ -24,8 +26,11 @@
         </Style>
     </prism:Dialog.WindowStyle>
     <UserControl.Resources>
+        <convertor:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
+        <convertor:InvertedTextToVisibilityConverter x:Key="InvertedTextToVisibilityConverter" />
         <BitmapImage x:Key="NoPoster" UriSource="/Resources/NoPosterAvailable.png" />
         <BitmapImage x:Key="LoadingPoster" UriSource="/Resources/LoadingPosterImage.png" />
+        <BitmapImage x:Key="VideoUnavailable" UriSource="/Resources/video-unavailable.png" />
     </UserControl.Resources>
     <hc:BusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy}">
         <Grid Margin="21,0,21,12">
@@ -126,7 +131,13 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>-->
                 </ListBox>
-                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}" ScrollViewer.VerticalScrollBarVisibility="Hidden" Background="{DynamicResource RegionBrush}"/>
+                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                               HtmlText="{Binding Path=SelectedItem.(models:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}"
+                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                               Visibility="{Binding HtmlText, Converter={StaticResource TextToVisibilityConverter}, RelativeSource={RelativeSource Self}}"
+                               Background="{DynamicResource RegionBrush}" />
+                <Image  x:Name="PlaceholderImage" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Source="{StaticResource VideoUnavailable}"
+                        Visibility="{Binding ElementName=WebBox, Path=HtmlText, Converter={StaticResource InvertedTextToVisibilityConverter}}"/>
             </Grid>
         </Grid>
     </hc:BusyIndicator>
