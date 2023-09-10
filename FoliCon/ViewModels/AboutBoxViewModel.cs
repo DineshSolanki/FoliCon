@@ -6,7 +6,7 @@ namespace FoliCon.ViewModels;
 public class AboutBoxViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private string _title = "Folicon v3.10.0";
+    private string _title = "Folicon v3.11.0-beta.1";
     private string _logo = "/Resources/folicon Icon.png";
 
     private string _description = LangProvider.GetLang("FoliConDescription");
