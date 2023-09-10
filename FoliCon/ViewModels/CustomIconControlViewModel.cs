@@ -1,5 +1,6 @@
 ﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
+using GongSolutions.Wpf.DragDrop;
 using NLog;
 using Logger = NLog.Logger;
 
@@ -8,6 +9,8 @@ namespace FoliCon.ViewModels;
 public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    
+    public IDropTarget ReOrderDropHandler { get; } = new ReOrderDropHandler();
     private string _selectedDirectory;
     private string _selectedIconsDirectory;
     private ObservableCollection<string> _directories;
@@ -200,14 +203,14 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private void StartProcessing()
     {
         Logger.Debug("Directories count: {Count}, Icons count: {IconCount}", Directories.Count, Icons.Count);
-        if (Directories.Count <= 0)
+        if (Directories.Count <= 0 || SelectedDirectory is null)
         {
             Logger.Warn("No folders to process");
             MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoFolderOrIconAlready"), LangProvider.GetLang("NoFoldersToProcess")));
             return;
         }
 
-        if (Icons.Count <= 0)
+        if (Icons.Count <= 0 || SelectedIconsDirectory is null)
         {
             MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoIconsSelected"), LangProvider.GetLang("NoIconsToApply")));
             return;
