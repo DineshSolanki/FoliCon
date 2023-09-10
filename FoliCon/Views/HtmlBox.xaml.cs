@@ -123,7 +123,7 @@ namespace FoliCon.Views
                                          </ head>
                                          <body>
                                              <iframe id='video' allow =autoplay; fullscreen; clipboard - write; encrypted - media; picture -in-picture' allowfullscreen='true'
-                                                 src ='{{HtmlText}}\' frameborder='0'>
+                                                 src ='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}' frameborder='0'>
                                              </iframe>
                                          </body>
                                      </html>
