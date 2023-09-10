@@ -1,4 +1,5 @@
-﻿using HandyControl.Themes;
+﻿using System.Windows.Navigation;
+using HandyControl.Themes;
 
 namespace FoliCon.Views
 {
@@ -12,14 +13,36 @@ namespace FoliCon.Views
         public HtmlBox()
         {
             InitializeComponent();
+            Browser.Visibility = Visibility.Hidden;
             var theme = ThemeManager.Current.ApplicationTheme;
-            var htmlText = "<style>body{ background-color: #FFFFFF; color: #202020; }</style>";
-            if (theme == ApplicationTheme.Dark)
-            {
-                htmlText = "<style>body{ background-color: #202020; color: #FFFFFF; }</style>";
-            }
-            
-            browser.NavigateToString(htmlText);
+            // var htmlText = """
+            //            <style>html, body {
+            //                overflow: hidden;
+            //                margin: 0;
+            //                padding: 0;
+            //                width: 100%;
+            //                height: 100%;
+            //                box-sizing: border-box;
+            //                background-color: #FFFFFF;
+            //            }</style>
+            //            """;
+            //
+            // if (theme == ApplicationTheme.Dark)
+            // {
+            //     htmlText = """
+            //                <style>html, body {
+            //                    overflow: hidden;
+            //                    margin: 0;
+            //                    padding: 0;
+            //                    width: 100%;
+            //                    height: 100%;
+            //                    box-sizing: border-box;
+            //                    background-color: #202020;
+            //                }</style>
+            //                """;
+            // }
+            //
+            // browser.NavigateToString(htmlText);
         }
 
         public static readonly DependencyProperty HtmlTextProperty = DependencyProperty.Register("HtmlText", typeof(string), typeof(HtmlBox));
@@ -53,16 +76,18 @@ namespace FoliCon.Views
 
         private void BrowseInternal()
         {
-            if (browser is not { IsLoaded: true }) return;
+            if (Browser is not { IsLoaded: true }) return;
             if (string.IsNullOrEmpty(HtmlText) || HtmlText.Contains("Video not available!"))
             {
-                string unavailableVideoContent = $@"
-    <html>
-        <body style='margin:0; padding:0; height: 100%; width: 100%; overflow: hidden;'>
-            <img src='{_imagePath}' style='height: 100%; width: 100%; object-fit: fill;' />
-        </body>
-    </html>";
-                browser.NavigateToString(unavailableVideoContent);
+                var unavailableVideoContent = $"""
+                                               
+                                                   <html>
+                                                       <body style='margin:0; padding:0; height: 100%; width: 100%; overflow: hidden;'>
+                                                           <img src='{_imagePath}' style='height: 100%; width: 100%; object-fit: fill;' />
+                                                       </body>
+                                                   </html>
+                                               """;
+                Browser.NavigateToString(unavailableVideoContent);
                 return;
             }
             //var html = "<!DOCTYPE html><html><head><meta name='viewport' content='width=device-width, initial-scale=1'><meta content='IE=Edge' http-equiv='X-UA-Compatible'><style>.container {position: relative;overflow: hidden;padding-top: 56.25%; /* 16:9 Aspect Ratio */}.responsive-iframe {position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;height: 100%;border: none;}</style></head><body><div class='container'> <iframe class='responsive-iframe' src='" + HtmlText + "' frameborder='0' allow =\"autoplay; fullscreen; clipboard - write; encrypted - media; picture-in-picture\" allowFullScreen></iframe></div></body></html>";
@@ -72,7 +97,14 @@ namespace FoliCon.Views
                                      <head>
                          <meta name='viewport' content='width=device-width, initial-scale=1'>
                          <meta content='IE=Edge' http-equiv='X-UA-Compatible'>
-                         <style>html{overflow:hidden;}</style>
+                         <style>html, body {
+                             overflow: hidden;
+                             margin: 0;
+                             padding: 0;
+                             width: 100%;
+                             height: 100%;
+                             box-sizing: border-box;
+                         }</style>
                          <script src="https://code.jquery.com/jquery-latest.min.js"
                                  type="text/javascript"></script>
                          <script>$(function() {
@@ -98,7 +130,12 @@ namespace FoliCon.Views
                          """;
 
 
-            browser.NavigateToString(html);
+            Browser.NavigateToString(html);
+        }
+
+        private void Browser_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            Browser.Visibility = Visibility.Visible;
         }
     }
 }
