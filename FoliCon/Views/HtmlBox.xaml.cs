@@ -1,4 +1,4 @@
-﻿using System.Windows.Navigation;
+﻿using HandyControl.Themes;
 
 namespace FoliCon.Views;
 
@@ -8,9 +8,8 @@ namespace FoliCon.Views;
 public partial class HtmlBox : UserControl
 {
     private const string VideoUnavailable = "Video not available!";
+    private readonly string _backgroundColor;
     
-    private readonly string _imagePath;
-
     public static readonly DependencyProperty HtmlTextProperty
         = DependencyProperty.Register(
             nameof(HtmlText), 
@@ -22,21 +21,14 @@ public partial class HtmlBox : UserControl
 
     public HtmlBox()
     {
-        _imagePath = Util.GetResourcePath("video-unavailable.png");
-
         InitializeComponent();
-
-        Browser.Visibility = Visibility.Collapsed;
+        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? "#000000" : "#FFFFFF";
     }
 
     public string HtmlText
     {
         get => (string)GetValue(HtmlTextProperty);
         set => SetValue(HtmlTextProperty, value);
-    }
-    private void UpdateBrowserVisibility()
-    {
-        Browser.Visibility = IsVideoAvailable ? Visibility.Visible : Visibility.Collapsed;
     }
     
     private void ProcessBrowse()
@@ -87,27 +79,16 @@ public partial class HtmlBox : UserControl
                                           });
                                       </script>
                                   </head>
-                                  <body>
+                                  <body style="background-color: {{_backgroundColor}}">
                                       <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
-                                          src='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}'>
+                                          src='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}'
+                                          style="visibility:hidden;" onload="this.style.visibility='visible';">
                                       </iframe>
                                   </body>
                               </html>
                   """;
     }
-
-    private string GenerateUnavailableContent()
-    {
-        return $"""
-                
-                            <html>
-                                <body style='margin:0; padding:0; height: 100%; width: 100%; overflow: hidden;'>
-                                    <img src='{_imagePath}' style='height: 100%; width: 100%; object-fit: fill;' />
-                                </body>
-                            </html>
-                """;
-    }
-
+    
     private static void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
     {
         var control = source as HtmlBox;
@@ -119,10 +100,5 @@ public partial class HtmlBox : UserControl
         {
             control.Dispatcher.Invoke(control.ProcessBrowse);
         }
-    }
-
-    private void Browser_LoadCompleted(object sender, NavigationEventArgs e)
-    {
-        Browser.Visibility = Visibility.Visible;
     }
 }
