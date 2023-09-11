@@ -56,7 +56,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Jot" Version="2.1.17" />
     <PackageReference Include="NLog" Version="5.2.4" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="Polly" Version="8.0.0-beta.1" />
+    <PackageReference Include="Polly" Version="8.0.0-beta.2" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Sentry" Version="3.39.0" />
     <PackageReference Include="Sentry.NLog" Version="3.39.0" />
