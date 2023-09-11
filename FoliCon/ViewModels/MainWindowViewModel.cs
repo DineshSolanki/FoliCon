@@ -174,9 +174,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 case FoliconThemes.Light: 
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                    ThemeManager.Current.UsingSystemTheme = false;
                     break;
                 case FoliconThemes.Dark: 
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                    ThemeManager.Current.UsingSystemTheme = false;
                     break;
                 case FoliconThemes.System:
                     ThemeManager.Current.UsingSystemTheme = true;
