@@ -1,5 +1,4 @@
 ﻿using System.Windows.Navigation;
-using HandyControl.Themes;
 
 namespace FoliCon.Views;
 
@@ -46,54 +45,55 @@ public partial class HtmlBox : UserControl
 
         if (!IsVideoAvailable)
         {
+            Browser.NavigateToString("<html><body></body></html>");
             return;
         }
         var content = GenerateHtmlContent();
-        
         Browser.NavigateToString(content);
     }
 
     private string GenerateHtmlContent()
     {
         return $$"""
-                 
-                             <html>
-                                 <head>
-                                     <meta name='viewport' content='width=device-width, initial-scale=1'>
-                                     <meta content='IE=Edge' http-equiv='X-UA-Compatible'>
-                                     <style>
-                                         html, body {
-                                             overflow: hidden;
-                                             margin: 0;
-                                             padding: 0;
-                                             width: 100%;
-                                             height: 100%;
-                                             box-sizing: border-box;
-                                         }
-                                     </style>
-                                     <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
-                                     <script>
-                                         $(function() {
-                                             $('#video').css({
-                                                 width: $(window).innerWidth() + 'px',
-                                                 height: $(window).innerHeight() + 'px'
-                                             });
-                                             $(window).resize(function() {
-                                                 $('#video').css({
-                                                     width: $(window).innerWidth() + 'px',
-                                                     height: $(window).innerHeight() + 'px'
-                                                 });
-                                             });
-                                         });
-                                     </script>
-                                 </head>
-                                 <body>
-                                     <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen='true'
-                                         src='{{HtmlText}}' frameborder='0'>
-                                     </iframe>
-                                 </body>
-                             </html>
-                 """;
+                  
+                              <html lang="{{LangProvider.Culture.TwoLetterISOLanguageName}}">
+                                  <head>
+                                      <meta name='viewport' content='width=device-width, initial-scale=1'>
+                                      <meta content='IE=Edge' http-equiv='X-UA-Compatible'>
+                                      <style>
+                                          html, body {
+                                              overflow: hidden;
+                                              margin: 0;
+                                              padding: 0;
+                                              width: 100%;
+                                              height: 100%;
+                                              box-sizing: border-box;
+                                          }
+                                      </style>
+                                      <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
+                                      <script>
+                                          $(function() {
+                                              $('#video').css({
+                                                  width: $(window).innerWidth() + 'px',
+                                                  height: $(window).innerHeight() + 'px',
+                                                  border: 'none'
+                                              });
+                                              $(window).resize(function() {
+                                                  $('#video').css({
+                                                      width: $(window).innerWidth() + 'px',
+                                                      height: $(window).innerHeight() + 'px'
+                                                  });
+                                              });
+                                          });
+                                      </script>
+                                  </head>
+                                  <body>
+                                      <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
+                                          src='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}'>
+                                      </iframe>
+                                  </body>
+                              </html>
+                  """;
     }
 
     private string GenerateUnavailableContent()
@@ -111,8 +111,14 @@ public partial class HtmlBox : UserControl
     private static void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
     {
         var control = source as HtmlBox;
-        control?.ProcessBrowse();
-        control?.UpdateBrowserVisibility();
+        if (control!.CheckAccess())
+        {
+            control.ProcessBrowse();
+        }
+        else
+        {
+            control.Dispatcher.Invoke(control.ProcessBrowse);
+        }
     }
 
     private void Browser_LoadCompleted(object sender, NavigationEventArgs e)

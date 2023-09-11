@@ -11,7 +11,7 @@ public class TextToVisibilityConverter : IValueConverter
     {
         if (value is string text)
         {
-            return text == "Video not available!" ? Visibility.Collapsed : Visibility.Visible;
+            return text == "Video not available!" ? Visibility.Hidden : Visibility.Visible;
         }
 
         return Visibility.Visible;

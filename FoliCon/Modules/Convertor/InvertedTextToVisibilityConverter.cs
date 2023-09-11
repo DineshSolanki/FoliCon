@@ -6,10 +6,10 @@ public class InvertedTextToVisibilityConverter : IValueConverter
     {
         if (value is string text)
         {
-            return text == "Video not available!" ? Visibility.Visible : Visibility.Collapsed;
+            return text == "Video not available!" ? Visibility.Visible : Visibility.Hidden;
         }
 
-        return Visibility.Collapsed;
+        return Visibility.Hidden;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
