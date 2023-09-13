@@ -31,7 +31,7 @@ public static class DialogServiceExtensions
     public static void ShowCustomIconWindow(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowCustomIconWindow called");
-        dialogService.ShowDialog("CustomIcon", new DialogParameters(), callBack);
+        dialogService.ShowDialog("CustomIcon", callBack);
     }
 
     public static void ShowProSearchResult(this IDialogService dialogService, string folderPath,
@@ -51,18 +51,18 @@ public static class DialogServiceExtensions
 
     public static void ShowApiConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
-        dialogService.ShowDialog("ApiConfig", new DialogParameters(), callBack);
+        dialogService.ShowDialog("ApiConfig", callBack);
     }
     public static void ShowPosterIconConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowPosterIconConfig called");
-        dialogService.ShowDialog("PosterIconConfig", new DialogParameters(), callBack);
+        dialogService.ShowDialog("PosterIconConfig", callBack);
     }
 
     public static void ShowAboutBox(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowAboutBox called");
-        dialogService.ShowDialog("AboutBox", new DialogParameters(), callBack);
+        dialogService.ShowDialog("AboutBox", callBack);
     }
     public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, IgdbClass igdbObject, ResultResponse result,int pickedIndex, ObservableCollection<ListItem> resultData, bool isPickedById, Action<IDialogResult> callBack)
     {

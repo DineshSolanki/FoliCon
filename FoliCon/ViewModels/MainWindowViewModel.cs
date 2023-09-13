@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using HandyControl.Themes;
+using NLog;
 
 namespace FoliCon.ViewModels;
 
@@ -70,6 +71,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     }
 
     private readonly IDialogService _dialogService;
+    private FoliconThemes _theme;
     private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
     public ProgressBarData BusyIndicatorProperties { get; set; }
@@ -161,6 +163,32 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         get => _appLanguage;
         set => SetProperty(ref _appLanguage, value);
     }
+    public FoliconThemes Theme
+    {
+        get => _theme;
+        set
+        {
+            SetProperty(ref _theme, value);
+            switch (value)
+            {
+                case FoliconThemes.Light: 
+                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                    ThemeManager.Current.UsingSystemTheme = false;
+                    break;
+                case FoliconThemes.Dark: 
+                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                    ThemeManager.Current.UsingSystemTheme = false;
+                    break;
+                case FoliconThemes.System:
+                    ThemeManager.Current.UsingSystemTheme = true;
+                    break;
+                default:
+                    ThemeManager.Current.UsingSystemTheme = true;
+                    break;
+            }
+        }
+    }
+
     #endregion GetterSetters
 
     #region DelegateCommands
@@ -212,6 +240,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             .Property(p => p.IsPosterMockupUsed, true)
             .Property(p => p.IsPosterWindowShown, false)
             .Property(p => p.AppLanguage, Languages.English)
+            .Property(p => p.Theme, FoliconThemes.System)
             .Property(p => p.EnableErrorReporting, false)
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);

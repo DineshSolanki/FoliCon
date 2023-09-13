@@ -567,4 +567,16 @@
   <data name="EnableErrorReportingTip" xml:space="preserve">
     <value>إرسال تقارير الأخطاء للمساعدة في تحسين FoliCon</value>
   </data>
+  <data name="Theme" xml:space="preserve">
+    <value>سمة</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>موضوع مظلم</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>موضوع خفيف</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>نظام</value>
+  </data>
 </root>

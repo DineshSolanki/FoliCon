@@ -8,6 +8,7 @@
              xmlns:foliCon="clr-namespace:FoliCon"
              xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance modules:PosterIconConfigViewModel }">
@@ -19,17 +20,17 @@
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="300" />
-            <Setter Property="MaxHeight" Value="300" />
+            <!-- <Setter Property="Background" Value="{DynamicResource RegionBrush}" /> -->
             <Setter Property="Width" Value="1066" />
-            <!--<Setter Property="ResizeMode" Value="NoResize" />-->
-            <Setter Property="WindowStyle" Value="ThreeDBorderWindow" />
+            <Setter Property="WindowStyle" Value="SingleBorderWindow" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <GroupBox 
-              Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
-               Foreground="Transparent" BorderThickness="0"
-              Background="Transparent" HorizontalContentAlignment="Center" HorizontalAlignment="Center">
+    <GroupBox
+        Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
+        hc:TitleElement.Background="{DynamicResource RegionBrush}"
+        Foreground="Transparent" BorderThickness="0"
+        Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center">
         <Grid Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
@@ -57,7 +58,7 @@
                     <Image Source="/Resources/PosterIconAlt.ico" />
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton x:Name="RPosterFaelpessoal"  Grid.Column="2" GroupName="PosterOverlay"
+            <RadioButton x:Name="RPosterFaelpessoal" Grid.Column="2" GroupName="PosterOverlay"
                          Command="{Binding IconOverlayChangedCommand}"
                          CommandParameter="Faelpessoal" FontSize="16"
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
@@ -67,7 +68,7 @@
                 </RadioButton.Content>
             </RadioButton>
 
-            <RadioButton x:Name="RPosterLiaher"  Grid.Column="3" GroupName="PosterOverlay"
+            <RadioButton x:Name="RPosterLiaher" Grid.Column="3" GroupName="PosterOverlay"
                          Command="{Binding IconOverlayChangedCommand}"
                          CommandParameter="Liaher" FontSize="16"
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
@@ -76,7 +77,8 @@
                     <Image Source="/Resources/PosterIconLiaher.ico" />
                 </RadioButton.Content>
             </RadioButton>
-            <RadioButton x:Name="RPosterFaelpessoalHorizontal"  Grid.Column="4" GroupName="PosterOverlay" ToolTip="{langExtension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
+            <RadioButton x:Name="RPosterFaelpessoalHorizontal" Grid.Column="4" GroupName="PosterOverlay"
+                         ToolTip="{langExtension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
                          Command="{Binding IconOverlayChangedCommand}"
                          CommandParameter="FaelpessoalHorizontal" FontSize="16"
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"

@@ -567,4 +567,16 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="EnableErrorReportingTip" xml:space="preserve">
     <value>Enviar informes de error para ayudar a mejorar FoliCon</value>
   </data>
+  <data name="Theme" xml:space="preserve">
+    <value>tema</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>tema oscuro</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Tema ligero</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
 </root>

@@ -1,4 +1,4 @@
-﻿<Window x:Class="FoliCon.Views.MainWindow"
+﻿<hc:Window x:Class="FoliCon.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
@@ -79,7 +79,8 @@
                         <MenuItem Header="{ex:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
                                   Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
                     </MenuItem>
-                        <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
+                    <hc:ComboBox x:Name="CmbTheme" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:FoliconThemes}}}"  IsEditable="False" SelectedItem ="{Binding Path=Theme}" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.Theme}}" hc:TitleElement.TitlePlacement="Left"/>
+                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{ex:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuRExbtn" Header="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                           ToolTip="{ex:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
@@ -126,7 +127,7 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
                     <Grid HorizontalAlignment="Stretch" >
-                        <TextBlock Text="{Binding SelectedFolder}" FontStyle="Italic" Foreground="Black"
+                        <TextBlock Text="{Binding SelectedFolder}" FontStyle="Italic" Foreground="{DynamicResource PrimaryTextBrush}"
                                    HorizontalAlignment="Center" VerticalAlignment="Top" />
                         
                         <Path Data="M8,5C4.699219,5 2,7.699219 2,11 2,13.171875 3.261719,14.949219 5,16L5,24.40625 5.28125,24.71875 7.28125,26.71875 8,27.40625 8.71875,26.71875 10.71875,24.71875 11,24.40625 11,16C12.738281,14.949219 14,13.171875 14,11 14,7.699219 11.300781,5 8,5z M8,7C10.21875,7 12,8.78125 12,11 12,12.648438 11.003906,14.039063 9.59375,14.65625L9,14.9375 9,17 8,17 8,19 9,19 9,20 8,20 8,22 9,22 9,23.5625 8,24.5625 7,23.5625 7,14.9375 6.40625,14.65625C4.996094,14.039063 4,12.648438 4,11 4,8.78125 5.78125,7 8,7z M8,9C6.894531,9,6,9.894531,6,11L10,11C10,9.894531,9.105469,9,8,9z M16,9L16,15 30,15 30,9z M18,11L28,11 28,13 18,13z M16,16L16,22 30,22 30,16z M18,18L28,18 28,20 18,20z"
@@ -139,15 +140,23 @@
                     </Grid>
                 </ContentControl>
 
-                <Grid Grid.Column="0" Grid.Row="2" Grid.IsSharedSizeScope="True" Background="WhiteSmoke">
+                <Grid Grid.Column="0" Grid.Row="2" Grid.IsSharedSizeScope="True">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="96" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
+                    <Grid.Background>
+                        <Binding ElementName="FinalList" Path="Background"/>
+                    </Grid.Background>
                     <GroupBox hc:TitleElement.TitlePlacement="Top" Grid.Row="0" Header="{ex:Lang Key={x:Static langs:LangKeys.IconMode}}"
                               Style="{StaticResource GroupBoxTab}" FontSize="18" FontFamily="Cambria"
-                              hc:TitleElement.Background="WhiteSmoke" Foreground="BlueViolet" BorderThickness="0"
-                              Background="WhiteSmoke">
+                               Foreground="BlueViolet" BorderThickness="0">
+                        <hc:TitleElement.Background>
+                            <Binding ElementName="FinalList" Path="Background"/>
+                        </hc:TitleElement.Background>
+                        <GroupBox.Background>
+                            <Binding ElementName="FinalList" Path="Background"/>
+                        </GroupBox.Background>
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -170,8 +179,13 @@
                         Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                         hc:TitleElement.TitlePlacement="Top" Header="{ex:Lang Key={x:Static langs:LangKeys.SearchMode}}" Style="{StaticResource GroupBoxTab}"
                         Grid.Row="1" Margin="0,1,0,0" FontFamily="Cambria" FontSize="18"
-                        hc:TitleElement.Background="WhiteSmoke" Foreground="BlueViolet" BorderThickness="0"
-                        Background="WhiteSmoke">
+                        Foreground="BlueViolet" BorderThickness="0">
+                        <hc:TitleElement.Background>
+                            <Binding ElementName="FinalList" Path="Background"/>
+                        </hc:TitleElement.Background>
+                        <GroupBox.Background>
+                            <Binding ElementName="FinalList" Path="Background"/>
+                        </GroupBox.Background>
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*" />
@@ -198,7 +212,10 @@
                         </Grid>
                     </GroupBox>
                 </Grid>
-                <Grid Grid.Column="1" Background="WhiteSmoke" Grid.Row="2">
+                <Grid Grid.Column="1" Grid.Row="2">
+                    <Grid.Background>
+                        <Binding ElementName="FinalList" Path="Background"/>
+                    </Grid.Background>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
@@ -310,4 +327,4 @@
             </Grid>
         </Grid>
     </hc:BusyIndicator>
-</Window>
+</hc:Window>

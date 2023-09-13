@@ -570,4 +570,16 @@
     <value>Отправлять отчеты об ошибках, чтобы помочь улучшить FoliCon
 </value>
   </data>
+  <data name="Theme" xml:space="preserve">
+    <value>тема</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Темная тема</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Светлая тема</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Система</value>
+  </data>
 </root>

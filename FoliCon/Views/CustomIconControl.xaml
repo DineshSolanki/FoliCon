@@ -13,6 +13,7 @@
              xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:CustomIconControlViewModel}"
+             Background="{DynamicResource RegionBrush}"
              prism:ViewModelLocator.AutoWireViewModel="True" AllowDrop="True" >
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -38,7 +39,7 @@
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
         </hc:BusyIndicator.BusyContent>
-        <Grid Background="WhiteSmoke">
+        <Grid Background="{DynamicResource RegionBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70" />
                 <RowDefinition Height="50" />
@@ -57,10 +58,8 @@
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto"
                     Command="{Binding LoadIcons}"  modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
             modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" />
-            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="0" Text="{langExtension:Lang Key={x:Static langs:LangKeys.Folders}}" HorizontalAlignment="Center"
-                       Foreground="Black" />
-            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="1" Text="{langExtension:Lang Key={x:Static langs:LangKeys.Icons}}" HorizontalAlignment="Center"
-                       Foreground="Black" />
+            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="0" Text="{langExtension:Lang Key={x:Static langs:LangKeys.Folders}}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="1" Text="{langExtension:Lang Key={x:Static langs:LangKeys.Icons}}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/>
             <ListBox x:Name="FoldersList" Grid.Row="2" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
                      Grid.Column="0" IsManipulationEnabled="True" dd:DragDrop.IsDragSource="True" dd:DragDrop.DropHandler="{Binding ReOrderDropHandler}"
                      dd:DragDrop.IsDropTarget="True" SelectionMode="Extended"

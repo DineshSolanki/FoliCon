@@ -149,6 +149,10 @@ public class LangProvider : INotifyPropertyChanged
             OnPropertyChanged(nameof(SkipThisTitle));
             OnPropertyChanged(nameof(Spanish));
             OnPropertyChanged(nameof(StopSearching));
+            OnPropertyChanged(nameof(Theme));
+            OnPropertyChanged(nameof(ThemeDark));
+            OnPropertyChanged(nameof(ThemeLight));
+            OnPropertyChanged(nameof(ThemeSystem));
             OnPropertyChanged(nameof(ThisIsLatestVersion));
             OnPropertyChanged(nameof(Title));
             OnPropertyChanged(nameof(TMDBAPIKey));
@@ -407,6 +411,10 @@ public class LangProvider : INotifyPropertyChanged
     public string Spanish => Lang.Spanish;
 
     public string StopSearching => Lang.StopSearching;
+    public string Theme => Lang.Theme;
+    public string ThemeDark => Lang.ThemeDark;
+    public string ThemeLight => Lang.ThemeLight;
+    public string ThemeSystem => Lang.ThemeSystem;
 
     public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
 
@@ -687,6 +695,10 @@ public class LangKeys
     public static string Spanish = nameof(Spanish);
 
     public static string StopSearching = nameof(StopSearching);
+    public static string Theme = nameof(Theme);
+    public static string ThemeDark = nameof(ThemeDark);
+    public static string ThemeLight = nameof(ThemeLight);
+    public static string ThemeSystem = nameof(ThemeSystem);
 
     public static string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
 

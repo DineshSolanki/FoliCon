@@ -567,4 +567,16 @@
   <data name="EnableErrorReportingTip" xml:space="preserve">
     <value>FoliCon को बेहतर बनाने में मदद के लिए त्रुटि रिपोर्ट भेजें</value>
   </data>
+  <data name="Theme" xml:space="preserve">
+    <value>थीम</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>डार्क</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>लाइट</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>सिस्टम</value>
+  </data>
 </root>
