@@ -321,59 +321,111 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private async void PerformSelectionChanged()
     {
-        if(ResultListViewData.SelectedItem == null && !ResultListViewData.SelectedItem!.TrailerKey.IsNullOrEmpty()) return;
+        if (ResultListViewData.SelectedItem == null || !ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
+            return;
+
         var itemId = ResultListViewData.SelectedItem.Id;
+
         if (SearchResult.MediaType == MediaTypes.Game)
         {
-            var r = await _igdbObject.GetGameVideo(itemId);
-            if (r == null || r.Length == 0) return;
-            if (r.Any(v => v.Name == "Trailer"))
-            {
-                var key = r.First(v => v.Name == "Trailer");
-                ResultListViewData.SelectedItem.TrailerKey = key.VideoId;
-                ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + key.VideoId);
-                Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
-                    ResultListViewData.SelectedItem.Trailer);
-            }
+            await HandleMediaType(itemId, GetGameTrailer);
+        }
+        else if (SearchResult.MediaType == MediaTypes.Movie)
+        {
+            await HandleMediaType(itemId, GetMovieTrailer);
+        }
+        else if (SearchResult.MediaType == MediaTypes.Tv)
+        {
+            await HandleMediaType(itemId, GetTvTrailer);
+        }
+        else if (SearchResult.MediaType == MediaTypes.Mtv)
+        {
+            await HandleMtvMediaType(itemId);
         }
         else
         {
-            if (SearchResult.MediaType == MediaTypes.Movie)
-            {
-                await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
-                {
-                    if (item.Result == null) return;
-                    if (!item.Result.Results.Any()) return;
-                    var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
-                    if (i == null)
-                    {
-                        Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-                        return;
-                    }
-                    ResultListViewData.SelectedItem.TrailerKey = i.Key;
-                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
-                    Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
-                        ResultListViewData.SelectedItem.Trailer);
-                });
-            }
-            else if (SearchResult.MediaType == MediaTypes.Tv)
-            {
-                await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
-                {
-                    if (item.Result == null) return;
-                    if (!item.Result.Results.Any()) return;
-                    var i = item.Result.Results.Any(i => i.Type == "Trailer" && i.Site == "YouTube") ? item.Result.Results.First(i => i.Type == "Trailer") : item.Result.Results.First();
-                    if (i == null)
-                    {
-                        Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-                        return;
-                    }
-                    ResultListViewData.SelectedItem.TrailerKey = i.Key;
-                    ResultListViewData.SelectedItem.Trailer = new Uri("https://www.youtube.com/embed/" + i.Key);
-                    Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
-                        ResultListViewData.SelectedItem.Trailer);
-                });
-            }
+            Logger.Warn("Unknown media type {MediaType}", SearchResult.MediaType);
         }
+    }
+
+    private async Task HandleMtvMediaType(string itemId)
+    {
+        switch (ResultListViewData.SelectedItem.MediaType)
+        {
+            case MediaType.Tv:
+                await HandleMediaType(itemId, GetTvTrailer);
+                break;
+            case MediaType.Movie:
+                await HandleMediaType(itemId, GetMovieTrailer);
+                break;
+            default:
+                Logger.Warn("Unknown media type {MediaType}", ResultListViewData.SelectedItem.MediaType);
+                break;
+        }
+    }
+
+    private async Task HandleMediaType(string itemId, Func<string, Task> handleAction)
+    {
+        await handleAction(itemId);
+    }
+
+    private async Task GetGameTrailer(string itemId)
+    {
+        var r = await _igdbObject.GetGameVideo(itemId);
+        if (r == null || r.Length == 0) return;
+        if (r.All(v => v.Name != "Trailer")) return;
+        var key = r.First(v => v.Name == "Trailer");
+        SetTrailer(key.VideoId);
+    }
+
+    private async Task GetMovieTrailer(string itemId)
+    {
+        await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+        {
+            if (item.Result == null) return;
+            var i = ChooseTrailer(item.Result.Results);
+            if (i != null)
+            {
+                SetTrailer(i.Key);
+            }
+            else
+            {
+                Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
+            }
+        });
+    }
+
+    private async Task GetTvTrailer(string itemId)
+    {
+        await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+        {
+            if (item.Result == null) return;
+            var i = ChooseTrailer(item.Result.Results);
+            if (i != null)
+            {
+                SetTrailer(i.Key);
+            }
+            else
+            {
+                Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
+            }
+        });
+    }
+
+    private dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
+    {
+        if (!results.Any()) return null;
+        return results.Any(i => i.Type == "Trailer" && i.Site == "YouTube")
+            ? results.First(i => i.Type == "Trailer")
+            : results.First();
+    }
+
+    private void SetTrailer(string trailerKey)
+    {
+        ResultListViewData.SelectedItem.TrailerKey = trailerKey;
+        ResultListViewData.SelectedItem.Trailer =
+            new Uri("https://www.youtube.com/embed/" + trailerKey);
+        Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
+            ResultListViewData.SelectedItem.Trailer);
     }
 }
