@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace FoliCon.Models
 {
+    //[TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum FoliconThemes
     {
-        //[LocalizedDescription("Light", typeof(Lang))]
+        //[LocalizedDescription("ThemeLight", typeof(Lang))]
         Light,
 
-        //[LocalizedDescription("Dark", typeof(Lang))]
+        //[LocalizedDescription("ThemeDark", typeof(Lang))]
         Dark,
 
-        //[LocalizedDescription("System", typeof(Lang))]
+        //[LocalizedDescription("ThemeSystem", typeof(Lang))]
         System
     }
 }
