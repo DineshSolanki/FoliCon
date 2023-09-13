@@ -1,6 +1,4 @@
-﻿using HandyControl.Controls;
-
-using NLog;
+﻿using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.Modules;

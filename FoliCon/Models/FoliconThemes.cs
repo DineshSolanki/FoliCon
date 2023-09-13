@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace FoliCon.Models;
 
-namespace FoliCon.Models
+//[TypeConverter(typeof(EnumDescriptionTypeConverter))]
+public enum FoliconThemes
 {
-    //[TypeConverter(typeof(EnumDescriptionTypeConverter))]
-    public enum FoliconThemes
-    {
-        //[LocalizedDescription("ThemeLight", typeof(Lang))]
-        Light,
+    //[LocalizedDescription("ThemeLight", typeof(Lang))]
+    Light,
 
-        //[LocalizedDescription("ThemeDark", typeof(Lang))]
-        Dark,
+    //[LocalizedDescription("ThemeDark", typeof(Lang))]
+    Dark,
 
-        //[LocalizedDescription("ThemeSystem", typeof(Lang))]
-        System
-    }
+    //[LocalizedDescription("ThemeSystem", typeof(Lang))]
+    System
 }

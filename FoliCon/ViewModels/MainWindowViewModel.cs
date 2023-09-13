@@ -1,6 +1,5 @@
-﻿using NLog;
-
-using HandyControl.Themes;
+﻿using HandyControl.Themes;
+using NLog;
 
 namespace FoliCon.ViewModels;
 

@@ -1,7 +1,6 @@
 ﻿using FoliCon.ViewModels;
 using NLog;
 using Prism.Ioc;
-using System.Windows.Controls.Ribbon;
 using Sentry;
 using Logger = NLog.Logger;
 
