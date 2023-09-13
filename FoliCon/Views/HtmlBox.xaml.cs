@@ -37,7 +37,7 @@ public partial class HtmlBox : UserControl
 
         if (!IsVideoAvailable)
         {
-            Browser.NavigateToString("<html><body></body></html>");
+            Browser.NavigateToString($"""<html><body style="background-color: {_backgroundColor}"></body></html>""");
             return;
         }
         var content = GenerateHtmlContent();
