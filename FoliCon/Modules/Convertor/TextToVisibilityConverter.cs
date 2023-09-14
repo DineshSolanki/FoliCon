@@ -8,7 +8,7 @@ public class TextToVisibilityConverter : IValueConverter
             return text == "Video not available!" ? Visibility.Hidden : Visibility.Visible;
         }
 
-        return Visibility.Visible;
+        return Visibility.Hidden;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

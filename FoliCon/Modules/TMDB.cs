@@ -124,7 +124,7 @@ public class Tmdb
                 }
                 Logger.Trace("Media Name: {MediaName}, Year: {Year}, Rating: {Rating}, Overview:{Pverview}, PosterPath: {Poster}",
                     mediaName, year, rating, overview, poster);
-                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id.ToString()));
+                items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id.ToString(), mediaType));
                 Logger.Info("Added {MediaName} to List", mediaName);
             }
 

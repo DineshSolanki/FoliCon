@@ -14,7 +14,7 @@
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded">
+             d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded" Background="{DynamicResource RegionBrush}">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -44,7 +44,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Text="{Binding SearchTitle}" VerticalAlignment="Top" Grid.ColumnSpan="2"
                        HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}" />
-            <Grid Grid.Column="0" Grid.Row="1">
+            <Grid Grid.Column="0" Grid.Row="1" Background="{DynamicResource RegionBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
                     <RowDefinition Height="*" />
@@ -87,7 +87,7 @@
                     </i:Interaction.Triggers>
                 </hc:SearchBar>
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="1" Margin="4,0,0,0">
+            <Grid Grid.Row="1" Grid.Column="1" Margin="4,0,0,0" Background="{DynamicResource RegionBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35" />
                     <RowDefinition Height="200" />
@@ -124,7 +124,7 @@
                          FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
                          VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
                 <ListBox x:Name="LstFolderContent" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
-                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="{DynamicResource RegionBrush}">
                     <!--<hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:LaunchUriOrFileAction Path="{Binding ElementName=LstFolderContent, Path=SelectedItem}"/>

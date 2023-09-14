@@ -11,6 +11,7 @@ public class ListItem : BindableBase
     private string _trailerKey;
     private Uri _trailerLink;
     private string _id;
+    private MediaType _mediaType;
 
     public string Title
     {
@@ -65,9 +66,15 @@ public class ListItem : BindableBase
         get => _id;
         set => SetProperty(ref _id, value);
     }
+    
+    public MediaType MediaType
+    {
+        get => _mediaType;
+        set => SetProperty(ref _mediaType, value);
+    }
 
     public ListItem(string title, string year, string rating, string overview = null, string poster = null,
-        string folder = "", string id = "")
+        string folder = "", string id = "", MediaType mediaType = MediaType.Unknown)
     {
         Title = title;
         Year = year;
@@ -76,7 +83,7 @@ public class ListItem : BindableBase
         Poster = poster;
         Folder = folder;
         Id = id;
-
+        MediaType = mediaType;
     }
 
     public ListItem()
