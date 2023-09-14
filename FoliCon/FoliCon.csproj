@@ -14,6 +14,7 @@
     <Company>Dinesh Solanki</Company>
     <Description>Creates Folder icons for Movies, Serials, Music, and Games Folders
 dineshsolanki.github.io/folicon/</Description>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>0</WarningLevel>
