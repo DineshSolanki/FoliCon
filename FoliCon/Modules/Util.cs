@@ -13,68 +13,101 @@ namespace FoliCon.Modules;
 internal static class Util
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     public static async void CheckForUpdate(bool onlyShowIfUpdateAvailable = false)
     {
         Logger.Debug("Checking for Update");
-        if (ApplicationHelper.IsConnectedToInternet())
-        {
-            var ver = await UpdateHelper.CheckUpdateAsync("DineshSolanki", "FoliCon");
-            if (ver.IsExistNewVersion)
-            {
-                Logger.Debug("New Version Found: {}", ver.TagName);
-                var info = new GrowlInfo
-                {
-                    Message = LangProvider.GetLang("NewVersionFound").Format(ver.TagName,
-                        ver.Changelog.Replace("\\n", Environment.NewLine)),
-                    ConfirmStr = LangProvider.GetLang("UpdateNow"),
-                    CancelStr = LangProvider.GetLang("Ignore"),
-                    ShowDateTime = false,
-                    ActionBeforeClose = isConfirmed =>
-                    {
-                        switch (isConfirmed)
-                        {
-                            case true:
-                                Logger.Debug("Update Confirmed. Starting Update Process");
-                                StartProcess(ver.ReleaseUrl);
-                                break;
-                        }
 
-                        return true;
-                    }
-                };
-                Growl.AskGlobal(info);
-            }
-            else
-            {
-                Logger.Debug("No New Version Found");
-                if (onlyShowIfUpdateAvailable is not false) return;
-                var info = new GrowlInfo
-                {
-                    Message = LangProvider.GetLang("ThisIsLatestVersion"),
-                    ShowDateTime = false,
-                    StaysOpen = false
-                };
-                Growl.InfoGlobal(info);
-            }
+        if (!ApplicationHelper.IsConnectedToInternet())
+        {
+            ShowGrowlError(LangProvider.GetLang("NetworkNotAvailable"));
+            return;
         }
-        else
-            Growl.ErrorGlobal(new GrowlInfo
-                { Message = LangProvider.GetLang("NetworkNotAvailable"), ShowDateTime = false });
+
+        var ver = await UpdateHelper.CheckUpdateAsync("DineshSolanki", "FoliCon");
+
+        if (!ver.IsExistNewVersion)
+        {
+            Logger.Debug("No New Version Found");
+
+            if (!onlyShowIfUpdateAvailable)
+            {
+                ShowGrowlInfo(LangProvider.GetLang("ThisIsLatestVersion"));
+            }
+
+            return;
+        }
+
+        Logger.Debug("New Version Found: {}", ver.TagName);
+        ConfirmUpdate(ver);
+    }
+
+    private static void ShowGrowlError(string message)
+    {
+        Growl.ErrorGlobal(new GrowlInfo { Message = message, ShowDateTime = false });
+    }
+
+    private static void ShowGrowlInfo(string message)
+    {
+        Growl.InfoGlobal(new GrowlInfo { Message = message, ShowDateTime = false, StaysOpen = false });
+    }
+
+    private static void ConfirmUpdate(ReleaseInfo ver)
+    {
+        var message = LangProvider.GetLang("NewVersionFound")
+            .Format(ver.TagName, ver.Changelog.Replace("\\n", Environment.NewLine));
+        var confirmMessage = LangProvider.GetLang("UpdateNow");
+        var cancelMessage = LangProvider.GetLang("Ignore");
+
+        var info = new GrowlInfo
+        {
+            Message = message,
+            ConfirmStr = confirmMessage,
+            CancelStr = cancelMessage,
+            ShowDateTime = false,
+            ActionBeforeClose = isConfirmed =>
+            {
+                if (!isConfirmed) return true;
+                Logger.Debug("Update Confirmed. Starting Update Process");
+                StartProcess(ver.ReleaseUrl);
+
+                return true;
+            }
+        };
+
+        Growl.AskGlobal(info);
     }
 
     /// <summary>
     /// Starts Process associated with given path.
     /// </summary>
-    /// <param name="path">if path is a URL it opens url in default browser, if path is File Or folder path it will be started.</param>
+    /// <param name="path">If the path is a URL, it opens the URL in the default browser. If the path is a file or folder path, it will be started.</param>
     public static void StartProcess(string path)
     {
-        Logger.Debug("Starting Process: {}", path);
-        Process.Start(new ProcessStartInfo(path)
+        try
         {
-            UseShellExecute = true
-        });
+            var processInfo = new ProcessStartInfo(path)
+            {
+                UseShellExecute = true
+            };
+
+            Logger.Debug($"Starting Process: {path}");
+            Process.Start(processInfo);
+        }
+        catch (Exception e)
+        {
+            Logger.Error($"Failed to start process: {e.Message}");
+            throw;
+        }
     }
 
+    /// <summary>
+    /// Determines whether a given string value ends with any string within a collection of file extensions.
+    /// </summary>
+    /// <param name="value">The string value to check.</param>
+    /// <param name="fileExtensions">An iterable collection of file extensions.</param>
+    /// <returns>A boolean indicating whether the string value ends with any of the provided file extensions.
+    /// Returns true if the value ends with any of the file extensions; false otherwise.</returns>
     private static bool EndsIn(string value, IEnumerable<string> fileExtensions)
     {
         return fileExtensions.Any(fileExtension => value.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase));
@@ -133,23 +166,41 @@ internal static class Util
 
     public static void RefreshIconCache()
     {
-        Logger.Debug("Refreshing Icon Cache");
-        _ = Kernel32.Wow64DisableWow64FsRedirection(out _);
-        var objProcess = new Process
+        try
         {
-            StartInfo =
+            Logger.Debug("Refreshing Icon Cache");
+
+            var isWow64Redirected = Kernel32.Wow64DisableWow64FsRedirection(out _);
+
+            var systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
+            var exePath = Path.Combine(systemFolder, "ie4uinit.exe");
+
+            using (var process = new Process())
             {
-                FileName = Environment.GetFolderPath(Environment.SpecialFolder.System) +
-                           "\\ie4uinit.exe",
-                Arguments = "-ClearIconCache",
-                WindowStyle = ProcessWindowStyle.Normal
+                process.StartInfo = new ProcessStartInfo()
+                {
+                    FileName = exePath,
+                    Arguments = "-ClearIconCache",
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+
+                process.Start();
+                process.WaitForExit();
             }
-        };
-        objProcess.Start();
-        objProcess.WaitForExit();
-        objProcess.Close();
-        Logger.Debug("Icon Cache Refreshed");
-        Kernel32.Wow64EnableWow64FsRedirection(true);
+
+            Logger.Debug("Icon Cache Refreshed");
+
+            if (isWow64Redirected)
+            {
+                Kernel32.Wow64EnableWow64FsRedirection(true);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.ForErrorEvent().Message($"Failed to refresh the icon cache due to error: {ex.Message}")
+                .Exception(ex)
+                .Log();
+        }
     }
 
     /// <summary>
@@ -653,36 +704,20 @@ internal static class Util
     public static CultureInfo GetCultureInfoByLanguage(Languages language)
     {
         Logger.Debug("Getting CultureInfo by Language: {Language}", language);
-        CultureInfo cultureInfo;
-        switch (language)
-        {
-            case Languages.English:
-                ConfigHelper.Instance.SetLang("en");
-                cultureInfo = new CultureInfo("en-US");
-                break;
-            case Languages.Spanish:
-                ConfigHelper.Instance.SetLang("es");
-                cultureInfo = new CultureInfo("es-MX");
-                break;
-            case Languages.Arabic:
-                ConfigHelper.Instance.SetLang("ar");
-                cultureInfo = new CultureInfo("ar-SA");
-                break;
-            case Languages.Russian:
-                ConfigHelper.Instance.SetLang("ru");
-                cultureInfo = new CultureInfo("ru-RU");
-                break;
-            case Languages.Hindi:
-                ConfigHelper.Instance.SetLang("hi");
-                cultureInfo = new CultureInfo("hi-IN");
-                break;
-            default:
-                ConfigHelper.Instance.SetLang("en");
-                cultureInfo = new CultureInfo("en-US");
-                break;
-        }
 
-        return cultureInfo;
+        var languageCodes = new Dictionary<Languages, string>
+        {
+            { Languages.English, "en-US" },
+            { Languages.Spanish, "es-MX" },
+            { Languages.Arabic, "ar-SA" },
+            { Languages.Russian, "ru-RU" },
+            { Languages.Hindi, "hi-IN" }
+        };
+
+        var langCode = languageCodes.GetValueOrDefault(language, "en-US");
+        ConfigHelper.Instance.SetLang(langCode.Split("-")[0]);
+
+        return new CultureInfo(langCode);
     }
 
     public static void SaveMediaInfo(int id, string mediaType, string folderPath)
@@ -716,16 +751,25 @@ internal static class Util
 
     public static (string ID, string MediaType) ReadMediaInfo(string folderPath)
     {
+        string id = null;
+        string mediaType = null;
         var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
-        var id = File.Exists(filePath) ? InIHelper.ReadValue("ID", null, filePath) : null;
-        var mediaType = File.Exists(filePath) ? InIHelper.ReadValue("MediaType", null, filePath) : null;
-        if (string.IsNullOrWhiteSpace(id))
+
+        if (File.Exists(filePath))
         {
-            id = null;
-            mediaType = null;
+            id = InIHelper.ReadValue("ID", null, filePath);
+            mediaType = InIHelper.ReadValue("MediaType", null, filePath);
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                id = null;
+                mediaType = null;
+            }
         }
+
         var mediaInfo = (ID: id, MediaType: mediaType);
         Logger.Debug("Media Info Read: {@MediaInfo}", mediaInfo);
+
         return mediaInfo;
     }
 
@@ -797,52 +841,36 @@ internal static class Util
     {
         Logger.Info("Modifying Context Menu");
         if (IfNotAdminRestartAsAdmin() == false) return;
-        switch (Services.Settings.IsExplorerIntegrated)
+
+        if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"))
         {
-            case true when Services.Settings.ContextEntryName == LangProvider.GetLang("CreateIconsWithFoliCon"):
-                return;
-            case true when Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"):
-            {
-                Logger.Info("Removing Old Context Menu Entry");
-                RemoveFromContextMenu();
-                break;
-            }
+            Logger.Info("Removing Old Context Menu Entry");
+            RemoveFromContextMenu();
         }
+
         Services.Settings.ContextEntryName = LangProvider.GetLang("CreateIconsWithFoliCon");
         Services.Settings.IsExplorerIntegrated = true;
         Services.Settings.Save();
-        var commandS = $"""
-                        "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode Professional
-                        """;
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Professional"), commandS);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Professional"), commandS.Replace("%1", "%V"));
 
+        RegisterContextMenuOptions(new List<string> { "Professional", "Movie", "TV", "Game", "Auto" });
 
-        commandS = $"""
-                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode Movie
-                    """;
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Movie"), commandS);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Movie"), commandS.Replace("%1", "%V"));
-
-        commandS = $"""
-                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode TV
-                    """;
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("TV"), commandS);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("TV"), commandS.Replace("%1", "%V"));
-
-        commandS = $"""
-                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode Game
-                    """;
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Game"), commandS);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Game"), commandS.Replace("%1", "%V"));
-
-        commandS = $"""
-                    "{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode "Auto (Movies & TV Shows)"
-                    """;
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Auto"), commandS);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang("Auto"), commandS.Replace("%1", "%V"));
         Logger.Info("Context Menu Modified");
-        //Growl.SuccessGlobal("Merge Subtitle option added to context menu!");
+    }
+
+    private static void RegisterContextMenuOptions(List<string> modes)
+    {
+        foreach (var mode in modes)
+        {
+            var modeName = mode == "Auto" ? "Auto (Movies & TV Shows)" : mode;
+            var command = $"""{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode {modeName}""";
+            RegisterContextMenuOption(mode, command);
+        }
+    }
+
+    private static void RegisterContextMenuOption(string modeName, string command)
+    {
+        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command);
+        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command.Replace("%1", "%V"));
     }
 
     public static void RemoveFromContextMenu()
@@ -859,31 +887,63 @@ internal static class Util
     public static LoggingConfiguration GetNLogConfig()
     {
         Logger.Info("Getting NLog Configuration");
-        LogManager.Setup().LoadConfigurationFromFile();
+        LoadConfigurationFromNLog();
+
         var config = new LoggingConfiguration();
-        
-        var logPath = LogManager.Configuration.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
-        var fileLogLevel = LogLevel.FromString(LogManager.Configuration.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()));
-        
-        var fileTarget = new FileTarget
+        var logPath = GetLogPath();
+        var fileLogLevel = GetFileLogLevel();
+  
+        var fileTarget = ConfigureFileTarget(logPath);
+        var consoleTarget = ConfigureConsoleTarget();
+
+        config.AddRule(fileLogLevel, LogLevel.Fatal, fileTarget);
+        config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
+    
+        Logger.Info("NLog configuration loaded");
+        return config;
+    }
+
+    private static void LoadConfigurationFromNLog()
+    {
+        LogManager.Setup().LoadConfigurationFromFile(); 
+    }
+
+    private static string GetLogPath()
+    {
+        return LogManager.Configuration.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
+    }
+
+    private static LogLevel GetFileLogLevel()
+    {
+        return LogLevel.FromString(LogManager.Configuration.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()));
+    }
+
+    private static FileTarget ConfigureFileTarget(string logPath)
+    {
+        var layoutString= GetLayoutString();
+        return new FileTarget
         {
             Name = "fileTarget",
             FileName = logPath,
-            Layout = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}"
+            Layout = layoutString
         };
+    }
 
-        var consoleTarget = new ColoredConsoleTarget
+    private static ColoredConsoleTarget ConfigureConsoleTarget()
+    {
+        var layoutString= GetLayoutString();
+        return new ColoredConsoleTarget
         {
             Name = "consoleTarget",
             UseDefaultRowHighlightingRules = true,
             EnableAnsiOutput = true,
-            Layout = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}"
+            Layout = layoutString
         };
+    }
 
-        config.AddRule(fileLogLevel, LogLevel.Fatal, fileTarget);
-        config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
-        Logger.Info("NLog configuration loaded");
-        return config;
+    private static string GetLayoutString()
+    {
+        return "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
     }
 
     internal static SentryTarget GetSentryTarget()
@@ -912,41 +972,48 @@ internal static class Util
 
     public static DirectoryPermissionsResult CheckDirectoryPermissions(string dirPath)
     {
-        var result = new DirectoryPermissionsResult
-        {
-            CanRead = false,
-            CanWrite = false
-        };
+        var result = new DirectoryPermissionsResult();
 
         if (!Directory.Exists(dirPath)) return result;
+
+        result.CanRead = CheckReadPermissions(dirPath, "test.txt");
+        result.CanWrite = CheckWritePermissions(dirPath, "test.tmp");
+
+        Logger.Debug("Path: {Path}; Directory Permissions Checked: {@Result}", dirPath, result);
+
+        return result;
+    }
+
+    private static bool CheckReadPermissions(string dirPath, string fileName)
+    {
         try
         {
-            // Attempt to open.txt with read permissions
-            using var stream = File.OpenRead(Path.Combine(dirPath, "test.txt"));
-            result.CanRead = true;
+            // Attempt to open the file with read permissions
+            using var stream = File.OpenRead(Path.Combine(dirPath, fileName));
+            return true;
         }
         catch
         {
-            // Ignore any exception, it means we don't have read permissions
+            // Ignore any exception, it means we don't have read permissions.
+            return false;
         }
-
+    }
+    
+    private static bool CheckWritePermissions(string dirPath, string fileName)
+    {
         try
         {
             // Attempt to open a new file with write permissions
-            using (File.Create(Path.Combine(dirPath, "test.tmp")))
-            {
-                result.CanWrite = true;
-            }
-
+            using (File.Create(Path.Combine(dirPath, fileName)));
             // Successfully created file, try to delete it
-            File.Delete(Path.Combine(dirPath, "test.tmp"));
+            File.Delete(Path.Combine(dirPath, fileName));
+            return true;
         }
         catch
         {
-            // Ignore any exception, it means we don't have write permissions
+            // Ignore any exception, it means we don't have write permissions.
+            return false;
         }
-        Logger.Debug("Path: {Path};Directory Permissions Checked: {@Result}",dirPath, result);
-        return result;
     }
     
     public static string GetResourcePath(string resource)
