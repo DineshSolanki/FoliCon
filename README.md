@@ -78,5 +78,14 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 * Thanks to [Faelpessoal](https://www.deviantart.com/faelpessoal) and [Liaher](https://www.deviantart.com/liaher) for their Poster design used as an alternate Poster Icon design starting with v3.7.
 * <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/tmdbblack.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
-* All Professional Mode icons are fetched from publicly available galaries of DeviantArt, and all rights reserves to their respective owners.
+* All Professional Mode icons are fetched from publicly available galleries of DeviantArt, and all rights reserves to their respective owners.
 
+---
+Thank you to the following individuals who have provided invaluable inputs through discussions and issues:
+
+* [<img src="https://github.com/pierx.png?size=50" alt="pierx" /> @pierx](https://github.com/pierx)
+* [<img src="https://github.com/FazCodeFR.png?size=50" alt="FazCodeFR" /> @FazCodeFR](https://github.com/FazCodeFR)
+* [<img src="https://github.com/TheFmC.png?size=50" alt="TheFmC" /> @TheFmC](https://github.com/TheFmC)
+* [<img src="https://github.com/MasoudRahmani.png?size=50" alt="MasoudRahmani" /> @MasoudRahmani](https://github.com/MasoudRahmani)
+
+... and many more who have interacted with us through issues and discussions.
