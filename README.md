@@ -83,9 +83,12 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 ---
 Thank you to the following individuals who have provided invaluable inputs through discussions and issues:
 
-* [<img src="https://github.com/pierx.png?size=50" alt="pierx" /> @pierx](https://github.com/pierx)
-* [<img src="https://github.com/FazCodeFR.png?size=50" alt="FazCodeFR" /> @FazCodeFR](https://github.com/FazCodeFR)
-* [<img src="https://github.com/TheFmC.png?size=50" alt="TheFmC" /> @TheFmC](https://github.com/TheFmC)
-* [<img src="https://github.com/MasoudRahmani.png?size=50" alt="MasoudRahmani" /> @MasoudRahmani](https://github.com/MasoudRahmani)
-
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/pierx"><img src="https://github.com/pierx.png?size=50" alt="pierx" /><br /><sub><b>@pierx</b></sub></a></td>
+    <td align="center"><a href="https://github.com/FazCodeFR"><img src="https://github.com/FazCodeFR.png?size=50" alt="FazCodeFR" /><br /><sub><b>@FazCodeFR</b></sub></a></td>
+    <td align="center"><a href="https://github.com/TheFmC"><img src="https://github.com/TheFmC.png?size=50" alt="TheFmC" /><br /><sub><b>@TheFmC</b></sub></a></td>
+    <td align="center"><a href="https://github.com/MasoudRahmani"><img src="https://github.com/MasoudRahmani.png?size=50" alt="MasoudRahmani" /><br /><sub><b>@MasoudRahmani</b></sub></a></td>
+  </tr>
+<table>
 ... and many more who have interacted with us through issues and discussions.
