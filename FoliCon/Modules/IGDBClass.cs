@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.Modules;
@@ -109,7 +110,7 @@ public class IgdbClass
         var posterUrl = ImageHelper.GetImageUrl(result.Cover.Value.ImageId, ImageSize.HD720);
         Util.AddToPickedListDataTable(_listDataTable, localPosterPath, result.Name, rating, fullFolderPath, folderName,
             year);
-        if (result.Id != null) Util.SaveMediaInfo((int)result.Id, "Game", fullFolderPath);
+        if (result.Id != null) FileUtils.SaveMediaInfo((int)result.Id, "Game", fullFolderPath);
         var tempImage = new ImageToDownload
         {
             LocalPath = localPosterPath,

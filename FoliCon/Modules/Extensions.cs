@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using NLog.Config;
 using Logger = NLog.Logger;
 
@@ -51,7 +52,7 @@ public static class Extensions
         var target = config.AllTargets.FirstOrDefault(t => t.Name.Equals("sentry", StringComparison.OrdinalIgnoreCase));
         if (enableSentry && target is null)
         {
-            var sentryTarget = Util.GetSentryTarget();
+            var sentryTarget = LogUtils.GetSentryTarget();
             config.AddTarget(sentryTarget);
             config.AddRuleForAllLevels(sentryTarget);
             LogManager.Configuration = config;

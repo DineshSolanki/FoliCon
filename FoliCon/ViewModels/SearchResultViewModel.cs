@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using DelegateCommand = Prism.Commands.DelegateCommand;
 using Logger = NLog.Logger;
 
@@ -161,7 +162,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _isPickedById = parameters.GetValue<bool>("isPickedById");
         LoadData(SearchTitle);
         SearchAgainTitle = SearchTitle;
-        FileList = Util.GetFileNamesFromFolder(_fullFolderPath);
+        FileList = FileUtils.GetFileNamesFromFolder(_fullFolderPath);
     }
 
     private async void StartSearch(bool useBusy)

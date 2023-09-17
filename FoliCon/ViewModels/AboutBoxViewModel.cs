@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;
@@ -22,7 +23,7 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
         WebsiteClickCommand = new DelegateCommand(delegate
         {
             Logger.Debug("Opening {Website}",Website);
-            Util.StartProcess(Website);
+            ProcessUtils.StartProcess(Website);
         });
     }
 

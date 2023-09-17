@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 
@@ -281,7 +282,7 @@ public class Tmdb
 
         if (!isPickedById && id != 0)
         {
-            Util.SaveMediaInfo(id, type, fullFolderPath);
+            FileUtils.SaveMediaInfo(id, type, fullFolderPath);
         }
         var tempImage = new ImageToDownload
         {

@@ -1,5 +1,6 @@
 ﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
+using FoliCon.Modules.utils;
 using GongSolutions.Wpf.DragDrop;
 using NLog;
 using Logger = NLog.Logger;
@@ -58,7 +59,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             SetProperty(ref _selectedDirectory, value);
             Directories.Clear();
             KeepExactOnly = false;
-            foreach (var folder in Util.GetFolderNames(value))
+            foreach (var folder in FileUtils.GetFolderNames(value))
             {
                 Directories.Add(folder);
             }
@@ -74,7 +75,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             Logger.Debug("Selecting PNG and ICO files from {Value}", value);
             KeepExactOnly = false;
             Icons.Clear();
-            foreach (var file in Util.GetFileNamesFromFolder(value).Where(Util.IsPngOrIco))
+            foreach (var file in FileUtils.GetFileNamesFromFolder(value).Where(FileUtils.IsPngOrIco))
             {
                 Icons.Add(file);
             }
@@ -132,7 +133,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         if (_undoDirectories.Count == 0) return;
         foreach (var folder in _undoDirectories)
         {
-            Util.DeleteIconsFromFolder(folder);
+            FileUtils.DeleteIconsFromFolder(folder);
         }
 
         var info = new GrowlInfo
@@ -142,7 +143,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             StaysOpen = false
         };
         Growl.SuccessGlobal(info);
-        Util.RefreshIconCache();
+        ProcessUtils.RefreshIconCache();
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT
             , Directory.GetParent(_undoDirectories.First())?.FullName);
 
@@ -232,7 +233,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
                 CustomMessageBox.Ask(
                     $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
                     LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
-            Util.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
+            ProcessUtils.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
     }
 
     private int MakeIcons()
@@ -263,7 +264,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
             File.Move(iconPath, newIconPath);
             if (!File.Exists(newIconPath)) continue;
-            Util.HideFile(newIconPath);
+            FileUtils.HideFile(newIconPath);
             Util.SetFolderIcon($"{Directories[i]}.ico", folderPath);
             Index++;
             if (!StopSearch) continue;

@@ -1,9 +1,6 @@
+using FoliCon.Modules.utils;
 using NLog;
-using NLog.Config;
-using NLog.Targets;
 using Polly;
-using Sentry;
-using Sentry.NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 using PosterIcon = FoliCon.Models.PosterIcon;
@@ -69,7 +66,7 @@ internal static class Util
             {
                 if (!isConfirmed) return true;
                 Logger.Debug("Update Confirmed. Starting Update Process");
-                StartProcess(ver.ReleaseUrl);
+                ProcessUtils.StartProcess(ver.ReleaseUrl);
 
                 return true;
             }
@@ -78,46 +75,7 @@ internal static class Util
         Growl.AskGlobal(info);
     }
 
-    /// <summary>
-    /// Starts Process associated with given path.
-    /// </summary>
-    /// <param name="path">If the path is a URL, it opens the URL in the default browser. If the path is a file or folder path, it will be started.</param>
-    public static void StartProcess(string path)
-    {
-        try
-        {
-            var processInfo = new ProcessStartInfo(path)
-            {
-                UseShellExecute = true
-            };
 
-            Logger.Debug($"Starting Process: {path}");
-            Process.Start(processInfo);
-        }
-        catch (Exception e)
-        {
-            Logger.Error($"Failed to start process: {e.Message}");
-            throw;
-        }
-    }
-
-    /// <summary>
-    /// Determines whether a given string value ends with any string within a collection of file extensions.
-    /// </summary>
-    /// <param name="value">The string value to check.</param>
-    /// <param name="fileExtensions">An iterable collection of file extensions.</param>
-    /// <returns>A boolean indicating whether the string value ends with any of the provided file extensions.
-    /// Returns true if the value ends with any of the file extensions; false otherwise.</returns>
-    private static bool EndsIn(string value, IEnumerable<string> fileExtensions)
-    {
-        return fileExtensions.Any(fileExtension => value.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase));
-    }
-
-    
-    public static bool IsPngOrIco(string fileName) =>
-        fileName != null &&
-        EndsIn(fileName, new[] { ".png", ".ico" });
-    
     /// <summary>
     /// Set Column width of list view to fit content
     /// </summary>
@@ -136,120 +94,6 @@ internal static class Util
         }
     }
 
-    /// <summary>
-    /// Terminates Explorer.exe Process.
-    /// </summary>
-    private static void KillExplorer()
-    {
-        Logger.Debug("Killing Explorer.exe");
-        var taskKill = new ProcessStartInfo("taskkill", "/F /IM explorer.exe")
-        {
-            WindowStyle = ProcessWindowStyle.Hidden,
-            UseShellExecute = true
-        };
-        using var process = new Process();
-        process.StartInfo = taskKill;
-        process.Start();
-        process.WaitForExit();
-        Logger.Debug("Explorer.exe Killed");
-    }
-
-    /// <summary>
-    /// Terminates and Restart Explorer.exe process.
-    /// </summary>
-    public static void RestartExplorer()
-    {
-        KillExplorer();
-        Process.Start("explorer.exe");
-        Logger.Debug("Explorer.exe Restarted");
-    }
-
-    public static void RefreshIconCache()
-    {
-        try
-        {
-            Logger.Debug("Refreshing Icon Cache");
-
-            var isWow64Redirected = Kernel32.Wow64DisableWow64FsRedirection(out _);
-
-            var systemFolder = Environment.GetFolderPath(Environment.SpecialFolder.System);
-            var exePath = Path.Combine(systemFolder, "ie4uinit.exe");
-
-            using (var process = new Process())
-            {
-                process.StartInfo = new ProcessStartInfo()
-                {
-                    FileName = exePath,
-                    Arguments = "-ClearIconCache",
-                    WindowStyle = ProcessWindowStyle.Normal
-                };
-
-                process.Start();
-                process.WaitForExit();
-            }
-
-            Logger.Debug("Icon Cache Refreshed");
-
-            if (isWow64Redirected)
-            {
-                Kernel32.Wow64EnableWow64FsRedirection(true);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.ForErrorEvent().Message($"Failed to refresh the icon cache due to error: {ex.Message}")
-                .Exception(ex)
-                .Log();
-        }
-    }
-
-    /// <summary>
-    /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
-    /// </summary>
-    /// <param name="folderPath">Path to delete Icons from</param>
-    public static void DeleteIconsFromSubfolders(string folderPath)
-    {
-        Logger.Debug("Deleting Icons from Subfolders of: {FolderPath}", folderPath);
-        DeleteIconsFromFolder(folderPath);
-        foreach (var folder in Directory.EnumerateDirectories(folderPath))
-        {
-            DeleteIconsFromFolder(folder);
-        }
-
-        RefreshIconCache();
-        Logger.Debug("Icons Deleted from Subfolders of: {FolderPath}", folderPath);
-        SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT, folderPath);
-    }
-
-    public static void DeleteIconsFromFolder(string folderPath)
-    {
-        Logger.Debug("Deleting Icons from: {FolderPath}", folderPath);
-        var folderName = Path.GetFileName(folderPath);
-        var icoFile = Path.Combine(folderPath, $"{folderName}.ico");
-        var iniFile = Path.Combine(folderPath, "desktop.ini");
-        try
-        {
-            if (File.Exists(icoFile))
-                File.Delete(icoFile);
-            else
-                Logger.Debug("ICO File Not Found: {IcoFile}", icoFile);
-
-            if (File.Exists(iniFile))
-                File.Delete(iniFile);
-            else
-                Logger.Debug("INI File Not Found: {IniFile}", iniFile);
-
-        }
-        catch (UnauthorizedAccessException e)
-        {
-            Logger.ForErrorEvent().Message("DeleteIconsFromFolder: UnauthorizedAccessException Occurred. message: {Message}",
-                    e.Message)
-                .Exception(e).Log();
-            HandleUnauthorizedAccessException(e,folderPath);
-        }
-        Logger.Debug("Icons Deleted from: {FolderPath}", folderPath);
-    }
-
     //Handle UnauthorizedAccessException
     public static void HandleUnauthorizedAccessException(UnauthorizedAccessException ex, string path)
     {
@@ -257,19 +101,6 @@ internal static class Util
             ex.Message.Contains("The process cannot access the file")
                 ? LangProvider.GetLang("FileIsInUse")
                 : LangProvider.GetLang("FailedFileAccessAt").Format(path), LangProvider.GetLang("ExceptionOccurred")));
-    }
-    
-    public static void DeleteMediaInfoFromSubfolders(string folderPath)
-    {
-        Logger.Debug("Deleting MediaInfo from Subfolders of: {FolderPath}", folderPath);
-        var icoFile = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
-        File.Delete(icoFile);
-        foreach (var folder in Directory.EnumerateDirectories(folderPath))
-        {
-            icoFile = Path.Combine(folder, GlobalVariables.MediaInfoFile);
-            File.Delete(icoFile);
-        }
-        Logger.Debug("MediaInfo Deleted from Subfolders of: {FolderPath}", folderPath);
     }
 
     /// <summary>
@@ -299,19 +130,6 @@ internal static class Util
         }
         Logger.Debug("Network availability: {}", result);
         return result;
-    }
-
-    public static List<string> GetFolderNames(string folderPath)
-    {
-        var folderNames = new List<string>();
-        if (!string.IsNullOrEmpty(folderPath))
-        {
-            folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
-                where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
-                select Path.GetFileName(folder));
-        }
-
-        return folderNames;
     }
 
     public static VistaFolderBrowserDialog NewFolderBrowserDialog(string description)
@@ -408,30 +226,6 @@ internal static class Util
         }
         Logger.Trace("Details Added to ListView: {@Source}", source);
         return source;
-    }
-
-    /// <summary>
-    /// Get List of file in given folder.
-    /// </summary>
-    /// <param name="folder">Folder to Get File from.</param>
-    /// <returns>ArrayList with file Names.</returns>
-    public static List<string> GetFileNamesFromFolder(string folder)
-    {
-        Logger.Debug("Getting File Names from Folder: {Folder}", folder);
-        var itemList = new List<string>();
-        try
-        {
-            if (string.IsNullOrEmpty(folder)) return itemList;
-            itemList.AddRange(Directory.GetFiles(folder).Select(Path.GetFileName));
-        }
-        catch (Exception e)
-        {
-            Logger.ForErrorEvent().Message("Error Occurred while Getting File Names from Folder: {Folder}", folder)
-                .Exception(e).Log();
-            itemList.Add($"Error accessing files: {e.Message}");
-        }
-
-        return itemList;
     }
 
     /// <summary>
@@ -540,7 +334,7 @@ internal static class Util
             }
 
             if (!File.Exists(targetFile)) continue;
-            HideFile(targetFile);
+            FileUtils.HideFile(targetFile);
             SetFolderIcon($"{i}.ico", $@"{selectedFolder}\{i}");
         }
 
@@ -614,29 +408,6 @@ internal static class Util
         PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));
         icon.Dispose();
         Logger.Debug("Icon Created for Folder: {Folder}", filmFolderPath);
-    }
-
-    public static void HideFile(string icoFile)
-    {
-        Logger.Debug("Hiding File: {IcoFile}", icoFile);
-        if (!File.Exists(icoFile))
-        {
-            Logger.ForErrorEvent().Message("File Not Found: {IcoFile}", icoFile).Log();
-            return;
-        }
-        // Set file attribute to "Hidden"
-        if ((File.GetAttributes(icoFile) & FileAttributes.Hidden) != FileAttributes.Hidden)
-        {
-            Logger.Debug("Setting File Attribute to Hidden");
-            File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.Hidden);
-        }
-
-        // Set file attribute to "System"
-        if ((File.GetAttributes(icoFile) & FileAttributes.System) != FileAttributes.System)
-        {
-            Logger.Debug("Setting File Attribute to System");
-            File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
-        }
     }
 
     /// <summary>
@@ -720,321 +491,8 @@ internal static class Util
         return new CultureInfo(langCode);
     }
 
-    public static void SaveMediaInfo(int id, string mediaType, string folderPath)
-    {
-        Logger.Debug("Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
-            mediaType, folderPath);
-        var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
-        try
-        {
-            File.Create(filePath);
-            InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture), null, filePath);
-            InIHelper.AddValue("MediaType", mediaType, null, filePath);
-            HideFile(filePath);
-        }
-        catch (UnauthorizedAccessException e)
-        {
-            Logger.ForExceptionEvent(e, LogLevel.Error).Message("Error Occurred while Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
-                mediaType, filePath).Log();
-            MessageBox.Show(CustomMessageBox.Error(
-                e.Message.Contains("The process cannot access the file")
-                    ? LangProvider.GetLang("FileIsInUse")
-                    : LangProvider.GetLang("FailedToSaveMediaInfoAt").Format(filePath), LangProvider.GetLang("UnauthorizedAccess")));
-        }
-        catch (Exception e)
-        {
-            Logger.ForExceptionEvent(e, LogLevel.Error).Message("Error Occurred while Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
-                mediaType, folderPath).Log();
-            CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred"));
-        }
-    }
-
-    public static (string ID, string MediaType) ReadMediaInfo(string folderPath)
-    {
-        string id = null;
-        string mediaType = null;
-        var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
-
-        if (File.Exists(filePath))
-        {
-            id = InIHelper.ReadValue("ID", null, filePath);
-            mediaType = InIHelper.ReadValue("MediaType", null, filePath);
-
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                id = null;
-                mediaType = null;
-            }
-        }
-
-        var mediaInfo = (ID: id, MediaType: mediaType);
-        Logger.Debug("Media Info Read: {@MediaInfo}", mediaInfo);
-
-        return mediaInfo;
-    }
-
     public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
     {
         return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
     }
-    public static IDictionary<string, string> GetCmdArgs()
-    {
-        Logger.Info("Getting Command Line Arguments");
-        IDictionary<string, string> arguments = new Dictionary<string, string>();
-        var args = Environment.GetCommandLineArgs();
-
-        for (var index = 1; index < args.Length; index += 2)
-        {
-            var arg = args[index].Replace("--", "");
-            arguments.Add(arg, args[index + 1]);
-        }
-        Logger.Info("Command Line Arguments: {@Arguments}", arguments);
-        return arguments;
-    }
-
-    public static bool? IfNotAdminRestartAsAdmin()
-    {
-        if (ApplicationHelper.IsAdministrator())
-        {
-            Logger.Info("Application is running as Administrator");
-            return null;
-        }
-        if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
-                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
-        
-        StartAppAsAdmin();
-        return true;
-    }
-
-    private static void StartAppAsAdmin()
-    {
-        Logger.Info("Starting Application as Administrator");
-
-        var appPath = Path.ChangeExtension(AppPath, "exe");
-
-        if (string.IsNullOrWhiteSpace(appPath))
-        {
-            Logger.Error("AppPath: {AppPath} is not valid", appPath);
-            return;
-        }
-
-        var elevated = new ProcessStartInfo(appPath)
-        {
-            UseShellExecute = true,
-            Verb = "runas"
-        };
-
-        try
-        {
-            using var process = Process.Start(elevated);
-        }
-        catch (Exception ex)
-        {
-            Logger.ForErrorEvent().Message("Failed to start process with elevated rights {Message}",
-                ex.Message).Exception(ex).Log();
-        }
-
-        Environment.Exit(0);
-    }
-
-    public static void AddToContextMenu()
-    {
-        Logger.Info("Modifying Context Menu");
-        if (IfNotAdminRestartAsAdmin() == false) return;
-
-        if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"))
-        {
-            Logger.Info("Removing Old Context Menu Entry");
-            RemoveFromContextMenu();
-        }
-
-        Services.Settings.ContextEntryName = LangProvider.GetLang("CreateIconsWithFoliCon");
-        Services.Settings.IsExplorerIntegrated = true;
-        Services.Settings.Save();
-
-        RegisterContextMenuOptions(new List<string> { "Professional", "Movie", "TV", "Game", "Auto" });
-
-        Logger.Info("Context Menu Modified");
-    }
-
-    private static void RegisterContextMenuOptions(List<string> modes)
-    {
-        foreach (var mode in modes)
-        {
-            var modeName = mode == "Auto" ? "Auto (Movies & TV Shows)" : mode;
-            var command = $"""{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode {modeName}""";
-            RegisterContextMenuOption(mode, command);
-        }
-    }
-
-    private static void RegisterContextMenuOption(string modeName, string command)
-    {
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command.Replace("%1", "%V"));
-    }
-
-    public static void RemoveFromContextMenu()
-    {
-        if (IfNotAdminRestartAsAdmin() == false) return;
-        Services.Settings.IsExplorerIntegrated = false;
-        Services.Settings.Save();
-        ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory(Services.Settings.ContextEntryName, "");
-        ApplicationHelper.UnRegisterCascadeContextMenuFromBackground(Services.Settings.ContextEntryName, "");
-
-        //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
-    }
-
-    public static LoggingConfiguration GetNLogConfig()
-    {
-        Logger.Info("Getting NLog Configuration");
-        LoadConfigurationFromNLog();
-
-        var config = new LoggingConfiguration();
-        var logPath = GetLogPath();
-        var fileLogLevel = GetFileLogLevel();
-  
-        var fileTarget = ConfigureFileTarget(logPath);
-        var consoleTarget = ConfigureConsoleTarget();
-
-        config.AddRule(fileLogLevel, LogLevel.Fatal, fileTarget);
-        config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
-    
-        Logger.Info("NLog configuration loaded");
-        return config;
-    }
-
-    private static void LoadConfigurationFromNLog()
-    {
-        LogManager.Setup().LoadConfigurationFromFile(); 
-    }
-
-    private static string GetLogPath()
-    {
-        return LogManager.Configuration.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
-    }
-
-    private static LogLevel GetFileLogLevel()
-    {
-        return LogLevel.FromString(LogManager.Configuration.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()));
-    }
-
-    private static FileTarget ConfigureFileTarget(string logPath)
-    {
-        var layoutString= GetLayoutString();
-        return new FileTarget
-        {
-            Name = "fileTarget",
-            FileName = logPath,
-            Layout = layoutString
-        };
-    }
-
-    private static ColoredConsoleTarget ConfigureConsoleTarget()
-    {
-        var layoutString= GetLayoutString();
-        return new ColoredConsoleTarget
-        {
-            Name = "consoleTarget",
-            UseDefaultRowHighlightingRules = true,
-            EnableAnsiOutput = true,
-            Layout = layoutString
-        };
-    }
-
-    private static string GetLayoutString()
-    {
-        return "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
-    }
-
-    internal static SentryTarget GetSentryTarget()
-    {
-        var sentryTarget = new SentryTarget
-        {
-            Name = "sentry",
-            Dsn = Environment.GetEnvironmentVariable("SENTRY_DSN"),
-            Layout = "${message} ${exception:format=tostring}",
-            BreadcrumbLayout = "${message}",
-            Environment = "Development",
-            MinimumBreadcrumbLevel = LogLevel.Debug.ToString()!,
-            MinimumEventLevel = LogLevel.Error.ToString()!,
-            Options =
-            {
-                SendDefaultPii = true, ShutdownTimeoutSeconds = 5, Debug = false, IsGlobalModeEnabled = true,
-                AutoSessionTracking = true,
-                User = new SentryNLogUser { Username = Environment.MachineName }
-            },
-            IncludeEventDataOnBreadcrumbs = true,
-        };
-        sentryTarget.Options.AddExceptionFilterForType<UnauthorizedAccessException>();
-        sentryTarget.Tags.Add(new TargetPropertyWithContext("exception", "${exception:format=shorttype}"));
-        return sentryTarget;
-    }
-
-    public static DirectoryPermissionsResult CheckDirectoryPermissions(string dirPath)
-    {
-        var result = new DirectoryPermissionsResult();
-
-        if (!Directory.Exists(dirPath)) return result;
-
-        result.CanRead = CheckReadPermissions(dirPath, "test.txt");
-        result.CanWrite = CheckWritePermissions(dirPath, "test.tmp");
-
-        Logger.Debug("Path: {Path}; Directory Permissions Checked: {@Result}", dirPath, result);
-
-        return result;
-    }
-
-    private static bool CheckReadPermissions(string dirPath, string fileName)
-    {
-        try
-        {
-            // Attempt to open the file with read permissions
-            using var stream = File.OpenRead(Path.Combine(dirPath, fileName));
-            return true;
-        }
-        catch
-        {
-            // Ignore any exception, it means we don't have read permissions.
-            return false;
-        }
-    }
-    
-    private static bool CheckWritePermissions(string dirPath, string fileName)
-    {
-        try
-        {
-            // Attempt to open a new file with write permissions
-            using (File.Create(Path.Combine(dirPath, fileName)));
-            // Successfully created file, try to delete it
-            File.Delete(Path.Combine(dirPath, fileName));
-            return true;
-        }
-        catch
-        {
-            // Ignore any exception, it means we don't have write permissions.
-            return false;
-        }
-    }
-    
-    public static string GetResourcePath(string resource)
-    {
-        var path = Path.Combine(Path.GetTempPath(), resource);
-        Logger.Debug("Getting Resource Path, Resource: {Resource}, Path: {Path}", resource, path);
-        if (File.Exists(path)) return path;
-
-        var resourceUri = new Uri($"pack://application:,,,/FoliCon;component/Resources/{resource}");
-        var resourceStream = Application.GetResourceStream(resourceUri);
-
-        if (resourceStream == null)
-        {
-            Logger.Warn("Resource {Resource} cannot be found");
-            throw new InvalidOperationException($"Resource {resource} cannot be found.");
-        }
-        using var input = resourceStream.Stream;
-        using Stream output = File.Create(path);
-        input.CopyTo(output);
-        return path;
-
-    }
-    private static string AppPath { get; } = ApplicationHelper.GetExecutablePathNative();
 }

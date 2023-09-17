@@ -1,4 +1,5 @@
-﻿using HandyControl.Themes;
+﻿using FoliCon.Modules.utils;
+using HandyControl.Themes;
 using NLog;
 
 namespace FoliCon.ViewModels;
@@ -123,7 +124,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             SetProperty(ref _selectedFolder, value);
             if (value != null)
             {
-                DirectoryPermissionsResult = Util.CheckDirectoryPermissions(value);
+                DirectoryPermissionsResult = FileUtils.CheckDirectoryPermissions(value);
             }
         }
     }
@@ -206,8 +207,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
                 LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes) return;
-        Util.RefreshIconCache();
-        Util.RestartExplorer();
+        ProcessUtils.RefreshIconCache();
+        ProcessUtils.RestartExplorer();
     });
 
     public DelegateCommand CustomIconsCommand { get; private set; }
@@ -255,7 +256,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
 
             
-        var cmdArgs = Util.GetCmdArgs();
+        var cmdArgs = ProcessUtils.GetCmdArgs();
         if (!cmdArgs.ContainsKey("path")) return;
         
         Logger.Info("Command Line Argument Found, Initializing with Command Line Argument.");
@@ -308,7 +309,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             if (Directory.Exists(SelectedFolder))
             {
-                Fnames = Util.GetFolderNames(SelectedFolder);
+                Fnames = FileUtils.GetFolderNames(SelectedFolder);
             }
             else
             {
@@ -386,7 +387,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             // TODO: Set cursor to WAIT.
             var isAutoPicked = false;
             var searchTitle = TitleCleaner.Clean(itemTitle);
-            var (id, mediaType) = Util.ReadMediaInfo(fullFolderPath);
+            var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
             var isPickedById = false;
             ResultResponse response;
             if (id != null && mediaType != null)
@@ -570,7 +571,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             if (Directory.Exists(SelectedFolder))
             {
-                Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
+                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
             }
         });
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
@@ -579,8 +580,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private static void ExplorerIntegrationMethod(string isIntegrationEnabled)
     {
         var value = Convert.ToBoolean(isIntegrationEnabled);
-        if (value) Util.AddToContextMenu();
-        else Util.RemoveFromContextMenu();
+        if (value) ProcessUtils.AddToContextMenu();
+        else ProcessUtils.RemoveFromContextMenu();
     }
 
     private void DeleteMediaInfo()
@@ -593,7 +594,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
                         LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == MessageBoxResult.Yes)
                 {
-                    Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
+                    FileUtils.DeleteMediaInfoFromSubfolders(SelectedFolder);
                 }
             }
             else
@@ -685,7 +686,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
                         LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
                 {
-                    Util.DeleteIconsFromSubfolders(SelectedFolder);
+                    FileUtils.DeleteIconsFromSubfolders(SelectedFolder);
                 }
             }
             else
@@ -719,7 +720,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         if (folder == null) return;
         if (Directory.Exists(folder))
         {
-            Util.StartProcess(folder + Path.DirectorySeparatorChar);
+            ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
         }
     }
 
@@ -800,7 +801,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                         LangProvider.GetLang("IconCreated"))))
         {
             case MessageBoxResult.Yes:
-                Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
+                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                 break;
         }
     }
