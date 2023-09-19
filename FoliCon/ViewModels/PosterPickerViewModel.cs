@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 
@@ -190,7 +191,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                         continue;
                     }
                     var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(qualityPath, Util.LoadBitmap(bm)));
+                    ImageUrl.Add(new DArtImageList(qualityPath, ImageUtils.LoadBitmap(bm)));
                     bm.Dispose();
                 }
 
@@ -233,7 +234,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                         continue;
                     }
                     var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(image.ImageId, Util.LoadBitmap(bm)));
+                    ImageUrl.Add(new DArtImageList(image.ImageId, ImageUtils.LoadBitmap(bm)));
                     bm.Dispose();
                 }
 

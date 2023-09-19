@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.utils;
+using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.Modules;
@@ -23,7 +24,7 @@ public class ProIcon
         using var img = new Bitmap(_filePath);
         using var icon = new Bitmap(img, 256, 256);
         Logger.Debug("Icon resized to 256x256, filePath: {FilePath}", _filePath);
-        return Util.LoadBitmap(icon);
+        return ImageUtils.LoadBitmap(icon);
     }
 
     private static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)

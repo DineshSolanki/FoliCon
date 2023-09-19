@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 
 namespace FoliCon.Modules.utils;
@@ -63,7 +64,7 @@ public static class FileUtils
             Logger.ForErrorEvent().Message("DeleteIconsFromFolder: UnauthorizedAccessException Occurred. message: {Message}",
                     e.Message)
                 .Exception(e).Log();
-            Util.HandleUnauthorizedAccessException(e,folderPath);
+            HandleUnauthorizedAccessException(e,folderPath);
         }
         Logger.Debug("Icons Deleted from: {FolderPath}", folderPath);
     }
@@ -259,5 +260,186 @@ public static class FileUtils
         input.CopyTo(output);
         return path;
 
+    }
+
+    public static async void CheckForUpdate(bool onlyShowIfUpdateAvailable = false)
+    {
+        Logger.Debug("Checking for Update");
+
+        if (!ApplicationHelper.IsConnectedToInternet())
+        {
+            DialogUtils.ShowGrowlError(LangProvider.GetLang("NetworkNotAvailable"));
+            return;
+        }
+
+        var ver = await UpdateHelper.CheckUpdateAsync("DineshSolanki", "FoliCon");
+
+        if (!ver.IsExistNewVersion)
+        {
+            Logger.Debug("No New Version Found");
+
+            if (!onlyShowIfUpdateAvailable)
+            {
+                DialogUtils.ShowGrowlInfo(LangProvider.GetLang("ThisIsLatestVersion"));
+            }
+
+            return;
+        }
+
+        Logger.Debug("New Version Found: {}", ver.TagName);
+        DialogUtils.ConfirmUpdate(ver);
+    }
+
+    public static void HandleUnauthorizedAccessException(UnauthorizedAccessException ex, string path)
+    {
+        MessageBox.Show(CustomMessageBox.Error(
+            ex.Message.Contains("The process cannot access the file")
+                ? LangProvider.GetLang("FileIsInUse")
+                : LangProvider.GetLang("FailedFileAccessAt").Format(path), LangProvider.GetLang("ExceptionOccurred")));
+    }
+
+    /// <summary>
+    /// Adds Data to DataTable specifically PickedListDataTable
+    /// </summary>
+    /// <param name="dataTable">DataTable to insert Data</param>
+    /// <param name="poster">Local Poster path</param>
+    /// <param name="title">Media Title</param>
+    /// <param name="rating">Media Rating</param>
+    /// <param name="fullFolderPath">Complete Folder Path</param>
+    /// <param name="folderName">Short Folder Name</param>
+    /// <param name="year">Media Year</param>
+    public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating,
+        string fullFolderPath, string folderName, string year = "")
+    {
+        Logger.Debug("Adding Data to PickedListDataTable");
+        if (rating == "0")
+        {
+            rating = "";
+        }
+
+        var nRow = dataTable.NewRow();
+        nRow["Poster"] = poster;
+        nRow["Title"] = title;
+        nRow["Year"] = year;
+        nRow["Rating"] = rating;
+        nRow["Folder"] = fullFolderPath;
+        nRow["FolderName"] = folderName;
+        dataTable.Rows.Add(nRow);
+        Logger.Trace("Data Added to PickedListDataTable: {@Row}",nRow);
+    }
+
+    public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query,
+        bool isPickedById)
+    {
+        Logger.Trace(
+            "Fetching and Adding Details to ListView, Result: {@Result}, Query: {Query}, isPickedById: {IsPickedById}",
+            result, query, isPickedById);
+        var source = new ObservableCollection<ListItem>();
+
+        if (result.MediaType == MediaTypes.Tv)
+        {
+            dynamic ob = isPickedById ? (TvShow)result.Result : (SearchContainer<SearchTv>)result.Result;
+            source = Tmdb.ExtractTvDetailsIntoListItem(ob);
+        }
+        else if (result.MediaType == MediaTypes.Movie || result.MediaType == MediaTypes.Collection)
+        {
+            if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
+            {
+                dynamic ob = isPickedById
+                    ? (Collection)result.Result
+                    : (SearchContainer<SearchCollection>)result.Result;
+                source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
+            }
+            else
+            {
+                dynamic ob;
+                try
+                {
+                    ob = isPickedById ? (Movie)result.Result : (SearchContainer<SearchMovie>)result.Result;
+                    source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
+                }
+                catch (Exception e)
+                {
+                    Logger.ForErrorEvent().Message("Error Occurred while Fetching Movie Details, treating as collection")
+                        .Exception(e).Log();
+                    ob = isPickedById
+                        ? (Collection)result.Result
+                        : (SearchContainer<SearchCollection>)result.Result;
+                    source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
+                }
+            }
+        }
+        else if (result.MediaType == MediaTypes.Mtv)
+        {
+            var ob = (SearchContainer<SearchBase>)result.Result;
+            source = Tmdb.ExtractResourceDetailsIntoListItem(ob);
+        }
+        else if (result.MediaType == MediaTypes.Game)
+        {
+            var ob = (Game[])result.Result;
+            source = IgdbClass.ExtractGameDetailsIntoListItem(ob);
+        }
+        Logger.Trace("Details Added to ListView: {@Source}", source);
+        return source;
+    }
+
+    /// <summary>
+    /// Set folder icon for a given folder.
+    /// </summary>
+    /// <param name="icoFile"> path to the icon file [MUST BE .Ico]</param>
+    /// <param name="folderPath">path to the folder</param>
+    public static void SetFolderIcon(string icoFile, string folderPath)
+    {
+        Logger.Debug("Setting Folder Icon, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath);
+        try
+        {
+            var folderSettings = new SHFOLDERCUSTOMSETTINGS
+            {
+                dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
+                pszIconFile = icoFile,
+                dwSize = (uint)Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
+                cchIconFile = 0
+            };
+            //FolderSettings.iIconIndex = 0;
+            var unused =
+                SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
+            Logger.Info("Folder Icon Set, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath);
+        }
+        catch (Exception e)
+        {
+            Logger.ForErrorEvent().Message("Error Occurred while Setting Folder Icon, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath)
+                .Exception(e).Log();
+            MessageBox.Error(e.Message);
+        }
+
+        ApplyChanges(folderPath);
+    }
+
+    public static void ApplyChanges(string folderPath)
+    {
+        Logger.Debug("Applying Changes to Folder: {FolderPath}", folderPath);
+        SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW, folderPath);
+    }
+
+    public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
+        out string igdbClientSecret, out string dartClientSecret, out string dartId)
+    {
+        var settings = GlobalDataHelper.Load<AppConfig>();
+        tmdbkey = settings.TmdbKey;
+        igdbClientId = settings.IgdbClientId;
+        igdbClientSecret = settings.IgdbClientSecret;
+        dartClientSecret = settings.DevClientSecret;
+        dartId = settings.DevClientId;
+    }
+
+    public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
+        string dartClientSecret, string dartId)
+    {
+        Services.Settings.TmdbKey = tmdbkey;
+        Services.Settings.IgdbClientId = igdbClientId;
+        Services.Settings.IgdbClientSecret = igdbClientSecret;
+        Services.Settings.DevClientId = dartId;
+        Services.Settings.DevClientSecret = dartClientSecret;
+        Services.Settings.Save();
     }
 }

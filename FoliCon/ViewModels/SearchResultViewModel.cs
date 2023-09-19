@@ -180,7 +180,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         var result = SearchMode == MediaTypes.Game
             ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
             : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
-        if (Util.GetResultCount(_isPickedById, result.Result, SearchMode) == 0) return;
+        if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0) return;
         SearchResult = result;
         if (useBusy)
         {
@@ -201,7 +201,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
         {
             Logger.Info("Search result found for {SearchTitle}", searchTitle);
-            ResultListViewData.Data = Util.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
+            ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
             if (ResultListViewData.Data.Count == 0) return;
             ResultListViewData.SelectedItem = ResultListViewData.Data[0];
             PerformSelectionChanged();

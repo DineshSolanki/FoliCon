@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Models;
+﻿using FoliCon.Modules.utils;
+
+namespace FoliCon.Models;
 
 public class PosterIcon
 {
@@ -13,7 +15,7 @@ public class PosterIcon
         var filePath = Path.GetTempPath() + "\\posterDummy.png";
         if (!File.Exists(filePath))
         {
-            _ = Util.DownloadImageFromUrlAsync(new Uri("https://image.tmdb.org/t/p/original/r0bgHi3MwGHTKPWyJdORsb4ukY8.jpg"), filePath);
+            _ = NetworkUtils.DownloadImageFromUrlAsync(new Uri("https://image.tmdb.org/t/p/original/r0bgHi3MwGHTKPWyJdORsb4ukY8.jpg"), filePath);
         }
         var thisMemoryStream = new MemoryStream(File.ReadAllBytes(filePath));
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);

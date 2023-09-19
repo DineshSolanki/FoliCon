@@ -226,7 +226,7 @@ public class Tmdb
         {
             dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
             var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture) : "";
-            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
+            FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                 rating, fullFolderPath, folderName,
                 year);
             id = pickedResult.Id;
@@ -235,14 +235,14 @@ public class Tmdb
         {
             dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
             var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture) : "";
-            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
+            FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                 rating, fullFolderPath, folderName, year);
             id = pickedResult.Id;
         }
         else if (resultType == MediaTypes.Collection)
         {
             dynamic pickedResult = isPickedById ? (Collection)result : (SearchCollection)result;
-            Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name, rating, fullFolderPath,
+            FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name, rating, fullFolderPath,
                 folderName, "");
             id = pickedResult.Id;
         }
@@ -258,7 +258,7 @@ public class Tmdb
                     var year = pickedResult.FirstAirDate != null
                         ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture)
                         : "";
-                    Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
+                    FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
                         rating, fullFolderPath, folderName,
                         year);
                     id = pickedResult.Id;
@@ -271,7 +271,7 @@ public class Tmdb
                     var year = pickedResult.ReleaseDate != null
                         ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture)
                         : "";
-                    Util.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
+                    FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
                         rating, fullFolderPath, folderName,
                         year);
                     id = pickedResult.Id;

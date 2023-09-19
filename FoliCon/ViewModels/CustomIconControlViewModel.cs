@@ -152,7 +152,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void LoadDirectoryMethod()
     {
-        var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult) return;
         _backupDirectories.Clear();
@@ -162,7 +162,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void LoadIconsMethod()
     {
-        var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectIconsDirectory"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectIconsDirectory"));
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult) return;
         _backupIcons.Clear();
@@ -265,7 +265,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             File.Move(iconPath, newIconPath);
             if (!File.Exists(newIconPath)) continue;
             FileUtils.HideFile(newIconPath);
-            Util.SetFolderIcon($"{Directories[i]}.ico", folderPath);
+            FileUtils.SetFolderIcon($"{Directories[i]}.ico", folderPath);
             Index++;
             if (!StopSearch) continue;
             Logger.Warn("User stopped search");
@@ -273,7 +273,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
         }
 
-        Util.ApplyChanges(SelectedDirectory);
+        FileUtils.ApplyChanges(SelectedDirectory);
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
         IsBusy = false;
         return Index;

@@ -218,7 +218,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public DelegateCommand<string> ExploreIntegrationCommand { get; private set; }
 
     public DelegateCommand AboutCommand { get; private set; }
-    public DelegateCommand UpdateCommand { get; } = new(() => Util.CheckForUpdate());
+    public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
 
     #endregion MenuItem Commands
 
@@ -246,7 +246,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         var selectedLanguage = AppLanguage;
-        var cultureInfo = Util.GetCultureInfoByLanguage(selectedLanguage);
+        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
         LangProvider.Culture = cultureInfo;
         Thread.CurrentThread.CurrentCulture = cultureInfo;
         Thread.CurrentThread.CurrentUICulture = cultureInfo;
@@ -288,7 +288,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void LoadMethod()
     {
-        var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
         if (!SelectedFolder.IsNullOrEmpty())
         {
             folderBrowserDialog.SelectedPath = SelectedFolder;
@@ -320,7 +320,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             if (Fnames.Count != 0)
             {
-                if (Util.IsNetworkAvailable())
+                if (NetworkUtils.IsNetworkAvailable())
                 {
                     if (!IsObjectsInitialized)
                     {
@@ -625,7 +625,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         };
         StatusBarProperties = new StatusBarData
         {
-            NetIcon = Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
+            NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
             TotalIcons = 0,
             AppStatus = "Idle",
             AppStatusAdditional = ""
@@ -640,7 +640,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.ProgressBarData.Value = 0;
         _imgDownloadList = new List<ImageToDownload>();
         _pickedListDataTable = new DataTable();
-        if (Util.IsNetworkAvailable())
+        if (NetworkUtils.IsNetworkAvailable())
         {
             InitializeClientObjects();
             IsObjectsInitialized = true;
@@ -752,7 +752,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             try
             {
-                await Util.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
             }
             catch (UnauthorizedAccessException e)
             {
@@ -785,7 +785,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private void MakeIcons()
     {
         IsBusy = true;
-        var iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
+        var iconProcessedCount = IconUtils.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;
         var info = new GrowlInfo
@@ -809,7 +809,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private void InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
-        Util.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
+        FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
             out _devClientId);
         if (string.IsNullOrEmpty(_tmdbapiKey)
             || string.IsNullOrEmpty(_igdbClientId) || string.IsNullOrEmpty(_igdbClientSecret)

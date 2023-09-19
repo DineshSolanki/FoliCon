@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Views;
+﻿using FoliCon.Modules.utils;
+
+namespace FoliCon.Views;
 
 /// <summary>
 /// Interaction logic for SearchResult
@@ -18,7 +20,7 @@ public partial class SearchResult
     {
         if (e.Action == NotifyCollectionChangedAction.Reset)
         {
-            Util.SetColumnWidth(ListViewResult);
+            UiUtils.SetColumnWidth(ListViewResult);
             // scroll the new item into view
             //    //ListViewResult.ScrollIntoView(e.NewItems[0]);
         }
