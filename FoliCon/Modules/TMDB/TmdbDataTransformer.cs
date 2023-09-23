@@ -37,41 +37,7 @@ internal class TmdbDataTransformer
 
         return items;
     }
-
-    public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
-        SearchContainer<SearchMovie> result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        foreach (var item in result.Results)
-        {
-            var mediaName = item.Title;
-            var year = item.ReleaseDate != null
-                ? item.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture)
-                : "";
-            var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
-            var overview = item.Overview;
-            var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-            items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
-        }
-
-        return items;
-    }
-
-    public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(TvShow result)
-    {
-        var items = new ObservableCollection<ListItem>();
-        var mediaName = result.Name;
-        var year = result.FirstAirDate != null
-            ? result.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture)
-            : "";
-        var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
-        var overview = result.Overview;
-        var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-        items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
-
-        return items;
-    }
-
+    
     public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
         Collection result)
     {
@@ -100,6 +66,25 @@ internal class TmdbDataTransformer
         return items;
     }
 
+    public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
+        SearchContainer<SearchMovie> result)
+    {
+        var items = new ObservableCollection<ListItem>();
+        foreach (var item in result.Results)
+        {
+            var mediaName = item.Title;
+            var year = item.ReleaseDate != null
+                ? item.ReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture)
+                : "";
+            var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
+            var overview = item.Overview;
+            var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
+            items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
+        }
+
+        return items;
+    }
+    
     public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(SearchContainer<SearchTv> result)
     {
         var items = new ObservableCollection<ListItem>();
@@ -112,6 +97,21 @@ internal class TmdbDataTransformer
             var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
             items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
         }
+
+        return items;
+    }
+    
+    public static ObservableCollection<ListItem> ExtractTvDetailsIntoListItem(TvShow result)
+    {
+        var items = new ObservableCollection<ListItem>();
+        var mediaName = result.Name;
+        var year = result.FirstAirDate != null
+            ? result.FirstAirDate.Value.Year.ToString(CultureInfo.InvariantCulture)
+            : "";
+        var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
+        var overview = result.Overview;
+        var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
+        items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
 
         return items;
     }
