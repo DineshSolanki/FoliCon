@@ -1,4 +1,5 @@
-﻿using FoliCon.Modules.utils;
+﻿using FoliCon.Modules.TMDB;
+using FoliCon.Modules.utils;
 using HandyControl.Themes;
 using NLog;
 
@@ -394,7 +395,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
                 isPickedById = true;
-                response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+                response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
             }
             else
             {

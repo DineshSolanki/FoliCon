@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.TMDB;
+using NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 
