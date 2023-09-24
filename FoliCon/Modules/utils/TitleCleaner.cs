@@ -1,7 +1,7 @@
 ﻿using NLog;
 using Logger = NLog.Logger;
 
-namespace FoliCon.Modules;
+namespace FoliCon.Modules.utils;
 
 internal static class TitleCleaner
 {
