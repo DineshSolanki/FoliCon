@@ -8,8 +8,8 @@ internal class TmdbDataTransformer
 {
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-    readonly DataTable _listDataTable;
-    readonly List<ImageToDownload> _imgDownloadList;
+    private readonly DataTable _listDataTable;
+    private readonly List<ImageToDownload> _imgDownloadList;
     public TmdbDataTransformer(ref DataTable listDataTable,
         ref List<ImageToDownload> imgDownloadList)
     {
