@@ -10,7 +10,7 @@ public class IgdbClass
         return _igdbService.GetClient();
     }
     /// <summary>
-    /// IGDB Helper Class for Working with IGDB API efficiently for thi project.
+    /// IGDB Helper Class for Working with IGDB API efficiently for this project.
     /// </summary>
     /// <param name="listDataTable">DataTable that stores all the Picked Results.</param>
     /// <param name="serviceClient">Initialized IGDB/Twitch Client</param>

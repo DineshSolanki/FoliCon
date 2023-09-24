@@ -3,7 +3,7 @@ using NLog;
 using NLog.Config;
 using Logger = NLog.Logger;
 
-namespace FoliCon.Modules;
+namespace FoliCon.Modules.Extension;
 
 public static class Extensions
 {

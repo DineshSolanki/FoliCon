@@ -10,7 +10,8 @@
              xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
-             xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:utils="clr-namespace:FoliCon.Modules.utils"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:CustomIconControlViewModel}"
              Background="{DynamicResource RegionBrush}"
@@ -35,7 +36,7 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="{langExtension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
         </hc:BusyIndicator.BusyContent>
@@ -50,16 +51,16 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="FolderButton" Grid.Row="0" Grid.Column="0" Margin="10,10,10,10" Content="{langExtension:Lang Key={x:Static langs:LangKeys.BrowseFolderDropHere}}"
+            <Button x:Name="FolderButton" Grid.Row="0" Grid.Column="0" Margin="10,10,10,10" Content="{extension:Lang Key={x:Static langs:LangKeys.BrowseFolderDropHere}}"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto"
                     Command="{Binding LoadDirectory }"  modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
             modules:FolderDragDropHelper.FileDragDropTarget="{Binding}"/>
-            <Button x:Name="IconButton" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10" Content="{langExtension:Lang Key={x:Static langs:LangKeys.BrowseIconsDropHere}}"
+            <Button x:Name="IconButton" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10" Content="{extension:Lang Key={x:Static langs:LangKeys.BrowseIconsDropHere}}"
                     HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="auto"
                     Command="{Binding LoadIcons}"  modules:FolderDragDropHelper.IsFileDragDropEnabled="True"
             modules:FolderDragDropHelper.FileDragDropTarget="{Binding}" />
-            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="0" Text="{langExtension:Lang Key={x:Static langs:LangKeys.Folders}}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/>
-            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="1" Text="{langExtension:Lang Key={x:Static langs:LangKeys.Icons}}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="0" Text="{extension:Lang Key={x:Static langs:LangKeys.Folders}}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/>
+            <TextBlock Grid.Row="1" FontSize="20" Grid.Column="1" Text="{extension:Lang Key={x:Static langs:LangKeys.Icons}}" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/>
             <ListBox x:Name="FoldersList" Grid.Row="2" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
                      Grid.Column="0" IsManipulationEnabled="True" dd:DragDrop.IsDragSource="True" dd:DragDrop.DropHandler="{Binding ReOrderDropHandler}"
                      dd:DragDrop.IsDropTarget="True" SelectionMode="Extended"
@@ -85,11 +86,11 @@
                 </i:Interaction.Triggers>
             </ListBox>
             <VirtualizingStackPanel Grid.Row="3" Grid.Column="0">
-                <CheckBox Content="{langExtension:Lang Key={x:Static langs:LangKeys.OnlyKeepExactMatches}}" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
-                <Button Style="{StaticResource ButtonInfo}" Content="{langExtension:Lang Key={x:Static langs:LangKeys.Undo}}" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
+                <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OnlyKeepExactMatches}}" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
+                <Button Style="{StaticResource ButtonInfo}" Content="{extension:Lang Key={x:Static langs:LangKeys.Undo}}" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
             </VirtualizingStackPanel>
 
-            <Button Style="{StaticResource ButtonPrimary}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{langExtension:Lang Key={x:Static langs:LangKeys.Apply}}"
+            <Button Style="{StaticResource ButtonPrimary}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{extension:Lang Key={x:Static langs:LangKeys.Apply}}"
                      Command="{Binding Apply}" />
         </Grid>
     </hc:BusyIndicator>

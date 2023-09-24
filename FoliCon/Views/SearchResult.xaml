@@ -4,7 +4,6 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
-             xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
              xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:models="clr-namespace:FoliCon.Models"
@@ -12,6 +11,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views"
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded" Background="{DynamicResource RegionBrush}">
@@ -51,10 +51,10 @@
                     <RowDefinition Height="35" />
                     <RowDefinition Height="35" />
                 </Grid.RowDefinitions>
-                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.PickSelected}}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonPrimary}"
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonPrimary}"
                         Command="{Binding PickCommand}" IsDefault="True"/>
-                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
-                        Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
+                        Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}" Background="{DynamicResource PrimaryRegionBrush}"
                           SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
                     <hc:Interaction.Triggers>
@@ -67,18 +67,18 @@
                     </hc:Interaction.Triggers>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto" Header="{ex:Lang Key={x:Static langs:LangKeys.Title}}"/>
-                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}"/>
-                            <GridViewColumn Header="{ex:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto" Header="{extension:Lang Key={x:Static langs:LangKeys.Title}}"/>
+                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}"/>
+                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Label Content="{ex:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Row="2" />
-                <hc:SearchBar modules:FocusExtension.IsFocused="{Binding IsSearchFocused}" x:Name="SearchBar"
+                <Label Content="{extension:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Row="2" />
+                <hc:SearchBar extension:FocusExtension.IsFocused="{Binding IsSearchFocused}" x:Name="SearchBar"
                               Grid.Row="3"
                               Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                               Style="{StaticResource SearchBarPlus}"
-                              hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
+                              hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
                               VerticalAlignment="Bottom" IsRealTime="True">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SearchStarted">
@@ -99,8 +99,8 @@
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{ex:Lang Key={x:Static langs:LangKeys.All}}"
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SkipThisPlaceholder}}" />
+                <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.All}}"
+                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisPlaceholder}}" />
                 <hc:PreviewSlider x:Name="SizeSlider" Grid.Row="0" Grid.Column="1" Minimum="12" Maximum="25" Value="15"
                                   VerticalAlignment="Center" Height="18" />
                 <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
@@ -116,8 +116,8 @@
                         <DropShadowEffect />
                     </Image.Effect>
                 </Image>
-                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.ShowMore}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"/>
-                <hc:Rate Grid.Row="2" Grid.Column="1" Count="10" AllowHalf="True" Margin="5" Foreground="{DynamicResource WarningBrush}" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}" Value="{Binding Path=CustomRating, Mode=TwoWay}" AllowClear="True"/>
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(models:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"/>
+                <hc:Rate Grid.Row="2" Grid.Column="1" Count="10" AllowHalf="True" Margin="5" Foreground="{DynamicResource WarningBrush}" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.CustomRating}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}" Value="{Binding Path=CustomRating, Mode=TwoWay}" AllowClear="True"/>
                 <!-- <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/> -->
                 <TextBox Foreground="{DynamicResource PrimaryTextBrush}" Grid.Row="1" Grid.Column="1"
                          Text="{Binding Path=SelectedItem.(models:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"

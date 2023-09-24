@@ -1,4 +1,5 @@
-﻿using FoliCon.Modules.utils;
+﻿using FoliCon.Modules.Extension;
+using FoliCon.Modules.utils;
 using NLog;
 using Logger = NLog.Logger;
 

@@ -3,7 +3,7 @@ using FoliCon.Modules.TMDB;
 using NLog;
 using Logger = NLog.Logger;
 
-namespace FoliCon.Modules;
+namespace FoliCon.Modules.Extension;
 
 public static class DialogServiceExtensions
 {
