@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.Media;
+using NLog;
 using PosterIcon = FoliCon.Models.PosterIcon;
 
 namespace FoliCon.Modules.utils;

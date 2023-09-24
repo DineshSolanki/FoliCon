@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules;
+﻿namespace FoliCon.Modules.DeviantArt;
 
 public class DArt : BindableBase
 {
