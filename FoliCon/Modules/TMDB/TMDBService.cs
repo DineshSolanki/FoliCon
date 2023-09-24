@@ -14,9 +14,9 @@ internal class TmdbService
         _ = _serviceClient.GetConfigAsync().Result;
         _mediaTypeHandlers = new Dictionary<string, Func<int, Task<object>>>
         {
-            { MediaTypes.Movie, async (id) => _serviceClient.GetMovieAsync(id) },
-            { MediaTypes.Collection, async (id) => _serviceClient.GetCollectionAsync(id) },
-            { MediaTypes.Tv, async (id) => _serviceClient.GetTvShowAsync(id) }
+            { MediaTypes.Movie, async (id) => await _serviceClient.GetMovieAsync(id) },
+            { MediaTypes.Collection, async (id) => await _serviceClient.GetCollectionAsync(id) },
+            { MediaTypes.Tv, async (id) => await _serviceClient.GetTvShowAsync(id) }
         };
     }
 
