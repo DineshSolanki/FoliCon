@@ -425,7 +425,7 @@ public static class FileUtils
     public static void ApplyChanges(string folderPath)
     {
         Logger.Debug("Applying Changes to Folder: {FolderPath}", folderPath);
-        SHChangeNotify(SHCNE.SHCNE_UPDATEDIR, SHCNF.SHCNF_PATHW, folderPath);
+        SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_PATHW, folderPath);
     }
 
     public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
