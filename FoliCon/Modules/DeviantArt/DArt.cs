@@ -1,10 +1,14 @@
-﻿namespace FoliCon.Modules.DeviantArt;
+﻿using Microsoft.Extensions.Caching.Memory;
+
+namespace FoliCon.Modules.DeviantArt;
 
 public class DArt : BindableBase
 {
     private string _clientAccessToken;
     private string _clientSecret;
     private string _clientId;
+    
+    private readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
     public string ClientId
     {
@@ -37,22 +41,17 @@ public class DArt : BindableBase
 
     public async void GetClientAccessTokenAsync()
     {
-        if (!string.IsNullOrEmpty(ClientAccessToken))
+        if (!_cache.TryGetValue("DArtToken", out string cachedToken))
         {
-            if (!await IsTokenValidAsync(ClientAccessToken))
-            {
-                ClientAccessToken = await GenerateNewAccessToken();
-            }
+            cachedToken = await GenerateNewAccessToken();
         }
-        else
-        {
-            ClientAccessToken = await GenerateNewAccessToken();
-        }
+
+        ClientAccessToken = cachedToken;
     }
 
     public static async Task<bool> IsTokenValidAsync(string clientAccessToken)
     {
-        var url = "https://www.deviantart.com/api/v1/oauth2/placebo?access_token=" + clientAccessToken;
+        var url = GetPlaceboApiUrl(clientAccessToken);
         using var response = await Services.HttpC.GetAsync(new Uri(url));
         var jsonData = await response.Content.ReadAsStringAsync();
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
@@ -62,26 +61,45 @@ public class DArt : BindableBase
 
     private async Task<string> GenerateNewAccessToken()
     {
-        var url = "https://www.deviantart.com/oauth2/token?client_id=" + ClientId +
-                  "&client_secret=" + ClientSecret +
-                  "&grant_type=client_credentials";
+        var url = GetTokenApiUrl();
         using var response = await Services.HttpC.GetAsync(new Uri(url));
         var jsonData = await response.Content.ReadAsStringAsync();
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
-        var clientAccessToken = tokenResponse?.AccessToken;
-        return clientAccessToken;
+
+        if (tokenResponse == null) return string.Empty;
+        var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(tokenResponse.ExpiresIn));
+        _cache.Set("DArtToken", tokenResponse.AccessToken, cacheEntryOptions);
+
+        return tokenResponse.AccessToken;
+
     }
 
     public async Task<DArtBrowseResult> Browse(string query, int offset = 0)
     {
         GetClientAccessTokenAsync();
-        var url = "https://www.deviantart.com/api/v1/oauth2/browse/newest?timerange=alltime&offset=" + offset +
-                  "&q=" + query + " folder icon" +
-                  "&limit=20&access_token=" + ClientAccessToken;
+
+        var url = GetBrowseApiUrl(query, offset);
         using var response = await Services.HttpC.GetAsync(new Uri(url));
         var jsonData = await response.Content.ReadAsStringAsync();
+
         var serializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
         var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, serializerSettings);
-        return result;
+
+        return result;        
+    }
+
+    private static string GetPlaceboApiUrl(string clientAccessToken)
+    {
+        return "https://www.deviantart.com/api/v1/oauth2/placebo?access_token=" + clientAccessToken;
+    }
+
+    private string GetTokenApiUrl()
+    {
+        return $"https://www.deviantart.com/oauth2/token?client_id={ClientId}&client_secret={ClientSecret}&grant_type=client_credentials";
+    }
+
+    private string GetBrowseApiUrl(string query, int offset)
+    {
+        return $"https://www.deviantart.com/api/v1/oauth2/browse/newest?timerange=alltime&offset={offset}&q={query} folder icon&limit=20&access_token={ClientAccessToken}";
     }
 }
