@@ -1,6 +1,7 @@
 ﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
 using FoliCon.Modules.Extension;
+using FoliCon.Modules.UI;
 using FoliCon.Modules.utils;
 using GongSolutions.Wpf.DragDrop;
 using NLog;

@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules;
+﻿namespace FoliCon.Modules.UI;
 
 public class ClickBehavior : Behavior<System.Windows.Controls.Image>
 {

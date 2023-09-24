@@ -1,6 +1,7 @@
 ﻿using FoliCon.Modules.Extension;
 using FoliCon.Modules.IGDB;
 using FoliCon.Modules.TMDB;
+using FoliCon.Modules.UI;
 using FoliCon.Modules.utils;
 using NLog;
 using DelegateCommand = Prism.Commands.DelegateCommand;

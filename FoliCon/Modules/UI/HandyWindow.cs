@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules;
+﻿namespace FoliCon.Modules.UI;
 
 public class HandyWindow : HandyControl.Controls.Window, IDialogWindow
 {
