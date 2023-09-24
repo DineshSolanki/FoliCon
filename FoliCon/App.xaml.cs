@@ -1,4 +1,5 @@
-﻿using FoliCon.Modules.utils;
+﻿using FoliCon.Modules.Configuration;
+using FoliCon.Modules.utils;
 using FoliCon.ViewModels;
 using NLog;
 using Prism.Ioc;

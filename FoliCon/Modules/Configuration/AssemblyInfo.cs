@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules;
+﻿namespace FoliCon.Modules.Configuration;
 
 internal static class AssemblyInfo
 {

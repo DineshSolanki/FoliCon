@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules;
+﻿namespace FoliCon.Modules.Configuration;
 
 public class AppConfig : GlobalDataHelper
 {
