@@ -16,7 +16,7 @@ public class Tmdb
     }
 
     /// <summary>
-    /// TMDB Helper Class for Working with IGDB API efficiently for this project.
+    /// TMDB Helper Class for Working with TMDB API efficiently for this project.
     /// </summary>
     /// <param name="serviceClient">Initialized TMDB Client</param>
     /// <param name="listDataTable">DataTable that stores all the Picked Results.</param>

@@ -150,7 +150,10 @@ public static class FileUtils
         var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
         try
         {
-            File.Create(filePath);
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath).Dispose();
+            }
             InIHelper.AddValue("ID", id.ToString(CultureInfo.InvariantCulture), null, filePath);
             InIHelper.AddValue("MediaType", mediaType, null, filePath);
             HideFile(filePath);
