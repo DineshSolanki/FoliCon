@@ -11,7 +11,7 @@
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
         <Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="56,16,47,22" />
-        <Image Source="../Resources/PosterMockup.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="3,-40,16,-40" Visibility="{Binding MockupVisibility}" />
+        <Image Source="/Resources/poster_mockups/simple/PosterMockup.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="3,-40,16,-40" Visibility="{Binding MockupVisibility}" />
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

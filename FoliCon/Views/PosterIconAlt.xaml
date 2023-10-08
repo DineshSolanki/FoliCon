@@ -10,9 +10,9 @@
              d:DataContext="{d:DesignInstance Type=model:PosterIcon, IsDesignTimeCreatable=True}">
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
-        <Image Source="/Resources/mockup2base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="30,14,48,15" Visibility="{Binding MockupVisibility}" />
+        <Image Source="/Resources/poster_mockups/dvd/mockup2base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="30,14,48,15" Visibility="{Binding MockupVisibility}" />
         <Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="31,42,50,19" />
-        <Image Source="/Resources/mockup cover cropped.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="16,14,35,15" Visibility="{Binding MockupVisibility}"/>
+        <Image Source="/Resources/poster_mockups/dvd/mockup cover cropped.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="16,14,35,15" Visibility="{Binding MockupVisibility}"/>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />

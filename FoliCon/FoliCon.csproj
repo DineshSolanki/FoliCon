@@ -74,22 +74,22 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\icons\NoPosterAvailable.png" />
     <Resource Include="Resources\icons\Strong-WiFi.png" />
     <Resource Include="Resources\icons\video-unavailable.png" />
-    <Resource Include="Resources\mockup faelpessoal base horizontal.png" />
     <Resource Include="Resources\PosterIconFaelpessoal 2.ico" />
     <Resource Include="Resources\PosterIconFaelpessoalHorizontal2.ico" />
     <Resource Include="Resources\PosterIconFaelpessoal.ico" />
     <Resource Include="Resources\PosterIconFaelpessoalHorizontal.ico" />
     <Resource Include="Resources\PosterIconLiaher2.ico" />
     <Resource Include="Resources\PosterIconLiaher.ico" />
-    <Resource Include="Resources\mockup cover cropped.png" />
-    <Resource Include="Resources\Mockup faelpessoal base.png" />
-    <Resource Include="Resources\mockup faelpessoal front.png" />
-    <Resource Include="Resources\mockup liaher base.png" />
-    <Resource Include="Resources\mockup liaher front.png" />
-    <Resource Include="Resources\mockup2base.png" />
     <Resource Include="Resources\PosterIcon.ico" />
     <Resource Include="Resources\PosterIconAlt.ico" />
-    <Resource Include="Resources\PosterMockup.png" />
+    <Resource Include="Resources\poster_mockups\dvd\mockup cover cropped.png" />
+    <Resource Include="Resources\poster_mockups\dvd\mockup2base.png" />
+    <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal base horizontal.png" />
+    <Resource Include="Resources\poster_mockups\faelpessoal\Mockup faelpessoal base.png" />
+    <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal front.png" />
+    <Resource Include="Resources\poster_mockups\liaher\mockup liaher base.png" />
+    <Resource Include="Resources\poster_mockups\liaher\mockup liaher front.png" />
+    <Resource Include="Resources\poster_mockups\simple\PosterMockup.png" />
     <Resource Include="Resources\shield.png" />
     <None Remove="Resources\video-unavailable.png" />
   </ItemGroup>
@@ -108,5 +108,8 @@ dineshsolanki.github.io/folicon/</Description>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Lang.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\poster_mockups\simple\" />
   </ItemGroup>
 </Project>
