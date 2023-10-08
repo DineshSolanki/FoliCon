@@ -25,7 +25,7 @@
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <Image x:Name="Shield" Source="../Resources/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
+            <Image x:Name="Shield" Source="/Resources/rating_mockup/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
                    Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding RatingVisibility}" Grid.Row="1" Grid.RowSpan="2" />
             <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
                        VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"

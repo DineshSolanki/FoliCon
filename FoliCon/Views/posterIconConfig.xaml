@@ -46,7 +46,7 @@
                          HorizontalAlignment="Left"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Legacy, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIcon.ico" />
+                    <Image Source="/Resources/mockup_demos/simple/PosterIcon.ico" />
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton x:Name="RPosterAlt" Grid.Column="1" GroupName="PosterOverlay"
@@ -55,7 +55,7 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Alternate, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconAlt.ico" />
+                    <Image Source="/Resources/mockup_demos/dvd/PosterIconAlt.ico" />
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton x:Name="RPosterFaelpessoal" Grid.Column="2" GroupName="PosterOverlay"
@@ -64,7 +64,7 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Faelpessoal, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconFaelpessoal.ico" />
+                    <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoal.ico" />
                 </RadioButton.Content>
             </RadioButton>
 
@@ -74,7 +74,7 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Liaher, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconLiaher.ico" />
+                    <Image Source="/Resources/mockup_demos/liaher/PosterIconLiaher.ico" />
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton x:Name="RPosterFaelpessoalHorizontal" Grid.Column="4" GroupName="PosterOverlay"
@@ -84,7 +84,7 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconFaelpessoalHorizontal.ico" />
+                    <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico" />
                 </RadioButton.Content>
             </RadioButton>
         </Grid>
