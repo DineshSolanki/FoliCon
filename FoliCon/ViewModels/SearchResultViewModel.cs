@@ -31,7 +31,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
-    private double _customRating = 0;
+    private double _customRating;
 
     #endregion Variables
 

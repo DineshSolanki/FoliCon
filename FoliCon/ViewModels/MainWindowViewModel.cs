@@ -856,5 +856,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         _tmdbClient?.Dispose();
         _pickedListDataTable?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }
