@@ -9,7 +9,7 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _title = AssemblyInfo.GetVersionWithoutBuild();
-    private string _logo = "/Resources/folicon Icon.png";
+    private string _logo = "/Resources/icons/folicon Icon.png";
 
     private string _description = LangProvider.GetLang("FoliConDescription");
 
