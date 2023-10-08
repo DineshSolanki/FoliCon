@@ -67,31 +67,31 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\icons\folicon Icon.ico" />
+    <Resource Include="Resources\icons\folicon Icon.png" />
+    <Resource Include="Resources\icons\LoadingPosterImage.png" />
+    <Resource Include="Resources\icons\No-WiFi.png" />
+    <Resource Include="Resources\icons\NoPosterAvailable.png" />
+    <Resource Include="Resources\icons\Strong-WiFi.png" />
+    <Resource Include="Resources\icons\video-unavailable.png" />
     <Resource Include="Resources\mockup faelpessoal base horizontal.png" />
     <Resource Include="Resources\PosterIconFaelpessoal 2.ico" />
     <Resource Include="Resources\PosterIconFaelpessoalHorizontal2.ico" />
     <Resource Include="Resources\PosterIconFaelpessoal.ico" />
     <Resource Include="Resources\PosterIconFaelpessoalHorizontal.ico" />
-    <Resource Include="Resources\folicon Icon.ico" />
-    <Resource Include="Resources\folicon Icon.png" />
     <Resource Include="Resources\PosterIconLiaher2.ico" />
     <Resource Include="Resources\PosterIconLiaher.ico" />
-    <Resource Include="Resources\LoadingPosterImage.png" />
     <Resource Include="Resources\mockup cover cropped.png" />
     <Resource Include="Resources\Mockup faelpessoal base.png" />
     <Resource Include="Resources\mockup faelpessoal front.png" />
     <Resource Include="Resources\mockup liaher base.png" />
     <Resource Include="Resources\mockup liaher front.png" />
     <Resource Include="Resources\mockup2base.png" />
-    <Resource Include="Resources\No-WiFi.png" />
-    <Resource Include="Resources\NoPosterAvailable.png" />
     <Resource Include="Resources\PosterIcon.ico" />
     <Resource Include="Resources\PosterIconAlt.ico" />
     <Resource Include="Resources\PosterMockup.png" />
     <Resource Include="Resources\shield.png" />
-    <Resource Include="Resources\Strong-WiFi.png" />
     <None Remove="Resources\video-unavailable.png" />
-    <Resource Include="Resources\video-unavailable.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Langs\Lang.Designer.cs">

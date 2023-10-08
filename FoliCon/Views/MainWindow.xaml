@@ -17,7 +17,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="714" Width="851" MinWidth="850" MinHeight="630"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
-           Icon="/Resources/folicon Icon.ico"
+           Icon="/Resources/icons/folicon Icon.ico"
         ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
         ui:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">

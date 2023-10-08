@@ -28,9 +28,9 @@
     <UserControl.Resources>
         <convertor:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
         <convertor:InvertedTextToVisibilityConverter x:Key="InvertedTextToVisibilityConverter" />
-        <BitmapImage x:Key="NoPoster" UriSource="/Resources/NoPosterAvailable.png" />
-        <BitmapImage x:Key="LoadingPoster" UriSource="/Resources/LoadingPosterImage.png" />
-        <BitmapImage x:Key="VideoUnavailable" UriSource="/Resources/video-unavailable.png" />
+        <BitmapImage x:Key="NoPoster" UriSource="/Resources/icons/NoPosterAvailable.png" />
+        <BitmapImage x:Key="LoadingPoster" UriSource="/Resources/icons/LoadingPosterImage.png" />
+        <BitmapImage x:Key="VideoUnavailable" UriSource="/Resources/icons/video-unavailable.png" />
     </UserControl.Resources>
     <hc:BusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy}">
         <Grid Margin="21,0,21,12">
