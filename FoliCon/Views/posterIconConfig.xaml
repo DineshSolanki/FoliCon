@@ -5,16 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:modules="clr-namespace:FoliCon.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:foliCon="clr-namespace:FoliCon"
-             xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance modules:PosterIconConfigViewModel }">
     <UserControl.Resources>
         <ResourceDictionary>
-            <foliCon:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
+            <convertor:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
         </ResourceDictionary>
     </UserControl.Resources>
     <prism:Dialog.WindowStyle>
@@ -46,7 +46,7 @@
                          HorizontalAlignment="Left"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Legacy, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIcon.ico" />
+                    <Image Source="/Resources/mockup_demos/simple/PosterIcon.ico" />
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton x:Name="RPosterAlt" Grid.Column="1" GroupName="PosterOverlay"
@@ -55,7 +55,7 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Alternate, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconAlt.ico" />
+                    <Image Source="/Resources/mockup_demos/dvd/PosterIconAlt.ico" />
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton x:Name="RPosterFaelpessoal" Grid.Column="2" GroupName="PosterOverlay"
@@ -64,7 +64,7 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Faelpessoal, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconFaelpessoal.ico" />
+                    <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoal.ico" />
                 </RadioButton.Content>
             </RadioButton>
 
@@ -74,17 +74,17 @@
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= Liaher, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconLiaher.ico" />
+                    <Image Source="/Resources/mockup_demos/liaher/PosterIconLiaher.ico" />
                 </RadioButton.Content>
             </RadioButton>
             <RadioButton x:Name="RPosterFaelpessoalHorizontal" Grid.Column="4" GroupName="PosterOverlay"
-                         ToolTip="{langExtension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
+                         ToolTip="{extension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
                          Command="{Binding IconOverlayChangedCommand}"
                          CommandParameter="FaelpessoalHorizontal" FontSize="16"
                          HorizontalAlignment="Left" VerticalAlignment="Stretch"
                          IsChecked="{Binding IconOverlay, ConverterParameter= FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
-                    <Image Source="/Resources/PosterIconFaelpessoalHorizontal.ico" />
+                    <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico" />
                 </RadioButton.Content>
             </RadioButton>
         </Grid>

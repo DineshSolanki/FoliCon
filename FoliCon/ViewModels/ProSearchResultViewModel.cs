@@ -1,4 +1,10 @@
-﻿using NLog;
+﻿using FoliCon.Models.Data;
+using FoliCon.Modules.Configuration;
+using FoliCon.Modules.DeviantArt;
+using FoliCon.Modules.Extension;
+using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
+using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;
@@ -122,7 +128,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                     }
                     using (var bm = await response.GetBitmap())
                     {
-                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, Util.LoadBitmap(bm)));
+                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, ImageUtils.LoadBitmap(bm)));
                         bm.Dispose();
                     }
                     if (_stopSearch)
@@ -165,7 +171,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);
-        Util.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
+        FileUtils.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
         if (!(_i > Fnames.Count - 1))

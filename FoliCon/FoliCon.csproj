@@ -7,7 +7,7 @@
     <Version>3.11.0</Version>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	  <!--<PublishTrimmed>true</PublishTrimmed>-->
-    <ApplicationIcon>Resources\folicon Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\icons\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
     <PackageVersion>3.11.0</PackageVersion>
     <AssemblyVersion>3.11.0</AssemblyVersion>
@@ -55,6 +55,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="HandyControls" Version="3.4.5" />
     <PackageReference Include="IGDB" Version="2.3.2" />
     <PackageReference Include="Jot" Version="2.1.17" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
     <PackageReference Include="NLog" Version="5.2.5" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="Polly" Version="8.0.0" />
@@ -66,31 +67,31 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\mockup faelpessoal base horizontal.png" />
-    <Resource Include="Resources\PosterIconFaelpessoal 2.ico" />
-    <Resource Include="Resources\PosterIconFaelpessoalHorizontal2.ico" />
-    <Resource Include="Resources\PosterIconFaelpessoal.ico" />
-    <Resource Include="Resources\PosterIconFaelpessoalHorizontal.ico" />
-    <Resource Include="Resources\folicon Icon.ico" />
-    <Resource Include="Resources\folicon Icon.png" />
-    <Resource Include="Resources\PosterIconLiaher2.ico" />
-    <Resource Include="Resources\PosterIconLiaher.ico" />
-    <Resource Include="Resources\LoadingPosterImage.png" />
-    <Resource Include="Resources\mockup cover cropped.png" />
-    <Resource Include="Resources\Mockup faelpessoal base.png" />
-    <Resource Include="Resources\mockup faelpessoal front.png" />
-    <Resource Include="Resources\mockup liaher base.png" />
-    <Resource Include="Resources\mockup liaher front.png" />
-    <Resource Include="Resources\mockup2base.png" />
-    <Resource Include="Resources\No-WiFi.png" />
-    <Resource Include="Resources\NoPosterAvailable.png" />
-    <Resource Include="Resources\PosterIcon.ico" />
-    <Resource Include="Resources\PosterIconAlt.ico" />
-    <Resource Include="Resources\PosterMockup.png" />
-    <Resource Include="Resources\shield.png" />
-    <Resource Include="Resources\Strong-WiFi.png" />
+    <Resource Include="Resources\icons\folicon Icon.ico" />
+    <Resource Include="Resources\icons\folicon Icon.png" />
+    <Resource Include="Resources\icons\LoadingPosterImage.png" />
+    <Resource Include="Resources\icons\No-WiFi.png" />
+    <Resource Include="Resources\icons\NoPosterAvailable.png" />
+    <Resource Include="Resources\icons\Strong-WiFi.png" />
+    <Resource Include="Resources\icons\video-unavailable.png" />
+    <Resource Include="Resources\mockup_demos\dvd\PosterIconAlt.ico" />
+    <Resource Include="Resources\mockup_demos\faelpessoal\PosterIconFaelpessoal 2.ico" />
+    <Resource Include="Resources\mockup_demos\faelpessoal\PosterIconFaelpessoal.ico" />
+    <Resource Include="Resources\mockup_demos\faelpessoal\PosterIconFaelpessoalHorizontal.ico" />
+    <Resource Include="Resources\mockup_demos\faelpessoal\PosterIconFaelpessoalHorizontal2.ico" />
+    <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher.ico" />
+    <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher2.ico" />
+    <Resource Include="Resources\mockup_demos\simple\PosterIcon.ico" />
+    <Resource Include="Resources\poster_mockups\dvd\mockup cover cropped.png" />
+    <Resource Include="Resources\poster_mockups\dvd\mockup2base.png" />
+    <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal base horizontal.png" />
+    <Resource Include="Resources\poster_mockups\faelpessoal\Mockup faelpessoal base.png" />
+    <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal front.png" />
+    <Resource Include="Resources\poster_mockups\liaher\mockup liaher base.png" />
+    <Resource Include="Resources\poster_mockups\liaher\mockup liaher front.png" />
+    <Resource Include="Resources\poster_mockups\simple\PosterMockup.png" />
     <None Remove="Resources\video-unavailable.png" />
-    <Resource Include="Resources\video-unavailable.png" />
+    <Resource Include="Resources\rating_mockup\shield.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Langs\Lang.Designer.cs">

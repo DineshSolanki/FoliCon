@@ -5,11 +5,12 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
-             xmlns:ex="clr-namespace:FoliCon.Modules.LangExtension"
-             xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:ui="clr-namespace:FoliCon.Modules.UI"
+             mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ProSearchResultViewModel }">
     <prism:Dialog.WindowStyle>
@@ -31,7 +32,7 @@
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
-                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
                         Command="{Binding StopSearchCommand}" />
             </StackPanel>
         </hc:BusyIndicator.BusyContent>
@@ -46,14 +47,14 @@
                     <ColumnDefinition Width="107" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="{ex:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                         Command="{Binding SkipCommand}" IsCancel="True" />
-                <Label Content="{ex:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Column="1" VerticalAlignment="Top" />
+                <Label Content="{extension:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Column="1" VerticalAlignment="Top" />
                 <hc:SearchBar
-                    modules:FocusExtension.IsFocused="{Binding IsSearchFocused,UpdateSourceTrigger=PropertyChanged}"
+                    extension:FocusExtension.IsFocused="{Binding IsSearchFocused,UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="2" Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource SearchBarPlusBaseStyle}"
-                    hc:InfoElement.Placeholder="{ex:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
+                    hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
                     VerticalAlignment="Top">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="SearchStarted">
@@ -70,7 +71,7 @@
                             <Image Source="{Binding Image}" Tag="{Binding Url}" Height="128" Width="128"
                                    RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
                                 <i:Interaction.Behaviors>
-                                    <modules:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
+                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.PickCommand)}" 
                                                            ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.OpenImageCommand)}"/>

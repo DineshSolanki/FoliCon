@@ -1,4 +1,6 @@
-﻿namespace FoliCon.ViewModels;
+﻿using FoliCon.Modules.utils;
+
+namespace FoliCon.ViewModels;
 
 public class ApiConfigurationViewModel : BindableBase, IDialogAware
 {
@@ -24,7 +26,7 @@ public class ApiConfigurationViewModel : BindableBase, IDialogAware
     public ApiConfigurationViewModel()
     {
         SaveCommand = new DelegateCommand(SaveMethod);
-        Util.ReadApiConfiguration(out _tmdbKey, out _igdbClientId, out _igdbClientSecret, out _dartClient, out _dartClientId);
+        FileUtils.ReadApiConfiguration(out _tmdbKey, out _igdbClientId, out _igdbClientSecret, out _dartClient, out _dartClientId);
     }
 
     private void SaveMethod()
@@ -35,7 +37,7 @@ public class ApiConfigurationViewModel : BindableBase, IDialogAware
         }
         else
         {
-            Util.WriteApiConfiguration(TmdbKey, IgdbClientId, IgdbClientSecret, DArtClient, DArtClientId);
+            FileUtils.WriteApiConfiguration(TmdbKey, IgdbClientId, IgdbClientSecret, DArtClient, DArtClientId);
             MessageBox.Success("API configuration Saved.", "Success");
             CloseDialog("true");
         }

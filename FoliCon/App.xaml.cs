@@ -1,4 +1,7 @@
-﻿using FoliCon.ViewModels;
+﻿using FoliCon.Modules.Configuration;
+using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
+using FoliCon.ViewModels;
 using NLog;
 using Prism.Ioc;
 using Sentry;
@@ -20,7 +23,7 @@ public partial class App
     public App()
     {
         
-        LogManager.Configuration = Util.GetNLogConfig();
+        LogManager.Configuration = LogUtils.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
         Logger.Info("FoliCon Initilized");

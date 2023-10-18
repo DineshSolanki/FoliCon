@@ -7,7 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
-             xmlns:langExtension="clr-namespace:FoliCon.Modules.LangExtension"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True" Width="600" Height="300"
              d:DataContext="{d:DesignInstance viewModels:AboutBoxViewModel}">
@@ -31,8 +31,8 @@
             <Image Grid.Column="0" Source="{Binding Logo}" RenderOptions.BitmapScalingMode="HighQuality" Width="200" Margin="-2,0,2,-20" />
             <StackPanel Grid.Column="1">
                 <hc:TextBox BorderThickness="0" IsReadOnly="True" Text="{Binding Title}" FontSize="36" FontFamily="Monotype Corsiva" Foreground="Firebrick" Background="Transparent" />
-                <hc:TextBox BorderThickness="0" IsReadOnly="True" Focusable="False" Text="{Binding Version}" hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.Version}}" hc:InfoElement.TitlePlacement="Left" Background="Transparent" />
-                <hc:TextBox BorderThickness="0" IsReadOnly="True" Focusable="False" Text="{Binding License}" hc:InfoElement.Title="{langExtension:Lang Key={x:Static langs:LangKeys.License}}" hc:InfoElement.TitlePlacement="Left" Background="Transparent" />
+                <hc:TextBox BorderThickness="0" IsReadOnly="True" Focusable="False" Text="{Binding Version}" hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.Version}}" hc:InfoElement.TitlePlacement="Left" Background="Transparent" />
+                <hc:TextBox BorderThickness="0" IsReadOnly="True" Focusable="False" Text="{Binding License}" hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.License}}" hc:InfoElement.TitlePlacement="Left" Background="Transparent" />
                 <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Foreground="RoyalBlue" ScrollViewer.CanContentScroll="True" />
                 <TextBlock Text="{Binding AdditionalNotes}" Margin="0,5,0,0" />
                 <ContentControl VerticalAlignment="Top">

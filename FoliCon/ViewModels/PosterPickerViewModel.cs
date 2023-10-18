@@ -1,4 +1,12 @@
-﻿using NLog;
+﻿using FoliCon.Models.Constants;
+using FoliCon.Models.Data;
+using FoliCon.Modules.Configuration;
+using FoliCon.Modules.Extension;
+using FoliCon.Modules.IGDB;
+using FoliCon.Modules.TMDB;
+using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
+using NLog;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 
@@ -99,7 +107,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         LoadData();
             
     }
-    public void LoadData()
+    public async void LoadData()
     {
         var resultType = Result.MediaType;
         var response = _isPickedById
@@ -113,19 +121,19 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
             {
                 dynamic pickedResult = _isPickedById ? (TvShow)response : (SearchTv)response;
                 Title = pickedResult.Name;
-                images = TmdbObject.SearchTvImages(pickedResult.Id);
+                images = await TmdbObject.SearchTvImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Movie)
             {
                 dynamic pickedResult = _isPickedById ? (Movie)response : (SearchMovie)response;
                 Title = pickedResult.Title;
-                images = TmdbObject.SearchMovieImages(pickedResult.Id);
+                images = await TmdbObject.SearchMovieImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Collection)
             {
                 dynamic pickedResult = _isPickedById ? (Collection)response : (SearchCollection)response;
                 Title = pickedResult.Name;
-                images = TmdbObject.SearchCollectionImages(pickedResult.Id);
+                images = await TmdbObject.SearchCollectionImages(pickedResult.Id);
             }
             else if (resultType == MediaTypes.Mtv)
             {
@@ -136,14 +144,14 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     {
                         SearchTv pickedResult = response;
                         Title = pickedResult.Name;
-                        images = TmdbObject.SearchTvImages(pickedResult.Id);
+                        images = await TmdbObject.SearchTvImages(pickedResult.Id);
                         break;
                     }
                     case MediaType.Movie:
                     {
                         SearchMovie pickedResult = response;
                         Title = pickedResult.Title;
-                        images = TmdbObject.SearchMovieImages(pickedResult.Id);
+                        images = await TmdbObject.SearchMovieImages(pickedResult.Id);
                         break;
                     }
                 }
@@ -190,7 +198,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                         continue;
                     }
                     var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(qualityPath, Util.LoadBitmap(bm)));
+                    ImageUrl.Add(new DArtImageList(qualityPath, ImageUtils.LoadBitmap(bm)));
                     bm.Dispose();
                 }
 
@@ -233,7 +241,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                         continue;
                     }
                     var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(image.ImageId, Util.LoadBitmap(bm)));
+                    ImageUrl.Add(new DArtImageList(image.ImageId, ImageUtils.LoadBitmap(bm)));
                     bm.Dispose();
                 }
 

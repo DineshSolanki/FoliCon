@@ -1,4 +1,7 @@
-﻿namespace FoliCon.Views;
+﻿using FoliCon.Models.Enums;
+using FoliCon.Modules.utils;
+
+namespace FoliCon.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
@@ -15,7 +18,7 @@ public partial class MainWindow
 
     private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        Util.SetColumnWidth(FinalList);
+        UiUtils.SetColumnWidth(FinalList);
         if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             //    // scroll the new item into view
@@ -30,14 +33,14 @@ public partial class MainWindow
         if (CmbLanguage.SelectedItem is null)
             return;
         var selectedLanguage = (Languages)CmbLanguage.SelectedValue;
-        var cultureInfo = Util.GetCultureInfoByLanguage(selectedLanguage);
+        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
         LangProvider.Culture = cultureInfo;
         Thread.CurrentThread.CurrentCulture = cultureInfo;
         Thread.CurrentThread.CurrentUICulture = cultureInfo;
         Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
         if (FinalList is not null)
         {
-            Util.SetColumnWidth(FinalList);
+            UiUtils.SetColumnWidth(FinalList);
         }
 
     }

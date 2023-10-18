@@ -2,15 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:model="clr-namespace:FoliCon.Models"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:FoliCon.Models.Data"
              prism:ViewModelLocator.AutoWireViewModel="False"  Width="265" Height="256"
-             d:DataContext="{d:DesignInstance Type=model:PosterIcon, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=data:PosterIcon, IsDesignTimeCreatable=True}">
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
-        <Image Source="/Resources/mockup liaher base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
+        <Image Source="/Resources/poster_mockups/liaher/mockup liaher base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
         <Border CornerRadius="8,8,8,8" Grid.Row="0"  Margin="34,10,43,21">
             <Border.Background>
                 <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" />
@@ -18,14 +18,14 @@
         </Border>
 
         <!--<Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="34,10,42,21" />-->
-        <Image Source="/Resources/mockup liaher front.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="0,-6,8,5" Visibility="{Binding MockupVisibility}"/>
+        <Image Source="/Resources/poster_mockups/liaher/mockup liaher front.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="0,-6,8,5" Visibility="{Binding MockupVisibility}"/>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <Image x:Name="Shield" Source="../Resources/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
+            <Image x:Name="Shield" Source="/Resources/rating_mockup/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
                    Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding RatingVisibility}" Grid.Row="1" Grid.RowSpan="2" />
             <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
                        VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"

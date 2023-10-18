@@ -1,4 +1,15 @@
-﻿using HandyControl.Themes;
+﻿using FoliCon.Models.Configs;
+using FoliCon.Models.Constants;
+using FoliCon.Models.Data;
+using FoliCon.Models.Enums;
+using FoliCon.Modules.Configuration;
+using FoliCon.Modules.DeviantArt;
+using FoliCon.Modules.Extension;
+using FoliCon.Modules.IGDB;
+using FoliCon.Modules.TMDB;
+using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
+using HandyControl.Themes;
 using NLog;
 
 namespace FoliCon.ViewModels;
@@ -123,7 +134,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             SetProperty(ref _selectedFolder, value);
             if (value != null)
             {
-                DirectoryPermissionsResult = Util.CheckDirectoryPermissions(value);
+                DirectoryPermissionsResult = FileUtils.CheckDirectoryPermissions(value);
             }
         }
     }
@@ -206,8 +217,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
                 LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes) return;
-        Util.RefreshIconCache();
-        Util.RestartExplorer();
+        ProcessUtils.RefreshIconCache();
+        ProcessUtils.RestartExplorer();
     });
 
     public DelegateCommand CustomIconsCommand { get; private set; }
@@ -217,7 +228,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public DelegateCommand<string> ExploreIntegrationCommand { get; private set; }
 
     public DelegateCommand AboutCommand { get; private set; }
-    public DelegateCommand UpdateCommand { get; } = new(() => Util.CheckForUpdate());
+    public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
 
     #endregion MenuItem Commands
 
@@ -245,7 +256,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         var selectedLanguage = AppLanguage;
-        var cultureInfo = Util.GetCultureInfoByLanguage(selectedLanguage);
+        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
         LangProvider.Culture = cultureInfo;
         Thread.CurrentThread.CurrentCulture = cultureInfo;
         Thread.CurrentThread.CurrentUICulture = cultureInfo;
@@ -255,7 +266,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
 
             
-        var cmdArgs = Util.GetCmdArgs();
+        var cmdArgs = ProcessUtils.GetCmdArgs();
         if (!cmdArgs.ContainsKey("path")) return;
         
         Logger.Info("Command Line Argument Found, Initializing with Command Line Argument.");
@@ -287,7 +298,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private void LoadMethod()
     {
-        var folderBrowserDialog = Util.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
         if (!SelectedFolder.IsNullOrEmpty())
         {
             folderBrowserDialog.SelectedPath = SelectedFolder;
@@ -308,7 +319,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             if (Directory.Exists(SelectedFolder))
             {
-                Fnames = Util.GetFolderNames(SelectedFolder);
+                Fnames = FileUtils.GetFolderNames(SelectedFolder);
             }
             else
             {
@@ -319,7 +330,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             if (Fnames.Count != 0)
             {
-                if (Util.IsNetworkAvailable())
+                if (NetworkUtils.IsNetworkAvailable())
                 {
                     if (!IsObjectsInitialized)
                     {
@@ -386,14 +397,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             // TODO: Set cursor to WAIT.
             var isAutoPicked = false;
             var searchTitle = TitleCleaner.Clean(itemTitle);
-            var (id, mediaType) = Util.ReadMediaInfo(fullFolderPath);
+            var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
             var isPickedById = false;
             ResultResponse response;
             if (id != null && mediaType != null)
             {
                 Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
                 isPickedById = true;
-                response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+                response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
             }
             else
             {
@@ -570,7 +581,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             if (Directory.Exists(SelectedFolder))
             {
-                Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
+                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
             }
         });
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
@@ -579,8 +590,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private static void ExplorerIntegrationMethod(string isIntegrationEnabled)
     {
         var value = Convert.ToBoolean(isIntegrationEnabled);
-        if (value) Util.AddToContextMenu();
-        else Util.RemoveFromContextMenu();
+        if (value) ProcessUtils.AddToContextMenu();
+        else ProcessUtils.RemoveFromContextMenu();
     }
 
     private void DeleteMediaInfo()
@@ -593,7 +604,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
                         LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == MessageBoxResult.Yes)
                 {
-                    Util.DeleteMediaInfoFromSubfolders(SelectedFolder);
+                    FileUtils.DeleteMediaInfoFromSubfolders(SelectedFolder);
                 }
             }
             else
@@ -624,7 +635,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         };
         StatusBarProperties = new StatusBarData
         {
-            NetIcon = Util.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
+            NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
             TotalIcons = 0,
             AppStatus = "Idle",
             AppStatusAdditional = ""
@@ -639,7 +650,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.ProgressBarData.Value = 0;
         _imgDownloadList = new List<ImageToDownload>();
         _pickedListDataTable = new DataTable();
-        if (Util.IsNetworkAvailable())
+        if (NetworkUtils.IsNetworkAvailable())
         {
             InitializeClientObjects();
             IsObjectsInitialized = true;
@@ -685,7 +696,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
                         LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
                 {
-                    Util.DeleteIconsFromSubfolders(SelectedFolder);
+                    FileUtils.DeleteIconsFromSubfolders(SelectedFolder);
                 }
             }
             else
@@ -719,7 +730,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         if (folder == null) return;
         if (Directory.Exists(folder))
         {
-            Util.StartProcess(folder + Path.DirectorySeparatorChar);
+            ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
         }
     }
 
@@ -751,7 +762,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             try
             {
-                await Util.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
             }
             catch (UnauthorizedAccessException e)
             {
@@ -784,7 +795,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private void MakeIcons()
     {
         IsBusy = true;
-        var iconProcessedCount = Util.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
+        var iconProcessedCount = IconUtils.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;
         var info = new GrowlInfo
@@ -800,7 +811,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                         LangProvider.GetLang("IconCreated"))))
         {
             case MessageBoxResult.Yes:
-                Util.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
+                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
                 break;
         }
     }
@@ -808,7 +819,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private void InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
-        Util.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
+        FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
             out _devClientId);
         if (string.IsNullOrEmpty(_tmdbapiKey)
             || string.IsNullOrEmpty(_igdbClientId) || string.IsNullOrEmpty(_igdbClientSecret)
@@ -850,5 +861,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         _tmdbClient?.Dispose();
         _pickedListDataTable?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }
