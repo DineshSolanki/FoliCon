@@ -62,7 +62,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Sentry" Version="3.40.1" />
     <PackageReference Include="Sentry.NLog" Version="3.40.1" />
     <PackageReference Include="TMDbLib" Version="2.0.0" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.16" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
