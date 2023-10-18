@@ -13,6 +13,7 @@
         xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
         xmlns:utils="clr-namespace:FoliCon.Modules.utils"
         xmlns:ui="clr-namespace:FoliCon.Modules.UI"
+        xmlns:enums="clr-namespace:FoliCon.Models.Enums"
         mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="714" Width="851" MinWidth="850" MinHeight="630"
@@ -81,8 +82,8 @@
                         <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
                                   Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
                     </MenuItem>
-                    <hc:ComboBox x:Name="CmbTheme" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:FoliconThemes}}}"  IsEditable="False" SelectedItem ="{Binding Path=Theme}" hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.Theme}}" hc:TitleElement.TitlePlacement="Left"/>
-                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type models:Languages}}}"  IsEditable="False" hc:Poptip.Content="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
+                    <hc:ComboBox x:Name="CmbTheme" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"  IsEditable="False" SelectedItem ="{Binding Path=Theme}" hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.Theme}}" hc:TitleElement.TitlePlacement="Left"/>
+                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"  IsEditable="False" hc:Poptip.Content="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
                 </MenuItem>
                 <MenuItem x:Name="MenuRExbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                           ToolTip="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"

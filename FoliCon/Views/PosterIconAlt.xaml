@@ -6,8 +6,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:data="clr-namespace:FoliCon.Models.Data"
              prism:ViewModelLocator.AutoWireViewModel="False"  Width="265" Height="256"
-             d:DataContext="{d:DesignInstance Type=model:PosterIcon, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=data:PosterIcon, IsDesignTimeCreatable=True}">
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
         <Image Source="/Resources/poster_mockups/dvd/mockup2base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="30,14,48,15" Visibility="{Binding MockupVisibility}" />

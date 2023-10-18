@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Enums;
 
 public enum IconOverlay
 {

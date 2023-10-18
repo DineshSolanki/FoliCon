@@ -1,6 +1,8 @@
-﻿using FoliCon.Modules.Media;
+﻿using FoliCon.Models.Constants;
+using FoliCon.Models.Enums;
+using FoliCon.Modules.Media;
 using NLog;
-using PosterIcon = FoliCon.Models.PosterIcon;
+using PosterIcon = FoliCon.Models.Data.PosterIcon;
 
 namespace FoliCon.Modules.utils;
 

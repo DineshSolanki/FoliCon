@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Constants;
 
 public static class PosterSize
 {
@@ -9,6 +9,4 @@ public static class PosterSize
     public static string W500 { get; } = "w500";
     public static string W780 { get; } = "w780";
     public static string Original { get; } = "original";
-
-
 }

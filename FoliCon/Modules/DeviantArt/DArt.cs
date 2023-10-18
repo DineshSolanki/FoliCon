@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using FoliCon.Models.Api;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FoliCon.Modules.DeviantArt;
 

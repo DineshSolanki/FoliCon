@@ -1,6 +1,7 @@
-﻿using FoliCon.ViewModels;
+﻿using FoliCon.Models.Enums;
+using FoliCon.ViewModels;
 
-namespace FoliCon.Models;
+namespace FoliCon.Models.Constants;
 
 internal static class GlobalVariables
 {

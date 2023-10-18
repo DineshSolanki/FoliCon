@@ -1,8 +1,6 @@
 ﻿// ReSharper disable StringLiteralTypo
 // ReSharper disable IdentifierTypo
-namespace FoliCon.Models;
-
-using Newtonsoft.Json;
+namespace FoliCon.Models.Api;
 
 public class Author
 {

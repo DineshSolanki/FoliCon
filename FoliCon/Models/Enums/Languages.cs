@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Enums;
 
 //[TypeConverter(typeof(EnumDescriptionTypeConverter))]
 public enum Languages

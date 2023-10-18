@@ -1,4 +1,9 @@
-﻿using FoliCon.Modules.DeviantArt;
+﻿using FoliCon.Models.Configs;
+using FoliCon.Models.Constants;
+using FoliCon.Models.Data;
+using FoliCon.Models.Data;
+using FoliCon.Models.Enums;
+using FoliCon.Modules.DeviantArt;
 using FoliCon.Modules.Extension;
 using FoliCon.Modules.IGDB;
 using FoliCon.Modules.TMDB;

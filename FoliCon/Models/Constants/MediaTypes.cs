@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Constants;
 
 public static class MediaTypes
 {

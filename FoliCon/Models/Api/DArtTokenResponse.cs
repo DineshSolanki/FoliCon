@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Api;
 
 public class DArtTokenResponse
 {

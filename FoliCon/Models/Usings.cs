@@ -1,6 +1,4 @@
-﻿global using FoliCon.Models;
-global using FoliCon.Modules;
-global using FoliCon.Properties.Langs;
+﻿global using FoliCon.Properties.Langs;
 global using FoliCon.Views;
 
 global using HandyControl.Controls;
@@ -30,7 +28,6 @@ global using System.Collections.Specialized;
 global using System.ComponentModel;
 global using System.Data;
 global using System.Diagnostics;
-global using System.Diagnostics.Contracts;
 global using System.Drawing;
 global using System.Drawing.IconLib;
 global using System.Globalization;

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Models.Enums;
+using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.Modules.utils;

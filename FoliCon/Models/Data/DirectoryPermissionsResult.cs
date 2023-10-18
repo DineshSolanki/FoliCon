@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Data;
 
 public class DirectoryPermissionsResult
 {

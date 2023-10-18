@@ -1,4 +1,5 @@
-﻿using FoliCon.Modules.utils;
+﻿using FoliCon.Models.Enums;
+using FoliCon.Modules.utils;
 
 namespace FoliCon.Views;
 

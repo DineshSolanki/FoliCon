@@ -1,6 +1,6 @@
 ﻿using FoliCon.Modules.utils;
 
-namespace FoliCon.Models;
+namespace FoliCon.Models.Data;
 
 public class PosterIcon
 {

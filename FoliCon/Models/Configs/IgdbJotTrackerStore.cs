@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models;
+﻿namespace FoliCon.Models.Configs;
 
 public class IgdbJotTrackerStore : BindableBase, ITokenStore
 {
