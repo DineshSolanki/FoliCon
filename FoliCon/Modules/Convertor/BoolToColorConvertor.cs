@@ -1,5 +1,4 @@
 ﻿using NLog;
-using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Logger = NLog.Logger;
 
@@ -11,12 +10,9 @@ public class BoolToColorConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         Logger.Debug("Converting {Value} to color", value);
-        if (value is bool b)
-        {
-            Logger.Debug("Value is bool");
-            return b ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
-        }
-        return Brushes.Transparent;
+        if (value is not bool b) return Brushes.Transparent;
+        Logger.Debug("Value is bool");
+        return b ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
