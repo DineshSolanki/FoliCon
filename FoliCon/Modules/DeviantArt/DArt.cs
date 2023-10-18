@@ -1,4 +1,5 @@
 ﻿using FoliCon.Models.Api;
+using FoliCon.Modules.Configuration;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace FoliCon.Modules.DeviantArt;

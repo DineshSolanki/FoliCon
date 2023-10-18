@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using FoliCon.Modules.Configuration;
+using NLog;
 using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;

@@ -1,4 +1,4 @@
-﻿namespace FoliCon;
+﻿namespace FoliCon.Modules.Convertor;
 
 public class String2BooleanConvertor : ResourceDictionary, IValueConverter
 {

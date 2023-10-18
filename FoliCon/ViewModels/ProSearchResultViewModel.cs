@@ -1,4 +1,5 @@
 ﻿using FoliCon.Models.Data;
+using FoliCon.Modules.Configuration;
 using FoliCon.Modules.DeviantArt;
 using FoliCon.Modules.Extension;
 using FoliCon.Modules.UI;

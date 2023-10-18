@@ -9,12 +9,13 @@
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance modules:PosterIconConfigViewModel }">
     <UserControl.Resources>
         <ResourceDictionary>
-            <foliCon:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
+            <convertor:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
         </ResourceDictionary>
     </UserControl.Resources>
     <prism:Dialog.WindowStyle>

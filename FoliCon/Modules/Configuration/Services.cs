@@ -1,6 +1,4 @@
-﻿using FoliCon.Modules.Configuration;
-
-namespace FoliCon;
+﻿namespace FoliCon.Modules.Configuration;
 
 public static class Services
 {
