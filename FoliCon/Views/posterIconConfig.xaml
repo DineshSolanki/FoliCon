@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:modules="clr-namespace:FoliCon.ViewModels"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:foliCon="clr-namespace:FoliCon"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"

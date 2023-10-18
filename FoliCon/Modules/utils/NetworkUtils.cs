@@ -49,14 +49,14 @@ public static class NetworkUtils
         var retryPolicy = Policy
             .Handle<HttpRequestException>()
             .WaitAndRetryAsync(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), 
-                (exception, retryCount, context) => 
+                (exception, retryCount, _) => 
                 {
                     Logger.Warn(exception, $"Failed to download image from URL: {url}. Retrying... Attempt {retryCount}");
                 });
 
         var fallbackPolicy = Policy
             .Handle<HttpRequestException>()
-            .FallbackAsync(async ct => 
+            .FallbackAsync(async _ => 
             { 
                 Logger.Error($"All attempts to download image from URL: {url} have failed.");
                 throw new HttpRequestException($"Failed to download the image after {maxRetry} attempts");

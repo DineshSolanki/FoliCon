@@ -65,6 +65,4 @@ global using static Vanara.PInvoke.Shell32;
 global using MessageBox = HandyControl.Controls.MessageBox;
 namespace FoliCon.Models;
 
-internal class Usings
-{
-}
+internal class Usings;

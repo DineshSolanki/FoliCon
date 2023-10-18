@@ -8,7 +8,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              xmlns:ui="clr-namespace:FoliCon.Modules.UI"
              mc:Ignorable="d"

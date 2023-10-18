@@ -4,9 +4,7 @@
              xmlns:prism="http://prismlibrary.com/"
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
-             xmlns:modules="clr-namespace:FoliCon.Modules"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
-             xmlns:models="clr-namespace:FoliCon.Models"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views"
@@ -63,7 +61,7 @@
                             <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
                         </hc:EventTrigger>
                         <hc:EventTrigger EventName="SelectionChanged">
-                            <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True"></hc:EventToCommand>
+                            <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True" />
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
                     <ListView.View>

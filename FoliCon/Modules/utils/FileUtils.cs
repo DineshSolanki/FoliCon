@@ -238,7 +238,10 @@ public static class FileUtils
         try
         {
             // Attempt to open a new file with write permissions
-            using (File.Create(Path.Combine(dirPath, fileName)));
+            using (File.Create(Path.Combine(dirPath, fileName)))
+            {
+            }
+
             // Successfully created file, try to delete it
             File.Delete(Path.Combine(dirPath, fileName));
             return true;
