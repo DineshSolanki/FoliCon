@@ -53,7 +53,7 @@ dineshsolanki.github.io/folicon/</Description>
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
     <PackageReference Include="HandyControls" Version="3.4.5" />
-    <PackageReference Include="IGDB" Version="2.3.2" />
+    <PackageReference Include="IGDB" Version="3.0.0" />
     <PackageReference Include="Jot" Version="2.1.17" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
     <PackageReference Include="NLog" Version="5.2.5" />
