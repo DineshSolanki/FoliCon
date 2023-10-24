@@ -341,5 +341,3 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /LangsGenerator
-/LanguageClassGenerator/AppConfig.json
-/LanguageClassGenerator/LanguageClassGenerator.csproj
