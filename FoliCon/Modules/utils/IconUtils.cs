@@ -2,6 +2,7 @@
 using FoliCon.Models.Enums;
 using FoliCon.Modules.Media;
 using NLog;
+using System.Windows.Media;
 using PosterIcon = FoliCon.Models.Data.PosterIcon;
 
 namespace FoliCon.Modules.utils;
@@ -86,7 +87,15 @@ public static class IconUtils
         ratingVisibility = string.IsNullOrEmpty(rating) ? "Hidden" : ratingVisibility;
         if (!string.IsNullOrEmpty(rating) && rating != "10")
         {
-            rating = rating.Contains('.') ? DataUtils.FormatRatingString(rating) : rating;
+            if (double.TryParse(rating, out var ratingValue))
+            {
+                rating = rating.Contains('.') ? DataUtils.FormatRating(ratingValue) : rating;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid rating value.");
+            }
+            
         }
 
         Bitmap icon;

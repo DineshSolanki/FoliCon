@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Models.Data;
+﻿using FoliCon.Modules.utils;
+
+namespace FoliCon.Models.Data;
 
 public class ListItem : BindableBase
 {
@@ -28,7 +30,17 @@ public class ListItem : BindableBase
     public string Rating
     {
         get => _rating;
-        set => SetProperty(ref _rating, value);
+        set
+        {
+            if (double.TryParse(value, out var ratingValue))
+            {
+                SetProperty(ref _rating, DataUtils.FormatRating(ratingValue)); 
+            }
+            else
+            {
+                throw new ArgumentException("Invalid rating value.");
+            }
+        }
     }
 
     public string Folder

@@ -18,29 +18,11 @@ public static class DataUtils
     /// </summary>
     /// <param name="ratingInput">Rating value.</param>
     /// <returns>Formatted Rating value.</returns>
-    public static string FormatRatingString(string ratingInput)
+    public static string FormatRating(double ratingInput)
     {
         Logger.Debug($"Start FormatRatingString() - Input received : {ratingInput}.");
-
-        //TODO: Validate the incoming string if required.
-        // As the rating is pure string and the validation is already done from the server side [assumption],
-        // just trimming the incoming string and formatting to the required format.
-        string formattedRatingValue = string.Empty;
-        int decimalIndex = ratingInput.IndexOf('.');
-        if (decimalIndex >= 0)
-        {
-            int digitsAfterDecimal = 2;
-            int endIndex = Math.Min(decimalIndex + (digitsAfterDecimal + 1), ratingInput.Length);
-            string trimmedValue = ratingInput.Substring(0, endIndex);
-            formattedRatingValue = trimmedValue;
-        }
-
-        //Verification.
-        string pattern = @".....+"; // Pattern to match string which have 3+ characters
-        if (Regex.IsMatch(formattedRatingValue, pattern))
-        {
-            Logger.Error("Found a rating string with 3+ characters in it.");
-        }
+        var decimalPart = ratingInput % 1;
+        string formattedRatingValue = decimalPart > 0 ? ratingInput.ToString("0.##") : ratingInput.ToString("0");
         Logger.Debug($"End FormatRatingString() - Formatted Rating : {formattedRatingValue}.");
         return formattedRatingValue;
     }
