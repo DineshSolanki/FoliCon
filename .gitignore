@@ -341,4 +341,3 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /LangsGenerator
-/LanguageClassGenerator
