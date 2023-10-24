@@ -86,7 +86,7 @@ public static class IconUtils
         ratingVisibility = string.IsNullOrEmpty(rating) ? "Hidden" : ratingVisibility;
         if (!string.IsNullOrEmpty(rating) && rating != "10")
         {
-            rating = !rating.Contains('.') ? $"{rating}.0" : rating;
+            rating = rating.Contains('.') ? DataUtils.FormatRatingString(rating) : rating;
         }
 
         Bitmap icon;
