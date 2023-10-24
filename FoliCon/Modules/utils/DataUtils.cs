@@ -1,11 +1,11 @@
-﻿using NLog.Fluent;
-using System.Windows.Media;
-using static Vanara.PInvoke.User32;
+﻿using NLog;
 
 namespace FoliCon.Modules.utils;
 
 public static class DataUtils
 {
+    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    
     public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
     {
         return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
@@ -20,10 +20,10 @@ public static class DataUtils
     /// <returns>Formatted Rating value.</returns>
     public static string FormatRating(double ratingInput)
     {
-        Logger.Debug($"Start FormatRatingString() - Input received : {ratingInput}.");
+        Logger.Debug("Start FormatRatingString() - Input received : {RatingInput}", ratingInput);
         var decimalPart = ratingInput % 1;
-        string formattedRatingValue = decimalPart > 0 ? ratingInput.ToString("0.##") : ratingInput.ToString("0");
-        Logger.Debug($"End FormatRatingString() - Formatted Rating : {formattedRatingValue}.");
+        var formattedRatingValue = decimalPart > 0 ? ratingInput.ToString("0.##") : ratingInput.ToString("0");
+        Logger.Debug("End FormatRatingString() - Formatted Rating : {FormattedRatingValue}", formattedRatingValue);
         return formattedRatingValue;
     }
 }
