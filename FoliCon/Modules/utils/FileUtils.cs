@@ -454,4 +454,21 @@ public static class FileUtils
         Services.Settings.DevClientSecret = dartClientSecret;
         Services.Settings.Save();
     }
+    public static bool IsSeriesFolder(string folderPath)
+    {
+        try
+        {
+            var seasonPattern = new Regex(@"season\s*\d+", RegexOptions.IgnoreCase);
+
+            var subfolders = Directory.GetDirectories(folderPath);
+            return subfolders.Any(subfolder => seasonPattern.IsMatch(Path.GetFileName(subfolder)));
+        }
+        catch (Exception ex)
+        {
+            Logger.ForErrorEvent().Message("Error Occurred while Checking if Folder is Series Folder, Folder Path: {FolderPath}",
+                    folderPath)
+                .Exception(ex).Log();
+            return false;
+        }
+    }
 }
