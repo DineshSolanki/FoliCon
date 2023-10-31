@@ -18,7 +18,8 @@ public static class CultureUtils
             { Languages.Spanish, "es-MX" },
             { Languages.Arabic, "ar-SA" },
             { Languages.Russian, "ru-RU" },
-            { Languages.Hindi, "hi-IN" }
+            { Languages.Hindi, "hi-IN" },
+            { Languages.Portuguese, "pt-PT" }
         };
 
         var langCode = languageCodes.GetValueOrDefault(language, "en-US");
