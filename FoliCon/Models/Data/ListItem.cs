@@ -38,7 +38,7 @@ public class ListItem : BindableBase
             }
             else
             {
-                throw new ArgumentException("Invalid rating value.");
+                SetProperty(ref _rating, value);
             }
         }
     }
