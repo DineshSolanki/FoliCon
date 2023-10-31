@@ -582,4 +582,7 @@
   <data name="ThemeSystem" xml:space="preserve">
     <value>Система</value>
   </data>
+  <data name="Portuguese(PT)" xml:space="preserve">
+    <value>Português (PT)</value>
+  </data>
 </root>

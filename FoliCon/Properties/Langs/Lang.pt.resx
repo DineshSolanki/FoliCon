@@ -338,7 +338,7 @@ e pode adequar-se a 'Jogos,Filmes, e séries' e a qualquer ícones de media.</va
     <value>Licença :</value>
   </data>
   <data name="LicenseInfo" xml:space="preserve">
-    <value>GNU General Public License v3.0</value>
+    <value>Licença Pública Geral GNU v3.0</value>
   </data>
   <data name="Load" xml:space="preserve">
     <value>Carregar</value>
@@ -415,7 +415,7 @@ Tentar Procurar por outro Título
   <data name="Poster" xml:space="preserve">
     <value>Poster</value>
   </data>
-  <data name="Portuguese (PT)" xml:space="preserve">
+  <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
@@ -523,7 +523,7 @@ e renovar o cache dos Ícones?</value>
     <value>Para Forçar Reínicio, clique em Reiniciar Explorador.</value>
   </data>
   <data name="TV" xml:space="preserve">
-    <value>TV</value>
+    <value>televisão</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Desfazer</value>

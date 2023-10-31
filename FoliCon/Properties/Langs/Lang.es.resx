@@ -579,4 +579,7 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="ThemeSystem" xml:space="preserve">
     <value>Sistema</value>
   </data>
+  <data name="Portuguese(PT)" xml:space="preserve">
+    <value>Português (PT)</value>
+  </data>
 </root>

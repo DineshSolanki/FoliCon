@@ -975,6 +975,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Português (PT).
+        /// </summary>
+        public static string Portuguese_PT_ {
+            get {
+                return ResourceManager.GetString("Portuguese(PT)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Poster.
         /// </summary>
         public static string Poster {
