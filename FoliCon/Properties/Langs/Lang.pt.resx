@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Sobre</value>
+  </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+    <value>Adicionar ao menu de Contexto</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="AlwaysShowPosterWindow" xml:space="preserve">
+    <value>Mostrar sempre a janela do Poster</value>
+  </data>
+  <data name="AmbiguousTitleTooltip" xml:space="preserve">
+    <value>Ignorar títulos ambíguos na Procura</value>
+  </data>
+  <data name="APIKeysConfiguration" xml:space="preserve">
+    <value>_Configração das Chaves API</value>
+  </data>
+  <data name="APIKeysNotProvided" xml:space="preserve">
+    <value>Chaves API inexistentes</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Aplicar</value>
+  </data>
+  <data name="AppWillClose" xml:space="preserve">
+    <value>A Aplicação vai ser encerrada.</value>
+  </data>
+  <data name="Arabic" xml:space="preserve">
+    <value>Arábico</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto (Filmes &amp; Séries de TV)</value>
+  </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+    <value>Mais adequado a imagens horizontais, como imagens para jogos.</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>Escolher Pasta/Largar aqui</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>Escolher Ícones/Largar aqui</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Alterar Idioma</value>
+  </data>
+  <data name="ChangePosterOverlay" xml:space="preserve">
+    <value>_Mudar o overlay do Ícone do Poster</value>
+  </data>
+  <data name="CheckForUpdate" xml:space="preserve">
+    <value>Verificar Atualizações</value>
+  </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>ID do Cliente:</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>Cliente Secreto:</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Encerrar</value>
+  </data>
+  <data name="ClosingApplication" xml:space="preserve">
+    <value>Encerrando a Aplicação</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ConfirmExplorerRestart" xml:space="preserve">
+    <value>Confirmar Reínicio do Explorador</value>
+  </data>
+  <data name="ConfirmIconDeletion" xml:space="preserve">
+    <value>Confirmar a eliminação do Ícone</value>
+  </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+    <value>Confirmar eliminação dos ficheiros de Info</value>
+  </data>
+  <data name="ConfirmToOpenFolder" xml:space="preserve">
+    <value>Clique "Confirmar" para abrir pasta.</value>
+  </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+    <value>Criar ícones com o FoliCon</value>
+  </data>
+  <data name="CreatingIcons" xml:space="preserve">
+    <value>Criando Ícones...</value>
+  </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>Definição do Ícon Personalizado</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+    <value>Classificação Personalizada: </value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+    <value>Permite definir a sua própria classificação em vez da obtida pelo FoliCon.</value>
+  </data>
+  <data name="DeleteIcons" xml:space="preserve">
+    <value>Eliminar Ícones</value>
+  </data>
+  <data name="DeleteIconsConfirmation" xml:space="preserve">
+    <value>Tem certeza que deseja eliminar todos os Ícones?</value>
+  </data>
+  <data name="DeleteIconsTooltip" xml:space="preserve">
+    <value>Irá eliminar todos os ícones existentes em todas as sub-pastas.</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+    <value>Eliminar info Media</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+    <value>Tem certeza que deseja eliminar todos os ficherios de info media da Folicon?</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+    <value>Isto eliminar os ficheiros info de medio da Folicon que armazenam a identificação depois de ser selecionado o título pela primeira vez.
+Isto ajuda o Folicon a identificar os media sem ter que escolher de títulos ambíguos.</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+    <value>Desenvolvido Por Dinesh Solanki.</value>
+  </data>
+  <data name="DirectoryIsEmpty" xml:space="preserve">
+    <value>A Pasta está vazia</value>
+  </data>
+  <data name="DownloadingIcons" xml:space="preserve">
+    <value>Descarregando Ícones</value>
+  </data>
+  <data name="DownloadingIconWithCount" xml:space="preserve">
+    <value>Descarregando Ícone {0}/{1}...</value>
+  </data>
+  <data name="DownloadIt" xml:space="preserve">
+    <value>Descarregar</value>
+  </data>
+  <data name="EmptyDirectory" xml:space="preserve">
+    <value>Pasta vazia</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>Inglês</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+    <value>Escrever o título aqui para procurar novamente.</value>
+  </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+    <value>Ocorreu uma Excepção</
+value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+    <value>Integração no Explorador (Menu do clique direito)</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Pasta</value>
+  </data>
+  <data name="FolderDoesNotExist" xml:space="preserve">
+    <value>A Pasta não existe!</value>
+  </data>
+  <data name="FolderError" xml:space="preserve">
+    <value>Erro na Pasta</value>
+  </data>
+  <data name="Folders" xml:space="preserve">
+    <value>Pastas</value>
+  </data>
+  <data name="FoldersProcessed" xml:space="preserve">
+    <value>Pastas Processadas:</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+    <value>FoliCon é mais de que um modificador de Ícones das Pastas
+Ele automatiza a tarefa de uma forma mais extensa, tem 2 modos diferentes para designs diferentes para ícones de pastas,
+e pode adequar-se a 'Jogos,Filmes, e séries' e a qualquer ícones de media.</value>
+  </data>
+  <data name="Game" xml:space="preserve">
+    <value>Jogo</value>
+  </data>
+  <data name="HaveIcons" xml:space="preserve">
+    <value>já existem os ícones?</value>
+  </data>
+  <data name="HaveIconsTooltip" xml:space="preserve">
+    <value>Permite definir os seus ícones(Só png e ico permitidos).</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Ajuda</value>
+  </data>
+  <data name="HelpDocument" xml:space="preserve">
+    <value>Documento de Ajuda</value>
+  </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>Hindi</value>
+  </data>
+  <data name="IconCreated" xml:space="preserve">
+    <value>Ícone(s) Criado(s)</value>
+  </data>
+  <data name="IconCreatedWithCount" xml:space="preserve">
+    <value>{0} Ícone criado</value>
+  </data>
+  <data name="IconMode" xml:space="preserve">
+    <value>Modo Ícone</value>
+  </data>
+  <data name="IconReloadMayTakeTime" xml:space="preserve">
+    <value>Nota:O Ícone pode demorar tempo a recarregar.</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>Ícones</value>
+  </data>
+  <data name="IconsAlready" xml:space="preserve">
+    <value>Pasta já tem ícones ou está vazia!</value>
+  </data>
+  <data name="IconsCreated" xml:space="preserve">
+    <value>Ícones Criados:</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>Parado</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>Ignorar</value>
+  </data>
+  <data name="IgnoreAmbiguousTitle" xml:space="preserve">
+    <value>Ignorar títulos Ambígous title</value>
+  </data>
+  <data name="InvalidPath" xml:space="preserve">
+    <value>Caminho Inválido</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Licença :</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+    <value>GNU General Public License v3.0</value>
+  </data>
+  <data name="Load" xml:space="preserve">
+    <value>Carregar</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+    <value>Carregando posteres...</value>
+  </data>
+  <data name="MakeIcons" xml:space="preserve">
+    <value>Construir Ícones</value>
+  </data>
+  <data name="Movie" xml:space="preserve">
+    <value>Filme</value>
+  </data>
+  <data name="NetworkError" xml:space="preserve">
+    <value>Erro de Rede</value>
+  </data>
+  <data name="NetworkNotAvailable" xml:space="preserve">
+    <value>Rede não disponível!</value>
+  </data>
+  <data name="NewVersionFound" xml:space="preserve">
+    <value>Nova versão({0}) encontrada!
+Changelog:{1}</value>
+  </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>Sem pastas selecionadas ou as pastas já tem ícones.</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>Sem pastas para processar</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>Sem ícones selecionados</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>Sem ícones para aplicar</value>
+  </data>
+  <data name="NoInternet" xml:space="preserve">
+    <value>erro, Internet indisponível.</value>
+  </data>
+  <data name="NoPosterFound" xml:space="preserve">
+    <value>Sem poster na procura.</value>
+  </data>
+  <data name="NoResult" xml:space="preserve">
+    <value>Sem Resultados</value>
+  </data>
+  <data name="NoResultFound" xml:space="preserve">
+    <value>Sem Resultados na Procura.</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+    <value>Sem Resultados, Tente procurar outravez com o título correto.</value>
+  </data>
+  <data name="NothingFoundFor" xml:space="preserve">
+    <value>Nada encontrado para {0}
+Tentar Procurar por outro Título
+ ou verificar Modo de Procura</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>Manter só correspondências exatas?</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>~ OU ~</value>
+  </data>
+  <data name="OutOf" xml:space="preserve">
+    <value>fora de</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+    <value>Escolher Ícone de {0}</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+    <value>Escolher o selecionado</value>
+  </data>
+  <data name="Poster" xml:space="preserve">
+    <value>Poster</value>
+  </data>
+  <data name="Portuguese (PT)" xml:space="preserve">
+    <value>Português (PT)</value>
+  </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+    <value>Overlay do Ícone do Poster</value>
+  </data>
+  <data name="PosterOverlayTooltip" xml:space="preserve">
+    <value>Controlos para utilizar o overlay do poster ou Poster em original.</value>
+  </data>
+  <data name="Professional" xml:space="preserve">
+    <value>Profissional</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Avaliação</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+    <value>Remover do menu de contexto</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+    <value>Isto exige direitos de administrador, utilizar em modo de administrador.
+Quer reinicar o Folicon em modo admin ?</value>
+  </data>
+  <data name="RestartExplorer" xml:space="preserve">
+    <value>Reinicar Explorador</value>
+  </data>
+  <data name="RestartExplorerConfirmation" xml:space="preserve">
+    <value>Tem certeza que deseja reiniciar o Explorador 
+e renovar o cache dos Ícones?</value>
+  </data>
+  <data name="RestartExplorerTooltip" xml:space="preserve">
+    <value>Isto irá encerrar todas as pastas abertas e reiniciar o Explorador.</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>Russo</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="Searching" xml:space="preserve">
+    <value>Procurando..</value>
+  </data>
+  <data name="SearchingWithCount" xml:space="preserve">
+    <value>Procurando...{0}</value>
+  </data>
+  <data name="SearchingWithName" xml:space="preserve">
+    <value>Procurarando por {0}...</value>
+  </data>
+  <data name="SearchMode" xml:space="preserve">
+    <value>Modo de Procura</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>Resultados da Procura</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+    <value>Mostar mais poster/capas.</value>
+  </data>
+  <data name="SelectFolder" xml:space="preserve">
+    <value>Escolher Pasta</value>
+  </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>Escolher a pasta dos Ícones</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+    <value>Escolher o overlay do ícone do Poster</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Definições</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>Mostar mais...</value>
+  </data>
+  <data name="ShowPosterWindowTooltip" xml:space="preserve">
+    <value>Mostar janela do poster mesmo que encontre um título exacto. Isto permite escolger um poster diferente e uma avaliação também &amp;#x0a; sobrepõem-se à opção 'Ignorar títulos Ambíguos'.</value>
+  </data>
+  <data name="ShowRatingBadge" xml:space="preserve">
+    <value>Mostar selo de Avaliação</value>
+  </data>
+  <data name="ShowRatingBadgeTooltip" xml:space="preserve">
+    <value>Controlos para ocultar ou mostrar o selo com a Avaliação</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>Ignorar</value>
+  </data>
+  <data name="SkipThisPlaceholder" xml:space="preserve">
+    <value>Ignorar este e todos os títulos que faltam.</value>
+  </data>
+  <data name="SkipThisTitle" xml:space="preserve">
+    <value>Ignorar este título.</value>
+  </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Espanhol</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+    <value>Parar Procura</value>
+  </data>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>Fantástico! Está a utilizar a última versão.</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Título</value>
+  </data>
+  <data name="TMDBAPIKey" xml:space="preserve">
+    <value>Chave API TMDB:</value>
+  </data>
+  <data name="ToForceReload" xml:space="preserve">
+    <value>Para Forçar Reínicio, clique em Reiniciar Explorador.</value>
+  </data>
+  <data name="TV" xml:space="preserve">
+    <value>TV</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+    <value>Desfazer</value>
+  </data>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>Sucesso no Desfazer</value>
+  </data>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Atualizar agora</value>
+  </data>
+  <data name="UsePosterOverlay" xml:space="preserve">
+    <value>Utilizar o Poster overlay</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Versão :</value>
+  </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>Vídeo não disponível!</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Ano</value>
+  </data>
+  <data name="FileIsInUse" xml:space="preserve">
+    <value>O Ficheiro já está a ser utilizado.</value>
+  </data>
+  <data name="UnauthorizedAccess" xml:space="preserve">
+    <value>O Ficheiro não pode ser acessado.</value>
+  </data>
+  <data name="FailedFileAccessAt" xml:space="preserve">
+    <value>Falha ao aceder ao ficheiro em {0}. Pode não ter permissões para aceder a este ficheiro. Tente em modo de administrador.</value>
+  </data>
+  <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
+    <value>Falha em salvar a info media em {0}, Verifique as permissões de acesso</value>
+  </data>
+  <data name="WritePermissionAllowed" xml:space="preserve">
+    <value>Permissão de Escrita Permitida</value>
+  </data>
+  <data name="WritePermissionNotAllowed" xml:space="preserve">
+    <value>Sem Permissão de Escrita</value>
+  </data>
+  <data name="EnableErrorReporting" xml:space="preserve">
+    <value>Ativar Reporte de Erros</value>
+  </data>
+  <data name="EnableErrorReportingTip" xml:space="preserve">
+    <value>Enviar relatórios de erro para ajudar a melhorar FoliCon</value>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Escuro</value>
+  </data>
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="ThemeSystem" xml:space="preserve">
+    <value>Sistema</value>
+  </data>
+</root>
