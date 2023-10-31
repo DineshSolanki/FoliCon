@@ -257,8 +257,7 @@ Isto ajuda o Folicon a identificar os media sem ter que escolher de títulos amb
     <value>Escrever o título aqui para procurar novamente.</value>
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
-    <value>Ocorreu uma Excepção</
-value>
+    <value>Ocorreu uma Excepção</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
     <value>Integração no Explorador (Menu do clique direito)</value>
