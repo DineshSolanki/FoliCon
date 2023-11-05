@@ -89,6 +89,7 @@ Thank you to the following individuals who have provided invaluable inputs throu
     <td align="center"><a href="https://github.com/FazCodeFR"><img src="https://github.com/FazCodeFR.png?size=50" alt="FazCodeFR" /><br /><sub><b>@FazCodeFR</b></sub></a></td>
     <td align="center"><a href="https://github.com/TheFmC"><img src="https://github.com/TheFmC.png?size=50" alt="TheFmC" /><br /><sub><b>@TheFmC</b></sub></a></td>
     <td align="center"><a href="https://github.com/MasoudRahmani"><img src="https://github.com/MasoudRahmani.png?size=50" alt="MasoudRahmani" /><br /><sub><b>@MasoudRahmani</b></sub></a></td>
+    <td align="center"><a href="PoetaGA"><img src="https://github.com/PoetaGA.png?size=50" alt="PoetaGA" /><br /><sub><b>@PoetaGA</b></sub></a></td>
   </tr>
 <table>
 ... and many more who have interacted with us through issues and discussions.
