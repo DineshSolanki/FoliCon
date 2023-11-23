@@ -9,6 +9,8 @@ FoliCon has grown a lot since its first release, and it has a lot of features no
     * English, Hindi, Spanish, Arabic, Russian, and Portuguese.
 * [Custom Icon setter](Custom-Icon-Setter.md)
   * To let you set your own downloaded icons to the folders
+* Explorer context menu integration
+  * FoliCon has the option to add/remove integration into the explorer context menu to let you change the icons of the folders directly from the explorer.
 * Instantly refreshes the icons
   * FoliCon instantly refreshes the icons when you change the icon of a folder.
 * Option to clear explorer cache

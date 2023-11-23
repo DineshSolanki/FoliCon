@@ -8,3 +8,9 @@
       <img src="icon-overlays.png" border-effect="none" alt="icon overlays"/>
     * Poster mode also lets you see details about the media such as the title, year, rating, plot, and trailer.
       <img src="search-result.png" border-effect="none" alt="search result"/>
+    * Chose from a lot of available posters of the media. 
+      <img src="more-posters.png" border-effect="none" alt="more posters"/>
+    * See full preview of the image
+        <img src="full-preview.png" border-effect="none" alt="full preview"/>
+    * Remembers the selected title when choosing from ambiguous results to auto select the title on next search in case of a failure.
+  <tip> This media info can be cleared by the option 'Delete media info'</tip>
