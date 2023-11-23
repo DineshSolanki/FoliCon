@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="folicon"
+                 name="FoliCon"
+                 start-page="Overview.md">
+    <toc-element topic="Overview.md">
+        <toc-element topic="Features.md">
+            <toc-element topic="Poster-Mode.md"/>
+            <toc-element topic="Professional-Mode.md"/>
+            <toc-element topic="Custom-Icon-Setter.md"/>
+        </toc-element>
+    </toc-element>
+</instance-profile>
