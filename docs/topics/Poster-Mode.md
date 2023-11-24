@@ -12,5 +12,9 @@
       <img src="more-posters.png" border-effect="none" alt="more posters"/>
     * See full preview of the image
         <img src="full-preview.png" border-effect="none" alt="full preview"/>
+  <note> Single click on the image to see the full preview</note>
+  <note> Double click to select the image</note>
     * Remembers the selected title when choosing from ambiguous results to auto select the title on next search in case of a failure.
   <tip> This media info can be cleared by the option 'Delete media info'</tip>
+
+<note>Professional mode can search for any type of media</note>

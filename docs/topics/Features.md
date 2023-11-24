@@ -18,3 +18,6 @@ FoliCon has grown a lot since its first release, and it has a lot of features no
 * Option to delete applied icons from a directory and its subdirectories
 * Error reporting system
   * FoliCon has an error reporting system that lets you report errors directly to the developer.
+
+<tip> Use poster mode for more customization</tip>
+<tip> Use professional mode for ready-made high-quality icons</tip>
