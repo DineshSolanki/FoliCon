@@ -10,6 +10,7 @@ You can browse for your parent directory that has all the folders you want to se
 and then browse for the folder that has all the icons you want to set.
 
 <tip> You can also drag and drop the folders in the respective fields </tip>
+<tip> PNG and ICO are supported</tip>
 
 clicking 'Apply' will set the icon for folders that are aligned in the same position.
 
