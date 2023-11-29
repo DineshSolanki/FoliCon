@@ -1,4 +1,5 @@
 # Custom Icon Setter
+<snippet id="custom-icon-setter">
 
 Custom Icon setter is useful when you already have some downloaded icons,
 and you want to set them to your matching folders,
@@ -19,4 +20,5 @@ the second folder will get the second icon, and so on.
 
 <img src="custom-icon-setter-example.png" alt="custom icon setter example" />
 
+</snippet>
 <note>See the usage section for more information</note>
