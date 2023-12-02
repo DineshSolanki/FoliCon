@@ -118,469 +118,465 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>О</value>
+    <value>Sobre</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
-    <value>Всегда показывать окно плаката</value>
+    <value>Mostrar sempre a janela do Poster</value>
   </data>
   <data name="AmbiguousTitleTooltip" xml:space="preserve">
-    <value>Пропускать неоднозначные заголовки из поиска</value>
+    <value>Ignorar títulos ambíguos na Procura</value>
   </data>
   <data name="APIKeysConfiguration" xml:space="preserve">
-    <value>_API-ключи Конфигурация</value>
+    <value>_Configração das Chaves API</value>
   </data>
   <data name="APIKeysNotProvided" xml:space="preserve">
-    <value>Ключи API не предоставлены</value>
+    <value>Chaves API inexistentes</value>
   </data>
   <data name="AppWillClose" xml:space="preserve">
-    <value>Приложение закроется.</value>
+    <value>A Aplicação vai ser encerrada.</value>
   </data>
   <data name="Arabic" xml:space="preserve">
-    <value>арабский</value>
+    <value>Arábico</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Авто (фильмы и телешоу)</value>
+    <value>Auto (Filmes &amp; Séries de TV)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Отмена</value>
+    <value>Cancelar</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Изменить язык</value>
+    <value>Alterar Idioma</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
-    <value>_Изменить наложение значка плаката</value>
+    <value>_Mudar o overlay do Ícone do Poster</value>
   </data>
   <data name="CheckForUpdate" xml:space="preserve">
-    <value>Проверить обновления</value>
+    <value>Verificar Atualizações</value>
   </data>
   <data name="ClosingApplication" xml:space="preserve">
-    <value>Закрытие приложения</value>
+    <value>Encerrando a Aplicação</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Подтверждать</value>
+    <value>Confirmar</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
-    <value>Подтвердите перезапуск проводника</value>
+    <value>Confirmar Reínicio do Explorador</value>
   </data>
   <data name="ConfirmIconDeletion" xml:space="preserve">
-    <value>Подтвердить удаление значка</value>
+    <value>Confirmar a eliminação do Ícone</value>
   </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
-    <value>Нажмите «Подтвердить», чтобы открыть папку.</value>
+    <value>Clique "Confirmar" para abrir pasta.</value>
   </data>
   <data name="CreatingIcons" xml:space="preserve">
-    <value>Создание значков ...</value>
+    <value>Criando Ícones...</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
-    <value>Удалить значки</value>
+    <value>Eliminar Ícones</value>
   </data>
   <data name="DeleteIconsConfirmation" xml:space="preserve">
-    <value>Вы уверены, что хотите удалить все значки?</value>
+    <value>Tem certeza que deseja eliminar todos os Ícones?</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
-    <value>Это удалит существующие значки из всех вложенных папок.</value>
+    <value>Irá eliminar todos os ícones existentes em todas as sub-pastas.</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
-    <value>Каталог пуст</value>
+    <value>A Pasta está vazia</value>
   </data>
   <data name="DownloadingIcons" xml:space="preserve">
-    <value>Скачивание иконок</value>
+    <value>Descarregando Ícones</value>
   </data>
   <data name="DownloadingIconWithCount" xml:space="preserve">
-    <value>Скачивание значка {0} / {1} ...</value>
+    <value>Descarregando Ícone {0}/{1}...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
-    <value>Скачать это</value>
+    <value>Descarregar</value>
   </data>
   <data name="EmptyDirectory" xml:space="preserve">
-    <value>Пустой каталог</value>
+    <value>Pasta vazia</value>
   </data>
   <data name="English" xml:space="preserve">
-    <value>английский</value>
+    <value>Inglês</value>
   </data>
   <data name="Folder" xml:space="preserve">
-    <value>Папка</value>
+    <value>Pasta</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
-    <value>Папка не существует!</value>
+    <value>A Pasta não existe!</value>
   </data>
   <data name="FolderError" xml:space="preserve">
-    <value>Ошибка папки</value>
+    <value>Erro na Pasta</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
-    <value>Обработанные папки:</value>
+    <value>Pastas Processadas:</value>
   </data>
   <data name="Game" xml:space="preserve">
-    <value>Игра</value>
+    <value>Jogo</value>
   </data>
   <data name="HaveIcons" xml:space="preserve">
-    <value>у вас уже есть иконки?</value>
+    <value>já existem os ícones?</value>
   </data>
   <data name="HaveIconsTooltip" xml:space="preserve">
-    <value>Позволяет вам устанавливать свои собственные значки (разрешены только png и ico).</value>
+    <value>Permite definir os seus ícones(Só png e ico permitidos).</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Помощь</value>
+    <value>Ajuda</value>
   </data>
   <data name="HelpDocument" xml:space="preserve">
-    <value>Справочный документ</value>
+    <value>Documento de Ajuda</value>
   </data>
   <data name="IconCreated" xml:space="preserve">
-    <value>Иконки созданы</value>
+    <value>Ícone(s) Criado(s)</value>
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
-    <value>{0} Значок создан</value>
+    <value>{0} Ícone criado</value>
   </data>
   <data name="IconMode" xml:space="preserve">
-    <value>Режим значков</value>
+    <value>Modo Ícone</value>
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
-    <value>Примечание. Для перезагрузки значка может потребоваться некоторое время.</value>
+    <value>Nota:O Ícone pode demorar tempo a recarregar.</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
-    <value>В папке уже есть значки или она пуста!</value>
+    <value>Pasta já tem ícones ou está vazia!</value>
   </data>
   <data name="IconsCreated" xml:space="preserve">
-    <value>Иконки созданы:</value>
+    <value>Ícones Criados:</value>
   </data>
   <data name="Idle" xml:space="preserve">
-    <value>Праздный</value>
+    <value>Parado</value>
   </data>
   <data name="Ignore" xml:space="preserve">
-    <value>Игнорировать</value>
+    <value>Ignorar</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
-    <value>Игнорировать неоднозначное название</value>
+    <value>Ignorar títulos Ambígous title</value>
   </data>
   <data name="InvalidPath" xml:space="preserve">
-    <value>Неверный путь</value>
+    <value>Caminho Inválido</value>
   </data>
   <data name="Load" xml:space="preserve">
-    <value>Нагрузка</value>
+    <value>Carregar</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
-    <value>Сделать значки</value>
+    <value>Construir Ícones</value>
   </data>
   <data name="Movie" xml:space="preserve">
-    <value>Фильм</value>
+    <value>Filme</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Сетевая ошибка</value>
+    <value>Erro de Rede</value>
   </data>
   <data name="NetworkNotAvailable" xml:space="preserve">
-    <value>Сеть недоступна!</value>
+    <value>Rede não disponível!</value>
   </data>
   <data name="NewVersionFound" xml:space="preserve">
-    <value>Найдена новая версия ({0})!
-Журнал изменений: {1}</value>
+    <value>Nova versão({0}) encontrada!
+Changelog:{1}</value>
   </data>
   <data name="NoInternet" xml:space="preserve">
-    <value>Извините, Интернет недоступен.</value>
+    <value>erro, Internet indisponível.</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
-    <value>Плакатов не найдено.</value>
+    <value>Sem poster na procura.</value>
   </data>
   <data name="NoResultFound" xml:space="preserve">
-    <value>Результатов не найдено</value>
+    <value>Sem Resultados na Procura.</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>Ничего не найдено для {0}
-Попробуйте поискать с другим заголовком
- или проверьте режим поиска</value>
+    <value>Nada encontrado para {0}
+Tentar Procurar por outro Título
+ ou verificar Modo de Procura</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>хорошо</value>
+    <value>OK</value>
   </data>
   <data name="OutOf" xml:space="preserve">
-    <value>снаружи</value>
+    <value>fora de</value>
   </data>
   <data name="Poster" xml:space="preserve">
-    <value>Плакат</value>
+    <value>Poster</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
-    <value>Определяет, следует ли использовать наложение плаката или простые плакаты.</value>
+    <value>Controlos para utilizar o overlay do poster ou Poster em original.</value>
   </data>
   <data name="Professional" xml:space="preserve">
-    <value>Профессиональный</value>
+    <value>Profissional</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Рейтинг</value>
+    <value>Avaliação</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
-    <value>Перезапустите проводник</value>
+    <value>Reinicar Explorador</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>Вы уверены, что хотите перезапустить проводник?
-и обновить кэш значков?</value>
+    <value>Tem certeza que deseja reiniciar o Explorador 
+e renovar o cache dos Ícones?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
-    <value>Это закроет все открытые папки и перезапустит проводник.</value>
+    <value>Isto irá encerrar todas as pastas abertas e reiniciar o Explorador.</value>
   </data>
   <data name="Russian" xml:space="preserve">
-    <value>русский</value>
+    <value>Russo</value>
   </data>
   <data name="Searching" xml:space="preserve">
-    <value>Ищем ...</value>
+    <value>Procurando..</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
-    <value>Поиск ... {0}</value>
+    <value>Procurando...{0}</value>
   </data>
   <data name="SearchMode" xml:space="preserve">
-    <value>Режим поиска</value>
+    <value>Modo de Procura</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
-    <value>Выберите папку</value>
+    <value>Escolher Pasta</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Настройки</value>
+    <value>Definições</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Показывать окно плаката, даже если найден точный заголовок. Это позволит вам выбрать для них другой плакат, а также пользовательский рейтинг
- это отменяет опцию «Игнорировать неоднозначное название».</value>
+    <value>Mostar janela do poster mesmo que encontre um título exacto. Isto permite escolger um poster diferente e uma avaliação também &amp;#x0a; sobrepõem-se à opção 'Ignorar títulos Ambíguos'.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
-    <value>Показать значок рейтинга</value>
+    <value>Mostar selo de Avaliação</value>
   </data>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
-    <value>Управляет отображением или скрытием рейтингового щита.</value>
+    <value>Controlos para ocultar ou mostrar o selo com a Avaliação</value>
   </data>
   <data name="Spanish" xml:space="preserve">
-    <value>испанский язык</value>
+    <value>Espanhol</value>
   </data>
   <data name="ThisIsLatestVersion" xml:space="preserve">
-    <value>Большой! вы используете последнюю версию.</value>
+    <value>Fantástico! Está a utilizar a última versão.</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Заголовок</value>
+    <value>Título</value>
   </data>
   <data name="ToForceReload" xml:space="preserve">
-    <value>Чтобы принудительно перезагрузить, нажмите «Перезапустить проводник».</value>
+    <value>Para Forçar Reínicio, clique em Reiniciar Explorador.</value>
   </data>
   <data name="TV" xml:space="preserve">
-    <value>Телевизор</value>
+    <value>televisão</value>
   </data>
   <data name="UpdateNow" xml:space="preserve">
-    <value>Обновить сейчас</value>
+    <value>Atualizar agora</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
-    <value>Использовать наложение плаката</value>
+    <value>Utilizar o Poster overlay</value>
   </data>
   <data name="Year" xml:space="preserve">
-    <value>Год</value>
+    <value>Ano</value>
   </data>
   <data name="All" xml:space="preserve">
-    <value>Все</value>
+    <value>Todos</value>
   </data>
   <data name="CustomRating" xml:space="preserve">
-    <value>Пользовательский рейтинг:</value>
+    <value>Classificação Personalizada: </value>
   </data>
   <data name="CustomRatingTooltip" xml:space="preserve">
-    <value>Это позволяет вам установить свой собственный рейтинг вместо рейтинга, полученного FoliCon.</value>
+    <value>Permite definir a sua própria classificação em vez da obtida pelo FoliCon.</value>
   </data>
   <data name="EnterTitlePlaceholder" xml:space="preserve">
-    <value>Пожалуйста, введите здесь заголовок для повторного поиска.</value>
+    <value>Escrever o título aqui para procurar novamente.</value>
   </data>
   <data name="NoResult" xml:space="preserve">
-    <value>Безрезультатно</value>
+    <value>Sem Resultados</value>
   </data>
   <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-    <value>Ничего не найдено. Попробуйте снова выполнить поиск с правильным заголовком.</value>
+    <value>Sem Resultados, Tente procurar outravez com o título correto.</value>
   </data>
   <data name="Or" xml:space="preserve">
-    <value>~ ИЛИ ~</value>
+    <value>~ OU ~</value>
   </data>
   <data name="PickIconWithName" xml:space="preserve">
-    <value>Выберите значок для {0}</value>
+    <value>Escolher Ícone de {0}</value>
   </data>
   <data name="PickSelected" xml:space="preserve">
-    <value>Выбрать выбранное</value>
+    <value>Escolher o selecionado</value>
   </data>
   <data name="SearchingWithName" xml:space="preserve">
-    <value>Поиск {0} ...</value>
+    <value>Procurarando por {0}...</value>
   </data>
   <data name="SearchResult" xml:space="preserve">
-    <value>Результат поиска</value>
+    <value>Resultados da Procura</value>
   </data>
   <data name="SeeMorePosters" xml:space="preserve">
-    <value>Смотрите больше постеров / обложек.</value>
+    <value>Mostar mais poster/capas.</value>
   </data>
   <data name="ShowMore" xml:space="preserve">
-    <value>Показать больше...</value>
+    <value>Mostar mais...</value>
   </data>
   <data name="Skip" xml:space="preserve">
-    <value>Пропускать</value>
+    <value>Ignorar</value>
   </data>
   <data name="SkipThisPlaceholder" xml:space="preserve">
-    <value>Пропустите этот и все остальные заголовки.</value>
+    <value>Ignorar este e todos os títulos que faltam.</value>
   </data>
   <data name="SkipThisTitle" xml:space="preserve">
-    <value>Пропустите этот заголовок.</value>
+    <value>Ignorar este título.</value>
   </data>
   <data name="StopSearching" xml:space="preserve">
-    <value>Прекратить поиск</value>
+    <value>Parar Procura</value>
   </data>
   <data name="LoadingPosters" xml:space="preserve">
-    <value>Загрузка плакатов ...</value>
+    <value>Carregando posteres...</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Применять</value>
+    <value>Aplicar</value>
   </data>
   <data name="BrowseFolderDropHere" xml:space="preserve">
-    <value>Просмотреть папку / перетащить сюда</value>
+    <value>Escolher Pasta/Largar aqui</value>
   </data>
   <data name="BrowseIconsDropHere" xml:space="preserve">
-    <value>Просмотр иконок / Перетащите сюда</value>
+    <value>Escolher Ícones/Largar aqui</value>
   </data>
   <data name="Folders" xml:space="preserve">
-    <value>Папки</value>
+    <value>Pastas</value>
   </data>
   <data name="Icons" xml:space="preserve">
-    <value>Иконки</value>
+    <value>Ícones</value>
   </data>
   <data name="OnlyKeepExactMatches" xml:space="preserve">
-    <value>Сохранять только точные совпадения?</value>
+    <value>Manter só correspondências exatas?</value>
   </data>
   <data name="ClientSecret" xml:space="preserve">
-    <value>Секрет клиента:</value>
+    <value>Cliente Secreto:</value>
   </data>
   <data name="ClientID" xml:space="preserve">
-    <value>ID клиента :</value>
+    <value>ID do Cliente:</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Закрывать</value>
+    <value>Encerrar</value>
   </data>
   <data name="CustomIconSetter" xml:space="preserve">
-    <value>Настраиваемый набор иконок</value>
+    <value>Definição do Ícon Personalizado</value>
   </data>
   <data name="NoFolderOrIconAlready" xml:space="preserve">
-    <value>Нет папок Выбранные или папки уже имеют значки.</value>
+    <value>Sem pastas selecionadas ou as pastas já tem ícones.</value>
   </data>
   <data name="NoFoldersToProcess" xml:space="preserve">
-    <value>Нет папок для обработки</value>
+    <value>Sem pastas para processar</value>
   </data>
   <data name="NoIconsSelected" xml:space="preserve">
-    <value>Значки не выбраны</value>
+    <value>Sem ícones selecionados</value>
   </data>
   <data name="NoIconsToApply" xml:space="preserve">
-    <value>Нет значков для применения</value>
+    <value>Sem ícones para aplicar</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
+    <value>Guardar</value>
   </data>
   <data name="SelectIconsDirectory" xml:space="preserve">
-    <value>Выберите каталог значков</value>
+    <value>Escolher a pasta dos Ícones</value>
   </data>
   <data name="TMDBAPIKey" xml:space="preserve">
-    <value>Ключ API TMDB:</value>
+    <value>Chave API TMDB:</value>
   </data>
   <data name="UndoSuccessful" xml:space="preserve">
-    <value>Отменить успешно</value>
+    <value>Sucesso no Desfazer</value>
   </data>
   <data name="Undo" xml:space="preserve">
-    <value>Отменить</value>
+    <value>Desfazer</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
-    <value>Разработал Динеш Соланки.</value>
+    <value>Desenvolvido Por Dinesh Solanki.</value>
   </data>
   <data name="FoliConDescription" xml:space="preserve">
-    <value>FoliCon - это больше, чем просто средство смены значков папок
-Он в большей степени автоматизирует эту задачу, имеет два разных режима для разных дизайнов значков папок,
-и он может получать «Игры, фильмы и шоу» и почти любые значки медиа-папок.</value>
+    <value>FoliCon é mais de que um modificador de Ícones das Pastas
+Ele automatiza a tarefa de uma forma mais extensa, tem 2 modos diferentes para designs diferentes para ícones de pastas,
+e pode adequar-se a 'Jogos,Filmes, e séries' e a qualquer ícones de media.</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Лицензия:</value>
+    <value>Licença :</value>
   </data>
   <data name="LicenseInfo" xml:space="preserve">
-    <value>Стандартная общественная лицензия GNU v3.0</value>
+    <value>Licença Pública Geral GNU v3.0</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Версия:</value>
+    <value>Versão :</value>
   </data>
   <data name="ExceptionOccurred" xml:space="preserve">
-    <value>Произошло исключение</value>
+    <value>Ocorreu uma Excepção</value>
   </data>
   <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-    <value>Подтвердите удаление файлов Media Info</value>
+    <value>Confirmar eliminação dos ficheiros de Info</value>
   </data>
   <data name="DeleteMediaInfo" xml:space="preserve">
-    <value>Удалить информацию о мультимедиа</value>
+    <value>Eliminar info Media</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-    <value>Вы уверены, что хотите удалить информационные файлы мультимедиа Folicon?</value>
+    <value>Tem certeza que deseja eliminar todos os ficherios de info media da Folicon?</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-    <value>Это приведет к удалению файлов информации о мультимедиа, используемых folicon для хранения идентификатора мультимедиа после выбора заголовка в первый раз.
-Это помогает фоликону идентифицировать носители без необходимости выбирать из двусмысленных названий.</value>
+    <value>Isto eliminar os ficheiros info de medio da Folicon que armazenam a identificação depois de ser selecionado o título pela primeira vez.
+Isto ajuda o Folicon a identificar os media sem ter que escolher de títulos ambíguos.</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
-    <value>Наложение значка плаката</value>
+    <value>Overlay do Ícone do Poster</value>
   </data>
   <data name="BestSuitedForHorizontal" xml:space="preserve">
-    <value>Лучше всего подходит для горизонтальных изображений, таких как игровые иллюстрации.</value>
+    <value>Mais adequado a imagens horizontais, como imagens para jogos.</value>
   </data>
   <data name="SelectPosterIconOverlay" xml:space="preserve">
-    <value>Выберите наложение значка плаката</value>
+    <value>Escolher o overlay do ícone do Poster</value>
   </data>
   <data name="Hindi" xml:space="preserve">
-    <value>хинди</value>
+    <value>Hindi</value>
   </data>
   <data name="AddToContextMenu" xml:space="preserve">
-    <value>Добавить в контекстное меню</value>
+    <value>Adicionar ao menu de Contexto</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
-    <value>Интеграция с проводником (меню, вызываемое правой кнопкой мыши)</value>
+    <value>Integração no Explorador (Menu do clique direito)</value>
   </data>
   <data name="RemoveFromContextMenu" xml:space="preserve">
-    <value>Удалить из контекстного меню</value>
+    <value>Remover do menu de contexto</value>
   </data>
   <data name="RestartAsAdmin" xml:space="preserve">
-    <value>Эта функция требует прав администратора, используйте ее при работе от имени администратора.
-Вы хотите перезапустить Folicon от имени администратора?</value>
+    <value>Isto exige direitos de administrador, utilizar em modo de administrador.
+Quer reinicar o Folicon em modo admin ?</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-    <value>Создавайте иконки с FoliCon</value>
+    <value>Criar ícones com o FoliCon</value>
   </data>
   <data name="VideoUnavailable" xml:space="preserve">
-    <value>Видео недоступно!</value>
+    <value>Vídeo não disponível!</value>
   </data>
   <data name="FileIsInUse" xml:space="preserve">
-    <value>Файл уже используется.</value>
+    <value>O Ficheiro já está a ser utilizado.</value>
   </data>
   <data name="UnauthorizedAccess" xml:space="preserve">
-    <value>Не удалось получить доступ к файлу</value>
+    <value>O Ficheiro não pode ser acessado.</value>
   </data>
   <data name="FailedFileAccessAt" xml:space="preserve">
-    <value>Не удалось получить доступ к файлу по адресу {0}. Возможно, у вас нет разрешения на доступ к этому файлуo intente ejecutarlo como administrador</value>
+    <value>Falha ao aceder ao ficheiro em {0}. Pode não ter permissões para aceder a este ficheiro. Tente em modo de administrador.</value>
   </data>
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
-    <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
+    <value>Falha em salvar a info media em {0}, Verifique as permissões de acesso</value>
   </data>
   <data name="WritePermissionAllowed" xml:space="preserve">
-    <value>Предоставлено разрешение на запись</value>
+    <value>Permissão de Escrita Permitida</value>
   </data>
   <data name="WritePermissionNotAllowed" xml:space="preserve">
-    <value>Нет разрешения на запись
-</value>
+    <value>Sem Permissão de Escrita</value>
   </data>
   <data name="EnableErrorReporting" xml:space="preserve">
-    <value>Включить отчеты об ошибках
-</value>
+    <value>Ativar Reporte de Erros</value>
   </data>
   <data name="EnableErrorReportingTip" xml:space="preserve">
-    <value>Отправлять отчеты об ошибках, чтобы помочь улучшить FoliCon
-</value>
+    <value>Enviar relatórios de erro para ajudar a melhorar FoliCon</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>тема</value>
+    <value>Tema</value>
   </data>
   <data name="ThemeDark" xml:space="preserve">
-    <value>Темная тема</value>
+    <value>Escuro</value>
   </data>
   <data name="ThemeLight" xml:space="preserve">
-    <value>Светлая тема</value>
+    <value>Claro</value>
   </data>
   <data name="ThemeSystem" xml:space="preserve">
-    <value>Система</value>
+    <value>Sistema</value>
   </data>
   <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
