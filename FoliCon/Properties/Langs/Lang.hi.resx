@@ -1,104 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -112,13 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
   </resheader>
   <data name="About" xml:space="preserve">
     <value>विवरण</value>
+  </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+    <value>कॉन्टेक्स्ट मेनू में जोड़ें</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>सभी</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
     <value>हमेशा पोस्टर विंडो दिखाएं</value>
@@ -132,6 +142,9 @@
   <data name="APIKeysNotProvided" xml:space="preserve">
     <value>API कुंजियाँ प्रदान नहीं की गईं</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>लागू करे</value>
+  </data>
   <data name="AppWillClose" xml:space="preserve">
     <value>एप बंद हो जाएगा।</value>
   </data>
@@ -140,6 +153,15 @@
   </data>
   <data name="Auto" xml:space="preserve">
     <value>ऑटो (फिल्में और टीवी शो)</value>
+  </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+    <value>क्षैतिज छवियों के लिए सबसे उपयुक्त, जैसे कि गेम आर्टवर्क।</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>फ़ोल्डर ब्राउज़ करें/यहां छोड़ें</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>आइकॉन ब्राउज़ करें/यहां छोड़ें</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>रद्द करे</value>
@@ -153,6 +175,15 @@
   <data name="CheckForUpdate" xml:space="preserve">
     <value>अपडेट के लिये जांचें</value>
   </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>क्लाइंट ID :</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>क्लाइंट सीक्रेट:</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>बंद करे</value>
+  </data>
   <data name="ClosingApplication" xml:space="preserve">
     <value>एप बंद हो रहा है</value>
   </data>
@@ -165,11 +196,26 @@
   <data name="ConfirmIconDeletion" xml:space="preserve">
     <value>आइकन हटाने की पुष्टि करें</value>
   </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+    <value>मीडिया इन्फो फ़ाइलों को हटाने की पुष्टि करें</value>
+  </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
     <value>फ़ोल्डर खोलने के लिए "पुष्टि करें" पर क्लिक करें।</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+    <value>FoliCon के साथ आइकन बनाएं</value>
+  </data>
   <data name="CreatingIcons" xml:space="preserve">
     <value>आइकन बनाए जा रहे हैं...</value>
+  </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>कस्टम आइकन सेटर</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+    <value>कस्टम रेटिंग:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+    <value>यह आपको FoliCon द्वारा प्राप्त की गई रेटिंग के बजाय अपनी स्वयं की रेटिंग सेट करने देता है।</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>आइकन हटाएं</value>
@@ -179,6 +225,19 @@
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
     <value>यह सभी सबफ़ोल्डर्स से मौजूदा आइकन हटा देगा।</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+    <value>मीडिया जानकारी हटाएं</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+    <value>क्या आप वाकई फ़ॉलिकॉन मीडिया जानकारी फ़ाइलें हटाना चाहते हैं?</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+    <value>यह पहली बार किसी शीर्षक के चयन के बाद मीडिया आईडी को स्टोर करने के लिए फॉलिकॉन द्वारा उपयोग की जाने वाली मीडिया जानकारी फ़ाइलों को हटा देगा।
+यह अस्पष्ट शीर्षकों में से चुने बिना फॉलिकॉन को मीडिया की पहचान करने में मदद करता है।</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+    <value>दिनेश सोलंकी द्वारा विकसित।</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
     <value>फोल्डर खाली है</value>
@@ -198,6 +257,15 @@
   <data name="English" xml:space="preserve">
     <value>अंग्रेज़ी</value>
   </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+    <value>कृपया फिर से खोजने के लिए यहां शीर्षक दर्ज करें।</value>
+  </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+    <value>त्रुटी</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+    <value>एक्सप्लोरर एकीकरण (राइट क्लिक मेनू)</value>
+  </data>
   <data name="Folder" xml:space="preserve">
     <value>फ़ोल्डर</value>
   </data>
@@ -207,8 +275,16 @@
   <data name="FolderError" xml:space="preserve">
     <value>फ़ोल्डर त्रुटि</value>
   </data>
+  <data name="Folders" xml:space="preserve">
+    <value>फ़ोल्डर</value>
+  </data>
   <data name="FoldersProcessed" xml:space="preserve">
     <value>संसाधित किए गए फ़ोल्डर:</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+    <value>FoliCon केवल एक विशिष्ट फ़ोल्डर आइकन परिवर्तक से कहीं अधिक है
+यह इस कार्य को काफी हद तक स्वचालित करता है, इसमें फ़ोल्डर आइकन के विभिन्न डिज़ाइनों के लिए दो अलग-अलग मोड हैं,
+और यह 'गेम्स, मूवीज, और शो' और लगभग किसी भी मीडिया फोल्डर आइकन को बना सकता है।</value>
   </data>
   <data name="Game" xml:space="preserve">
     <value>खेल</value>
@@ -225,6 +301,9 @@
   <data name="HelpDocument" xml:space="preserve">
     <value>सहायता दस्तावेज़</value>
   </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>हिंदी</value>
+  </data>
   <data name="IconCreated" xml:space="preserve">
     <value>आइकन बनाया गया</value>
   </data>
@@ -236,6 +315,9 @@
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
     <value>नोट: आइकन को पुनः लोड होने में कुछ समय लग सकता है।</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>आइकन</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
     <value>फ़ोल्डर में पहले से ही आइकन हैं या खाली है!</value>
@@ -255,8 +337,17 @@
   <data name="InvalidPath" xml:space="preserve">
     <value>अवैध मार्ग</value>
   </data>
+  <data name="License" xml:space="preserve">
+    <value>लाइसेंस :</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+    <value>जीएनयू जनरल पब्लिक लाइसेंस v3.0</value>
+  </data>
   <data name="Load" xml:space="preserve">
     <value>फ़ोल्डर्स चुने</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+    <value>पोस्टर लोड हो रहे हैं...</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
     <value>आइकन बनाएं</value>
@@ -274,14 +365,32 @@
     <value>नया संस्करण({0}) मिला!
 बदलाव:{1}</value>
   </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>कोई फ़ोल्डर चयनित नहीं है या फ़ोल्डर में पहले से ही आइकन हैं।</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>संसाधित करने के लिए कोई फ़ोल्डर नहीं</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>कोई आइकन नहीं चुना गया</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>लागू करने के लिए कोई आइकन नहीं</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>क्षमा करें, इंटरनेट उपलब्ध नहीं है।</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
     <value>कोई पोस्टर नहीं मिला।</value>
   </data>
+  <data name="NoResult" xml:space="preserve">
+    <value>कोई परिणाम नही</value>
+  </data>
   <data name="NoResultFound" xml:space="preserve">
     <value>कोई परिणाम नहीं मिला</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+    <value>कोई परिणाम नहीं मिला, सही शीर्षक के साथ फिर से खोजने का प्रयास करें।</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
     <value>{0} के लिए कुछ नहीं मिला
@@ -291,11 +400,26 @@
   <data name="OK" xml:space="preserve">
     <value>ठीक है</value>
   </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>केवल सटीक मिलान रखें?</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>~ या ~</value>
+  </data>
   <data name="OutOf" xml:space="preserve">
     <value>में से</value>
   </data>
+  <data name="PickIconWithName" xml:space="preserve">
+    <value>{0} के लिए आइकन चुनें</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+    <value>चयनित चुनें</value>
+  </data>
   <data name="Poster" xml:space="preserve">
     <value>पोस्टर</value>
+  </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+    <value>पोस्टर आइकन ओवरले</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
     <value>नियंत्रित करता है कि पोस्टर ओवरले या प्लेन पोस्टर का उपयोग करना है या नहीं।</value>
@@ -305,6 +429,13 @@
   </data>
   <data name="Rating" xml:space="preserve">
     <value>रेटिंग</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+    <value>कॉन्टेक्स्ट मेनू से निकालें</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+    <value>इस सुविधा के लिए एडमिन अधिकारों की आवश्यकता है, एडमिन  के रूप में चलाते समय इसका उपयोग करें।
+क्या आप Folicon को एडमिनके रूप में पुनः आरंभ करना चाहते हैं?</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
     <value>एक्सप्लोरर को पुनरारंभ करें</value>
@@ -319,20 +450,41 @@
   <data name="Russian" xml:space="preserve">
     <value>रूसी</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>सहेजें</value>
+  </data>
   <data name="Searching" xml:space="preserve">
     <value>खोज जारी...</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
     <value>खोजा जा रहा है...{0}</value>
   </data>
+  <data name="SearchingWithName" xml:space="preserve">
+    <value>{0} की खोज की जा रही है...</value>
+  </data>
   <data name="SearchMode" xml:space="preserve">
     <value>खोज मोड</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>परिणाम खोजें</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+    <value>अधिक पोस्टर/कवर देखें।</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
     <value>फोल्डर का चयन करें</value>
   </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>आइकन फोल्डर का चयन करें</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+    <value>पोस्टर आइकन ओवरले का चयन करें</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>विभिन्न विकल्प</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>और देखे...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
     <value>सटीक शीर्षक मिलने पर भी पोस्टर विंडो दिखाएं। इससे आप उनके लिए अलग पोस्टर और कस्टम रेटिंग भी चुन सकेंगे
@@ -344,69 +496,6 @@
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
     <value>नियंत्रित करता है कि रेटिंग शील्ड को छिपाना है या दिखाना है</value>
   </data>
-  <data name="Spanish" xml:space="preserve">
-    <value>स्पेनिश</value>
-  </data>
-  <data name="ThisIsLatestVersion" xml:space="preserve">
-    <value>बहुत अच्छे! आप नवीनतम संस्करण का उपयोग कर रहे हैं।</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>शीर्षक</value>
-  </data>
-  <data name="ToForceReload" xml:space="preserve">
-    <value>फोर्स रीलोड करने के लिए, रीस्टार्ट एक्सप्लोरर पर क्लिक करें।</value>
-  </data>
-  <data name="TV" xml:space="preserve">
-    <value>टीवी</value>
-  </data>
-  <data name="UpdateNow" xml:space="preserve">
-    <value>अभी अपडेट करें</value>
-  </data>
-  <data name="UsePosterOverlay" xml:space="preserve">
-    <value>पोस्टर ओवरले का प्रयोग करें</value>
-  </data>
-  <data name="Year" xml:space="preserve">
-    <value>वर्ष</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>सभी</value>
-  </data>
-  <data name="CustomRating" xml:space="preserve">
-    <value>कस्टम रेटिंग:</value>
-  </data>
-  <data name="CustomRatingTooltip" xml:space="preserve">
-    <value>यह आपको FoliCon द्वारा प्राप्त की गई रेटिंग के बजाय अपनी स्वयं की रेटिंग सेट करने देता है।</value>
-  </data>
-  <data name="EnterTitlePlaceholder" xml:space="preserve">
-    <value>कृपया फिर से खोजने के लिए यहां शीर्षक दर्ज करें।</value>
-  </data>
-  <data name="NoResult" xml:space="preserve">
-    <value>कोई परिणाम नही</value>
-  </data>
-  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-    <value>कोई परिणाम नहीं मिला, सही शीर्षक के साथ फिर से खोजने का प्रयास करें।</value>
-  </data>
-  <data name="Or" xml:space="preserve">
-    <value>~ या ~</value>
-  </data>
-  <data name="PickIconWithName" xml:space="preserve">
-    <value>{0} के लिए आइकन चुनें</value>
-  </data>
-  <data name="PickSelected" xml:space="preserve">
-    <value>चयनित चुनें</value>
-  </data>
-  <data name="SearchingWithName" xml:space="preserve">
-    <value>{0} की खोज की जा रही है...</value>
-  </data>
-  <data name="SearchResult" xml:space="preserve">
-    <value>परिणाम खोजें</value>
-  </data>
-  <data name="SeeMorePosters" xml:space="preserve">
-    <value>अधिक पोस्टर/कवर देखें।</value>
-  </data>
-  <data name="ShowMore" xml:space="preserve">
-    <value>और देखे...</value>
-  </data>
   <data name="Skip" xml:space="preserve">
     <value>छोड़ें</value>
   </data>
@@ -416,132 +505,47 @@
   <data name="SkipThisTitle" xml:space="preserve">
     <value>इस मीडिया को छोड़ दें।</value>
   </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>स्पेनिश</value>
+  </data>
   <data name="StopSearching" xml:space="preserve">
     <value>खोजना बंद करें</value>
   </data>
-  <data name="LoadingPosters" xml:space="preserve">
-    <value>पोस्टर लोड हो रहे हैं...</value>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>बहुत अच्छे! आप नवीनतम संस्करण का उपयोग कर रहे हैं।</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>लागू करे</value>
-  </data>
-  <data name="BrowseFolderDropHere" xml:space="preserve">
-    <value>फ़ोल्डर ब्राउज़ करें/यहां छोड़ें</value>
-  </data>
-  <data name="BrowseIconsDropHere" xml:space="preserve">
-    <value>आइकॉन ब्राउज़ करें/यहां छोड़ें</value>
-  </data>
-  <data name="Folders" xml:space="preserve">
-    <value>फ़ोल्डर</value>
-  </data>
-  <data name="Icons" xml:space="preserve">
-    <value>आइकन</value>
-  </data>
-  <data name="OnlyKeepExactMatches" xml:space="preserve">
-    <value>केवल सटीक मिलान रखें?</value>
-  </data>
-  <data name="ClientSecret" xml:space="preserve">
-    <value>क्लाइंट सीक्रेट:</value>
-  </data>
-  <data name="ClientID" xml:space="preserve">
-    <value>क्लाइंट ID :</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>बंद करे</value>
-  </data>
-  <data name="CustomIconSetter" xml:space="preserve">
-    <value>कस्टम आइकन सेटर</value>
-  </data>
-  <data name="NoFolderOrIconAlready" xml:space="preserve">
-    <value>कोई फ़ोल्डर चयनित नहीं है या फ़ोल्डर में पहले से ही आइकन हैं।</value>
-  </data>
-  <data name="NoFoldersToProcess" xml:space="preserve">
-    <value>संसाधित करने के लिए कोई फ़ोल्डर नहीं</value>
-  </data>
-  <data name="NoIconsSelected" xml:space="preserve">
-    <value>कोई आइकन नहीं चुना गया</value>
-  </data>
-  <data name="NoIconsToApply" xml:space="preserve">
-    <value>लागू करने के लिए कोई आइकन नहीं</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>सहेजें</value>
-  </data>
-  <data name="SelectIconsDirectory" xml:space="preserve">
-    <value>आइकन फोल्डर का चयन करें</value>
+  <data name="Title" xml:space="preserve">
+    <value>शीर्षक</value>
   </data>
   <data name="TMDBAPIKey" xml:space="preserve">
     <value>TMDB API कुंजी:</value>
   </data>
-  <data name="UndoSuccessful" xml:space="preserve">
-    <value>पूर्ववत सफल</value>
+  <data name="ToForceReload" xml:space="preserve">
+    <value>फोर्स रीलोड करने के लिए, रीस्टार्ट एक्सप्लोरर पर क्लिक करें।</value>
+  </data>
+  <data name="TV" xml:space="preserve">
+    <value>टीवी</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>पूर्ववत करे</value>
   </data>
-  <data name="DevelopedByDinesh" xml:space="preserve">
-    <value>दिनेश सोलंकी द्वारा विकसित।</value>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>पूर्ववत सफल</value>
   </data>
-  <data name="FoliConDescription" xml:space="preserve">
-    <value>FoliCon केवल एक विशिष्ट फ़ोल्डर आइकन परिवर्तक से कहीं अधिक है
-यह इस कार्य को काफी हद तक स्वचालित करता है, इसमें फ़ोल्डर आइकन के विभिन्न डिज़ाइनों के लिए दो अलग-अलग मोड हैं,
-और यह 'गेम्स, मूवीज, और शो' और लगभग किसी भी मीडिया फोल्डर आइकन को बना सकता है।</value>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>अभी अपडेट करें</value>
   </data>
-  <data name="License" xml:space="preserve">
-    <value>लाइसेंस :</value>
-  </data>
-  <data name="LicenseInfo" xml:space="preserve">
-    <value>जीएनयू जनरल पब्लिक लाइसेंस v3.0</value>
+  <data name="UsePosterOverlay" xml:space="preserve">
+    <value>पोस्टर ओवरले का प्रयोग करें</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>संस्करण :</value>
   </data>
-  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-    <value>मीडिया इन्फो फ़ाइलों को हटाने की पुष्टि करें</value>
-  </data>
-  <data name="DeleteMediaInfo" xml:space="preserve">
-    <value>मीडिया जानकारी हटाएं</value>
-  </data>
-  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-    <value>क्या आप वाकई फ़ॉलिकॉन मीडिया जानकारी फ़ाइलें हटाना चाहते हैं?</value>
-  </data>
-  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-    <value>यह पहली बार किसी शीर्षक के चयन के बाद मीडिया आईडी को स्टोर करने के लिए फॉलिकॉन द्वारा उपयोग की जाने वाली मीडिया जानकारी फ़ाइलों को हटा देगा।
-यह अस्पष्ट शीर्षकों में से चुने बिना फॉलिकॉन को मीडिया की पहचान करने में मदद करता है।</value>
-  </data>
-  <data name="ExceptionOccurred" xml:space="preserve">
-    <value>त्रुटी</value>
-  </data>
-  <data name="PosterIconOverlay" xml:space="preserve">
-    <value>पोस्टर आइकन ओवरले</value>
-  </data>
-  <data name="BestSuitedForHorizontal" xml:space="preserve">
-    <value>क्षैतिज छवियों के लिए सबसे उपयुक्त, जैसे कि गेम आर्टवर्क।</value>
-  </data>
-  <data name="SelectPosterIconOverlay" xml:space="preserve">
-    <value>पोस्टर आइकन ओवरले का चयन करें</value>
-  </data>
-  <data name="Hindi" xml:space="preserve">
-    <value>हिंदी</value>
-  </data>
-  <data name="AddToContextMenu" xml:space="preserve">
-    <value>कॉन्टेक्स्ट मेनू में जोड़ें</value>
-  </data>
-  <data name="ExplorerIntegration" xml:space="preserve">
-    <value>एक्सप्लोरर एकीकरण (राइट क्लिक मेनू)</value>
-  </data>
-  <data name="RemoveFromContextMenu" xml:space="preserve">
-    <value>कॉन्टेक्स्ट मेनू से निकालें</value>
-  </data>
-  <data name="RestartAsAdmin" xml:space="preserve">
-    <value>इस सुविधा के लिए एडमिन अधिकारों की आवश्यकता है, एडमिन  के रूप में चलाते समय इसका उपयोग करें।
-क्या आप Folicon को एडमिनके रूप में पुनः आरंभ करना चाहते हैं?</value>
-  </data>
-  <data name="CreateIconsWithFoliCon" xml:space="preserve">
-    <value>FoliCon के साथ आइकन बनाएं</value>
-  </data>
   <data name="VideoUnavailable" xml:space="preserve">
     <value>वीडियो उपलब्ध नहीं है!</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>वर्ष</value>
   </data>
   <data name="FileIsInUse" xml:space="preserve">
     <value>फ़ाइल पहले से उपयोग में है।</value>
@@ -580,6 +584,6 @@
     <value>सिस्टम</value>
   </data>
   <data name="Portuguese(PT)" xml:space="preserve">
-    <value>Português (PT)</value>
-  </data>
+      <value>Português (PT)</value>
+    </data>
 </root>
