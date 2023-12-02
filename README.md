@@ -1,3 +1,12 @@
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://dineshsolanki.github.io/FoliCon-docs/)
+
+<p align="center">
+    <a href='https://dineshsolanki.github.io/FoliCon-docs/'> See FoliCon Docs</a>
+</p>
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://dineshsolanki.github.io/FoliCon-docs/)
+
+
 <a href="https://dineshsolanki.github.io/FoliCon/">
     <img src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/folicon Icon.png" alt="FoliCon logo" title="FoliCon" align="right" height="120" />
 </a>
