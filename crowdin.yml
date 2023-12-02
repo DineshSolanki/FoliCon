@@ -1,3 +1,3 @@
 files:
-  - source: /FoliCon/Properties/Langs/
+  - source: /FoliCon/Properties/Langs/Lang.resx
     translation: /FoliCon/Properties/Langs/Lang.%two_letters_code%.resx
