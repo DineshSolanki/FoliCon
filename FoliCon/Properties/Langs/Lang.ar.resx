@@ -1,64 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-      Microsoft ResX Schema 
-      
-      Version 2.0
-      
-      The primary goals of this format is to allow a simple XML format 
-      that is mostly human readable. The generation and parsing of the 
-      various data types are done through the TypeConverter classes 
-      associated with the data types.
-      
-      Example:
-      
-      ... ado.net/XML headers & schema ...
-      <resheader name="resmimetype">text/microsoft-resx</resheader>
-      <resheader name="version">2.0</resheader>
-      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-          <value>[base64 mime encoded serialized .NET Framework object]</value>
-      </data>
-      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-          <comment>This is a comment</comment>
-      </data>
-                  
-      There are any number of "resheader" rows that contain simple 
-      name/value pairs.
-      
-      Each data row contains a name, and value. The row also contains a 
-      type or mimetype. Type corresponds to a .NET class that support 
-      text/value conversion through the TypeConverter architecture. 
-      Classes that don't support this are serialized and stored with the 
-      mimetype set.
-      
-      The mimetype is used for serialized objects, and tells the 
-      ResXResourceReader how to depersist the object. This is currently not 
-      extensible. For a given mimetype the value must be set accordingly:
-      
-      Note - application/x-microsoft.net.object.binary.base64 is the format 
-      that the ResXResourceWriter will generate, however the reader can 
-      read any of the formats listed below.
-      
-      mimetype: application/x-microsoft.net.object.binary.base64
-      value   : The object must be serialized with 
-              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-              : and then encoded with base64 encoding.
-      
-      mimetype: application/x-microsoft.net.object.soap.base64
-      value   : The object must be serialized with 
-              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-              : and then encoded with base64 encoding.
-  
-      mimetype: application/x-microsoft.net.object.bytearray.base64
-      value   : The object must be serialized into a byte array 
-              : using a System.ComponentModel.TypeConverter
-              : and then encoded with base64 encoding.
-      -->
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -112,477 +112,474 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
-        </value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="AddToContextMenu" xml:space="preserve">
-    <value>Add to context menu</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>All</value>
+    <value>حول</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
-    <value>Always show poster window</value>
+    <value>اعرض دائمًا نافذة الملصق</value>
   </data>
   <data name="AmbiguousTitleTooltip" xml:space="preserve">
-    <value>Skip ambiguous titles from search</value>
+    <value>تخطي العناوين الغامضة من البحث</value>
   </data>
   <data name="APIKeysConfiguration" xml:space="preserve">
-    <value>_API keys Configuration</value>
+    <value>تكوين مفاتيح _API</value>
   </data>
   <data name="APIKeysNotProvided" xml:space="preserve">
-    <value>API keys not provided</value>
-  </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
+    <value>لم يتم توفير مفاتيح API</value>
   </data>
   <data name="AppWillClose" xml:space="preserve">
-    <value>The Application will close.</value>
+    <value>سيتم إغلاق التطبيق.</value>
   </data>
   <data name="Arabic" xml:space="preserve">
-    <value>Arabic</value>
+    <value>عربى</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Auto (Movies &amp; TV Shows)</value>
-  </data>
-  <data name="BestSuitedForHorizontal" xml:space="preserve">
-    <value>Best suited for horizontal images, such as game artworks.</value>
-  </data>
-  <data name="BrowseFolderDropHere" xml:space="preserve">
-    <value>Browse Folder/Drop here</value>
-  </data>
-  <data name="BrowseIconsDropHere" xml:space="preserve">
-    <value>Browse Icons/Drop here</value>
+    <value>تلقائي (أفلام وبرامج تلفزيونية)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>يلغي</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Change Language</value>
+    <value>تغيير اللغة</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
-    <value>_Change Poster Icon overlay</value>
+    <value>_تغيير تراكب أيقونة الملصق</value>
   </data>
   <data name="CheckForUpdate" xml:space="preserve">
-    <value>Check for update</value>
-  </data>
-  <data name="ClientID" xml:space="preserve">
-    <value>Client ID :</value>
-  </data>
-  <data name="ClientSecret" xml:space="preserve">
-    <value>Client Secret  :</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
+    <value>فحص التحديثات</value>
   </data>
   <data name="ClosingApplication" xml:space="preserve">
-    <value>Closing Application</value>
+    <value>طلب الإغلاق</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>يتأكد</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
-    <value>Confirm Explorer Restart</value>
+    <value>قم بتأكيد إعادة تشغيل Explorer</value>
   </data>
   <data name="ConfirmIconDeletion" xml:space="preserve">
-    <value>Confirm Icon Deletion</value>
-  </data>
-  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-    <value>Confirm Media Info files deletion</value>
+    <value>تأكيد حذف الرمز</value>
   </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
-    <value>Click "Confirm" to open folder.</value>
-  </data>
-  <data name="CreateIconsWithFoliCon" xml:space="preserve">
-    <value>Create icons with FoliCon</value>
+    <value>انقر فوق "تأكيد" لفتح المجلد.</value>
   </data>
   <data name="CreatingIcons" xml:space="preserve">
-    <value>Creating Icons...</value>
-  </data>
-  <data name="CustomIconSetter" xml:space="preserve">
-    <value>Custom icon setter</value>
-  </data>
-  <data name="CustomRating" xml:space="preserve">
-    <value>Custom rating: </value>
-  </data>
-  <data name="CustomRatingTooltip" xml:space="preserve">
-    <value>This lets you set your own rating instead of one fetched by FoliCon.</value>
+    <value>جاري إنشاء أيقونات ...</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
-    <value>Delete Icons</value>
+    <value>حذف الأيقونات</value>
   </data>
   <data name="DeleteIconsConfirmation" xml:space="preserve">
-    <value>Are you sure you want to delete all Icons?</value>
+    <value>هل أنت متأكد أنك تريد حذف كافة الأيقونات؟</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
-    <value>This will delete existing icons from all subFolders.</value>
-  </data>
-  <data name="DeleteMediaInfo" xml:space="preserve">
-    <value>Delete media info</value>
-  </data>
-  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-    <value>Are you sure you want to delete folicon media info files ?</value>
-  </data>
-  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-    <value>This will delete media info files used by folicon to store media id after a title is selected for the first time.
-This helps folicon identify media without having to chose from ambigous titles.</value>
-  </data>
-  <data name="DevelopedByDinesh" xml:space="preserve">
-    <value>Developed By Dinesh Solanki.</value>
+    <value>سيؤدي هذا إلى حذف الرموز الموجودة من جميع المجلدات الفرعية.</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
-    <value>Directory is Empty</value>
+    <value>الدليل فارغ</value>
   </data>
   <data name="DownloadingIcons" xml:space="preserve">
-    <value>Downloading Icons</value>
+    <value>تحميل الأيقونات</value>
   </data>
   <data name="DownloadingIconWithCount" xml:space="preserve">
-    <value>Downloading Icon {0}/{1}...</value>
+    <value>جارٍ تنزيل الرمز {0} / {1} ...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
-    <value>Download it</value>
+    <value>تنزيله</value>
   </data>
   <data name="EmptyDirectory" xml:space="preserve">
-    <value>Empty Directory</value>
+    <value>دليل فارغ</value>
   </data>
   <data name="English" xml:space="preserve">
-    <value>English</value>
-  </data>
-  <data name="EnterTitlePlaceholder" xml:space="preserve">
-    <value>Please Enter Title here to search again.</value>
-  </data>
-  <data name="ExceptionOccurred" xml:space="preserve">
-    <value>Exception Occurred</value>
-  </data>
-  <data name="ExplorerIntegration" xml:space="preserve">
-    <value>Explorer Integration (Right click menu)</value>
+    <value>إنجليزي</value>
   </data>
   <data name="Folder" xml:space="preserve">
-    <value>Folder</value>
+    <value>مجلد</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
-    <value>Folder does not exist!</value>
+    <value>المجلد غير موجود!</value>
   </data>
   <data name="FolderError" xml:space="preserve">
-    <value>Folder Error</value>
-  </data>
-  <data name="Folders" xml:space="preserve">
-    <value>Folders</value>
+    <value>خطأ في المجلد</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
-    <value>Folders Processed:</value>
-  </data>
-  <data name="FoliConDescription" xml:space="preserve">
-    <value>FoliCon is more than just a typical folder Icon changer
-It automates this task to a greater extent, it has two different modes for different designs of folder Icons,
-and it can fetch 'Games,Movies, and shows' and almost any media folder icons.</value>
+    <value>المجلدات التي تمت معالجتها:</value>
   </data>
   <data name="Game" xml:space="preserve">
-    <value>Game</value>
+    <value>لعبة</value>
   </data>
   <data name="HaveIcons" xml:space="preserve">
-    <value>you already have icons?</value>
+    <value>لديك بالفعل رموز؟</value>
   </data>
   <data name="HaveIconsTooltip" xml:space="preserve">
-    <value>Let you set your own icons(only png and ico allowed).</value>
+    <value>تتيح لك تعيين الرموز الخاصة بك (يُسمح فقط بتنسيق png و ico).</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Help</value>
+    <value>يساعد</value>
   </data>
   <data name="HelpDocument" xml:space="preserve">
-    <value>Help Document</value>
-  </data>
-  <data name="Hindi" xml:space="preserve">
-    <value>Hindi</value>
+    <value>وثيقة المساعدة</value>
   </data>
   <data name="IconCreated" xml:space="preserve">
-    <value>Icon(s) Created</value>
+    <value>تم إنشاء الرمز (الرموز)</value>
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
-    <value>{0} Icon created</value>
+    <value>{0} تم إنشاء الرمز</value>
   </data>
   <data name="IconMode" xml:space="preserve">
-    <value>Icon Mode</value>
+    <value>وضع الأيقونة</value>
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
-    <value>Note:The Icon may take some time to reload.</value>
-  </data>
-  <data name="Icons" xml:space="preserve">
-    <value>Icons</value>
+    <value>ملاحظة: قد يستغرق الرمز بعض الوقت لإعادة التحميل.</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
-    <value>Folder already have Icons or is Empty!</value>
+    <value>يحتوي المجلد بالفعل على أيقونات أو أنه فارغ!</value>
   </data>
   <data name="IconsCreated" xml:space="preserve">
-    <value>Icons Created :</value>
+    <value>تم إنشاء الرموز:</value>
   </data>
   <data name="Idle" xml:space="preserve">
-    <value>Idle</value>
+    <value>عاطل</value>
   </data>
   <data name="Ignore" xml:space="preserve">
-    <value>Ignore</value>
+    <value>يتجاهل</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
-    <value>Ignore Ambiguous title</value>
+    <value>تجاهل العنوان الغامض</value>
   </data>
   <data name="InvalidPath" xml:space="preserve">
-    <value>Invalid Path</value>
-  </data>
-  <data name="License" xml:space="preserve">
-    <value>License :</value>
-  </data>
-  <data name="LicenseInfo" xml:space="preserve">
-    <value>GNU General Public License v3.0</value>
+    <value>مسار غير صالح</value>
   </data>
   <data name="Load" xml:space="preserve">
-    <value>Load</value>
-  </data>
-  <data name="LoadingPosters" xml:space="preserve">
-    <value>Loading posters...</value>
+    <value>حمل</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
-    <value>Make Icons</value>
+    <value>اصنع أيقونات</value>
   </data>
   <data name="Movie" xml:space="preserve">
-    <value>Movie</value>
+    <value>فيلم</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Network Error</value>
+    <value>خطأ في الشبكة</value>
   </data>
   <data name="NetworkNotAvailable" xml:space="preserve">
-    <value>Network not available!</value>
+    <value>الشبكة غير متاحة!</value>
   </data>
   <data name="NewVersionFound" xml:space="preserve">
-    <value>New Version({0}) Found!
-Changelog:{1}</value>
-  </data>
-  <data name="NoFolderOrIconAlready" xml:space="preserve">
-    <value>No folders Selected or folders already have icons.</value>
-  </data>
-  <data name="NoFoldersToProcess" xml:space="preserve">
-    <value>No folders to process</value>
-  </data>
-  <data name="NoIconsSelected" xml:space="preserve">
-    <value>No icons selected</value>
-  </data>
-  <data name="NoIconsToApply" xml:space="preserve">
-    <value>No icons to apply</value>
+    <value>تم العثور على إصدار جديد ({0})!
+سجل التغيير: {1}</value>
   </data>
   <data name="NoInternet" xml:space="preserve">
-    <value>Sorry, Internet is Not available.</value>
+    <value>عذرا ، الإنترنت غير متوفر.</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
-    <value>No poster found.</value>
-  </data>
-  <data name="NoResult" xml:space="preserve">
-    <value>No Result</value>
+    <value>لم يتم العثور على ملصق.</value>
   </data>
   <data name="NoResultFound" xml:space="preserve">
-    <value>No Result Found.</value>
-  </data>
-  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-    <value>No result Found, Try to search again with correct title.</value>
+    <value>لم يتم العثور على نتائج</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>Nothing found for {0}
-Try Searching with Other Title
- or check Search Mode</value>
+    <value>لم يتم العثور على شيء لـ {0}
+حاول البحث بعنوان آخر
+ أو تحقق من وضع البحث</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="OnlyKeepExactMatches" xml:space="preserve">
-    <value>Only keep exact matches?</value>
-  </data>
-  <data name="Or" xml:space="preserve">
-    <value>~ OR ~</value>
+    <value>حسنا</value>
   </data>
   <data name="OutOf" xml:space="preserve">
-    <value>out of</value>
-  </data>
-  <data name="PickIconWithName" xml:space="preserve">
-    <value>Pick Icon for {0}</value>
-  </data>
-  <data name="PickSelected" xml:space="preserve">
-    <value>Pick Selected</value>
+    <value>بعيدا عن المكان</value>
   </data>
   <data name="Poster" xml:space="preserve">
-    <value>Poster</value>
-  </data>
-  <data name="PosterIconOverlay" xml:space="preserve">
-    <value>Poster Icon Overlay</value>
+    <value>ملصق</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
-    <value>Controls whether to use poster Overlay or Plain Posters.</value>
+    <value>يتحكم في استخدام ملصق تراكب أو ملصقات عادية.</value>
   </data>
   <data name="Professional" xml:space="preserve">
-    <value>Professional</value>
+    <value>احترافي</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Rating</value>
-  </data>
-  <data name="RemoveFromContextMenu" xml:space="preserve">
-    <value>Remove from context menu</value>
-  </data>
-  <data name="RestartAsAdmin" xml:space="preserve">
-    <value>This feature requires admin rights, use it when running as admin.
-Do you want to restart Folicon as admin ?</value>
+    <value>تقييم</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
-    <value>Restart Explorer</value>
+    <value>أعد تشغيل Explorer</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>Are you sure you want to Restart Explorer 
-and refresh Icon Cache?</value>
+    <value>هل أنت متأكد أنك تريد إعادة تشغيل Explorer
+وتحديث Icon Cache؟</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
-    <value>This will close all Open folders and Restart Explorer.</value>
+    <value>سيؤدي هذا إلى إغلاق جميع المجلدات المفتوحة وإعادة تشغيل Explorer.</value>
   </data>
   <data name="Russian" xml:space="preserve">
-    <value>Russian</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>الروسية</value>
   </data>
   <data name="Searching" xml:space="preserve">
-    <value>Searching...</value>
+    <value>يبحث...</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
-    <value>Searching...{0}</value>
-  </data>
-  <data name="SearchingWithName" xml:space="preserve">
-    <value>Searching for {0}...</value>
+    <value>جاري البحث ... {0}</value>
   </data>
   <data name="SearchMode" xml:space="preserve">
-    <value>Search Mode</value>
-  </data>
-  <data name="SearchResult" xml:space="preserve">
-    <value>Search Result</value>
-  </data>
-  <data name="SeeMorePosters" xml:space="preserve">
-    <value>See more posters/covers.</value>
+    <value>وضع البحث</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
-    <value>Select Folder</value>
-  </data>
-  <data name="SelectIconsDirectory" xml:space="preserve">
-    <value>Select Icons Directory</value>
-  </data>
-  <data name="SelectPosterIconOverlay" xml:space="preserve">
-    <value>Select Poster Icon overlay</value>
+    <value>اختر مجلد</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="ShowMore" xml:space="preserve">
-    <value>Show more...</value>
+    <value>إعدادات</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>اعرض نافذة الملصق حتى إذا تم العثور على العنوان بالضبط ، فهذا سيتيح لك اختيار ملصق مختلف له وتقييم مخصص أيضًا
+ هذا يلغي خيار "تجاهل العنوان الغامض".</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
-    <value>Show Rating badge</value>
+    <value>إظهار شارة التقييم</value>
   </data>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
-    <value>Controls whether to hide or show Rating Shield</value>
-  </data>
-  <data name="Skip" xml:space="preserve">
-    <value>Skip</value>
-  </data>
-  <data name="SkipThisPlaceholder" xml:space="preserve">
-    <value>Skip this and all remaining titles.</value>
-  </data>
-  <data name="SkipThisTitle" xml:space="preserve">
-    <value>Skip this title.</value>
+    <value>يتحكم في ما إذا كان سيتم إخفاء أو إظهار درع التصنيف</value>
   </data>
   <data name="Spanish" xml:space="preserve">
-    <value>Spanish</value>
-  </data>
-  <data name="StopSearching" xml:space="preserve">
-    <value>Stop Searching</value>
+    <value>الأسبانية</value>
   </data>
   <data name="ThisIsLatestVersion" xml:space="preserve">
-    <value>Great! you are using the latest version.</value>
+    <value>رائعة! أنت تستخدم أحدث إصدار.</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="TMDBAPIKey" xml:space="preserve">
-    <value>TMDB API Key :</value>
+    <value>لقب</value>
   </data>
   <data name="ToForceReload" xml:space="preserve">
-    <value>To Force Reload, click on Restart Explorer.</value>
+    <value>لفرض إعادة التحميل ، انقر فوق إعادة تشغيل Explorer.</value>
   </data>
   <data name="TV" xml:space="preserve">
-    <value>TV</value>
-  </data>
-  <data name="Undo" xml:space="preserve">
-    <value>Undo</value>
-  </data>
-  <data name="UndoSuccessful" xml:space="preserve">
-    <value>Undo successful</value>
+    <value>تلفزيون</value>
   </data>
   <data name="UpdateNow" xml:space="preserve">
-    <value>Update Now</value>
+    <value>تحديث الان</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
-    <value>Use Poster overlay</value>
-  </data>
-  <data name="Version" xml:space="preserve">
-    <value>Version :</value>
-  </data>
-  <data name="VideoUnavailable" xml:space="preserve">
-    <value>Video not available!</value>
+    <value>استخدم تراكب الملصق</value>
   </data>
   <data name="Year" xml:space="preserve">
-    <value>Year</value>
+    <value>عام</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>الجميع</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+    <value>التصنيف المخصص:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+    <value>يتيح لك هذا تعيين التقييم الخاص بك بدلاً من التقييم الذي يجلبه FoliCon.</value>
+  </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+    <value>الرجاء إدخال العنوان هنا للبحث مرة أخرى.</value>
+  </data>
+  <data name="NoResult" xml:space="preserve">
+    <value>لا نتيجة</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+    <value>لم يتم العثور على نتيجة ، حاول البحث مرة أخرى بالعنوان الصحيح.</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>~ أو ~</value>
+  </data>
+  <data name="PickIconWithName" xml:space="preserve">
+    <value>اختر رمزًا لـ {0}</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+    <value>اختر المحدد</value>
+  </data>
+  <data name="SearchingWithName" xml:space="preserve">
+    <value>البحث عن {0} ...</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>نتيجة البحث</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+    <value>شاهد المزيد من الملصقات / الأغلفة.</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>أظهر المزيد...</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>تخطى</value>
+  </data>
+  <data name="SkipThisPlaceholder" xml:space="preserve">
+    <value>تخطي هذا وجميع العناوين المتبقية.</value>
+  </data>
+  <data name="SkipThisTitle" xml:space="preserve">
+    <value>تخطي هذا العنوان.</value>
+  </data>
+  <data name="StopSearching" xml:space="preserve">
+    <value>توقف عن البحث</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+    <value>جارٍ تحميل الملصقات ...</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>تطبيق</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>تصفح المجلد / أفلت هنا</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>تصفح الأيقونات / الإسقاط هنا</value>
+  </data>
+  <data name="Folders" xml:space="preserve">
+    <value>المجلدات</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>الأيقونات</value>
+  </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>فقط الاحتفاظ بالمطابقات الدقيقة؟</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>سر العميل:</value>
+  </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>معرف العميل:</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>يغلق</value>
+  </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>محدد رمز مخصص</value>
+  </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>لا توجد مجلدات محددة أو مجلدات بها رموز بالفعل.</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>لا توجد مجلدات للمعالجة</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>لم يتم تحديد رموز</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>لا رموز للتطبيق</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>يحفظ</value>
+  </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>حدد دليل الأيقونات</value>
+  </data>
+  <data name="TMDBAPIKey" xml:space="preserve">
+    <value>مفتاح TMDB API:</value>
+  </data>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>تم التراجع بنجاح</value>
+  </data>
+  <data name="Undo" xml:space="preserve">
+    <value>الغاء التحميل</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+    <value>طوره دينيش سولانكي.</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+    <value>FoliCon هو أكثر من مجرد مغير أيقونة مجلد نموذجي
+تقوم بأتمتة هذه المهمة إلى حد كبير ، ولديها وضعان مختلفان للتصميمات المختلفة لأيقونات المجلدات ،
+ويمكنه جلب "الألعاب والأفلام والعروض" وتقريبًا أي رموز مجلد وسائط.</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>رخصة :</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+    <value>رخصة جنو العمومية v3.0</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>إصدار :</value>
+  </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+    <value>حدث استثناء</value>
+  </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+    <value>تأكيد حذف ملفات معلومات الوسائط</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+    <value>حذف معلومات الوسائط</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+    <value>هل أنت متأكد أنك تريد حذف ملفات معلومات وسائط فوليكون؟</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+    <value>سيؤدي هذا إلى حذف ملفات معلومات الوسائط التي يستخدمها فوليكون لتخزين معرف الوسائط بعد تحديد العنوان لأول مرة.
+يساعد هذا فوليكون في التعرف على الوسائط دون الحاجة إلى الاختيار من بين العناوين الغامضة.</value>
+  </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+    <value>تراكب أيقونة الملصق</value>
+  </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+    <value>الأنسب للصور الأفقية ، مثل الأعمال الفنية للعبة.</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+    <value>حدد تراكب أيقونة الملصق</value>
+  </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>هندي</value>
+  </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+    <value>أضف إلى قائمة السياق</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+    <value>تكامل المستكشف (انقر بزر الماوس الأيمن فوق القائمة)</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+    <value>إزالة من قائمة السياق</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+    <value>تتطلب هذه الميزة حقوق المسؤول ، استخدمها عند التشغيل كمسؤول.
+هل تريد إعادة تشغيل Folicon كمسؤول؟</value>
+  </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+    <value>قم بإنشاء أيقونات باستخدام FoliCon</value>
+  </data>
+  <data name="VideoUnavailable" xml:space="preserve">
+    <value>الفيديو غير متوفر!</value>
   </data>
   <data name="FileIsInUse" xml:space="preserve">
-    <value>File is already in use.</value>
+    <value>الملف قيد الاستخدام بالفعل.</value>
   </data>
   <data name="UnauthorizedAccess" xml:space="preserve">
-    <value>The file could not be accessed.</value>
+    <value>تعذر الوصول إلى الملف</value>
   </data>
   <data name="FailedFileAccessAt" xml:space="preserve">
-    <value>Failed to access file at {0}. You may not have permission to access this file. Try running as admin.</value>
+    <value>فشل في الوصول إلى الملف في {0}. قد لا يكون لديك إذن للوصول إلى هذا الملف.أو حاول تشغيله كمسؤول</value>
   </data>
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
-    <value>Failed to save media info at {0}, Please check access permissions</value>
+    <value>فشل في حفظ معلومات الوسائط في {0}، يرجى التحقق من أذونات الوصول</value>
   </data>
   <data name="WritePermissionAllowed" xml:space="preserve">
-    <value>Write Permission Allowed</value>
+    <value>تم السماح بإذن الكتابة</value>
   </data>
   <data name="WritePermissionNotAllowed" xml:space="preserve">
-    <value>No Write Permission</value>
+    <value>لا يوجد إذن كتابة</value>
   </data>
   <data name="EnableErrorReporting" xml:space="preserve">
-    <value>Enable Error reporting</value>
+    <value>تمكين الإبلاغ عن الأخطاء</value>
   </data>
   <data name="EnableErrorReportingTip" xml:space="preserve">
-    <value>Send error reports to help improve FoliCon</value>
+    <value>إرسال تقارير الأخطاء للمساعدة في تحسين FoliCon</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
+    <value>سمة</value>
   </data>
   <data name="ThemeDark" xml:space="preserve">
-    <value>Dark</value>
+    <value>موضوع مظلم</value>
   </data>
   <data name="ThemeLight" xml:space="preserve">
-    <value>Light</value>
+    <value>موضوع خفيف</value>
   </data>
   <data name="ThemeSystem" xml:space="preserve">
-    <value>System</value>
+    <value>نظام</value>
   </data>
   <data name="Portuguese(PT)" xml:space="preserve">
-      <value>Português (PT)</value>
-    </data>
+    <value>Português (PT)</value>
+  </data>
 </root>
