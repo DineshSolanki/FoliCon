@@ -5,6 +5,10 @@ FoliCon is a Folder icon changer that works for movies, music, games, shows, ani
 
 it also shows ratings on the created icons, and has two modes, POSTER and Professional.
 
+> [Leave a ⭐ if you like FoliCon](https://github.com/DineshSolanki/FoliCon)
+>
+> ![GitHub Repo stars](https://img.shields.io/github/stars/DineshSolanki/FoliCon)
+
 ## What is the inspiration behind FoliCon?
 
 I was tired of seeing the same folder icon for all my movies and games folders.

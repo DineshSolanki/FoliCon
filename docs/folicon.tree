@@ -18,4 +18,10 @@
             <toc-element topic="More-settings.md"/>
         </toc-element>
     </toc-element>
+    <toc-element topic="How-to-contribute.md">
+        <toc-element topic="Improve-Documentation.md"/>
+        <toc-element topic="Translations.md"/>
+        <toc-element topic="Code-Contribution.md"/>
+    </toc-element>
+    <toc-element topic="Dependencies.md"/>
 </instance-profile>
