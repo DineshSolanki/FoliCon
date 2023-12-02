@@ -1,4 +1,4 @@
-# Custom Icon Setter
+# Custom Icon Setter usage
 
 <include from="Custom-Icon-Setter.md" element-id="custom-icon-setter"/>
 

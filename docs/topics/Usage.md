@@ -1,6 +1,11 @@
 # Usage
 
 Using FoliCon is straightforward-
+
+> Download the latest version from [here](https://github.com/DineshSolanki/FoliCon/releases/latest)
+>
+{style="note"}
+
 * Click on the 'Load' button to load a parent folder. 
 This folder should contain all the subfolders that you want to create icons for.
 * You should now see the path of the folder in the top center (just below the menu bar). 

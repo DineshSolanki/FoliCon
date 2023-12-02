@@ -9,6 +9,9 @@ it also shows ratings on the created icons, and has two modes, POSTER and Profes
 >
 > ![GitHub Repo stars](https://img.shields.io/github/stars/DineshSolanki/FoliCon)
 
+> Download the latest version from [here](https://github.com/DineshSolanki/FoliCon/releases/latest)
+>
+{style="note"}
 ## What is the inspiration behind FoliCon?
 
 I was tired of seeing the same folder icon for all my movies and games folders.
