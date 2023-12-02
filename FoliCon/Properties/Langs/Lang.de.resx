@@ -118,466 +118,466 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Acerca de</value>
+    <value>विवरण</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
-    <value>Mostrar siempre la ventana del póster</value>
+    <value>हमेशा पोस्टर विंडो दिखाएं</value>
   </data>
   <data name="AmbiguousTitleTooltip" xml:space="preserve">
-    <value>Omitir títulos ambiguos de la búsqueda</value>
+    <value>खोज से अस्पष्ट मीडिया छोड़ें</value>
   </data>
   <data name="APIKeysConfiguration" xml:space="preserve">
-    <value>_ Configuración de claves de API</value>
+    <value>_API कुंजियाँ कॉन्फ़िगरेशन</value>
   </data>
   <data name="APIKeysNotProvided" xml:space="preserve">
-    <value>No se proporcionan claves de API</value>
+    <value>API कुंजियाँ प्रदान नहीं की गईं</value>
   </data>
   <data name="AppWillClose" xml:space="preserve">
-    <value>La aplicación se cerrará.</value>
+    <value>एप बंद हो जाएगा।</value>
   </data>
   <data name="Arabic" xml:space="preserve">
-    <value>Arábica</value>
+    <value>अरबी</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>Automático (películas y programas de televisión)</value>
+    <value>ऑटो (फिल्में और टीवी शो)</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+    <value>रद्द करे</value>
   </data>
   <data name="ChangeLanguage" xml:space="preserve">
-    <value>Cambiar idioma</value>
+    <value>भाषा बदले</value>
   </data>
   <data name="ChangePosterOverlay" xml:space="preserve">
-    <value>_Cambiar la superposición del icono de póster</value>
+    <value>_पोस्टर आइकन ओवरले बदलें</value>
   </data>
   <data name="CheckForUpdate" xml:space="preserve">
-    <value>Buscar actualizaciones</value>
+    <value>अपडेट के लिये जांचें</value>
   </data>
   <data name="ClosingApplication" xml:space="preserve">
-    <value>Solicitud de cierre</value>
+    <value>एप बंद हो रहा है</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Confirmar</value>
+    <value>पुष्टि करें</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
-    <value>Confirmar el reinicio del explorador</value>
+    <value>एक्सप्लोरर पुनरारंभ की पुष्टि करें</value>
   </data>
   <data name="ConfirmIconDeletion" xml:space="preserve">
-    <value>Confirmar la eliminación del icono</value>
+    <value>आइकन हटाने की पुष्टि करें</value>
   </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
-    <value>Haga clic en "Confirmar" para abrir la carpeta.</value>
+    <value>फ़ोल्डर खोलने के लिए "पुष्टि करें" पर क्लिक करें।</value>
   </data>
   <data name="CreatingIcons" xml:space="preserve">
-    <value>Creación de iconos ...</value>
+    <value>आइकन बनाए जा रहे हैं...</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
-    <value>Eliminar iconos</value>
+    <value>आइकन हटाएं</value>
   </data>
   <data name="DeleteIconsConfirmation" xml:space="preserve">
-    <value>¿Está seguro de que desea eliminar todos los iconos?</value>
+    <value>क्या आप वाकई सभी आइकन हटाना चाहते हैं?</value>
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
-    <value>Esto eliminará los iconos existentes de todas las subcarpetas.</value>
+    <value>यह सभी सबफ़ोल्डर्स से मौजूदा आइकन हटा देगा।</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
-    <value>El directorio está vacío</value>
+    <value>फोल्डर खाली है</value>
   </data>
   <data name="DownloadingIcons" xml:space="preserve">
-    <value>Descarga de iconos</value>
+    <value>डाउनलोडिंग आइकन</value>
   </data>
   <data name="DownloadingIconWithCount" xml:space="preserve">
-    <value>Descargando ícono {0} / {1} ...</value>
+    <value>आइकन डाउनलोड हो रहा है {0}/{1}...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
-    <value>Descargalo</value>
+    <value>डाउनलोड करे</value>
   </data>
   <data name="EmptyDirectory" xml:space="preserve">
-    <value>Directorio vacío</value>
+    <value>खाली फोल्डर</value>
   </data>
   <data name="English" xml:space="preserve">
-    <value>inglés</value>
+    <value>अंग्रेज़ी</value>
   </data>
   <data name="Folder" xml:space="preserve">
-    <value>Carpeta</value>
+    <value>फ़ोल्डर</value>
   </data>
   <data name="FolderDoesNotExist" xml:space="preserve">
-    <value>¡La carpeta no existe!</value>
+    <value>फ़ोल्डर मौजूद नहीं है!</value>
   </data>
   <data name="FolderError" xml:space="preserve">
-    <value>Error de carpeta</value>
+    <value>फ़ोल्डर त्रुटि</value>
   </data>
   <data name="FoldersProcessed" xml:space="preserve">
-    <value>Carpetas procesadas:</value>
+    <value>संसाधित किए गए फ़ोल्डर:</value>
   </data>
   <data name="Game" xml:space="preserve">
-    <value>Juego</value>
+    <value>खेल</value>
   </data>
   <data name="HaveIcons" xml:space="preserve">
-    <value>ya tienes iconos?</value>
+    <value>आपके पास पहले से ही आइकन हैं?</value>
   </data>
   <data name="HaveIconsTooltip" xml:space="preserve">
-    <value>Le permite configurar sus propios iconos (solo se permiten png e ico).</value>
+    <value>अपना खुद का आइकन सेट करने दें (केवल पीएनजी और आईसीओ की अनुमति है)।</value>
   </data>
   <data name="Help" xml:space="preserve">
-    <value>Ayuda</value>
+    <value>मदद</value>
   </data>
   <data name="HelpDocument" xml:space="preserve">
-    <value>Documento de ayuda</value>
+    <value>सहायता दस्तावेज़</value>
   </data>
   <data name="IconCreated" xml:space="preserve">
-    <value>Icono (s) creado (s)</value>
+    <value>आइकन बनाया गया</value>
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
-    <value>{0} Icono creado</value>
+    <value>{0} आइकन बनाए गए</value>
   </data>
   <data name="IconMode" xml:space="preserve">
-    <value>Modo de icono</value>
+    <value>आइकन मोड</value>
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
-    <value>Nota: El icono puede tardar un tiempo en recargarse.</value>
+    <value>नोट: आइकन को पुनः लोड होने में कुछ समय लग सकता है।</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
-    <value>La carpeta ya tiene íconos o está vacía.</value>
+    <value>फ़ोल्डर में पहले से ही आइकन हैं या खाली है!</value>
   </data>
   <data name="IconsCreated" xml:space="preserve">
-    <value>Iconos creados:</value>
+    <value>बनाए गए आइकन:</value>
   </data>
   <data name="Idle" xml:space="preserve">
-    <value>Inactivo</value>
+    <value>निष्क्रिय</value>
   </data>
   <data name="Ignore" xml:space="preserve">
-    <value>Ignorar</value>
+    <value>नज़रअंदाज़ करना</value>
   </data>
   <data name="IgnoreAmbiguousTitle" xml:space="preserve">
-    <value>Ignorar título ambiguo</value>
+    <value>अस्पष्ट मीडिया पर ध्यान न दें</value>
   </data>
   <data name="InvalidPath" xml:space="preserve">
-    <value>Ruta no válida</value>
+    <value>अवैध मार्ग</value>
   </data>
   <data name="Load" xml:space="preserve">
-    <value>Carga</value>
+    <value>फ़ोल्डर्स चुने</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
-    <value>Hacer iconos</value>
+    <value>आइकन बनाएं</value>
   </data>
   <data name="Movie" xml:space="preserve">
-    <value>Película</value>
+    <value>मूवी</value>
   </data>
   <data name="NetworkError" xml:space="preserve">
-    <value>Error de red</value>
+    <value>नेटवर्क त्रुटि</value>
   </data>
   <data name="NetworkNotAvailable" xml:space="preserve">
-    <value>¡Red no disponible!</value>
+    <value>नेटवर्क उपलब्ध नहीं!</value>
   </data>
   <data name="NewVersionFound" xml:space="preserve">
-    <value>Se ha encontrado una nueva versión ({0}).
-Registro de cambios: {1}</value>
+    <value>नया संस्करण({0}) मिला!
+बदलाव:{1}</value>
   </data>
   <data name="NoInternet" xml:space="preserve">
-    <value>Lo sentimos, Internet no está disponible.</value>
+    <value>क्षमा करें, इंटरनेट उपलब्ध नहीं है।</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
-    <value>No se encontró ningún póster.</value>
+    <value>कोई पोस्टर नहीं मिला।</value>
   </data>
   <data name="NoResultFound" xml:space="preserve">
-    <value>No se han encontrado resultados</value>
+    <value>कोई परिणाम नहीं मिला</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
-    <value>No se encontró nada para {0}
-Intente buscar con otro título
- o comprobar el modo de búsqueda</value>
+    <value>{0} के लिए कुछ नहीं मिला
+अन्य शीर्षक के साथ खोजने का प्रयास करें
+ या खोज मोड की जाँच करें</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>si</value>
+    <value>ठीक है</value>
   </data>
   <data name="OutOf" xml:space="preserve">
-    <value>fuera de</value>
+    <value>में से</value>
   </data>
   <data name="Poster" xml:space="preserve">
-    <value>Póster</value>
+    <value>पोस्टर</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
-    <value>Controla si se utiliza la superposición de póster o pósters sencillos.</value>
+    <value>नियंत्रित करता है कि पोस्टर ओवरले या प्लेन पोस्टर का उपयोग करना है या नहीं।</value>
   </data>
   <data name="Professional" xml:space="preserve">
-    <value>Profesional</value>
+    <value>प्रोफेशनल</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Clasificación</value>
+    <value>रेटिंग</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
-    <value>Reiniciar el explorador</value>
+    <value>एक्सप्लोरर को पुनरारंभ करें</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>¿Está seguro de que desea reiniciar el Explorador?
-y actualizar la caché de iconos?</value>
+    <value>क्या आप वाकई एक्सप्लोरर को पुनरारंभ करना चाहते हैं
+और आइकन कैश रीफ्रेश करें?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
-    <value>Esto cerrará todas las carpetas abiertas y reiniciará el explorador.</value>
+    <value>यह सभी ओपन फोल्डर और रीस्टार्ट एक्सप्लोरर को बंद कर देगा।</value>
   </data>
   <data name="Russian" xml:space="preserve">
-    <value>ruso</value>
+    <value>रूसी</value>
   </data>
   <data name="Searching" xml:space="preserve">
-    <value>Buscando...</value>
+    <value>खोज जारी...</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
-    <value>Buscando ... {0}</value>
+    <value>खोजा जा रहा है...{0}</value>
   </data>
   <data name="SearchMode" xml:space="preserve">
-    <value>Modo de búsqueda</value>
+    <value>खोज मोड</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
-    <value>Seleccione la carpeta</value>
+    <value>फोल्डर का चयन करें</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Ajustes</value>
+    <value>विभिन्न विकल्प</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Mostrar la ventana del póster incluso si se encuentra el título exacto.Esto le permitirá elegir un póster diferente para ellos y una calificación personalizada también
- esto anula la opción 'Ignorar título ambiguo'.</value>
+    <value>सटीक शीर्षक मिलने पर भी पोस्टर विंडो दिखाएं। इससे आप उनके लिए अलग पोस्टर और कस्टम रेटिंग भी चुन सकेंगे
+ यह 'अस्पष्ट मीडिया पर ध्यान न दें' विकल्प को ओवरराइड करता है।</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
-    <value>Mostrar insignia de calificación</value>
+    <value>रेटिंग बैज दिखाएं</value>
   </data>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
-    <value>Controla si ocultar o mostrar el Escudo de clasificación</value>
+    <value>नियंत्रित करता है कि रेटिंग शील्ड को छिपाना है या दिखाना है</value>
   </data>
   <data name="Spanish" xml:space="preserve">
-    <value>Español</value>
+    <value>स्पेनिश</value>
   </data>
   <data name="ThisIsLatestVersion" xml:space="preserve">
-    <value>¡Genial! está utilizando la última versión.</value>
+    <value>बहुत अच्छे! आप नवीनतम संस्करण का उपयोग कर रहे हैं।</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Título</value>
+    <value>शीर्षक</value>
   </data>
   <data name="ToForceReload" xml:space="preserve">
-    <value>Para forzar la recarga, haga clic en Reiniciar el explorador.</value>
+    <value>फोर्स रीलोड करने के लिए, रीस्टार्ट एक्सप्लोरर पर क्लिक करें।</value>
   </data>
   <data name="TV" xml:space="preserve">
-    <value>televisor</value>
+    <value>टीवी</value>
   </data>
   <data name="UpdateNow" xml:space="preserve">
-    <value>Actualizar ahora</value>
+    <value>अभी अपडेट करें</value>
   </data>
   <data name="UsePosterOverlay" xml:space="preserve">
-    <value>Usar superposición de póster</value>
+    <value>पोस्टर ओवरले का प्रयोग करें</value>
   </data>
   <data name="Year" xml:space="preserve">
-    <value>Año</value>
+    <value>वर्ष</value>
   </data>
   <data name="All" xml:space="preserve">
-    <value>Todos</value>
+    <value>सभी</value>
   </data>
   <data name="CustomRating" xml:space="preserve">
-    <value>Calificación personalizada:</value>
+    <value>कस्टम रेटिंग:</value>
   </data>
   <data name="CustomRatingTooltip" xml:space="preserve">
-    <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
+    <value>यह आपको FoliCon द्वारा प्राप्त की गई रेटिंग के बजाय अपनी स्वयं की रेटिंग सेट करने देता है।</value>
   </data>
   <data name="EnterTitlePlaceholder" xml:space="preserve">
-    <value>Ingrese el título aquí para buscar nuevamente.</value>
+    <value>कृपया फिर से खोजने के लिए यहां शीर्षक दर्ज करें।</value>
   </data>
   <data name="NoResult" xml:space="preserve">
-    <value>Sin resultados</value>
+    <value>कोई परिणाम नही</value>
   </data>
   <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-    <value>No se ha encontrado ningún resultado. Intente buscar de nuevo con el título correcto.</value>
+    <value>कोई परिणाम नहीं मिला, सही शीर्षक के साथ फिर से खोजने का प्रयास करें।</value>
   </data>
   <data name="Or" xml:space="preserve">
-    <value>~ O ~</value>
+    <value>~ या ~</value>
   </data>
   <data name="PickIconWithName" xml:space="preserve">
-    <value>Elegir ícono para {0}</value>
+    <value>{0} के लिए आइकन चुनें</value>
   </data>
   <data name="PickSelected" xml:space="preserve">
-    <value>Elegir seleccionado</value>
+    <value>चयनित चुनें</value>
   </data>
   <data name="SearchingWithName" xml:space="preserve">
-    <value>Buscando {0} ...</value>
+    <value>{0} की खोज की जा रही है...</value>
   </data>
   <data name="SearchResult" xml:space="preserve">
-    <value>Resultado de búsqueda</value>
+    <value>परिणाम खोजें</value>
   </data>
   <data name="SeeMorePosters" xml:space="preserve">
-    <value>Ver más carteles / portadas.</value>
+    <value>अधिक पोस्टर/कवर देखें।</value>
   </data>
   <data name="ShowMore" xml:space="preserve">
-    <value>Mostrar más...</value>
+    <value>और देखे...</value>
   </data>
   <data name="Skip" xml:space="preserve">
-    <value>Saltar</value>
+    <value>छोड़ें</value>
   </data>
   <data name="SkipThisPlaceholder" xml:space="preserve">
-    <value>Omita este y todos los títulos restantes.</value>
+    <value>इसे और शेष सभी मीडिया को छोड़ दें।</value>
   </data>
   <data name="SkipThisTitle" xml:space="preserve">
-    <value>Omita este título.</value>
+    <value>इस मीडिया को छोड़ दें।</value>
   </data>
   <data name="StopSearching" xml:space="preserve">
-    <value>Deja de buscar</value>
+    <value>खोजना बंद करें</value>
   </data>
   <data name="LoadingPosters" xml:space="preserve">
-    <value>Cargando carteles ...</value>
+    <value>पोस्टर लोड हो रहे हैं...</value>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Solicitar</value>
+    <value>लागू करे</value>
   </data>
   <data name="BrowseFolderDropHere" xml:space="preserve">
-    <value>Examinar carpeta / Soltar aquí</value>
+    <value>फ़ोल्डर ब्राउज़ करें/यहां छोड़ें</value>
   </data>
   <data name="BrowseIconsDropHere" xml:space="preserve">
-    <value>Examinar iconos / soltar aquí</value>
+    <value>आइकॉन ब्राउज़ करें/यहां छोड़ें</value>
   </data>
   <data name="Folders" xml:space="preserve">
-    <value>Carpetas</value>
+    <value>फ़ोल्डर</value>
   </data>
   <data name="Icons" xml:space="preserve">
-    <value>Iconos</value>
+    <value>आइकन</value>
   </data>
   <data name="OnlyKeepExactMatches" xml:space="preserve">
-    <value>¿Conserva solo coincidencias exactas?</value>
+    <value>केवल सटीक मिलान रखें?</value>
   </data>
   <data name="ClientSecret" xml:space="preserve">
-    <value>Secreto del cliente:</value>
+    <value>क्लाइंट सीक्रेट:</value>
   </data>
   <data name="ClientID" xml:space="preserve">
-    <value>Identificación del cliente :</value>
+    <value>क्लाइंट ID :</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Cerrar</value>
+    <value>बंद करे</value>
   </data>
   <data name="CustomIconSetter" xml:space="preserve">
-    <value>Establecedor de iconos personalizados</value>
+    <value>कस्टम आइकन सेटर</value>
   </data>
   <data name="NoFolderOrIconAlready" xml:space="preserve">
-    <value>No hay carpetas seleccionadas o las carpetas ya tienen iconos.</value>
+    <value>कोई फ़ोल्डर चयनित नहीं है या फ़ोल्डर में पहले से ही आइकन हैं।</value>
   </data>
   <data name="NoFoldersToProcess" xml:space="preserve">
-    <value>No hay carpetas para procesar</value>
+    <value>संसाधित करने के लिए कोई फ़ोल्डर नहीं</value>
   </data>
   <data name="NoIconsSelected" xml:space="preserve">
-    <value>No se seleccionaron iconos</value>
+    <value>कोई आइकन नहीं चुना गया</value>
   </data>
   <data name="NoIconsToApply" xml:space="preserve">
-    <value>No hay iconos para aplicar</value>
+    <value>लागू करने के लिए कोई आइकन नहीं</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Salvar</value>
+    <value>सहेजें</value>
   </data>
   <data name="SelectIconsDirectory" xml:space="preserve">
-    <value>Seleccionar directorio de iconos</value>
+    <value>आइकन फोल्डर का चयन करें</value>
   </data>
   <data name="TMDBAPIKey" xml:space="preserve">
-    <value>Clave de API de TMDB:</value>
+    <value>TMDB API कुंजी:</value>
   </data>
   <data name="UndoSuccessful" xml:space="preserve">
-    <value>Deshacer exitosamente</value>
+    <value>पूर्ववत सफल</value>
   </data>
   <data name="Undo" xml:space="preserve">
-    <value>Deshacer</value>
+    <value>पूर्ववत करे</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
-    <value>Desarrollado por Dinesh Solanki.</value>
+    <value>दिनेश सोलंकी द्वारा विकसित।</value>
   </data>
   <data name="FoliConDescription" xml:space="preserve">
-    <value>FoliCon es más que un típico cambiador de iconos de carpetas
-Automatiza esta tarea en mayor medida, tiene dos modos diferentes para diferentes diseños de iconos de carpetas,
-y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpeta multimedia.</value>
+    <value>FoliCon केवल एक विशिष्ट फ़ोल्डर आइकन परिवर्तक से कहीं अधिक है
+यह इस कार्य को काफी हद तक स्वचालित करता है, इसमें फ़ोल्डर आइकन के विभिन्न डिज़ाइनों के लिए दो अलग-अलग मोड हैं,
+और यह 'गेम्स, मूवीज, और शो' और लगभग किसी भी मीडिया फोल्डर आइकन को बना सकता है।</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Licencia:</value>
+    <value>लाइसेंस :</value>
   </data>
   <data name="LicenseInfo" xml:space="preserve">
-    <value>Licencia pública general GNU v3.0</value>
+    <value>जीएनयू जनरल पब्लिक लाइसेंस v3.0</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Versión :</value>
-  </data>
-  <data name="ExceptionOccurred" xml:space="preserve">
-    <value>Ocurrió una excepción</value>
+    <value>संस्करण :</value>
   </data>
   <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-    <value>Confirmar la eliminación de archivos de información multimedia</value>
+    <value>मीडिया इन्फो फ़ाइलों को हटाने की पुष्टि करें</value>
   </data>
   <data name="DeleteMediaInfo" xml:space="preserve">
-    <value>Eliminar información multimedia</value>
+    <value>मीडिया जानकारी हटाएं</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-    <value>¿Está seguro de que desea eliminar los archivos de información de medios de folicon?</value>
+    <value>क्या आप वाकई फ़ॉलिकॉन मीडिया जानकारी फ़ाइलें हटाना चाहते हैं?</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-    <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
-Esto ayuda a folicon a identificar los medios sin tener que elegir entre títulos ambiguos.</value>
+    <value>यह पहली बार किसी शीर्षक के चयन के बाद मीडिया आईडी को स्टोर करने के लिए फॉलिकॉन द्वारा उपयोग की जाने वाली मीडिया जानकारी फ़ाइलों को हटा देगा।
+यह अस्पष्ट शीर्षकों में से चुने बिना फॉलिकॉन को मीडिया की पहचान करने में मदद करता है।</value>
+  </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+    <value>त्रुटी</value>
   </data>
   <data name="PosterIconOverlay" xml:space="preserve">
-    <value>Superposición de icono de póster</value>
+    <value>पोस्टर आइकन ओवरले</value>
   </data>
   <data name="BestSuitedForHorizontal" xml:space="preserve">
-    <value>Más adecuado para imágenes horizontales, como obras de arte de juegos.</value>
+    <value>क्षैतिज छवियों के लिए सबसे उपयुक्त, जैसे कि गेम आर्टवर्क।</value>
   </data>
   <data name="SelectPosterIconOverlay" xml:space="preserve">
-    <value>Seleccionar superposición de icono de póster</value>
+    <value>पोस्टर आइकन ओवरले का चयन करें</value>
   </data>
   <data name="Hindi" xml:space="preserve">
-    <value>Hindi</value>
+    <value>हिंदी</value>
   </data>
   <data name="AddToContextMenu" xml:space="preserve">
-    <value>Agregar al menú contextual</value>
+    <value>कॉन्टेक्स्ट मेनू में जोड़ें</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
-    <value>Integración del explorador (menú contextual)</value>
+    <value>एक्सप्लोरर एकीकरण (राइट क्लिक मेनू)</value>
   </data>
   <data name="RemoveFromContextMenu" xml:space="preserve">
-    <value>Eliminar del menú contextual</value>
+    <value>कॉन्टेक्स्ट मेनू से निकालें</value>
   </data>
   <data name="RestartAsAdmin" xml:space="preserve">
-    <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
-¿Quieres reiniciar Folicon como administrador?</value>
+    <value>इस सुविधा के लिए एडमिन अधिकारों की आवश्यकता है, एडमिन  के रूप में चलाते समय इसका उपयोग करें।
+क्या आप Folicon को एडमिनके रूप में पुनः आरंभ करना चाहते हैं?</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-    <value>Crea iconos con FoliCon</value>
+    <value>FoliCon के साथ आइकन बनाएं</value>
   </data>
   <data name="VideoUnavailable" xml:space="preserve">
-    <value>¡Video no disponible!</value>
+    <value>वीडियो उपलब्ध नहीं है!</value>
   </data>
   <data name="FileIsInUse" xml:space="preserve">
-    <value>El archivo ya está en uso.</value>
+    <value>फ़ाइल पहले से उपयोग में है।</value>
   </data>
   <data name="UnauthorizedAccess" xml:space="preserve">
-    <value>No se pudo acceder al archivo</value>
+    <value>फाइल एक्सेस नही की जा सकी</value>
   </data>
   <data name="FailedFileAccessAt" xml:space="preserve">
-    <value>No se pudo acceder al archivo en {0}. Es posible que no tenga permiso para acceder a este archivo.o intente ejecutarlo como administrador</value>
+    <value>फ़ाइल {0} एक्सेस विफल, कृपया फ़ाइल की परमिशन की जाँच करें या एडमिन से रन करे।</value>
   </data>
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
-    <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
+    <value>{0} पर मीडिया जानकारी सहेजने में विफल, कृपया एक्सेस अनुमतियों की जांच करें</value>
   </data>
   <data name="WritePermissionAllowed" xml:space="preserve">
-    <value>Permiso de escritura habilitado</value>
+    <value>फोल्डर परमिशन प्राप्त</value>
   </data>
   <data name="WritePermissionNotAllowed" xml:space="preserve">
-    <value>Sin permiso de escritura</value>
+    <value>फोल्डर एक्सेस प्राप्त नही</value>
   </data>
   <data name="EnableErrorReporting" xml:space="preserve">
-    <value>Habilitar informes de errores</value>
+    <value>त्रुटि रिपोर्टिंग शुरू करें</value>
   </data>
   <data name="EnableErrorReportingTip" xml:space="preserve">
-    <value>Enviar informes de error para ayudar a mejorar FoliCon</value>
+    <value>FoliCon को बेहतर बनाने में मदद के लिए त्रुटि रिपोर्ट भेजें</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>tema</value>
+    <value>थीम</value>
   </data>
   <data name="ThemeDark" xml:space="preserve">
-    <value>tema oscuro</value>
+    <value>डार्क</value>
   </data>
   <data name="ThemeLight" xml:space="preserve">
-    <value>Tema ligero</value>
+    <value>लाइट</value>
   </data>
   <data name="ThemeSystem" xml:space="preserve">
-    <value>Sistema</value>
+    <value>सिस्टम</value>
   </data>
   <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
