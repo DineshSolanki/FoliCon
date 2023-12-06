@@ -293,7 +293,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         Logger.Debug("Network Availability Changed, Updating StatusBar.");
         StatusBarProperties.NetIcon =
-            ApplicationHelper.IsConnectedToInternet() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png";
+            ApplicationHelper.IsConnectedToInternet() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
     }
 
     private void LoadMethod()
@@ -635,7 +635,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         };
         StatusBarProperties = new StatusBarData
         {
-            NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\Strong-WiFi.png" : @"\Resources\No-WiFi.png",
+            NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png",
             TotalIcons = 0,
             AppStatus = "Idle",
             AppStatusAdditional = ""
