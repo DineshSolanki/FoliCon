@@ -20,29 +20,6 @@ dineshsolanki.github.io/folicon/</Description>
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\folicon Icon.ico" />
-    <None Remove="Resources\folicon Icon.png" />
-    <None Remove="Resources\LoadingPosterImage.png" />
-    <None Remove="Resources\mockup cover cropped.png" />
-    <None Remove="Resources\mockup faelpessoal base horizontal.png" />
-    <None Remove="Resources\Mockup faelpessoal base.png" />
-    <None Remove="Resources\mockup faelpessoal front.png" />
-    <None Remove="Resources\mockup liaher base.png" />
-    <None Remove="Resources\mockup liaher front.png" />
-    <None Remove="Resources\mockup2base.png" />
-    <None Remove="Resources\No-WiFi.png" />
-    <None Remove="Resources\NoPosterAvailable.png" />
-    <None Remove="Resources\PosterIcon.ico" />
-    <None Remove="Resources\PosterIconAlt.ico" />
-    <None Remove="Resources\PosterIconFaelpessoal 2.ico" />
-    <None Remove="Resources\PosterIconFaelpessoal.ico" />
-    <None Remove="Resources\PosterIconFaelpessoalHorizontal.ico" />
-    <None Remove="Resources\PosterIconFaelpessoalHorizontal2.ico" />
-    <None Remove="Resources\PosterIconLiaher.ico" />
-    <None Remove="Resources\PosterIconLiaher2.ico" />
-    <None Remove="Resources\PosterMockup.png" />
-    <None Remove="Resources\shield.png" />
-    <None Remove="Resources\Strong-WiFi.png" />
     <None Update="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -52,7 +29,7 @@ dineshsolanki.github.io/folicon/</Description>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
-    <PackageReference Include="HandyControls" Version="3.5.0" />
+    <PackageReference Include="HandyControls" Version="3.4.4" />
     <PackageReference Include="IGDB" Version="3.0.0" />
     <PackageReference Include="Jot" Version="2.1.17" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
@@ -90,7 +67,6 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher base.png" />
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher front.png" />
     <Resource Include="Resources\poster_mockups\simple\PosterMockup.png" />
-    <None Remove="Resources\video-unavailable.png" />
     <Resource Include="Resources\rating_mockup\shield.png" />
   </ItemGroup>
   <ItemGroup>
