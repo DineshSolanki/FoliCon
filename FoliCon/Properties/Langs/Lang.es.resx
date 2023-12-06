@@ -586,4 +586,7 @@ y actualizar la caché de iconos?</value>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
+  <data name="ResetDefaultPoster" xml:space="preserve">
+      <value>Restablecer cartel por defecto</value>
+    </data>
 </root>
