@@ -1038,6 +1038,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset default poster.
+        /// </summary>
+        public static string ResetDefaultPoster {
+            get {
+                return ResourceManager.GetString("ResetDefaultPoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This feature requires admin rights, use it when running as admin.
         ///Do you want to restart Folicon as admin ?.
         /// </summary>

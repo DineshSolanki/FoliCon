@@ -582,4 +582,7 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
   </data>
+  <data name="ResetDefaultPoster" xml:space="preserve">
+    <value>Restablecer cartel por defecto</value>
+  </data>
 </root>

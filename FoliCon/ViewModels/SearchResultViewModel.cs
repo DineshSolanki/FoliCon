@@ -113,6 +113,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     public DelegateCommand SkipCommand { get; }
     public DelegateCommand SkipAllCommand { get; }
     public DelegateCommand SearchAgainCommand { get; }
+    public DelegateCommand ResetPosterCommand { get; }
 
     #endregion Commands
 
@@ -124,6 +125,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
         ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
         PickCommand = new DelegateCommand<MouseButtonEventArgs>(PickMethod);
+        ResetPosterCommand = new DelegateCommand(ResetPoster);
         SkipAllCommand = new DelegateCommand(delegate
         {
             GlobalVariables.SkipAll = true;
@@ -434,5 +436,9 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             new Uri("https://www.youtube.com/embed/" + trailerKey);
         Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
             ResultListViewData.SelectedItem.Trailer);
+    }
+    private void ResetPoster()
+    {
+        ResultListViewData.SelectedItem.ResetInitialPoster();
     }
 }

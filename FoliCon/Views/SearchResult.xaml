@@ -25,6 +25,7 @@
         </Style>
     </prism:Dialog.WindowStyle>
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <convertor:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
         <convertor:InvertedTextToVisibilityConverter x:Key="InvertedTextToVisibilityConverter" />
         <BitmapImage x:Key="NoPoster" UriSource="/Resources/icons/NoPosterAvailable.png" />
@@ -115,7 +116,28 @@
                         <DropShadowEffect />
                     </Image.Effect>
                 </Image>
-                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" Style="{StaticResource ButtonInfo}" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"/>
+                <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Grid.ColumnSpan="1" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" HorizontalAlignment="Stretch" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Visibility, ElementName=ResetPoster}" Value="Visible">
+                                        <Setter Property="Grid.ColumnSpan" Value="1"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Visibility, ElementName=ResetPoster}" Value="Collapsed">
+                                        <Setter Property="Grid.ColumnSpan" Value="2"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <Button x:Name="ResetPoster" Grid.Column="1" Style="{StaticResource ButtonIcon}" Visibility="{Binding Path=SelectedItem.(data:ListItem.CanResetPoster), ElementName=ListViewResult, Converter={StaticResource BoolToVis}}" Foreground="{DynamicResource PrimaryTextBrush}" hc:IconElement.Geometry="{StaticResource RotateLeftGeometry}" HorizontalAlignment="Right" VerticalAlignment="Stretch"
+                            Command="{Binding Path= ResetPosterCommand}"  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ResetDefaultPoster}}"/>
+                </Grid>
                 <hc:Rate Grid.Row="2" Grid.Column="1" Count="10" AllowHalf="True" Margin="5" Foreground="{DynamicResource WarningBrush}" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.CustomRating}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}" Value="{Binding Path=CustomRating, Mode=TwoWay}" AllowClear="True"/>
                 <!-- <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/> -->
                 <TextBox Foreground="{DynamicResource PrimaryTextBrush}" Grid.Row="1" Grid.Column="1"

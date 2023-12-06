@@ -126,6 +126,7 @@ public class LangProvider : INotifyPropertyChanged
             OnPropertyChanged(nameof(PosterOverlayTooltip));
             OnPropertyChanged(nameof(Professional));
             OnPropertyChanged(nameof(Rating));
+            OnPropertyChanged(nameof(ResetDefaultPoster));
             OnPropertyChanged(nameof(RestartExplorer));
             OnPropertyChanged(nameof(RestartExplorerConfirmation));
             OnPropertyChanged(nameof(RestartExplorerTooltip));
@@ -455,6 +456,7 @@ public class LangProvider : INotifyPropertyChanged
         public string UnauthorizedAccess => Lang.UnauthorizedAccess;
         public string WritePermissionAllowed => Lang.WritePermissionAllowed;
         public string WritePermissionNotAllowed => Lang.WritePermissionNotAllowed;
+        public string ResetDefaultPoster => Lang.ResetDefaultPoster;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -740,5 +742,6 @@ public class LangKeys
         public static string UnauthorizedAccess = nameof(UnauthorizedAccess);
         public static string WritePermissionNotAllowed = nameof(WritePermissionNotAllowed);
         public static string WritePermissionAllowed = nameof(WritePermissionAllowed);
+        public static string ResetDefaultPoster = nameof(ResetDefaultPoster);
         
     }

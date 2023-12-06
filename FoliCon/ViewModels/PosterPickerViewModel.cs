@@ -265,6 +265,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         var result = _isPickedById
             ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
             : Result.MediaType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
+        _resultList[PickedIndex].SetInitialPoster();
         if (Result.MediaType == MediaTypes.Game)
         {
             result.Cover.Value.ImageId = link;
