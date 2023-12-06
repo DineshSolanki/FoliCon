@@ -828,7 +828,13 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             Logger.Warn("API Keys not provided, Showing API Config Window.");
             _dialogService.ShowApiConfig(r =>
             {
-                if (r.Result != ButtonResult.Cancel) return;
+                if (r.Result != ButtonResult.Cancel)
+                {
+                    FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
+                        out _devClientId);
+                    return;
+                }
+
                 MessageBox.Show(CustomMessageBox.Error($"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}" +
                                                        LangProvider.GetLang("AppWillClose"),
                     LangProvider.GetLang("ClosingApplication")));
