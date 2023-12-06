@@ -582,4 +582,7 @@
   <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
   </data>
+  <data name="ResetDefaultPoster" xml:space="preserve">
+    <value>डिफ़ॉल्ट पोस्टर रीसेट करें</value>
+  </data>
 </root>

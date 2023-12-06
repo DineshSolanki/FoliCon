@@ -581,4 +581,7 @@ e renovar o cache dos Ícones?</value>
   <data name="ThemeSystem" xml:space="preserve">
     <value>Sistema</value>
   </data>
+  <data name="ResetDefaultPoster" xml:space="preserve">
+    <value>Repor o cartaz predefinido</value>
+  </data>
 </root>

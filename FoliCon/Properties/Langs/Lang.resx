@@ -586,4 +586,7 @@ and refresh Icon Cache?</value>
     <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
+    <data name="ResetDefaultPoster" xml:space="preserve">
+      <value>Reset default poster</value>
+    </data>
 </root>

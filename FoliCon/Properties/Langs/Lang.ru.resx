@@ -585,4 +585,7 @@
   <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
   </data>
+  <data name="ResetDefaultPoster" xml:space="preserve">
+    <value>Сброс плаката по умолчанию</value>
+  </data>
 </root>

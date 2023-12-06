@@ -14,6 +14,15 @@ public class ListItem : BindableBase
     private Uri _trailerLink;
     private string _id;
     private MediaType _mediaType;
+    
+    private string _initialPoster;
+    private bool _isInitialSet;
+
+    public bool CanResetPoster
+    {
+        get => _isInitialSet;
+        set => SetProperty(ref _isInitialSet, value);
+    }
 
     public string Title
     {
@@ -100,5 +109,18 @@ public class ListItem : BindableBase
 
     public ListItem()
     {
+    }
+    
+    public void ResetInitialPoster()
+    {
+        if (!_isInitialSet) return;
+        Poster = _initialPoster;
+        CanResetPoster = false;
+    }
+    public void SetInitialPoster()
+    {
+        if (_isInitialSet) return;
+        _initialPoster = _poster;
+        CanResetPoster = true;
     }
 }
