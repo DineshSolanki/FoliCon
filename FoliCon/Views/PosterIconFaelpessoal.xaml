@@ -25,7 +25,7 @@
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <TextBlock Text="{Binding MediaTitle}" TextWrapping="Wrap" Foreground="White" FontFamily="Cormorant" TextTrimming="WordEllipsis" Margin="190,14,-2,53" RenderTransformOrigin="0.5,0.5" Grid.Row="1">
+            <TextBlock Text="{Binding MediaTitle}" TextWrapping="Wrap" Foreground="White" FontFamily="Cormorant" TextTrimming="WordEllipsis" Margin="190,14,-2,53" RenderTransformOrigin="0.5,0.5" Grid.Row="1" Visibility="{Binding MockupVisibility}">
                 <TextBlock.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
