@@ -16,7 +16,7 @@
                 <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" />
             </Border.Background>
         </Border>
-        <TextBlock Text="{Binding MediaTitle}" TextWrapping="Wrap" Foreground="White" FontFamily="Cormorant" TextTrimming="WordEllipsis" Margin="28,36,155,197"/>
+        <TextBlock Text="{Binding MediaTitle}" TextWrapping="Wrap" Foreground="White" FontFamily="Cormorant" TextTrimming="WordEllipsis" Margin="28,36,155,197" Visibility="{Binding MockupVisibility}"/>
         <!--<Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="34,10,42,21" />-->
         <Image Source="/Resources/poster_mockups/faelpessoal/mockup faelpessoal front horizontal.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="0,-4,8,9" Visibility="{Binding MockupVisibility}"/>
         <Grid Grid.Row="0">
