@@ -78,4 +78,11 @@ public static class DialogServiceExtensions
         };
         dialogService.ShowDialog("PosterPicker", p, callBack);
     }
+
+    public static void ShowPreviewer(this IDialogService dialogService, Action<IDialogResult> callBack)
+    {
+        Logger.Trace("ShowPreviewer called");
+        var p = new DialogParameters {};
+        dialogService.ShowDialog("Previewer", p, callBack);
+    }
 }

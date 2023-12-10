@@ -2,11 +2,15 @@
 
 namespace FoliCon.Models.Data;
 
-public class PosterIcon
+public class PosterIcon: BindableBase
 {
     public ImageSource FolderJpg { get; set; }
     public string RatingVisibility { get; set; }
-    public string Rating { get; set; }
+    private string _rating;
+    public string Rating { 
+        get=> _rating;
+        set => SetProperty(ref _rating, value); 
+     }
     public string MockupVisibility { get; set; }
     public string MediaTitle { get; set; }
 

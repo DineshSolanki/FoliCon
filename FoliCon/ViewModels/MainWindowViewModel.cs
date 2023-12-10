@@ -228,6 +228,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public DelegateCommand<string> ExploreIntegrationCommand { get; private set; }
 
     public DelegateCommand AboutCommand { get; private set; }
+    public DelegateCommand ShowPreviewer { get; private set; }
     public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
 
     #endregion MenuItem Commands
@@ -244,6 +245,10 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public MainWindowViewModel(IDialogService dialogService)
     {
+        ShowPreviewer = new DelegateCommand(() =>
+        {
+            _dialogService.ShowPreviewer(_ => { });
+        });
         Logger.Info("Application Started, Initilizing MainWindowViewModel.");
         _dialogService = dialogService;
         Services.Tracker.Configure<MainWindowViewModel>()

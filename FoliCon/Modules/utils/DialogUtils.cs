@@ -53,4 +53,24 @@ public static class DialogUtils
         };
         return folderBrowser;
     }
+    
+    public static VistaOpenFileDialog NewOpenFileDialog(string description, string filter= "All files (*.*)|*.*")
+    {
+        Logger.Debug("Creating New Open File Dialog");
+        var openFileDialog = new VistaOpenFileDialog
+        {
+            Filter = filter,
+            Multiselect = false,
+            CheckFileExists = true,
+            CheckPathExists = true,
+            DereferenceLinks = true,
+            RestoreDirectory = true,
+            ShowReadOnly = false,
+            ReadOnlyChecked = false,
+            Title = description,
+            ValidateNames = true,
+            InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+        };
+        return openFileDialog;
+    }
 }
