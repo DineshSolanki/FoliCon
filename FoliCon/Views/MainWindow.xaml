@@ -234,10 +234,10 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Load}}" Grid.Row="0" Command="{Binding LoadCommand}" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Bottom" Height="76" Margin="3,0,3,0" />
+                            VerticalAlignment="Bottom" Height="76" Margin="3,0,3,0" hc:IconElement.Geometry="{StaticResource FolderGeometry}" hc:IconElement.Height="25"/>
                     <Button Content="{extension:Lang Key={x:Static langs:LangKeys.MakeIcons}}" Grid.Row="1" IsEnabled="{Binding IsMakeEnabled}"
                             Command="{Binding SearchAndMakeCommand}" HorizontalAlignment="Stretch" Margin="3,0,3,0"
-                            Height="76" />
+                            Height="76" hc:IconElement.Geometry="{StaticResource MakeIconsGeometry}" hc:IconElement.Height="25"/>
                 </Grid>
                 <ListView x:Name="FinalList" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
                           ItemsSource="{Binding FinalListViewData.Data}"
