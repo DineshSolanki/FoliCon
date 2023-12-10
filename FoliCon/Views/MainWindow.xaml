@@ -55,16 +55,15 @@
         <Grid>
             <Menu IsMainMenu="True" Grid.Row="0">
                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
-                    <MenuItem x:Name="ChkIsRatingVisible" Header="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
-                              IsChecked="{Binding IsRatingVisible}" IsCheckable="True"
-                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" />
-                    <MenuItem x:Name="ChkPosterShown" Header="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
-                              IsChecked="{Binding IsPosterWindowShown}" IsCheckable="True"
+                    <CheckBox x:Name="ChkIsRatingVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}" 
+                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" IsChecked="{Binding IsRatingVisible}"/>
+                    <CheckBox x:Name="ChkPosterShown" Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
+                              IsChecked="{Binding IsPosterWindowShown}"
                               ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}" />
-                    <MenuItem x:Name="ChkIsPosterOverlayVisible" Header="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
-                              IsChecked="{Binding IsPosterMockupUsed}" IsCheckable="True"
+                    <CheckBox x:Name="ChkIsPosterOverlayVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
+                              IsChecked="{Binding IsPosterMockupUsed}"
                               ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}" />
-                    <MenuItem x:Name="ChkIgnoreAmbiguous" Header="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}" IsCheckable="True"
+                    <CheckBox x:Name="ChkIgnoreAmbiguous" Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
                               IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
                               ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
                     <Separator />
