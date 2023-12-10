@@ -1,15 +1,16 @@
 ﻿<prism:PrismApplication x:Class="FoliCon.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:prism="http://prismlibrary.com/" xmlns:hc="https://handyorg.github.io/handycontrol" 
-             xmlns:langs="clr-namespace:FoliCon.Properties.Langs">
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:prism="http://prismlibrary.com/" xmlns:hc="https://handyorg.github.io/handycontrol"
+                        xmlns:langs="clr-namespace:FoliCon.Properties.Langs">
     <Application.Resources>
         <ResourceDictionary>
-            <langs:LangProvider x:Key="FoliConLangs"/>
+            <langs:LangProvider x:Key="FoliConLangs" />
             <ResourceDictionary.MergedDictionaries>
-                <hc:ThemeResources UsingSystemTheme="True"/>
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"/>
+                <hc:ThemeResources UsingSystemTheme="True" />
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml" />
+                <ResourceDictionary Source="/Resources/Dictionaries/GeometryResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
