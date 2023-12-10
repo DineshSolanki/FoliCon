@@ -93,6 +93,7 @@
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
                           ToolTip="{extension:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
+                <Button x:Name="Previewer" Command="{Binding ShowPreviewer}" Content="Previewer"/>
                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Help}}">
                     <MenuItem x:Name="MenubtnHelp" Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
                         <MenuItem.Icon>
@@ -110,7 +111,7 @@
                             <Path Data="{StaticResource BlogsGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
                         </MenuItem.Icon>
                     </MenuItem>
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" >
+                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" >
                         <MenuItem.Icon>
                             <Path Data="{StaticResource InfoGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
                         </MenuItem.Icon>
