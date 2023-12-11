@@ -40,7 +40,7 @@
             <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
                        VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"
                        Visibility="{Binding RatingVisibility}" FontSize="25" Margin="189,30,21,24" Panel.ZIndex="3"
-                       Grid.Row="2" Width="55" Height="46" />
+                       Grid.Row="2" Width="55" Height="46" Foreground="Black"/>
         </Grid>
     </Grid>
 </UserControl>
