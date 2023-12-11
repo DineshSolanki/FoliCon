@@ -5,14 +5,33 @@ namespace FoliCon.Models.Data;
 public class PosterIcon: BindableBase
 {
     public ImageSource FolderJpg { get; set; }
-    public string RatingVisibility { get; set; }
+
     private string _rating;
+    private string _mockupVisibility;
+    private string _ratingVisibility;
+    private string _mediaTitle;
+
     public string Rating { 
         get=> _rating;
         set => SetProperty(ref _rating, value); 
      }
-    public string MockupVisibility { get; set; }
-    public string MediaTitle { get; set; }
+
+    public string RatingVisibility
+    {
+        get => _ratingVisibility;
+        set => SetProperty(ref _ratingVisibility, value);
+    }
+    public string MockupVisibility
+    {
+        get => _mockupVisibility;
+        set => SetProperty(ref _mockupVisibility, value);
+    }
+    
+    public string MediaTitle
+    {
+        get => _mediaTitle;
+        set => SetProperty(ref _mediaTitle, value);
+    }
 
     public PosterIcon()
     {
@@ -36,8 +55,6 @@ public class PosterIcon: BindableBase
         MockupVisibility = mockupVisibility;
         var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
-        //byte[] bytes = Util.ImageSourceToBytes(new PngBitmapEncoder(), FolderJpg);
-        //string base64string = System.Convert.ToBase64String(bytes);
     }
     public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle="FoliCon")
     {
@@ -47,7 +64,5 @@ public class PosterIcon: BindableBase
         var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
         MediaTitle = mediaTitle;
-        //byte[] bytes = Util.ImageSourceToBytes(new PngBitmapEncoder(), FolderJpg);
-        //string base64string = System.Convert.ToBase64String(bytes);
     }
 }

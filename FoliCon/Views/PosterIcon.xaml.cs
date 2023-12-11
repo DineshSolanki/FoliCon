@@ -5,6 +5,11 @@
 /// </summary>
 public partial class PosterIcon
 {
+
+    public PosterIcon()
+    {
+        InitializeComponent();
+    }
     public PosterIcon(object dataContext)
     {
         DataContext = dataContext;
