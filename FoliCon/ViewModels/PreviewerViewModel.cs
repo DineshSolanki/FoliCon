@@ -1,18 +1,15 @@
-﻿using Microsoft.Win32;
-using Prism.Commands;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media;
-using FoliCon.Modules.utils;
+﻿using FoliCon.Modules.utils;
+using NLog;
 
 namespace FoliCon.ViewModels
 {
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
+        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+        
         public PreviewerViewModel()
         {
+            Logger.Debug("PosterIconConfigViewModel created");
             PosterIconInstance = new FoliCon.Models.Data.PosterIcon
             {
                 Rating = Rating
@@ -59,7 +56,7 @@ namespace FoliCon.ViewModels
             set
             {
                 SetProperty(ref _ratingVisibility, value);
-                PosterIconInstance.RatingVisibility = BooleanToVisibility(value).ToString();
+                PosterIconInstance.RatingVisibility = UiUtils.BooleanToVisibility(value).ToString();
             }
         }
         
@@ -69,46 +66,63 @@ namespace FoliCon.ViewModels
             set
             {
                 SetProperty(ref _overlayVisibility, value);
-                PosterIconInstance.MockupVisibility = BooleanToVisibility(value).ToString();
+                PosterIconInstance.MockupVisibility = UiUtils.BooleanToVisibility(value).ToString();
             }
         }
         
-        public event Action<IDialogResult> RequestClose;
         public DelegateCommand SelectImageCommand { get; set; }
         
 
         private void SelectImage()
         {
-            var fileDialog = DialogUtils.NewOpenFileDialog("Select Image", "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
+            Logger.Debug("Opening image selection dialog");
+            var fileDialog = DialogUtils.NewOpenFileDialog(LangProvider.GetLang("ChooseAnImage"), "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
             var selected = fileDialog.ShowDialog();
 
-            if (selected != null && (bool)!selected) return;
+            if (selected != null && (bool)!selected)
+            {
+                Logger.Warn("No image selected");
+                return;
+            }
+
             var thisMemoryStream = new MemoryStream(File.ReadAllBytes(fileDialog.FileName));
             var rt= new FoliCon.Models.Data.PosterIcon
             {
                 FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream)
             };
             PosterIconInstance = rt;
-        }
-
-        public bool CanCloseDialog()
-        {
-           return true;
-        }
-
-        public void OnDialogClosed()
-        {
-            
-        }
-
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
-            
+            Logger.Info("Image selected: {FileName}", fileDialog.FileName);
         }
         
-        public Visibility BooleanToVisibility(bool value)
+        
+        #region DialogMethods
+        public event Action<IDialogResult> RequestClose;
+        protected virtual void CloseDialog(string parameter)
         {
-            return value ? Visibility.Visible : Visibility.Hidden;
+            Logger.Info("CloseDialog called with parameter {Parameter}", parameter);
+            var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
+            {
+                "true" => ButtonResult.OK,
+                "false" => ButtonResult.Cancel,
+                _ => ButtonResult.None
+            };
+
+            RaiseRequestClose(new DialogResult(result));
         }
+
+        public virtual void RaiseRequestClose(IDialogResult dialogResult) =>
+            RequestClose?.Invoke(dialogResult);
+
+        public virtual bool CanCloseDialog() => true;
+
+        public virtual void OnDialogClosed()
+        {
+        }
+
+        public virtual void OnDialogOpened(IDialogParameters parameters)
+        {
+        }
+
+        #endregion DialogMethods
     }
 }
