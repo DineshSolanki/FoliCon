@@ -588,4 +588,25 @@
   <data name="ResetDefaultPoster" xml:space="preserve">
     <value>Сброс плаката по умолчанию</value>
   </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Конфигурация</value>
+  </data>
+  <data name="ChoosePoster" xml:space="preserve">
+    <value>Выбрать постер</value>
+  </data>
+  <data name="MediaRating" xml:space="preserve">
+    <value>Рейтинг медиа</value>
+  </data>
+  <data name="MediaTitle" xml:space="preserve">
+    <value>Заголовок медиафайла</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Оверлей</value>
+  </data>
+  <data name="Previewer" xml:space="preserve">
+    <value>Предпросмотр</value>
+  </data>
+  <data name="ChooseAnImage" xml:space="preserve">
+    <value>Выберите изображение...</value>
+  </data>
 </root>

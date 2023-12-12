@@ -222,6 +222,24 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose an image....
+        /// </summary>
+        public static string ChooseAnImage {
+            get {
+                return ResourceManager.GetString("ChooseAnImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose poster.
+        /// </summary>
+        public static string ChoosePoster {
+            get {
+                return ResourceManager.GetString("ChoosePoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Client ID :.
         /// </summary>
         public static string ClientID {
@@ -254,6 +272,15 @@ namespace FoliCon.Properties.Langs {
         public static string ClosingApplication {
             get {
                 return ResourceManager.GetString("ClosingApplication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration.
+        /// </summary>
+        public static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
             }
         }
         
@@ -792,6 +819,24 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Media Rating.
+        /// </summary>
+        public static string MediaRating {
+            get {
+                return ResourceManager.GetString("MediaRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Media Title.
+        /// </summary>
+        public static string MediaTitle {
+            get {
+                return ResourceManager.GetString("MediaTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movie.
         /// </summary>
         public static string Movie {
@@ -957,6 +1002,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overlay.
+        /// </summary>
+        public static string Overlay {
+            get {
+                return ResourceManager.GetString("Overlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pick Icon for {0}.
         /// </summary>
         public static string PickIconWithName {
@@ -1007,6 +1061,15 @@ namespace FoliCon.Properties.Langs {
         public static string PosterOverlayTooltip {
             get {
                 return ResourceManager.GetString("PosterOverlayTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previewer.
+        /// </summary>
+        public static string Previewer {
+            get {
+                return ResourceManager.GetString("Previewer", resourceCulture);
             }
         }
         

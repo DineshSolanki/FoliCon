@@ -412,7 +412,7 @@ Tentar Procurar por outro Título
     <value>Escolher o selecionado</value>
   </data>
   <data name="Poster" xml:space="preserve">
-    <value>Poster</value>
+    <value>Pôster</value>
   </data>
   <data name="Portuguese(PT)" xml:space="preserve">
     <value>Português (PT)</value>
@@ -583,5 +583,26 @@ e renovar o cache dos Ícones?</value>
   </data>
   <data name="ResetDefaultPoster" xml:space="preserve">
     <value>Repor o cartaz predefinido</value>
+  </data>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configuração</value>
+  </data>
+  <data name="ChoosePoster" xml:space="preserve">
+    <value>Escolher pôster</value>
+  </data>
+  <data name="MediaRating" xml:space="preserve">
+    <value>Classificação da mídia</value>
+  </data>
+  <data name="MediaTitle" xml:space="preserve">
+    <value>Título da mídia</value>
+  </data>
+  <data name="Previewer" xml:space="preserve">
+    <value>Visualizador</value>
+  </data>
+  <data name="Overlay" xml:space="preserve">
+    <value>Sobreposição</value>
+  </data>
+  <data name="ChooseAnImage" xml:space="preserve">
+    <value>Escolher uma imagem...</value>
   </data>
 </root>

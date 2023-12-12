@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="FoliCon.Views.Previewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"        
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:view="clr-namespace:FoliCon.Views" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             d:DataContext="{d:DesignInstance viewModels:PreviewerViewModel}">
+    <ScrollViewer>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Row="0" Header="{extension:Lang Key={x:Static langs:LangKeys.Configuration}}" Style="{StaticResource GroupBoxTab}" FontSize="18" FontFamily="Cambria" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                <hc:FlexPanel Grid.Row="1" Margin="32" AlignItems="Center" AlignContent="FlexStart" JustifyContent="SpaceAround" FlexWrap="Wrap" FlexDirection="Row" >
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.ChooseAnImage}}" Command="{Binding SelectImageCommand}" Margin="5" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ChoosePoster}}"/>
+                    <hc:Rate HorizontalAlignment="Center" DefaultValue="4" AllowHalf="True" Value="{Binding Path=Rating, Mode=TwoWay}" VerticalAlignment="Top" Margin="5"
+                         ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaRating}}"/>
+                    <hc:TextBox Text="{Binding MediaTitle, UpdateSourceTrigger=PropertyChanged}" hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.MediaTitle}}" Margin="5" 
+                            ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaTitle}}"/>
+                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.Rating}}" IsChecked="{Binding RatingVisibility}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5"/>
+                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.Overlay}}" IsChecked="{Binding OverlayVisibility}" Margin="5"/>
+                </hc:FlexPanel>
+            </GroupBox>
+            <hc:FlexPanel Grid.Row="1" Margin="32" AlignItems="FlexStart" AlignContent="FlexStart" JustifyContent="FlexStart" FlexWrap="Wrap" FlexDirection="Row">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PosterIcon DataContext="{Binding PosterIconInstance}" hc:TitleElement.Title="Legacy"/>
+                    <TextBlock Grid.Row="1" Text="Legacy" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PosterIconAlt DataContext="{Binding PosterIconInstance}"/>
+                    <TextBlock Grid.Row="1" Text="Alternate" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PosterIconLiaher DataContext="{Binding PosterIconInstance}"/>
+                    <TextBlock Grid.Row="1" Text="Liaher" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PosterIconFaelpessoal DataContext="{Binding PosterIconInstance}"/>
+                    <TextBlock Grid.Row="1" Text="Faelpessoal" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PosterIconFaelpessoalHorizontal DataContext="{Binding PosterIconInstance}"/>
+                    <TextBlock Grid.Row="1" Text="Faelpessoal Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
+                <hc:ColorPicker x:Name="ColorPicker" Margin="32" SelectedBrush="{DynamicResource RegionBrush}"/>
+            </hc:FlexPanel>
+        </Grid>
+    </ScrollViewer>
+    <UserControl.Background>
+        <Binding ElementName="ColorPicker" Path="SelectedBrush"/>
+    </UserControl.Background>
+</UserControl>
