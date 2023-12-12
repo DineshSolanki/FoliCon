@@ -589,4 +589,25 @@
   <data name="ResetDefaultPoster" xml:space="preserve">
       <value>إعادة تعيين البوستر الافتراضي</value>
     </data>
+  <data name="Configuration" xml:space="preserve">
+      <value>إعدادات</value>
+    </data>
+  <data name="ChoosePoster" xml:space="preserve">
+      <value>اختر الملصق</value>
+    </data>
+  <data name="MediaRating" xml:space="preserve">
+      <value>تقييم الوسائط</value>
+    </data>
+  <data name="MediaTitle" xml:space="preserve">
+      <value>عنوان الوسائط</value>
+    </data>
+  <data name="Overlay" xml:space="preserve">
+      <value>تراكب</value>
+    </data>
+  <data name="Previewer" xml:space="preserve">
+      <value>معاين</value>
+    </data>
+  <data name="ChooseAnImage" xml:space="preserve">
+      <value>اختر صورة...</value>
+    </data>
 </root>
