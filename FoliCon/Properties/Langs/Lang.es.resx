@@ -589,4 +589,25 @@ y actualizar la caché de iconos?</value>
   <data name="ResetDefaultPoster" xml:space="preserve">
       <value>Restablecer cartel por defecto</value>
     </data>
+  <data name="Configuration" xml:space="preserve">
+      <value>Configuración</value>
+    </data>
+  <data name="ChoosePoster" xml:space="preserve">
+      <value>Elegir póster</value>
+    </data>
+  <data name="MediaRating" xml:space="preserve">
+      <value>Clasificación de los medios</value>
+    </data>
+  <data name="MediaTitle" xml:space="preserve">
+      <value>Título de los medios</value>
+    </data>
+  <data name="Overlay" xml:space="preserve">
+      <value>Superposición</value>
+    </data>
+  <data name="Previewer" xml:space="preserve">
+      <value>Vista previa</value>
+    </data>
+  <data name="ChooseAnImage" xml:space="preserve">
+      <value>Elige una imagen...</value>
+    </data>
 </root>
