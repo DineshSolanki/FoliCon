@@ -589,4 +589,25 @@
   <data name="ResetDefaultPoster" xml:space="preserve">
       <value>डिफ़ॉल्ट पोस्टर रीसेट करें</value>
     </data>
+  <data name="Configuration" xml:space="preserve">
+      <value>कॉन्फ़िगरेशन</value>
+    </data>
+  <data name="ChoosePoster" xml:space="preserve">
+      <value>पोस्टर चुनें</value>
+    </data>
+  <data name="MediaRating" xml:space="preserve">
+      <value>मीडिया शीर्षक</value>
+    </data>
+  <data name="MediaTitle" xml:space="preserve">
+      <value>मीडिया शीर्षक</value>
+    </data>
+  <data name="Overlay" xml:space="preserve">
+      <value>ओवरले</value>
+    </data>
+  <data name="Previewer" xml:space="preserve">
+      <value>प्रीव्यूर</value>
+    </data>
+  <data name="ChooseAnImage" xml:space="preserve">
+      <value>एक छवि चुनें...</value>
+    </data>
 </root>
