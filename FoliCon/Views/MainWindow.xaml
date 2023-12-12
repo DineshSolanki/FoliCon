@@ -93,7 +93,7 @@
                 <MenuItem x:Name="MenuCustomIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
                           ToolTip="{extension:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
                           Command="{Binding CustomIconsCommand}" />
-                <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="Previewer"/>
+                <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}"/>
                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Help}}">
                     <MenuItem x:Name="MenubtnHelp" Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
                         <MenuItem.Icon>
