@@ -19,4 +19,9 @@ public static class UiUtils
             column.Width = double.NaN;
         }
     }
+
+    public static Visibility BooleanToVisibility(bool value)
+    {
+        return value ? Visibility.Visible : Visibility.Hidden;
+    }
 }
