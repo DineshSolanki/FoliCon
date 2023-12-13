@@ -98,7 +98,7 @@ public partial class HtmlBox : UserControl
         }
         else
         {
-            control.Dispatcher.Invoke(control.ProcessBrowse);
+            control.Dispatcher.InvokeAsync(control.ProcessBrowse);
         }
     }
 }

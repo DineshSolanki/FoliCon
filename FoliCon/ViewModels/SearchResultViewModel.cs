@@ -432,17 +432,15 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
     {
-        if (!results.Any()) return null;
-        return results.Any(i => i.Type == "Trailer" && i.Site == "YouTube")
-            ? results.First(i => i.Type == "Trailer")
-            : results.First();
+        var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item?.Site == "YouTube");
+        return trailerYouTube != null ? trailerYouTube : results.FirstOrDefault();
     }
 
     private void SetTrailer(string trailerKey)
     {
         ResultListViewData.SelectedItem.TrailerKey = trailerKey;
         ResultListViewData.SelectedItem.Trailer =
-            new Uri("https://www.youtube.com/embed/" + trailerKey);
+            new Uri($"https://www.youtube.com/embed/{trailerKey}");
         Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
             ResultListViewData.SelectedItem.Trailer);
     }
