@@ -36,15 +36,13 @@ public static class Extensions
     {
         return new ObservableCollection<T>(col);
     }
-    public static Task<Bitmap> GetBitmap(this HttpResponseMessage responseMessage)
+    public static async Task<Bitmap> GetBitmap(this HttpResponseMessage responseMessage)
     {
         Logger.Trace("GetBitmap from HttpResponseMessage");
-        return responseMessage.Content.ReadAsStreamAsync().ContinueWith(t =>
-        {
-            Bitmap bitmap = new(t.Result);
-            Logger.Trace("GetBitmap from HttpResponseMessage - done");
-            return bitmap;
-        });
+        var stream = await responseMessage.Content.ReadAsStreamAsync();
+        var bitmap = new Bitmap(stream);
+        Logger.Trace("GetBitmap from HttpResponseMessage - done");
+        return bitmap;
     }
 
     public static void SentryConfig(this LoggingConfiguration config, bool enableSentry)

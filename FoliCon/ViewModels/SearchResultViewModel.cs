@@ -389,36 +389,45 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private async Task GetMovieTrailer(string itemId)
     {
-        await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+        try 
         {
-            if (item.Result == null) return;
-            var i = ChooseTrailer(item.Result.Results);
-            if (i != null)
+            var result = await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt());
+
+            if (result != null)
             {
-                SetTrailer(i.Key);
+                var trailer = ChooseTrailer(result.Results);
+                if (trailer != null)
+                {
+                    SetTrailer(trailer.Key);
+                }
+                else
+                {
+                    Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
+                }
             }
-            else
-            {
-                Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-            }
-        });
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Error fetching movie trailer for {Title}", ResultListViewData.SelectedItem.Title);
+        }
     }
 
     private async Task GetTvTrailer(string itemId)
     {
-        await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt()).ContinueWith(item =>
+        var result = await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt());
+
+        if (result == null) return;
+    
+        var i = ChooseTrailer(result.Results);
+    
+        if (i != null)
         {
-            if (item.Result == null) return;
-            var i = ChooseTrailer(item.Result.Results);
-            if (i != null)
-            {
-                SetTrailer(i.Key);
-            }
-            else
-            {
-                Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-            }
-        });
+            SetTrailer(i.Key);
+        }
+        else
+        {
+            Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
+        }
     }
 
     private dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
