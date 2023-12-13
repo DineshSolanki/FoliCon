@@ -23,6 +23,7 @@ public partial class HtmlBox : UserControl
     {
         InitializeComponent();
         _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? "#000000" : "#FFFFFF";
+        InitializeAsync();
     }
 
     public string HtmlText
@@ -37,11 +38,11 @@ public partial class HtmlBox : UserControl
 
         if (!IsVideoAvailable)
         {
-            Browser.NavigateToString($"""<html><body style="background-color: {_backgroundColor}"></body></html>""");
+            Browser.CoreWebView2.NavigateToString($"""<html><body style="background-color: {_backgroundColor}"></body></html>""");
             return;
         }
         var content = GenerateHtmlContent();
-        Browser.NavigateToString(content);
+        Browser.CoreWebView2.NavigateToString(content);
     }
 
     private string GenerateHtmlContent()
@@ -100,5 +101,9 @@ public partial class HtmlBox : UserControl
         {
             control.Dispatcher.InvokeAsync(control.ProcessBrowse);
         }
+    }
+    async void InitializeAsync()
+    {
+        await Browser.EnsureCoreWebView2Async(null);
     }
 }
