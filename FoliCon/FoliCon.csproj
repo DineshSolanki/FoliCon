@@ -9,8 +9,8 @@
 	  <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\icons\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
-    <PackageVersion>3.13.0</PackageVersion>
-    <AssemblyVersion>3.13.0</AssemblyVersion>
+    <PackageVersion>3.14.0</PackageVersion>
+    <AssemblyVersion>3.14.0</AssemblyVersion>
     <Company>Dinesh Solanki</Company>
     <Description>Creates Folder icons for Movies, Serials, Music, and Games Folders
 dineshsolanki.github.io/folicon/</Description>
