@@ -5,7 +5,7 @@ namespace FoliCon.Views;
 /// <summary>
 /// Interaction logic for HtmlBox.xaml
 /// </summary>
-public partial class HtmlBox : UserControl
+public partial class HtmlBox
 {
     private const string VideoUnavailable = "Video not available!";
     private readonly string _backgroundColor;
@@ -36,7 +36,7 @@ public partial class HtmlBox : UserControl
         if (Browser is not {IsLoaded: true}) return;
         
         var content = !IsVideoAvailable
-            ? $"<html><body style=\"background-color: {_backgroundColor}\"></body></html>"
+            ? $"""<html><body style="background-color: {_backgroundColor}"></body></html>"""
             : GenerateHtmlContent();
 
         await InitializeAsync(content);
@@ -49,7 +49,6 @@ public partial class HtmlBox : UserControl
                               <html lang="{{LangProvider.Culture.TwoLetterISOLanguageName}}">
                                   <head>
                                       <meta name='viewport' content='width=device-width, initial-scale=1'>
-                                      <meta content='IE=Edge' http-equiv='X-UA-Compatible'>
                                       <style>
                                           html, body {
                                               overflow: hidden;
@@ -60,6 +59,12 @@ public partial class HtmlBox : UserControl
                                               box-sizing: border-box;
                                           }
                                       </style>
+                                  </head>
+                                  <body style="background-color: {{_backgroundColor}}">
+                                      <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
+                                          src='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}'
+                                          style="visibility:hidden;" onload="this.style.visibility='visible';">
+                                      </iframe>
                                       <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
                                       <script>
                                           $(function() {
@@ -76,12 +81,6 @@ public partial class HtmlBox : UserControl
                                               });
                                           });
                                       </script>
-                                  </head>
-                                  <body style="background-color: {{_backgroundColor}}">
-                                      <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
-                                          src='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}'
-                                          style="visibility:hidden;" onload="this.style.visibility='visible';">
-                                      </iframe>
                                   </body>
                               </html>
                   """;
