@@ -22,8 +22,7 @@ public partial class HtmlBox : UserControl
     public HtmlBox()
     {
         InitializeComponent();
-        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? "#000000" : "#FFFFFF";
-        InitializeAsync();
+        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? "#1C1C1C" : "#FFFFFF";
     }
 
     public string HtmlText
@@ -32,17 +31,15 @@ public partial class HtmlBox : UserControl
         set => SetValue(HtmlTextProperty, value);
     }
     
-    private void ProcessBrowse()
+    private async Task ProcessBrowse()
     {
         if (Browser is not {IsLoaded: true}) return;
-        InitializeAsync();
-        if (!IsVideoAvailable)
-        {
-            Browser.CoreWebView2.NavigateToString($"""<html><body style="background-color: {_backgroundColor}"></body></html>""");
-            return;
-        }
-        var content = GenerateHtmlContent();
-        Browser.CoreWebView2.NavigateToString(content);
+        
+        var content = !IsVideoAvailable
+            ? $"<html><body style=\"background-color: {_backgroundColor}\"></body></html>"
+            : GenerateHtmlContent();
+
+        await InitializeAsync(content);
     }
 
     private string GenerateHtmlContent()
@@ -90,20 +87,25 @@ public partial class HtmlBox : UserControl
                   """;
     }
     
-    private static void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
+    private static async void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
     {
         var control = source as HtmlBox;
         if (control!.CheckAccess())
         {
-            control.ProcessBrowse();
+            await control.ProcessBrowse();
         }
         else
         {
-            control.Dispatcher.InvokeAsync(control.ProcessBrowse);
+            await control.Dispatcher.InvokeAsync(control.ProcessBrowse);
         }
     }
-    async void InitializeAsync()
+
+    private async Task InitializeAsync(string content)
     {
         await Browser.EnsureCoreWebView2Async(null);
+        Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
+        Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+        Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+        Browser.CoreWebView2.NavigateToString(content);
     }
 }
