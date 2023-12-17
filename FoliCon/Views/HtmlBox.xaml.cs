@@ -35,7 +35,7 @@ public partial class HtmlBox : UserControl
     private void ProcessBrowse()
     {
         if (Browser is not {IsLoaded: true}) return;
-
+        InitializeAsync();
         if (!IsVideoAvailable)
         {
             Browser.CoreWebView2.NavigateToString($"""<html><body style="background-color: {_backgroundColor}"></body></html>""");
