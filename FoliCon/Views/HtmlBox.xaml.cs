@@ -17,7 +17,7 @@ public partial class HtmlBox
             typeof(HtmlBox), 
             new PropertyMetadata(default(string), OnHtmlTextPropertyChanged));
 
-    public bool IsVideoAvailable => !string.IsNullOrEmpty(HtmlText) && !HtmlText.Contains(VideoUnavailable);
+    public bool IsVideoAvailable { get; private set; }
 
     public HtmlBox()
     {
@@ -44,52 +44,18 @@ public partial class HtmlBox
 
     private string GenerateHtmlContent()
     {
-        return $$"""
-                  
-                              <html lang="{{LangProvider.Culture.TwoLetterISOLanguageName}}">
-                                  <head>
-                                      <meta name='viewport' content='width=device-width, initial-scale=1'>
-                                      <style>
-                                          html, body {
-                                              overflow: hidden;
-                                              margin: 0;
-                                              padding: 0;
-                                              width: 100%;
-                                              height: 100%;
-                                              box-sizing: border-box;
-                                          }
-                                      </style>
-                                  </head>
-                                  <body style="background-color: {{_backgroundColor}}">
-                                      <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
-                                          src='{{HtmlText}}?hl={{LangProvider.Culture.TwoLetterISOLanguageName}}'
-                                          style="visibility:hidden;" onload="this.style.visibility='visible';">
-                                      </iframe>
-                                      <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
-                                      <script>
-                                          $(function() {
-                                              $('#video').css({
-                                                  width: $(window).innerWidth() + 'px',
-                                                  height: $(window).innerHeight() + 'px',
-                                                  border: 'none'
-                                              });
-                                              $(window).resize(function() {
-                                                  $('#video').css({
-                                                      width: $(window).innerWidth() + 'px',
-                                                      height: $(window).innerHeight() + 'px'
-                                                  });
-                                              });
-                                          });
-                                      </script>
-                                  </body>
-                              </html>
-                  """;
+        return string.Format(HtmlTemplate, LangProvider.Culture.TwoLetterISOLanguageName, _backgroundColor, HtmlText);
     }
     
     private static async void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
     {
-        var control = source as HtmlBox;
-        if (control!.CheckAccess())
+        var htmlText = e.NewValue as string;
+        if (source is not HtmlBox control)
+        {
+            return;
+        }
+        control.IsVideoAvailable = !string.IsNullOrEmpty(htmlText) && !htmlText.Contains(VideoUnavailable);
+        if (control.CheckAccess())
         {
             await control.ProcessBrowse();
         }
@@ -107,4 +73,45 @@ public partial class HtmlBox
         Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
         Browser.CoreWebView2.NavigateToString(content);
     }
+    
+    private const string HtmlTemplate = """
+                                        
+                                                    <html lang="{0}">
+                                                        <head>
+                                                            <meta name='viewport' content='width=device-width, initial-scale=1'>
+                                                            <style>
+                                                                html, body {{
+                                                                    overflow: hidden;
+                                                                    margin: 0;
+                                                                    padding: 0;
+                                                                    width: 100%;
+                                                                    height: 100%;
+                                                                    box-sizing: border-box;
+                                                                }}
+                                                            </style>
+                                                        </head>
+                                                        <body style="background-color: {1}">
+                                                            <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
+                                                                src='{2}?hl={0}'
+                                                                style="visibility:hidden;" onload="this.style.visibility='visible';">
+                                                            </iframe>
+                                                            <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
+                                                            <script>
+                                                                $(function() {{
+                                                                    $('#video').css({{
+                                                                        width: $(window).innerWidth() + 'px',
+                                                                        height: $(window).innerHeight() + 'px',
+                                                                        border: 'none'
+                                                                    }});
+                                                                    $(window).resize(function() {{
+                                                                        $('#video').css({{
+                                                                            width: $(window).innerWidth() + 'px',
+                                                                            height: $(window).innerHeight() + 'px'
+                                                                        }});
+                                                                    }});
+                                                                }});
+                                                            </script>
+                                                        </body>
+                                                    </html>
+                                        """;
 }
