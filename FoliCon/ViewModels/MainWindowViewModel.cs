@@ -245,6 +245,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public MainWindowViewModel(IDialogService dialogService)
     {
+        ProcessUtils.CheckWebView2();
         ShowPreviewer = new DelegateCommand(() =>
         {
             _dialogService.ShowPreviewer(_ => { });

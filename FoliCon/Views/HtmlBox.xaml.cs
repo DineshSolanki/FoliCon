@@ -1,5 +1,4 @@
 ﻿using HandyControl.Themes;
-using Microsoft.Web.WebView2.Core;
 using NLog;
 using Logger = NLog.Logger;
 
@@ -72,7 +71,6 @@ public partial class HtmlBox
     private async Task InitializeAsync(string content)
     {
         Logger.Info("Initializing WebView2");
-        CheckWebView2();
         await Browser.EnsureCoreWebView2Async(null);
         Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
         Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
@@ -120,20 +118,4 @@ public partial class HtmlBox
                                                         </body>
                                                     </html>
                                         """;
-    
-    public static void CheckWebView2()
-    {
-        try
-        {
-            Logger.Info("Checking WebView2 Runtime availability");
-            var availableBrowserVersionString = CoreWebView2Environment.GetAvailableBrowserVersionString();
-            Logger.Info($"WebView2 Runtime version {availableBrowserVersionString} is available");
-        }
-        catch (WebView2RuntimeNotFoundException exception)
-        {
-            Logger.ForErrorEvent().Message("WebView2 Runtime is not installed.").Exception(exception).Log();
-            // WebView2 Runtime is not installed. Show a meaningful error message to the user.
-            MessageBox.Show("Microsoft WebView2 Runtime is not found. Please install.", "Error");
-        }
-    }
 }

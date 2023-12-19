@@ -1481,6 +1481,25 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Microsoft WebView2 Runtime is not found. Videos won&apos;t show.
+        /// Do you want to download it?.
+        /// </summary>
+        public static string WebView2DownloadConfirmation {
+            get {
+                return ResourceManager.GetString("WebView2DownloadConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install WebView2 Runtime.
+        /// </summary>
+        public static string WebView2DownloadConfirmationHeader {
+            get {
+                return ResourceManager.GetString("WebView2DownloadConfirmationHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Write Permission Allowed.
         /// </summary>
         public static string WritePermissionAllowed {

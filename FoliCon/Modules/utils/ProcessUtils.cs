@@ -1,5 +1,6 @@
 ﻿using FoliCon.Modules.Configuration;
 using FoliCon.Modules.UI;
+using Microsoft.Web.WebView2.Core;
 using NLog;
 using Logger = NLog.Logger;
 
@@ -32,6 +33,26 @@ public static class ProcessUtils
         }
     }
 
+    public static void CheckWebView2()
+    {
+        try
+        {
+            Logger.Info("Checking WebView2 Runtime availability");
+            var availableBrowserVersionString = CoreWebView2Environment.GetAvailableBrowserVersionString();
+            Logger.Info($"WebView2 Runtime version {availableBrowserVersionString} is available");
+        }
+        catch (WebView2RuntimeNotFoundException exception)
+        {
+            Logger.ForErrorEvent().Message("WebView2 Runtime is not installed.").Exception(exception).Log();
+            
+            var result = MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("WebView2DownloadConfirmation"),
+                LangProvider.GetLang("WebView2DownloadConfirmationHeader")));
+            if (result != MessageBoxResult.Yes) return;
+            
+            StartProcess("https://go.microsoft.com/fwlink/p/?LinkId=2124703");
+        }
+    }
+    
     /// <summary>
     /// Terminates Explorer.exe Process.
     /// </summary>

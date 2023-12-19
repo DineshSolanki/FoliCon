@@ -187,6 +187,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(UsePosterOverlay));
         OnPropertyChanged(nameof(Version));
         OnPropertyChanged(nameof(VideoUnavailable));
+        OnPropertyChanged(nameof(WebView2DownloadConfirmation));
+        OnPropertyChanged(nameof(WebView2DownloadConfirmationHeader));
         OnPropertyChanged(nameof(WritePermissionAllowed));
         OnPropertyChanged(nameof(WritePermissionNotAllowed));
         OnPropertyChanged(nameof(Year));
@@ -347,6 +349,8 @@ public class LangProvider : INotifyPropertyChanged
     public string UsePosterOverlay => Lang.UsePosterOverlay;
     public string Version => Lang.Version;
     public string VideoUnavailable => Lang.VideoUnavailable;
+    public string WebView2DownloadConfirmation => Lang.WebView2DownloadConfirmation;
+    public string WebView2DownloadConfirmationHeader => Lang.WebView2DownloadConfirmationHeader;
     public string WritePermissionAllowed => Lang.WritePermissionAllowed;
     public string WritePermissionNotAllowed => Lang.WritePermissionNotAllowed;
     public string Year => Lang.Year;
@@ -515,6 +519,8 @@ public class LangKeys
     public static string UsePosterOverlay = nameof(UsePosterOverlay);
     public static string Version = nameof(Version);
     public static string VideoUnavailable = nameof(VideoUnavailable);
+    public static string WebView2DownloadConfirmation = nameof(WebView2DownloadConfirmation);
+    public static string WebView2DownloadConfirmationHeader = nameof(WebView2DownloadConfirmationHeader);
     public static string WritePermissionAllowed = nameof(WritePermissionAllowed);
     public static string WritePermissionNotAllowed = nameof(WritePermissionNotAllowed);
     public static string Year = nameof(Year);
