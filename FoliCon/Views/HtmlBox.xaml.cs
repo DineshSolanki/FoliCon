@@ -1,4 +1,5 @@
 ﻿using HandyControl.Themes;
+using Microsoft.Web.WebView2.Core;
 
 namespace FoliCon.Views;
 
@@ -67,6 +68,7 @@ public partial class HtmlBox
 
     private async Task InitializeAsync(string content)
     {
+        CheckWebView2();
         await Browser.EnsureCoreWebView2Async(null);
         Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
         Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
@@ -114,4 +116,17 @@ public partial class HtmlBox
                                                         </body>
                                                     </html>
                                         """;
+    
+    public static void CheckWebView2()
+    {
+        try
+        {
+            CoreWebView2Environment.GetAvailableBrowserVersionString();
+        }
+        catch (WebView2RuntimeNotFoundException)
+        {
+            // WebView2 Runtime is not installed. Show a meaningful error message to the user.
+            MessageBox.Show("Microsoft WebView2 Runtime is not found. Please install.", "Error");
+        }
+    }
 }
