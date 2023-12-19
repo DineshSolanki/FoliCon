@@ -1,5 +1,7 @@
 ﻿using HandyControl.Themes;
 using Microsoft.Web.WebView2.Core;
+using NLog;
+using Logger = NLog.Logger;
 
 namespace FoliCon.Views;
 
@@ -8,6 +10,7 @@ namespace FoliCon.Views;
 /// </summary>
 public partial class HtmlBox
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string VideoUnavailable = "Video not available!";
     private readonly string _backgroundColor;
     
@@ -68,6 +71,7 @@ public partial class HtmlBox
 
     private async Task InitializeAsync(string content)
     {
+        Logger.Info("Initializing WebView2");
         CheckWebView2();
         await Browser.EnsureCoreWebView2Async(null);
         Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
@@ -121,10 +125,13 @@ public partial class HtmlBox
     {
         try
         {
-            CoreWebView2Environment.GetAvailableBrowserVersionString();
+            Logger.Info("Checking WebView2 Runtime availability");
+            var availableBrowserVersionString = CoreWebView2Environment.GetAvailableBrowserVersionString();
+            Logger.Info($"WebView2 Runtime version {availableBrowserVersionString} is available");
         }
-        catch (WebView2RuntimeNotFoundException)
+        catch (WebView2RuntimeNotFoundException exception)
         {
+            Logger.ForErrorEvent().Message("WebView2 Runtime is not installed.").Exception(exception).Log();
             // WebView2 Runtime is not installed. Show a meaningful error message to the user.
             MessageBox.Show("Microsoft WebView2 Runtime is not found. Please install.", "Error");
         }
