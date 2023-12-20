@@ -488,7 +488,7 @@ and refresh Icon Cache?</value>
     <value>Show more...</value>
   </data>
     <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
   </data>
     <data name="ShowRatingBadge" xml:space="preserve">
     <value>Show Rating badge</value>

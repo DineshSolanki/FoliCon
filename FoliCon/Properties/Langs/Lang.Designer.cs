@@ -1265,7 +1265,8 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &amp;#x0a; this overrides &apos;Ignore Ambiguous title&apos; option..
+        ///   Looks up a localized string similar to Show poster window even if exact title found.this would let you chose different poster for them and custom rating also 
+        /// this overrides &apos;Ignore Ambiguous title&apos; option..
         /// </summary>
         public static string ShowPosterWindowTooltip {
             get {
