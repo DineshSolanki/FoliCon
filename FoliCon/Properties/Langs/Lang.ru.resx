@@ -613,4 +613,10 @@
   <data name="ChooseAnImage" xml:space="preserve">
       <value>Выберите изображение...</value>
     </data>
+  <data name="WebView2DownloadConfirmation" xml:space="preserve">
+      <value>Не найдено исполняющей среды Microsoft WebView2. Видео не будут отображаться.&#x0a; Хотите загрузить её?</value>
+    </data>
+  <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
+      <value>Установить исполняющую среду WebView2</value>
+    </data>
 </root>
