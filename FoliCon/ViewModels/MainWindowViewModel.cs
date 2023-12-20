@@ -253,7 +253,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         Logger.Info("Application Started, Initilizing MainWindowViewModel.");
         _dialogService = dialogService;
         Services.Tracker.Configure<MainWindowViewModel>()
-            .Property(p => p.IsRatingVisible, true)
+            .Property(p => p.IsRatingVisible, false)
             .Property(p => p.IsPosterMockupUsed, true)
             .Property(p => p.IsPosterWindowShown, false)
             .Property(p => p.AppLanguage, Languages.English)
