@@ -487,8 +487,7 @@ y actualizar la caché de iconos?</value>
     <value>Mostrar más...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Mostrar la ventana del póster incluso si se encuentra el título exacto.Esto le permitirá elegir un póster diferente para ellos y una calificación personalizada también
- esto anula la opción 'Ignorar título ambiguo'.</value>
+    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Mostrar insignia de calificación</value>
