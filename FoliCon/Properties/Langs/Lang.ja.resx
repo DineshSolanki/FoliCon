@@ -609,4 +609,10 @@ and refresh Icon Cache?</value>
   <data name="ChooseAnImage" xml:space="preserve">
       <value>Choose an image...</value>
     </data>
+  <data name="WebView2DownloadConfirmation" xml:space="preserve">
+      <value>Microsoft WebView2 Runtime is not found. Videos won't show.&#x0a; Do you want to download it?</value>
+    </data>
+  <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
+      <value>Install WebView2 Runtime</value>
+    </data>
 </root>
