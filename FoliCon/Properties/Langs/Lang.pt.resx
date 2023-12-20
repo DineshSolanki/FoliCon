@@ -487,7 +487,7 @@ e renovar o cache dos Ícones?</value>
     <value>Mostar mais...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Mostar janela do poster mesmo que encontre um título exacto. Isto permite escolger um poster diferente e uma avaliação também &amp;#x0a; sobrepõem-se à opção 'Ignorar títulos Ambíguos'.</value>
+    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Mostar selo de Avaliação</value>
