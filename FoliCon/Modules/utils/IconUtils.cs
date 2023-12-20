@@ -23,36 +23,29 @@ public static class IconUtils
         var iconProcessedCount = 0;
         var ratingVisibility = isRatingVisible ? "visible" : "hidden";
         var mockupVisibility = isMockupVisible ? "visible" : "hidden";
-        var fNames = new List<string>();
-        fNames.AddRange(Directory.GetDirectories(selectedFolder).Select(Path.GetFileName));
-        foreach (var i in fNames)
+
+        foreach (DataRow row in pickedListDataTable.Rows)
         {
-            var tempI = i;
-            var targetFile = $@"{selectedFolder}\{i}\{i}.ico";
-            var pngFilePath = $@"{selectedFolder}\{i}\{i}.png";
+            var folderName = row["FolderName"].ToString();
+            var targetFile = $@"{selectedFolder}\{folderName}\{folderName}.ico";
+            var pngFilePath = $@"{selectedFolder}\{folderName}\{folderName}.png";
             if (File.Exists(pngFilePath) && !File.Exists(targetFile))
             {
-                var rating = pickedListDataTable.AsEnumerable()
-                    .Where(p => p["FolderName"].Equals(tempI))
-                    .Select(p => p["Rating"].ToString())
-                    .FirstOrDefault();
-                var mediaTitle = pickedListDataTable.AsEnumerable()
-                    .Where(p => p["FolderName"].Equals(tempI))
-                    .Select(p => p["Title"].ToString())
-                    .FirstOrDefault();
-                BuildFolderIco(iconMode, pngFilePath, rating, ratingVisibility,
+                var rating = row["Rating"].ToString();
+                var mediaTitle = row["Title"].ToString();
+                
+                BuildFolderIco(iconMode, pngFilePath, rating, ratingVisibility, 
                     mockupVisibility, mediaTitle);
                 iconProcessedCount += 1;
-                
-                Logger.Info("Icon Created for Folder: {Folder}", i);
+
+                Logger.Info("Icon Created for Folder: {Folder}", folderName);
                 Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
-                
+
                 File.Delete(pngFilePath); //<--IO Exception here
             }
-
             if (!File.Exists(targetFile)) continue;
             FileUtils.HideFile(targetFile);
-            FileUtils.SetFolderIcon($"{i}.ico", $@"{selectedFolder}\{i}");
+            FileUtils.SetFolderIcon($"{folderName}.ico", $@"{selectedFolder}\{folderName}");
         }
 
         FileUtils.ApplyChanges(selectedFolder);
