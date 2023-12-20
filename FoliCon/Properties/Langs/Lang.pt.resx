@@ -609,4 +609,10 @@ e renovar o cache dos Ícones?</value>
   <data name="ChooseAnImage" xml:space="preserve">
       <value>Escolher uma imagem...</value>
     </data>
+  <data name="WebView2DownloadConfirmation" xml:space="preserve">
+      <value>O Runtime do Microsoft WebView2 não foi encontrado. Vídeos não serão exibidos.&#x0a; Deseja baixá-lo?</value>
+    </data>
+  <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
+      <value>Instalar Runtime do WebView2</value>
+    </data>
 </root>
