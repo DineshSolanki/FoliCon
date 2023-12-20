@@ -610,4 +610,10 @@
   <data name="ChooseAnImage" xml:space="preserve">
       <value>اختر صورة...</value>
     </data>
+  <data name="WebView2DownloadConfirmation" xml:space="preserve">
+      <value>لم يتم العثور على بيئة تشغيل Microsoft WebView2. لن تظهر الفيديوهات.&amp;#x0a; هل تريد تحميلها؟</value>
+    </data>
+  <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
+      <value>تثبيت بيئة تشغيل WebView2</value>
+    </data>
 </root>
