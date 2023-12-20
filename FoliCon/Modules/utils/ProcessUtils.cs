@@ -152,32 +152,16 @@ public static class ProcessUtils
     private static void StartAppAsAdmin()
     {
         Logger.Info("Starting Application as Administrator");
-
-        var appPath = Path.ChangeExtension(AppPath, "exe");
-
-        if (string.IsNullOrWhiteSpace(appPath))
-        {
-            Logger.Error("AppPath: {AppPath} is not valid", appPath);
-            return;
-        }
-
-        var elevated = new ProcessStartInfo(appPath)
-        {
-            UseShellExecute = true,
-            Verb = "runas"
-        };
-
+        
         try
         {
-            using var process = Process.Start(elevated);
+            ApplicationHelper.Restart(true);
         }
         catch (Exception ex)
         {
             Logger.ForErrorEvent().Message("Failed to start process with elevated rights {Message}",
                 ex.Message).Exception(ex).Log();
         }
-
-        Environment.Exit(0);
     }
 
     public static void AddToContextMenu()
@@ -195,7 +179,7 @@ public static class ProcessUtils
         Services.Settings.IsExplorerIntegrated = true;
         Services.Settings.Save();
 
-        RegisterContextMenuOptions(new List<string> { "Professional", "Movie", "TV", "Game", "Auto" });
+        RegisterContextMenuOptions(["Professional", "Movie", "TV", "Game", "Auto"]);
 
         Logger.Info("Context Menu Modified");
     }
@@ -226,6 +210,4 @@ public static class ProcessUtils
 
         //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
     }
-
-    private static string AppPath { get; } = ApplicationHelper.GetExecutablePathNative();
 }
