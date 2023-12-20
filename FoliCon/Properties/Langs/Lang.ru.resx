@@ -487,8 +487,7 @@
     <value>Показать больше...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Показывать окно плаката, даже если найден точный заголовок. Это позволит вам выбрать для них другой плакат, а также пользовательский рейтинг
- это отменяет опцию «Игнорировать неоднозначное название».</value>
+    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Показать значок рейтинга</value>
