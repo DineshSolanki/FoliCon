@@ -22,7 +22,7 @@ public class Tmdb
     /// <param name="serviceClient">Initialized TMDB Client</param>
     /// <param name="listDataTable">DataTable that stores all the Picked Results.</param>
     /// <param name="imgDownloadList">List that stores all the images to download.</param>
-    public Tmdb(ref TMDbClient serviceClient, ref DataTable listDataTable,
+    public Tmdb(ref TMDbClient serviceClient, ref List<PickedListItem> listDataTable,
         ref List<ImageToDownload> imgDownloadList)
     {
         Logger.Debug("Initializing TMDB Helper Class");

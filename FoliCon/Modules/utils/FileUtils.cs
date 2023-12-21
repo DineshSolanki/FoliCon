@@ -320,7 +320,7 @@ public static class FileUtils
     /// <param name="fullFolderPath">Complete Folder Path</param>
     /// <param name="folderName">Short Folder Name</param>
     /// <param name="year">Media Year</param>
-    public static void AddToPickedListDataTable(DataTable dataTable, string poster, string title, string rating,
+    public static void AddToPickedListDataTable(List<PickedListItem> dataTable, string poster, string title, string rating,
         string fullFolderPath, string folderName, string year = "")
     {
         Logger.Debug("Adding Data to PickedListDataTable");
@@ -328,16 +328,9 @@ public static class FileUtils
         {
             rating = "";
         }
-
-        var nRow = dataTable.NewRow();
-        nRow["Poster"] = poster;
-        nRow["Title"] = title;
-        nRow["Year"] = year;
-        nRow["Rating"] = rating;
-        nRow["Folder"] = fullFolderPath;
-        nRow["FolderName"] = folderName;
-        dataTable.Rows.Add(nRow);
-        Logger.Trace("Data Added to PickedListDataTable: {@Row}",nRow);
+        PickedListItem pickedListItem = new(title, year, rating, fullFolderPath, folderName,poster);
+        dataTable.Add(pickedListItem);
+        Logger.Trace("Data Added to PickedListDataTable: {@Row}",pickedListItem);
     }
 
     public static ObservableCollection<ListItem> FetchAndAddDetailsToListView(ResultResponse result, string query,

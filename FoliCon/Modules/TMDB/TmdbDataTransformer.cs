@@ -10,9 +10,9 @@ internal class TmdbDataTransformer
 {
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private readonly DataTable _listDataTable;
+    private readonly List<PickedListItem> _listDataTable;
     private readonly List<ImageToDownload> _imgDownloadList;
-    public TmdbDataTransformer(ref DataTable listDataTable,
+    public TmdbDataTransformer(ref List<PickedListItem> listDataTable,
         ref List<ImageToDownload> imgDownloadList)
     {
         this._listDataTable = listDataTable;

@@ -20,7 +20,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private string _busyContent = LangProvider.GetLang("Searching");
     private bool _isBusy;
     private DArt _dArtObject;
-    private DataTable _listDataTable;
+    private List<PickedListItem> _listDataTable;
     private List<ImageToDownload> _imgDownloadList;
     private int _index;
     private int _totalPosters;
@@ -233,7 +233,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     {
         DArtObject = parameters.GetValue<DArt>("dartobject");
         Fnames = parameters.GetValue<List<string>>("fnames");
-        _listDataTable = parameters.GetValue<DataTable>("pickedtable");
+        _listDataTable = parameters.GetValue<List<PickedListItem>>("pickedtable");
         _imgDownloadList = parameters.GetValue<List<ImageToDownload>>("imglist");
         _folderPath = parameters.GetValue<string>("folderpath");
         PrepareForSearch();

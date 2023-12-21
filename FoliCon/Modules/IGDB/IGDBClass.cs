@@ -17,7 +17,7 @@ public class IgdbClass
     /// <param name="listDataTable">DataTable that stores all the Picked Results.</param>
     /// <param name="serviceClient">Initialized IGDB/Twitch Client</param>
     /// <param name="imgDownloadList">List that stores all the images to download.</param>
-    public IgdbClass(ref DataTable listDataTable, ref IGDBClient serviceClient,
+    public IgdbClass(ref List<PickedListItem> listDataTable, ref IGDBClient serviceClient,
         ref List<ImageToDownload> imgDownloadList)
     {
         _dataTransformer = new IgdbDataTransformer(ref listDataTable, ref imgDownloadList);

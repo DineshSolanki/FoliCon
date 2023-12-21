@@ -5,14 +5,14 @@ using Logger = NLog.Logger;
 
 namespace FoliCon.Modules.IGDB;
 
-public class IgdbDataTransformer(ref DataTable listDataTable, ref List<ImageToDownload> imgDownloadList)
+public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref List<ImageToDownload> imgDownloadList)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     private readonly List<ImageToDownload> _imgDownloadList =
         imgDownloadList ?? throw new ArgumentNullException(nameof(imgDownloadList));
 
-    private readonly DataTable _listDataTable = listDataTable ?? throw new ArgumentNullException(nameof(listDataTable));
+    private readonly List<PickedListItem> _listDataTable = listDataTable ?? throw new ArgumentNullException(nameof(listDataTable));
 
     public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(IEnumerable<Game> games)
     {
