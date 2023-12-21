@@ -82,7 +82,7 @@ public static class DialogServiceExtensions
     public static void ShowPreviewer(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowPreviewer called");
-        var p = new DialogParameters {};
+        var p = new DialogParameters();
         dialogService.ShowDialog("Previewer", p, callBack);
     }
 }

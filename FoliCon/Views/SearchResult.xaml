@@ -121,7 +121,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Grid.ColumnSpan="1" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" HorizontalAlignment="Stretch" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}">
+                    <Button Grid.Column="0" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" HorizontalAlignment="Stretch" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
                                 <Style.Triggers>
