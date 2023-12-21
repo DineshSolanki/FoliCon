@@ -39,7 +39,7 @@ public static class DialogServiceExtensions
     }
 
     public static void ShowProSearchResult(this IDialogService dialogService, string folderPath,
-        List<string> fnames, DataTable pickedTable, List<ImageToDownload> imgList, DArt dartObject,
+        List<string> fnames, List<PickedListItem> pickedTable, List<ImageToDownload> imgList, DArt dartObject,
         Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowProSearchResult called with folderPath: {FolderPath} and fnames: {@Fnames}", folderPath,
@@ -82,7 +82,7 @@ public static class DialogServiceExtensions
     public static void ShowPreviewer(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowPreviewer called");
-        var p = new DialogParameters {};
+        var p = new DialogParameters();
         dialogService.ShowDialog("Previewer", p, callBack);
     }
 }

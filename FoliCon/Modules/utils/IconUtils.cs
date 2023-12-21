@@ -1,4 +1,5 @@
 ﻿using FoliCon.Models.Constants;
+using FoliCon.Models.Data;
 using FoliCon.Models.Enums;
 using FoliCon.Modules.Media;
 using NLog;
@@ -13,7 +14,7 @@ public static class IconUtils
     /// <summary>
     /// Creates Icons from PNG
     /// </summary>
-    public static int MakeIco(string iconMode, string selectedFolder, DataTable pickedListDataTable,
+    public static int MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
         bool isRatingVisible = false, bool isMockupVisible = true)
     {
         Logger.Debug(
@@ -24,15 +25,15 @@ public static class IconUtils
         var ratingVisibility = isRatingVisible ? "visible" : "hidden";
         var mockupVisibility = isMockupVisible ? "visible" : "hidden";
 
-        foreach (DataRow row in pickedListDataTable.Rows)
+        foreach (var item in pickedListDataTable)
         {
-            var folderName = row["FolderName"].ToString();
+            var folderName = item.FolderName;
             var targetFile = $@"{selectedFolder}\{folderName}\{folderName}.ico";
             var pngFilePath = $@"{selectedFolder}\{folderName}\{folderName}.png";
             if (File.Exists(pngFilePath) && !File.Exists(targetFile))
             {
-                var rating = row["Rating"].ToString();
-                var mediaTitle = row["Title"].ToString();
+                var rating = item.Rating;
+                var mediaTitle = item.Title;
                 
                 BuildFolderIco(iconMode, pngFilePath, rating, ratingVisibility, 
                     mockupVisibility, mediaTitle);

@@ -46,7 +46,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private string _devClientId;
     private ListViewData _finalListViewData;
     private List<ImageToDownload> _imgDownloadList;
-    private DataTable _pickedListDataTable;
+    private List<PickedListItem> _pickedListDataTable;
     private bool IsObjectsInitialized { get; set; }
 
     public bool IsPosterWindowShown
@@ -511,15 +511,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
                              "adding to final list", isAutoPicked, dialogResult, itemTitle);
-                if (_pickedListDataTable is not null && _pickedListDataTable.Rows.Count != 0)
+                if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
                 {
-                    FinalListViewData.Data.Add(new ListItem
-                    {
-                        Title = _pickedListDataTable.Rows[^1]["Title"].ToString(),
-                        Year = _pickedListDataTable.Rows[^1]["Year"].ToString(),
-                        Rating = _pickedListDataTable.Rows[^1]["Rating"].ToString(),
-                        Folder = _pickedListDataTable.Rows[^1]["Folder"].ToString()
-                    });
+                    FinalListViewData.Data.Add(_pickedListDataTable.Last());
                 }
                 // TODO: Set cursor back to arrow here
             }
@@ -539,19 +533,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.AppStatus = "Searching";
         _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
             _dArtObject, _ => { });
-        if (_pickedListDataTable.Rows.Count <= 0) return;
-        Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
-        foreach (DataRow v in _pickedListDataTable.Rows)
+        if (_pickedListDataTable.Count <= 0)
         {
-            FinalListViewData.Data.Add(new ListItem
-            {
-                Title = v["Title"].ToString(),
-                Year = v["Year"].ToString(),
-                Rating = v["Rating"].ToString(),
-                Folder = v["Folder"].ToString()
-            });
+            return;
         }
-        StatusBarProperties.ProcessedFolder = _pickedListDataTable.Rows.Count;
+
+        Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
+        FinalListViewData.Data.AddRange(_pickedListDataTable);
+        StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
     }
 
     private void InitializeDelegates()
@@ -655,7 +644,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.ProgressBarData.Max = 100;
         StatusBarProperties.ProgressBarData.Value = 0;
         _imgDownloadList = new List<ImageToDownload>();
-        _pickedListDataTable = new DataTable();
+        _pickedListDataTable = [];
         if (NetworkUtils.IsNetworkAvailable())
         {
             InitializeClientObjects();
@@ -674,20 +663,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public void InitPickedListDataTable()
     {
         Logger.Debug("Initializing PickedListDataTable.");
-        _pickedListDataTable.Columns.Clear();
-        _pickedListDataTable.Rows.Clear();
-        var column1 = new DataColumn("Poster") { DataType = typeof(string) };
-        var column2 = new DataColumn("Title") { DataType = typeof(string) };
-        var column3 = new DataColumn("Year") { DataType = typeof(string) };
-        var column4 = new DataColumn("Rating") { DataType = typeof(string) };
-        var column5 = new DataColumn("Folder") { DataType = typeof(string) };
-        var column6 = new DataColumn("FolderName") { DataType = typeof(string) };
-        _pickedListDataTable.Columns.Add(column1);
-        _pickedListDataTable.Columns.Add(column2);
-        _pickedListDataTable.Columns.Add(column3);
-        _pickedListDataTable.Columns.Add(column4);
-        _pickedListDataTable.Columns.Add(column5);
-        _pickedListDataTable.Columns.Add(column6);
+        _pickedListDataTable.Clear();
         Logger.Debug("PickedListDataTable Initialized.");
     }
 
@@ -872,7 +848,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public void Dispose()
     {
         _tmdbClient?.Dispose();
-        _pickedListDataTable?.Dispose();
         GC.SuppressFinalize(this);
     }
 }
