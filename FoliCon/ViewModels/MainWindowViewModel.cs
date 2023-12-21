@@ -533,7 +533,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.AppStatus = "Searching";
         _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
             _dArtObject, _ => { });
-        if (_pickedListDataTable.Count <= 0) return;
+        if (_pickedListDataTable.Count <= 0)
+        {
+            return;
+        }
+
         Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
         FinalListViewData.Data.AddRange(_pickedListDataTable);
         StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
