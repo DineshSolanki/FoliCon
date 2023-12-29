@@ -1,4 +1,6 @@
 ﻿using FoliCon.Modules.Configuration;
+using FoliCon.Plugins;
+using FoliCon.Plugins.Overlay;
 using NLog;
 using Logger = NLog.Logger;
 
@@ -9,7 +11,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _iconOverlay;
     public DelegateCommand<object> IconOverlayChangedCommand { get; }
-
+    public IEnumerable<OverlayPluginBase> Plugins => PluginManager.Instance.Plugins;
     public PosterIconConfigViewModel()
     {
         Logger.Debug("PosterIconConfigViewModel created");

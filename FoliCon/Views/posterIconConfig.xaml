@@ -26,67 +26,105 @@
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <GroupBox
-        Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
-        hc:TitleElement.Background="{DynamicResource RegionBrush}"
-        Foreground="Transparent" BorderThickness="0"
-        Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center">
-        <Grid Margin="15,0,15,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="200" />
-            </Grid.ColumnDefinitions>
-            <RadioButton x:Name="RPoster" Grid.Column="0" GroupName="PosterOverlay"
-                         Command="{Binding IconOverlayChangedCommand}"
-                         CommandParameter="Legacy" hc:Poptip.Content="Legacy" hc:Poptip.Placement="LeftTop"
-                         Margin="0,4,0,4" FontSize="16" VerticalAlignment="Stretch"
-                         HorizontalAlignment="Left"
-                         IsChecked="{Binding IconOverlay, ConverterParameter= Legacy, Converter={StaticResource StringToBooleanConvertor}}">
-                <RadioButton.Content>
-                    <Image Source="/Resources/mockup_demos/simple/PosterIcon.ico" />
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton x:Name="RPosterAlt" Grid.Column="1" GroupName="PosterOverlay"
-                         Command="{Binding IconOverlayChangedCommand}"
-                         CommandParameter="Alternate" FontSize="16" hc:Poptip.Content="Alternate" hc:Poptip.Placement="LeftTop"
-                         HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                         IsChecked="{Binding IconOverlay, ConverterParameter= Alternate, Converter={StaticResource StringToBooleanConvertor}}">
-                <RadioButton.Content>
-                    <Image Source="/Resources/mockup_demos/dvd/PosterIconAlt.ico" />
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton x:Name="RPosterFaelpessoal" Grid.Column="2" GroupName="PosterOverlay"
-                         Command="{Binding IconOverlayChangedCommand}"
-                         CommandParameter="Faelpessoal" FontSize="16" hc:Poptip.Content="Faelpessoal" hc:Poptip.Placement="LeftTop"
-                         HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                         IsChecked="{Binding IconOverlay, ConverterParameter= Faelpessoal, Converter={StaticResource StringToBooleanConvertor}}">
-                <RadioButton.Content>
-                    <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoal.ico" />
-                </RadioButton.Content>
-            </RadioButton>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <GroupBox
+            Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
+            hc:TitleElement.Background="{DynamicResource RegionBrush}"
+            Foreground="Transparent" BorderThickness="0"
+            Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch"
+            HorizontalAlignment="Center">
+            <Grid Margin="15,0,15,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <RadioButton x:Name="RPoster" Grid.Column="0" GroupName="PosterOverlay"
+                             Command="{Binding IconOverlayChangedCommand}"
+                             CommandParameter="Legacy" hc:Poptip.Content="Legacy" hc:Poptip.Placement="LeftTop"
+                             Margin="0,4,0,4" FontSize="16" VerticalAlignment="Stretch"
+                             HorizontalAlignment="Left"
+                             IsChecked="{Binding IconOverlay, ConverterParameter= Legacy, Converter={StaticResource StringToBooleanConvertor}}">
+                    <RadioButton.Content>
+                        <Image Source="/Resources/mockup_demos/simple/PosterIcon.ico" />
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton x:Name="RPosterAlt" Grid.Column="1" GroupName="PosterOverlay"
+                             Command="{Binding IconOverlayChangedCommand}"
+                             CommandParameter="Alternate" FontSize="16" hc:Poptip.Content="Alternate"
+                             hc:Poptip.Placement="LeftTop"
+                             HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                             IsChecked="{Binding IconOverlay, ConverterParameter= Alternate, Converter={StaticResource StringToBooleanConvertor}}">
+                    <RadioButton.Content>
+                        <Image Source="/Resources/mockup_demos/dvd/PosterIconAlt.ico" />
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton x:Name="RPosterFaelpessoal" Grid.Column="2" GroupName="PosterOverlay"
+                             Command="{Binding IconOverlayChangedCommand}"
+                             CommandParameter="Faelpessoal" FontSize="16" hc:Poptip.Content="Faelpessoal"
+                             hc:Poptip.Placement="LeftTop"
+                             HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                             IsChecked="{Binding IconOverlay, ConverterParameter= Faelpessoal, Converter={StaticResource StringToBooleanConvertor}}">
+                    <RadioButton.Content>
+                        <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoal.ico" />
+                    </RadioButton.Content>
+                </RadioButton>
 
-            <RadioButton x:Name="RPosterLiaher" Grid.Column="3" GroupName="PosterOverlay"
-                         Command="{Binding IconOverlayChangedCommand}"
-                         CommandParameter="Liaher" FontSize="16" hc:Poptip.Content="Liaher" hc:Poptip.Placement="LeftTop"
-                         HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                         IsChecked="{Binding IconOverlay, ConverterParameter= Liaher, Converter={StaticResource StringToBooleanConvertor}}">
-                <RadioButton.Content>
-                    <Image Source="/Resources/mockup_demos/liaher/PosterIconLiaher.ico" />
-                </RadioButton.Content>
-            </RadioButton>
-            <RadioButton x:Name="RPosterFaelpessoalHorizontal" Grid.Column="4" GroupName="PosterOverlay"
-                         ToolTip="{extension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
-                         Command="{Binding IconOverlayChangedCommand}"
-                         CommandParameter="FaelpessoalHorizontal" FontSize="16" hc:Poptip.Content="Faelpessoal Horizontal" hc:Poptip.Placement="LeftTop"
-                         HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                         IsChecked="{Binding IconOverlay, ConverterParameter= FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
-                <RadioButton.Content>
-                    <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico" />
-                </RadioButton.Content>
-            </RadioButton>
-        </Grid>
-    </GroupBox>
+                <RadioButton x:Name="RPosterLiaher" Grid.Column="3" GroupName="PosterOverlay"
+                             Command="{Binding IconOverlayChangedCommand}"
+                             CommandParameter="Liaher" FontSize="16" hc:Poptip.Content="Liaher"
+                             hc:Poptip.Placement="LeftTop"
+                             HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                             IsChecked="{Binding IconOverlay, ConverterParameter= Liaher, Converter={StaticResource StringToBooleanConvertor}}">
+                    <RadioButton.Content>
+                        <Image Source="/Resources/mockup_demos/liaher/PosterIconLiaher.ico" />
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton x:Name="RPosterFaelpessoalHorizontal" Grid.Column="4" GroupName="PosterOverlay"
+                             ToolTip="{extension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
+                             Command="{Binding IconOverlayChangedCommand}"
+                             CommandParameter="FaelpessoalHorizontal" FontSize="16"
+                             hc:Poptip.Content="Faelpessoal Horizontal" hc:Poptip.Placement="LeftTop"
+                             HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                             IsChecked="{Binding IconOverlay, ConverterParameter= FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
+                    <RadioButton.Content>
+                        <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico" />
+                    </RadioButton.Content>
+                </RadioButton>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
+                  hc:TitleElement.Background="{DynamicResource RegionBrush}"
+                  Foreground="Transparent" BorderThickness="0"
+                  Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch"
+                  HorizontalAlignment="Center" hc:TitleElement.Title="Custom Overlays">
+            <ItemsControl ItemsSource="{Binding Plugins}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton Command="{Binding Path=DataContext.IconOverlayChangedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                     CommandParameter="{Binding Name}"
+                                     IsChecked="{Binding Path=DataContext.IconOverlay, Converter={StaticResource StringToBooleanConvertor}, ConverterParameter={Binding Name}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                            <RadioButton.Content>
+                                <StackPanel> 
+                                    <Image Source="{Binding PluginIconSource}" Height="40" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </RadioButton.Content>
+                        </RadioButton>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </GroupBox>
+    </Grid>
 </UserControl>
