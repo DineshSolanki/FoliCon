@@ -26,6 +26,7 @@ public partial class App
         LogManager.Configuration = LogUtils.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
+        Plugins.PluginManager.Instance.Initialize();
         Logger.Info("FoliCon Initilized");
     }
 
