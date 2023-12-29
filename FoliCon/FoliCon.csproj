@@ -40,6 +40,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Sentry" Version="3.41.2" />
     <PackageReference Include="Sentry.NLog" Version="3.41.2" />
+    <PackageReference Include="System.Composition.AttributedModel" Version="8.0.0" />
     <PackageReference Include="TMDbLib" Version="2.0.0" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
