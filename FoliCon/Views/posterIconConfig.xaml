@@ -15,11 +15,12 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <convertor:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
+            <convertor:OverlayNameToBooleanConvertor x:Key="OverlayToBooleanConvertor" />
         </ResourceDictionary>
     </UserControl.Resources>
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="300" />
+            <Setter Property="Height" Value="Auto" />
             <!-- <Setter Property="Background" Value="{DynamicResource RegionBrush}" /> -->
             <Setter Property="Width" Value="1066" />
             <Setter Property="WindowStyle" Value="SingleBorderWindow" />
@@ -100,23 +101,32 @@
             </Grid>
         </GroupBox>
         <GroupBox Grid.Row="1" Style="{StaticResource GroupBoxTab}" FontSize="22" FontFamily="Cambria"
-                  hc:TitleElement.Background="{DynamicResource RegionBrush}"
-                  Foreground="Transparent" BorderThickness="0"
-                  Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch"
-                  HorizontalAlignment="Center">
-                <ItemsControl ItemsSource="{Binding Plugins}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <RadioButton GroupName="PosterOverlay" HorizontalAlignment="Left" VerticalAlignment="Stretch"
-                                         IsChecked="{Binding DataContext.IconOverlay, RelativeSource={RelativeSource AncestorType=ItemsControl}, ConverterParameter= Name, Converter={StaticResource StringToBooleanConvertor}}">
-                                <RadioButton.Content>
-                                    <Image Width="200" Source="{Binding Icon}" />
-                                </RadioButton.Content>
-                            </RadioButton>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-        </GroupBox>
+          hc:TitleElement.Background="{DynamicResource RegionBrush}"
+          Foreground="Transparent" BorderThickness="0"
+          Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch"
+          HorizontalAlignment="Center">
+            <ItemsControl ItemsSource="{Binding Plugins}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton GroupName="PosterOverlay" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                     FontSize="16"
+                                     hc:Poptip.Content="{Binding Name}" hc:Poptip.Placement="LeftTop"
+                                     Command="{Binding DataContext.IconOverlayChangedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                     CommandParameter="{Binding Name}">
+                            <RadioButton.IsChecked>
+                                <MultiBinding Converter="{StaticResource OverlayToBooleanConvertor}" Mode="OneWay">
+                                    <Binding Path="DataContext.IconOverlay" RelativeSource="{RelativeSource AncestorType=ItemsControl}" PresentationTraceSources.TraceLevel="High"/>
+                                    <Binding Path="Name" PresentationTraceSources.TraceLevel="High"/>
+                                </MultiBinding>
+                            </RadioButton.IsChecked>
+                            <RadioButton.Content>
+                                <Image Width="200" Source="{Binding Icon}" PresentationTraceSources.TraceLevel="High" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+</GroupBox>
 
     </Grid>
 </UserControl>
