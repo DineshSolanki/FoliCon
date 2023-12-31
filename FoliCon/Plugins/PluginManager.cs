@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
+﻿
+using System.Composition.Hosting;
+using System.Runtime.Loader;
 using FoliCon.Plugins.Overlay;
 
 namespace FoliCon.Plugins;
@@ -7,10 +8,8 @@ namespace FoliCon.Plugins;
 public class PluginManager
 {
     private const string PluginsPath = @".\Plugins";
-    private CompositionContainer _container;
-    private DirectoryCatalog _catalog;
 
-    [System.Composition.ImportMany]
+    [System.Composition.ImportMany(nameof(OverlayPluginBase))]
     public IEnumerable<OverlayPluginBase> Plugins { get; private set; } = null!;
 
     public static PluginManager Instance { get; } = new();
@@ -22,8 +21,15 @@ public class PluginManager
     public void Initialize()
     {
         Directory.CreateDirectory(PluginsPath);
-        _catalog = new DirectoryCatalog(PluginsPath);
-        _container = new CompositionContainer(_catalog);
-        _container.ComposeParts(this);
+        var assemblies = Directory
+            .GetFiles(PluginsPath, "*.dll")
+            .Select(Path.GetFullPath)
+            .Select(AssemblyLoadContext.Default.LoadFromAssemblyPath);
+
+        var configuration = new ContainerConfiguration()
+            .WithAssemblies(assemblies);
+
+        using var container = configuration.CreateContainer();
+        Plugins = container.GetExports<OverlayPluginBase>();
     }
 }

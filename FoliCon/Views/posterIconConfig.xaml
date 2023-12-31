@@ -103,28 +103,20 @@
                   hc:TitleElement.Background="{DynamicResource RegionBrush}"
                   Foreground="Transparent" BorderThickness="0"
                   Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch"
-                  HorizontalAlignment="Center" hc:TitleElement.Title="Custom Overlays">
-            <ItemsControl ItemsSource="{Binding Plugins}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="5"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <RadioButton Command="{Binding Path=DataContext.IconOverlayChangedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                     CommandParameter="{Binding Name}"
-                                     IsChecked="{Binding Path=DataContext.IconOverlay, Converter={StaticResource StringToBooleanConvertor}, ConverterParameter={Binding Name}, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                            <RadioButton.Content>
-                                <StackPanel> 
-                                    <Image Source="{Binding PluginIconSource}" Height="40" />
-                                    <TextBlock Text="{Binding Name}" />
-                                </StackPanel>
-                            </RadioButton.Content>
-                        </RadioButton>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                  HorizontalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding Plugins}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton GroupName="PosterOverlay" HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                         IsChecked="{Binding DataContext.IconOverlay, RelativeSource={RelativeSource AncestorType=ItemsControl}, ConverterParameter= Name, Converter={StaticResource StringToBooleanConvertor}}">
+                                <RadioButton.Content>
+                                    <Image Width="200" Source="{Binding Icon}" />
+                                </RadioButton.Content>
+                            </RadioButton>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
         </GroupBox>
+
     </Grid>
 </UserControl>

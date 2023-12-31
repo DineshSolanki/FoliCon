@@ -2,13 +2,16 @@
 
 public abstract class OverlayPluginBase : UserControl
 {
-    string Name { get; }
+    public virtual string OverlayName { get; }
     
-    public string PluginIconSource { get; set; }
+    public virtual string PluginIconSource { get; set; }
     
-    public virtual Bitmap RenderOverlay(PosterIcon parameters)
+    public virtual FoliCon.Models.Data.PosterIcon PluginParameters { get; private set; }
+    
+    public virtual Bitmap RenderOverlay(FoliCon.Models.Data.PosterIcon parameters)
     {
         DataContext = parameters;
+        PluginParameters = parameters;
         return RenderToBitmap();
     }
 

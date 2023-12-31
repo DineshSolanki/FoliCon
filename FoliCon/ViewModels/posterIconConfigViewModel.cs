@@ -11,7 +11,16 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _iconOverlay;
     public DelegateCommand<object> IconOverlayChangedCommand { get; }
-    public IEnumerable<OverlayPluginBase> Plugins => PluginManager.Instance.Plugins;
+    private IEnumerable<PluginProperties> _plugins = PluginManager.Instance.Plugins.Select(plugin => new PluginProperties
+    {
+        Name = plugin.OverlayName,
+        Icon = plugin.PluginIconSource
+    });
+    public IEnumerable<PluginProperties> Plugins
+    {
+        get => _plugins;
+        set => SetProperty(ref _plugins, value);
+    }
     public PosterIconConfigViewModel()
     {
         Logger.Debug("PosterIconConfigViewModel created");
