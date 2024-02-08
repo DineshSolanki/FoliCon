@@ -6,10 +6,20 @@ namespace FoliCon.Modules.utils;
 internal static class TitleCleaner
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Dictionary<string, string> UnicodeToNonUnicode = new()
+    {
+        { "\uA789", ":" },
+        { "\u2236", ":" }
+    };
     public static string Clean(string title)
     {
         var normalizedTitle = title.Replace('-', ' ').Replace('_', ' ').Replace('.', ' ');
 
+        normalizedTitle = UnicodeToNonUnicode.Aggregate(normalizedTitle, (current, pair) => normalizedTitle.Replace(pair.Key, pair.Value));
+        
+        // Remove all remaining unicode characters
+        normalizedTitle = Regex.Replace(normalizedTitle, @"[^\u0000-\u007F]+", string.Empty);
+        
         // \s* --Remove any whitespace which would be left at the end after this substitution
         // \(? --Remove optional bracket starting (720p)
         // (\d{4}) --Remove year from movie
