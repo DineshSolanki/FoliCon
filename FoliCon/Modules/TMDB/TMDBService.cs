@@ -1,6 +1,10 @@
-﻿using FoliCon.Models.Constants;
+﻿using System.Windows.Documents;
+using FoliCon.Models.Constants;
 using FoliCon.Models.Data;
+using FoliCon.Models.Enums;
 using NLog;
+using TMDbLib.Objects.Find;
+using Collection = TMDbLib.Objects.Collections.Collection;
 
 namespace FoliCon.Modules.TMDB;
 
@@ -99,4 +103,191 @@ internal class TmdbService
         };
         return response;
     }
-}
+
+    public async Task<ResultResponse> SearchWithParamsAsync(ParsedTitle parsedTitle, string searchMode)
+    {
+        Logger.Debug("Searching for {ParsedTitle} in {SearchMode}", parsedTitle, searchMode);
+        object r = null;
+        var mediaType = "";
+        var query = parsedTitle.Title;
+        if (searchMode == MediaTypes.Movie)
+        {
+            if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
+            {
+                r = parsedTitle.IdType switch
+                {
+                    IdType.None => await _serviceClient.SearchCollectionAsync(query),
+                    IdType.Tvdb => GetMovieSearchContainer(
+                        await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+                    IdType.Tmdb => GetCollectionSearchContainer(
+                        await _serviceClient.GetCollectionAsync(Convert.ToInt32(parsedTitle.Id))),
+                    IdType.Imdb => GetMovieSearchContainer(
+                        await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
+                    _ => await _serviceClient.SearchCollectionAsync(query)
+                };
+
+                mediaType = MediaTypes.Collection;
+            }
+            else
+            {
+                r = parsedTitle.IdType switch
+                {
+                    IdType.None => parsedTitle.Year != 0
+                        ? await _serviceClient.SearchMovieAsync(query: query, year: parsedTitle.Year)
+                        : await _serviceClient.SearchMovieAsync(query),
+                    IdType.Tvdb => GetMovieSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+                    IdType.Tmdb => GetMovieSearchContainer(await _serviceClient.GetMovieAsync(Convert.ToInt32(parsedTitle.Id))),
+                    IdType.Imdb => await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id),
+                    _ => parsedTitle.Year != 0
+                        ? await _serviceClient.SearchMovieAsync(query: query, year: parsedTitle.Year)
+                        : await _serviceClient.SearchMovieAsync(query)
+                };
+
+                mediaType = MediaTypes.Movie;
+            }
+        }
+        else if (searchMode == MediaTypes.Tv)
+        {
+            r = parsedTitle.IdType switch
+            {
+                IdType.None => parsedTitle.Year != 0
+                    ? await _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: parsedTitle.Year)
+                    : await _serviceClient.SearchTvShowAsync(query),
+                IdType.Tvdb => GetTvSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+                IdType.Tmdb => GetTvSearchContainer(await _serviceClient.GetTvShowAsync(Convert.ToInt32(parsedTitle.Id))),
+                IdType.Imdb => GetTvSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
+                _ => parsedTitle.Year != 0
+                    ? await _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: parsedTitle.Year)
+                    : await _serviceClient.SearchTvShowAsync(query)
+            };
+            mediaType = MediaTypes.Tv;
+        }
+        else if (searchMode == MediaTypes.Mtv)
+        {
+            r = parsedTitle.IdType switch
+            {
+                IdType.None => parsedTitle.Year != 0
+                    ? await _serviceClient.SearchMultiAsync(query: query, year: parsedTitle.Year)
+                    : await _serviceClient.SearchMultiAsync(query),
+                IdType.Tvdb => GetMultiSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+                IdType.Imdb => GetMultiSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
+                _ => parsedTitle.Year != 0
+                    ? await _serviceClient.SearchMultiAsync(query: query, year: parsedTitle.Year)
+                    : await _serviceClient.SearchMultiAsync(query)
+            };
+            mediaType = MediaTypes.Mtv;
+        }
+
+        var response = new ResultResponse
+        {
+            Result = r,
+            MediaType = mediaType
+        };
+        return response;
+    }
+    
+    private static SearchContainer<SearchMovie> GetMovieSearchContainer(FindContainer findContainer)
+    {
+        return new SearchContainer<SearchMovie>
+        {
+            TotalResults = findContainer.MovieResults.Count,
+            Results = findContainer.MovieResults
+        };
+    }
+    
+    private static SearchContainer<SearchMovie> GetMovieSearchContainer(Movie movie)
+    {
+        return new SearchContainer<SearchMovie>
+        {
+            TotalResults = 1,
+            Results = movie is null ? [] : [ConvertMovieToSearchMovie(movie)]
+        };
+    }
+    
+    private static SearchContainer<SearchCollection> GetCollectionSearchContainer(Collection collection)
+    {
+        return new SearchContainer<SearchCollection>
+        {
+            TotalResults = 1,
+            Results = collection is null ? [] : [ConvertCollectionToSearchCollection(collection)]
+        };
+    }
+    
+    private static SearchContainer<SearchTv> GetTvSearchContainer(FindContainer findContainer)
+    {
+        return new SearchContainer<SearchTv>
+        {
+            TotalResults = findContainer.TvResults.Count,
+            Results = findContainer.TvResults
+        };
+    }
+    
+    private static SearchContainer<SearchTv> GetTvSearchContainer(TvShow tvShow)
+    {
+        var rd = tvShow;
+        return new SearchContainer<SearchTv>
+        {
+            TotalResults = 1,
+            Results = tvShow is null ? [] : [ConvertTvShowToSearchTv(tvShow)]
+        };
+    }
+    
+    private static SearchContainer<dynamic> GetMultiSearchContainer(FindContainer findContainer)
+    {
+        dynamic result;
+        if (findContainer.MovieResults.Count != 0)
+        {
+            result = findContainer.MovieResults;
+        }
+        else if (findContainer.TvResults.Count != 0)
+        {
+            result = findContainer.TvResults;
+        }
+        else
+        {
+            result = new List();
+        }
+        return new SearchContainer<dynamic>
+        {
+            TotalResults = findContainer.MovieResults.Count + findContainer.TvResults.Count,
+            Results = result
+        };
+    }
+    
+    private static SearchTv ConvertTvShowToSearchTv(TvShow tvShow)
+    {
+        return new SearchTv
+        {
+            Id = tvShow.Id,
+            Name = tvShow.Name,
+            FirstAirDate = tvShow.FirstAirDate,
+            Overview = tvShow.Overview,
+            PosterPath = tvShow.PosterPath,
+            VoteAverage = tvShow.VoteAverage
+        };
+    }
+    
+    private static SearchMovie ConvertMovieToSearchMovie(Movie movie)
+    {
+        return new SearchMovie
+        {
+            Id = movie.Id,
+            Title = movie.Title,
+            ReleaseDate = movie.ReleaseDate,
+            Overview = movie.Overview,
+            PosterPath = movie.PosterPath,
+            VoteAverage = movie.VoteAverage
+        };
+    }
+    
+    private static SearchCollection ConvertCollectionToSearchCollection(Collection collection)
+    {
+        return new SearchCollection
+        {
+            Id = collection.Id,
+            Name = collection.Name,
+            PosterPath = collection.PosterPath,
+            BackdropPath = collection.BackdropPath
+        };
+    }
+ }

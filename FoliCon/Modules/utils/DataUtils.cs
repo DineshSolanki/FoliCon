@@ -1,4 +1,6 @@
-﻿using NLog;
+﻿using FoliCon.Models.Data;
+using FoliCon.Models.Enums;
+using NLog;
 
 namespace FoliCon.Modules.utils;
 
@@ -26,4 +28,9 @@ public static class DataUtils
         Logger.Debug("End FormatRatingString() - Formatted Rating : {FormattedRatingValue}", formattedRatingValue);
         return formattedRatingValue;
     }
+    
+   public static bool ShouldUseParsedTitle(ParsedTitle parsedTitle)
+   {
+       return parsedTitle != null && (parsedTitle.Year != 0 || (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0"));
+   }
 }

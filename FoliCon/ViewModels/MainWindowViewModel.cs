@@ -402,7 +402,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             StatusBarProperties.AppStatusAdditional = itemTitle;
             // TODO: Set cursor to WAIT.
             var isAutoPicked = false;
-            var searchTitle = TitleCleaner.Clean(itemTitle);
+            var parsedTitle = TitleCleaner.CleanAndParse(itemTitle);
             var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
             var isPickedById = false;
             ResultResponse response;
@@ -416,8 +416,10 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
                 response = SearchMode == "Game"
-                    ? await _igdbObject.SearchGameAsync(searchTitle)
-                    : await _tmdbObject.SearchAsync(searchTitle, SearchMode);
+                    ? await _igdbObject.SearchGameAsync(parsedTitle.Title)
+                    : DataUtils.ShouldUseParsedTitle(parsedTitle)
+                        ? await _tmdbObject.SearchAsync(parsedTitle, SearchMode)
+                        : await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
             }
             int resultCount = isPickedById ? response.Result != null ? 1 : 0 : SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
             Logger.Info("Search Result Count: {ResultCount}", resultCount);
@@ -427,7 +429,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
                     MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
                         LangProvider.GetLang("NoResultFound")));
-                    _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath, response,
+                    _dialogService.ShowSearchResult(SearchMode, parsedTitle.Title, fullFolderPath, response,
                         _tmdbObject, _igdbObject, isPickedById,
                         r =>
                         {
@@ -488,7 +490,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                                          "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
                                          " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
                             
-                            _dialogService.ShowSearchResult(SearchMode, searchTitle, fullFolderPath,
+                            _dialogService.ShowSearchResult(SearchMode, parsedTitle.Title, fullFolderPath,
                                 response, _tmdbObject, _igdbObject, isPickedById,
                                 r =>
                                 {

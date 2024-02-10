@@ -96,6 +96,11 @@ public class Tmdb
         return _tmdbService.SearchAsync(query, searchMode);
     }
 
+    public Task<ResultResponse> SearchAsync(ParsedTitle parsedTitle, string searchMode)
+    {
+        return _tmdbService.SearchWithParamsAsync(parsedTitle, searchMode);
+    }
+    
     /// <summary>
     /// Searches TMDB media by ID as per media Type.
     /// </summary>

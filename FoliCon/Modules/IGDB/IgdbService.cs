@@ -1,4 +1,5 @@
-﻿using FoliCon.Models.Constants;
+﻿using System.Text;
+using FoliCon.Models.Constants;
 using FoliCon.Models.Data;
 using NLog;
 
