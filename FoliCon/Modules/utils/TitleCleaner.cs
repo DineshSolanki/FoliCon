@@ -78,7 +78,10 @@ internal static class TitleCleaner
             title = Regex.Replace(title, showIdPattern, "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
-        if (!yearMatch.Success) return (title, showIdType, showId, 0);
+        if (!yearMatch.Success)
+        {
+            return (title, showIdType, showId, 0);
+        }
         var year = Convert.ToInt32(yearMatch.Groups[1].Value);
         title = Regex.Replace(title, yearPattern, "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
