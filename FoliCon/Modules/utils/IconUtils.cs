@@ -10,7 +10,12 @@ namespace FoliCon.Modules.utils;
 public static class IconUtils
 {
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
-    
+    private const string ImageName = "folicon";
+
+    public static string GetImageName()
+    {
+        return ImageName;
+    }
     /// <summary>
     /// Creates Icons from PNG
     /// </summary>
@@ -28,8 +33,8 @@ public static class IconUtils
         foreach (var item in pickedListDataTable)
         {
             var folderName = item.FolderName;
-            var targetFile = $@"{selectedFolder}\{folderName}\{folderName}.ico";
-            var pngFilePath = $@"{selectedFolder}\{folderName}\{folderName}.png";
+            var targetFile = $@"{selectedFolder}\{folderName}\{ImageName}.ico";
+            var pngFilePath = $@"{selectedFolder}\{folderName}\{ImageName}.png";
             if (File.Exists(pngFilePath) && !File.Exists(targetFile))
             {
                 var rating = item.Rating;
@@ -46,7 +51,7 @@ public static class IconUtils
             }
             if (!File.Exists(targetFile)) continue;
             FileUtils.HideFile(targetFile);
-            FileUtils.SetFolderIcon($"{folderName}.ico", $@"{selectedFolder}\{folderName}");
+            FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{selectedFolder}\{folderName}");
         }
 
         FileUtils.ApplyChanges(selectedFolder);
