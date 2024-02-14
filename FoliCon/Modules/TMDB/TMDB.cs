@@ -58,6 +58,11 @@ public class Tmdb
     {
         return TmdbDataTransformer.ExtractCollectionDetailsIntoListItem(result);
     }
+    
+    public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(SearchContainer<SearchCollection> result)
+    {
+        return TmdbDataTransformer.ExtractCollectionDetailsIntoListItem(result);
+    }
 
     public static ObservableCollection<ListItem> ExtractMoviesDetailsIntoListItem(
         dynamic result)
