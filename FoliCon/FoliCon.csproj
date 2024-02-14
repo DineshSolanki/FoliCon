@@ -33,14 +33,14 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="IGDB" Version="3.0.0" />
     <PackageReference Include="Jot" Version="2.1.17" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
-    <PackageReference Include="NLog" Version="5.2.6" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2277.86" />
+    <PackageReference Include="NLog" Version="5.2.8" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="Polly" Version="8.2.0" />
+    <PackageReference Include="Polly" Version="8.3.0" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-    <PackageReference Include="Sentry" Version="3.41.2" />
-    <PackageReference Include="Sentry.NLog" Version="3.41.2" />
-    <PackageReference Include="TMDbLib" Version="2.0.0" />
+    <PackageReference Include="Sentry" Version="4.1.0" />
+    <PackageReference Include="Sentry.NLog" Version="4.1.0" />
+    <PackageReference Include="TMDbLib" Version="2.1.0" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="3.4.17" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
