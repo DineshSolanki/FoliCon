@@ -167,7 +167,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
         var tempImage = new ImageToDownload
         {
-            LocalPath = $"{currentPath}\\{Fnames[_i]}.png",
+            LocalPath = $"{currentPath}\\{IconUtils.GetImageName()}.png",
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);

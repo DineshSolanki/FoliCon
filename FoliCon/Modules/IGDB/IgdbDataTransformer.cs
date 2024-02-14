@@ -45,7 +45,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
     {
         ValidateGamePoster(game);
         var folderName = Path.GetFileName(fullFolderPath);
-        var localPosterPath = $@"{fullFolderPath}\{folderName}.png";
+        var localPosterPath = $@"{fullFolderPath}\{IconUtils.GetImageName()}.png";
         HandleGamePosterPath(game, fullFolderPath, localPosterPath, rating, folderName);
     }
 

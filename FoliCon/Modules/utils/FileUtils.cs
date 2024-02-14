@@ -49,8 +49,8 @@ public static class FileUtils
     public static void DeleteIconsFromFolder(string folderPath)
     {
         Logger.Debug("Deleting Icons from: {FolderPath}", folderPath);
-        var folderName = Path.GetFileName(folderPath);
-        var icoFile = Path.Combine(folderPath, $"{folderName}.ico");
+        
+        var icoFile = Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico");
         var iniFile = Path.Combine(folderPath, "desktop.ini");
         try
         {
@@ -94,7 +94,7 @@ public static class FileUtils
         if (!string.IsNullOrEmpty(folderPath))
         {
             folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
-                where !File.Exists(folder + @"\" + Path.GetFileName(folder) + ".ico")
+                where !File.Exists($@"{folder}\{IconUtils.GetImageName()}.ico")
                 select Path.GetFileName(folder));
         }
 
