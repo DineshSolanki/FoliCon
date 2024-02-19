@@ -38,7 +38,7 @@ public static class ProcessUtils
         try
         {
             Logger.Info("Checking WebView2 Runtime availability");
-            var availableBrowserVersionString = CoreWebView2Environment.GetAvailableBrowserVersionString();
+            var availableBrowserVersionString = CoreWebView2Environment.GetAvailableBrowserVersionString(string.Empty);
             Logger.Info($"WebView2 Runtime version {availableBrowserVersionString} is available");
         }
         catch (WebView2RuntimeNotFoundException exception)
