@@ -31,10 +31,9 @@ internal class TmdbDataTransformer
             var mediaName = item.Name;
             const string year = "";
             const string rating = "";
-            const string overview = "";
             var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null,
                 CultureInfo.InvariantCulture);
-            items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
+            items.Add(new ListItem(mediaName, year, rating, item.Overview, poster, "", item.Id.ToString()));
         }
 
         return items;
@@ -47,9 +46,8 @@ internal class TmdbDataTransformer
         var mediaName = result.Name;
         const string year = "";
         const string rating = "";
-        const string overview = "";
         var poster = Convert.ToString(result.PosterPath != null ? SmallPosterBase + result.PosterPath : null, CultureInfo.InvariantCulture);
-        items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
+        items.Add(new ListItem(mediaName, year, rating, result.Overview, poster, "", result.Id.ToString()));
 
         return items;
     }
