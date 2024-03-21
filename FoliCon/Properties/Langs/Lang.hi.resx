@@ -487,7 +487,8 @@
     <value>और देखे...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>सटीक शीर्षक मिलने पर भी पोस्टर विंडो दिखाएं। इससे आप उनके लिए अलग पोस्टर और कस्टम रेटिंग भी चुन सकेंगे
+ यह 'अस्पष्ट मीडिया पर ध्यान न दें' विकल्प को ओवरराइड करता है।</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>रेटिंग बैज दिखाएं</value>
@@ -614,5 +615,8 @@
     </data>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
       <value>WebView2 Runtime इंस्टॉल करें</value>
+    </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+      <value>इसे और {0} के बाकी मीडिया को छोड़ दे</value>
     </data>
 </root>
