@@ -487,7 +487,8 @@
     <value>أظهر المزيد...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>اعرض نافذة الملصق حتى إذا تم العثور على العنوان بالضبط ، فهذا سيتيح لك اختيار ملصق مختلف له وتقييم مخصص أيضًا
+ هذا يلغي خيار "تجاهل العنوان الغامض".</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>إظهار شارة التقييم</value>
@@ -614,5 +615,8 @@
     </data>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
       <value>تثبيت بيئة تشغيل WebView2</value>
+    </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+      <value>تخطي هذا وكل العناوين المتبقية لـ {0}</value>
     </data>
 </root>
