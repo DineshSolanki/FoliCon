@@ -612,4 +612,7 @@
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
     <value>تثبيت بيئة تشغيل WebView2</value>
   </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+    <value>تخطي هذا وكل العناوين المتبقية لـ {0}</value>
+  </data>
 </root>

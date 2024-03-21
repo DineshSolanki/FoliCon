@@ -1311,6 +1311,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skip this and all remaining titles of {0}.
+        /// </summary>
+        public static string SkipThisPlaceholderParent {
+            get {
+                return ResourceManager.GetString("SkipThisPlaceholderParent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skip this title..
         /// </summary>
         public static string SkipThisTitle {

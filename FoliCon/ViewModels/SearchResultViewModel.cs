@@ -23,6 +23,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private string _searchMode;
     private ListViewData _resultListViewData;
     private string _searchAgainTitle;
+    private string _skipAllText = LangProvider.GetLang("SkipThisPlaceholder");
     private List<string> _fileList;
     private ResultResponse _searchResult;
     private string _fullFolderPath;
@@ -79,6 +80,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     {
         get => _searchAgainTitle;
         set => SetProperty(ref _searchAgainTitle, value);
+    }
+
+    public string SkipAllText
+    {
+        get => _skipAllText;
+        set => SetProperty(ref _skipAllText, value);
     }
 
     public List<string> FileList
@@ -175,6 +182,8 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
         _fullFolderPath = parameters.GetValue<string>("folderpath");
         _isPickedById = parameters.GetValue<bool>("isPickedById");
+        var parent = Directory.GetParent(_fullFolderPath);
+        if (parent != null) SkipAllText = LangProvider.GetLang("SkipThisPlaceholderParent").Format(parent.Name);
         LoadData(SearchTitle);
         SearchAgainTitle = SearchTitle;
         FileList = FileUtils.GetFileNamesFromFolder(_fullFolderPath);

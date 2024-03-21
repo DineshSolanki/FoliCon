@@ -611,4 +611,7 @@ e renovar o cache dos Ícones?</value>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
     <value>Instalar Runtime do WebView2</value>
   </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+    <value>Ignorar este e todos os títulos restantes de {0}</value>
+  </data>
 </root>
