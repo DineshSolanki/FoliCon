@@ -391,7 +391,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         Logger.Debug("Entered ProcessPosterModeAsync method");
         IsMakeEnabled = false;
-        GlobalVariables.SkipAll = false;
         await ProcessPosterFolderAsync(SelectedFolder);
 
         StatusBarProperties.AppStatus = "Idle";
@@ -400,7 +399,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private async Task ProcessPosterFolderAsync(string folderPath)
     {
-        foreach (var subFolder in FileUtils.GetAllSubFolders(folderPath))
+        var folders = FileUtils.GetAllSubFolders(folderPath);
+        foreach (var subFolder in folders)
         {
             await ProcessPosterFolderAsync(subFolder);
         }
@@ -416,6 +416,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             Logger.Info("Search Result Count: {ResultCount}", resultCount);
             var dialogResult = false;
             var isAutoPicked = false;
+            var skipAll = false;
             switch (resultCount)
             {
                 case 0:
@@ -430,7 +431,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 {
                     if (resultCount >= 1)
                     {
-                        dialogResult = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
                     }
                     break;
                 }
@@ -447,7 +448,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 // TODO: Set cursor back to arrow here
             }
             StatusBarProperties.ProcessedFolder++;
-            if (!GlobalVariables.SkipAll) continue;
+            if (!skipAll) continue;
             Logger.Debug("Skip All selected, breaking loop");
             break;
         }
@@ -549,9 +550,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         return isAutoPicked;
     }
 
-    private async Task<bool> ProcessMultipleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
     {
-        var taskCompletionSource = new TaskCompletionSource<bool>();
+        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
         if (!IsPosterWindowShown && IsSkipAmbiguous) return await taskCompletionSource.Task;
         Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
                      "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
@@ -568,7 +569,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     ButtonResult.Cancel => false,
                     _ => false
                 };
-                taskCompletionSource.SetResult(dialogResult);
+                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
+                taskCompletionSource.SetResult((dialogResult, skipAll));
             });
         return await taskCompletionSource.Task;
     }

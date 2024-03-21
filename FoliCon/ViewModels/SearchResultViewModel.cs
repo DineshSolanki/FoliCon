@@ -128,12 +128,16 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         ResetPosterCommand = new DelegateCommand(ResetPoster);
         SkipAllCommand = new DelegateCommand(delegate
         {
-            GlobalVariables.SkipAll = true;
-            CloseDialog("false");
+            CloseDialog("false", true);
         });
     }
 
     protected virtual void CloseDialog(string parameter)
+    {
+        CloseDialog(parameter, false);
+    }
+
+    protected virtual void CloseDialog(string parameter, bool skipAll)
     {
         var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
         {
@@ -141,8 +145,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             "false" => ButtonResult.Cancel,
             _ => ButtonResult.None
         };
-
-        RaiseRequestClose(new DialogResult(result));
+        var parameters = new DialogParameters
+        {
+            { "skipAll", skipAll }
+        };
+        RaiseRequestClose(new DialogResult(result, parameters));
     }
 
     public virtual void RaiseRequestClose(IDialogResult dialogResult)
