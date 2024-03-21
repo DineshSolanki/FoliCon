@@ -487,7 +487,7 @@ e renovar o cache dos Ícones?</value>
     <value>Mostar mais...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>Mostar janela do poster mesmo que encontre um título exacto. Isto permite escolger um poster diferente e uma avaliação também &amp;#x0a; sobrepõem-se à opção 'Ignorar títulos Ambíguos'.</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Mostar selo de Avaliação</value>
@@ -614,5 +614,8 @@ e renovar o cache dos Ícones?</value>
     </data>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
       <value>Instalar Runtime do WebView2</value>
+    </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+      <value>Ignorar este e todos os títulos restantes de {0}</value>
     </data>
 </root>
