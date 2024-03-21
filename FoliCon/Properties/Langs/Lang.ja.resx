@@ -615,4 +615,7 @@ and refresh Icon Cache?</value>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
       <value>Install WebView2 Runtime</value>
     </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+      <value>Skip this and all remaining titles of {0}</value>
+    </data>
 </root>
