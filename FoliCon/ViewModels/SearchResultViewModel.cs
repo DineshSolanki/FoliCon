@@ -183,7 +183,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _fullFolderPath = parameters.GetValue<string>("folderpath");
         _isPickedById = parameters.GetValue<bool>("isPickedById");
         var parent = Directory.GetParent(_fullFolderPath);
-        if (parent != null) SkipAllText = LangProvider.GetLang("SkipThisPlaceholderParent").Format(parent.Name);
+        if (parent != null)
+        {
+            SkipAllText = LangProvider.GetLang("SkipThisPlaceholderParent").Format(parent.Name);
+        }
+
         LoadData(SearchTitle);
         SearchAgainTitle = SearchTitle;
         FileList = FileUtils.GetFileNamesFromFolder(_fullFolderPath);

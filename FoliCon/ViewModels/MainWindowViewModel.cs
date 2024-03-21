@@ -448,7 +448,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 // TODO: Set cursor back to arrow here
             }
             StatusBarProperties.ProcessedFolder++;
-            if (!skipAll) continue;
+            if (!skipAll)
+            {
+                continue;
+            }
+
             Logger.Debug("Skip All selected, breaking loop");
             break;
         }
@@ -553,7 +557,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
     {
         var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
-        if (!IsPosterWindowShown && IsSkipAmbiguous) return await taskCompletionSource.Task;
+        if (!IsPosterWindowShown && IsSkipAmbiguous)
+        {
+            return await taskCompletionSource.Task;
+        }
+
         Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
                      "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
                      " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
