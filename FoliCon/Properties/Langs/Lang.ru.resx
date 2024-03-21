@@ -487,7 +487,8 @@
     <value>Показать больше...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
-    <value>Show poster window even if exact title found.this would let you chose different poster for them and custom rating also &#x0a; this overrides 'Ignore Ambiguous title' option.</value>
+    <value>Показывать окно плаката, даже если найден точный заголовок. Это позволит вам выбрать для них другой плакат, а также пользовательский рейтинг
+ это отменяет опцию «Игнорировать неоднозначное название».</value>
   </data>
   <data name="ShowRatingBadge" xml:space="preserve">
     <value>Показать значок рейтинга</value>
@@ -617,5 +618,8 @@
     </data>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
       <value>Установить исполняющую среду WebView2</value>
+    </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+      <value>Пропустить этот и все оставшиеся заголовки {0}</value>
     </data>
 </root>
