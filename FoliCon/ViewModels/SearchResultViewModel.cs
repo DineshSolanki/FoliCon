@@ -23,6 +23,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private string _searchMode;
     private ListViewData _resultListViewData;
     private string _searchAgainTitle;
+    private string _skipAllText = LangProvider.GetLang("SkipThisPlaceholder");
     private List<string> _fileList;
     private ResultResponse _searchResult;
     private string _fullFolderPath;
@@ -81,6 +82,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         set => SetProperty(ref _searchAgainTitle, value);
     }
 
+    public string SkipAllText
+    {
+        get => _skipAllText;
+        set => SetProperty(ref _skipAllText, value);
+    }
+
     public List<string> FileList
     {
         get => _fileList;
@@ -128,12 +135,16 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         ResetPosterCommand = new DelegateCommand(ResetPoster);
         SkipAllCommand = new DelegateCommand(delegate
         {
-            GlobalVariables.SkipAll = true;
-            CloseDialog("false");
+            CloseDialog("false", true);
         });
     }
 
     protected virtual void CloseDialog(string parameter)
+    {
+        CloseDialog(parameter, false);
+    }
+
+    protected virtual void CloseDialog(string parameter, bool skipAll)
     {
         var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
         {
@@ -141,8 +152,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             "false" => ButtonResult.Cancel,
             _ => ButtonResult.None
         };
-
-        RaiseRequestClose(new DialogResult(result));
+        var parameters = new DialogParameters
+        {
+            { "skipAll", skipAll }
+        };
+        RaiseRequestClose(new DialogResult(result, parameters));
     }
 
     public virtual void RaiseRequestClose(IDialogResult dialogResult)
@@ -168,6 +182,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _igdbObject = parameters.GetValue<IgdbClass>("igdbObject");
         _fullFolderPath = parameters.GetValue<string>("folderpath");
         _isPickedById = parameters.GetValue<bool>("isPickedById");
+        var parent = Directory.GetParent(_fullFolderPath);
+        if (parent != null)
+        {
+            SkipAllText = LangProvider.GetLang("SkipThisPlaceholderParent").Format(parent.Name);
+        }
+
         LoadData(SearchTitle);
         SearchAgainTitle = SearchTitle;
         FileList = FileUtils.GetFileNamesFromFolder(_fullFolderPath);

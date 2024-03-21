@@ -32,9 +32,13 @@ public static class IconUtils
 
         foreach (var item in pickedListDataTable)
         {
+            var parent = Directory.GetParent(item.Folder);
+            var parentFolder = parent != null
+                ? parent.FullName
+                : selectedFolder;
             var folderName = item.FolderName;
-            var targetFile = $@"{selectedFolder}\{folderName}\{ImageName}.ico";
-            var pngFilePath = $@"{selectedFolder}\{folderName}\{ImageName}.png";
+            var targetFile = $@"{parentFolder}\{folderName}\{ImageName}.ico";
+            var pngFilePath = $@"{parentFolder}\{folderName}\{ImageName}.png";
             if (File.Exists(pngFilePath) && !File.Exists(targetFile))
             {
                 var rating = item.Rating;
@@ -51,7 +55,7 @@ public static class IconUtils
             }
             if (!File.Exists(targetFile)) continue;
             FileUtils.HideFile(targetFile);
-            FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{selectedFolder}\{folderName}");
+            FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{parentFolder}\{folderName}");
         }
 
         FileUtils.ApplyChanges(selectedFolder);

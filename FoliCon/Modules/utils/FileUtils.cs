@@ -101,6 +101,10 @@ public static class FileUtils
         return folderNames;
     }
 
+    public static string[] GetAllSubFolders(string folderPath)
+    {
+        return Directory.GetDirectories(folderPath);
+    }
     /// <summary>
     /// Get List of file in given folder.
     /// </summary>

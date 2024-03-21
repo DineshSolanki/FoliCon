@@ -615,4 +615,7 @@
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
     <value>Установить исполняющую среду WebView2</value>
   </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+    <value>Пропустить этот и все оставшиеся заголовки {0}</value>
+  </data>
 </root>

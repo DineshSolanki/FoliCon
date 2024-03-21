@@ -391,120 +391,48 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         Logger.Debug("Entered ProcessPosterModeAsync method");
         IsMakeEnabled = false;
-        GlobalVariables.SkipAll = false;
-        foreach (var itemTitle in Fnames)
+        await ProcessPosterFolderAsync(SelectedFolder);
+
+        StatusBarProperties.AppStatus = "Idle";
+        StatusBarProperties.AppStatusAdditional = "";
+    }
+
+    private async Task ProcessPosterFolderAsync(string folderPath)
+    {
+        var folders = FileUtils.GetAllSubFolders(folderPath);
+        foreach (var subFolder in folders)
         {
-            var fullFolderPath = $@"{SelectedFolder}\{itemTitle}";
+            await ProcessPosterFolderAsync(subFolder);
+        }
+        var subfolderNames = FileUtils.GetFolderNames(folderPath);
+        foreach (var itemTitle in subfolderNames)
+        {
+            var fullFolderPath = $@"{folderPath}\{itemTitle}";
             
             Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
-            var dialogResult = false;
-            StatusBarProperties.AppStatus = "Searching";
-            StatusBarProperties.AppStatusAdditional = itemTitle;
-            // TODO: Set cursor to WAIT.
-            var isAutoPicked = false;
-            var parsedTitle = TitleCleaner.CleanAndParse(itemTitle);
-            var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
-            var isPickedById = false;
-            ResultResponse response;
-            if (id != null && mediaType != null)
-            {
-                Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
-                isPickedById = true;
-                response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
-            }
-            else
-            {
-                Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
-                response = SearchMode == "Game"
-                    ? await _igdbObject.SearchGameAsync(parsedTitle.Title)
-                    : DataUtils.ShouldUseParsedTitle(parsedTitle)
-                        ? await _tmdbObject.SearchAsync(parsedTitle, SearchMode)
-                        : await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
-            }
-            int resultCount = isPickedById ? response.Result != null ? 1 : 0 : SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+            var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
+
+            var resultCount = CalculateResultCount(response, isPickedById);
             Logger.Info("Search Result Count: {ResultCount}", resultCount);
+            var dialogResult = false;
+            var isAutoPicked = false;
+            var skipAll = false;
             switch (resultCount)
             {
                 case 0:
-                    Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
-                    MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
-                        LangProvider.GetLang("NoResultFound")));
-                    _dialogService.ShowSearchResult(SearchMode, parsedTitle.Title, fullFolderPath, response,
-                        _tmdbObject, _igdbObject, isPickedById,
-                        r =>
-                        {
-                            dialogResult = r.Result switch
-                            {
-                                ButtonResult.None => false,
-                                ButtonResult.OK => true,
-                                ButtonResult.Cancel => false,
-                                _ => false
-                            };
-                        });
+                    dialogResult = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
                     break;
                 case 1 when !IsPosterWindowShown:
                 {
-                    Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
-                        itemTitle, SearchMode);
-                    try
-                    {
-                        if (isPickedById ? mediaType == "Game" : SearchMode == "Game")
-                        {
-                            var result = response.Result[0];
-                            _igdbObject.ResultPicked(result, fullFolderPath);
-                        }
-                        else
-                        {
-                            var result = isPickedById
-                                ? response.Result
-                                : response.Result.Results[0];
-                            _tmdbObject.ResultPicked(result, response.MediaType,
-                                fullFolderPath, "", isPickedById);
-                        }
-
-                        isAutoPicked = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.ForErrorEvent().Message("ProcessPosterModeAsync: Exception Occurred. message: {Message}", ex.Message)
-                            .Exception(ex).Log();
-                        if (ex.Message == "NoPoster")
-                        {
-                            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
-                        }
-#if DEBUG
-                        MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
-#endif
-                        isAutoPicked = false;
-                    }
-
+                    isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
                     break;
                 }
                 default:
                 {
                     if (resultCount >= 1)
                     {
-                        if (IsPosterWindowShown || !IsSkipAmbiguous)
-                        {
-                            Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
-                                         "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
-                                         " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
-                            
-                            _dialogService.ShowSearchResult(SearchMode, parsedTitle.Title, fullFolderPath,
-                                response, _tmdbObject, _igdbObject, isPickedById,
-                                r =>
-                                {
-                                    dialogResult = r.Result switch
-                                    {
-                                        ButtonResult.None => false,
-                                        ButtonResult.OK => true,
-                                        ButtonResult.Cancel => false,
-                                        _ => false
-                                    };
-                                });
-                        }
+                        (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
                     }
-
                     break;
                 }
             }
@@ -520,15 +448,141 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 // TODO: Set cursor back to arrow here
             }
             StatusBarProperties.ProcessedFolder++;
-            if (!GlobalVariables.SkipAll) continue;
+            if (!skipAll)
+            {
+                continue;
+            }
+
             Logger.Debug("Skip All selected, breaking loop");
             break;
         }
-
-        StatusBarProperties.AppStatus = "Idle";
-        StatusBarProperties.AppStatusAdditional = "";
     }
 
+    private async Task<(ResultResponse response, ParsedTitle parsedTitle, bool isPickedById, string mediaType)> PerformPreprocessing(string itemTitle, string fullFolderPath)
+    {
+        StatusBarProperties.AppStatus = "Searching";
+        StatusBarProperties.AppStatusAdditional = itemTitle;
+        var parsedTitle = TitleCleaner.CleanAndParse(itemTitle);
+        var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
+        var isPickedById = false;
+        ResultResponse response;
+        if (id != null && mediaType != null)
+        {
+            Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
+            isPickedById = true;
+            response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+        }
+        else
+        {
+            Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
+            response = SearchMode == "Game"
+                ? await _igdbObject.SearchGameAsync(parsedTitle.Title)
+                : DataUtils.ShouldUseParsedTitle(parsedTitle)
+                    ? await _tmdbObject.SearchAsync(parsedTitle, SearchMode)
+                    : await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
+        }
+
+        return (response, parsedTitle, isPickedById, mediaType);
+    }
+
+    private int CalculateResultCount(ResultResponse response, bool isPickedById)
+    {
+        return isPickedById ? response.Result != null ? 1 : 0 :
+            SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+    }
+
+    private async Task<bool> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    {
+        Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
+        MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
+            LangProvider.GetLang("NoResultFound")));
+    
+        var taskCompletionSource = new TaskCompletionSource<bool>();
+
+        _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath, response,
+            _tmdbObject, _igdbObject, isPickedById,
+            r =>
+            {
+                var dialogResult = r.Result switch
+                {
+                    ButtonResult.None => false,
+                    ButtonResult.OK => true,
+                    ButtonResult.Cancel => false,
+                    _ => false
+                };
+                taskCompletionSource.SetResult(dialogResult);
+            });
+        return await taskCompletionSource.Task;
+    }
+
+    private bool ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, bool isPickedById, string mediaType)
+    {
+        bool isAutoPicked;
+        Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
+            itemTitle, SearchMode);
+        try
+        {
+            if (isPickedById ? mediaType == "Game" : SearchMode == "Game")
+            {
+                var result = response.Result[0];
+                _igdbObject.ResultPicked(result, fullFolderPath);
+            }
+            else
+            {
+                var result = isPickedById
+                    ? response.Result
+                    : response.Result.Results[0];
+                _tmdbObject.ResultPicked(result, response.MediaType,
+                    fullFolderPath, "", isPickedById);
+            }
+
+            isAutoPicked = true;
+        }
+        catch (Exception ex)
+        {
+            Logger.ForErrorEvent().Message("ProcessPosterModeAsync: Exception Occurred. message: {Message}", ex.Message)
+                .Exception(ex).Log();
+            if (ex.Message == "NoPoster")
+            {
+                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
+            }
+#if DEBUG
+            MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+#endif
+            isAutoPicked = false;
+        }
+        return isAutoPicked;
+    }
+
+    private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    {
+        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
+        if (!IsPosterWindowShown && IsSkipAmbiguous)
+        {
+            return await taskCompletionSource.Task;
+        }
+
+        Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
+                     "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
+                     " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
+                            
+        _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath,
+            response, _tmdbObject, _igdbObject, isPickedById,
+            r =>
+            {
+                var dialogResult = r.Result switch
+                {
+                    ButtonResult.None => false,
+                    ButtonResult.OK => true,
+                    ButtonResult.Cancel => false,
+                    _ => false
+                };
+                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
+                taskCompletionSource.SetResult((dialogResult, skipAll));
+            });
+        return await taskCompletionSource.Task;
+    }
+    
     private void ProcessProfessionalMode()
     {
         Logger.Debug("Entered ProcessProfessionalMode method");

@@ -612,4 +612,7 @@
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
     <value>WebView2 Runtime इंस्टॉल करें</value>
   </data>
+  <data name="SkipThisPlaceholderParent" xml:space="preserve">
+    <value>इसे और {0} के बाकी मीडिया को छोड़ दे</value>
+  </data>
 </root>
