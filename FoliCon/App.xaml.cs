@@ -26,7 +26,7 @@ public partial class App
         LogManager.Configuration = LogUtils.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
-        Logger.Info("FoliCon Initilized");
+        Logger.Info("FoliCon Initialized");
     }
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)

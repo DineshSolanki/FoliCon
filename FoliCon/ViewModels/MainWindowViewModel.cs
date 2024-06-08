@@ -251,7 +251,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             _dialogService.ShowPreviewer(_ => { });
         });
-        Logger.Info("Application Started, Initilizing MainWindowViewModel.");
+        Logger.Info("Application Started, Initializing MainWindowViewModel.");
         _dialogService = dialogService;
         Services.Tracker.Configure<MainWindowViewModel>()
             .Property(p => p.IsRatingVisible, false)
