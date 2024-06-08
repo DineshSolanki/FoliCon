@@ -210,6 +210,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public DelegateCommand ApiConfigCommand { get; set; }
     public DelegateCommand PosterIconConfigCommand { get; set; }
+    public DelegateCommand SubfolderProcessingConfigCommand { get; set; }
 
     #endregion SettingMenu
 
@@ -604,6 +605,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         Logger.Debug("Initializing Delegates for MainWindow.");
         ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(_ => { }); });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
+        SubfolderProcessingConfigCommand = new DelegateCommand(delegate { _dialogService.ShowSubfolderProcessingConfig(_ => { }); });
         AboutCommand = new DelegateCommand(AboutMethod);
         DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
         DeleteMediaInfoCommand = new DelegateCommand(DeleteMediaInfo);

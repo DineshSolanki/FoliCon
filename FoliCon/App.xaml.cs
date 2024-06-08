@@ -37,6 +37,7 @@ public partial class App
         containerRegistry.RegisterDialog<ApiConfiguration, ApiConfigurationViewModel>("ApiConfig");
         containerRegistry.RegisterDialog<CustomIconControl, CustomIconControlViewModel>("CustomIcon");
         containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
+        containerRegistry.RegisterDialog<Patterns, PatternsViewModel>("SubfolderProcessingConfig");
         containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");

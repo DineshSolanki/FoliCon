@@ -12,4 +12,6 @@ public class AppConfig : GlobalDataHelper
     public override string FileName { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"FoliConConfig.json");
     public override JsonSerializerOptions JsonSerializerOptions { get; set; }
     public override int FileVersion { get; set; }
+
+    public bool SubfolderProcessingEnabled { get; set; }
 }

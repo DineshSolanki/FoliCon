@@ -69,6 +69,7 @@
                     <Separator />
                     <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
                               Command="{Binding PosterIconConfigCommand}" />
+                    <MenuItem x:Name="MenuSubfolderProcessingConfigBtn" Header="Subfolder processing" Command="{Binding SubfolderProcessingConfigCommand}"/>
                     <MenuItem x:Name="MenuApiConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
                               Command="{Binding ApiConfigCommand}" />
                     <Separator />
