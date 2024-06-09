@@ -33,4 +33,17 @@ public static class DataUtils
    {
        return parsedTitle != null && (parsedTitle.Year != 0 || (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0"));
    }
+   
+   public static bool IsValidRegex(string pattern)
+   {
+       try
+       {
+           _ = new Regex(pattern);
+           return true;
+       }
+       catch (ArgumentException)
+       {
+           return false;
+       }
+   }
 }

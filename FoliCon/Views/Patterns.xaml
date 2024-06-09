@@ -19,7 +19,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="10">
             <hc:TextBox x:Name="TxtPattern" hc:InfoElement.Placeholder="Enter valid regex pattern"
-                        Margin="0,0,10,0" Style="{StaticResource TextBoxExtend}"/>
+                        Margin="0,0,10,0" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Necessary="True"/>
             <Button x:Name="BtnAdd" Content="Add" Command="{Binding AddCommand}" 
                     CommandParameter="{Binding ElementName=TxtPattern, Path=Text}" 
                     Style="{StaticResource ButtonSuccess}"/>
@@ -43,7 +43,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <hc:TextBox Style="{StaticResource TextBoxExtend}"/>
+                                <hc:TextBox MinWidth="100" Style="{StaticResource TextBoxPlus.Small}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -1,10 +1,7 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using FoliCon.Models.Data;
+﻿using FoliCon.Models.Data;
 using FoliCon.Modules.Configuration;
+using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
 
 namespace FoliCon.ViewModels;
 
@@ -49,12 +46,28 @@ public class PatternsViewModel : BindableBase, IDialogAware
         
     private void AddPattern(string regex)
     {
-        PatternsList.Add(new Pattern(regex, true));
+        var trimmedRegex = regex?.Trim();
+        if (IsValidPattern(trimmedRegex))
+        {
+            PatternsList.Add(new Pattern(trimmedRegex, true));
+        }
     }
-        
+    
     private void RemovePattern(Pattern pattern)
     {
         PatternsList.Remove(pattern);
+    }
+    
+    private bool IsValidPattern(string pattern)
+    {
+        if (!string.IsNullOrWhiteSpace(pattern)
+            && !PatternsList.Any(p => p.Regex == pattern)
+            && DataUtils.IsValidRegex(pattern)) return true;
+        if (!DataUtils.IsValidRegex(pattern))
+        {
+            MessageBox.Show(CustomMessageBox.Error("The regex you entered is invalid. Please try again.", "Invalid regex"));
+        }
+        return false;
     }
     
     #region DialogMethods
