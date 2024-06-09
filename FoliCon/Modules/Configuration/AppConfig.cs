@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Modules.Configuration;
+﻿using FoliCon.Models.Data;
+
+namespace FoliCon.Modules.Configuration;
 
 public class AppConfig : GlobalDataHelper
 {
@@ -14,4 +16,6 @@ public class AppConfig : GlobalDataHelper
     public override int FileVersion { get; set; }
 
     public bool SubfolderProcessingEnabled { get; set; }
+    
+    public ObservableCollection<Pattern> Patterns { get; set; }
 }
