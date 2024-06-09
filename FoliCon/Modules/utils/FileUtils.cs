@@ -105,6 +105,14 @@ public static class FileUtils
     {
         return Directory.GetDirectories(folderPath);
     }
+    public static string[] GetAllSubFolders(string folderPath, ObservableCollection<Pattern> patterns)
+    {
+        return Directory.GetDirectories(folderPath).Where(folder =>
+        {
+            var folderName = Path.GetFileName(folder);
+            return patterns.Any(p => Regex.IsMatch(folderName, p.Regex));
+        }).ToArray();
+    }
     /// <summary>
     /// Get List of file in given folder.
     /// </summary>
