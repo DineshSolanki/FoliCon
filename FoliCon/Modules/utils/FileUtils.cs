@@ -105,13 +105,26 @@ public static class FileUtils
     {
         return Directory.GetDirectories(folderPath);
     }
-    public static string[] GetAllSubFolders(string folderPath, ObservableCollection<Pattern> patterns)
+    public static IEnumerable<string> GetAllSubFolders(string folderPath, ObservableCollection<Pattern> patterns)
     {
-        return Directory.GetDirectories(folderPath).Where(folder =>
-        {
-            var folderName = Path.GetFileName(folder);
-            return patterns.Any(p => Regex.IsMatch(folderName, p.Regex));
-        }).ToArray();
+        return Directory.GetDirectories(folderPath)
+            .Select(directoryPath => new DirectoryInfo(directoryPath))
+            .Where(ValidateDirectoryInfo)
+            .Where(directoryInfo => PatternsMatch(directoryInfo, patterns))
+            .Select(directoryInfo => directoryInfo.FullName);
+    }
+
+    private static bool ValidateDirectoryInfo(DirectoryInfo directoryInfo)
+    {
+        var isHiddenOrSystem = (directoryInfo.Attributes & (FileAttributes.Hidden | FileAttributes.System)) != 0;
+        var startsWithDot = directoryInfo.Name.StartsWith(".");
+
+        return !isHiddenOrSystem && !startsWithDot;
+    }
+
+    private static bool PatternsMatch(DirectoryInfo directoryInfo, IEnumerable<Pattern> patterns)
+    {
+        return patterns.Any(pattern => Regex.IsMatch(directoryInfo.Name, pattern.Regex));
     }
     /// <summary>
     /// Get List of file in given folder.
