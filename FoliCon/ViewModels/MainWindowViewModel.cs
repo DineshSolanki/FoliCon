@@ -400,10 +400,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private async Task ProcessPosterFolderAsync(string folderPath)
     {
-        var folders = FileUtils.GetAllSubFolders(folderPath);
-        foreach (var subFolder in folders)
+        if (Services.Settings.SubfolderProcessingEnabled)
         {
-            await ProcessPosterFolderAsync(subFolder);
+            Logger.Debug("Subfolder Processing Enabled, Processing Subfolders.");
+            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+            foreach (var subFolder in folders)
+            {
+                await ProcessPosterFolderAsync(subFolder);
+            }
         }
         var subfolderNames = FileUtils.GetFolderNames(folderPath);
         foreach (var itemTitle in subfolderNames)
