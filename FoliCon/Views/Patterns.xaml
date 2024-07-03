@@ -13,6 +13,7 @@
              d:DataContext="{d:DesignInstance viewModels:PatternsViewModel}">
     <UserControl.Resources>
         <convertor:RegexValidationConverter x:Key="RegexValidationConverter"/>
+        <hc:Boolean2BooleanReConverter x:Key="InverseBooleanConverter"/>
         <Style x:Key="ValidatingTextBoxExtend" BasedOn="{StaticResource TextBoxExtend}" TargetType="TextBox">
             <Style.Triggers>
                 <DataTrigger Value="false">
@@ -46,14 +47,21 @@
         <DataGrid x:Name="DgPatterns" Grid.Row="1" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding PatternsList}"
                   SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Pattern" Binding="{Binding Regex}" Width="auto"/>
+                <DataGridTemplateColumn Header="Pattern" Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <hc:TextBox Text="{Binding Regex}" IsReadOnly="{Binding IsReadOnly}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnabled}"/>
                 <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Remove" Command="{Binding DataContext.RemoveCommand, 
-                            RelativeSource={RelativeSource AncestorType=DataGrid}}" 
-                                    Style="{StaticResource ButtonDanger}" CommandParameter="{Binding}"/>
+                            <Button Content="Remove" IsEnabled="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+                                    Command="{Binding DataContext.RemoveCommand, 
+                            RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    Style="{StaticResource ButtonDanger}" CommandParameter="{Binding}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
