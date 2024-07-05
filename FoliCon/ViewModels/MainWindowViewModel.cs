@@ -402,7 +402,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         if (Services.Settings.SubfolderProcessingEnabled)
         {
-            Logger.Debug("Subfolder Processing Enabled, Processing Subfolders.");
+            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
             var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
             foreach (var subFolder in folders)
             {

@@ -2,6 +2,7 @@
 using FoliCon.Modules.Configuration;
 using FoliCon.Modules.UI;
 using FoliCon.Modules.utils;
+using NLog;
 
 namespace FoliCon.ViewModels;
 
@@ -9,9 +10,10 @@ public class PatternsViewModel : BindableBase, IDialogAware
 {
 
     #region Variables
+    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+
     public string Title => "Patterns";
 
-    public string test { get; set; } = "4522";
     private ObservableCollection<Pattern> _patterns;
     private bool _subfolderProcessingEnabled;
         
@@ -47,25 +49,24 @@ public class PatternsViewModel : BindableBase, IDialogAware
     private void AddPattern(string regex)
     {
         var trimmedRegex = regex?.Trim();
-        if (IsValidPattern(trimmedRegex))
-        {
-            PatternsList.Add(new Pattern(trimmedRegex, true));
-        }
+        if (!IsValidPattern(trimmedRegex)) return;
+        Logger.Debug("Adding pattern: {Regex}", trimmedRegex);
+        PatternsList.Add(new Pattern(trimmedRegex, true));
     }
     
     private void RemovePattern(Pattern pattern)
     {
+        Logger.Debug("Removing pattern: {Regex}", pattern.Regex);
         PatternsList.Remove(pattern);
     }
     
     private bool IsValidPattern(string pattern)
     {
         if (!string.IsNullOrWhiteSpace(pattern)
-            && !PatternsList.Any(p => p.Regex == pattern)
-            && DataUtils.IsValidRegex(pattern)) return true;
+            && PatternsList.All(p => p.Regex != pattern) && DataUtils.IsValidRegex(pattern)) return true;
         if (!DataUtils.IsValidRegex(pattern))
         {
-            MessageBox.Show(CustomMessageBox.Error("The regex you entered is invalid. Please try again.", "Invalid regex"));
+            MessageBox.Show(CustomMessageBox.Error("The regex pattern entered is invalid. Ensure it follows the correct syntax (e.g., ^[A-Za-z0-9]+$).", "Invalid regex"));
         }
         return false;
     }
@@ -73,23 +74,6 @@ public class PatternsViewModel : BindableBase, IDialogAware
     #region DialogMethods
 
     public event Action<IDialogResult> RequestClose;
-
-    protected virtual void CloseDialog(string parameter)
-    {
-        var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
-        {
-            "true" => ButtonResult.OK,
-            "false" => ButtonResult.Cancel,
-            _ => ButtonResult.None
-        };
-
-        RaiseRequestClose(new DialogResult(result));
-    }
-
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
-    {
-        RequestClose?.Invoke(dialogResult);
-    }
 
     public virtual bool CanCloseDialog()
     {

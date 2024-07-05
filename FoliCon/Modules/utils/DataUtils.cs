@@ -38,11 +38,14 @@ public static class DataUtils
    {
        try
        {
+           Logger.Trace("Checking if the pattern {Pattern}is a valid regex.", pattern);
            _ = new Regex(pattern);
+           Logger.Trace("Pattern {Pattern} is a valid regex.", pattern);
            return true;
        }
-       catch (ArgumentException)
+       catch (ArgumentException e)
        {
+              Logger.Trace("Pattern {Pattern} is not a valid regex. reason: {Reason}", pattern, e.Message);
            return false;
        }
    }
