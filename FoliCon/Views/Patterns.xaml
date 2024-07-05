@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <convertor:RegexValidationConverter x:Key="RegexValidationConverter"/>
         <hc:Boolean2BooleanReConverter x:Key="InverseBooleanConverter"/>
-        <Style x:Key="ValidatingTextBoxExtend" BasedOn="{StaticResource TextBoxExtend}" TargetType="TextBox">
+        <Style x:Key="ValidatingTextBoxExtend" BasedOn="{StaticResource TextBoxPlusBaseStyle}" TargetType="hc:TextBox">
             <Style.Triggers>
                 <DataTrigger Value="false">
                     <DataTrigger.Binding>
@@ -23,8 +23,8 @@
                             <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}" Path="Item.Regex"/>
                         </MultiBinding>
                     </DataTrigger.Binding>
-                    <Setter Property="Background" Value="Red"/>
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Background" Value="LightCoral"/>
+                    <Setter Property="Foreground" Value="Black"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -37,11 +37,11 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="10">
-            <hc:TextBox x:Name="TxtPattern" hc:InfoElement.Placeholder="Enter valid regex pattern"
+            <hc:TextBox x:Name="TxtPattern" hc:InfoElement.Placeholder="Please enter a valid regular expression pattern."
                         Margin="0,0,10,0" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Necessary="True"/>
-            <Button x:Name="BtnAdd" Content="Add" Command="{Binding AddCommand}" 
+            <Button x:Name="BtnAdd" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Command="{Binding AddCommand}" 
                     CommandParameter="{Binding ElementName=TxtPattern, Path=Text}" 
-                    Style="{StaticResource ButtonSuccess}"/>
+                    Style="{StaticResource ButtonIcon}" BorderThickness="1" BorderBrush="Black" Foreground="{DynamicResource PrimaryTextBrush}"/>
         </StackPanel>
 
         <DataGrid x:Name="DgPatterns" Grid.Row="1" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding PatternsList}"
@@ -58,23 +58,24 @@
                 <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Remove" IsEnabled="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
+                            <Button hc:IconElement.Geometry="{StaticResource RemoveGeometry}" IsEnabled="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
                                     Command="{Binding DataContext.RemoveCommand, 
                             RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                    Style="{StaticResource ButtonDanger}" CommandParameter="{Binding}" />
+                                    Style="{StaticResource ButtonIcon}" CommandParameter="{Binding}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="Test">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox x:Name="TestInput" Style="{StaticResource ValidatingTextBoxExtend}" hc:InfoElement.Placeholder="Enter text to test"/>       
+                            <hc:TextBox x:Name="TestInput" Style="{StaticResource ValidatingTextBoxExtend}"
+                                        hc:InfoElement.ShowClearButton="True" hc:Empty.ShowEmpty="True"/>       
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <CheckBox x:Name="ChkEnableFeature" IsChecked="{Binding SubfolderProcessingEnabled}" Content="Enable Feature" Grid.Row="2" Margin="10" />
+        <CheckBox x:Name="ChkEnableFeature" IsChecked="{Binding SubfolderProcessingEnabled}" Content="Enable subfolder processing" Grid.Row="2" Margin="10" />
     </Grid>
 </UserControl>
