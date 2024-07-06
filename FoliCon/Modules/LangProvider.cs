@@ -34,6 +34,7 @@ public class LangProvider : INotifyPropertyChanged
     private void UpdateLangs()
     {
         OnPropertyChanged(nameof(About));
+        OnPropertyChanged(nameof(Action));
         OnPropertyChanged(nameof(AddToContextMenu));
         OnPropertyChanged(nameof(All));
         OnPropertyChanged(nameof(AlwaysShowPosterWindow));
@@ -79,10 +80,13 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(DownloadingIconWithCount));
         OnPropertyChanged(nameof(DownloadIt));
         OnPropertyChanged(nameof(EmptyDirectory));
+        OnPropertyChanged(nameof(Enabled));
         OnPropertyChanged(nameof(EnableErrorReporting));
         OnPropertyChanged(nameof(EnableErrorReportingTip));
+        OnPropertyChanged(nameof(EnableSubfolderProcessing));
         OnPropertyChanged(nameof(English));
         OnPropertyChanged(nameof(EnterTitlePlaceholder));
+        OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
         OnPropertyChanged(nameof(ExplorerIntegration));
         OnPropertyChanged(nameof(FailedFileAccessAt));
         OnPropertyChanged(nameof(FailedToSaveMediaInfoAt));
@@ -110,6 +114,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Ignore));
         OnPropertyChanged(nameof(IgnoreAmbiguousTitle));
         OnPropertyChanged(nameof(InvalidPath));
+        OnPropertyChanged(nameof(InvalidRegex));
+        OnPropertyChanged(nameof(InvalidRegexMessage));
         OnPropertyChanged(nameof(License));
         OnPropertyChanged(nameof(LicenseInfo));
         OnPropertyChanged(nameof(Load));
@@ -136,6 +142,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Or));
         OnPropertyChanged(nameof(OutOf));
         OnPropertyChanged(nameof(Overlay));
+        OnPropertyChanged(nameof(Pattern));
+        OnPropertyChanged(nameof(Patterns));
         OnPropertyChanged(nameof(PickIconWithName));
         OnPropertyChanged(nameof(PickSelected));
         OnPropertyChanged(nameof(Poster));
@@ -171,6 +179,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(SkipThisTitle));
         OnPropertyChanged(nameof(Spanish));
         OnPropertyChanged(nameof(StopSearching));
+        OnPropertyChanged(nameof(SubfolderProcessing));
+        OnPropertyChanged(nameof(Test));
         OnPropertyChanged(nameof(Theme));
         OnPropertyChanged(nameof(ThemeDark));
         OnPropertyChanged(nameof(ThemeLight));
@@ -192,19 +202,10 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(WritePermissionAllowed));
         OnPropertyChanged(nameof(WritePermissionNotAllowed));
         OnPropertyChanged(nameof(Year));
-        OnPropertyChanged(nameof(SubfolderProcessing));
-        OnPropertyChanged(nameof(Patterns));
-        OnPropertyChanged(nameof(InvalidRegexMessage));
-        OnPropertyChanged(nameof(InvalidRegex));
-        OnPropertyChanged(nameof(Enabled));
-        OnPropertyChanged(nameof(Action));
-        OnPropertyChanged(nameof(Test));
-        OnPropertyChanged(nameof(EnableSubfolderProcessing));
-        OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
-        OnPropertyChanged(nameof(Pattern));
     }
 
     public string About => Lang.About;
+    public string Action => Lang.Action;
     public string AddToContextMenu => Lang.AddToContextMenu;
     public string All => Lang.All;
     public string AlwaysShowPosterWindow => Lang.AlwaysShowPosterWindow;
@@ -250,10 +251,13 @@ public class LangProvider : INotifyPropertyChanged
     public string DownloadingIconWithCount => Lang.DownloadingIconWithCount;
     public string DownloadIt => Lang.DownloadIt;
     public string EmptyDirectory => Lang.EmptyDirectory;
+    public string Enabled => Lang.Enabled;
     public string EnableErrorReporting => Lang.EnableErrorReporting;
     public string EnableErrorReportingTip => Lang.EnableErrorReportingTip;
+    public string EnableSubfolderProcessing => Lang.EnableSubfolderProcessing;
     public string English => Lang.English;
     public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
+    public string EnterValidRegexPlaceholder => Lang.EnterValidRegexPlaceholder;
     public string ExceptionOccurred => Lang.ExceptionOccurred;
     public string ExplorerIntegration => Lang.ExplorerIntegration;
     public string FailedFileAccessAt => Lang.FailedFileAccessAt;
@@ -282,6 +286,8 @@ public class LangProvider : INotifyPropertyChanged
     public string Ignore => Lang.Ignore;
     public string IgnoreAmbiguousTitle => Lang.IgnoreAmbiguousTitle;
     public string InvalidPath => Lang.InvalidPath;
+    public string InvalidRegex => Lang.InvalidRegex;
+    public string InvalidRegexMessage => Lang.InvalidRegexMessage;
     public string License => Lang.License;
     public string LicenseInfo => Lang.LicenseInfo;
     public string Load => Lang.Load;
@@ -308,6 +314,8 @@ public class LangProvider : INotifyPropertyChanged
     public string Or => Lang.Or;
     public string OutOf => Lang.OutOf;
     public string Overlay => Lang.Overlay;
+    public string Pattern => Lang.Pattern;
+    public string Patterns => Lang.Patterns;
     public string PickIconWithName => Lang.PickIconWithName;
     public string PickSelected => Lang.PickSelected;
     public string Poster => Lang.Poster;
@@ -343,6 +351,8 @@ public class LangProvider : INotifyPropertyChanged
     public string SkipThisTitle => Lang.SkipThisTitle;
     public string Spanish => Lang.Spanish;
     public string StopSearching => Lang.StopSearching;
+    public string SubfolderProcessing => Lang.SubfolderProcessing;
+    public string Test => Lang.Test;
     public string Theme => Lang.Theme;
     public string ThemeDark => Lang.ThemeDark;
     public string ThemeLight => Lang.ThemeLight;
@@ -364,16 +374,6 @@ public class LangProvider : INotifyPropertyChanged
     public string WritePermissionAllowed => Lang.WritePermissionAllowed;
     public string WritePermissionNotAllowed => Lang.WritePermissionNotAllowed;
     public string Year => Lang.Year;
-    public string SubfolderProcessing => Lang.SubfolderProcessing;
-    public string Patterns => Lang.Patterns;
-    public string InvalidRegexMessage => Lang.InvalidRegexMessage;
-    public string InvalidRegex => Lang.InvalidRegex;
-    public string Enabled => Lang.Enabled;
-    public string Action => Lang.Action;
-    public string Test => Lang.Test;
-    public string EnableSubfolderProcessing => Lang.EnableSubfolderProcessing;
-    public string EnterValidRegexPlaceholder => Lang.EnterValidRegexPlaceholder;
-    public string Pattern => Lang.Pattern;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -385,6 +385,7 @@ public class LangProvider : INotifyPropertyChanged
 public class LangKeys
 {
     public static string About = nameof(About);
+    public static string Action = nameof(Action);
     public static string AddToContextMenu = nameof(AddToContextMenu);
     public static string All = nameof(All);
     public static string AlwaysShowPosterWindow = nameof(AlwaysShowPosterWindow);
@@ -430,10 +431,13 @@ public class LangKeys
     public static string DownloadingIconWithCount = nameof(DownloadingIconWithCount);
     public static string DownloadIt = nameof(DownloadIt);
     public static string EmptyDirectory = nameof(EmptyDirectory);
+    public static string Enabled = nameof(Enabled);
     public static string EnableErrorReporting = nameof(EnableErrorReporting);
     public static string EnableErrorReportingTip = nameof(EnableErrorReportingTip);
+    public static string EnableSubfolderProcessing = nameof(EnableSubfolderProcessing);
     public static string English = nameof(English);
     public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);
+    public static string EnterValidRegexPlaceholder = nameof(EnterValidRegexPlaceholder);
     public static string ExceptionOccurred = nameof(ExceptionOccurred);
     public static string ExplorerIntegration = nameof(ExplorerIntegration);
     public static string FailedFileAccessAt = nameof(FailedFileAccessAt);
@@ -462,6 +466,8 @@ public class LangKeys
     public static string Ignore = nameof(Ignore);
     public static string IgnoreAmbiguousTitle = nameof(IgnoreAmbiguousTitle);
     public static string InvalidPath = nameof(InvalidPath);
+    public static string InvalidRegex = nameof(InvalidRegex);
+    public static string InvalidRegexMessage = nameof(InvalidRegexMessage);
     public static string License = nameof(License);
     public static string LicenseInfo = nameof(LicenseInfo);
     public static string Load = nameof(Load);
@@ -488,6 +494,8 @@ public class LangKeys
     public static string Or = nameof(Or);
     public static string OutOf = nameof(OutOf);
     public static string Overlay = nameof(Overlay);
+    public static string Pattern = nameof(Pattern);
+    public static string Patterns = nameof(Patterns);
     public static string PickIconWithName = nameof(PickIconWithName);
     public static string PickSelected = nameof(PickSelected);
     public static string Poster = nameof(Poster);
@@ -523,6 +531,8 @@ public class LangKeys
     public static string SkipThisTitle = nameof(SkipThisTitle);
     public static string Spanish = nameof(Spanish);
     public static string StopSearching = nameof(StopSearching);
+    public static string SubfolderProcessing = nameof(SubfolderProcessing);
+    public static string Test = nameof(Test);
     public static string Theme = nameof(Theme);
     public static string ThemeDark = nameof(ThemeDark);
     public static string ThemeLight = nameof(ThemeLight);
@@ -544,15 +554,5 @@ public class LangKeys
     public static string WritePermissionAllowed = nameof(WritePermissionAllowed);
     public static string WritePermissionNotAllowed = nameof(WritePermissionNotAllowed);
     public static string Year = nameof(Year);
-    public static string SubfolderProcessing = nameof(SubfolderProcessing);
-    public static string Patterns = nameof(Patterns);
-    public static string InvalidRegexMessage = nameof(InvalidRegexMessage);
-    public static string InvalidRegex = nameof(InvalidRegex);
-    public static string Enabled = nameof(Enabled);
-    public static string Action = nameof(Action);
-    public static string Test = nameof(Test);
-    public static string EnableSubfolderProcessing = nameof(EnableSubfolderProcessing);
-    public static string EnterValidRegexPlaceholder = nameof(EnterValidRegexPlaceholder);
-    public static string Pattern = nameof(Pattern);
     
 }
