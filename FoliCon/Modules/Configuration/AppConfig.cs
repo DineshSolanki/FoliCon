@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Modules.Configuration;
+﻿using FoliCon.Models.Data;
+
+namespace FoliCon.Modules.Configuration;
 
 public class AppConfig : GlobalDataHelper
 {
@@ -12,4 +14,10 @@ public class AppConfig : GlobalDataHelper
     public override string FileName { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"FoliConConfig.json");
     public override JsonSerializerOptions JsonSerializerOptions { get; set; }
     public override int FileVersion { get; set; }
+
+    public bool SubfolderProcessingEnabled { get; set; }
+    
+    public ObservableCollection<Pattern> Patterns { get; set; } =
+        [new Pattern("^[0-9]{1,2}x[0-9]{1,2}", false, true), new Pattern("S[0-9]{1,2}E[0-9]", false, true),
+            new Pattern("Season [0-9]{1,2} Episode [0-9]{1,2}", false, true), new Pattern("\\S+", true, true)];
 }

@@ -618,4 +618,34 @@
   <data name="SkipThisPlaceholderParent" xml:space="preserve">
     <value>Пропустить этот и все оставшиеся заголовки {0}</value>
   </data>
+  <data name="SubfolderProcessing" xml:space="preserve">
+    <value>Обработка подпапок</value>
+  </data>
+  <data name="Patterns" xml:space="preserve">
+    <value>Шаблоны</value>
+  </data>
+  <data name="InvalidRegexMessage" xml:space="preserve">
+    <value>Введенный шаблон регулярного выражения недействителен. Убедитесь, что он соответствует правильному синтаксису (например, ^[A-Za-z0-9]+$).</value>
+  </data>
+  <data name="InvalidRegex" xml:space="preserve">
+    <value>Ошибка шаблона регулярного выражения</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Включено</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Действие</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="EnableSubfolderProcessing" xml:space="preserve">
+    <value>Включить обработку подпапок</value>
+  </data>
+  <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+    <value>Пожалуйста, введите корректный шаблон регулярного выражения.</value>
+  </data>
+  <data name="Pattern" xml:space="preserve">
+    <value>Шаблон</value>
+  </data>
 </root>

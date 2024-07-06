@@ -69,6 +69,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        public static string Action {
+            get {
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add to context menu.
         /// </summary>
         public static string AddToContextMenu {
@@ -484,6 +493,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string Enabled {
+            get {
+                return ResourceManager.GetString("Enabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enable Error reporting.
         /// </summary>
         public static string EnableErrorReporting {
@@ -502,6 +520,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable subfolder processing.
+        /// </summary>
+        public static string EnableSubfolderProcessing {
+            get {
+                return ResourceManager.GetString("EnableSubfolderProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string English {
@@ -516,6 +543,15 @@ namespace FoliCon.Properties.Langs {
         public static string EnterTitlePlaceholder {
             get {
                 return ResourceManager.GetString("EnterTitlePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid regular expression pattern..
+        /// </summary>
+        public static string EnterValidRegexPlaceholder {
+            get {
+                return ResourceManager.GetString("EnterValidRegexPlaceholder", resourceCulture);
             }
         }
         
@@ -774,6 +810,24 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Regex Pattern Error.
+        /// </summary>
+        public static string InvalidRegex {
+            get {
+                return ResourceManager.GetString("InvalidRegex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The regex pattern entered is invalid. Ensure it follows the correct syntax (e.g., ^[A-Za-z0-9]+$)..
+        /// </summary>
+        public static string InvalidRegexMessage {
+            get {
+                return ResourceManager.GetString("InvalidRegexMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to License :.
         /// </summary>
         public static string License {
@@ -1007,6 +1061,24 @@ namespace FoliCon.Properties.Langs {
         public static string Overlay {
             get {
                 return ResourceManager.GetString("Overlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pattern.
+        /// </summary>
+        public static string Pattern {
+            get {
+                return ResourceManager.GetString("Pattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patterns.
+        /// </summary>
+        public static string Patterns {
+            get {
+                return ResourceManager.GetString("Patterns", resourceCulture);
             }
         }
         
@@ -1343,6 +1415,24 @@ namespace FoliCon.Properties.Langs {
         public static string StopSearching {
             get {
                 return ResourceManager.GetString("StopSearching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subfolder processing.
+        /// </summary>
+        public static string SubfolderProcessing {
+            get {
+                return ResourceManager.GetString("SubfolderProcessing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test.
+        /// </summary>
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
             }
         }
         

@@ -619,4 +619,34 @@ and refresh Icon Cache?</value>
     <data name="SkipThisPlaceholderParent" xml:space="preserve">
       <value>Skip this and all remaining titles of {0}</value>
     </data>
+    <data name="SubfolderProcessing" xml:space="preserve">
+      <value>Subfolder processing</value>
+    </data>
+    <data name="Patterns" xml:space="preserve">
+      <value>Patterns</value>
+    </data>
+    <data name="InvalidRegexMessage" xml:space="preserve">
+      <value>The regex pattern entered is invalid. Ensure it follows the correct syntax (e.g., ^[A-Za-z0-9]+$).</value>
+    </data>
+    <data name="InvalidRegex" xml:space="preserve">
+      <value>Regex Pattern Error</value>
+    </data>
+    <data name="Enabled" xml:space="preserve">
+      <value>Enabled</value>
+    </data>
+    <data name="Action" xml:space="preserve">
+      <value>Action</value>
+    </data>
+    <data name="Test" xml:space="preserve">
+      <value>Test</value>
+    </data>
+    <data name="EnableSubfolderProcessing" xml:space="preserve">
+      <value>Enable subfolder processing</value>
+    </data>
+    <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+      <value>Please enter a valid regular expression pattern.</value>
+    </data>
+    <data name="Pattern" xml:space="preserve">
+      <value>Pattern</value>
+    </data>
 </root>

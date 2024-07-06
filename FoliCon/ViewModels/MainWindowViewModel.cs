@@ -210,6 +210,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public DelegateCommand ApiConfigCommand { get; set; }
     public DelegateCommand PosterIconConfigCommand { get; set; }
+    public DelegateCommand SubfolderProcessingConfigCommand { get; set; }
 
     #endregion SettingMenu
 
@@ -250,7 +251,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             _dialogService.ShowPreviewer(_ => { });
         });
-        Logger.Info("Application Started, Initilizing MainWindowViewModel.");
+        Logger.Info("Application Started, Initializing MainWindowViewModel.");
         _dialogService = dialogService;
         Services.Tracker.Configure<MainWindowViewModel>()
             .Property(p => p.IsRatingVisible, false)
@@ -399,10 +400,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private async Task ProcessPosterFolderAsync(string folderPath)
     {
-        var folders = FileUtils.GetAllSubFolders(folderPath);
-        foreach (var subFolder in folders)
+        if (Services.Settings.SubfolderProcessingEnabled)
         {
-            await ProcessPosterFolderAsync(subFolder);
+            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
+            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+            foreach (var subFolder in folders)
+            {
+                await ProcessPosterFolderAsync(subFolder);
+            }
         }
         var subfolderNames = FileUtils.GetFolderNames(folderPath);
         foreach (var itemTitle in subfolderNames)
@@ -604,6 +609,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         Logger.Debug("Initializing Delegates for MainWindow.");
         ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(_ => { }); });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
+        SubfolderProcessingConfigCommand = new DelegateCommand(delegate { _dialogService.ShowSubfolderProcessingConfig(_ => { }); });
         AboutCommand = new DelegateCommand(AboutMethod);
         DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
         DeleteMediaInfoCommand = new DelegateCommand(DeleteMediaInfo);

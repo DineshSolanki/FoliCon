@@ -614,4 +614,34 @@ e renovar o cache dos Ícones?</value>
   <data name="SkipThisPlaceholderParent" xml:space="preserve">
     <value>Ignorar este e todos os títulos restantes de {0}</value>
   </data>
+  <data name="SubfolderProcessing" xml:space="preserve">
+    <value>Processamento de subpastas</value>
+  </data>
+  <data name="Patterns" xml:space="preserve">
+    <value>Padrões</value>
+  </data>
+  <data name="InvalidRegexMessage" xml:space="preserve">
+    <value>O padrão de expressão regular inserido é inválido. Certifique-se de que ele segue a sintaxe correta (por exemplo, ^[A-Za-z0-9]+$).</value>
+  </data>
+  <data name="InvalidRegex" xml:space="preserve">
+    <value>Erro no padrão de expressão regular</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Ativado</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Ação</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Teste</value>
+  </data>
+  <data name="EnableSubfolderProcessing" xml:space="preserve">
+    <value>Ativar processamento de subpastas</value>
+  </data>
+  <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+    <value>Por favor, insira um padrão de expressão regular válido.</value>
+  </data>
+  <data name="Pattern" xml:space="preserve">
+    <value>Padrão</value>
+  </data>
 </root>

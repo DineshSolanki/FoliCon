@@ -62,6 +62,12 @@ public static class DialogServiceExtensions
         Logger.Trace("ShowPosterIconConfig called");
         dialogService.ShowDialog("PosterIconConfig", callBack);
     }
+    
+    public static void ShowSubfolderProcessingConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
+    {
+        Logger.Trace("ShowSubfolderProcessingConfig called");
+        dialogService.ShowDialog("SubfolderProcessingConfig", callBack);
+    }
 
     public static void ShowAboutBox(this IDialogService dialogService, Action<IDialogResult> callBack)
     {

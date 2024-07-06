@@ -615,4 +615,34 @@
   <data name="SkipThisPlaceholderParent" xml:space="preserve">
     <value>इसे और {0} के बाकी मीडिया को छोड़ दे</value>
   </data>
+  <data name="SubfolderProcessing" xml:space="preserve">
+    <value>सबफोल्डर प्रोसेसिंग</value>
+  </data>
+  <data name="Patterns" xml:space="preserve">
+    <value>पैटर्न</value>
+  </data>
+  <data name="InvalidRegexMessage" xml:space="preserve">
+    <value>दर्ज किया गया रेगेक्स पैटर्न अमान्य है। सुनिश्चित करें कि यह सही सिंटैक्स का पालन करता है (उदाहरण: ^[A-Za-z0-9]+$).</value>
+  </data>
+  <data name="InvalidRegex" xml:space="preserve">
+    <value>रेगेक्स पैटर्न त्रुटि</value>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>सक्रिय</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>एक्शन </value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>परीक्षण</value>
+  </data>
+  <data name="EnableSubfolderProcessing" xml:space="preserve">
+    <value>सबफोल्डर की प्रोसेसिंग चालू करें</value>
+  </data>
+  <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+    <value>कृपया एक मान्य रेगुलर एक्सप्रेशन पैटर्न दर्ज करें।</value>
+  </data>
+  <data name="Pattern" xml:space="preserve">
+    <value>पैटर्न</value>
+  </data>
 </root>
