@@ -49,7 +49,10 @@ public class PatternsViewModel : BindableBase, IDialogAware
     private void AddPattern(string regex)
     {
         var trimmedRegex = regex?.Trim();
-        if (!IsValidPattern(trimmedRegex)) return;
+        if (!IsValidPattern(trimmedRegex))
+        {
+            return;
+        }
         Logger.Debug("Adding pattern: {Regex}", trimmedRegex);
         PatternsList.Add(new Pattern(trimmedRegex, true));
     }
@@ -63,7 +66,10 @@ public class PatternsViewModel : BindableBase, IDialogAware
     private bool IsValidPattern(string pattern)
     {
         if (!string.IsNullOrWhiteSpace(pattern)
-            && PatternsList.All(p => p.Regex != pattern) && DataUtils.IsValidRegex(pattern)) return true;
+            && PatternsList.All(p => p.Regex != pattern) && DataUtils.IsValidRegex(pattern))
+        {
+            return true;
+        }
         if (!DataUtils.IsValidRegex(pattern))
         {
             MessageBox.Show(CustomMessageBox.Error("The regex pattern entered is invalid. Ensure it follows the correct syntax (e.g., ^[A-Za-z0-9]+$).", "Invalid regex"));

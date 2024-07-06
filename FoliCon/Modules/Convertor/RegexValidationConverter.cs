@@ -8,7 +8,9 @@ public class RegexValidationConverter : IMultiValueConverter
         var pattern = values[1] as string;
 
         if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(pattern))
+        {
             return false;
+        }
 
         try
         {
