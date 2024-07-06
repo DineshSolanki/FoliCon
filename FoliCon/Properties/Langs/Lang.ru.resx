@@ -642,4 +642,10 @@
   <data name="EnableSubfolderProcessing" xml:space="preserve">
     <value>Включить обработку подпапок</value>
   </data>
+  <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+    <value>Пожалуйста, введите корректный шаблон регулярного выражения.</value>
+  </data>
+  <data name="Pattern" xml:space="preserve">
+    <value>Шаблон</value>
+  </data>
 </root>

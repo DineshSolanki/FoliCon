@@ -7,6 +7,8 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -37,7 +39,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="10">
-            <hc:TextBox x:Name="TxtPattern" hc:InfoElement.Placeholder="Please enter a valid regular expression pattern."
+            <hc:TextBox x:Name="TxtPattern" hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterValidRegexPlaceholder}}"
                         Margin="0,0,10,0" Style="{StaticResource TextBoxExtend}" hc:InfoElement.Necessary="True"/>
             <Button x:Name="BtnAdd" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Command="{Binding AddCommand}" 
                     CommandParameter="{Binding ElementName=TxtPattern, Path=Text}" 
@@ -47,15 +49,15 @@
         <DataGrid x:Name="DgPatterns" Grid.Row="1" Margin="10" AutoGenerateColumns="False" ItemsSource="{Binding PatternsList}"
                   SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="Pattern" Width="auto">
+                <DataGridTemplateColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Pattern}}" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <hc:TextBox Text="{Binding Regex}" IsReadOnly="{Binding IsReadOnly}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnabled}"/>
-                <DataGridTemplateColumn Header="Action">
+                <DataGridCheckBoxColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Enabled}}" Binding="{Binding IsEnabled}"/>
+                <DataGridTemplateColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Action}}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button hc:IconElement.Geometry="{StaticResource RemoveGeometry}" IsEnabled="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
@@ -65,17 +67,17 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Test">
+                <DataGridTemplateColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Test}}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <hc:TextBox x:Name="TestInput" Style="{StaticResource ValidatingTextBoxExtend}"
-                                        hc:InfoElement.ShowClearButton="True" hc:Empty.ShowEmpty="True"/>       
+                                        hc:InfoElement.ShowClearButton="True"/>       
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 
-        <CheckBox x:Name="ChkEnableFeature" IsChecked="{Binding SubfolderProcessingEnabled}" Content="Enable subfolder processing" Grid.Row="2" Margin="10" />
+        <CheckBox x:Name="ChkEnableFeature" IsChecked="{Binding SubfolderProcessingEnabled}" Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}" Grid.Row="2" Margin="10" />
     </Grid>
 </UserControl>

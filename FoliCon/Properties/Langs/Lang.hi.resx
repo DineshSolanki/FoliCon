@@ -639,4 +639,10 @@
   <data name="EnableSubfolderProcessing" xml:space="preserve">
     <value>सबफोल्डर की प्रोसेसिंग चालू करें</value>
   </data>
+  <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+    <value>कृपया एक मान्य रेगुलर एक्सप्रेशन पैटर्न दर्ज करें।</value>
+  </data>
+  <data name="Pattern" xml:space="preserve">
+    <value>पैटर्न</value>
+  </data>
 </root>

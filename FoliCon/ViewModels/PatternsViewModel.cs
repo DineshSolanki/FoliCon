@@ -12,7 +12,7 @@ public class PatternsViewModel : BindableBase, IDialogAware
     #region Variables
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public string Title => "Patterns";
+    public string Title => LangProvider.GetLang("Patterns");
 
     private ObservableCollection<Pattern> _patterns;
     private bool _subfolderProcessingEnabled;
@@ -72,7 +72,8 @@ public class PatternsViewModel : BindableBase, IDialogAware
         }
         if (!DataUtils.IsValidRegex(pattern))
         {
-            MessageBox.Show(CustomMessageBox.Error("The regex pattern entered is invalid. Ensure it follows the correct syntax (e.g., ^[A-Za-z0-9]+$).", "Invalid regex"));
+            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("InvalidRegexMessage"), 
+                LangProvider.GetLang("InvalidRegex")));
         }
         return false;
     }

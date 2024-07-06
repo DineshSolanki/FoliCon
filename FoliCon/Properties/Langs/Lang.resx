@@ -643,4 +643,10 @@ and refresh Icon Cache?</value>
     <data name="EnableSubfolderProcessing" xml:space="preserve">
       <value>Enable subfolder processing</value>
     </data>
+    <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+      <value>Please enter a valid regular expression pattern.</value>
+    </data>
+    <data name="Pattern" xml:space="preserve">
+      <value>Pattern</value>
+    </data>
 </root>

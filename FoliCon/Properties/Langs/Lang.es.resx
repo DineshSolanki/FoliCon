@@ -639,4 +639,10 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
   <data name="EnableSubfolderProcessing" xml:space="preserve">
     <value>Activar procesamiento de subcarpetas</value>
   </data>
+  <data name="EnterValidRegexPlaceholder" xml:space="preserve">
+    <value>Por favor, introduzca un patrón de expresión regular válido.</value>
+  </data>
+  <data name="Pattern" xml:space="preserve">
+    <value>Patrón</value>
+  </data>
 </root>

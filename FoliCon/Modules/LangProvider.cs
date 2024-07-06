@@ -192,6 +192,16 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(WritePermissionAllowed));
         OnPropertyChanged(nameof(WritePermissionNotAllowed));
         OnPropertyChanged(nameof(Year));
+        OnPropertyChanged(nameof(SubfolderProcessing));
+        OnPropertyChanged(nameof(Patterns));
+        OnPropertyChanged(nameof(InvalidRegexMessage));
+        OnPropertyChanged(nameof(InvalidRegex));
+        OnPropertyChanged(nameof(Enabled));
+        OnPropertyChanged(nameof(Action));
+        OnPropertyChanged(nameof(Test));
+        OnPropertyChanged(nameof(EnableSubfolderProcessing));
+        OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
+        OnPropertyChanged(nameof(Pattern));
     }
 
     public string About => Lang.About;
@@ -354,6 +364,16 @@ public class LangProvider : INotifyPropertyChanged
     public string WritePermissionAllowed => Lang.WritePermissionAllowed;
     public string WritePermissionNotAllowed => Lang.WritePermissionNotAllowed;
     public string Year => Lang.Year;
+    public string SubfolderProcessing => Lang.SubfolderProcessing;
+    public string Patterns => Lang.Patterns;
+    public string InvalidRegexMessage => Lang.InvalidRegexMessage;
+    public string InvalidRegex => Lang.InvalidRegex;
+    public string Enabled => Lang.Enabled;
+    public string Action => Lang.Action;
+    public string Test => Lang.Test;
+    public string EnableSubfolderProcessing => Lang.EnableSubfolderProcessing;
+    public string EnterValidRegexPlaceholder => Lang.EnterValidRegexPlaceholder;
+    public string Pattern => Lang.Pattern;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -524,4 +544,15 @@ public class LangKeys
     public static string WritePermissionAllowed = nameof(WritePermissionAllowed);
     public static string WritePermissionNotAllowed = nameof(WritePermissionNotAllowed);
     public static string Year = nameof(Year);
+    public static string SubfolderProcessing = nameof(SubfolderProcessing);
+    public static string Patterns = nameof(Patterns);
+    public static string InvalidRegexMessage = nameof(InvalidRegexMessage);
+    public static string InvalidRegex = nameof(InvalidRegex);
+    public static string Enabled = nameof(Enabled);
+    public static string Action = nameof(Action);
+    public static string Test = nameof(Test);
+    public static string EnableSubfolderProcessing = nameof(EnableSubfolderProcessing);
+    public static string EnterValidRegexPlaceholder = nameof(EnterValidRegexPlaceholder);
+    public static string Pattern = nameof(Pattern);
+    
 }

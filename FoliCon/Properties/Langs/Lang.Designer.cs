@@ -547,6 +547,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid regular expression pattern..
+        /// </summary>
+        public static string EnterValidRegexPlaceholder {
+            get {
+                return ResourceManager.GetString("EnterValidRegexPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exception Occurred.
         /// </summary>
         public static string ExceptionOccurred {
@@ -1052,6 +1061,15 @@ namespace FoliCon.Properties.Langs {
         public static string Overlay {
             get {
                 return ResourceManager.GetString("Overlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pattern.
+        /// </summary>
+        public static string Pattern {
+            get {
+                return ResourceManager.GetString("Pattern", resourceCulture);
             }
         }
         
