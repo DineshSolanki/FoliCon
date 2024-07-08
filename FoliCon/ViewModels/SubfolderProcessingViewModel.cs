@@ -6,13 +6,13 @@ using NLog;
 
 namespace FoliCon.ViewModels;
 
-public class PatternsViewModel : BindableBase, IDialogAware
+public class SubfolderProcessingViewModel : BindableBase, IDialogAware
 {
 
     #region Variables
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public string Title => LangProvider.GetLang("Patterns");
+    public string Title => LangProvider.GetLang("SubfolderProcessing");
 
     private ObservableCollection<Pattern> _patterns;
     private bool _subfolderProcessingEnabled;
@@ -37,7 +37,7 @@ public class PatternsViewModel : BindableBase, IDialogAware
     public DelegateCommand<Pattern> RemoveCommand { get; }
     
     #endregion
-    public PatternsViewModel()
+    public SubfolderProcessingViewModel()
     {
         AddCommand = new DelegateCommand<string>(AddPattern);
         RemoveCommand = new DelegateCommand<Pattern>(RemovePattern);

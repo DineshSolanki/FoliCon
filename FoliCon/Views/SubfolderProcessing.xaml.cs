@@ -5,9 +5,9 @@ namespace FoliCon.Views
     /// <summary>
     /// Interaction logic for Patterns
     /// </summary>
-    public partial class Patterns
+    public partial class SubfolderProcessing
     {
-        public Patterns()
+        public SubfolderProcessing()
         {
             InitializeComponent();
         }

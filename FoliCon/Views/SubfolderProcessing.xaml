@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoliCon.Views.Patterns"
+﻿<UserControl x:Class="FoliCon.Views.SubfolderProcessing"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -12,7 +12,7 @@
              mc:Ignorable="d"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:PatternsViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:SubfolderProcessingViewModel}">
     <UserControl.Resources>
         <convertor:RegexValidationConverter x:Key="RegexValidationConverter"/>
         <hc:Boolean2BooleanReConverter x:Key="InverseBooleanConverter"/>
