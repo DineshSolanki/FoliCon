@@ -13,6 +13,9 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ProSearchResultViewModel }">
+    <UserControl.Resources>
+        <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
+    </UserControl.Resources>
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="450" />
@@ -76,6 +79,15 @@
                                                            ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.OpenImageCommand)}"/>
                                 </i:Interaction.Behaviors>
+                                <Image.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem
+                                            Header="Extract Manually"
+                                            Command="{Binding Value.OpenImageCommand,
+                                             Source={StaticResource Proxy}}" 
+                                            CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                    </ContextMenu>
+                                </Image.ContextMenu>
                             </Image>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
