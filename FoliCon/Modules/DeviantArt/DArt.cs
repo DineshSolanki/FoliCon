@@ -1,9 +1,8 @@
 ﻿using FoliCon.Models.Api;
 using FoliCon.Modules.Configuration;
+using FoliCon.Modules.Extension;
 using FoliCon.Modules.utils;
 using Microsoft.Extensions.Caching.Memory;
-using SharpCompress.Common;
-using SharpCompress.Readers;
 
 namespace FoliCon.Modules.DeviantArt;
 
@@ -93,7 +92,51 @@ public class DArt : BindableBase
 
         return result;        
     }
+    
+    public async Task<DArtDownloadResponse> Download(string deviationId)
+    {
+        GetClientAccessTokenAsync();
+        var dArtDownloadResponse = await GetDArtDownloadResponseAsync(deviationId);
+        var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(dArtDownloadResponse.Filename);
+        dArtDownloadResponse.localDownloadPath = targetDirectoryPath;
+        var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src);
+        
+        if (FileUtils.IsCompressedArchive(dArtDownloadResponse.Filename))
+        {
+            await ProcessCompressedFiles(downloadResponse, targetDirectoryPath);
+        }
+        else
+        {
+            await FileStreamToDestination(downloadResponse, targetDirectoryPath, dArtDownloadResponse.Filename);
+        }
 
+        FileUtils.DeleteDirectoryIfEmpty(targetDirectoryPath);
+
+        return dArtDownloadResponse;
+    }
+    
+    public async Task<DArtDownloadResponse> GetDArtDownloadResponseAsync(string deviationId)
+    {
+        var url = GetDownloadApiUrl(deviationId);
+        using var response = await Services.HttpC.GetAsync(new Uri(url));
+        var jsonData = await response.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
+    }
+
+    private async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath)
+    {
+        await using var stream = await downloadResponse.Content.ReadAsStreamAsync();
+        stream.ExtractPngAndIcoToDirectory(targetDirectoryPath);
+    }
+
+    private async Task FileStreamToDestination(HttpResponseMessage downloadResponse, string targetDirectoryPath,
+        string filename)
+    {
+        await using var fileStream = await downloadResponse.Content.ReadAsStreamAsync();
+        await using var file = File.Create(Path.Combine(targetDirectoryPath, filename));
+        await fileStream.CopyToAsync(file);
+    }
+    
     private static string GetPlaceboApiUrl(string clientAccessToken)
     {
         return $"https://www.deviantart.com/api/v1/oauth2/placebo?access_token={clientAccessToken}";
@@ -107,5 +150,10 @@ public class DArt : BindableBase
     private string GetBrowseApiUrl(string query, int offset)
     {
         return $"https://www.deviantart.com/api/v1/oauth2/browse/newest?timerange=alltime&offset={offset}&q={query} folder icon&limit=20&access_token={ClientAccessToken}";
+    }
+    
+    private string GetDownloadApiUrl(string deviationId)
+    {
+        return $"https://www.deviantart.com/api/v1/oauth2/deviation/download/{deviationId}?access_token={ClientAccessToken}";
     }
 }
