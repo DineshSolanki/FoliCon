@@ -71,10 +71,10 @@
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Image}" Tag="{Binding Url}" Height="128" Width="128"
+                            <Image Source="{Binding Image}" Tag="{Binding }" Height="128" Width="128"
                                    RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
                                 <i:Interaction.Behaviors>
-                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
+                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag.Url, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.PickCommand)}" 
                                                            ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
                                                         AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.OpenImageCommand)}"/>
@@ -83,9 +83,9 @@
                                     <ContextMenu>
                                         <MenuItem
                                             Header="Extract Manually"
-                                            Command="{Binding Value.OpenImageCommand,
+                                            Command="{Binding Value.ExtractManuallyCommand,
                                              Source={StaticResource Proxy}}" 
-                                            CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                            CommandParameter="{Binding PlacementTarget.Tag.DeviationId, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
                                     </ContextMenu>
                                 </Image.ContextMenu>
                             </Image>
