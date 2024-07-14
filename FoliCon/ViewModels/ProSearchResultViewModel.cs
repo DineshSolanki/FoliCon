@@ -24,7 +24,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private List<ImageToDownload> _imgDownloadList;
     private int _index;
     private int _totalPosters;
-
+    private readonly IDialogService _dialogService;
+    
     public event Action<IDialogResult> RequestClose;
 
     private string _folderPath;
@@ -64,7 +65,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
 
-    public ProSearchResultViewModel()
+    public ProSearchResultViewModel(IDialogService dialogService)
     {
         Logger.Debug("ProSearchResultViewModel Constructor");
         ImageUrl = [];
@@ -74,6 +75,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
+        _dialogService = dialogService;
     }
 
     private void OpenImageMethod(object parameter)
@@ -92,9 +94,12 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     {
         Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter);
         var deviationId = (string)parameter;
-        DArtObject.Download(deviationId).ContinueWith(task =>
+        _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
         {
-            Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
+            if (result.Result == ButtonResult.OK)
+            {
+                Logger.Debug("Manual Extraction Completed");
+            }
         });
     }
     private async void PrepareForSearch()

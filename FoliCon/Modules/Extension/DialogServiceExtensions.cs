@@ -68,6 +68,17 @@ public static class DialogServiceExtensions
         Logger.Trace("ShowSubfolderProcessingConfig called");
         dialogService.ShowDialog("SubfolderProcessingConfig", callBack);
     }
+    
+    public static void ShowManualExplorer(this IDialogService dialogService, string deviationId,
+        DArt dartObject, Action<IDialogResult> callBack)
+    {
+        Logger.Trace("ShowManualExplorer called with deviationId: {DeviationId}", deviationId);
+        var p = new DialogParameters
+        {
+            {"DeviationId", deviationId}, {"dartobject", dartObject}
+        };
+        dialogService.ShowDialog("ManualExplorer", p, callBack);
+    }
 
     public static void ShowAboutBox(this IDialogService dialogService, Action<IDialogResult> callBack)
     {

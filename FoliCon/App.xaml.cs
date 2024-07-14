@@ -38,6 +38,7 @@ public partial class App
         containerRegistry.RegisterDialog<CustomIconControl, CustomIconControlViewModel>("CustomIcon");
         containerRegistry.RegisterDialog<PosterIconConfig, PosterIconConfigViewModel>("PosterIconConfig");
         containerRegistry.RegisterDialog<SubfolderProcessing, SubfolderProcessingViewModel>("SubfolderProcessingConfig");
+        containerRegistry.RegisterDialog<ManualExplorer, ManualExplorerViewModel>("ManualExplorer");
         containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
