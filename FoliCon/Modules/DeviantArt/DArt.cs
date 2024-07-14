@@ -1,6 +1,9 @@
 ﻿using FoliCon.Models.Api;
 using FoliCon.Modules.Configuration;
+using FoliCon.Modules.utils;
 using Microsoft.Extensions.Caching.Memory;
+using SharpCompress.Common;
+using SharpCompress.Readers;
 
 namespace FoliCon.Modules.DeviantArt;
 
@@ -12,6 +15,8 @@ public class DArt : BindableBase
     
     private readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
+    private static readonly JsonSerializerSettings SerializerSettings = new() { NullValueHandling = NullValueHandling.Ignore };
+    
     public string ClientId
     {
         get => _clientId;
@@ -83,16 +88,15 @@ public class DArt : BindableBase
         var url = GetBrowseApiUrl(query, offset);
         using var response = await Services.HttpC.GetAsync(new Uri(url));
         var jsonData = await response.Content.ReadAsStringAsync();
-
-        var serializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-        var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, serializerSettings);
+        
+        var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, SerializerSettings);
 
         return result;        
     }
 
     private static string GetPlaceboApiUrl(string clientAccessToken)
     {
-        return "https://www.deviantart.com/api/v1/oauth2/placebo?access_token=" + clientAccessToken;
+        return $"https://www.deviantart.com/api/v1/oauth2/placebo?access_token={clientAccessToken}";
     }
 
     private string GetTokenApiUrl()
