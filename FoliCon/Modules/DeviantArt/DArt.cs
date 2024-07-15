@@ -97,7 +97,7 @@ public class DArt : BindableBase
     {
         GetClientAccessTokenAsync();
         var dArtDownloadResponse = await GetDArtDownloadResponseAsync(deviationId);
-        var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(dArtDownloadResponse.Filename);
+        var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(deviationId);
         dArtDownloadResponse.localDownloadPath = targetDirectoryPath;
         var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src);
         
