@@ -482,7 +482,7 @@ public static class FileUtils
 
     public static string CreateDirectoryInFoliConTemp(string path)
     {
-        var foliConTempPath = FoliConTempPath();
+        var foliConTempPath = FoliConTempDeviationsPath();
         var fullPath = Path.Combine(foliConTempPath, path);
         CreateDirectory(fullPath);
         return fullPath;
@@ -504,8 +504,25 @@ public static class FileUtils
         }
     }
     
+    public static void DeleteFoliConTempDeviationDirectory(bool ifEmpty = false)
+    {
+        if (ifEmpty)
+        {
+            DeleteDirectoryIfEmpty(FoliConTempDeviationsPath());
+        }
+        else
+        {
+            Directory.Delete(FoliConTempDeviationsPath(), true);
+        }
+    }
+    
     private static string FoliConTempPath()
     {
         return Path.Combine(Path.GetTempPath(), "FoliCon");
+    }
+    
+    private static string FoliConTempDeviationsPath()
+    {
+        return Path.Combine(FoliConTempPath(), "Deviations");
     }
 }

@@ -806,7 +806,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             try
             {
-                await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                if (img.RemotePath.IsFile)
+                {
+                    File.Move(img.RemotePath.AbsolutePath, img.LocalPath);
+                }
+                else
+                {
+                    await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                }
             }
             catch (UnauthorizedAccessException e)
             {
@@ -834,6 +841,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         }
 
         IsMakeEnabled = true;
+        FileUtils.DeleteFoliConTempDeviationDirectory();
     }
 
     private void MakeIcons()
@@ -911,5 +919,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         _tmdbClient?.Dispose();
         GC.SuppressFinalize(this);
+        FileUtils.DeleteFoliConTempDeviationDirectory();
     }
 }

@@ -15,12 +15,13 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
 	}
 
-	private void PickMethod(object obj)
+	private void PickMethod(object localImagePath)
 	{
-		
+		Logger.Debug("Picking Image {Image}", localImagePath);
+		CloseDialog(ButtonResult.OK, (string)localImagePath);
 	}
 
-	private string _title = LangProvider.GetLang("SearchResult");
+	private string _title = "Manual Explorer";
 	private bool _isBusy;
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
@@ -58,7 +59,22 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	public virtual void OnDialogClosed()
 	{
 		Directory.Clear();
-		
+	}
+	
+	protected virtual void CloseDialog(ButtonResult result, string localPath)
+	{
+		Logger.Info("Close Dialog called with result {Result}, localImagePath {LocalImagePath}", result, localPath);
+		var dialogParams = new DialogParameters()
+		{
+			{"localPath", localPath}
+		};
+
+		RaiseRequestClose(new DialogResult(result, dialogParams));
+	}
+
+	public virtual void RaiseRequestClose(IDialogResult dialogResult)
+	{
+		RequestClose?.Invoke(dialogResult);
 	}
 
 	public virtual void OnDialogOpened(IDialogParameters parameters)
