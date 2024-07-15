@@ -18,7 +18,7 @@
            Icon="/Resources/icons/folicon Icon.ico"
         ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
         ui:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" Closed="MainWindow_OnClosed">
 
     <Window.Resources>
         <convertor:BoolToColorConverter x:Key="BoolToColorConverter"/>

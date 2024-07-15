@@ -841,7 +841,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         }
 
         IsMakeEnabled = true;
-        FileUtils.DeleteFoliConTempDeviationDirectory();
     }
 
     private void MakeIcons()
@@ -919,6 +918,5 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         _tmdbClient?.Dispose();
         GC.SuppressFinalize(this);
-        FileUtils.DeleteFoliConTempDeviationDirectory();
     }
 }
