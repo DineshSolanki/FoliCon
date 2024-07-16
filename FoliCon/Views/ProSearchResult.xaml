@@ -82,7 +82,7 @@
                                 <Image.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem
-                                            Header="Extract Manually"
+                                            Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractManually}}"
                                             Command="{Binding Value.ExtractManuallyCommand,
                                              Source={StaticResource Proxy}}" 
                                             CommandParameter="{Binding PlacementTarget.Tag.DeviationId, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />

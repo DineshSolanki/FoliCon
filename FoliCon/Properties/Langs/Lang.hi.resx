@@ -645,4 +645,10 @@
   <data name="Pattern" xml:space="preserve">
     <value>पैटर्न</value>
   </data>
+  <data name="ManualExplorer" xml:space="preserve">
+    <value>मैनुअल एक्सप्लोरर</value>
+  </data>
+  <data name="ExtractManually" xml:space="preserve">
+    <value>एक्सट्रेक्ट करे</value>
+  </data>
 </root>
