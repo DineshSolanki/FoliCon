@@ -92,7 +92,12 @@ public class DArt : BindableBase
 
         return result;        
     }
-    
+
+    /// <summary>
+    /// Downloads a file from the DeviantArt API.
+    /// </summary>
+    /// <param name="deviationId">The ID of the deviation.</param>
+    /// <returns>The DArtDownloadResponse object containing the download details.</returns>
     public async Task<DArtDownloadResponse> Download(string deviationId)
     {
         GetClientAccessTokenAsync();
