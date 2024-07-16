@@ -649,4 +649,10 @@
   <data name="Pattern" xml:space="preserve">
       <value>نمط</value>
     </data>
+  <data name="ManualExplorer" xml:space="preserve">
+      <value>المستكشف اليدوي</value>
+    </data>
+  <data name="ExtractManually" xml:space="preserve">
+      <value>استخراج يدوي</value>
+    </data>
 </root>
