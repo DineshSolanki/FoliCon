@@ -649,4 +649,10 @@ y actualizar la caché de iconos?</value>
   <data name="Pattern" xml:space="preserve">
       <value>Patrón</value>
     </data>
+  <data name="ManualExplorer" xml:space="preserve">
+      <value>Explorador manual</value>
+    </data>
+  <data name="ExtractManually" xml:space="preserve">
+      <value>Extraer manualmente</value>
+    </data>
 </root>
