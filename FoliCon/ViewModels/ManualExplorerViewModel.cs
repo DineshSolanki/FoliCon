@@ -64,7 +64,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	protected virtual void CloseDialog(ButtonResult result, string localPath)
 	{
 		Logger.Info("Close Dialog called with result {Result}, localImagePath {LocalImagePath}", result, localPath);
-		var dialogParams = new DialogParameters()
+		var dialogParams = new DialogParameters
 		{
 			{"localPath", localPath}
 		};
