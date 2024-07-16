@@ -574,6 +574,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extract manually.
+        /// </summary>
+        public static string ExtractManually {
+            get {
+                return ResourceManager.GetString("ExtractManually", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to access file at {0}. You may not have permission to access this file. Try running as admin..
         /// </summary>
         public static string FailedFileAccessAt {
@@ -869,6 +878,15 @@ namespace FoliCon.Properties.Langs {
         public static string MakeIcons {
             get {
                 return ResourceManager.GetString("MakeIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Explorer.
+        /// </summary>
+        public static string ManualExplorer {
+            get {
+                return ResourceManager.GetString("ManualExplorer", resourceCulture);
             }
         }
         

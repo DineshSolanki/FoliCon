@@ -33,16 +33,16 @@ public class LangProvider : INotifyPropertyChanged
 
     private void UpdateLangs()
     {
+        OnPropertyChanged(nameof(APIKeysConfiguration));
+        OnPropertyChanged(nameof(APIKeysNotProvided));
         OnPropertyChanged(nameof(About));
         OnPropertyChanged(nameof(Action));
         OnPropertyChanged(nameof(AddToContextMenu));
         OnPropertyChanged(nameof(All));
         OnPropertyChanged(nameof(AlwaysShowPosterWindow));
         OnPropertyChanged(nameof(AmbiguousTitleTooltip));
-        OnPropertyChanged(nameof(APIKeysConfiguration));
-        OnPropertyChanged(nameof(APIKeysNotProvided));
-        OnPropertyChanged(nameof(Apply));
         OnPropertyChanged(nameof(AppWillClose));
+        OnPropertyChanged(nameof(Apply));
         OnPropertyChanged(nameof(Arabic));
         OnPropertyChanged(nameof(Auto));
         OnPropertyChanged(nameof(BestSuitedForHorizontal));
@@ -76,18 +76,19 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(DeleteMediaInfoTooltip));
         OnPropertyChanged(nameof(DevelopedByDinesh));
         OnPropertyChanged(nameof(DirectoryIsEmpty));
-        OnPropertyChanged(nameof(DownloadingIcons));
-        OnPropertyChanged(nameof(DownloadingIconWithCount));
         OnPropertyChanged(nameof(DownloadIt));
+        OnPropertyChanged(nameof(DownloadingIconWithCount));
+        OnPropertyChanged(nameof(DownloadingIcons));
         OnPropertyChanged(nameof(EmptyDirectory));
-        OnPropertyChanged(nameof(Enabled));
         OnPropertyChanged(nameof(EnableErrorReporting));
         OnPropertyChanged(nameof(EnableErrorReportingTip));
         OnPropertyChanged(nameof(EnableSubfolderProcessing));
+        OnPropertyChanged(nameof(Enabled));
         OnPropertyChanged(nameof(English));
         OnPropertyChanged(nameof(EnterTitlePlaceholder));
         OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
         OnPropertyChanged(nameof(ExplorerIntegration));
+        OnPropertyChanged(nameof(ExtractManually));
         OnPropertyChanged(nameof(FailedFileAccessAt));
         OnPropertyChanged(nameof(FailedToSaveMediaInfoAt));
         OnPropertyChanged(nameof(FileIsInUse));
@@ -121,6 +122,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Load));
         OnPropertyChanged(nameof(LoadingPosters));
         OnPropertyChanged(nameof(MakeIcons));
+        OnPropertyChanged(nameof(ManualExplorer));
         OnPropertyChanged(nameof(MediaRating));
         OnPropertyChanged(nameof(MediaTitle));
         OnPropertyChanged(nameof(Movie));
@@ -160,11 +162,11 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(RestartExplorerTooltip));
         OnPropertyChanged(nameof(Russian));
         OnPropertyChanged(nameof(Save));
+        OnPropertyChanged(nameof(SearchMode));
+        OnPropertyChanged(nameof(SearchResult));
         OnPropertyChanged(nameof(Searching));
         OnPropertyChanged(nameof(SearchingWithCount));
         OnPropertyChanged(nameof(SearchingWithName));
-        OnPropertyChanged(nameof(SearchMode));
-        OnPropertyChanged(nameof(SearchResult));
         OnPropertyChanged(nameof(SeeMorePosters));
         OnPropertyChanged(nameof(SelectFolder));
         OnPropertyChanged(nameof(SelectIconsDirectory));
@@ -180,6 +182,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Spanish));
         OnPropertyChanged(nameof(StopSearching));
         OnPropertyChanged(nameof(SubfolderProcessing));
+        OnPropertyChanged(nameof(TMDBAPIKey));
+        OnPropertyChanged(nameof(TV));
         OnPropertyChanged(nameof(Test));
         OnPropertyChanged(nameof(Theme));
         OnPropertyChanged(nameof(ThemeDark));
@@ -187,9 +191,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(ThemeSystem));
         OnPropertyChanged(nameof(ThisIsLatestVersion));
         OnPropertyChanged(nameof(Title));
-        OnPropertyChanged(nameof(TMDBAPIKey));
         OnPropertyChanged(nameof(ToForceReload));
-        OnPropertyChanged(nameof(TV));
         OnPropertyChanged(nameof(UnauthorizedAccess));
         OnPropertyChanged(nameof(Undo));
         OnPropertyChanged(nameof(UndoSuccessful));
@@ -204,16 +206,16 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Year));
     }
 
+    public string APIKeysConfiguration => Lang.APIKeysConfiguration;
+    public string APIKeysNotProvided => Lang.APIKeysNotProvided;
     public string About => Lang.About;
     public string Action => Lang.Action;
     public string AddToContextMenu => Lang.AddToContextMenu;
     public string All => Lang.All;
     public string AlwaysShowPosterWindow => Lang.AlwaysShowPosterWindow;
     public string AmbiguousTitleTooltip => Lang.AmbiguousTitleTooltip;
-    public string APIKeysConfiguration => Lang.APIKeysConfiguration;
-    public string APIKeysNotProvided => Lang.APIKeysNotProvided;
-    public string Apply => Lang.Apply;
     public string AppWillClose => Lang.AppWillClose;
+    public string Apply => Lang.Apply;
     public string Arabic => Lang.Arabic;
     public string Auto => Lang.Auto;
     public string BestSuitedForHorizontal => Lang.BestSuitedForHorizontal;
@@ -247,19 +249,20 @@ public class LangProvider : INotifyPropertyChanged
     public string DeleteMediaInfoTooltip => Lang.DeleteMediaInfoTooltip;
     public string DevelopedByDinesh => Lang.DevelopedByDinesh;
     public string DirectoryIsEmpty => Lang.DirectoryIsEmpty;
-    public string DownloadingIcons => Lang.DownloadingIcons;
-    public string DownloadingIconWithCount => Lang.DownloadingIconWithCount;
     public string DownloadIt => Lang.DownloadIt;
+    public string DownloadingIconWithCount => Lang.DownloadingIconWithCount;
+    public string DownloadingIcons => Lang.DownloadingIcons;
     public string EmptyDirectory => Lang.EmptyDirectory;
-    public string Enabled => Lang.Enabled;
     public string EnableErrorReporting => Lang.EnableErrorReporting;
     public string EnableErrorReportingTip => Lang.EnableErrorReportingTip;
     public string EnableSubfolderProcessing => Lang.EnableSubfolderProcessing;
+    public string Enabled => Lang.Enabled;
     public string English => Lang.English;
     public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
     public string EnterValidRegexPlaceholder => Lang.EnterValidRegexPlaceholder;
     public string ExceptionOccurred => Lang.ExceptionOccurred;
     public string ExplorerIntegration => Lang.ExplorerIntegration;
+    public string ExtractManually => Lang.ExtractManually;
     public string FailedFileAccessAt => Lang.FailedFileAccessAt;
     public string FailedToSaveMediaInfoAt => Lang.FailedToSaveMediaInfoAt;
     public string FileIsInUse => Lang.FileIsInUse;
@@ -293,6 +296,7 @@ public class LangProvider : INotifyPropertyChanged
     public string Load => Lang.Load;
     public string LoadingPosters => Lang.LoadingPosters;
     public string MakeIcons => Lang.MakeIcons;
+    public string ManualExplorer => Lang.ManualExplorer;
     public string MediaRating => Lang.MediaRating;
     public string MediaTitle => Lang.MediaTitle;
     public string Movie => Lang.Movie;
@@ -332,11 +336,11 @@ public class LangProvider : INotifyPropertyChanged
     public string RestartExplorerTooltip => Lang.RestartExplorerTooltip;
     public string Russian => Lang.Russian;
     public string Save => Lang.Save;
+    public string SearchMode => Lang.SearchMode;
+    public string SearchResult => Lang.SearchResult;
     public string Searching => Lang.Searching;
     public string SearchingWithCount => Lang.SearchingWithCount;
     public string SearchingWithName => Lang.SearchingWithName;
-    public string SearchMode => Lang.SearchMode;
-    public string SearchResult => Lang.SearchResult;
     public string SeeMorePosters => Lang.SeeMorePosters;
     public string SelectFolder => Lang.SelectFolder;
     public string SelectIconsDirectory => Lang.SelectIconsDirectory;
@@ -352,6 +356,8 @@ public class LangProvider : INotifyPropertyChanged
     public string Spanish => Lang.Spanish;
     public string StopSearching => Lang.StopSearching;
     public string SubfolderProcessing => Lang.SubfolderProcessing;
+    public string TMDBAPIKey => Lang.TMDBAPIKey;
+    public string TV => Lang.TV;
     public string Test => Lang.Test;
     public string Theme => Lang.Theme;
     public string ThemeDark => Lang.ThemeDark;
@@ -359,9 +365,7 @@ public class LangProvider : INotifyPropertyChanged
     public string ThemeSystem => Lang.ThemeSystem;
     public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
     public string Title => Lang.Title;
-    public string TMDBAPIKey => Lang.TMDBAPIKey;
     public string ToForceReload => Lang.ToForceReload;
-    public string TV => Lang.TV;
     public string UnauthorizedAccess => Lang.UnauthorizedAccess;
     public string Undo => Lang.Undo;
     public string UndoSuccessful => Lang.UndoSuccessful;
@@ -384,16 +388,16 @@ public class LangProvider : INotifyPropertyChanged
 
 public class LangKeys
 {
+    public static string APIKeysConfiguration = nameof(APIKeysConfiguration);
+    public static string APIKeysNotProvided = nameof(APIKeysNotProvided);
     public static string About = nameof(About);
     public static string Action = nameof(Action);
     public static string AddToContextMenu = nameof(AddToContextMenu);
     public static string All = nameof(All);
     public static string AlwaysShowPosterWindow = nameof(AlwaysShowPosterWindow);
     public static string AmbiguousTitleTooltip = nameof(AmbiguousTitleTooltip);
-    public static string APIKeysConfiguration = nameof(APIKeysConfiguration);
-    public static string APIKeysNotProvided = nameof(APIKeysNotProvided);
-    public static string Apply = nameof(Apply);
     public static string AppWillClose = nameof(AppWillClose);
+    public static string Apply = nameof(Apply);
     public static string Arabic = nameof(Arabic);
     public static string Auto = nameof(Auto);
     public static string BestSuitedForHorizontal = nameof(BestSuitedForHorizontal);
@@ -427,19 +431,20 @@ public class LangKeys
     public static string DeleteMediaInfoTooltip = nameof(DeleteMediaInfoTooltip);
     public static string DevelopedByDinesh = nameof(DevelopedByDinesh);
     public static string DirectoryIsEmpty = nameof(DirectoryIsEmpty);
-    public static string DownloadingIcons = nameof(DownloadingIcons);
-    public static string DownloadingIconWithCount = nameof(DownloadingIconWithCount);
     public static string DownloadIt = nameof(DownloadIt);
+    public static string DownloadingIconWithCount = nameof(DownloadingIconWithCount);
+    public static string DownloadingIcons = nameof(DownloadingIcons);
     public static string EmptyDirectory = nameof(EmptyDirectory);
-    public static string Enabled = nameof(Enabled);
     public static string EnableErrorReporting = nameof(EnableErrorReporting);
     public static string EnableErrorReportingTip = nameof(EnableErrorReportingTip);
     public static string EnableSubfolderProcessing = nameof(EnableSubfolderProcessing);
+    public static string Enabled = nameof(Enabled);
     public static string English = nameof(English);
     public static string EnterTitlePlaceholder = nameof(EnterTitlePlaceholder);
     public static string EnterValidRegexPlaceholder = nameof(EnterValidRegexPlaceholder);
     public static string ExceptionOccurred = nameof(ExceptionOccurred);
     public static string ExplorerIntegration = nameof(ExplorerIntegration);
+    public static string ExtractManually = nameof(ExtractManually);
     public static string FailedFileAccessAt = nameof(FailedFileAccessAt);
     public static string FailedToSaveMediaInfoAt = nameof(FailedToSaveMediaInfoAt);
     public static string FileIsInUse = nameof(FileIsInUse);
@@ -473,6 +478,7 @@ public class LangKeys
     public static string Load = nameof(Load);
     public static string LoadingPosters = nameof(LoadingPosters);
     public static string MakeIcons = nameof(MakeIcons);
+    public static string ManualExplorer = nameof(ManualExplorer);
     public static string MediaRating = nameof(MediaRating);
     public static string MediaTitle = nameof(MediaTitle);
     public static string Movie = nameof(Movie);
@@ -512,11 +518,11 @@ public class LangKeys
     public static string RestartExplorerTooltip = nameof(RestartExplorerTooltip);
     public static string Russian = nameof(Russian);
     public static string Save = nameof(Save);
+    public static string SearchMode = nameof(SearchMode);
+    public static string SearchResult = nameof(SearchResult);
     public static string Searching = nameof(Searching);
     public static string SearchingWithCount = nameof(SearchingWithCount);
     public static string SearchingWithName = nameof(SearchingWithName);
-    public static string SearchMode = nameof(SearchMode);
-    public static string SearchResult = nameof(SearchResult);
     public static string SeeMorePosters = nameof(SeeMorePosters);
     public static string SelectFolder = nameof(SelectFolder);
     public static string SelectIconsDirectory = nameof(SelectIconsDirectory);
@@ -532,6 +538,8 @@ public class LangKeys
     public static string Spanish = nameof(Spanish);
     public static string StopSearching = nameof(StopSearching);
     public static string SubfolderProcessing = nameof(SubfolderProcessing);
+    public static string TMDBAPIKey = nameof(TMDBAPIKey);
+    public static string TV = nameof(TV);
     public static string Test = nameof(Test);
     public static string Theme = nameof(Theme);
     public static string ThemeDark = nameof(ThemeDark);
@@ -539,9 +547,7 @@ public class LangKeys
     public static string ThemeSystem = nameof(ThemeSystem);
     public static string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
     public static string Title = nameof(Title);
-    public static string TMDBAPIKey = nameof(TMDBAPIKey);
     public static string ToForceReload = nameof(ToForceReload);
-    public static string TV = nameof(TV);
     public static string UnauthorizedAccess = nameof(UnauthorizedAccess);
     public static string Undo = nameof(Undo);
     public static string UndoSuccessful = nameof(UndoSuccessful);

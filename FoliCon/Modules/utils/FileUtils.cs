@@ -1,4 +1,6 @@
-﻿using FoliCon.Models.Constants;
+﻿using System.Security.AccessControl;
+using System.Security.Principal;
+using FoliCon.Models.Constants;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Configuration;
 using FoliCon.Modules.IGDB;
@@ -13,6 +15,15 @@ namespace FoliCon.Modules.utils;
 public static class FileUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly List<string> CompressedExtensions = [
+        ".zip",
+        ".rar",
+        ".gz",
+        ".bz2",
+        ".7z",
+        ".tar"
+    ];
+
     /// <summary>
     /// Determines whether a given string value ends with any string within a collection of file extensions.
     /// </summary>
@@ -231,53 +242,42 @@ public static class FileUtils
 
     public static DirectoryPermissionsResult CheckDirectoryPermissions(string dirPath)
     {
-        var result = new DirectoryPermissionsResult();
+        var permissions = new DirectoryPermissionsResult();
 
-        if (!Directory.Exists(dirPath)) return result;
-
-        result.CanRead = CheckReadPermissions(dirPath, "test.txt");
-        result.CanWrite = CheckWritePermissions(dirPath, "test.tmp");
-
-        Logger.Debug("Path: {Path}; Directory Permissions Checked: {@Result}", dirPath, result);
-
-        return result;
-    }
-
-    private static bool CheckReadPermissions(string dirPath, string fileName)
-    {
-        try
+        if (!Directory.Exists(dirPath))
         {
-            // Attempt to open the file with read permissions
-            using var stream = File.OpenRead(Path.Combine(dirPath, fileName));
-            return true;
+            return permissions;
         }
-        catch
-        {
-            // Ignore any exception, it means we don't have read permissions.
-            return false;
-        }
-    }
 
-    private static bool CheckWritePermissions(string dirPath, string fileName)
-    {
-        try
+        var identity = WindowsIdentity.GetCurrent();
+        var principal = new WindowsPrincipal(identity);
+
+        var directoryInfo = new DirectoryInfo(dirPath);
+        var directorySecurity = directoryInfo.GetAccessControl();
+        var authorizationRules = directorySecurity.GetAccessRules(true, true, typeof(SecurityIdentifier));
+
+        foreach (FileSystemAccessRule rule in authorizationRules)
         {
-            // Attempt to open a new file with write permissions
-            using (File.Create(Path.Combine(dirPath, fileName)))
+            var securityIdentifier = (SecurityIdentifier) rule.IdentityReference;
+
+            if (!principal.IsInRole(securityIdentifier))
             {
+                continue;
             }
 
-            // Successfully created file, try to delete it
-            File.Delete(Path.Combine(dirPath, fileName));
-            return true;
-        }
-        catch
-        {
-            // Ignore any exception, it means we don't have write permissions.
-            return false;
-        }
-    }
+            if ((FileSystemRights.Read & rule.FileSystemRights) != 0 && rule.AccessControlType == AccessControlType.Allow)
+            {
+                permissions.CanRead = true;
+            }
 
+            if ((FileSystemRights.Write & rule.FileSystemRights) != 0 && rule.AccessControlType == AccessControlType.Allow)
+            {
+                permissions.CanWrite = true;
+            }
+        }
+        Logger.Debug("Path: {Path}; Directory Permissions Checked: {@Result}", dirPath, permissions);
+        return permissions;
+    }
     public static string GetResourcePath(string resource)
     {
         var path = Path.Combine(Path.GetTempPath(), resource);
@@ -471,5 +471,63 @@ public static class FileUtils
         Services.Settings.DevClientId = dartId;
         Services.Settings.DevClientSecret = dartClientSecret;
         Services.Settings.Save();
+    }
+    
+    public static bool CreateDirectory(string path)
+    {
+        try
+        {
+            Logger.Debug("Creating Directory: {Path}", path);
+            Directory.CreateDirectory(path);
+            return true;
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            HandleUnauthorizedAccessException(e, path);
+            return false;
+        }
+    }
+
+    public static string CreateDirectoryInFoliConTemp(string path)
+    {
+        var foliConTempPath = FoliConTempDeviationsPath();
+        var fullPath = Path.Combine(foliConTempPath, path);
+        CreateDirectory(fullPath);
+        return fullPath;
+    }
+    
+    public static bool IsCompressedArchive(string fileName)
+    {
+        var fileExtension = Path.GetExtension(fileName)?.ToLower();
+        return CompressedExtensions.Contains(fileExtension);
+    }
+    
+    public static void DeleteDirectoryIfEmpty(string targetDirectoryPath)
+    {
+        if (!Directory.Exists(targetDirectoryPath))
+        {
+            return;
+        }
+
+        if (Directory.GetFiles(targetDirectoryPath).Length == 0)
+        {
+            Directory.Delete(targetDirectoryPath);
+        }
+    }
+
+    public static void DeleteFoliConTempDeviationDirectory()
+    {
+        Directory.Delete(FoliConTempDeviationsPath(), true);
+    }
+    
+    
+    private static string FoliConTempPath()
+    {
+        return Path.Combine(Path.GetTempPath(), "FoliCon");
+    }
+    
+    private static string FoliConTempDeviationsPath()
+    {
+        return Path.Combine(FoliConTempPath(), "Deviations");
     }
 }

@@ -806,7 +806,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             try
             {
-                await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                if (img.RemotePath.IsFile)
+                {
+                    File.Move(img.RemotePath.AbsolutePath, img.LocalPath);
+                }
+                else
+                {
+                    await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                }
             }
             catch (UnauthorizedAccessException e)
             {

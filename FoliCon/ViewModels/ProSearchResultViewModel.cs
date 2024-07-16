@@ -24,7 +24,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private List<ImageToDownload> _imgDownloadList;
     private int _index;
     private int _totalPosters;
-
+    private readonly IDialogService _dialogService;
+    
     public event Action<IDialogResult> RequestClose;
 
     private string _folderPath;
@@ -60,18 +61,21 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     public DelegateCommand SkipCommand { get; set; }
     public DelegateCommand<object> PickCommand { get; set; }
     public DelegateCommand<object> OpenImageCommand { get; set; }
+    public DelegateCommand<object> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
 
-    public ProSearchResultViewModel()
+    public ProSearchResultViewModel(IDialogService dialogService)
     {
         Logger.Debug("ProSearchResultViewModel Constructor");
-        ImageUrl = new ObservableCollection<DArtImageList>();
+        ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<object>(PickMethod);
         OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+        ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
+        _dialogService = dialogService;
     }
 
     private void OpenImageMethod(object parameter)
@@ -86,6 +90,21 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         browser.Show();
     }
 
+    private void ExtractManually(object parameter)
+    {
+        Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter);
+        var deviationId = (string)parameter;
+        _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
+        {
+            if (result.Result != ButtonResult.OK)
+            {
+                return;
+            }
+
+            Logger.Debug("Manual Extraction Completed");
+            PickMethod(result.Parameters.GetValue<string>("localPath"));
+        });
+    }
     private async void PrepareForSearch()
     {
         StopSearch = false;
@@ -128,8 +147,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                     }
                     using (var bm = await response.GetBitmap())
                     {
-                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, ImageUtils.LoadBitmap(bm)));
-                        bm.Dispose();
+                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, ImageUtils.LoadBitmap(bm), item.Value.Deviationid));
                     }
                     if (_stopSearch)
                     {

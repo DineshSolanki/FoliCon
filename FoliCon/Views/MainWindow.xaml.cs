@@ -81,4 +81,9 @@ public partial class MainWindow
         dataView.SortDescriptions.Add(sd);
         dataView.Refresh();
     }
+
+    private void MainWindow_OnClosed(object sender, EventArgs e)
+    {
+        FileUtils.DeleteFoliConTempDeviationDirectory();
+    }
 }

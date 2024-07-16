@@ -649,4 +649,10 @@ and refresh Icon Cache?</value>
     <data name="Pattern" xml:space="preserve">
       <value>Pattern</value>
     </data>
+    <data name="ManualExplorer" xml:space="preserve">
+      <value>Manual Explorer</value>
+    </data>
+    <data name="ExtractManually" xml:space="preserve">
+      <value>Extract manually</value>
+    </data>
 </root>

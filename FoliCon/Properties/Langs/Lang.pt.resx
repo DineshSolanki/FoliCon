@@ -644,4 +644,10 @@ e renovar o cache dos Ícones?</value>
   <data name="Pattern" xml:space="preserve">
     <value>Padrão</value>
   </data>
+  <data name="ManualExplorer" xml:space="preserve">
+    <value>Explorador manual</value>
+  </data>
+  <data name="ExtractManually" xml:space="preserve">
+    <value>Extrair manualmente</value>
+  </data>
 </root>
