@@ -355,7 +355,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                         await ProcessPosterModeAsync();
                     else
                     {
-                        ProcessProfessionalMode();
+                        ProcessProfessionalMode(SelectedFolder);
                     }
                     StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
                         StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
@@ -591,20 +591,44 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         return await taskCompletionSource.Task;
     }
     
-    private void ProcessProfessionalMode()
+    private void ProcessProfessionalMode(string initialFolderPath)
     {
         Logger.Debug("Entered ProcessProfessionalMode method");
-        StatusBarProperties.AppStatus = "Searching";
-        _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
-            _dArtObject, _ => { });
-        if (_pickedListDataTable.Count <= 0)
+        // Create a queue to hold the folders
+        var foldersQueue = new Queue<string>();
+        foldersQueue.Enqueue(initialFolderPath);
+        while (foldersQueue.Count > 0)
         {
-            return;
+            var folderPath = foldersQueue.Dequeue();
+            Logger.Trace($"Processing Folder: {folderPath}");
+            var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            if (subfolderNames.Count == 0)
+            {
+                continue;
+            }
+            StatusBarProperties.AppStatus = "Searching";
+            _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
+                _dArtObject, _ => { });
+            // if (_pickedListDataTable.Count <= 0)
+            // {
+            //     continue;
+            // }
+            Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
+            FinalListViewData.Data.AddRange(_pickedListDataTable);
+            StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
+            if (!Services.Settings.SubfolderProcessingEnabled)
+            {
+                continue;
+            }
+            Logger.Trace("Subfolder Processing Enabled, Adding Subfolders.");
+            var subFolders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+            var subfolderList = subFolders as string[] ?? subFolders.ToArray();
+            if (!subfolderList.Any()) continue;
+            foreach (var subFolder in subfolderList)
+            {
+                foldersQueue.Enqueue(subFolder);
+            }
         }
-
-        Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
-        FinalListViewData.Data.AddRange(_pickedListDataTable);
-        StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
     }
 
     private void InitializeDelegates()
