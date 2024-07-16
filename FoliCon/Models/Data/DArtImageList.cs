@@ -12,10 +12,8 @@ public class DArtImageList : BindableBase
         Image = bmp ?? throw new ArgumentNullException(nameof(bmp));
     }
 
-    public DArtImageList(string url, BitmapSource bmp, string deviationId)
+    public DArtImageList(string url, BitmapSource bmp, string deviationId) : this(url, bmp)
     {
-        Url = url ?? throw new ArgumentNullException(nameof(url));
-        Image = bmp ?? throw new ArgumentNullException(nameof(bmp));
         DeviationId = deviationId ?? throw new ArgumentNullException(nameof(deviationId));
     }
     

@@ -86,7 +86,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		{
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 			var dArtDownloadResponse = task.Result;
-			dArtDownloadResponse.localDownloadPath.ToDirectoryInfo().GetFiles()
+			dArtDownloadResponse.LocalDownloadPath.ToDirectoryInfo().GetFiles()
 				.ForEach(info => { Directory.AddOnUI(info.FullName); });
 			IsBusy = false;
 		});

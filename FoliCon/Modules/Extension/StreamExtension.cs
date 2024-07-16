@@ -12,13 +12,10 @@ public static class StreamExtensions
         while (reader.MoveToNextEntry())
         {
             var entryKey = reader.Entry.Key;
-
-            if (entryKey != null && (reader.Entry.IsDirectory ||
-                                     entryKey.Contains("ResourceForks") ||
-                                     entryKey.Contains("__MACOSX") ||
-                                     entryKey.StartsWith("._") ||
-                                     entryKey.Equals(".DS_Store") ||
-                                     entryKey.Equals("Thumbs.db"))) continue;
+            if (IsUnwantedDirectoryOrFileType(entryKey, reader))
+            {
+                continue;
+            }
 
             if (FileUtils.IsPngOrIco(entryKey))
             {
@@ -29,5 +26,15 @@ public static class StreamExtensions
                 });
             }
         }
+    }
+
+    private static bool IsUnwantedDirectoryOrFileType(string entryKey, IReader reader)
+    {
+        return entryKey != null && (reader.Entry.IsDirectory ||
+                                    entryKey.Contains("ResourceForks") ||
+                                    entryKey.Contains("__MACOSX") ||
+                                    entryKey.StartsWith("._") ||
+                                    entryKey.Equals(".DS_Store") ||
+                                    entryKey.Equals("Thumbs.db"));
     }
 }

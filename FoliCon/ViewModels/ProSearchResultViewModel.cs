@@ -96,7 +96,11 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         var deviationId = (string)parameter;
         _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
         {
-            if (result.Result != ButtonResult.OK) return;
+            if (result.Result != ButtonResult.OK)
+            {
+                return;
+            }
+
             Logger.Debug("Manual Extraction Completed");
             PickMethod(result.Parameters.GetValue<string>("localPath"));
         });

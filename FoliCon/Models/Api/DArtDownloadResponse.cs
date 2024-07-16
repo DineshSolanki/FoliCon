@@ -18,21 +18,10 @@ public record DArtDownloadResponse
     public int FileSizeBytes { get; init; }
     
     [JsonIgnore]
-    public string localDownloadPath { get; set; }
+    public string LocalDownloadPath { get; set; }
     
     public string GetFileSizeHumanReadable()
     {
-        if (FileSizeBytes < 1024)
-            return $"{FileSizeBytes} bytes";
-        
-        int i;
-        double fileSizeToDouble = FileSizeBytes;
-
-        for (i = 0; i < 8 && fileSizeToDouble >= 1024; ++i)
-        {
-            fileSizeToDouble /= 1024;
-        }
-
-        return $"{fileSizeToDouble:0.##} {new[] {"bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"}[i]}";
+        return ConvertHelper.ToFileSize(FileSizeBytes);
     }
 }

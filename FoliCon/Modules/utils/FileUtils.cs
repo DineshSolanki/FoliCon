@@ -15,7 +15,7 @@ namespace FoliCon.Modules.utils;
 public static class FileUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private static readonly List<string> _compressedExtensions = [
+    private static readonly List<string> CompressedExtensions = [
         ".zip",
         ".rar",
         ".gz",
@@ -244,7 +244,11 @@ public static class FileUtils
     {
         var permissions = new DirectoryPermissionsResult();
 
-        if (!Directory.Exists(dirPath)) return permissions;
+        if (!Directory.Exists(dirPath))
+        {
+            return permissions;
+        }
+
         var identity = WindowsIdentity.GetCurrent();
         var principal = new WindowsPrincipal(identity);
 
@@ -256,7 +260,11 @@ public static class FileUtils
         {
             var securityIdentifier = (SecurityIdentifier) rule.IdentityReference;
 
-            if (!principal.IsInRole(securityIdentifier)) continue;
+            if (!principal.IsInRole(securityIdentifier))
+            {
+                continue;
+            }
+
             if ((FileSystemRights.Read & rule.FileSystemRights) != 0 && rule.AccessControlType == AccessControlType.Allow)
             {
                 permissions.CanRead = true;
@@ -491,30 +499,27 @@ public static class FileUtils
     public static bool IsCompressedArchive(string fileName)
     {
         var fileExtension = Path.GetExtension(fileName)?.ToLower();
-        return _compressedExtensions.Contains(fileExtension);
+        return CompressedExtensions.Contains(fileExtension);
     }
     
     public static void DeleteDirectoryIfEmpty(string targetDirectoryPath)
     {
-        if (!Directory.Exists(targetDirectoryPath)) return;
-        
+        if (!Directory.Exists(targetDirectoryPath))
+        {
+            return;
+        }
+
         if (Directory.GetFiles(targetDirectoryPath).Length == 0)
         {
             Directory.Delete(targetDirectoryPath);
         }
     }
-    
-    public static void DeleteFoliConTempDeviationDirectory(bool ifEmpty = false)
+
+    public static void DeleteFoliConTempDeviationDirectory()
     {
-        if (ifEmpty)
-        {
-            DeleteDirectoryIfEmpty(FoliConTempDeviationsPath());
-        }
-        else
-        {
-            Directory.Delete(FoliConTempDeviationsPath(), true);
-        }
+        Directory.Delete(FoliConTempDeviationsPath(), true);
     }
+    
     
     private static string FoliConTempPath()
     {
