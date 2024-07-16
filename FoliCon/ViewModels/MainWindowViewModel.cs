@@ -808,7 +808,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 if (img.RemotePath.IsFile)
                 {
-                    File.Move(img.RemotePath.AbsolutePath, img.LocalPath);
+                    File.Move(img.RemotePath.LocalPath, img.LocalPath);
                 }
                 else
                 {
