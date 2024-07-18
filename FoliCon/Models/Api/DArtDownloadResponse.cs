@@ -20,7 +20,9 @@ public record DArtDownloadResponse
     [JsonIgnore]
     public string LocalDownloadPath { get; set; }
     
-    public string GetFileSizeHumanReadable()
+    public string FileSizeHumanReadable => GetFileSizeHumanReadable();
+    
+    private string GetFileSizeHumanReadable()
     {
         return ConvertHelper.ToFileSize(FileSizeBytes);
     }

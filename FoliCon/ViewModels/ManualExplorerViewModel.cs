@@ -1,4 +1,6 @@
 ﻿
+using FoliCon.Models.Api;
+using FoliCon.Models.Data;
 using FoliCon.Modules.DeviantArt;
 using NLog;
 
@@ -25,10 +27,14 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private bool _isBusy;
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
+	private DArtDownloadResponse _dArtDownloadResponse;
+	private ExtractionProgress _progress = new(0,1);
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 	public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
+	public ExtractionProgress Progress { get => _progress; set => SetProperty(ref _progress, value); }
+	public DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
 	
 	public DelegateCommand<object> PickCommand { get; set; }
@@ -77,19 +83,24 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		RequestClose?.Invoke(dialogResult);
 	}
 
-	public virtual void OnDialogOpened(IDialogParameters parameters)
+	public virtual async void OnDialogOpened(IDialogParameters parameters)
 	{
 		parameters.TryGetValue("DeviationId", out string deviationId);
 		DArtObject = parameters.GetValue<DArt>("dartobject");
 		IsBusy = true;
-		DArtObject.Download(deviationId).ContinueWith(task =>
+		DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
+		DArtDownloadResponse = await Task.Run(()=> DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse, new Progress<ExtractionProgress>(value => {
+			Progress = value;
+		})));
+			
+		Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
+
+		foreach (var fileInfo in DArtDownloadResponse.LocalDownloadPath.ToDirectoryInfo().GetFiles())
 		{
-			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
-			var dArtDownloadResponse = task.Result;
-			dArtDownloadResponse.LocalDownloadPath.ToDirectoryInfo().GetFiles()
-				.ForEach(info => { Directory.AddOnUI(info.FullName); });
-			IsBusy = false;
-		});
+			Directory.AddOnUI(fileInfo.FullName);
+		}
+
+		IsBusy = false;
 	}
 
 	#endregion DialogMethods

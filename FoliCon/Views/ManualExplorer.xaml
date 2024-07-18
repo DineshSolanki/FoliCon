@@ -21,7 +21,18 @@
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContent>
             <StackPanel>
-                <TextBlock FontWeight="Bold" Text="Extracting..." />
+                <TextBlock FontWeight="Bold">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}{1}/{2}">
+                            <Binding Path="DArtDownloadResponse.FileSizeHumanReadable" />
+                            <Binding Path="Progress.Current" />
+                            <Binding Path="Progress.Total"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <ProgressBar Value="{Binding Progress.Current}" Maximum="{Binding Progress.Total}" Height="15"/>
+                <!-- <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top" -->
+                <!--         Command="{Binding StopSearchCommand}" /> -->
             </StackPanel>
         </hc:BusyIndicator.BusyContent>
         <Grid Margin="12,12,12,12">

@@ -1,6 +1,7 @@
-﻿using FoliCon.Modules.utils;
+﻿using FoliCon.Models.Data;
+using FoliCon.Modules.utils;
+using SharpCompress.Archives;
 using SharpCompress.Common;
-using SharpCompress.Readers;
 
 namespace FoliCon.Modules.Extension;
 
@@ -11,35 +12,37 @@ public static class StreamExtensions
     /// </summary>
     /// <param name="archiveStream">The compressed stream containing the PNG and ICO files.</param>
     /// <param name="targetPath">The path of the directory where the extracted files should be written.</param>
-    public static void ExtractPngAndIcoToDirectory(this Stream archiveStream, string targetPath)
+    /// <param name="progressCallback">A Callback which can be used to report the progress of the extraction.</param>
+    public static void ExtractPngAndIcoToDirectory(this Stream archiveStream, string targetPath,
+        IProgress<ExtractionProgress> progressCallback)
     {
-        using var reader = ReaderFactory.Open(archiveStream);
-        while (reader.MoveToNextEntry())
+        using var reader = ArchiveFactory.Open(archiveStream);
+        var pngAndIcoEntries = reader.Entries.Where(entry =>
+            (!entry.IsDirectory || !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
+        var pngAndIcoFiles = pngAndIcoEntries as IArchiveEntry[] ?? pngAndIcoEntries.ToArray();
+        var totalCount = pngAndIcoFiles.Length;
+        var extractionProgress = new ExtractionProgress(0, totalCount);
+        progressCallback.Report(extractionProgress);
+        var extractionSettings = new ExtractionOptions
         {
-            var entryKey = reader.Entry.Key;
-            if (IsUnwantedDirectoryOrFileType(entryKey, reader))
-            {
-                continue;
-            }
-
-            if (FileUtils.IsPngOrIco(entryKey))
-            {
-                reader.WriteEntryToDirectory(targetPath, new ExtractionOptions
-                {
-                    ExtractFullPath = false,
-                    Overwrite = true
-                });
-            }
+            ExtractFullPath = false,
+            Overwrite = true
+        };
+        foreach (var entry in pngAndIcoFiles)
+        {
+            entry.WriteToDirectory(targetPath, extractionSettings);
+            extractionProgress.Current++;
+            progressCallback.Report(extractionProgress);
         }
     }
 
-    private static bool IsUnwantedDirectoryOrFileType(string entryKey, IReader reader)
+    private static bool IsUnwantedDirectoryOrFileType(IEntry entry)
     {
-        return entryKey != null && (reader.Entry.IsDirectory ||
-                                    entryKey.Contains("ResourceForks") ||
-                                    entryKey.Contains("__MACOSX") ||
-                                    entryKey.StartsWith("._") ||
-                                    entryKey.Equals(".DS_Store") ||
-                                    entryKey.Equals("Thumbs.db"));
+        return entry.Key != null && (entry.IsDirectory ||
+                                    entry.Key.Contains("ResourceForks") ||
+                                    entry.Key.Contains("__MACOSX") ||
+                                    entry.Key.StartsWith("._") ||
+                                    entry.Key.Equals(".DS_Store") ||
+                                    entry.Key.Equals("Thumbs.db"));
     }
 }
