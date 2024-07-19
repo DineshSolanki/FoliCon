@@ -7,11 +7,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="clr-namespace:FoliCon.Modules.UI"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ManualExplorerViewModel }"
              x:Name="Root">
+    <UserControl.Resources>
+        <convertor:ImageCacheConverter x:Key="ImageCacheConverter"/>
+    </UserControl.Resources>
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="450" />
@@ -59,7 +63,7 @@
                 <ItemsControl ItemsSource="{Binding Directory}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Tag="{Binding}" Height="128" Width="128" Source="{Binding}" Unloaded="FrameworkElement_OnUnloaded"
+                            <Image Tag="{Binding}" Height="128" Width="128" Source="{Binding Converter={StaticResource ImageCacheConverter}}" Unloaded="FrameworkElement_OnUnloaded"
                                    RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
                                 <i:Interaction.Behaviors>
                                     <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" 
