@@ -23,7 +23,7 @@
             <StackPanel>
                 <TextBlock FontWeight="Bold">
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}{1}/{2}">
+                        <MultiBinding StringFormat="{}{0} {1}/{2}">
                             <Binding Path="DArtDownloadResponse.FileSizeHumanReadable" />
                             <Binding Path="Progress.Current" />
                             <Binding Path="Progress.Total"/>
