@@ -23,7 +23,7 @@
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <hc:BusyIndicator IsBusy="{Binding IsBusy}">
+    <hc:BusyIndicator IsBusy="{Binding IsBusy}" FocusAfterBusy="{Binding ElementName=SearchBar}">
         <hc:BusyIndicator.BusyContent>
             <StackPanel>
                 <TextBlock FontWeight="Bold">
@@ -53,7 +53,7 @@
                 <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                         Command="{Binding SkipCommand}" IsCancel="True" />
                 <Label Content="{extension:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Column="1" VerticalAlignment="Top" />
-                <hc:SearchBar
+                <hc:SearchBar x:Name="SearchBar"
                     extension:FocusExtension.IsFocused="{Binding IsSearchFocused,UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="2" Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource SearchBarPlusBaseStyle}"

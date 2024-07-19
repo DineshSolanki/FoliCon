@@ -168,8 +168,11 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             {
                 Logger.Warn("No Result Found for {Query}", query);
                 IsBusy = false;
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
-                    LangProvider.GetLang("NoResult")));
+                if (offset == 0)
+                {
+                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
+                        LangProvider.GetLang("NoResult")));
+                }
                 IsSearchFocused = true;
             }
 
