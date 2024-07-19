@@ -12,16 +12,18 @@ public static class StreamExtensions
     /// </summary>
     /// <param name="archiveStream">The compressed stream containing the PNG and ICO files.</param>
     /// <param name="targetPath">The path of the directory where the extracted files should be written.</param>
+    /// <param name="cancellationToken"></param>
     /// <param name="progressCallback">A Callback which can be used to report the progress of the extraction.</param>
     public static void ExtractPngAndIcoToDirectory(this Stream archiveStream, string targetPath,
-        IProgress<ExtractionProgress> progressCallback)
+        CancellationToken cancellationToken,
+        IProgress<ProgressInfo> progressCallback)
     {
         using var reader = ArchiveFactory.Open(archiveStream);
         var pngAndIcoEntries = reader.Entries.Where(entry =>
             (!entry.IsDirectory || !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
         var pngAndIcoFiles = pngAndIcoEntries as IArchiveEntry[] ?? pngAndIcoEntries.ToArray();
         var totalCount = pngAndIcoFiles.Length;
-        var extractionProgress = new ExtractionProgress(0, totalCount);
+        var extractionProgress = new ProgressInfo(0, totalCount, "Extracting...");
         progressCallback.Report(extractionProgress);
         var extractionSettings = new ExtractionOptions
         {
@@ -30,6 +32,7 @@ public static class StreamExtensions
         };
         foreach (var entry in pngAndIcoFiles)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             entry.WriteToDirectory(targetPath, extractionSettings);
             extractionProgress.Current++;
             progressCallback.Report(extractionProgress);

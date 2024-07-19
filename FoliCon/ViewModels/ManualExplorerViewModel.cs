@@ -15,6 +15,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		Directory = [];
 		PickCommand = new DelegateCommand<object>(PickMethod);
 		OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+		CancelCommand = new DelegateCommand(CancelMethod);
 	}
 
 	private void PickMethod(object localImagePath)
@@ -28,19 +29,27 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
-	private ExtractionProgress _progress = new(0,1);
+	private ProgressInfo _progressInfo = new(0,1, "Downloading...");
+	public CancellationTokenSource Cts = new();
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 	public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-	public ExtractionProgress Progress { get => _progress; set => SetProperty(ref _progress, value); }
+	public ProgressInfo ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
 	public DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
 	
 	public DelegateCommand<object> PickCommand { get; set; }
 	public DelegateCommand<object> OpenImageCommand { get; set; }
-	
-	
+	public DelegateCommand CancelCommand { get; init; }
+
+	private void CancelMethod()
+	{
+		Logger.Trace("Cancelling Manual Extraction");
+		Cts.Cancel();
+	}
+
+
 	private void OpenImageMethod(object parameter)
 	{
 		Logger.Debug("Opening Image {Image}", parameter);
@@ -88,17 +97,26 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		parameters.TryGetValue("DeviationId", out string deviationId);
 		DArtObject = parameters.GetValue<DArt>("dartobject");
 		IsBusy = true;
-		DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
-		DArtDownloadResponse = await Task.Run(()=> DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse, new Progress<ExtractionProgress>(value => {
-			Progress = value;
-		})));
-			
-		Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
-
-		foreach (var fileInfo in DArtDownloadResponse.LocalDownloadPath.ToDirectoryInfo().GetFiles())
+		try
 		{
-			Directory.AddOnUI(fileInfo.FullName);
+			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
+			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
+				Cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
+			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 		}
+		catch (OperationCanceledException e)
+		{
+			Logger.Debug("User cancelled manual extraction");
+			
+		} 
+		finally
+		{
+			Cts.Dispose();
+		}
+
+		DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
+			.GetFiles()
+			.ForEach(fileInfo => Directory.AddOnUI(fileInfo.FullName));
 
 		IsBusy = false;
 	}
