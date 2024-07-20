@@ -655,4 +655,10 @@
   <data name="ExtractManually" xml:space="preserve">
       <value>एक्सट्रेक्ट करे</value>
     </data>
+  <data name="Extracting" xml:space="preserve">
+      <value>एक्सट्रैक्टिंग...</value>
+    </data>
+  <data name="Downloading" xml:space="preserve">
+      <value>डाउनलोड हो रहा है...</value>
+    </data>
 </root>
