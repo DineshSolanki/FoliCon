@@ -10,7 +10,9 @@ public class ImageCacheConverter : IValueConverter
     {
         var path = (string)value;
         if (string.IsNullOrEmpty(path))
+        {
             return null;
+        }
 
         try
         {

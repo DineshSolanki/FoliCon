@@ -30,7 +30,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
 	private ProgressInfo _progressInfo = new(0,1,LangProvider.Instance.Downloading);
-	public CancellationTokenSource Cts = new();
+	private readonly CancellationTokenSource _cts = new();
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
@@ -46,7 +46,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private void CancelMethod()
 	{
 		Logger.Trace("Cancelling Manual Extraction");
-		Cts.Cancel();
+		_cts.Cancel();
 	}
 
 
@@ -101,7 +101,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		{
 			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
 			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				Cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
+				_cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 		}
 		catch (OperationCanceledException e)
@@ -109,16 +109,13 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			Logger.Debug("User cancelled manual extraction");
 			
 		} 
-		finally
-		{
-			Cts.Dispose();
-		}
 
 		DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
 			.GetFiles()
 			.ForEach(fileInfo => Directory.AddOnUI(fileInfo.FullName));
 
 		IsBusy = false;
+		_cts.Dispose();
 	}
 
 	#endregion DialogMethods
