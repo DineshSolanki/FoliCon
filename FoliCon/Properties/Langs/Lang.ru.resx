@@ -654,4 +654,10 @@
   <data name="ExtractManually" xml:space="preserve">
     <value>Извлечь вручную</value>
   </data>
+  <data name="Extracting" xml:space="preserve">
+    <value>Извлечение...</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Загрузка...</value>
+  </data>
 </root>

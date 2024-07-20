@@ -1,4 +1,6 @@
 ﻿
+using FoliCon.Models.Api;
+using FoliCon.Models.Data;
 using FoliCon.Modules.DeviantArt;
 using NLog;
 
@@ -13,6 +15,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		Directory = [];
 		PickCommand = new DelegateCommand<object>(PickMethod);
 		OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+		CancelCommand = new DelegateCommand(CancelMethod);
 	}
 
 	private void PickMethod(object localImagePath)
@@ -25,16 +28,28 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private bool _isBusy;
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
+	private DArtDownloadResponse _dArtDownloadResponse;
+	private ProgressInfo _progressInfo = new(0,1,LangProvider.Instance.Downloading);
+	private readonly CancellationTokenSource _cts = new();
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 	public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
+	public ProgressInfo ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
+	public DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
 	
 	public DelegateCommand<object> PickCommand { get; set; }
 	public DelegateCommand<object> OpenImageCommand { get; set; }
-	
-	
+	public DelegateCommand CancelCommand { get; init; }
+
+	private void CancelMethod()
+	{
+		Logger.Trace("Cancelling Manual Extraction");
+		_cts.Cancel();
+	}
+
+
 	private void OpenImageMethod(object parameter)
 	{
 		Logger.Debug("Opening Image {Image}", parameter);
@@ -77,19 +92,30 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		RequestClose?.Invoke(dialogResult);
 	}
 
-	public virtual void OnDialogOpened(IDialogParameters parameters)
+	public virtual async void OnDialogOpened(IDialogParameters parameters)
 	{
 		parameters.TryGetValue("DeviationId", out string deviationId);
 		DArtObject = parameters.GetValue<DArt>("dartobject");
 		IsBusy = true;
-		DArtObject.Download(deviationId).ContinueWith(task =>
+		try
 		{
+			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
+			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
+				_cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
-			var dArtDownloadResponse = task.Result;
-			dArtDownloadResponse.LocalDownloadPath.ToDirectoryInfo().GetFiles()
-				.ForEach(info => { Directory.AddOnUI(info.FullName); });
-			IsBusy = false;
-		});
+		}
+		catch (OperationCanceledException e)
+		{
+			Logger.Debug("User cancelled manual extraction");
+			
+		} 
+
+		DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
+			.GetFiles()
+			.ForEach(fileInfo => Directory.AddOnUI(fileInfo.FullName));
+
+		IsBusy = false;
+		_cts.Dispose();
 	}
 
 	#endregion DialogMethods

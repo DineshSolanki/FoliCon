@@ -1,4 +1,5 @@
 ﻿using FoliCon.Models.Api;
+using FoliCon.Models.Data;
 using FoliCon.Modules.Configuration;
 using FoliCon.Modules.Extension;
 using FoliCon.Modules.utils;
@@ -102,13 +103,23 @@ public class DArt : BindableBase
     {
         GetClientAccessTokenAsync();
         var dArtDownloadResponse = await GetDArtDownloadResponseAsync(deviationId);
+        await TryExtraction(deviationId, dArtDownloadResponse, CancellationToken.None, new Progress<ProgressInfo>(_ => { }));
+
+        return dArtDownloadResponse;
+    }
+
+    private async Task<DArtDownloadResponse> TryExtraction(string deviationId,
+        DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
+        IProgress<ProgressInfo> progressCallback)
+    {
+        progressCallback.Report(new ProgressInfo(0, 1, LangProvider.Instance.Downloading));
         var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(deviationId);
         dArtDownloadResponse.LocalDownloadPath = targetDirectoryPath;
-        var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src);
+        var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src, cancellationToken);
         
         if (FileUtils.IsCompressedArchive(dArtDownloadResponse.Filename))
         {
-            await ProcessCompressedFiles(downloadResponse, targetDirectoryPath);
+            await ProcessCompressedFiles(downloadResponse, targetDirectoryPath,cancellationToken, progressCallback);
         }
         else
         {
@@ -116,10 +127,17 @@ public class DArt : BindableBase
         }
 
         FileUtils.DeleteDirectoryIfEmpty(targetDirectoryPath);
-
         return dArtDownloadResponse;
     }
-    
+
+    public async Task<DArtDownloadResponse> ExtractDeviation(string deviationId,
+        DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
+        IProgress<ProgressInfo> progressCallback)
+    {
+        GetClientAccessTokenAsync();
+        return await TryExtraction(deviationId, dArtDownloadResponse, cancellationToken, progressCallback);
+
+    }
     public async Task<DArtDownloadResponse> GetDArtDownloadResponseAsync(string deviationId)
     {
         var url = GetDownloadApiUrl(deviationId);
@@ -128,10 +146,12 @@ public class DArt : BindableBase
         return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
     }
 
-    private async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath)
+    private async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath,
+        CancellationToken cancellationToken,
+        IProgress<ProgressInfo> progressCallback)
     {
-        await using var stream = await downloadResponse.Content.ReadAsStreamAsync();
-        stream.ExtractPngAndIcoToDirectory(targetDirectoryPath);
+        await using var stream = await downloadResponse.Content.ReadAsStreamAsync(cancellationToken);
+        stream.ExtractPngAndIcoToDirectory(targetDirectoryPath, cancellationToken, progressCallback);
     }
 
     private async Task FileStreamToDestination(HttpResponseMessage downloadResponse, string targetDirectoryPath,

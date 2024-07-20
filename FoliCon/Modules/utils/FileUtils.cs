@@ -517,7 +517,15 @@ public static class FileUtils
 
     public static void DeleteFoliConTempDeviationDirectory()
     {
-        Directory.Delete(FoliConTempDeviationsPath(), true);
+        try
+        {
+            Directory.Delete(FoliConTempDeviationsPath(), true);
+        }
+        catch (Exception e)
+        {
+            Logger.ForErrorEvent().Message("Error Occurred while Deleting FoliCon Temp Deviation Directory")
+                .Exception(e).Log();
+        }
     }
     
     
