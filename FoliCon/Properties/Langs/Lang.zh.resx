@@ -654,4 +654,10 @@ and refresh Icon Cache?</value>
   <data name="ExtractManually" xml:space="preserve">
       <value>Extract manually</value>
     </data>
+  <data name="Extracting" xml:space="preserve">
+      <value>Extracting...</value>
+    </data>
+  <data name="Downloading" xml:space="preserve">
+      <value>Downloading...</value>
+    </data>
 </root>
