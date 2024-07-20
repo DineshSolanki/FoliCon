@@ -112,7 +112,7 @@ public class DArt : BindableBase
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
         IProgress<ProgressInfo> progressCallback)
     {
-        progressCallback.Report(new ProgressInfo(0, 1, "Downloading..."));
+        progressCallback.Report(new ProgressInfo(0, 1, LangProvider.Instance.Downloading));
         var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(deviationId);
         dArtDownloadResponse.LocalDownloadPath = targetDirectoryPath;
         var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src, cancellationToken);

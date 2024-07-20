@@ -10,6 +10,8 @@
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ManualExplorerViewModel }"
              x:Name="Root">
@@ -42,7 +44,8 @@
                                      Maximum="{Binding DataContext.ProgressInfo.Total, ElementName=Root}" Height="15"/>
                     </StackPanel>
                     <Grid>
-                        <Button Content="Cancel" Command="{Binding DataContext.CancelCommand, ElementName=Root}" HorizontalAlignment="Center" Margin="2 0 0 0"/>
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Cancel}}" Command="{Binding DataContext.CancelCommand,
+                         ElementName=Root}" HorizontalAlignment="Center" Margin="2 0 0 0"/>
                     </Grid>
                 </StackPanel>
             </DataTemplate>

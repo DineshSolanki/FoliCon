@@ -651,4 +651,10 @@
   <data name="ExtractManually" xml:space="preserve">
     <value>استخراج يدوي</value>
   </data>
+  <data name="Extracting" xml:space="preserve">
+    <value>جارٍ الاستخراج...</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>جارٍ التنزيل...</value>
+  </data>
 </root>

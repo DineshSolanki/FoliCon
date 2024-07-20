@@ -23,7 +23,7 @@ public static class StreamExtensions
             (!entry.IsDirectory || !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
         var pngAndIcoFiles = pngAndIcoEntries as IArchiveEntry[] ?? pngAndIcoEntries.ToArray();
         var totalCount = pngAndIcoFiles.Length;
-        var extractionProgress = new ProgressInfo(0, totalCount, "Extracting...");
+        var extractionProgress = new ProgressInfo(0, totalCount, LangProvider.Instance.Extracting);
         progressCallback.Report(extractionProgress);
         var extractionSettings = new ExtractionOptions
         {

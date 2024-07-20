@@ -650,4 +650,10 @@ e renovar o cache dos Ícones?</value>
   <data name="ExtractManually" xml:space="preserve">
     <value>Extrair manualmente</value>
   </data>
+  <data name="Extracting" xml:space="preserve">
+    <value>Extraindo...</value>
+  </data>
+  <data name="Downloading" xml:space="preserve">
+    <value>Baixando...</value>
+  </data>
 </root>

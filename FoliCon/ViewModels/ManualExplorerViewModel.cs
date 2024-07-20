@@ -29,7 +29,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
-	private ProgressInfo _progressInfo = new(0,1, "Downloading...");
+	private ProgressInfo _progressInfo = new(0,1,LangProvider.Instance.Downloading);
 	public CancellationTokenSource Cts = new();
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }

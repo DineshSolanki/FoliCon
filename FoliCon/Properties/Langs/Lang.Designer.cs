@@ -457,6 +457,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading....
+        /// </summary>
+        public static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading Icons.
         /// </summary>
         public static string DownloadingIcons {
@@ -570,6 +579,15 @@ namespace FoliCon.Properties.Langs {
         public static string ExplorerIntegration {
             get {
                 return ResourceManager.GetString("ExplorerIntegration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracting....
+        /// </summary>
+        public static string Extracting {
+            get {
+                return ResourceManager.GetString("Extracting", resourceCulture);
             }
         }
         

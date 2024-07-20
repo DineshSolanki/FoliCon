@@ -77,6 +77,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(DevelopedByDinesh));
         OnPropertyChanged(nameof(DirectoryIsEmpty));
         OnPropertyChanged(nameof(DownloadIt));
+        OnPropertyChanged(nameof(Downloading));
         OnPropertyChanged(nameof(DownloadingIconWithCount));
         OnPropertyChanged(nameof(DownloadingIcons));
         OnPropertyChanged(nameof(EmptyDirectory));
@@ -89,6 +90,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
         OnPropertyChanged(nameof(ExplorerIntegration));
         OnPropertyChanged(nameof(ExtractManually));
+        OnPropertyChanged(nameof(Extracting));
         OnPropertyChanged(nameof(FailedFileAccessAt));
         OnPropertyChanged(nameof(FailedToSaveMediaInfoAt));
         OnPropertyChanged(nameof(FileIsInUse));
@@ -250,6 +252,7 @@ public class LangProvider : INotifyPropertyChanged
     public string DevelopedByDinesh => Lang.DevelopedByDinesh;
     public string DirectoryIsEmpty => Lang.DirectoryIsEmpty;
     public string DownloadIt => Lang.DownloadIt;
+    public string Downloading => Lang.Downloading;
     public string DownloadingIconWithCount => Lang.DownloadingIconWithCount;
     public string DownloadingIcons => Lang.DownloadingIcons;
     public string EmptyDirectory => Lang.EmptyDirectory;
@@ -263,6 +266,7 @@ public class LangProvider : INotifyPropertyChanged
     public string ExceptionOccurred => Lang.ExceptionOccurred;
     public string ExplorerIntegration => Lang.ExplorerIntegration;
     public string ExtractManually => Lang.ExtractManually;
+    public string Extracting => Lang.Extracting;
     public string FailedFileAccessAt => Lang.FailedFileAccessAt;
     public string FailedToSaveMediaInfoAt => Lang.FailedToSaveMediaInfoAt;
     public string FileIsInUse => Lang.FileIsInUse;
@@ -432,6 +436,7 @@ public class LangKeys
     public static string DevelopedByDinesh = nameof(DevelopedByDinesh);
     public static string DirectoryIsEmpty = nameof(DirectoryIsEmpty);
     public static string DownloadIt = nameof(DownloadIt);
+    public static string Downloading = nameof(Downloading);
     public static string DownloadingIconWithCount = nameof(DownloadingIconWithCount);
     public static string DownloadingIcons = nameof(DownloadingIcons);
     public static string EmptyDirectory = nameof(EmptyDirectory);
@@ -445,6 +450,7 @@ public class LangKeys
     public static string ExceptionOccurred = nameof(ExceptionOccurred);
     public static string ExplorerIntegration = nameof(ExplorerIntegration);
     public static string ExtractManually = nameof(ExtractManually);
+    public static string Extracting = nameof(Extracting);
     public static string FailedFileAccessAt = nameof(FailedFileAccessAt);
     public static string FailedToSaveMediaInfoAt = nameof(FailedToSaveMediaInfoAt);
     public static string FileIsInUse = nameof(FileIsInUse);
