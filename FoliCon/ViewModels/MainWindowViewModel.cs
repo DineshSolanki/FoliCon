@@ -398,68 +398,71 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.AppStatusAdditional = "";
     }
 
-    private async Task ProcessPosterFolderAsync(string folderPath)
+    private async Task ProcessPosterFolderAsync(string rootFolderPath)
     {
-        if (Services.Settings.SubfolderProcessingEnabled)
+        var folderQueue = new Queue<string>();
+        folderQueue.Enqueue(rootFolderPath);
+        while (folderQueue.Count > 0)
         {
-            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
-            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            foreach (var subFolder in folders)
+            var folderPath = folderQueue.Dequeue();
+            if (Services.Settings.SubfolderProcessingEnabled)
             {
-                await ProcessPosterFolderAsync(subFolder);
+                Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
+                var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+                folders.ForEach(folderQueue.Enqueue);
             }
-        }
-        var subfolderNames = FileUtils.GetFolderNames(folderPath);
-        foreach (var itemTitle in subfolderNames)
-        {
-            var fullFolderPath = $@"{folderPath}\{itemTitle}";
+            var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            foreach (var itemTitle in subfolderNames)
+            {
+                var fullFolderPath = $@"{folderPath}\{itemTitle}";
             
-            Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
-            var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
+                Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
+                var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
 
-            var resultCount = CalculateResultCount(response, isPickedById);
-            Logger.Info("Search Result Count: {ResultCount}", resultCount);
-            var dialogResult = false;
-            var isAutoPicked = false;
-            var skipAll = false;
-            switch (resultCount)
-            {
-                case 0:
-                    dialogResult = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
-                    break;
-                case 1 when !IsPosterWindowShown:
+                var resultCount = CalculateResultCount(response, isPickedById);
+                Logger.Info("Search Result Count: {ResultCount}", resultCount);
+                var dialogResult = false;
+                var isAutoPicked = false;
+                var skipAll = false;
+                switch (resultCount)
                 {
-                    isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
-                    break;
-                }
-                default:
-                {
-                    if (resultCount >= 1)
+                    case 0:
+                        dialogResult = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        break;
+                    case 1 when !IsPosterWindowShown:
                     {
-                        (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
+                        break;
                     }
-                    break;
+                    default:
+                    {
+                        if (resultCount >= 1)
+                        {
+                            (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        }
+                        break;
+                    }
                 }
-            }
 
-            if (isAutoPicked || dialogResult)
-            {
-                Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
-                             "adding to final list", isAutoPicked, dialogResult, itemTitle);
-                if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
+                if (isAutoPicked || dialogResult)
                 {
-                    FinalListViewData.Data.Add(_pickedListDataTable.Last());
+                    Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
+                                 "adding to final list", isAutoPicked, dialogResult, itemTitle);
+                    if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
+                    {
+                        FinalListViewData.Data.Add(_pickedListDataTable.Last());
+                    }
+                    // TODO: Set cursor back to arrow here
                 }
-                // TODO: Set cursor back to arrow here
-            }
-            StatusBarProperties.ProcessedFolder++;
-            if (!skipAll)
-            {
-                continue;
-            }
+                StatusBarProperties.ProcessedFolder++;
+                if (!skipAll)
+                {
+                    continue;
+                }
 
-            Logger.Debug("Skip All selected, breaking loop");
-            break;
+                Logger.Debug("Skip All selected, breaking loop");
+                break;
+            }
         }
     }
 
