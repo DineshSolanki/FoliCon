@@ -655,4 +655,10 @@ y actualizar la caché de iconos?</value>
   <data name="ExtractManually" xml:space="preserve">
       <value>Extraer manualmente</value>
     </data>
+  <data name="Extracting" xml:space="preserve">
+      <value>Extrayendo...</value>
+    </data>
+  <data name="Downloading" xml:space="preserve">
+      <value>Descargando...</value>
+    </data>
 </root>
