@@ -25,6 +25,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private int _index;
     private int _totalPosters;
     private readonly IDialogService _dialogService;
+    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
     
     public event Action<IDialogResult> RequestClose;
 
@@ -55,6 +56,17 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                 RaisePropertyChanged();
             }
             SetProperty(ref _isSearchFocused, value);
+        }
+    }
+    
+    public bool SubfolderProcessingEnabled
+    {
+        get => _subfolderProcessingEnabled;
+        set
+        {
+            SetProperty(ref _subfolderProcessingEnabled, value);
+            Services.Settings.SubfolderProcessingEnabled = value;
+            Services.Settings.Save();
         }
     }
 

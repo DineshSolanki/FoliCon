@@ -49,6 +49,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="107" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                         Command="{Binding SkipCommand}" IsCancel="True" />
@@ -65,6 +66,9 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </hc:SearchBar>
+                <CheckBox Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
+                          IsChecked="{Binding SubfolderProcessingEnabled}" 
+                          Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
             </Grid>
             <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">

@@ -352,7 +352,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     StatusBarProperties.TotalFolders = Fnames.Count;
                     PrepareForSearch();
                     if (IconMode == "Poster")
+                    {
                         await ProcessPosterModeAsync();
+                    }
                     else
                     {
                         ProcessProfessionalMode(SelectedFolder);
@@ -405,13 +407,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         while (folderQueue.Count > 0)
         {
             var folderPath = folderQueue.Dequeue();
-            if (Services.Settings.SubfolderProcessingEnabled)
-            {
-                Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
-                var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-                folders.ForEach(folderQueue.Enqueue);
-            }
             var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            if (subfolderNames.Count == 0)
+            {
+                continue;
+            }
+            
             foreach (var itemTitle in subfolderNames)
             {
                 var fullFolderPath = $@"{folderPath}\{itemTitle}";
@@ -463,6 +464,15 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 Logger.Debug("Skip All selected, breaking loop");
                 break;
             }
+
+            if (!Services.Settings.SubfolderProcessingEnabled)
+            {
+                continue;
+            }
+
+            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
+            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+            folders.ForEach(folderQueue.Enqueue);
         }
     }
 
@@ -609,10 +619,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             StatusBarProperties.AppStatus = "Searching";
             _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
-            // if (_pickedListDataTable.Count <= 0)
-            // {
-            //     continue;
-            // }
             Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
             FinalListViewData.Data.AddRange(_pickedListDataTable);
             StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
@@ -622,12 +628,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             }
             Logger.Trace("Subfolder Processing Enabled, Adding Subfolders.");
             var subFolders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            var subfolderList = subFolders as string[] ?? subFolders.ToArray();
-            if (!subfolderList.Any()) continue;
-            foreach (var subFolder in subfolderList)
-            {
-                foldersQueue.Enqueue(subFolder);
-            }
+            subFolders.ForEach(foldersQueue.Enqueue);
         }
     }
 

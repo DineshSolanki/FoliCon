@@ -1,5 +1,6 @@
 ﻿using FoliCon.Models.Constants;
 using FoliCon.Models.Data;
+using FoliCon.Modules.Configuration;
 using FoliCon.Modules.Extension;
 using FoliCon.Modules.IGDB;
 using FoliCon.Modules.TMDB;
@@ -30,6 +31,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private readonly IDialogService _dialogService;
     private bool _isSearchFocused;
     private bool _isPickedById;
+    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
     public event Action<IDialogResult> RequestClose;
 
     private Tmdb _tmdbObject;
@@ -110,6 +112,17 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     {
         get => _isSearchFocused;
         set => SetProperty(ref _isSearchFocused, value);
+    }
+    
+    public bool SubfolderProcessingEnabled
+    {
+        get => _subfolderProcessingEnabled;
+        set
+        {
+            SetProperty(ref _subfolderProcessingEnabled, value);
+            Services.Settings.SubfolderProcessingEnabled = value;
+            Services.Settings.Save();
+        }
     }
 
     #endregion Properties
