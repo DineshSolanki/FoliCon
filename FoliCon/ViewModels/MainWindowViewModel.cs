@@ -352,10 +352,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     StatusBarProperties.TotalFolders = Fnames.Count;
                     PrepareForSearch();
                     if (IconMode == "Poster")
+                    {
                         await ProcessPosterModeAsync();
+                    }
                     else
                     {
-                        ProcessProfessionalMode();
+                        ProcessProfessionalMode(SelectedFolder);
                     }
                     StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
                         StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
@@ -398,68 +400,79 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         StatusBarProperties.AppStatusAdditional = "";
     }
 
-    private async Task ProcessPosterFolderAsync(string folderPath)
+    private async Task ProcessPosterFolderAsync(string rootFolderPath)
     {
-        if (Services.Settings.SubfolderProcessingEnabled)
+        var folderQueue = new Queue<string>();
+        folderQueue.Enqueue(rootFolderPath);
+        while (folderQueue.Count > 0)
         {
-            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
-            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            foreach (var subFolder in folders)
+            var folderPath = folderQueue.Dequeue();
+            var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            if (subfolderNames.Count == 0)
             {
-                await ProcessPosterFolderAsync(subFolder);
+                continue;
             }
-        }
-        var subfolderNames = FileUtils.GetFolderNames(folderPath);
-        foreach (var itemTitle in subfolderNames)
-        {
-            var fullFolderPath = $@"{folderPath}\{itemTitle}";
             
-            Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
-            var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
-
-            var resultCount = CalculateResultCount(response, isPickedById);
-            Logger.Info("Search Result Count: {ResultCount}", resultCount);
-            var dialogResult = false;
-            var isAutoPicked = false;
-            var skipAll = false;
-            switch (resultCount)
+            foreach (var itemTitle in subfolderNames)
             {
-                case 0:
-                    dialogResult = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
-                    break;
-                case 1 when !IsPosterWindowShown:
+                var fullFolderPath = $@"{folderPath}\{itemTitle}";
+            
+                Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
+                var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
+
+                var resultCount = CalculateResultCount(response, isPickedById);
+                Logger.Info("Search Result Count: {ResultCount}", resultCount);
+                var dialogResult = false;
+                var isAutoPicked = false;
+                var skipAll = false;
+                switch (resultCount)
                 {
-                    isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
-                    break;
-                }
-                default:
-                {
-                    if (resultCount >= 1)
+                    case 0:
+                        dialogResult = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        break;
+                    case 1 when !IsPosterWindowShown:
                     {
-                        (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
+                        break;
                     }
-                    break;
+                    default:
+                    {
+                        if (resultCount >= 1)
+                        {
+                            (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        }
+                        break;
+                    }
                 }
+
+                if (isAutoPicked || dialogResult)
+                {
+                    Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
+                                 "adding to final list", isAutoPicked, dialogResult, itemTitle);
+                    if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
+                    {
+                        FinalListViewData.Data.Add(_pickedListDataTable.Last());
+                    }
+                    // TODO: Set cursor back to arrow here
+                }
+                StatusBarProperties.ProcessedFolder++;
+                if (!skipAll)
+                {
+                    continue;
+                }
+
+                Logger.Debug("Skip All selected, breaking loop");
+                break;
             }
 
-            if (isAutoPicked || dialogResult)
-            {
-                Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
-                             "adding to final list", isAutoPicked, dialogResult, itemTitle);
-                if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
-                {
-                    FinalListViewData.Data.Add(_pickedListDataTable.Last());
-                }
-                // TODO: Set cursor back to arrow here
-            }
-            StatusBarProperties.ProcessedFolder++;
-            if (!skipAll)
+            if (!Services.Settings.SubfolderProcessingEnabled)
             {
                 continue;
             }
 
-            Logger.Debug("Skip All selected, breaking loop");
-            break;
+            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
+            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+            folders.ForEach(folderQueue.Enqueue);
         }
     }
 
@@ -588,20 +601,35 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         return await taskCompletionSource.Task;
     }
     
-    private void ProcessProfessionalMode()
+    private void ProcessProfessionalMode(string initialFolderPath)
     {
         Logger.Debug("Entered ProcessProfessionalMode method");
-        StatusBarProperties.AppStatus = "Searching";
-        _dialogService.ShowProSearchResult(SelectedFolder, Fnames, _pickedListDataTable, _imgDownloadList,
-            _dArtObject, _ => { });
-        if (_pickedListDataTable.Count <= 0)
+        // Create a queue to hold the folders
+        var foldersQueue = new Queue<string>();
+        foldersQueue.Enqueue(initialFolderPath);
+        while (foldersQueue.Count > 0)
         {
-            return;
+            var folderPath = foldersQueue.Dequeue();
+            Logger.Trace($"Processing Folder: {folderPath}");
+            var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            if (subfolderNames.Count == 0)
+            {
+                continue;
+            }
+            StatusBarProperties.AppStatus = "Searching";
+            _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
+                _dArtObject, _ => { });
+            Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
+            FinalListViewData.Data.AddRange(_pickedListDataTable);
+            StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
+            if (!Services.Settings.SubfolderProcessingEnabled)
+            {
+                continue;
+            }
+            Logger.Trace("Subfolder Processing Enabled, Adding Subfolders.");
+            var subFolders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+            subFolders.ForEach(foldersQueue.Enqueue);
         }
-
-        Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
-        FinalListViewData.Data.AddRange(_pickedListDataTable);
-        StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
     }
 
     private void InitializeDelegates()

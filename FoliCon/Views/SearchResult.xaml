@@ -19,8 +19,6 @@
         <Style TargetType="Window">
             <Setter Property="Height" Value="700" />
             <Setter Property="Width" Value="1023" />
-            <!--<Setter Property="ResizeMode" Value="NoResize" />
-            <Setter Property="WindowStyle" Value="ToolWindow" />-->
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
@@ -101,8 +99,12 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.All}}"
                         HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="{Binding SkipAllText}" />
-                <hc:PreviewSlider x:Name="SizeSlider" Grid.Row="0" Grid.Column="1" Minimum="12" Maximum="25" Value="15"
-                                  VerticalAlignment="Center" Height="18" />
+                <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" FlowDirection="LeftToRight">
+                    <CheckBox VerticalAlignment="Top" HorizontalAlignment="Right" IsChecked="{Binding SubfolderProcessingEnabled}" Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
+                    <hc:PreviewSlider x:Name="SizeSlider" Minimum="12" Maximum="25" Value="15"
+                                      VerticalAlignment="Center" Height="18" />
+                </StackPanel>
+                
                 <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
                        Width="158" RenderOptions.BitmapScalingMode="HighQuality" />
                 <Image Grid.Row="1" Grid.Column="0"
