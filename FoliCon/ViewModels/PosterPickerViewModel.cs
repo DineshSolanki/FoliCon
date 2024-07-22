@@ -42,21 +42,21 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
 
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
-    public DelegateCommand<object> PickCommand { get; set; }
-    public DelegateCommand<object> OpenImageCommand { get; set; }
+    public DelegateCommand<DArtImageList> PickCommand { get; set; }
+    public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
     #endregion
     public PosterPickerViewModel()
     {
         ImageUrl = new ObservableCollection<DArtImageList>();
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
-        PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+        PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
     }
 
-    private void OpenImageMethod(object parameter)
+    private void OpenImageMethod(DArtImageList selectedImage)
     {
-        Logger.Info("Open Image Method called with parameter: {Parameter}, MediaType: {MediaType}",parameter, Result.MediaType );
-        var link = (string)parameter;
+        Logger.Info("Open Image Method called with parameter: {Parameter}, MediaType: {MediaType}",selectedImage, Result.MediaType );
+        var link = selectedImage.Url;
         link = Result.MediaType == MediaTypes.Game
             ? $"https://{ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..]}"
             : link;
@@ -258,10 +258,10 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         }
         IsBusy = false;
     }
-    private void PickMethod(object parameter)
+    private void PickMethod(DArtImageList pickedImage)
     {
-        Logger.Info("Pick Method called with parameter: {Parameter}", parameter);
-        var link = (string)parameter;
+        Logger.Info("Pick Method called with parameter: {Parameter}", pickedImage);
+        var link = (string)pickedImage.Url;
         var result = _isPickedById
             ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
             : Result.MediaType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];

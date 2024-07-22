@@ -13,13 +13,18 @@ public class ImageCacheConverter : IValueConverter
         {
             return null;
         }
+        var uri = new Uri(path, UriKind.Absolute);
+        if (!uri.IsFile)
+        {
+            return value;
+        }
 
         try
         {
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(path, UriKind.Absolute);
+            image.UriSource = uri;
             image.EndInit();
             image.Freeze(); // Improve performance and thread safety
             return image;
