@@ -916,8 +916,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     return;
                 }
 
-                MessageBox.Show(CustomMessageBox.Error($"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}" +
-                                                       LangProvider.GetLang("AppWillClose"),
+                MessageBox.Show(CustomMessageBox.Error(
+                    $"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}{LangProvider.GetLang("AppWillClose")}",
                     LangProvider.GetLang("ClosingApplication")));
                 Logger.Warn("API Keys not provided, Closing Application.");
                 Environment.Exit(0);

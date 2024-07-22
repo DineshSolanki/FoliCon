@@ -203,7 +203,7 @@ internal class TmdbDataTransformer
         var folderName = Path.GetFileName(fullFolderPath);
         var localPosterPath = $@"{fullFolderPath}\{IconUtils.GetImageName()}.png";
 
-        string posterUrl = string.Concat(PosterBase, result.PosterPath.Replace("http://image.tmdb.org/t/p/w500",""));
+        string posterUrl = string.Concat(PosterBase, result.PosterPath.Replace("https://image.tmdb.org/t/p/w500",""));
 
         if (resultType == MediaTypes.Tv)
         {

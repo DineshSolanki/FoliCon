@@ -228,7 +228,8 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                 Index = item.Index + 1;
                 if (image is not null)
                 {
-                    var posterPath = image.ImageId != null ? "https://" + ImageHelper.GetImageUrl(item.Value.ImageId, ImageSize.ScreenshotMed)[2..] : null;
+                    var posterPath = image.ImageId != null ? $"https://{ImageHelper.GetImageUrl(item.Value.ImageId, ImageSize.ScreenshotMed)[2..]}"
+                        : null;
                     Logger.Info("Poster Path: {PosterPath}", posterPath);
                     var response = await Services.HttpC.GetAsync(posterPath);
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -265,7 +266,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         if (Result.MediaType == MediaTypes.Game)
         {
             result.Cover.Value.ImageId = pickedImage.DeviationId;
-            _resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(pickedImage.DeviationId, ImageSize.HD720)[2..];
+            _resultList[PickedIndex].Poster = $"https://{ImageHelper.GetImageUrl(pickedImage.DeviationId, ImageSize.HD720)[2..]}";
             Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
         }
         else
