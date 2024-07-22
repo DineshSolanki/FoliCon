@@ -47,7 +47,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     #endregion
     public PosterPickerViewModel()
     {
-        ImageUrl = new ObservableCollection<DArtImageList>();
+        ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
         OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
@@ -261,7 +261,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private void PickMethod(DArtImageList pickedImage)
     {
         Logger.Info("Pick Method called with parameter: {Parameter}", pickedImage);
-        var link = (string)pickedImage.Url;
+        var link = pickedImage.Url;
         var result = _isPickedById
             ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
             : Result.MediaType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];

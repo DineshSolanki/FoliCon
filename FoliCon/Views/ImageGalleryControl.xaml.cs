@@ -3,7 +3,7 @@ using Image = System.Windows.Controls.Image;
 
 namespace FoliCon.Views;
 
-public partial class ImageGalleryControl : UserControl
+public partial class ImageGalleryControl
 {
     public ImageGalleryControl()
     {
@@ -28,14 +28,14 @@ public partial class ImageGalleryControl : UserControl
 
     public static readonly DependencyProperty BindingPathProperty = 
         DependencyProperty.Register(
-            "BindingPath", 
+            nameof(BindingPath), 
             typeof(string), 
             typeof(ImageGalleryControl), 
             new PropertyMetadata("Url")  // Default binding path
         );
         
     public static readonly DependencyProperty UseCacheConverterProperty =
-        DependencyProperty.Register("UseCacheConverter", typeof(bool), 
+        DependencyProperty.Register(nameof(UseCacheConverter), typeof(bool), 
             typeof(ImageGalleryControl), 
             new PropertyMetadata(false));
     
@@ -45,37 +45,37 @@ public partial class ImageGalleryControl : UserControl
 
     public DataTemplate CustomBusyContentTemplate
     {
-        get => (DataTemplate)GetValue(CustomBusyContentTemplateProperty);
+        get => GetValue(CustomBusyContentTemplateProperty) as DataTemplate;
         set => SetValue(CustomBusyContentTemplateProperty, value);
     }
     
     public IEnumerable ItemsSource
     {
-        get => (IEnumerable)GetValue(ItemsSourceProperty);
+        get => GetValue(ItemsSourceProperty) as IEnumerable;
         set => SetValue(ItemsSourceProperty, value);
     }
 
     public ICommand DoubleClickCommand
     {
-        get => (ICommand)GetValue(DoubleClickCommandProperty);
+        get => GetValue(DoubleClickCommandProperty) as ICommand;
         set => SetValue(DoubleClickCommandProperty, value);
     }
 
     public ICommand ClickCommand
     {
-        get => (ICommand)GetValue(ClickCommandProperty);
+        get => GetValue(ClickCommandProperty) as ICommand;
         set => SetValue(ClickCommandProperty, value);
     }
 
     public string BindingPath
     {
-        get => (string) GetValue(BindingPathProperty);
+        get => GetValue(BindingPathProperty) as string;
         set => SetValue(BindingPathProperty, value);
     }
     
     public bool UseCacheConverter
     {
-        get => (bool) GetValue(UseCacheConverterProperty);
+        get => GetValue(UseCacheConverterProperty) as bool? ?? false;
         set => SetValue(UseCacheConverterProperty, value);
     }
     #endregion

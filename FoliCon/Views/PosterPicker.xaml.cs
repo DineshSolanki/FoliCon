@@ -3,9 +3,8 @@
 /// <summary>
 /// Interaction logic for PosterPicker
 /// </summary>
-public partial class PosterPicker : UserControl
+public partial class PosterPicker
 {
-    private bool _autoScroll = true;
     public PosterPicker()
     {
         InitializeComponent();
