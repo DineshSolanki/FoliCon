@@ -33,7 +33,12 @@ public partial class ImageGalleryControl : UserControl
             typeof(ImageGalleryControl), 
             new PropertyMetadata("Url")  // Default binding path
         );
-
+        
+    public static readonly DependencyProperty UseCacheConverterProperty =
+        DependencyProperty.Register("UseCacheConverter", typeof(bool), 
+            typeof(ImageGalleryControl), 
+            new PropertyMetadata(false));
+    
     #endregion
 
     #region Properties
@@ -66,6 +71,12 @@ public partial class ImageGalleryControl : UserControl
     {
         get => (string) GetValue(BindingPathProperty);
         set => SetValue(BindingPathProperty, value);
+    }
+    
+    public bool UseCacheConverter
+    {
+        get => (bool) GetValue(UseCacheConverterProperty);
+        set => SetValue(UseCacheConverterProperty, value);
     }
     #endregion
 

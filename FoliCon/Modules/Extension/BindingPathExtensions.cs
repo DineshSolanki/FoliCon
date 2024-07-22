@@ -28,15 +28,33 @@ public static class BindingPathExtensions
     {
         var img = d as Image;
         var bindingPath = (string)e.NewValue;
-        var binding = new Binding
+        var binding = new Binding();
+        
+        var userControl = FindAncestor<ImageGalleryControl>(img);
+        if (userControl is { UseCacheConverter: true })
         {
-            Converter = ImageCacheConverter
-        };
+            binding.Converter = ImageCacheConverter;
+        }
         // Only set Binding.Path if it's not direct DataContext binding
         if (bindingPath != ".") 
         {
             binding.Path = new PropertyPath(bindingPath);
         }
         img?.SetBinding(Image.SourceProperty, binding);
+    }
+
+    private static T FindAncestor<T>(DependencyObject dependencyObject) where T : class
+    {
+        var current = dependencyObject;
+        do
+        {
+            if (current is T typed)
+            {
+                return typed;
+            }
+            current = VisualTreeHelper.GetParent(current);
+        }
+        while (current != null);
+        return null;
     }
 }

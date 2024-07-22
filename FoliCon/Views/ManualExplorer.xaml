@@ -26,7 +26,7 @@
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <views:ImageGalleryControl ItemsSource="{Binding Directory}" BindingPath="."
+    <views:ImageGalleryControl ItemsSource="{Binding Directory}" BindingPath="." UseCacheConverter="True"
                                ClickCommand="{Binding OpenImageCommand}"
                                DoubleClickCommand="{Binding PickCommand}">
         <views:ImageGalleryControl.CustomBusyContentTemplate>

@@ -14,11 +14,6 @@ public class ImageCacheConverter : IValueConverter
             return null;
         }
         var uri = new Uri(path, UriKind.Absolute);
-        if (!uri.IsFile)
-        {
-            return value;
-        }
-
         try
         {
             var image = new BitmapImage();

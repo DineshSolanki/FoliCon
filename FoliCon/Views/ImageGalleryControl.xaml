@@ -7,7 +7,6 @@
              xmlns:hc="https://handyorg.github.io/handycontrol"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ui="clr-namespace:FoliCon.Modules.UI"
-             xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
