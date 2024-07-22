@@ -59,8 +59,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     }
 
     public DelegateCommand SkipCommand { get; set; }
-    public DelegateCommand<object> PickCommand { get; set; }
-    public DelegateCommand<object> OpenImageCommand { get; set; }
+    public DelegateCommand<DArtImageList> PickCommand { get; set; }
+    public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
     public DelegateCommand<object> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
@@ -70,18 +70,23 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         Logger.Debug("ProSearchResultViewModel Constructor");
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
-        PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+        PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
         _dialogService = dialogService;
     }
 
-    private void OpenImageMethod(object parameter)
+    private void OpenImageMethod(DArtImageList parameter)
     {
         Logger.Debug("Opening Image {Image}", parameter);
-        var link = (string)parameter;
+        if (parameter.MustWatch)
+        {
+            //TODO:watch
+            parameter.MustWatch = false;
+        }
+        var link = parameter.Url;
         var browser = new ImageBrowser(link)
         {
             ShowTitle = false,
@@ -133,10 +138,17 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                 Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
                 foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
                 {
+                    var mustWatch = false;
                     if (!item.Value.IsDownloadable)
                     {
-                        Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
-                        continue;
+                        if (item.Value.PremiumFolderData is null || item.Value.PremiumFolderData.Type != "watchers")
+                        {
+                            Logger.Warn("Poster {URL} is not downloadable", item.Value.Url);
+                            continue;    
+                        }
+                        mustWatch = true;
+                        Logger.Warn("Poster {URL} is not downloadable, but can be watched to download", item.Value.Url);
+
                     }
                     var response = await Services.HttpC.GetAsync(item.Value.Thumbs[0].Src);
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -147,7 +159,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                     }
                     using (var bm = await response.GetBitmap())
                     {
-                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, ImageUtils.LoadBitmap(bm), item.Value.Deviationid));
+                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, ImageUtils.LoadBitmap(bm),
+                            item.Value.Deviationid, mustWatch));
                     }
                     if (_stopSearch)
                     {
@@ -180,15 +193,31 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private void PickMethod(object parameter)
+    private void PickMethod(DArtImageList parameter)
     {
-        Logger.Debug("Picking Image {Image}", parameter);
+        if (parameter.MustWatch)
+        {
+            //TODO:Watch
+            parameter.MustWatch = false;
+        }
+        var link = parameter.Url;
+        ProcessPick(link);
+    }
+    
+    private void PickMethod(string link)
+    {
+        ProcessPick(link);
+    }
+
+    private void ProcessPick(string link)
+    {
+        Logger.Debug("Picking Image {Image}", link);
+        var extension = Path.GetExtension(new Uri(link).LocalPath) == ".ico" ? ".ico" : ".png";
         SearchAgainTitle = null;
-        var link = (string)parameter;
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
         var tempImage = new ImageToDownload
         {
-            LocalPath = $"{currentPath}\\{IconUtils.GetImageName()}.png",
+            LocalPath = $"{currentPath}\\{IconUtils.GetImageName()}{extension}",
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);

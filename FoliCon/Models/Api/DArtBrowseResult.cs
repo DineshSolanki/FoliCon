@@ -17,6 +17,18 @@ public class Author
     public string Type { get; set; }
 }
 
+public class PremiumFolderData
+{
+    [JsonProperty("type")]
+    public string Type { get; set; }
+    
+    [JsonProperty("has_access")]
+    public bool HasAccess { get; set; }
+    
+    [JsonProperty("gallery_id")]
+    public string GallaryId { get; set; }
+}
+
 public class Stats
 {
     [JsonProperty("comments")]
@@ -108,6 +120,9 @@ public class Result
 
     [JsonProperty("thumbs")]
     public Thumb[] Thumbs { get; set; }
+    
+    [JsonProperty("premium_folder_data")]
+    public PremiumFolderData PremiumFolderData { get; set; }
 }
 
 public class DArtBrowseResult
