@@ -519,7 +519,12 @@ public static class FileUtils
     {
         try
         {
-            Directory.Delete(FoliConTempDeviationsPath(), true);
+            var tempDeviationPath = FoliConTempDeviationsPath();
+            if (!Directory.Exists(tempDeviationPath))
+            {
+                return;
+            }
+            Directory.Delete(tempDeviationPath, true);
         }
         catch (Exception e)
         {
