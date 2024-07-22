@@ -12,11 +12,12 @@
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:views="clr-namespace:FoliCon.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ManualExplorerViewModel }"
              x:Name="Root">
     <UserControl.Resources>
-        <convertor:ImageCacheConverter x:Key="ImageCacheConverter"/>
+        <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
     </UserControl.Resources>
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -25,66 +26,32 @@
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <hc:BusyIndicator IsBusy="{Binding IsBusy}">
-        <hc:BusyIndicator.BusyContentTemplate>
+    <views:ImageGalleryControl ItemsSource="{Binding Directory}" BindingPath="." UseCacheConverter="True"
+                               ClickCommand="{Binding OpenImageCommand}"
+                               DoubleClickCommand="{Binding PickCommand}">
+        <views:ImageGalleryControl.CustomBusyContentTemplate>
             <DataTemplate>
                 <StackPanel Margin="4">
                     <StackPanel Margin="4">
-                        <TextBlock>
+                        <TextBlock FontWeight="Bold">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}({1}) {2}/{3}">
-                                    <Binding Path="DataContext.ProgressInfo.Text" ElementName="Root"/>
-                                    <Binding Path="DataContext.DArtDownloadResponse.FileSizeHumanReadable" ElementName="Root"/>
-                                    <Binding Path="DataContext.ProgressInfo.Current" ElementName="Root"/>
-                                    <Binding Path="DataContext.ProgressInfo.Total" ElementName="Root"/>
+                                    <Binding Path="Value.ProgressInfo.Text" Source="{StaticResource Proxy}"/>
+                                    <Binding Path="Value.DArtDownloadResponse.FileSizeHumanReadable" Source="{StaticResource Proxy}"/>
+                                    <Binding Path="Value.ProgressInfo.Current" Source="{StaticResource Proxy}"/>
+                                    <Binding Path="Value.ProgressInfo.Total" Source="{StaticResource Proxy}"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <ProgressBar Style="{StaticResource ProgressBarInfo}" Value="{Binding DataContext.ProgressInfo.Current, ElementName=Root}" 
-                                     Maximum="{Binding DataContext.ProgressInfo.Total, ElementName=Root}" Height="15"/>
+                        <ProgressBar Style="{StaticResource ProgressBarInfo}" Value="{Binding Value.ProgressInfo.Current, Source={StaticResource Proxy}}" 
+                                     Maximum="{Binding Value.ProgressInfo.Total, Source={StaticResource Proxy}}" Height="15"/>
                     </StackPanel>
                     <Grid>
-                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Cancel}}" Command="{Binding DataContext.CancelCommand,
-                         ElementName=Root}" HorizontalAlignment="Center" Margin="2 0 0 0"/>
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Cancel}}" Command="{Binding Value.CancelCommand,
+                         Source={StaticResource Proxy}}" HorizontalAlignment="Center" Margin="2 0 0 0"/>
                     </Grid>
                 </StackPanel>
             </DataTemplate>
-        </hc:BusyIndicator.BusyContentTemplate>
-        <hc:BusyIndicator.ProgressBarStyle>
-            <Style TargetType="ProgressBar">
-                <Setter Property="Visibility" Value="Collapsed"/>
-            </Style>
-        </hc:BusyIndicator.ProgressBarStyle>
-        
-        <Grid Margin="12,12,12,12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="0" HorizontalScrollBarVisibility="Disabled"
-                             HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
-                <ItemsControl ItemsSource="{Binding Directory}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Image Tag="{Binding}" Height="128" Width="128" Source="{Binding Converter={StaticResource ImageCacheConverter}}" Unloaded="FrameworkElement_OnUnloaded"
-                                   RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
-                                <i:Interaction.Behaviors>
-                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" 
-                                                      DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ManualExplorerViewModel.PickCommand)}" 
-                                                      ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ManualExplorerViewModel.OpenImageCommand)}"/>
-                                </i:Interaction.Behaviors>
-                            </Image>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </hc:ScrollViewer>
-        </Grid>
-    </hc:BusyIndicator>
+        </views:ImageGalleryControl.CustomBusyContentTemplate>
+    </views:ImageGalleryControl>
 </UserControl>
