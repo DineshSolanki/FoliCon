@@ -427,7 +427,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 switch (resultCount)
                 {
                     case 0:
-                        dialogResult = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
+                        (dialogResult, skipAll) = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
                         break;
                     case 1 when !IsPosterWindowShown:
                     {
@@ -508,13 +508,13 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
     }
 
-    private async Task<bool> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
     {
         Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
         MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
             LangProvider.GetLang("NoResultFound")));
     
-        var taskCompletionSource = new TaskCompletionSource<bool>();
+        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
 
         _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath, response,
             _tmdbObject, _igdbObject, isPickedById,
@@ -527,7 +527,8 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     ButtonResult.Cancel => false,
                     _ => false
                 };
-                taskCompletionSource.SetResult(dialogResult);
+                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
+                taskCompletionSource.SetResult((dialogResult, skipAll));
             });
         return await taskCompletionSource.Task;
     }
