@@ -1,6 +1,7 @@
 ﻿using FoliCon.Models.Configs;
 using FoliCon.Models.Constants;
 using FoliCon.Models.Data;
+using FoliCon.Models.Data.Dialog;
 using FoliCon.Models.Enums;
 using FoliCon.Modules.Configuration;
 using FoliCon.Modules.DeviantArt;
@@ -14,7 +15,7 @@ using NLog;
 
 namespace FoliCon.ViewModels;
 
-public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
+public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
@@ -32,18 +33,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private bool _stopIconDownload;
     private Languages _appLanguage;
     private TMDbClient _tmdbClient;
-    private IGDBClient _igdbClient;
     private IgdbClass _igdbObject;
     private Tmdb _tmdbObject;
     private DArt _dArtObject;
     private bool _isPosterWindowShown;
     private bool _enableErrorReporting;
 
-    private string _tmdbapiKey;
-    private string _igdbClientId;
-    private string _igdbClientSecret;
-    private string _devClientSecret;
-    private string _devClientId;
     private ListViewData _finalListViewData;
     private List<ImageToDownload> _imgDownloadList;
     private List<PickedListItem> _pickedListDataTable;
@@ -217,7 +212,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public DelegateCommand RestartExCommand { get; } = new(delegate
     {
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
-                LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes) return;
+                LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
         ProcessUtils.RefreshIconCache();
         ProcessUtils.RestartExplorer();
     });
@@ -274,8 +273,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
             
         var cmdArgs = ProcessUtils.GetCmdArgs();
-        if (!cmdArgs.ContainsKey("path")) return;
-        
+        if (!cmdArgs.ContainsKey("path"))
+        {
+            return;
+        }
+
         Logger.Info("Command Line Argument Found, Initializing with Command Line Argument.");
         
         SelectedFolder = cmdArgs["path"];
@@ -312,7 +314,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             Logger.Debug("LoadMethod:Already Selected Folder: {SelectedFolder}", SelectedFolder);
         }
         var dialogResult = folderBrowserDialog.ShowDialog();
-        if (dialogResult != null && (bool)!dialogResult) return;
+        if (dialogResult != null && (bool)!dialogResult)
+        {
+            return;
+        }
+
         SelectedFolder = folderBrowserDialog.SelectedPath;
         Logger.Debug("LoadMethod:Selected Folder: {SelectedFolder}", SelectedFolder);
         StatusBarProperties.ResetData();
@@ -363,9 +369,13 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                     BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
                     Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}", _imgDownloadList.Count);
                     if (_imgDownloadList.Count > 0)
+                    {
                         await StartDownloadingAsync();
+                    }
                     else
+                    {
                         IsMakeEnabled = true;
+                    }
                 }
                 else
                 {
@@ -450,7 +460,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                                  "adding to final list", isAutoPicked, dialogResult, itemTitle);
                     if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
                     {
-                        FinalListViewData.Data.Add(_pickedListDataTable.Last());
+                        FinalListViewData.Data.Add(_pickedListDataTable[^1]);
                     }
                     // TODO: Set cursor back to arrow here
                 }
@@ -492,11 +502,21 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         else
         {
             Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
-            response = SearchMode == "Game"
-                ? await _igdbObject.SearchGameAsync(parsedTitle.Title)
-                : DataUtils.ShouldUseParsedTitle(parsedTitle)
-                    ? await _tmdbObject.SearchAsync(parsedTitle, SearchMode)
-                    : await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
+            if (SearchMode == "Game")
+            {
+                response = await _igdbObject.SearchGameAsync(parsedTitle.Title);
+            }
+            else
+            {
+                if (DataUtils.ShouldUseParsedTitle(parsedTitle))
+                {
+                    response = await _tmdbObject.SearchAsync(parsedTitle, SearchMode);
+                }
+                else
+                {
+                    response = await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
+                }
+            }
         }
 
         return (response, parsedTitle, isPickedById, mediaType);
@@ -504,8 +524,12 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private int CalculateResultCount(ResultResponse response, bool isPickedById)
     {
-        return isPickedById ? response.Result != null ? 1 : 0 :
-            SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+        if (isPickedById)
+        {
+            return response.Result != null ? 1 : 0;
+        }
+
+        return SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
@@ -516,20 +540,29 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     
         var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
 
-        _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath, response,
-            _tmdbObject, _igdbObject, isPickedById,
-            r =>
+        var dialogParams = new SearchResultDialogParams
+        {
+            SearchMode = SearchMode,
+            Query = parsedTitle,
+            FolderPath = fullFolderPath,
+            Result = response,
+            TmdbObject = _tmdbObject,
+            IgdbObject = _igdbObject,
+            IsPickedById = isPickedById,
+            CallBack = dialog =>
             {
-                var dialogResult = r.Result switch
+                var dialogResult = dialog.Result switch
                 {
                     ButtonResult.None => false,
                     ButtonResult.OK => true,
                     ButtonResult.Cancel => false,
                     _ => false
                 };
-                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
+                dialog.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
                 taskCompletionSource.SetResult((dialogResult, skipAll));
-            });
+            }
+        };
+        _dialogService.ShowSearchResult(dialogParams);
         return await taskCompletionSource.Task;
     }
 
@@ -584,21 +617,29 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
                      "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
                      " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
-                            
-        _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath,
-            response, _tmdbObject, _igdbObject, isPickedById,
-            r =>
+        var dialogParams = new SearchResultDialogParams
+        {
+            SearchMode = SearchMode,
+            Query = parsedTitle,
+            FolderPath = fullFolderPath,
+            Result = response,
+            TmdbObject = _tmdbObject,
+            IgdbObject = _igdbObject,
+            IsPickedById = isPickedById,
+            CallBack = dialog =>
             {
-                var dialogResult = r.Result switch
+                var dialogResult = dialog.Result switch
                 {
                     ButtonResult.None => false,
                     ButtonResult.OK => true,
                     ButtonResult.Cancel => false,
                     _ => false
                 };
-                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
+                dialog.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
                 taskCompletionSource.SetResult((dialogResult, skipAll));
-            });
+            }
+        };
+        _dialogService.ShowSearchResult(dialogParams);
         return await taskCompletionSource.Task;
     }
     
@@ -621,7 +662,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             StatusBarProperties.AppStatus = "Searching";
             _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
-            Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
+            Logger.Debug("ProcessProfessionalMode: found {ResultCount} results, adding to final list", _pickedListDataTable.Count);
             FinalListViewData.Data.AddRange(_pickedListDataTable);
             StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
             if (!Services.Settings.SubfolderProcessingEnabled)
@@ -677,8 +718,14 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private static void ExplorerIntegrationMethod(string isIntegrationEnabled)
     {
         var value = Convert.ToBoolean(isIntegrationEnabled);
-        if (value) ProcessUtils.AddToContextMenu();
-        else ProcessUtils.RemoveFromContextMenu();
+        if (value)
+        {
+            ProcessUtils.AddToContextMenu();
+        }
+        else
+        {
+            ProcessUtils.RemoveFromContextMenu();
+        }
     }
 
     private void DeleteMediaInfo()
@@ -743,7 +790,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             IsObjectsInitialized = true;
         }
         else
+        {
             IsObjectsInitialized = false;
+        }
     }
 
     private void PrepareForSearch()
@@ -766,7 +815,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             if (Directory.Exists(SelectedFolder))
             {
-                //TODO: Replace with DialogService if efficient.
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
                         LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
                 {
@@ -801,7 +849,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         
         var folder = selectedItem.Folder;
         Logger.Info("Double Clicked on ListView, selected folder: {SelectedFolder}",SelectedFolder);
-        if (folder == null) return;
+        if (folder == null)
+        {
+            return;
+        }
+
         if (Directory.Exists(folder))
         {
             ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
@@ -900,34 +952,34 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private void InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
-        FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
-            out _devClientId);
-        if (string.IsNullOrEmpty(_tmdbapiKey)
-            || string.IsNullOrEmpty(_igdbClientId) || string.IsNullOrEmpty(_igdbClientSecret)
-            || string.IsNullOrEmpty(_devClientSecret) || string.IsNullOrEmpty(_devClientId))
+        FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret, out var devClientSecret,
+            out var devClientId);
+        if (string.IsNullOrEmpty(tmdbapiKey)
+            || string.IsNullOrEmpty(igdbClientId) || string.IsNullOrEmpty(igdbClientSecret)
+            || string.IsNullOrEmpty(devClientSecret) || string.IsNullOrEmpty(devClientId))
         {
             Logger.Warn("API Keys not provided, Showing API Config Window.");
             _dialogService.ShowApiConfig(r =>
             {
                 if (r.Result != ButtonResult.Cancel)
                 {
-                    FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
-                        out _devClientId);
+                    FileUtils.ReadApiConfiguration(out tmdbapiKey, out igdbClientId, out igdbClientSecret, out devClientSecret,
+                        out devClientId);
                     return;
                 }
 
-                MessageBox.Show(CustomMessageBox.Error(
-                    $"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}{LangProvider.GetLang("AppWillClose")}",
+                MessageBox.Show(CustomMessageBox.Error($"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}" +
+                                                       LangProvider.GetLang("AppWillClose"),
                     LangProvider.GetLang("ClosingApplication")));
                 Logger.Warn("API Keys not provided, Closing Application.");
                 Environment.Exit(0);
             });
         }
-        _tmdbClient = new TMDbClient(_tmdbapiKey);
-        _igdbClient = new IGDBClient(_igdbClientId, _igdbClientSecret, new IgdbJotTrackerStore());
-        _igdbObject = new IgdbClass(ref _pickedListDataTable, ref _igdbClient, ref _imgDownloadList);
+        _tmdbClient = new TMDbClient(tmdbapiKey);
+        var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
+        _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
         _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
-        _dArtObject = new DArt(_devClientSecret, _devClientId);
+        _dArtObject = new DArt(devClientSecret, devClientId);
         Logger.Debug("Client Objects Initialized.");
     }
 

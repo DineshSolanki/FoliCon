@@ -46,31 +46,27 @@ public static class LogUtils
 
     private static FileTarget ConfigureFileTarget(string logPath)
     {
-        var layoutString= GetLayoutString();
         return new FileTarget
         {
             Name = "fileTarget",
             FileName = logPath,
-            Layout = layoutString
+            Layout = LogLayoutString
         };
     }
 
     private static ColoredConsoleTarget ConfigureConsoleTarget()
     {
-        var layoutString= GetLayoutString();
         return new ColoredConsoleTarget
         {
             Name = "consoleTarget",
             UseDefaultRowHighlightingRules = true,
             EnableAnsiOutput = true,
-            Layout = layoutString
+            Layout = LogLayoutString
         };
     }
 
-    private static string GetLayoutString()
-    {
-        return "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
-    }
+    private const string LogLayoutString = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
+
 
     internal static SentryTarget GetSentryTarget()
     {

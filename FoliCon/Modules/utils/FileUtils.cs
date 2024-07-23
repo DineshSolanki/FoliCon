@@ -66,15 +66,22 @@ public static class FileUtils
         try
         {
             if (File.Exists(icoFile))
+            {
                 File.Delete(icoFile);
+            }
             else
+            {
                 Logger.Debug("ICO File Not Found: {IcoFile}", icoFile);
+            }
 
             if (File.Exists(iniFile))
+            {
                 File.Delete(iniFile);
+            }
             else
+            {
                 Logger.Debug("INI File Not Found: {IniFile}", iniFile);
-
+            }
         }
         catch (UnauthorizedAccessException e)
         {
@@ -128,7 +135,7 @@ public static class FileUtils
     private static bool ValidateDirectoryInfo(DirectoryInfo directoryInfo)
     {
         var isHiddenOrSystem = (directoryInfo.Attributes & (FileAttributes.Hidden | FileAttributes.System)) != 0;
-        var startsWithDot = directoryInfo.Name.StartsWith(".");
+        var startsWithDot = directoryInfo.Name.StartsWith('.');
 
         return !isHiddenOrSystem && !startsWithDot;
     }
@@ -148,7 +155,11 @@ public static class FileUtils
         var itemList = new List<string>();
         try
         {
-            if (string.IsNullOrEmpty(folder)) return itemList;
+            if (string.IsNullOrEmpty(folder))
+            {
+                return itemList;
+            }
+
             itemList.AddRange(Directory.GetFiles(folder).Select(Path.GetFileName));
         }
         catch (Exception e)
@@ -282,7 +293,10 @@ public static class FileUtils
     {
         var path = Path.Combine(Path.GetTempPath(), resource);
         Logger.Debug("Getting Resource Path, Resource: {Resource}, Path: {Path}", resource, path);
-        if (File.Exists(path)) return path;
+        if (File.Exists(path))
+        {
+            return path;
+        }
 
         var resourceUri = new Uri($"pack://application:,,,/FoliCon;component/Resources/{resource}");
         var resourceStream = Application.GetResourceStream(resourceUri);
@@ -323,7 +337,7 @@ public static class FileUtils
             return;
         }
 
-        Logger.Debug("New Version Found: {}", ver.TagName);
+        Logger.Debug("New Version Found: {TagName}", ver.TagName);
         DialogUtils.ConfirmUpdate(ver);
     }
 
@@ -430,9 +444,7 @@ public static class FileUtils
                 dwSize = (uint)Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
                 cchIconFile = 0
             };
-            //FolderSettings.iIconIndex = 0;
-            var unused =
-                SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
+            SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
             Logger.Info("Folder Icon Set, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath);
         }
         catch (Exception e)

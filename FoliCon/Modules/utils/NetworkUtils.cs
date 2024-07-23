@@ -33,7 +33,7 @@ public static class NetworkUtils
                 .Exception(e).Log();
             // ignored
         }
-        Logger.Debug("Network availability: {}", result);
+        Logger.Debug("Network availability: {IsNetworkAvailable}", result);
         return result;
     }
 

@@ -28,7 +28,7 @@ public static class ProcessUtils
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed to start process: {e.Message}");
+            Logger.Error(e, "Failed to start process: {ExceptionMessage}", e.Message);
             throw;
         }
     }
@@ -47,8 +47,11 @@ public static class ProcessUtils
             
             var result = MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("WebView2DownloadConfirmation"),
                 LangProvider.GetLang("WebView2DownloadConfirmationHeader")));
-            if (result != MessageBoxResult.Yes) return;
-            
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             StartProcess("https://go.microsoft.com/fwlink/p/?LinkId=2124703");
         }
     }
@@ -143,7 +146,10 @@ public static class ProcessUtils
             return null;
         }
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
-                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
+                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes)
+        {
+            return false;
+        }
 
         StartAppAsAdmin();
         return true;
@@ -167,7 +173,10 @@ public static class ProcessUtils
     public static void AddToContextMenu()
     {
         Logger.Info("Modifying Context Menu");
-        if (IfNotAdminRestartAsAdmin() == false) return;
+        if (IfNotAdminRestartAsAdmin() == false)
+        {
+            return;
+        }
 
         if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"))
         {
@@ -202,7 +211,11 @@ public static class ProcessUtils
 
     public static void RemoveFromContextMenu()
     {
-        if (IfNotAdminRestartAsAdmin() == false) return;
+        if (IfNotAdminRestartAsAdmin() == false)
+        {
+            return;
+        }
+
         Services.Settings.IsExplorerIntegrated = false;
         Services.Settings.Save();
         ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory(Services.Settings.ContextEntryName, "");

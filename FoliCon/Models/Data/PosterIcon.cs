@@ -56,13 +56,8 @@ public class PosterIcon: BindableBase
         var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
     }
-    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle="FoliCon")
+    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle):this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
     {
-        RatingVisibility = ratingVisibility;
-        Rating = rating;
-        MockupVisibility = mockupVisibility;
-        var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
-        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
         MediaTitle = mediaTitle;
     }
 }

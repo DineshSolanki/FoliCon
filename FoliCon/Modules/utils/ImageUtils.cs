@@ -26,7 +26,6 @@ public static class ImageUtils
         finally
         {
             DeleteObject(ip);
-            // _ = NativeMethods.DeleteObject(ip);
         }
 
         Logger.Trace("Bitmap Converted to BitmapSource");

@@ -32,7 +32,11 @@ public static class DialogUtils
             ShowDateTime = false,
             ActionBeforeClose = isConfirmed =>
             {
-                if (!isConfirmed) return true;
+                if (!isConfirmed)
+                {
+                    return true;
+                }
+
                 Logger.Debug("Update Confirmed. Starting Update Process");
                 ProcessUtils.StartProcess(ver.ReleaseUrl);
 

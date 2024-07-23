@@ -106,7 +106,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		}
 		catch (OperationCanceledException e)
 		{
-			Logger.Debug("User cancelled manual extraction");
+			Logger.Debug(e, "User cancelled manual extraction");
 			
 		}
 

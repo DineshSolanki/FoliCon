@@ -58,7 +58,11 @@ public static class Extensions
         }
         else
         {
-            if (target == null) return;
+            if (target == null)
+            {
+                return;
+            }
+
             config.RemoveTarget("sentry");
             LogManager.Configuration = config;
             Logger.Debug("Sentry disabled");

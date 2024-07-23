@@ -21,20 +21,33 @@ public partial class SearchResult
         if (e.Action == NotifyCollectionChangedAction.Reset)
         {
             UiUtils.SetColumnWidth(ListViewResult);
-            // scroll the new item into view
-            //    //ListViewResult.ScrollIntoView(e.NewItems[0]);
         }
     }
 
     private void ListViewResult_OnClick(object sender, RoutedEventArgs e)
     {
-        if (e.OriginalSource is not GridViewColumnHeader headerClicked) return;
-        if (headerClicked.Role == GridViewColumnHeaderRole.Padding) return;
-        var direction = headerClicked != _lastHeaderClicked
-            ? ListSortDirection.Ascending
-            : _lastDirection == ListSortDirection.Ascending
+        if (e.OriginalSource is not GridViewColumnHeader headerClicked)
+        {
+            return;
+        }
+
+        if (headerClicked.Role == GridViewColumnHeaderRole.Padding)
+        {
+            return;
+        }
+
+        ListSortDirection direction;
+        if (headerClicked != _lastHeaderClicked)
+        {
+            direction = ListSortDirection.Ascending;
+        }
+        else
+        {
+            direction = _lastDirection == ListSortDirection.Ascending
                 ? ListSortDirection.Descending
                 : ListSortDirection.Ascending;
+        }
+
         var header = headerClicked.Column.Header as string;
         Sort(header, direction);
 

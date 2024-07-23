@@ -51,7 +51,11 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
 
     private static void ValidateGamePoster(Game game)
     {
-        if (game.Cover != null) return;
+        if (game.Cover != null)
+        {
+            return;
+        }
+
         Logger.Warn($"No Poster Found for {game.Name}");
         throw new InvalidDataException("NoPoster");
     }
@@ -68,7 +72,9 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             folderName, year);
 
         if (game.Id != null)
+        {
             FileUtils.SaveMediaInfo((int)game.Id, "Game", fullFolderPath);
+        }
 
         var temporaryImage = new ImageToDownload
         {

@@ -198,7 +198,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         FileUtils.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
-        if (!(_i > Fnames.Count - 1))
+        if (_i <= Fnames.Count - 1)
         {
             Logger.Info("Some titles are left, processed: {Processed}, total: {Total}", _i, Fnames.Count);
             PrepareForSearch();
@@ -215,7 +215,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         Logger.Debug("Skipping title");
         _i++;
         SearchAgainTitle = null;
-        if (!(_i > Fnames.Count - 1))
+        if (_i <= Fnames.Count - 1)
         {
             Logger.Info("Some titles are left, processed: {Processed}, total: {Total}", _i, Fnames.Count);
             PrepareForSearch();

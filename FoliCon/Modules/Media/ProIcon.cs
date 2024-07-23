@@ -4,14 +4,9 @@ using Logger = NLog.Logger;
 
 namespace FoliCon.Modules.Media;
 
-public class ProIcon
+public class ProIcon(string filePath)
 {
-    private readonly string _filePath;
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public ProIcon(string filePath)
-    {
-        _filePath = filePath;
-    }
 
     public Bitmap RenderToBitmap()
     {
@@ -21,9 +16,9 @@ public class ProIcon
 
     private BitmapSource AsRenderTargetBitmap()
     {
-        using var img = new Bitmap(_filePath);
+        using var img = new Bitmap(filePath);
         using var icon = new Bitmap(img, 256, 256);
-        Logger.Debug("Icon resized to 256x256, filePath: {FilePath}", _filePath);
+        Logger.Debug("Icon resized to 256x256, filePath: {FilePath}", filePath);
         return ImageUtils.LoadBitmap(icon);
     }
 
@@ -35,6 +30,6 @@ public class ProIcon
         encoder.Frames.Add(BitmapFrame.Create(rtb));
         encoder.Save(stream);
         Logger.Debug("RenderTargetBitmap converted to 32BppArgb");
-        return new Bitmap(stream); //png;
+        return new Bitmap(stream);
     }
 }

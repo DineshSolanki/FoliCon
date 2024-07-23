@@ -14,6 +14,7 @@ namespace FoliCon.ViewModels;
 
 public class PosterPickerViewModel : BindableBase, IDialogAware
 {
+    private const string PosterPathMessage = "Poster Path: {PosterPath}";
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
     private string _title = "";
@@ -110,9 +111,15 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     public async void LoadData()
     {
         var resultType = Result.MediaType;
-        var response = _isPickedById
-            ? resultType == MediaTypes.Game ? Result.Result[0] : Result.Result
-            : resultType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
+        dynamic response;
+        if (_isPickedById)
+        {
+            response = resultType == MediaTypes.Game ? Result.Result[0] : Result.Result;
+        }
+        else
+        {
+            response = resultType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
+        }
 
         if (resultType != MediaTypes.Game)
         {
@@ -186,7 +193,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     var qualityPath = TmdbObject.GetClient().GetImageUrl(PosterSize.W500, image.FilePath)
                         .ToString(); //TODO: give user option to set quality of preview.-
                     
-                    Logger.Info("Poster Path: {PosterPath}", posterPath);
+                    Logger.Info(PosterPathMessage, posterPath);
                     Logger.Info("Quality Path: {QualityPath}", qualityPath);
                     var response = await Services.HttpC.GetAsync(posterPath);
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -200,7 +207,11 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     ImageUrl.Add(new DArtImageList(qualityPath, posterPath));
                 }
 
-                if (!_stopSearch) continue;
+                if (!_stopSearch)
+                {
+                    continue;
+                }
+
                 Logger.Trace("Stop Search is true, breaking loop");
                 break;
             }
@@ -230,7 +241,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                 {
                     var posterPath = image.ImageId != null ? $"https://{ImageHelper.GetImageUrl(item.Value.ImageId, ImageSize.ScreenshotMed)[2..]}"
                         : null;
-                    Logger.Info("Poster Path: {PosterPath}", posterPath);
+                    Logger.Info(PosterPathMessage, posterPath);
                     var response = await Services.HttpC.GetAsync(posterPath);
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
@@ -242,7 +253,11 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     ImageUrl.Add(new DArtImageList(posterPath, posterPath, image.ImageId));
                 }
 
-                if (!_stopSearch) continue;
+                if (!_stopSearch)
+                {
+                    continue;
+                }
+
                 Logger.Trace("Stop Search is true, breaking loop");
                 break;
             }
@@ -259,21 +274,30 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     {
         Logger.Info("Pick Method called with parameter: {Parameter}", pickedImage);
         var link = pickedImage.Url;
-        var result = _isPickedById
-            ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
-            : Result.MediaType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
+        dynamic result;
+        if (_isPickedById)
+        {
+            result = Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result;
+        }
+        else
+        {
+            result = Result.MediaType == MediaTypes.Game
+                ? Result.Result[PickedIndex]
+                : Result.Result.Results[PickedIndex];
+        }
+
         _resultList[PickedIndex].SetInitialPoster();
         if (Result.MediaType == MediaTypes.Game)
         {
             result.Cover.Value.ImageId = pickedImage.DeviationId;
             _resultList[PickedIndex].Poster = $"https://{ImageHelper.GetImageUrl(pickedImage.DeviationId, ImageSize.HD720)[2..]}";
-            Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
+            Logger.Trace(PosterPathMessage, _resultList[PickedIndex].Poster);
         }
         else
         {
             result.PosterPath = link;
             _resultList[PickedIndex].Poster = link;
-            Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
+            Logger.Trace(PosterPathMessage, _resultList[PickedIndex].Poster);
         }
         CloseDialog("true");
     }

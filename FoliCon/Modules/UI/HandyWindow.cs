@@ -35,17 +35,25 @@ public class HandyWindow : HandyControl.Controls.Window, IDialogWindow
 
     private void HandleDataContextChanged()
     {
-        if (DataContext is not IDialogAware dialogAware) return;
+        if (DataContext is not IDialogAware dialogAware)
+        {
+            return;
+        }
+
         // Set title and subscribe to updates
         Title = dialogAware.Title;
         if(dialogAware is INotifyPropertyChanged notifyPropertyChanged)
+        {
             notifyPropertyChanged.PropertyChanged += DialogAwareOnPropertyChanged;
+        }
     }
 
     private void DialogAwareOnPropertyChanged(object sender, PropertyChangedEventArgs args)
     {
         // Only update when the 'Title' property changes
         if(args.PropertyName == nameof(IDialogAware.Title) && sender is IDialogAware dialogAware)
+        {
             Title = dialogAware.Title;
+        }
     }
 }

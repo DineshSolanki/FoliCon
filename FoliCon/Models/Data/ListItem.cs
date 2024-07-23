@@ -113,13 +113,21 @@ public class ListItem : BindableBase
     
     public void ResetInitialPoster()
     {
-        if (!_isInitialSet) return;
+        if (!_isInitialSet)
+        {
+            return;
+        }
+
         Poster = _initialPoster;
         CanResetPoster = false;
     }
     public void SetInitialPoster()
     {
-        if (_isInitialSet) return;
+        if (_isInitialSet)
+        {
+            return;
+        }
+
         _initialPoster = _poster;
         CanResetPoster = true;
     }

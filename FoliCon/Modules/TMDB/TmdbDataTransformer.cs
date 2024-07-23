@@ -6,18 +6,14 @@ using Collection = TMDbLib.Objects.Collections.Collection;
 
 namespace FoliCon.Modules.TMDB;
 
-internal class TmdbDataTransformer
+internal class TmdbDataTransformer(
+    ref List<PickedListItem> listDataTable,
+    ref List<ImageToDownload> imgDownloadList)
 {
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private readonly List<PickedListItem> _listDataTable;
-    private readonly List<ImageToDownload> _imgDownloadList;
-    public TmdbDataTransformer(ref List<PickedListItem> listDataTable,
-        ref List<ImageToDownload> imgDownloadList)
-    {
-        this._listDataTable = listDataTable;
-        this._imgDownloadList = imgDownloadList;
-    }
+    private readonly List<PickedListItem> _listDataTable = listDataTable;
+    private readonly List<ImageToDownload> _imgDownloadList = imgDownloadList;
 
     private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
     private const string PosterBase = "https://image.tmdb.org/t/p/original";

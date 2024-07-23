@@ -73,7 +73,11 @@ public class DArt : BindableBase
         var jsonData = await response.Content.ReadAsStringAsync();
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
-        if (tokenResponse == null) return string.Empty;
+        if (tokenResponse == null)
+        {
+            return string.Empty;
+        }
+
         var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(tokenResponse.ExpiresIn));
         _cache.Set("DArtToken", tokenResponse.AccessToken, cacheEntryOptions);
 

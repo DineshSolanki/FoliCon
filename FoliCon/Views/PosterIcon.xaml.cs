@@ -41,6 +41,6 @@ public partial class PosterIcon
         BitmapEncoder encoder = new PngBitmapEncoder();
         encoder.Frames.Add(BitmapFrame.Create(rtb));
         encoder.Save(stream);
-        return new Bitmap(stream); //png;
+        return new Bitmap(stream);
     }
 }

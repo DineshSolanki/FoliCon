@@ -19,5 +19,5 @@ internal static class GlobalVariables
         };
     }
 
-    public static string MediaInfoFile = "info.folicon";
+    public static readonly string MediaInfoFile = "info.folicon";
 }

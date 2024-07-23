@@ -53,7 +53,11 @@ public static class IconUtils
 
                 File.Delete(pngFilePath); //<--IO Exception here
             }
-            if (!File.Exists(targetFile)) continue;
+            if (!File.Exists(targetFile))
+            {
+                continue;
+            }
+
             FileUtils.HideFile(targetFile);
             FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{parentFolder}\{folderName}");
         }

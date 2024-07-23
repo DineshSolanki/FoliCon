@@ -18,12 +18,10 @@ public partial class MainWindow
 
     private void ListView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        UiUtils.SetColumnWidth(FinalList);
+        
         if (e.Action == NotifyCollectionChangedAction.Reset)
         {
-            //    // scroll the new item into view
-
-            //    //FinalList.ScrollIntoView(e.NewItems[0]);
+            UiUtils.SetColumnWidth(FinalList);
         }
     }
 
@@ -31,7 +29,10 @@ public partial class MainWindow
     {
 
         if (CmbLanguage.SelectedItem is null)
+        {
             return;
+        }
+
         var selectedLanguage = (Languages)CmbLanguage.SelectedValue;
         var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
         LangProvider.Culture = cultureInfo;
@@ -47,13 +48,28 @@ public partial class MainWindow
 
     private void FinalList_OnClick(object sender, RoutedEventArgs e)
     {
-        if (e.OriginalSource is not GridViewColumnHeader headerClicked) return;
-        if (headerClicked.Role == GridViewColumnHeaderRole.Padding) return;
-        var direction = headerClicked != _lastHeaderClicked
-            ? ListSortDirection.Ascending
-            : _lastDirection == ListSortDirection.Ascending
+        if (e.OriginalSource is not GridViewColumnHeader headerClicked)
+        {
+            return;
+        }
+
+        if (headerClicked.Role == GridViewColumnHeaderRole.Padding)
+        {
+            return;
+        }
+
+        ListSortDirection direction;
+        if (headerClicked != _lastHeaderClicked)
+        {
+            direction = ListSortDirection.Ascending;
+        }
+        else
+        {
+            direction = _lastDirection == ListSortDirection.Ascending
                 ? ListSortDirection.Descending
                 : ListSortDirection.Ascending;
+        }
+
         var header = headerClicked.Column.Header as string;
         Sort(header, direction);
 
