@@ -335,7 +335,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 return;
             }
 
-            if (Fnames.Count != 0)
+            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled)
             {
                 if (NetworkUtils.IsNetworkAvailable())
                 {
@@ -349,7 +349,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
                     StatusBarProperties.ResetData();
                     FinalListViewData.Data.Clear();
-                    StatusBarProperties.TotalFolders = Fnames.Count;
                     PrepareForSearch();
                     if (IconMode == "Poster")
                     {
@@ -412,7 +411,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 continue;
             }
-            
+            StatusBarProperties.TotalFolders+= subfolderNames.Count;
             foreach (var itemTitle in subfolderNames)
             {
                 var fullFolderPath = $@"{folderPath}\{itemTitle}";
@@ -577,6 +576,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
         if (!IsPosterWindowShown && IsSkipAmbiguous)
         {
+            taskCompletionSource.SetResult((false, false));
             return await taskCompletionSource.Task;
         }
 
@@ -616,6 +616,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             {
                 continue;
             }
+            StatusBarProperties.TotalFolders+= subfolderNames.Count;
             StatusBarProperties.AppStatus = "Searching";
             _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
