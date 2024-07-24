@@ -652,7 +652,7 @@
   <data name="ManualExplorer" xml:space="preserve">
       <value>मैनुअल एक्सप्लोरर</value>
     </data>
-  <data name="ExtractManually" xml:space="preserve">
+  <data name="ExtractGallery" xml:space="preserve">
       <value>एक्सट्रेक्ट करे</value>
     </data>
   <data name="Extracting" xml:space="preserve">
