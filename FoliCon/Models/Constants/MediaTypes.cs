@@ -2,9 +2,9 @@
 
 public static class MediaTypes
 {
-    public static string Game { get; } = "Game";
-    public static string Movie { get; } = "Movie";
-    public static string Collection { get; } = "Collection";
-    public static string Tv { get; } = "TV";
-    public static string Mtv { get; } = "Auto (Movies & TV Shows)";
+    public const string Game = "Game";
+    public const string Movie = "Movie";
+    public const string Collection = "Collection";
+    public const string Tv = "TV";
+    public const string Mtv = "Auto (Movies & TV Shows)";
 }

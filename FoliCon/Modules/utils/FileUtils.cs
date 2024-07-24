@@ -378,55 +378,76 @@ public static class FileUtils
         Logger.Trace(
             "Fetching and Adding Details to ListView, Result: {@Result}, Query: {Query}, isPickedById: {IsPickedById}",
             result, query, isPickedById);
-        var source = new ObservableCollection<ListItem>();
 
-        if (result.MediaType == MediaTypes.Tv)
+        var source = result.MediaType switch
         {
-            dynamic ob = isPickedById ? (TvShow)result.Result : (SearchContainer<SearchTv>)result.Result;
-            source = Tmdb.ExtractTvDetailsIntoListItem(ob);
-        }
-        else if (result.MediaType == MediaTypes.Movie || result.MediaType == MediaTypes.Collection)
-        {
-            if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
-            {
-                dynamic ob = isPickedById
-                    ? (Collection)result.Result
-                    : (SearchContainer<SearchCollection>)result.Result;
-                source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
-            }
-            else
-            {
-                dynamic ob;
-                try
-                {
-                    ob = isPickedById ? (Movie)result.Result : (SearchContainer<SearchMovie>)result.Result;
-                    source = Tmdb.ExtractMoviesDetailsIntoListItem(ob);
-                }
-                catch (Exception e)
-                {
-                    Logger.ForErrorEvent().Message("Error Occurred while Fetching Movie Details, treating as collection")
-                        .Exception(e).Log();
-                    ob = isPickedById
-                        ? (Collection)result.Result
-                        : (SearchContainer<SearchCollection>)result.Result;
-                    source = Tmdb.ExtractCollectionDetailsIntoListItem(ob);
-                }
-            }
-        }
-        else if (result.MediaType == MediaTypes.Mtv)
-        {
-            var ob = (SearchContainer<SearchBase>)result.Result;
-            source = Tmdb.ExtractResourceDetailsIntoListItem(ob);
-        }
-        else if (result.MediaType == MediaTypes.Game)
-        {
-            var ob = (Game[])result.Result;
-            source = IgdbClass.ExtractGameDetailsIntoListItem(ob);
-        }
+            MediaTypes.Tv => FetchTvDetails(result, isPickedById),
+            MediaTypes.Movie => FetchMovieOrCollectionDetails(result, query, isPickedById),
+            MediaTypes.Collection => FetchMovieOrCollectionDetails(result, query, isPickedById),
+            MediaTypes.Mtv => FetchMtvDetails(result),
+            MediaTypes.Game => FetchGameDetails(result),
+            _ => []
+        };
+
         Logger.Trace("Details Added to ListView: {@Source}", source);
         return source;
     }
 
+    #region type extraction methods
+
+    private static ObservableCollection<ListItem> FetchTvDetails(ResultResponse result, bool isPickedById)
+    {
+        dynamic ob = isPickedById ? (TvShow)result.Result : (SearchContainer<SearchTv>)result.Result;
+        return Tmdb.ExtractTvDetailsIntoListItem(ob);
+    }
+
+    private static ObservableCollection<ListItem> FetchMovieOrCollectionDetails(ResultResponse result, string query,
+        bool isPickedById)
+    {
+        if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
+        {
+            return FetchCollectionDetails(result, isPickedById);
+        }
+
+        try
+        {
+            return FetchMovieDetails(result, isPickedById);
+        }
+        catch (Exception e)
+        {
+            Logger.ForErrorEvent().Message("Error Occurred while Fetching Movie Details, treating as collection")
+                .Exception(e).Log();
+            return FetchCollectionDetails(result, isPickedById);
+        }
+    }
+
+    private static ObservableCollection<ListItem> FetchCollectionDetails(ResultResponse result, bool isPickedById)
+    {
+        dynamic ob = isPickedById
+            ? (Collection)result.Result
+            : (SearchContainer<SearchCollection>)result.Result;
+        return Tmdb.ExtractCollectionDetailsIntoListItem(ob);
+    }
+
+    private static ObservableCollection<ListItem> FetchMovieDetails(ResultResponse result, bool isPickedById)
+    {
+        dynamic ob = isPickedById ? (Movie)result.Result : (SearchContainer<SearchMovie>)result.Result;
+        return Tmdb.ExtractMoviesDetailsIntoListItem(ob);
+    }
+
+    private static ObservableCollection<ListItem> FetchMtvDetails(ResultResponse result)
+    {
+        var ob = (SearchContainer<SearchBase>)result.Result;
+        return Tmdb.ExtractResourceDetailsIntoListItem(ob);
+    }
+
+    private static ObservableCollection<ListItem> FetchGameDetails(ResultResponse result)
+    {
+        var ob = (Game[])result.Result;
+        return IgdbClass.ExtractGameDetailsIntoListItem(ob);
+    }
+
+    #endregion
     /// <summary>
     /// Set folder icon for a given folder.
     /// </summary>
