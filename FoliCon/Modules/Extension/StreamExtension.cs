@@ -31,8 +31,15 @@ public static class StreamExtensions
     {
         using var reader = ArchiveFactory.Open(archiveStream, ReaderOptions);
         var pngAndIcoEntries = reader.Entries.Where(entry =>
-            (!entry.IsDirectory || !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
-        var pngAndIcoFiles = pngAndIcoEntries as IArchiveEntry[] ?? pngAndIcoEntries.ToArray();
+            (!entry.IsDirectory && !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
+        
+        var pngAndIcoFiles = pngAndIcoEntries.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Key))
+            .Select(group =>
+                group.Any(entry => Path.GetExtension(entry.Key) == ".png")
+                    ? group.First(entry => Path.GetExtension(entry.Key) == ".png")
+                    : group.First())
+            .ToArray();
+        
         var totalCount = pngAndIcoFiles.Length;
         var extractionProgress = new ProgressInfo(0, totalCount, LangProvider.Instance.Extracting);
         progressCallback.Report(extractionProgress);
