@@ -651,8 +651,8 @@ e renovar o cache dos Ícones?</value>
   <data name="ManualExplorer" xml:space="preserve">
       <value>Explorador manual</value>
     </data>
-  <data name="ExtractManually" xml:space="preserve">
-      <value>Extrair manualmente</value>
+  <data name="ExtractGallery" xml:space="preserve">
+      <value>Extrair galeria</value>
     </data>
   <data name="Extracting" xml:space="preserve">
       <value>Extraindo...</value>
