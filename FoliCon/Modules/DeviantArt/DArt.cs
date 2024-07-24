@@ -52,7 +52,7 @@ public class DArt : BindableBase
         return dArt;
     }
 
-    public async Task GetClientAccessTokenAsync()
+    private async Task GetClientAccessTokenAsync()
     {
         if (!_cache.TryGetValue("DArtToken", out string cachedToken))
         {
@@ -93,7 +93,7 @@ public class DArt : BindableBase
 
     public async Task<DArtBrowseResult> Browse(string query, int offset = 0)
     {
-        GetClientAccessTokenAsync();
+        await GetClientAccessTokenAsync();
 
         var url = GetBrowseApiUrl(query, offset);
         using var response = await Services.HttpC.GetAsync(new Uri(url));
@@ -111,7 +111,7 @@ public class DArt : BindableBase
     /// <returns>The DArtDownloadResponse object containing the download details.</returns>
     public async Task<DArtDownloadResponse> Download(string deviationId)
     {
-        GetClientAccessTokenAsync();
+        await GetClientAccessTokenAsync();
         var dArtDownloadResponse = await GetDArtDownloadResponseAsync(deviationId);
         await TryExtraction(deviationId, dArtDownloadResponse, CancellationToken.None, new Progress<ProgressInfo>(_ => { }));
 
@@ -144,7 +144,7 @@ public class DArt : BindableBase
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
         IProgress<ProgressInfo> progressCallback)
     {
-        GetClientAccessTokenAsync();
+        await GetClientAccessTokenAsync();
         return await TryExtraction(deviationId, dArtDownloadResponse, cancellationToken, progressCallback);
 
     }
