@@ -652,8 +652,8 @@ y actualizar la caché de iconos?</value>
   <data name="ManualExplorer" xml:space="preserve">
       <value>Explorador manual</value>
     </data>
-  <data name="ExtractManually" xml:space="preserve">
-      <value>Extraer manualmente</value>
+  <data name="ExtractGallery" xml:space="preserve">
+      <value>Extraer galería</value>
     </data>
   <data name="Extracting" xml:space="preserve">
       <value>Extrayendo...</value>
