@@ -70,8 +70,8 @@
                           IsChecked="{Binding SubfolderProcessingEnabled}" 
                           Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
             </Grid>
-            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
+            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" 
+                             VerticalAlignment="Stretch" ui:ScrollViewerBehavior.AutoScroll="True">
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

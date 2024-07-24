@@ -5,8 +5,6 @@ namespace FoliCon.Views;
 
 public partial class ImageGalleryControl
 {
-    private const double Tolerance = 0.001;
-    private const double Epsilon = 1E-10;
     
     public ImageGalleryControl()
     {
@@ -14,8 +12,6 @@ public partial class ImageGalleryControl
     }
 
     #region Variables
-
-    private bool _autoScroll = true;
     
     public static readonly DependencyProperty CustomBusyContentTemplateProperty =
         DependencyProperty.Register(nameof(CustomBusyContentTemplate), typeof(DataTemplate), typeof(ImageGalleryControl), new PropertyMetadata(null));
@@ -84,21 +80,6 @@ public partial class ImageGalleryControl
     #endregion
 
     #region Methods
-
-    private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
-    {
-
-        if (Math.Abs(e.ExtentHeightChange) > Epsilon)
-        {
-            _autoScroll = Math.Abs(ScrollViewer.VerticalOffset - ScrollViewer.ScrollableHeight) < Tolerance;
-        }
-
-
-        if (_autoScroll && Math.Abs(e.ExtentHeightChange) > Epsilon)
-        {
-            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.ExtentHeight);
-        }
-    }
     
     private void FrameworkElement_OnUnloaded(object sender, RoutedEventArgs e)
     {
