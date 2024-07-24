@@ -6,6 +6,8 @@
 public partial class ProSearchResult
 {
     private bool _autoScroll = true;
+    private const double Tolerance = 0.001;
+    private const double Epsilon = 1E-10;
 
     public ProSearchResult()
     {
@@ -14,14 +16,13 @@ public partial class ProSearchResult
 
     private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
-        if (e.ExtentHeightChange == 0)
+        if (Math.Abs(e.ExtentHeightChange) > Epsilon)
         {
-                
-            _autoScroll = ScrollViewer.VerticalOffset == ScrollViewer.ScrollableHeight;
+            _autoScroll = Math.Abs(ScrollViewer.VerticalOffset - ScrollViewer.ScrollableHeight) < Tolerance;
         }
 
 
-        if (_autoScroll && e.ExtentHeightChange != 0)
+        if (_autoScroll && Math.Abs(e.ExtentHeightChange) > Epsilon)
         {
             ScrollViewer.ScrollToVerticalOffset(ScrollViewer.ExtentHeight);
         }

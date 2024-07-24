@@ -145,6 +145,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                 Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
                 foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
                 {
+                    Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
                     if (!item.Value.IsDownloadable)
                     {
                         Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);

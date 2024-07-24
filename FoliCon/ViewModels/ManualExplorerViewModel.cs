@@ -100,6 +100,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		try
 		{
 			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
+			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
 			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
 				_cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);

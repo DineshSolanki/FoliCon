@@ -273,14 +273,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             
         var cmdArgs = ProcessUtils.GetCmdArgs();
-        if (!cmdArgs.ContainsKey("path"))
+        if (!cmdArgs.TryGetValue("path", out var arg))
         {
             return;
         }
-
-        Logger.Info("Command Line Argument Found, Initializing with Command Line Argument.");
         
-        SelectedFolder = cmdArgs["path"];
+        SelectedFolder = arg;
         var mode = cmdArgs["mode"];
         if (mode != "Professional" &&
             new List<string> { "Auto (Movies & TV Shows)", "TV", "Movie", "Game" }.Contains(mode))

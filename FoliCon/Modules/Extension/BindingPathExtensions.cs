@@ -38,7 +38,7 @@ public static class BindingPathExtensions
         // Only set Binding.Path if it's not direct DataContext binding
         if (bindingPath != ".") 
         {
-            binding.Path = new PropertyPath(bindingPath);
+            binding.Path = new PropertyPath(bindingPath, "");
         }
         img?.SetBinding(Image.SourceProperty, binding);
     }
