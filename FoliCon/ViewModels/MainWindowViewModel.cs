@@ -411,76 +411,86 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         var folderQueue = new Queue<string>();
         folderQueue.Enqueue(rootFolderPath);
+
         while (folderQueue.Count > 0)
         {
             var folderPath = folderQueue.Dequeue();
             var subfolderNames = FileUtils.GetFolderNames(folderPath);
+
             if (subfolderNames.Count == 0)
             {
                 continue;
             }
-            StatusBarProperties.TotalFolders+= subfolderNames.Count;
+
+            StatusBarProperties.TotalFolders += subfolderNames.Count;
+
             foreach (var itemTitle in subfolderNames)
             {
-                var fullFolderPath = $@"{folderPath}\{itemTitle}";
-            
-                Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
-                var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
-
-                var resultCount = CalculateResultCount(response, isPickedById);
-                Logger.Info("Search Result Count: {ResultCount}", resultCount);
-                var dialogResult = false;
-                var isAutoPicked = false;
-                var skipAll = false;
-                switch (resultCount)
+                if (await ProcessItemAsync(folderPath, itemTitle))
                 {
-                    case 0:
-                        (dialogResult, skipAll) = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
-                        break;
-                    case 1 when !IsPosterWindowShown:
-                    {
-                        isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
-                        break;
-                    }
-                    default:
-                    {
-                        if (resultCount >= 1)
-                        {
-                            (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
-                        }
-                        break;
-                    }
+                    break; // Skip All was selected
                 }
-
-                if (isAutoPicked || dialogResult)
-                {
-                    Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
-                                 "adding to final list", isAutoPicked, dialogResult, itemTitle);
-                    if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
-                    {
-                        FinalListViewData.Data.Add(_pickedListDataTable[^1]);
-                    }
-                    // TODO: Set cursor back to arrow here
-                }
-                StatusBarProperties.ProcessedFolder++;
-                if (!skipAll)
-                {
-                    continue;
-                }
-
-                Logger.Debug("Skip All selected, breaking loop");
-                break;
             }
 
-            if (!Services.Settings.SubfolderProcessingEnabled)
+            if (Services.Settings.SubfolderProcessingEnabled)
             {
-                continue;
+                ProcessSubfolders(folderPath, folderQueue);
             }
-
-            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
-            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            folders.ForEach(folderQueue.Enqueue);
         }
+    }
+
+    private async Task<bool> ProcessItemAsync(string folderPath, string itemTitle)
+    {
+        var fullFolderPath = Path.Combine(folderPath, itemTitle);
+        Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
+
+        var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
+        var resultCount = CalculateResultCount(response, isPickedById);
+        Logger.Info("Search Result Count: {ResultCount}", resultCount);
+
+        var (dialogResult, skipAll) = await ProcessResultsAsync(resultCount, itemTitle, response, fullFolderPath,
+            parsedTitle.Title, isPickedById, mediaType);
+
+        if (dialogResult)
+        {
+            AddToFinalList(itemTitle);
+        }
+
+        StatusBarProperties.ProcessedFolder++;
+        return skipAll;
+    }
+
+    private async Task<(bool dialogResult, bool skipAll)> ProcessResultsAsync(int resultCount, string itemTitle,
+        dynamic response, string fullFolderPath, string parsedTitle, bool isPickedById, string mediaType)
+    {
+        switch (resultCount)
+        {
+            case 0:
+                return await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById);
+            case 1 when !IsPosterWindowShown:
+                ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
+                return (true, false);
+            default:
+                return resultCount >= 1
+                    ? await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById)
+                    : (false, false);
+        }
+    }
+
+    private void AddToFinalList(string itemTitle)
+    {
+        Logger.Debug("Adding to final list for {ItemTitle}", itemTitle);
+        if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
+        {
+            FinalListViewData.Data.Add(_pickedListDataTable[^1]);
+        }
+    }
+
+    private void ProcessSubfolders(string folderPath, Queue<string> folderQueue)
+    {
+        Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
+        var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+        folders.ForEach(folderQueue.Enqueue);
     }
 
     private async Task<(ResultResponse response, ParsedTitle parsedTitle, bool isPickedById, string mediaType)> PerformPreprocessing(string itemTitle, string fullFolderPath)
