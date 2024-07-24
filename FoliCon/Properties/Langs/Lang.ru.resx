@@ -651,8 +651,8 @@
   <data name="ManualExplorer" xml:space="preserve">
     <value>Ручной проводник</value>
   </data>
-  <data name="ExtractManually" xml:space="preserve">
-    <value>Извлечь вручную</value>
+  <data name="ExtractGallery" xml:space="preserve">
+    <value>Извлечь галерею</value>
   </data>
   <data name="Extracting" xml:space="preserve">
     <value>Извлечение...</value>

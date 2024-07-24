@@ -89,7 +89,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(EnterTitlePlaceholder));
         OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
         OnPropertyChanged(nameof(ExplorerIntegration));
-        OnPropertyChanged(nameof(ExtractManually));
+        OnPropertyChanged(nameof(ExtractGallery));
         OnPropertyChanged(nameof(Extracting));
         OnPropertyChanged(nameof(FailedFileAccessAt));
         OnPropertyChanged(nameof(FailedToSaveMediaInfoAt));
@@ -265,7 +265,7 @@ public class LangProvider : INotifyPropertyChanged
     public string EnterValidRegexPlaceholder => Lang.EnterValidRegexPlaceholder;
     public string ExceptionOccurred => Lang.ExceptionOccurred;
     public string ExplorerIntegration => Lang.ExplorerIntegration;
-    public string ExtractManually => Lang.ExtractManually;
+    public string ExtractGallery => Lang.ExtractGallery;
     public string Extracting => Lang.Extracting;
     public string FailedFileAccessAt => Lang.FailedFileAccessAt;
     public string FailedToSaveMediaInfoAt => Lang.FailedToSaveMediaInfoAt;
@@ -449,7 +449,7 @@ public class LangKeys
     public static string EnterValidRegexPlaceholder = nameof(EnterValidRegexPlaceholder);
     public static string ExceptionOccurred = nameof(ExceptionOccurred);
     public static string ExplorerIntegration = nameof(ExplorerIntegration);
-    public static string ExtractManually = nameof(ExtractManually);
+    public static string ExtractGallery = nameof(ExtractGallery);
     public static string Extracting = nameof(Extracting);
     public static string FailedFileAccessAt = nameof(FailedFileAccessAt);
     public static string FailedToSaveMediaInfoAt = nameof(FailedToSaveMediaInfoAt);

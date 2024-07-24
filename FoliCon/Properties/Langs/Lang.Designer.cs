@@ -583,20 +583,20 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extract gallery.
+        /// </summary>
+        public static string ExtractGallery {
+            get {
+                return ResourceManager.GetString("ExtractGallery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extracting....
         /// </summary>
         public static string Extracting {
             get {
                 return ResourceManager.GetString("Extracting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Extract manually.
-        /// </summary>
-        public static string ExtractManually {
-            get {
-                return ResourceManager.GetString("ExtractManually", resourceCulture);
             }
         }
         

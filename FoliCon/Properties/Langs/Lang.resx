@@ -652,8 +652,8 @@ and refresh Icon Cache?</value>
     <data name="ManualExplorer" xml:space="preserve">
       <value>Manual Explorer</value>
     </data>
-    <data name="ExtractManually" xml:space="preserve">
-      <value>Extract manually</value>
+    <data name="ExtractGallery" xml:space="preserve">
+      <value>Extract gallery</value>
     </data>
     <data name="Extracting" xml:space="preserve">
       <value>Extracting...</value>
