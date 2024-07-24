@@ -346,7 +346,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     if (!IsObjectsInitialized)
                     {
                         Logger.Warn("SearchAndMakeMethod: Client Objects not initialized, Initializing now.");
-                        InitializeClientObjects();
+                        await InitializeClientObjects();
                         IsObjectsInitialized = true;
                         Logger.Info("SearchAndMakeMethod: Client Objects Initialized.");
                     }
@@ -755,7 +755,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         
     }
 
-    private void InitializeProperties()
+    private async Task InitializeProperties()
     {
         Logger.Debug("Initializing Properties for MainWindow.");
         Fnames = new List<string>();
@@ -784,7 +784,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         _pickedListDataTable = [];
         if (NetworkUtils.IsNetworkAvailable())
         {
-            InitializeClientObjects();
+            await InitializeClientObjects();
             IsObjectsInitialized = true;
         }
         else
@@ -947,7 +947,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
     }
 
-    private void InitializeClientObjects()
+    private async Task InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
         FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret, out var devClientSecret,
@@ -977,7 +977,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
         _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
         _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
-        _dArtObject = new DArt(devClientSecret, devClientId);
+        _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
         Logger.Debug("Client Objects Initialized.");
     }
 

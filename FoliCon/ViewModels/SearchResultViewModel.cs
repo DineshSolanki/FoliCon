@@ -215,7 +215,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         FileList = FileUtils.GetFileNamesFromFolder(_fullFolderPath);
     }
 
-    private async void StartSearch(bool useBusy)
+    private async Task StartSearch(bool useBusy)
     {
         Logger.Debug("StartSearch called, show loader: {UseBusy}", useBusy);
         if (useBusy)

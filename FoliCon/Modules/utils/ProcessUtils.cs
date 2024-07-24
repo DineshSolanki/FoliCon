@@ -178,13 +178,13 @@ public static class ProcessUtils
             return;
         }
 
-        if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"))
+        if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != Lang.CreateIconsWithFoliCon)
         {
             Logger.Info("Removing Old Context Menu Entry");
             RemoveFromContextMenu();
         }
 
-        Services.Settings.ContextEntryName = LangProvider.GetLang("CreateIconsWithFoliCon");
+        Services.Settings.ContextEntryName = Lang.CreateIconsWithFoliCon;
         Services.Settings.IsExplorerIntegrated = true;
         Services.Settings.Save();
 
@@ -205,8 +205,8 @@ public static class ProcessUtils
 
     private static void RegisterContextMenuOption(string modeName, string command)
     {
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command.Replace("%1", "%V"));
+        ApplicationHelper.RegisterCascadeContextMenuToDirectory(Lang.CreateIconsWithFoliCon, LangProvider.GetLang(modeName), command);
+        ApplicationHelper.RegisterCascadeContextMenuToBackground(Lang.CreateIconsWithFoliCon, LangProvider.GetLang(modeName), command.Replace("%1", "%V"));
     }
 
     public static void RemoveFromContextMenu()
@@ -220,7 +220,5 @@ public static class ProcessUtils
         Services.Settings.Save();
         ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory(Services.Settings.ContextEntryName, "");
         ApplicationHelper.UnRegisterCascadeContextMenuFromBackground(Services.Settings.ContextEntryName, "");
-
-        //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
     }
 }

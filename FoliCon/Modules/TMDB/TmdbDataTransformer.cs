@@ -29,7 +29,16 @@ internal class TmdbDataTransformer(
             const string rating = "";
             var poster = Convert.ToString(item.PosterPath != null ? SmallPosterBase + item.PosterPath : null,
                 CultureInfo.InvariantCulture);
-            items.Add(new ListItem(mediaName, year, rating, item.Overview, poster, "", item.Id.ToString()));
+            
+            items.Add(new ListItem
+            {
+                Title = mediaName,
+                Year = year,
+                Rating = rating,
+                Overview = item.Overview,
+                Poster = poster,
+                Id = item.Id.ToString()
+            });
         }
 
         return items;
@@ -43,7 +52,15 @@ internal class TmdbDataTransformer(
         const string year = "";
         const string rating = "";
         var poster = Convert.ToString(result.PosterPath != null ? SmallPosterBase + result.PosterPath : null, CultureInfo.InvariantCulture);
-        items.Add(new ListItem(mediaName, year, rating, result.Overview, poster, "", result.Id.ToString()));
+        items.Add(new ListItem
+        {
+            Title = mediaName,
+            Year = year,
+            Rating = rating,
+            Overview = result.Overview,
+            Poster = poster,
+            Id = result.Id.ToString()
+        });
 
         return items;
     }
@@ -57,7 +74,15 @@ internal class TmdbDataTransformer(
         var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
         var overview = result.Overview;
         var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-        items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
+        items.Add(new ListItem
+        {
+            Title = mediaName,
+            Year = year,
+            Rating = rating,
+            Overview = overview,
+            Poster = poster,
+            Id = result.Id.ToString()
+        });
 
         return items;
     }
@@ -75,7 +100,15 @@ internal class TmdbDataTransformer(
             var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
             var overview = item.Overview;
             var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-            items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
+            items.Add(new ListItem
+            {
+                Title = mediaName,
+                Year = year,
+                Rating = rating,
+                Overview = overview,
+                Poster = poster,
+                Id = item.Id.ToString()
+            });
         }
 
         return items;
@@ -91,7 +124,15 @@ internal class TmdbDataTransformer(
             var rating = item.VoteAverage.ToString(CultureInfo.CurrentCulture);
             var overview = item.Overview;
             var poster = item.PosterPath != null ? SmallPosterBase + item.PosterPath : null;
-            items.Add(new ListItem(mediaName, year, rating, overview, poster, "", item.Id.ToString()));
+            items.Add(new ListItem
+            {
+                Title = mediaName,
+                Year = year,
+                Rating = rating,
+                Overview = overview,
+                Poster = poster,
+                Id = item.Id.ToString()
+            });
         }
 
         return items;
@@ -107,7 +148,15 @@ internal class TmdbDataTransformer(
         var rating = result.VoteAverage.ToString(CultureInfo.CurrentCulture);
         var overview = result.Overview;
         var poster = result.PosterPath != null ? SmallPosterBase + result.PosterPath : null;
-        items.Add(new ListItem(mediaName, year, rating, overview, poster, "", result.Id.ToString()));
+        items.Add(new ListItem
+        {
+            Title = mediaName,
+            Year = year,
+            Rating = rating,
+            Overview = overview,
+            Poster = poster,
+            Id = result.Id.ToString()
+        });
 
         return items;
     }
@@ -161,7 +210,16 @@ internal class TmdbDataTransformer(
             Logger.Trace(
                 "Media Name: {MediaName}, Year: {Year}, Rating: {Rating}, Overview:{Pverview}, PosterPath: {Poster}",
                 mediaName, year, rating, overview, poster);
-            items.Add(new ListItem(mediaName, year, rating, overview, poster, "", id.ToString(), mediaType));
+            items.Add(new ListItem
+            {
+                Title = mediaName,
+                Year = year,
+                Rating = rating,
+                Overview = overview,
+                Poster = poster,
+                Id = id.ToString(),
+                MediaType = mediaType
+            });
             Logger.Info("Added {MediaName} to List", mediaName);
         }
 

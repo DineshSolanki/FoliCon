@@ -108,7 +108,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         LoadData();
             
     }
-    public async void LoadData()
+    public async Task LoadData()
     {
         var resultType = Result.MediaType;
         dynamic response;
@@ -163,17 +163,17 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     }
                 }
             }
-            LoadImages(images);
+            await LoadImages(images);
         }
         else
         {
             Logger.Debug("Media Type is Game, loading images from IGDB");
             Artwork[] images =response.Artworks.Values;
-            LoadImages(images);
+            await LoadImages(images);
         }
     }
 
-    private async void LoadImages(ImagesWithId images)
+    private async Task LoadImages(ImagesWithId images)
     {
             
         StopSearch = false;
@@ -224,7 +224,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         }
         IsBusy = false;
     }
-    private async void LoadImages(Artwork[] images)
+    private async Task LoadImages(Artwork[] images)
     {
         StopSearch = false;
         ImageUrl.Clear();

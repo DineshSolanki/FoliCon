@@ -24,7 +24,16 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
     {
         const string placeholder = "";
         var (mediaName, year, overview, poster, id) = GetGameInfo(game);
-        return new ListItem(mediaName, year, placeholder, overview, poster, placeholder, id.ToString());
+        return new ListItem
+        {
+            Title = mediaName,
+            Year = year,
+            Overview = overview,
+            Poster = poster,
+            Id = id.ToString(),
+            Rating = placeholder,
+            Folder = placeholder,
+        };
     }
 
     private static (string mediaName, string year, string overview, string poster, long? id) GetGameInfo(Game game)

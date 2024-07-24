@@ -35,7 +35,7 @@ public class DArt : BindableBase
         set => SetProperty(ref _clientAccessToken, value);
     }
 
-    public DArt(string clientSecret, string clientId)
+    private DArt(string clientSecret, string clientId)
     {
         Services.Tracker.Configure<DArt>()
             .Property(p => p.ClientAccessToken)
@@ -43,10 +43,16 @@ public class DArt : BindableBase
         ClientSecret = clientSecret;
         ClientId = clientId;
         Services.Tracker.Track(this);
-        GetClientAccessTokenAsync();
+    }
+    
+    public static async Task<DArt> GetInstanceAsync(string clientSecret, string clientId)
+    {
+        DArt dArt = new(clientSecret, clientId);
+        await dArt.GetClientAccessTokenAsync();
+        return dArt;
     }
 
-    public async void GetClientAccessTokenAsync()
+    public async Task GetClientAccessTokenAsync()
     {
         if (!_cache.TryGetValue("DArtToken", out string cachedToken))
         {
