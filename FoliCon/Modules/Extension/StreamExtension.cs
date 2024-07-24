@@ -1,12 +1,23 @@
-﻿using FoliCon.Models.Data;
+﻿using System.Text;
+using FoliCon.Models.Data;
 using FoliCon.Modules.utils;
 using SharpCompress.Archives;
 using SharpCompress.Common;
+using SharpCompress.Readers;
 
 namespace FoliCon.Modules.Extension;
 
 public static class StreamExtensions
 {
+    private static readonly ReaderOptions ReaderOptions = new() { ArchiveEncoding = 
+        new ArchiveEncoding(Encoding.GetEncoding("IBM437"), Encoding.GetEncoding("IBM437")) };
+    
+    private static readonly ExtractionOptions ExtractionSettings = new()
+    {
+        ExtractFullPath = false,
+        Overwrite = true
+    };
+    
     /// <summary>
     /// Extracts PNG and ICO files from a compressed stream and writes them to a directory.
     /// </summary>
@@ -18,22 +29,17 @@ public static class StreamExtensions
         CancellationToken cancellationToken,
         IProgress<ProgressInfo> progressCallback)
     {
-        using var reader = ArchiveFactory.Open(archiveStream);
+        using var reader = ArchiveFactory.Open(archiveStream, ReaderOptions);
         var pngAndIcoEntries = reader.Entries.Where(entry =>
             (!entry.IsDirectory || !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
         var pngAndIcoFiles = pngAndIcoEntries as IArchiveEntry[] ?? pngAndIcoEntries.ToArray();
         var totalCount = pngAndIcoFiles.Length;
         var extractionProgress = new ProgressInfo(0, totalCount, LangProvider.Instance.Extracting);
         progressCallback.Report(extractionProgress);
-        var extractionSettings = new ExtractionOptions
-        {
-            ExtractFullPath = false,
-            Overwrite = true
-        };
         foreach (var entry in pngAndIcoFiles)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            entry.WriteToDirectory(targetPath, extractionSettings);
+            entry.WriteToDirectory(targetPath, ExtractionSettings);
             extractionProgress.Current++;
             progressCallback.Report(extractionProgress);
         }
