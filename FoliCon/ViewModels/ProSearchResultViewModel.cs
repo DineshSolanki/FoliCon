@@ -6,6 +6,7 @@ using FoliCon.Modules.DeviantArt;
 using FoliCon.Modules.Extension;
 using FoliCon.Modules.UI;
 using FoliCon.Modules.utils;
+using ImTools;
 using NLog;
 using Logger = NLog.Logger;
 
@@ -131,12 +132,13 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         await Search(SearchTitle);
         SearchAgainTitle = SearchTitle;
         IsBusy = false;
+        Index = 0;
+        TotalPosters = 0;
     }
 
     private async Task Search(string query, int offset = 0)
     {
         Logger.Trace("Search Started for {Query}, offset: {Offset}", query, offset);
-        Index = 0;
 
         while (true)
         {
@@ -160,7 +162,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private static bool HasNoResults(DArtBrowseResult searchResult)
     {
-        return searchResult.Results?.Length == 0;
+        return searchResult.Results.IsNullOrEmpty();
     }
 
     private void ProcessNoResults(string query, int offset)
@@ -189,14 +191,14 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
         {
             ProcessResultItems(item);
-            
-            if (_stopSearch)
+
+            if (!_stopSearch)
             {
-                Logger.Debug("Search Stopped by user at {Index}", Index);
-                break;
+                continue;
             }
 
-            Index++;
+            Logger.Debug("Search Stopped by user at {Index}", Index);
+            break;
         }
 
         if (!searchResult.HasMore)
@@ -216,6 +218,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         if (IsItemDownloadable(item))
         {
             ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
+            Index++;
         }
         else
         {
