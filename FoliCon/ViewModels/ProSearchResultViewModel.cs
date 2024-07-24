@@ -150,17 +150,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
                         Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
                         continue;
                     }
-                    var response = await Services.HttpC.GetAsync(item.Value.Thumbs[0].Src);
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        Logger.ForErrorEvent().Message("Could not download image {Image}", item.Value.Thumbs[0].Src)
-                            .Property("Response", response).Log();
-                        continue;
-                    }
-                    using (var bm = await response.GetBitmap())
-                    {
-                        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, ImageUtils.LoadBitmap(bm), item.Value.Deviationid));
-                    }
+                    
+                    ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
                     if (_stopSearch)
                     {
                         Logger.Debug("Search Stopped by user at {Index}", Index);

@@ -75,7 +75,7 @@
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Image}" Tag="{Binding }" Height="128" Width="128"
+                            <Image Source="{Binding ThumbnailUrl}" Tag="{Binding }" Height="128" Width="128"
                                    RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
                                 <i:Interaction.Behaviors>
                                     <ui:ClickBehavior CommandParameter="{Binding Path=Tag.Url, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,

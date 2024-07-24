@@ -197,9 +197,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                         
                         continue;
                     }
-                    var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(qualityPath, ImageUtils.LoadBitmap(bm)));
-                    bm.Dispose();
+                    ImageUrl.Add(new DArtImageList(qualityPath, posterPath));
                 }
 
                 if (!_stopSearch) continue;
@@ -240,9 +238,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                             .Property("Response", response).Log();
                         continue;
                     }
-                    var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(image.ImageId, ImageUtils.LoadBitmap(bm)));
-                    bm.Dispose();
+                    ImageUrl.Add(new DArtImageList(posterPath, posterPath, image.ImageId));
                 }
 
                 if (!_stopSearch) continue;
@@ -268,8 +264,8 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         _resultList[PickedIndex].SetInitialPoster();
         if (Result.MediaType == MediaTypes.Game)
         {
-            result.Cover.Value.ImageId = link;
-            _resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..];
+            result.Cover.Value.ImageId = pickedImage.DeviationId;
+            _resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(pickedImage.DeviationId, ImageSize.HD720)[2..];
             Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
         }
         else
