@@ -246,29 +246,26 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private void LoadData(string searchTitle)
     {
-        if (SearchResult != null
-            && (_isPickedById ? SearchResult.Result != null ? 1 :
-                null :
-                SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
-            && (_isPickedById ? SearchResult?.Result != null ? 1 :
-                0 :
-                SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
-        {
-            Logger.Info("Search result found for {SearchTitle}", searchTitle);
-            ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
-            if (ResultListViewData.Data.Count == 0)
-            {
-                return;
-            }
-
-            ResultListViewData.SelectedItem = ResultListViewData.Data[0];
-            PerformSelectionChanged();
-            
-        }
-        else
+        if (SearchResult?.Result is null)
         {
             IsSearchFocused = true;
+            return;
         }
+        
+        if (!HasSearchResult())
+        {
+            return;
+        }
+
+        Logger.Info("Search result found for {SearchTitle}", searchTitle);
+        ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
+        if (ResultListViewData.Data.Count == 0)
+        {
+            return;
+        }
+
+        ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+        PerformSelectionChanged();
     }
 
     private void SearchAgainMethod()
@@ -514,5 +511,20 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private void ResetPoster()
     {
         ResultListViewData.SelectedItem.ResetInitialPoster();
+    }
+    
+    private bool HasSearchResult()
+    {
+        if (_isPickedById)
+        {
+            return SearchResult.Result != null;
+        }
+
+        if (SearchMode == "Game")
+        {
+            return (SearchResult.Result as Game[])?.Length != 0;
+        }
+    
+        return SearchResult.Result.TotalResults != 0;
     }
 }
