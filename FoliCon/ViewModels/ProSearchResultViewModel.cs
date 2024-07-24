@@ -1,4 +1,6 @@
-﻿using FoliCon.Models.Data;
+﻿
+using FoliCon.Models.Api;
+using FoliCon.Models.Data;
 using FoliCon.Modules.Configuration;
 using FoliCon.Modules.DeviantArt;
 using FoliCon.Modules.Extension;
@@ -135,54 +137,97 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     {
         Logger.Trace("Search Started for {Query}, offset: {Offset}", query, offset);
         Index = 0;
+
         while (true)
         {
             var searchResult = await DArtObject.Browse(query, offset);
             Logger.Trace("Search Result for {Query} is {@SearchResult}", query, searchResult);
-            if (searchResult.Results?.Length > 0)
-            {
-                TotalPosters = searchResult.Results.Count( result => result.IsDownloadable) + offset;
-                Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
-                foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
-                {
-                    Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
-                    if (!item.Value.IsDownloadable)
-                    {
-                        Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
-                        continue;
-                    }
-                    
-                    ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
-                    if (_stopSearch)
-                    {
-                        Logger.Debug("Search Stopped by user at {Index}", Index);
-                        return;
-                    }
 
-                    Index++;
-                }
-                if (searchResult.HasMore)
-                {
-                    Logger.Debug("Search Result has more items, offset: {Offset}", searchResult.NextOffset);
-                    offset = searchResult.NextOffset;
-                    continue;
-                }
-            }
-            else
+            if (HasNoResults(searchResult))
             {
-                Logger.Warn("No Result Found for {Query}", query);
-                IsBusy = false;
-                if (offset == 0)
-                {
-                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
-                        LangProvider.GetLang("NoResult")));
-                }
-                IsSearchFocused = true;
+                ProcessNoResults(query, offset);
+                break;
             }
 
-            break;
+            offset = ProcessSearchResults(query, searchResult, offset);
+
+            if (!searchResult.HasMore || _stopSearch)
+            {
+                break;
+            }
         }
     }
+
+    private static bool HasNoResults(DArtBrowseResult searchResult)
+    {
+        return searchResult.Results?.Length == 0;
+    }
+
+    private void ProcessNoResults(string query, int offset)
+    {
+        Logger.Warn("No Result Found for {Query}", query);
+        IsBusy = false;
+        if (offset == 0)
+        {
+            MessageBox.Show(
+                CustomMessageBox.Error(
+                    LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
+                    LangProvider.GetLang("NoResult")
+                )
+            );
+        }
+
+        IsSearchFocused = true;
+    }
+
+    private int ProcessSearchResults(string query, DArtBrowseResult searchResult, int offset)
+    {
+        // Counter for the total posters
+        TotalPosters = searchResult.Results!.Count(result => result.IsDownloadable) + offset;
+        Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
+
+        foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
+        {
+            ProcessResultItems(item);
+            
+            if (_stopSearch)
+            {
+                Logger.Debug("Search Stopped by user at {Index}", Index);
+                break;
+            }
+
+            Index++;
+        }
+
+        if (!searchResult.HasMore)
+        {
+            return offset;
+        }
+
+        Logger.Debug("Search Result has more items, offset: {Offset}", searchResult.NextOffset);
+        return searchResult.NextOffset;
+
+    }
+
+    private void ProcessResultItems(EnumeratorWithIndex<Result> item)
+    {
+        Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
+
+        if (IsItemDownloadable(item))
+        {
+            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
+        }
+        else
+        {
+            Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
+        }
+    }
+
+    private static bool IsItemDownloadable(EnumeratorWithIndex<Result> item)
+    {
+        return item.Value.IsDownloadable;
+    }
+    
 
     private void PickMethod(object parameter)
     {
