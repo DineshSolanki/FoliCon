@@ -108,11 +108,24 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		{
 			Logger.Debug("User cancelled manual extraction");
 			
-		} 
+		}
 
-		DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
-			.GetFiles()
-			.ForEach(fileInfo => Directory.AddOnUI(fileInfo.FullName));
+		var extractedFiles = DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
+			.GetFiles();
+		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
+		if (extractedFiles?.Length > 0)
+		{
+			var pngOrAvailableFile = extractedFiles
+				.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Name))
+				.Select(group =>
+				{
+					var pngFile = group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png");
+					return pngFile ?? group.First();
+				}).ToList();
+			
+			Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
+			pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
+		}
 
 		IsBusy = false;
 		_cts.Dispose();
