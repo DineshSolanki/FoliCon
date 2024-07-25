@@ -23,7 +23,15 @@ public static class FileUtils
         ".7z",
         ".tar"
     ];
-
+    private static readonly HashSet<string> ExcludedFileIdentifiers =
+    [
+        "ResourceForks",
+        "__MACOSX",
+        "._",
+        ".DS_Store",
+        "Thumbs.db"
+    ];
+    
     /// <summary>
     /// Determines whether a given string value ends with any string within a collection of file extensions.
     /// </summary>
@@ -39,6 +47,9 @@ public static class FileUtils
     public static bool IsPngOrIco(string fileName) =>
         fileName != null && EndsIn(fileName, new[] { ".png", ".ico" });
 
+    public static bool isExcludedFileIdentifier(string fileName) =>
+        fileName != null && ExcludedFileIdentifiers.Any(fileName.Contains);
+    
     /// <summary>
     /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
     /// </summary>

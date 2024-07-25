@@ -30,8 +30,7 @@ public static class StreamExtensions
         IProgress<ProgressInfo> progressCallback)
     {
         using var reader = ArchiveFactory.Open(archiveStream, ReaderOptions);
-        var pngAndIcoEntries = reader.Entries.Where(entry =>
-            !IsUnwantedDirectoryOrFileType(entry) && FileUtils.IsPngOrIco(entry.Key)).ToList();
+        var pngAndIcoEntries = reader.Entries.Where(IsValidFile).ToList();
         
         
         var totalCount = pngAndIcoEntries.Count;
@@ -45,14 +44,9 @@ public static class StreamExtensions
             progressCallback.Report(extractionProgress);
         }
     }
-
-    private static bool IsUnwantedDirectoryOrFileType(IEntry entry)
+    
+    private static bool IsValidFile(IEntry entry)
     {
-        return entry.Key != null && (entry.IsDirectory ||
-                                    entry.Key.Contains("ResourceForks") ||
-                                    entry.Key.Contains("__MACOSX") ||
-                                    entry.Key.StartsWith("._") ||
-                                    entry.Key.Equals(".DS_Store") ||
-                                    entry.Key.Equals("Thumbs.db"));
+        return !entry.IsDirectory && !FileUtils.isExcludedFileIdentifier(entry.Key) && FileUtils.IsPngOrIco(entry.Key);
     }
 }
