@@ -259,61 +259,69 @@ internal class TmdbDataTransformer(
 
         string posterUrl = string.Concat(PosterBase, result.PosterPath.Replace("https://image.tmdb.org/t/p/w500",""));
 
-        if (resultType == MediaTypes.Tv)
+        switch (resultType)
         {
-            dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
-            var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture) : "";
-            FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                rating, fullFolderPath, folderName,
-                year);
-            id = pickedResult.Id;
-        }
-        else if (resultType == MediaTypes.Movie)
-        {
-            dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
-            var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture) : "";
-            FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                rating, fullFolderPath, folderName, year);
-            id = pickedResult.Id;
-        }
-        else if (resultType == MediaTypes.Collection)
-        {
-            dynamic pickedResult = isPickedById ? (Collection)result : (SearchCollection)result;
-            FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name, rating, fullFolderPath,
-                folderName, "");
-            id = pickedResult.Id;
-        }
-        else if (resultType == MediaTypes.Mtv)
-        {
-            MediaType mediaType = result.MediaType;
-            switch (mediaType)
+            case MediaTypes.Tv:
             {
-                case MediaType.Tv:
+                dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
+                var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture) : "";
+                FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
+                    rating, fullFolderPath, folderName,
+                    year);
+                id = pickedResult.Id;
+                break;
+            }
+            case MediaTypes.Movie:
+            {
+                dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
+                var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture) : "";
+                FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
+                    rating, fullFolderPath, folderName, year);
+                id = pickedResult.Id;
+                break;
+            }
+            case MediaTypes.Collection:
+            {
+                dynamic pickedResult = isPickedById ? (Collection)result : (SearchCollection)result;
+                FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name, rating, fullFolderPath,
+                    folderName, "");
+                id = pickedResult.Id;
+                break;
+            }
+            case MediaTypes.Mtv:
+            {
+                MediaType mediaType = result.MediaType;
+                switch (mediaType)
                 {
-                    type = "TV";
-                    dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
-                    var year = pickedResult.FirstAirDate != null
-                        ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture)
-                        : "";
-                    FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                        rating, fullFolderPath, folderName,
-                        year);
-                    id = pickedResult.Id;
-                    break;
+                    case MediaType.Tv:
+                    {
+                        type = MediaTypes.Tv;
+                        dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
+                        var year = pickedResult.FirstAirDate != null
+                            ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture)
+                            : "";
+                        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
+                            rating, fullFolderPath, folderName,
+                            year);
+                        id = pickedResult.Id;
+                        break;
+                    }
+                    case MediaType.Movie:
+                    {
+                        type = MediaTypes.Movie;
+                        dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
+                        var year = pickedResult.ReleaseDate != null
+                            ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture)
+                            : "";
+                        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
+                            rating, fullFolderPath, folderName,
+                            year);
+                        id = pickedResult.Id;
+                        break;
+                    }
                 }
-                case MediaType.Movie:
-                {
-                    type = "Movie";
-                    dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
-                    var year = pickedResult.ReleaseDate != null
-                        ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture)
-                        : "";
-                    FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                        rating, fullFolderPath, folderName,
-                        year);
-                    id = pickedResult.Id;
-                    break;
-                }
+
+                break;
             }
         }
 

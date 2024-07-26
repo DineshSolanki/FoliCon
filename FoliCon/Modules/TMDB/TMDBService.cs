@@ -72,9 +72,9 @@ internal class TmdbService
         Logger.Info("Searching for {Query} in {SearchMode}", query, searchMode);
         var (r, mediaType) = searchMode switch
         {
-            "Movie" => await SearchMoviesAsync(query),
-            "TV" => await SearchTvShowAsync(query),
-            "Auto (Movies & TV Shows)" => await SearchMultiAsync(query),
+            MediaTypes.Movie => await SearchMoviesAsync(query),
+            MediaTypes.Tv => await SearchTvShowAsync(query),
+            MediaTypes.Mtv => await SearchMultiAsync(query),
             _ => (null, "")
         };
         return new ResultResponse

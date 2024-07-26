@@ -520,7 +520,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return SearchResult.Result != null;
         }
 
-        if (SearchMode == "Game")
+        if (SearchMode == MediaTypes.Game)
         {
             return (SearchResult.Result as Game[])?.Length != 0;
         }

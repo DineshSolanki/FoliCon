@@ -28,7 +28,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private bool _isMakeEnabled;
     private bool _isSkipAmbiguous;
     private string _iconMode = "Poster";
-    private string _searchMode = "Movie";
+    private string _searchMode = MediaTypes.Movie;
     private bool _isSearchModeVisible = true;
     private bool _stopIconDownload;
     private Languages _appLanguage;
@@ -281,7 +281,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         SelectedFolder = arg;
         var mode = cmdArgs["mode"];
         if (mode != "Professional" &&
-            new List<string> { "Auto (Movies & TV Shows)", "TV", "Movie", "Game" }.Contains(mode))
+            new List<string> { MediaTypes.Mtv, MediaTypes.Tv, MediaTypes.Movie, MediaTypes.Game }.Contains(mode))
         {
             IconMode = "Poster";
             SearchMode = mode;
@@ -505,12 +505,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
             isPickedById = true;
-            response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+            response = mediaType == MediaTypes.Game ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
         }
         else
         {
             Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
-            if (SearchMode == "Game")
+            if (SearchMode == MediaTypes.Game)
             {
                 response = await _igdbObject.SearchGameAsync(parsedTitle.Title);
             }
@@ -537,7 +537,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             return response.Result != null ? 1 : 0;
         }
 
-        return SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+        return SearchMode == MediaTypes.Game ? response.Result.Length : response.Result.TotalResults;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
@@ -581,7 +581,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             itemTitle, SearchMode);
         try
         {
-            if (isPickedById ? mediaType == "Game" : SearchMode == "Game")
+            if (isPickedById ? mediaType == MediaTypes.Game : SearchMode == MediaTypes.Game)
             {
                 var result = response.Result[0];
                 _igdbObject.ResultPicked(result, fullFolderPath);

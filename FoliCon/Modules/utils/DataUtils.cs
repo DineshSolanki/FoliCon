@@ -1,4 +1,5 @@
-﻿using FoliCon.Models.Data;
+﻿using FoliCon.Models.Constants;
+using FoliCon.Models.Data;
 using FoliCon.Models.Enums;
 using NLog;
 
@@ -15,7 +16,7 @@ public static class DataUtils
             return result != null ? 1 : 0;
         }
 
-        return searchMode == "Game" ? result.Length : result.TotalResults;
+        return searchMode == MediaTypes.Game ? result.Length : result.TotalResults;
     }
 
     /// <summary>

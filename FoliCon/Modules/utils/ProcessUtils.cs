@@ -1,4 +1,5 @@
-﻿using FoliCon.Modules.Configuration;
+﻿using FoliCon.Models.Constants;
+using FoliCon.Modules.Configuration;
 using FoliCon.Modules.UI;
 using Microsoft.Web.WebView2.Core;
 using NLog;
@@ -197,7 +198,7 @@ public static class ProcessUtils
     {
         foreach (var mode in modes)
         {
-            var modeName = mode == "Auto" ? "Auto (Movies & TV Shows)" : mode;
+            var modeName = mode == "Auto" ? MediaTypes.Mtv : mode;
             var command = $"""{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode {modeName}""";
             RegisterContextMenuOption(mode, command);
         }

@@ -1,4 +1,5 @@
-﻿using FoliCon.Models.Data;
+﻿using FoliCon.Models.Constants;
+using FoliCon.Models.Data;
 using FoliCon.Modules.utils;
 using NLog;
 using Logger = NLog.Logger;
@@ -82,7 +83,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
 
         if (game.Id != null)
         {
-            FileUtils.SaveMediaInfo((int)game.Id, "Game", fullFolderPath);
+            FileUtils.SaveMediaInfo((int)game.Id, MediaTypes.Game, fullFolderPath);
         }
 
         var temporaryImage = new ImageToDownload
