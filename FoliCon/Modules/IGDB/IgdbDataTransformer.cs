@@ -46,7 +46,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             : string.Empty;
         var overview = game.Summary;
         var poster = game.Cover != null
-            ? $"https://{ImageHelper.GetImageUrl(game.Cover.Value.ImageId, ImageSize.HD720)[2..]}"
+            ? GetPosterUrl(game)
             : null;
         return (mediaName, year, overview, poster, id);
     }
@@ -76,7 +76,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
         var year = game.FirstReleaseDate != null
             ? game.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture)
             : string.Empty;
-        var posterUrl = ImageHelper.GetImageUrl(game.Cover.Value.ImageId, ImageSize.HD720);
+        
 
         FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, game.Name, rating, fullFolderPath,
             folderName, year);
@@ -86,11 +86,25 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             FileUtils.SaveMediaInfo((int)game.Id, MediaTypes.Game, fullFolderPath);
         }
 
+        var posterUrl = GetPosterUrl(game);
         var temporaryImage = new ImageToDownload
         {
             LocalPath = localPosterPath,
-            RemotePath = new Uri($"https://{posterUrl[2..]}")
+            RemotePath = new Uri(posterUrl),
         };
         _imgDownloadList.Add(temporaryImage);
+    }
+    
+    private static string GetPosterUrl(Game game)
+    {
+        return game.Cover != null
+            ? GetPosterUrl(game.Cover.Value.ImageId, ImageSize.HD720)
+            : string.Empty;
+    }
+
+    [Localizable(false)]
+    public static string GetPosterUrl(string imageId, ImageSize imageSize)
+    {
+        return $"https:{ImageHelper.GetImageUrl(imageId, imageSize)}";
     }
 }
