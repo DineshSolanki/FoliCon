@@ -199,7 +199,11 @@ public static class FileUtils
         }
 
         // Set file attribute to "System"
-        if ((File.GetAttributes(icoFile) & FileAttributes.System) == FileAttributes.System) return;
+        if ((File.GetAttributes(icoFile) & FileAttributes.System) == FileAttributes.System)
+        {
+            return;
+        }
+
         Logger.Debug("Setting File Attribute to System");
         File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
     }

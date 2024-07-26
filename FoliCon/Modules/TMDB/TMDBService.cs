@@ -140,6 +140,7 @@ internal class TmdbService
                 searchResult = await SearchMulti(parsedTitle);
                 mediaType = MediaTypes.Mtv;
                 break;
+            default: throw new InvalidDataException($"Invalid search mode: {searchMode}");
         }
 
         return new ResultResponse

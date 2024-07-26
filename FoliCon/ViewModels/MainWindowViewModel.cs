@@ -344,14 +344,13 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             PrepareForSearchOperations();
 
-            switch (IconMode)
+            if (IconMode == "Poster")
             {
-                case "Poster":
-                    await ProcessPosterModeAsync();
-                    break;
-                default:
-                    ProcessProfessionalMode(SelectedFolder);
-                    break;
+                await ProcessPosterModeAsync();
+            }
+            else
+            {
+                ProcessProfessionalMode(SelectedFolder);
             }
 
             Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}",
