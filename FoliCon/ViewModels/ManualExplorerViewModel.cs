@@ -2,7 +2,7 @@
 using FoliCon.Models.Api;
 using FoliCon.Models.Data;
 using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
 using NLog;
 
 namespace FoliCon.ViewModels;
@@ -15,7 +15,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	{
 		Directory = [];
 		PickCommand = new DelegateCommand<object>(PickMethod);
-		OpenImageCommand = new DelegateCommand<object>((link)=> UiUtil.ShowImageBrowser(link as string));
+		OpenImageCommand = new DelegateCommand<object>((link)=> UiUtils.ShowImageBrowser(link as string));
 		CancelCommand = new DelegateCommand(CancelMethod);
 	}
 

@@ -86,7 +86,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>((link)=> UiUtil.ShowImageBrowser(link as string));
+        OpenImageCommand = new DelegateCommand<object>((link)=> UiUtils.ShowImageBrowser(link as string));
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);

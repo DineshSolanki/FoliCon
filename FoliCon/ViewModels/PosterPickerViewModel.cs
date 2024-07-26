@@ -4,6 +4,7 @@ using FoliCon.Models.Data.Wrapper;
 using FoliCon.Modules.IGDB;
 using FoliCon.Modules.TMDB;
 using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
 using NLog;
 using Artwork = IGDB.Models.Artwork;
 using Collection = TMDbLib.Objects.Collections.Collection;
@@ -60,7 +61,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         link = Result.MediaType == MediaTypes.Game
             ? IgdbDataTransformer.GetPosterUrl(selectedImage.DeviationId, ImageSize.HD720)
             : link;
-        UiUtil.ShowImageBrowser(link);
+        UiUtils.ShowImageBrowser(link);
     }
 
     protected virtual void CloseDialog(string parameter)

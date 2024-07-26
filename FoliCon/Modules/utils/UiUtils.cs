@@ -2,6 +2,7 @@
 
 public static class UiUtils
 {
+    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
     /// <summary>
     /// Set Column width of list view to fit content
     /// </summary>
@@ -27,5 +28,16 @@ public static class UiUtils
     public static Visibility BooleanToVisibility(bool value)
     {
         return value ? Visibility.Visible : Visibility.Hidden;
+    }
+
+    public static void ShowImageBrowser(string imageLocation)
+    {
+        Logger.Trace("Opening Image {Image}", imageLocation);
+        var browser = new ImageBrowser(imageLocation)
+        {
+            ShowTitle = false,
+            IsFullScreen = true
+        };
+        browser.Show();
     }
 }
