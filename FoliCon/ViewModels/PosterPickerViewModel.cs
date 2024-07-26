@@ -60,13 +60,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         link = Result.MediaType == MediaTypes.Game
             ? IgdbDataTransformer.GetPosterUrl(selectedImage.DeviationId, ImageSize.HD720)
             : link;
-        Logger.Info("Opening Image: {Link}", link);
-        var browser = new ImageBrowser(link)
-        {
-            ShowTitle = false,
-            IsFullScreen = true
-        };
-        browser.Show();
+        UiUtil.ShowImageBrowser(link);
     }
 
     protected virtual void CloseDialog(string parameter)
