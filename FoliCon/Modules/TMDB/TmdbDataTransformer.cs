@@ -8,7 +8,7 @@ namespace FoliCon.Modules.TMDB;
 
 internal class TmdbDataTransformer(
     ref List<PickedListItem> listDataTable,
-    ref List<ImageToDownload> imgDownloadList)
+    ref List<ImageToDownload> imgDownloadList, TMDbClient client)
 {
     private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -16,7 +16,6 @@ internal class TmdbDataTransformer(
     private readonly List<ImageToDownload> _imgDownloadList = imgDownloadList;
 
     private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
-    private const string PosterBase = "https://image.tmdb.org/t/p/original";
 
     public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
         SearchContainer<SearchCollection> result)
@@ -247,14 +246,13 @@ internal class TmdbDataTransformer(
     
         Logger.Debug("Rating: {Rating}, Result Type: {ResultType}", rating, resultType);
 
-        var type = resultType;
         rating = PrepareRating(resultType, rating, result);
     
         var folderName = Path.GetFileName(fullFolderPath);
         var localPosterPath = Path.Combine(fullFolderPath, $"{IconUtils.GetImageName()}.png");
-        var posterUrl = $"{PosterBase}{result.PosterPath.Replace("https://image.tmdb.org/t/p/w500", "")}";
+        var posterUrl = GetPosterUrl(result.PosterPath, PosterSize.Original, client);
     
-        PickResult(result, resultType, fullFolderPath, rating, isPickedById,out int id, folderName, localPosterPath);
+        string type = PickResult(result, resultType, fullFolderPath, rating, isPickedById,out int id, folderName, localPosterPath);
     
         if (!isPickedById && id != 0)
         {
@@ -278,7 +276,7 @@ internal class TmdbDataTransformer(
         return rating;
     }
     
-    private void PickResult(dynamic result,
+    private string PickResult(dynamic result,
         string resultType,
         string fullFolderPath,
         string rating,
@@ -314,28 +312,25 @@ internal class TmdbDataTransformer(
                     break;
                 }
             case MediaTypes.Mtv:
-                SelectMtvType(result, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
+                resultType = SelectMtvType(result, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
                 break;
         }
+
+        return resultType;
     }
     
-    private void SelectMtvType(dynamic result, string fullFolderPath, string rating, bool isPickedById, out int id, string folderName, string localPosterPath)
+    private string SelectMtvType(dynamic result, string fullFolderPath, string rating, bool isPickedById, out int id, string folderName, string localPosterPath)
     {
         var mediaType = result.MediaType;
         id = 0;
-        switch (mediaType)
+        return mediaType switch
         {
-            case MediaType.Tv:
-                {
-                    PickResult(result, MediaTypes.Tv, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
-                    break;
-                }
-            case MediaType.Movie:
-                {
-                    PickResult(result, MediaTypes.Movie, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
-                    break;
-                }
-        }
+            MediaType.Tv => PickResult(result, MediaTypes.Tv, fullFolderPath, rating, isPickedById, out id, folderName,
+                localPosterPath),
+            MediaType.Movie => PickResult(result, MediaTypes.Movie, fullFolderPath, rating, isPickedById, out id,
+                folderName, localPosterPath),
+            _ => mediaType
+        };
     }
     
     private static dynamic CastResult(Type targetType, dynamic result)
@@ -346,5 +341,15 @@ internal class TmdbDataTransformer(
     private void AddToPickedList(string title, string year, string rating, string fullFolderPath, string folderName, string localPosterPath)
     {
         FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, title, rating, fullFolderPath, folderName, year);
+    }
+
+    public static string GetPosterUrl(ImageData image,string posterSize, TMDbClient client)
+    {
+        return GetPosterUrl(image.FilePath, posterSize, client);
+    }
+    
+    private static string GetPosterUrl(string posterPath, string posterSize, TMDbClient client)
+    {
+        return posterPath is null ? string.Empty : client.GetImageUrl(posterSize, posterPath).ToString();
     }
 }

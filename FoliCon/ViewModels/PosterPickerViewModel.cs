@@ -1,12 +1,11 @@
 ﻿using FoliCon.Models.Constants;
 using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.Extension;
+using FoliCon.Models.Data.Wrapper;
 using FoliCon.Modules.IGDB;
 using FoliCon.Modules.TMDB;
 using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
 using NLog;
+using Artwork = IGDB.Models.Artwork;
 using Collection = TMDbLib.Objects.Collections.Collection;
 using Logger = NLog.Logger;
 
@@ -163,81 +162,32 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
                     }
                 }
             }
-            await LoadImages(images);
+
+            var imageDataWrappers = images.Posters.Select(imageData => new ImageDataWrapper(images.Id, imageData, TmdbObject.GetClient()));
+            await LoadImages(imageDataWrappers);
         }
         else
         {
             Logger.Debug("Media Type is Game, loading images from IGDB");
-            Artwork[] images =response.Artworks.Values;
-            await LoadImages(images);
+            Artwork[] images = response.Artworks.Values;
+            var artworkWrappers = images.Select(artwork => new ArtworkWrapper(artwork));
+            await LoadImages(artworkWrappers);
         }
     }
 
-    private async Task LoadImages(ImagesWithId images)
-    {
-            
-        StopSearch = false;
-        ImageUrl.Clear();
-        IsBusy = true;
-        if (images is not null && images.Posters.Count > 0)
-        {
-            TotalPosters = images.Posters.Count;
-            Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
-            foreach (var item in images.Posters.GetEnumeratorWithIndex())
-            {
-                var image = item.Value;
-                Index = item.Index + 1;
-                if (image is not null)
-                {
-                    var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W92, image.FilePath).ToString() : null;
-                    var qualityPath = TmdbObject.GetClient().GetImageUrl(PosterSize.W500, image.FilePath)
-                        .ToString(); //TODO: give user option to set quality of preview.-
-                    
-                    Logger.Info(PosterPathMessage, posterPath);
-                    Logger.Info("Quality Path: {QualityPath}", qualityPath);
-                    var response = await Services.HttpC.GetAsync(posterPath);
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        Logger.ForErrorEvent().Message("Error getting poster from TMDb: {StatusCode}",
-                                response.StatusCode)
-                            .Property("Response", response).Log();
-                        
-                        continue;
-                    }
-                    ImageUrl.Add(new DArtImageList(qualityPath, posterPath));
-                }
-
-                if (!_stopSearch)
-                {
-                    continue;
-                }
-
-                Logger.Trace("Stop Search is true, breaking loop");
-                break;
-            }
-        }
-        else
-        {
-            Logger.Warn("No posters found for {Title}", Title);
-            IsBusy = false;
-            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
-        }
-        IsBusy = false;
-    }
-    private async Task LoadImages(Artwork[] images)
+    private async Task LoadImages(IEnumerable<IImage> images)
     {
         ResetState();
         IsBusy = true;
-    
-        if (images is { Length: > 0 })
+        var imageList = images.ToList();
+        if (imageList.Any())
         {
-            await ProcessImages(images);
+            ProcessImages(imageList);
         }
         else
         {
             HandleNoImagesFound();
         }
-    
         IsBusy = false;
     }
     
@@ -247,12 +197,13 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         ImageUrl.Clear();
     }
     
-    private async Task ProcessImages(Artwork[] images)
+    private void ProcessImages(IEnumerable<IImage> images)
     {
-        TotalPosters = images.Length;
+        var imageList = images.ToList();
+        TotalPosters = imageList.Count;
         Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
     
-        foreach (var item in images.GetEnumeratorWithIndex())
+        foreach (var item in imageList.GetEnumeratorWithIndex())
         {
             Index = item.Index + 1;
             TryLoadImage(item.Value);
@@ -262,17 +213,18 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         }
     }
     
-    private void TryLoadImage(Artwork image)
+    private void TryLoadImage(IImage image)
     {
-
-        var posterPath = IgdbDataTransformer.GetPosterUrl(image.ImageId, ImageSize.ScreenshotMed);
-        Logger.Info(PosterPathMessage, posterPath);
-        AddImageToCollection(posterPath, image);
+        var thumbnailUrl = image.GetThumbnailUrl();
+        var qualityPath = image.GetPosterUrl();
+        Logger.Info(PosterPathMessage, thumbnailUrl);
+        Logger.Trace("Quality Path: {QualityPath}", qualityPath);
+        AddImageToCollection(qualityPath,thumbnailUrl, image.Id);
     }
     
-    private void AddImageToCollection(string posterPath, Artwork image)
+    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id)
     {
-        ImageUrl.Add(new DArtImageList(posterPath, posterPath, image.ImageId));
+        ImageUrl.Add(new DArtImageList(qualityUrl, thumbnailUrl, id));
     }
     
     private void HandleNoImagesFound()
