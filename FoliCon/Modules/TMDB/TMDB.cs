@@ -27,7 +27,7 @@ public class Tmdb
     {
         Logger.Debug("Initializing TMDB Helper Class");
         _tmdbService = new TmdbService(serviceClient);
-        _dataTransformer = new TmdbDataTransformer(ref listDataTable, ref imgDownloadList);
+        _dataTransformer = new TmdbDataTransformer(ref listDataTable, ref imgDownloadList, serviceClient);
         Logger.Debug("Initialized TMDB Helper Class");
     }
 

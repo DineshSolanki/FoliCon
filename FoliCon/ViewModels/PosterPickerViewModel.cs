@@ -109,72 +109,99 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     }
     public async Task LoadData()
     {
-        var resultType = Result.MediaType;
-        dynamic response;
-        if (_isPickedById)
+        var resultType = _result.MediaType;
+        var response = GetResponse(resultType);
+
+        if (resultType == MediaTypes.Game)
         {
-            response = resultType == MediaTypes.Game ? Result.Result[0] : Result.Result;
+            await LoadGameData(response);
         }
         else
         {
-            response = resultType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
-        }
-
-        if (resultType != MediaTypes.Game)
-        {
-            ImagesWithId images = new();
-            if (resultType == MediaTypes.Tv)
-            {
-                dynamic pickedResult = _isPickedById ? (TvShow)response : (SearchTv)response;
-                Title = pickedResult.Name;
-                images = await TmdbObject.SearchTvImages(pickedResult.Id);
-            }
-            else if (resultType == MediaTypes.Movie)
-            {
-                dynamic pickedResult = _isPickedById ? (Movie)response : (SearchMovie)response;
-                Title = pickedResult.Title;
-                images = await TmdbObject.SearchMovieImages(pickedResult.Id);
-            }
-            else if (resultType == MediaTypes.Collection)
-            {
-                dynamic pickedResult = _isPickedById ? (Collection)response : (SearchCollection)response;
-                Title = pickedResult.Name;
-                images = await TmdbObject.SearchCollectionImages(pickedResult.Id);
-            }
-            else if (resultType == MediaTypes.Mtv)
-            {
-                MediaType mediaType = response.MediaType;
-                switch (mediaType)
-                {
-                    case MediaType.Tv:
-                    {
-                        SearchTv pickedResult = response;
-                        Title = pickedResult.Name;
-                        images = await TmdbObject.SearchTvImages(pickedResult.Id);
-                        break;
-                    }
-                    case MediaType.Movie:
-                    {
-                        SearchMovie pickedResult = response;
-                        Title = pickedResult.Title;
-                        images = await TmdbObject.SearchMovieImages(pickedResult.Id);
-                        break;
-                    }
-                }
-            }
-
-            var imageDataWrappers = images.Posters.Select(imageData => new ImageDataWrapper(images.Id, imageData, TmdbObject.GetClient()));
-            await LoadImages(imageDataWrappers);
-        }
-        else
-        {
-            Logger.Debug("Media Type is Game, loading images from IGDB");
-            Artwork[] images = response.Artworks.Values;
-            var artworkWrappers = images.Select(artwork => new ArtworkWrapper(artwork));
-            await LoadImages(artworkWrappers);
+            await LoadMediaData(resultType, response);
         }
     }
 
+    #region load data
+
+    private dynamic GetResponse(string resultType)
+    {
+        return (_isPickedById, resultType) switch
+        {
+            (true, MediaTypes.Game) => Result.Result[0],
+            (true, _) => Result.Result,
+            (false, MediaTypes.Game) => Result.Result[PickedIndex],
+            (false, _) => Result.Result.Results[PickedIndex]
+        };
+    }
+    private async Task LoadMediaData(string resultType, dynamic response)
+    {
+        ImagesWithId images = await GetTitleAndImages(resultType, response);
+
+        if (images != null)
+        {
+            var imageDataWrappers = images.Posters.Select(imageData => new ImageDataWrapper(images.Id, imageData, TmdbObject.GetClient()));
+            await LoadImages(imageDataWrappers);
+        }
+    }
+
+    private async Task<ImagesWithId> GetTitleAndImages(string resultType, dynamic response)
+    {
+        (string title, ImagesWithId images) result = resultType switch
+        {
+            MediaTypes.Tv => await GetTvData(response),
+            MediaTypes.Movie => await GetMovieData(response),
+            MediaTypes.Collection => await GetCollectionData(response),
+            MediaTypes.Mtv => await GetMtvData(response),
+            _ => throw new ArgumentException($"Unexpected media type: {resultType}")
+        };
+        
+        Title = result.title;
+        return result.images;
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetTvData(dynamic response)
+    {
+        dynamic pickedResult = _isPickedById ? (TvShow)response : (SearchTv)response;
+        var images = await TmdbObject.SearchTvImages(pickedResult.Id);
+        return (pickedResult.Name, images);
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetMovieData(dynamic response)
+    {
+        dynamic pickedResult = _isPickedById ? (Movie)response : (SearchMovie)response;
+        var images = await TmdbObject.SearchMovieImages(pickedResult.Id);
+        return (pickedResult.Title, images);
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetCollectionData(dynamic response)
+    {
+        dynamic pickedResult = _isPickedById ? (Collection)response : (SearchCollection)response;
+        var images = await TmdbObject.SearchCollectionImages(pickedResult.Id);
+        return (pickedResult.Name, images);
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetMtvData(dynamic response)
+    {
+        return response.MediaType switch
+        {
+            MediaType.Tv => await GetTvData(response),
+            MediaType.Movie => await GetMovieData(response),
+            _ => throw new ArgumentException($"Unexpected MTV media type: {response.MediaType}")
+        };
+    }
+
+    private async Task LoadGameData(dynamic response)
+    {
+        Logger.Debug("Media Type is Game, loading images from IGDB");
+        Artwork[] images = response.Artworks.Values;
+        var artworkWrappers = images.Select(artwork => new ArtworkWrapper(artwork));
+        await LoadImages(artworkWrappers);
+    }
+
+    #endregion
+    
+    
     private async Task LoadImages(IEnumerable<IImage> images)
     {
         ResetState();
@@ -190,7 +217,9 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         }
         IsBusy = false;
     }
-    
+
+    #region LoadImages
+
     private void ResetState()
     {
         StopSearch = false;
@@ -232,6 +261,9 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         Logger.Warn("No posters found for {Title}", Title);
         MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
     }
+
+    #endregion
+    
     private void PickMethod(DArtImageList pickedImage)
     {
         Logger.Info("Pick Method called with parameter: {Parameter}", pickedImage);
