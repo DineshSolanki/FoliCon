@@ -323,80 +323,128 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         IsMakeEnabled = true;
     }
 
+    #region SearchAndMake
+    
     private async void SearchAndMakeMethod()
     {
         Logger.Debug("SearchAndMakeMethod Called.");
         try
         {
-            if (Directory.Exists(SelectedFolder))
+            if (!ValidateFolder())
             {
-                Fnames = FileUtils.GetFolderNames(SelectedFolder);
-            }
-            else
-            {
-                Logger.Error("Folder does not exist: {SelectedFolder}", SelectedFolder);
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"), LangProvider.GetLang("InvalidPath")));
                 return;
             }
 
-            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled)
+            if (!ValidateNetwork())
             {
-                if (NetworkUtils.IsNetworkAvailable())
-                {
-                    if (!IsObjectsInitialized)
-                    {
-                        Logger.Warn("SearchAndMakeMethod: Client Objects not initialized, Initializing now.");
-                        await InitializeClientObjects();
-                        IsObjectsInitialized = true;
-                        Logger.Info("SearchAndMakeMethod: Client Objects Initialized.");
-                    }
+                return;
+            }
 
-                    StatusBarProperties.ResetData();
-                    FinalListViewData.Data.Clear();
-                    PrepareForSearch();
-                    if (IconMode == "Poster")
-                    {
-                        await ProcessPosterModeAsync();
-                    }
-                    else
-                    {
-                        ProcessProfessionalMode(SelectedFolder);
-                    }
-                    StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
-                        StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
-                    BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
-                    Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}", _imgDownloadList.Count);
-                    if (_imgDownloadList.Count > 0)
-                    {
-                        await StartDownloadingAsync();
-                    }
-                    else
-                    {
-                        IsMakeEnabled = true;
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"), LangProvider.GetLang("NetworkError")));
-                }
-            }
-            else
+            await InitializeClientIfRequired();
+
+            PrepareForSearchOperations();
+
+            switch (IconMode)
             {
-                Logger.Warn("SearchAndMakeMethod: Folder is empty: {SelectedFolder}", SelectedFolder);
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"), LangProvider.GetLang("FolderError")));
+                case "Poster":
+                    await ProcessPosterModeAsync();
+                    break;
+                default:
+                    ProcessProfessionalMode(SelectedFolder);
+                    break;
             }
+
+            Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}",
+                _imgDownloadList.Count);
+            await DownloadIconsOrEnableMake();
         }
         catch (Exception e)
         {
-            Logger.ForErrorEvent().Message("SearchAndMakeMethod: Exception Occurred. message: {Message}", e.Message)
-                .Exception(e).Log();
-            MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
-            StatusBarProperties.ResetData();
-            IsMakeEnabled = true;
-            IsBusy = false;
+            HandleException(e);
         }
     }
 
+    private bool ValidateFolder()
+    {
+        if (Directory.Exists(SelectedFolder))
+        {
+            Fnames = FileUtils.GetFolderNames(SelectedFolder);
+            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled)
+            {
+                return true;
+            }
+
+            Logger.Warn("SearchAndMakeMethod: Folder is empty: {SelectedFolder}", SelectedFolder);
+            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"),
+                LangProvider.GetLang("FolderError")));
+            return false;
+        }
+
+        Logger.Error("Folder does not exist: {SelectedFolder}", SelectedFolder);
+        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"),
+            LangProvider.GetLang("InvalidPath")));
+        return false;
+    }
+
+    private static bool ValidateNetwork()
+    {
+        if (NetworkUtils.IsNetworkAvailable())
+        {
+            return true;
+        }
+
+        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"),
+            LangProvider.GetLang("NetworkError")));
+        return false;
+
+    }
+
+    private async Task InitializeClientIfRequired()
+    {
+        if (!IsObjectsInitialized)
+        {
+            Logger.Warn("SearchAndMakeMethod: Client Objects not initialized, Initializing now.");
+            await InitializeClientObjects();
+            IsObjectsInitialized = true;
+            Logger.Info("SearchAndMakeMethod: Client Objects Initialized.");
+        }
+    }
+
+    private void PrepareForSearchOperations()
+    {
+        StatusBarProperties.ResetData();
+        FinalListViewData.Data.Clear();
+        PrepareForSearch();
+    }
+
+    private async Task DownloadIconsOrEnableMake()
+    {
+        StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
+            StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
+        BusyIndicatorProperties.Text =
+            LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
+
+        if (_imgDownloadList.Count > 0)
+        {
+            await StartDownloadingAsync();
+        }
+        else
+        {
+            IsMakeEnabled = true;
+        }
+    }
+
+    private void HandleException(Exception e)
+    {
+        Logger.ForErrorEvent().Message("SearchAndMakeMethod: Exception Occurred. message: {Message}", e.Message)
+            .Exception(e).Log();
+        MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
+        StatusBarProperties.ResetData();
+        IsMakeEnabled = true;
+        IsBusy = false;
+    }
+    
+    #endregion
     private async Task ProcessPosterModeAsync()
     {
         Logger.Debug("Entered ProcessPosterModeAsync method");
