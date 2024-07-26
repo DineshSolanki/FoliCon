@@ -11,6 +11,7 @@
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              xmlns:data="clr-namespace:FoliCon.Models.Data"
+             xmlns:ui="clr-namespace:FoliCon.Modules.UI"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded" Background="{DynamicResource RegionBrush}">
@@ -54,7 +55,7 @@
                 <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
                         Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
                 <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}" Background="{DynamicResource PrimaryRegionBrush}"
-                          SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="ListViewResult_OnClick">
+                          SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
@@ -63,6 +64,9 @@
                             <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True" />
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
+                    <i:Interaction.Behaviors>
+                        <ui:ListViewClickSortBehavior/>
+                    </i:Interaction.Behaviors>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto" Header="{extension:Lang Key={x:Static langs:LangKeys.Title}}"/>
