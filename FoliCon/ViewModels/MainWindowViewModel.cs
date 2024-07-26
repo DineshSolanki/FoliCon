@@ -587,43 +587,20 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         return SearchMode == MediaTypes.Game ? response.Result.Length : response.Result.TotalResults;
     }
 
-    private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(
+        string itemTitle, ResultResponse response, string fullFolderPath, 
+        string parsedTitle, bool isPickedById)
     {
         Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
         MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
             LangProvider.GetLang("NoResultFound")));
-    
-        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
 
-        var dialogParams = new SearchResultDialogParams
-        {
-            SearchMode = SearchMode,
-            Query = parsedTitle,
-            FolderPath = fullFolderPath,
-            Result = response,
-            TmdbObject = _tmdbObject,
-            IgdbObject = _igdbObject,
-            IsPickedById = isPickedById,
-            CallBack = dialog =>
-            {
-                var dialogResult = dialog.Result switch
-                {
-                    ButtonResult.None => false,
-                    ButtonResult.OK => true,
-                    ButtonResult.Cancel => false,
-                    _ => false
-                };
-                dialog.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
-                taskCompletionSource.SetResult((dialogResult, skipAll));
-            }
-        };
-        _dialogService.ShowSearchResult(dialogParams);
-        return await taskCompletionSource.Task;
+        return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
     }
 
-    private bool ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, bool isPickedById, string mediaType)
+    private void ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath,
+        bool isPickedById, string mediaType)
     {
-        bool isAutoPicked;
         Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
             itemTitle, SearchMode);
         try
@@ -641,8 +618,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 _tmdbObject.ResultPicked(result, response.MediaType,
                     fullFolderPath, "", isPickedById);
             }
-
-            isAutoPicked = true;
         }
         catch (Exception ex)
         {
@@ -655,23 +630,30 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 #if DEBUG
             MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
 #endif
-            isAutoPicked = false;
         }
-        return isAutoPicked;
     }
 
-    private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(
+        string itemTitle, ResultResponse response, string fullFolderPath, 
+        string parsedTitle, bool isPickedById)
     {
-        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
         if (!IsPosterWindowShown && IsSkipAmbiguous)
         {
-            taskCompletionSource.SetResult((false, false));
-            return await taskCompletionSource.Task;
+            return (false, false);
         }
 
         Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
-                     "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
+                     "always show poster window: {IsPosterWindowShown}, Skip ambiguous titles: {IsSkipAmbiguous}," +
                      " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
+
+        return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
+    }
+    
+    private async Task<(bool dialogResult, bool skipAll)> ShowSearchResultDialog(
+        string parsedTitle, string fullFolderPath, ResultResponse response, bool isPickedById)
+    {
+        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
+
         var dialogParams = new SearchResultDialogParams
         {
             SearchMode = SearchMode,
@@ -695,6 +677,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
         };
         _dialogService.ShowSearchResult(dialogParams);
+
         return await taskCompletionSource.Task;
     }
     
