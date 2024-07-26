@@ -235,105 +235,116 @@ internal class TmdbDataTransformer(
     /// <param name="rating">Rating for media</param>
     /// <param name="isPickedById"> identifies if Title was picked by media ID.</param>
     /// TODO: Merge parameter response and resultType.
-    public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "",bool isPickedById = false)
+    public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "", bool isPickedById = false)
     {
         Logger.Debug("Preparing the Selected Result for Download And final List View");
+    
         if (result.PosterPath == null)
         {
-            Logger.Warn("No Poster Found, path - {Folder}", fullFolderPath );
+            Logger.Warn("No Poster Found, path - {Folder}", fullFolderPath);
             throw new InvalidDataException("NoPoster");
         }
-        
+    
         Logger.Debug("Rating: {Rating}, Result Type: {ResultType}", rating, resultType);
-        var id = 0;
+
         var type = resultType;
-        if (string.IsNullOrWhiteSpace(rating) && resultType != MediaTypes.Collection)
-        {
-            Logger.Debug("Rating is null or empty, getting rating from result");
-            rating = result.VoteAverage.ToString(CultureInfo.InvariantCulture);
-            Logger.Debug("Rating: {Rating}", rating);
-        }
-
+        rating = PrepareRating(resultType, rating, result);
+    
         var folderName = Path.GetFileName(fullFolderPath);
-        var localPosterPath = $@"{fullFolderPath}\{IconUtils.GetImageName()}.png";
-
-        string posterUrl = string.Concat(PosterBase, result.PosterPath.Replace("https://image.tmdb.org/t/p/w500",""));
-
-        switch (resultType)
-        {
-            case MediaTypes.Tv:
-            {
-                dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
-                var year = pickedResult.FirstAirDate != null ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture) : "";
-                FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                    rating, fullFolderPath, folderName,
-                    year);
-                id = pickedResult.Id;
-                break;
-            }
-            case MediaTypes.Movie:
-            {
-                dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
-                var year = pickedResult.ReleaseDate != null ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture) : "";
-                FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                    rating, fullFolderPath, folderName, year);
-                id = pickedResult.Id;
-                break;
-            }
-            case MediaTypes.Collection:
-            {
-                dynamic pickedResult = isPickedById ? (Collection)result : (SearchCollection)result;
-                FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name, rating, fullFolderPath,
-                    folderName, "");
-                id = pickedResult.Id;
-                break;
-            }
-            case MediaTypes.Mtv:
-            {
-                MediaType mediaType = result.MediaType;
-                switch (mediaType)
-                {
-                    case MediaType.Tv:
-                    {
-                        type = MediaTypes.Tv;
-                        dynamic pickedResult = isPickedById ? (TvShow)result : (SearchTv)result;
-                        var year = pickedResult.FirstAirDate != null
-                            ? pickedResult.FirstAirDate.Year.ToString(CultureInfo.InvariantCulture)
-                            : "";
-                        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Name,
-                            rating, fullFolderPath, folderName,
-                            year);
-                        id = pickedResult.Id;
-                        break;
-                    }
-                    case MediaType.Movie:
-                    {
-                        type = MediaTypes.Movie;
-                        dynamic pickedResult = isPickedById ? (Movie)result : (SearchMovie)result;
-                        var year = pickedResult.ReleaseDate != null
-                            ? pickedResult.ReleaseDate.Year.ToString(CultureInfo.InvariantCulture)
-                            : "";
-                        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, pickedResult.Title,
-                            rating, fullFolderPath, folderName,
-                            year);
-                        id = pickedResult.Id;
-                        break;
-                    }
-                }
-
-                break;
-            }
-        }
-
+        var localPosterPath = Path.Combine(fullFolderPath, $"{IconUtils.GetImageName()}.png");
+        var posterUrl = $"{PosterBase}{result.PosterPath.Replace("https://image.tmdb.org/t/p/w500", "")}";
+    
+        PickResult(result, resultType, fullFolderPath, rating, isPickedById,out int id, folderName, localPosterPath);
+    
         if (!isPickedById && id != 0)
         {
             FileUtils.SaveMediaInfo(id, type, fullFolderPath);
         }
+    
         var tempImage = new ImageToDownload
         {
             LocalPath = localPosterPath,
             RemotePath = new Uri(posterUrl)
         };
         _imgDownloadList.Add(tempImage);
+    }
+    
+    private static string PrepareRating(string resultType, string rating, dynamic result)
+    {
+        if (!string.IsNullOrWhiteSpace(rating) || resultType == MediaTypes.Collection) return rating;
+        Logger.Debug("Rating is null or empty, getting rating from result");
+        rating = result.VoteAverage.ToString(CultureInfo.InvariantCulture);
+        Logger.Debug("Rating: {Rating}", rating);
+        return rating;
+    }
+    
+    private void PickResult(dynamic result,
+        string resultType,
+        string fullFolderPath,
+        string rating,
+        bool isPickedById,
+        out int id,
+        string folderName,
+        string localPosterPath)
+    {
+        id = 0;
+        switch (resultType)
+        {
+            case MediaTypes.Tv:
+                {
+                    var pickedResult = CastResult(isPickedById ? typeof(TvShow) : typeof(SearchTv), result);
+                    var year = pickedResult.FirstAirDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
+                    AddToPickedList(pickedResult.Name, year, rating, fullFolderPath, folderName, localPosterPath);
+                    id = pickedResult.Id;
+                    break;
+                }
+            case MediaTypes.Movie:
+                {
+                    var pickedResult = CastResult(isPickedById ? typeof(Movie) : typeof(SearchMovie), result);
+                    var year = pickedResult.ReleaseDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
+                    AddToPickedList(pickedResult.Title, year, rating, fullFolderPath, folderName, localPosterPath);
+                    id = pickedResult.Id;
+                    break;
+                }
+            case MediaTypes.Collection:
+                {
+                    var pickedResult = CastResult(isPickedById ? typeof(Collection) : typeof(SearchCollection), result);
+                    AddToPickedList(pickedResult.Name, null, rating, fullFolderPath, folderName, localPosterPath);
+                    id = pickedResult.Id;
+                    break;
+                }
+            case MediaTypes.Mtv:
+                SelectMtvType(result, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
+                break;
+        }
+    }
+    
+    private void SelectMtvType(dynamic result, string fullFolderPath, string rating, bool isPickedById, out int id, string folderName, string localPosterPath)
+    {
+        var mediaType = result.MediaType;
+        id = 0;
+        switch (mediaType)
+        {
+            case MediaType.Tv:
+                {
+                    PickResult(result, MediaTypes.Tv, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
+                    break;
+                }
+            case MediaType.Movie:
+                {
+                    PickResult(result, MediaTypes.Movie, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
+                    break;
+                }
+        }
+    }
+    
+    private static dynamic CastResult(Type targetType, dynamic result)
+    {
+        return Convert.ChangeType(result, targetType);
+    }
+    
+    private void AddToPickedList(string title, string year, string rating, string fullFolderPath, string folderName, string localPosterPath)
+    {
+        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, title, rating, fullFolderPath, folderName, year);
     }
 }
