@@ -268,11 +268,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         PerformSelectionChanged();
     }
 
-    private void SearchAgainMethod()
+    private async void SearchAgainMethod()
     {
         if (!string.IsNullOrWhiteSpace(SearchAgainTitle))
         {
-            StartSearch(false);
+            await StartSearch(false);
         }
     }
 

@@ -141,7 +141,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         if (images != null)
         {
             var imageDataWrappers = images.Posters.Select(imageData => new ImageDataWrapper(images.Id, imageData, TmdbObject.GetClient()));
-            await LoadImages(imageDataWrappers);
+            LoadImages(imageDataWrappers);
         }
     }
 
@@ -196,13 +196,13 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         Logger.Debug("Media Type is Game, loading images from IGDB");
         Artwork[] images = response.Artworks.Values;
         var artworkWrappers = images.Select(artwork => new ArtworkWrapper(artwork));
-        await LoadImages(artworkWrappers);
+        LoadImages(artworkWrappers);
     }
 
     #endregion
     
     
-    private async Task LoadImages(IEnumerable<IImage> images)
+    private void LoadImages(IEnumerable<IImage> images)
     {
         ResetState();
         IsBusy = true;

@@ -534,7 +534,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
     }
 
-    private void ProcessSubfolders(string folderPath, Queue<string> folderQueue)
+    private static void ProcessSubfolders(string folderPath, Queue<string> folderQueue)
     {
         Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
         var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
