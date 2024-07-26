@@ -236,7 +236,11 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         {
             Index = item.Index + 1;
             TryLoadImage(item.Value);
-            if (!StopSearch) continue;
+            if (!StopSearch)
+            {
+                continue;
+            }
+
             Logger.Trace("Stop Search is true, breaking loop");
             break;
         }

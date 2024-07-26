@@ -269,7 +269,11 @@ internal class TmdbDataTransformer(
     
     private static string PrepareRating(string resultType, string rating, dynamic result)
     {
-        if (!string.IsNullOrWhiteSpace(rating) || resultType == MediaTypes.Collection) return rating;
+        if (!string.IsNullOrWhiteSpace(rating) || resultType == MediaTypes.Collection)
+        {
+            return rating;
+        }
+
         Logger.Debug("Rating is null or empty, getting rating from result");
         rating = result.VoteAverage.ToString(CultureInfo.InvariantCulture);
         Logger.Debug("Rating: {Rating}", rating);
@@ -286,6 +290,7 @@ internal class TmdbDataTransformer(
         string localPosterPath)
     {
         id = 0;
+        var mediaType = resultType;
         switch (resultType)
         {
             case MediaTypes.Tv:
@@ -312,11 +317,12 @@ internal class TmdbDataTransformer(
                     break;
                 }
             case MediaTypes.Mtv:
-                resultType = SelectMtvType(result, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
+                mediaType = SelectMtvType(result, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
                 break;
+            default: throw new InvalidDataException($"Invalid Result Type: {resultType}");
         }
 
-        return resultType;
+        return mediaType;
     }
     
     private string SelectMtvType(dynamic result, string fullFolderPath, string rating, bool isPickedById, out int id, string folderName, string localPosterPath)

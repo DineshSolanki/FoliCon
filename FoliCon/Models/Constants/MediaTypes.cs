@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Models.Constants;
 
+[Localizable(false)]
 public static class MediaTypes
 {
     public const string Game = "Game";
