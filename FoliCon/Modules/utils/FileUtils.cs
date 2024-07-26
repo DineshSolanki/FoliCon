@@ -45,9 +45,9 @@ public static class FileUtils
     }
 
     public static bool IsPngOrIco(string fileName) =>
-        fileName != null && EndsIn(fileName, new[] { ".png", ".ico" });
+        fileName != null && EndsIn(fileName, [".png", ".ico"]);
 
-    public static bool isExcludedFileIdentifier(string fileName) =>
+    public static bool IsExcludedFileIdentifier(string fileName) =>
         fileName != null && ExcludedFileIdentifiers.Any(fileName.Contains);
     
     /// <summary>
@@ -199,11 +199,9 @@ public static class FileUtils
         }
 
         // Set file attribute to "System"
-        if ((File.GetAttributes(icoFile) & FileAttributes.System) != FileAttributes.System)
-        {
-            Logger.Debug("Setting File Attribute to System");
-            File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
-        }
+        if ((File.GetAttributes(icoFile) & FileAttributes.System) == FileAttributes.System) return;
+        Logger.Debug("Setting File Attribute to System");
+        File.SetAttributes(icoFile, File.GetAttributes(icoFile) | FileAttributes.System);
     }
 
     public static void SaveMediaInfo(int id, string mediaType, string folderPath)

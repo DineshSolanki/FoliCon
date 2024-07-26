@@ -388,25 +388,23 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         var itemId = ResultListViewData.SelectedItem.Id;
 
-        if (SearchResult.MediaType == MediaTypes.Game)
+        switch (SearchResult.MediaType)
         {
-            await HandleMediaType(itemId, GetGameTrailer);
-        }
-        else if (SearchResult.MediaType == MediaTypes.Movie)
-        {
-            await HandleMediaType(itemId, GetMovieTrailer);
-        }
-        else if (SearchResult.MediaType == MediaTypes.Tv)
-        {
-            await HandleMediaType(itemId, GetTvTrailer);
-        }
-        else if (SearchResult.MediaType == MediaTypes.Mtv)
-        {
-            await HandleMtvMediaType(itemId);
-        }
-        else
-        {
-            Logger.Warn("Unknown media type {MediaType}", SearchResult.MediaType);
+            case MediaTypes.Game:
+                await HandleMediaType(itemId, GetGameTrailer);
+                break;
+            case MediaTypes.Movie:
+                await HandleMediaType(itemId, GetMovieTrailer);
+                break;
+            case MediaTypes.Tv:
+                await HandleMediaType(itemId, GetTvTrailer);
+                break;
+            case MediaTypes.Mtv:
+                await HandleMtvMediaType(itemId);
+                break;
+            default:
+                Logger.Warn("Unknown media type {MediaType}", SearchResult.MediaType);
+                break;
         }
     }
 
@@ -426,7 +424,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private async Task HandleMediaType(string itemId, Func<string, Task> handleAction)
+    private static async Task HandleMediaType(string itemId, Func<string, Task> handleAction)
     {
         await handleAction(itemId);
     }
@@ -456,7 +454,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
             if (result != null)
             {
-                var trailer = ChooseTrailer(result.Results);
+                var trailer = SearchResultViewModel.ChooseTrailer(result.Results);
                 if (trailer != null)
                 {
                     SetTrailer(trailer.Key);
@@ -482,7 +480,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        var i = ChooseTrailer(result.Results);
+        var i = SearchResultViewModel.ChooseTrailer(result.Results);
     
         if (i != null)
         {
@@ -494,9 +492,9 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
+    private static dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
     {
-        var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item?.Site == "YouTube");
+        var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item.Site == "YouTube");
         return trailerYouTube != null ? trailerYouTube : results.FirstOrDefault();
     }
 

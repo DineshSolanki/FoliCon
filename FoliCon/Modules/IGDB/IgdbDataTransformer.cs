@@ -33,7 +33,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             Poster = poster,
             Id = id.ToString(),
             Rating = placeholder,
-            Folder = placeholder,
+            Folder = placeholder
         };
     }
 
@@ -90,7 +90,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
         var temporaryImage = new ImageToDownload
         {
             LocalPath = localPosterPath,
-            RemotePath = new Uri(posterUrl),
+            RemotePath = new Uri(posterUrl)
         };
         _imgDownloadList.Add(temporaryImage);
     }

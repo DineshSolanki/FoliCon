@@ -20,9 +20,9 @@ internal class TmdbService
         _ = _serviceClient.GetConfigAsync().Result;
         _mediaTypeHandlers = new Dictionary<string, Func<int, Task<object>>>
         {
-            { MediaTypes.Movie, async (id) => await _serviceClient.GetMovieAsync(id) },
-            { MediaTypes.Collection, async (id) => await _serviceClient.GetCollectionAsync(id) },
-            { MediaTypes.Tv, async (id) => await _serviceClient.GetTvShowAsync(id) }
+            { MediaTypes.Movie, async id => await _serviceClient.GetMovieAsync(id) },
+            { MediaTypes.Collection, async id => await _serviceClient.GetCollectionAsync(id) },
+            { MediaTypes.Tv, async id => await _serviceClient.GetTvShowAsync(id) }
         };
     }
 
@@ -104,14 +104,14 @@ internal class TmdbService
     private async Task<(object Result, string MediaType)> SearchTvShowAsync(string query)
     {
         var r = await _serviceClient.SearchTvShowAsync(query);
-        var mediaType = MediaTypes.Tv;
+        const string mediaType = MediaTypes.Tv;
         return (r, mediaType);
     }
 
     private async Task<(object Result, string MediaType)> SearchMultiAsync(string query)
     {
         var r = await _serviceClient.SearchMultiAsync(query);
-        var mediaType = MediaTypes.Mtv;
+        const string mediaType = MediaTypes.Mtv;
         return (r, mediaType);
     }
 
@@ -122,24 +122,24 @@ internal class TmdbService
         var mediaType = "";
         object? searchResult = null;
 
-        if (searchMode == MediaTypes.Movie)
+        switch (searchMode)
         {
-            searchResult = parsedTitle.Title.ToLower(CultureInfo.InvariantCulture).Contains("collection")
-                ? await SearchCollection(parsedTitle)
-                : await SearchMovie(parsedTitle);
-            mediaType = parsedTitle.Title.ToLower(CultureInfo.InvariantCulture).Contains("collection")
-                ? MediaTypes.Collection
-                : MediaTypes.Movie;
-        }
-        else if (searchMode == MediaTypes.Tv)
-        {
-            searchResult = await SearchTvShow(parsedTitle);
-            mediaType = MediaTypes.Tv;
-        }
-        else if (searchMode == MediaTypes.Mtv)
-        {
-            searchResult = await SearchMulti(parsedTitle);
-            mediaType = MediaTypes.Mtv;
+            case MediaTypes.Movie:
+                searchResult = parsedTitle.Title.ToLower(CultureInfo.InvariantCulture).Contains("collection")
+                    ? await SearchCollection(parsedTitle)
+                    : await SearchMovie(parsedTitle);
+                mediaType = parsedTitle.Title.ToLower(CultureInfo.InvariantCulture).Contains("collection")
+                    ? MediaTypes.Collection
+                    : MediaTypes.Movie;
+                break;
+            case MediaTypes.Tv:
+                searchResult = await SearchTvShow(parsedTitle);
+                mediaType = MediaTypes.Tv;
+                break;
+            case MediaTypes.Mtv:
+                searchResult = await SearchMulti(parsedTitle);
+                mediaType = MediaTypes.Mtv;
+                break;
         }
 
         return new ResultResponse

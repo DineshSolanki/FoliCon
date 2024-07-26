@@ -50,7 +50,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	}
 
 
-	private void OpenImageMethod(object parameter)
+	private static void OpenImageMethod(object parameter)
 	{
 		Logger.Debug("Opening Image {Image}", parameter);
 		var link = (string)parameter;

@@ -14,7 +14,7 @@ public class ClickBehavior : Behavior<System.Windows.Controls.Image>
         DependencyProperty.Register(nameof(ClickCommand), typeof(ICommand), typeof(ClickBehavior));
     public static readonly DependencyProperty CommandParameterProperty =
         DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(ClickBehavior));
-    public Object CommandParameter
+    public object CommandParameter
     {
         get => GetValue(CommandParameterProperty);
         set => SetValue(CommandParameterProperty, value);

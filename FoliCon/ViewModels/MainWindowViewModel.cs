@@ -816,7 +816,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task InitializeProperties()
     {
         Logger.Debug("Initializing Properties for MainWindow.");
-        Fnames = new List<string>();
+        Fnames = [];
         BusyIndicatorProperties = new ProgressBarData
         {
             Max = 100,
@@ -832,13 +832,13 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         };
         FinalListViewData = new ListViewData
         {
-            Data = new ObservableCollection<ListItem>(),
+            Data = [],
             SelectedItem = new ListItem(),
             SelectedCount = 0
         };
         StatusBarProperties.ProgressBarData.Max = 100;
         StatusBarProperties.ProgressBarData.Value = 0;
-        _imgDownloadList = new List<ImageToDownload>();
+        _imgDownloadList = [];
         _pickedListDataTable = [];
         if (NetworkUtils.IsNetworkAvailable())
         {

@@ -44,8 +44,8 @@ public partial class App
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
         containerRegistry.RegisterDialogWindow<HandyWindow>();
     }
-    
-    void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+
+    private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         SentrySdk.CaptureException(e.Exception);
 

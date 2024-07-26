@@ -1,6 +1,4 @@
-﻿using FoliCon.Models.Data.Dialog;
-
-namespace FoliCon.Models.Data;
+﻿namespace FoliCon.Models.Data.Dialog;
 
 public class PosterPickerDialogParams : DialogParamContainer
 {

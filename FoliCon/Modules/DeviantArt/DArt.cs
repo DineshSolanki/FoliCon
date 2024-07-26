@@ -118,7 +118,7 @@ public class DArt : BindableBase
         return dArtDownloadResponse;
     }
 
-    private async Task<DArtDownloadResponse> TryExtraction(string deviationId,
+    private static async Task<DArtDownloadResponse> TryExtraction(string deviationId,
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
         IProgress<ProgressInfo> progressCallback)
     {
@@ -156,7 +156,7 @@ public class DArt : BindableBase
         return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
     }
 
-    private async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath,
+    private static async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath,
         CancellationToken cancellationToken,
         IProgress<ProgressInfo> progressCallback)
     {
@@ -164,7 +164,7 @@ public class DArt : BindableBase
         stream.ExtractPngAndIcoToDirectory(targetDirectoryPath, cancellationToken, progressCallback);
     }
 
-    private async Task FileStreamToDestination(HttpResponseMessage downloadResponse, string targetDirectoryPath,
+    private static async Task FileStreamToDestination(HttpResponseMessage downloadResponse, string targetDirectoryPath,
         string filename)
     {
         await using var fileStream = await downloadResponse.Content.ReadAsStreamAsync();

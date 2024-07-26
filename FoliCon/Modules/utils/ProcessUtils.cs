@@ -98,7 +98,7 @@ public static class ProcessUtils
 
             using (var process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo()
+                process.StartInfo = new ProcessStartInfo
                 {
                     FileName = exePath,
                     Arguments = "-ClearIconCache",

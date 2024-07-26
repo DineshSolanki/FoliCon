@@ -25,9 +25,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private bool _stopSearch;
     public string Title => LangProvider.GetLang("CustomIconSetter");
 
-    private ObservableCollection<string> _undoDirectories = new();
-    private ObservableCollection<string> _backupDirectories = new();
-    private ObservableCollection<string> _backupIcons = new();
+    private ObservableCollection<string> _undoDirectories = [];
+    private ObservableCollection<string> _backupDirectories = [];
+    private ObservableCollection<string> _backupIcons = [];
     private string _busyContent = LangProvider.GetLang("CreatingIcons");
     private int _index;
     private int _totalIcons;
@@ -125,8 +125,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     public CustomIconControlViewModel()
     {
-        Directories = new ObservableCollection<string>();
-        Icons = new ObservableCollection<string>();
+        Directories = [];
+        Icons = [];
         LoadDirectory = new DelegateCommand(LoadDirectoryMethod);
         StopSearchCommand = new DelegateCommand(() => StopSearch = true);
         LoadIcons = new DelegateCommand(LoadIconsMethod);
