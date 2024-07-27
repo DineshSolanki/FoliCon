@@ -661,4 +661,10 @@ y actualizar la caché de iconos?</value>
   <data name="Downloading" xml:space="preserve">
       <value>Descargando...</value>
     </data>
+  <data name="CreatingIconWithCount" xml:space="preserve">
+      <value>Creando icono {0}/{1}...</value>
+    </data>
+  <data name="RefreshingFolder" xml:space="preserve">
+      <value>Actualizando carpeta</value>
+    </data>
 </root>
