@@ -28,8 +28,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private bool _enableErrorReporting;
 
     private ListViewData _finalListViewData;
-    private List<ImageToDownload> _imgDownloadList;
-    private List<PickedListItem> _pickedListDataTable;
+    private List<ImageToDownload> _imgDownloadList = [];
+    private List<PickedListItem> _pickedListDataTable = [];
     private bool IsObjectsInitialized { get; set; }
 
     public bool IsPosterWindowShown
@@ -69,7 +69,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
     public ProgressBarData BusyIndicatorProperties { get; set; }
-    public List<string> Fnames { get; set; }
+    public List<string> Fnames { get; set; } = [];
 
     public bool IsMakeEnabled
     {
@@ -233,57 +233,17 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        ProcessUtils.CheckWebView2();
-        ShowPreviewer = new DelegateCommand(() =>
-        {
-            _dialogService.ShowPreviewer(_ => { });
-        });
-        Logger.Info("Application Started, Initializing MainWindowViewModel.");
         _dialogService = dialogService;
-        Services.Tracker.Configure<MainWindowViewModel>()
-            .Property(p => p.IsRatingVisible, false)
-            .Property(p => p.IsPosterMockupUsed, true)
-            .Property(p => p.IsPosterWindowShown, false)
-            .Property(p => p.AppLanguage, Languages.English)
-            .Property(p => p.Theme, FoliconThemes.System)
-            .Property(p => p.EnableErrorReporting, false)
-            .PersistOn(nameof(PropertyChanged));
-        Services.Tracker.Track(this);
-        var selectedLanguage = AppLanguage;
-        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
-        LangProvider.Culture = cultureInfo;
-        Thread.CurrentThread.CurrentCulture = cultureInfo;
-        Thread.CurrentThread.CurrentUICulture = cultureInfo;
-        Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
-        InitializeProperties();
+        Logger.Info("Application Started, Initializing MainWindowViewModel.");
+        ProcessUtils.CheckWebView2();
+        TrackProperties();
+        SetCultureInfo();
         InitializeDelegates();
+        InitializeProperties();
         NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
-
-            
-        var cmdArgs = ProcessUtils.GetCmdArgs();
-        if (!cmdArgs.TryGetValue("path", out var arg))
-        {
-            return;
-        }
-        
-        SelectedFolder = arg;
-        var mode = cmdArgs["mode"];
-        if (mode != "Professional" &&
-            new List<string> { MediaTypes.Mtv, MediaTypes.Tv, MediaTypes.Movie, MediaTypes.Game }.Contains(mode))
-        {
-            IconMode = "Poster";
-            SearchMode = mode;
-        }
-        else
-        {
-            IconMode = "Professional";
-        }
-        Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
-            SelectedFolder, IconMode);
-        SearchAndMakeMethod();
-
+        ProcessCommandLineArgs();
     }
-
+    
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
     {
         Logger.Debug("Network Availability Changed, Updating StatusBar.");
@@ -738,6 +698,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
             }
         });
+        ShowPreviewer = new DelegateCommand(() => { _dialogService.ShowPreviewer(_ => { }); });
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
     }
 
@@ -786,7 +747,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task InitializeProperties()
     {
         Logger.Debug("Initializing Properties for MainWindow.");
-        Fnames = [];
         BusyIndicatorProperties = new ProgressBarData
         {
             Max = 100,
@@ -797,8 +757,13 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png",
             TotalIcons = 0,
-            AppStatus = "Idle",
-            AppStatusAdditional = ""
+            AppStatus = Lang.Idle,
+            AppStatusAdditional = "",
+            ProgressBarData =
+            {
+                Max = 100,
+                Value = 0
+            }
         };
         FinalListViewData = new ListViewData
         {
@@ -806,17 +771,21 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             SelectedItem = new ListItem(),
             SelectedCount = 0
         };
-        StatusBarProperties.ProgressBarData.Max = 100;
-        StatusBarProperties.ProgressBarData.Value = 0;
-        _imgDownloadList = [];
-        _pickedListDataTable = [];
-        if (NetworkUtils.IsNetworkAvailable())
+        try
         {
-            await InitializeClientObjects();
-            IsObjectsInitialized = true;
+            if (NetworkUtils.IsNetworkAvailable())
+            {
+                await InitializeClientObjects();
+                IsObjectsInitialized = true;
+            }
+            else
+            {
+                IsObjectsInitialized = false;
+            }
         }
-        else
+        catch (Exception ex)
         {
+            Logger.ForErrorEvent().Message("Failed to initialize client objects").Exception(ex).Log();
             IsObjectsInitialized = false;
         }
     }
@@ -965,14 +934,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             ConfirmStr = LangProvider.GetLang("Confirm")
         };
         Growl.SuccessGlobal(info);
-        switch (MessageBox.Show(
-                    CustomMessageBox.Ask($"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
-                        LangProvider.GetLang("IconCreated"))))
-        {
-            case MessageBoxResult.Yes:
-                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
-                break;
-        }
+        if (MessageBox.Show(
+                CustomMessageBox.Ask(
+                    $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
+                    LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
+            ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
     }
 
     private async Task InitializeClientObjects()
@@ -1009,6 +975,55 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("Client Objects Initialized.");
     }
 
+    private void TrackProperties()
+    {
+        Services.Tracker.Configure<MainWindowViewModel>()
+            .Property(p => p.IsRatingVisible, false)
+            .Property(p => p.IsPosterMockupUsed, true)
+            .Property(p => p.IsPosterWindowShown, false)
+            .Property(p => p.AppLanguage, Languages.English)
+            .Property(p => p.Theme, FoliconThemes.System)
+            .Property(p => p.EnableErrorReporting, false)
+            .PersistOn(nameof(PropertyChanged));
+        Services.Tracker.Track(this);
+    }
+
+    private void SetCultureInfo()
+    {
+        var selectedLanguage = AppLanguage;
+        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
+        LangProvider.Culture = cultureInfo;
+        Thread.CurrentThread.CurrentCulture = cultureInfo;
+        Thread.CurrentThread.CurrentUICulture = cultureInfo;
+        Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
+    }
+
+    private void ProcessCommandLineArgs()
+    {
+        var cmdArgs = ProcessUtils.GetCmdArgs();
+        if (!cmdArgs.TryGetValue("path", out var selectedFolder))
+        {
+            return;
+        }
+
+        SelectedFolder = selectedFolder;
+        var mode = cmdArgs["mode"];
+        if (mode != "Professional" &&
+            new List<string> { MediaTypes.Mtv, MediaTypes.Tv, MediaTypes.Movie, MediaTypes.Game }.Contains(mode))
+        {
+            IconMode = "Poster";
+            SearchMode = mode;
+        }
+        else
+        {
+            IconMode = "Professional";
+        }
+
+        Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
+            SelectedFolder, IconMode);
+        SearchAndMakeMethod();
+    }
+    
     private void AboutMethod()
     {
         _dialogService.ShowAboutBox(_ => { });
