@@ -191,7 +191,17 @@ internal class TmdbDataTransformer(
         var localPosterPath = Path.Combine(fullFolderPath, $"{IconUtils.GetImageName()}.png");
         var posterUrl = GetPosterUrl(result.PosterPath, PosterSize.Original, client);
     
-        string type = PickResult(result, resultType, fullFolderPath, rating, isPickedById,out int id, folderName, localPosterPath);
+        var resultDetails = new SearchResultData
+        {
+            Result = result,
+            ResultType = resultType,
+            FullFolderPath = fullFolderPath,
+            Rating = rating,
+            IsPickedById = isPickedById,
+            FolderName = folderName,
+            LocalPosterPath = localPosterPath,
+        };
+        var type = PickResult(resultDetails, out var id);
     
         if (!isPickedById && id != 0)
         {
@@ -219,61 +229,53 @@ internal class TmdbDataTransformer(
         return rating;
     }
     
-    private string PickResult(dynamic result,
-        string resultType,
-        string fullFolderPath,
-        string rating,
-        bool isPickedById,
-        out int id,
-        string folderName,
-        string localPosterPath)
+    private string PickResult(SearchResultData details, out int id)
     {
         id = 0;
-        var mediaType = resultType;
-        switch (resultType)
+        var mediaType = details.ResultType;
+        switch (mediaType)
         {
             case MediaTypes.Tv:
-                {
-                    var pickedResult = CastResult(isPickedById ? typeof(TvShow) : typeof(SearchTv), result);
-                    var year = pickedResult.FirstAirDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
-                    AddToPickedList(pickedResult.Name, year, rating, fullFolderPath, folderName, localPosterPath);
-                    id = pickedResult.Id;
-                    break;
-                }
-            case MediaTypes.Movie:
-                {
-                    var pickedResult = CastResult(isPickedById ? typeof(Movie) : typeof(SearchMovie), result);
-                    var year = pickedResult.ReleaseDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
-                    AddToPickedList(pickedResult.Title, year, rating, fullFolderPath, folderName, localPosterPath);
-                    id = pickedResult.Id;
-                    break;
-                }
-            case MediaTypes.Collection:
-                {
-                    var pickedResult = CastResult(isPickedById ? typeof(Collection) : typeof(SearchCollection), result);
-                    AddToPickedList(pickedResult.Name, null, rating, fullFolderPath, folderName, localPosterPath);
-                    id = pickedResult.Id;
-                    break;
-                }
-            case MediaTypes.Mtv:
-                mediaType = SelectMtvType(result, fullFolderPath, rating, isPickedById, out id, folderName, localPosterPath);
+            {
+                var pickedResult = CastResult(details.IsPickedById ? typeof(TvShow) : typeof(SearchTv), details.Result);
+                var year = pickedResult.FirstAirDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
+                AddToPickedList(pickedResult.Name, year, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
+                id = pickedResult.Id;
                 break;
-            default: throw new InvalidDataException($"Invalid Result Type: {resultType}");
+            }
+            case MediaTypes.Movie:
+            {
+                var pickedResult = CastResult(details.IsPickedById ? typeof(Movie) : typeof(SearchMovie), details.Result);
+                var year = pickedResult.ReleaseDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
+                AddToPickedList(pickedResult.Title, year, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
+                id = pickedResult.Id;
+                break;
+            }
+            case MediaTypes.Collection:
+            {
+                var pickedResult = CastResult(details.IsPickedById ? typeof(Collection) : typeof(SearchCollection), details.Result);
+                AddToPickedList(pickedResult.Name, null, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
+                id = pickedResult.Id;
+                break;
+            }
+            case MediaTypes.Mtv:
+                mediaType = SelectMtvType(details, out id);
+                break;
+            default: throw new InvalidDataException($"Invalid Result Type: {mediaType}");
         }
 
         return mediaType;
     }
     
-    private string SelectMtvType(dynamic result, string fullFolderPath, string rating, bool isPickedById, out int id, string folderName, string localPosterPath)
+    private string SelectMtvType(SearchResultData details, out int id)
     {
-        var mediaType = result.MediaType;
+        var mediaType = details.Result.MediaType;
         id = 0;
+        details.ResultType = mediaType.ToString();
         return mediaType switch
         {
-            MediaType.Tv => PickResult(result, MediaTypes.Tv, fullFolderPath, rating, isPickedById, out id, folderName,
-                localPosterPath),
-            MediaType.Movie => PickResult(result, MediaTypes.Movie, fullFolderPath, rating, isPickedById, out id,
-                folderName, localPosterPath),
+            MediaType.Tv => PickResult(details, out id),
+            MediaType.Movie => PickResult(details, out id),
             _ => mediaType
         };
     }
