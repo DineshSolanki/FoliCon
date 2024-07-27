@@ -33,8 +33,15 @@ public class ListViewClickSortBehavior : Behavior<ListView>
 
     private void OnClick(object sender, RoutedEventArgs e)
     {
-        if (e.OriginalSource is not GridViewColumnHeader headerClicked) return;
-        if (headerClicked.Role == GridViewColumnHeaderRole.Padding) return;
+        if (e.OriginalSource is not GridViewColumnHeader headerClicked)
+        {
+            return;
+        }
+
+        if (headerClicked.Role == GridViewColumnHeaderRole.Padding)
+        {
+            return;
+        }
 
         ListSortDirection direction;
         if (headerClicked != _lastHeaderClicked)
