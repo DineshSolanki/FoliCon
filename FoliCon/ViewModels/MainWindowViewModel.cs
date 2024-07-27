@@ -938,7 +938,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 CustomMessageBox.Ask(
                     $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
                     LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
+        {
             ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
+        }
     }
 
     private async Task InitializeClientObjects()
