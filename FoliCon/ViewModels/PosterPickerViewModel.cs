@@ -100,7 +100,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
 
         if (resultType == MediaTypes.Game)
         {
-            await LoadGameData(response);
+            LoadGameData(response);
         }
         else
         {
@@ -177,7 +177,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         };
     }
 
-    private async Task LoadGameData(dynamic response)
+    private void LoadGameData(dynamic response)
     {
         Logger.Debug("Media Type is Game, loading images from IGDB");
         Artwork[] images = response.Artworks.Values;

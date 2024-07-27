@@ -24,8 +24,10 @@ public static class ProcessUtils
         }
         catch (Exception e)
         {
-            Logger.Error(e, "Failed to start process: {ExceptionMessage}", e.Message);
-            throw;
+            var detailedErrorMessage = $"Failed to start process at path: {path}. Exception: {e.Message}";
+            
+            Logger.Error(e, detailedErrorMessage);
+            throw new InvalidOperationException(detailedErrorMessage, e);
         }
     }
 
