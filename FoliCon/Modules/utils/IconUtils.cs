@@ -17,7 +17,7 @@ public static class IconUtils
     /// Creates Icons from PNG
     /// </summary>
     public static int MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
-        bool isRatingVisible, bool isMockupVisible)
+        bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback)
     {
         Logger.Debug(
             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}",
@@ -27,6 +27,9 @@ public static class IconUtils
         var ratingVisibility = isRatingVisible ? "visible" : "hidden";
         var mockupVisibility = isMockupVisible ? "visible" : "hidden";
 
+        var max = pickedListDataTable.Count;
+        var extractionProgress = new ProgressBarData(0, max, Lang.CreatingIconWithCount.Format(0, max));
+        progressCallback.Report(extractionProgress);
         foreach (var item in pickedListDataTable)
         {
             var parent = Directory.GetParent(item.Folder);
@@ -57,8 +60,13 @@ public static class IconUtils
 
             FileUtils.HideFile(targetFile);
             FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{parentFolder}\{folderName}");
+            
+            extractionProgress.Value = iconProcessedCount;
+            extractionProgress.Text = Lang.CreatingIconWithCount.Format(iconProcessedCount, max);
+            progressCallback.Report(extractionProgress);
         }
-
+        extractionProgress.Text = Lang.RefreshingFolder;
+        progressCallback.Report(extractionProgress);
         FileUtils.ApplyChanges(selectedFolder);
         SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW, selectedFolder);
         return iconProcessedCount;

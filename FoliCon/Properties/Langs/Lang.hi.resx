@@ -657,4 +657,10 @@
   <data name="Downloading" xml:space="preserve">
     <value>डाउनलोड हो रहा है...</value>
   </data>
+  <data name="CreatingIconWithCount" xml:space="preserve">
+    <value>आइकन बना रहा है {0}/{1}...</value>
+  </data>
+  <data name="RefreshingFolder" xml:space="preserve">
+    <value>फ़ोल्डर रीफ्रेश हो रहा है</value>
+  </data>
 </root>

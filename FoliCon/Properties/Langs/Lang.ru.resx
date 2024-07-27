@@ -660,4 +660,10 @@
   <data name="Downloading" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
+  <data name="CreatingIconWithCount" xml:space="preserve">
+    <value>Создание значка {0}/{1}...</value>
+  </data>
+  <data name="RefreshingFolder" xml:space="preserve">
+    <value>Обновление папки</value>
+  </data>
 </root>

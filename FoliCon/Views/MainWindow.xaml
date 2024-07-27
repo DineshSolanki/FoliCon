@@ -35,7 +35,7 @@
                     <StackPanel Margin="4">
                         <TextBlock
                             Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
-                        <ProgressBar Style="{DynamicResource ProgressBarFlat}"
+                        <ProgressBar Style="{DynamicResource ProgressBarSuccessStripe}"
                                      Value="{Binding Path=DataContext.BusyIndicatorProperties.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                      Maximum="{Binding Path=DataContext.BusyIndicatorProperties.Max, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                      Height="15" />

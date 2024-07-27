@@ -26,6 +26,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private DArt _dArtObject;
     private bool _isPosterWindowShown;
     private bool _enableErrorReporting;
+    private ProgressBarData _busyIndicatorProperties;
 
     private ListViewData _finalListViewData;
     private List<ImageToDownload> _imgDownloadList = [];
@@ -68,7 +69,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private FoliconThemes _theme;
     private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
-    public ProgressBarData BusyIndicatorProperties { get; set; }
+    public ProgressBarData BusyIndicatorProperties { get => _busyIndicatorProperties; set => SetProperty(ref _busyIndicatorProperties, value); }
     public List<string> Fnames { get; set; } = [];
 
     public bool IsMakeEnabled
@@ -875,7 +876,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             if (StopIconDownload)
             {
                 Logger.Debug("StopIconDownload is true, breaking loop and making icons.");
-                MakeIcons();
+                await MakeIcons();
                 IsMakeEnabled = true;
                 StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
                 return;
@@ -914,16 +915,21 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.Debug("All Icons Downloaded, Making Icons.");
             IsBusy = true;
-            MakeIcons();
+            await MakeIcons();
         }
 
         IsMakeEnabled = true;
     }
 
-    private void MakeIcons()
+    private async Task MakeIcons()
     {
         IsBusy = true;
-        var iconProcessedCount = IconUtils.MakeIco(IconMode, SelectedFolder, _pickedListDataTable, IsRatingVisible, IsPosterMockupUsed);
+        var iconProcessedCount = await Task.Run(()=>IconUtils.MakeIco(IconMode,
+            SelectedFolder,
+            _pickedListDataTable,
+            IsRatingVisible,
+            IsPosterMockupUsed,
+            new Progress<ProgressBarData>(value => BusyIndicatorProperties = value)));
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;
         var info = new GrowlInfo

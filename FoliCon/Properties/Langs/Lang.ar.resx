@@ -657,4 +657,10 @@
   <data name="Downloading" xml:space="preserve">
     <value>جارٍ التنزيل...</value>
   </data>
+  <data name="CreatingIconWithCount" xml:space="preserve">
+    <value>جارٍ إنشاء الأيقونة {0}/{1}...</value>
+  </data>
+  <data name="RefreshingFolder" xml:space="preserve">
+    <value>تحديث المجلد</value>
+  </data>
 </root>
