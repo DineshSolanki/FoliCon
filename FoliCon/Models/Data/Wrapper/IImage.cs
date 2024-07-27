@@ -1,8 +1,4 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-
-namespace FoliCon.Models.Data.Wrapper
+﻿namespace FoliCon.Models.Data.Wrapper
 {
     public interface IImage
     {

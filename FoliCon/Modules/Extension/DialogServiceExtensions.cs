@@ -1,12 +1,4 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Models.Data.Dialog;
-using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.Extension;
+﻿namespace FoliCon.Modules.Extension;
 
 public static class DialogServiceExtensions
 {

@@ -1,11 +1,14 @@
-﻿namespace FoliCon.Modules.UI;
+﻿using Brush = System.Windows.Media.Brush;
+using Window = HandyControl.Controls.Window;
 
-public class HandyWindow : HandyControl.Controls.Window, IDialogWindow
+namespace FoliCon.Modules.UI;
+
+public class HandyWindow : Window, IDialogWindow
 {
     static HandyWindow()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(HandyWindow),
-            new FrameworkPropertyMetadata(typeof(HandyControl.Controls.Window)));
+            new FrameworkPropertyMetadata(typeof(Window)));
     }
 
     public HandyWindow()
@@ -13,7 +16,7 @@ public class HandyWindow : HandyControl.Controls.Window, IDialogWindow
         ShowTitle = true;
         HandleDataContextChanged();
         DataContextChanged += HandyWindow_DataContextChanged;
-        Background = (System.Windows.Media.Brush)FindResource("RegionBrush");
+        Background = (Brush)FindResource("RegionBrush");
     }
 
     public IDialogResult Result { get; set; }

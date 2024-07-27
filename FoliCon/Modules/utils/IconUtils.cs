@@ -1,15 +1,10 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using FoliCon.Modules.Media;
-using NLog;
-using PosterIcon = FoliCon.Models.Data.PosterIcon;
+﻿using FoliCon.Modules.Media;
 
 namespace FoliCon.Modules.utils;
 
 public static class IconUtils
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string ImageName = "folicon";
 
     public static string GetImageName()

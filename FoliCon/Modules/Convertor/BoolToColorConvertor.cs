@@ -1,6 +1,4 @@
-﻿using NLog;
-using Brushes = System.Windows.Media.Brushes;
-using Logger = NLog.Logger;
+﻿using Brushes = System.Windows.Media.Brushes;
 
 namespace FoliCon.Modules.Convertor;
 

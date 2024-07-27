@@ -1,7 +1,4 @@
-﻿using FoliCon.Modules.Configuration;
-using NLog;
-using Polly;
-using Logger = NLog.Logger;
+﻿using Polly;
 
 namespace FoliCon.Modules.utils;
 

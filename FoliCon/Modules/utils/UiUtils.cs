@@ -2,7 +2,7 @@
 
 public static class UiUtils
 {
-    private static readonly NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     /// <summary>
     /// Set Column width of list view to fit content
     /// </summary>

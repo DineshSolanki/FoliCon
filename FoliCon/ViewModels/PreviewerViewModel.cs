@@ -1,16 +1,13 @@
-﻿using FoliCon.Modules.utils;
-using NLog;
-
-namespace FoliCon.ViewModels
+﻿namespace FoliCon.ViewModels
 {
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
-        private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
         public PreviewerViewModel()
         {
             Logger.Debug("PosterIconConfigViewModel created");
-            PosterIconInstance = new FoliCon.Models.Data.PosterIcon
+            PosterIconInstance = new PosterIcon
             {
                 Rating = Rating
             };
@@ -18,14 +15,14 @@ namespace FoliCon.ViewModels
             SelectImageCommand = new DelegateCommand(SelectImage);
         }
         
-        private FoliCon.Models.Data.PosterIcon _posterIconInstance;
+        private PosterIcon _posterIconInstance;
         private string _rating = "3.5";
         public string Title => "Previewer";
         private string _mediaTitle = "Made with ♥ by FoliCon";
         private bool _ratingVisibility = true;
         private bool _overlayVisibility = true;
         
-        public FoliCon.Models.Data.PosterIcon PosterIconInstance
+        public PosterIcon PosterIconInstance
         {
             get => _posterIconInstance;
             set => SetProperty(ref _posterIconInstance, value);
@@ -86,7 +83,7 @@ namespace FoliCon.ViewModels
             }
 
             var thisMemoryStream = new MemoryStream(File.ReadAllBytes(fileDialog.FileName));
-            var rt= new FoliCon.Models.Data.PosterIcon
+            var rt= new PosterIcon
             {
                 FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream)
             };

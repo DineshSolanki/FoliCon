@@ -1,9 +1,4 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.utils;
+﻿namespace FoliCon.Modules.utils;
 
 internal static class TitleCleaner
 {

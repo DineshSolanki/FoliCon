@@ -1,13 +1,8 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using NLog;
-
-namespace FoliCon.Modules.utils;
+﻿namespace FoliCon.Modules.utils;
 
 public static class DataUtils
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     
     public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
     {

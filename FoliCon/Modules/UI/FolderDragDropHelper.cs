@@ -1,7 +1,4 @@
-﻿using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.UI;
+﻿namespace FoliCon.Modules.UI;
 
 public interface IFileDragDropTarget
 {

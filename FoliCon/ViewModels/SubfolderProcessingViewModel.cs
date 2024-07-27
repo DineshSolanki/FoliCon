@@ -1,16 +1,10 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using NLog;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 public class SubfolderProcessingViewModel : BindableBase, IDialogAware
 {
 
     #region Variables
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     public string Title => LangProvider.GetLang("SubfolderProcessing");
 

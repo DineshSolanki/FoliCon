@@ -1,9 +1,4 @@
-﻿using FoliCon.Modules.utils;
-using NLog;
-using NLog.Config;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.Extension;
+﻿namespace FoliCon.Modules.Extension;
 
 public static class Extensions
 {

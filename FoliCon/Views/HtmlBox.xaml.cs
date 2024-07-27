@@ -1,6 +1,4 @@
 ﻿using HandyControl.Themes;
-using NLog;
-using Logger = NLog.Logger;
 
 namespace FoliCon.Views;
 

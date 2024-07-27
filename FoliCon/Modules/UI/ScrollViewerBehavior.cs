@@ -1,7 +1,6 @@
-﻿namespace FoliCon.Modules.UI;
+﻿using ScrollViewer = System.Windows.Controls.ScrollViewer;
 
-using System.Windows;
-using System.Windows.Controls;
+namespace FoliCon.Modules.UI;
 
 public static class ScrollViewerBehavior
 {

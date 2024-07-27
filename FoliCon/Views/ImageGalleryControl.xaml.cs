@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Image = System.Windows.Controls.Image;
 
 namespace FoliCon.Views;
 

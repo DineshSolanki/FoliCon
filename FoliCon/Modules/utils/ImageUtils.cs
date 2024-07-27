@@ -1,7 +1,4 @@
-﻿using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.utils;
+﻿namespace FoliCon.Modules.utils;
 
 public static class ImageUtils
 {

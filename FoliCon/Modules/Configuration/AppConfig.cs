@@ -1,6 +1,4 @@
-﻿using FoliCon.Models.Data;
-
-namespace FoliCon.Modules.Configuration;
+﻿namespace FoliCon.Modules.Configuration;
 
 public class AppConfig : GlobalDataHelper
 {

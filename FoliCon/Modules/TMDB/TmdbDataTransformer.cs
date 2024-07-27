@@ -1,16 +1,10 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
-using NLog;
-using Collection = TMDbLib.Objects.Collections.Collection;
-
-namespace FoliCon.Modules.TMDB;
+﻿namespace FoliCon.Modules.TMDB;
 
 internal class TmdbDataTransformer(
     ref List<PickedListItem> listDataTable,
     ref List<ImageToDownload> imgDownloadList, TMDbClient client)
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     private readonly List<PickedListItem> _listDataTable = listDataTable;
     private readonly List<ImageToDownload> _imgDownloadList = imgDownloadList;

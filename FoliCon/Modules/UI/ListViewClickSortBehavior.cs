@@ -1,5 +1,4 @@
 using System.Windows.Controls.Primitives;
-using FoliCon.Modules.utils;
 
 namespace FoliCon.Modules.UI;
 

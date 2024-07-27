@@ -1,16 +1,11 @@
 ﻿using System.Windows.Documents;
-using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using NLog;
 using TMDbLib.Objects.Find;
-using Collection = TMDbLib.Objects.Collections.Collection;
 
 namespace FoliCon.Modules.TMDB;
 
 internal class TmdbService
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly TMDbClient _serviceClient;
     private readonly Dictionary<string, Func<int, Task<object>>> _mediaTypeHandlers;
 

@@ -1,6 +1,4 @@
-﻿using FoliCon.Models.Data;
-
-namespace FoliCon.Modules.IGDB;
+﻿namespace FoliCon.Modules.IGDB;
 
 public class IgdbClass
 {

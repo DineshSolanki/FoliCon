@@ -1,9 +1,4 @@
-﻿using FoliCon.Models.Data;
-using NLog;
-using Collection = TMDbLib.Objects.Collections.Collection;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.TMDB;
+﻿namespace FoliCon.Modules.TMDB;
 
 public class Tmdb
 {

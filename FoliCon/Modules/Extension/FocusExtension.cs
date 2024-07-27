@@ -1,7 +1,4 @@
-﻿using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.Extension;
+﻿namespace FoliCon.Modules.Extension;
 
 /// <summary>
 /// This class registers an attached property that can be set to trigger

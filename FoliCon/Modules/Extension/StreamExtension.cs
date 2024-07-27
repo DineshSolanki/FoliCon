@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;

@@ -1,5 +1,4 @@
 ﻿using FoliCon.Modules.Convertor;
-using Image = System.Windows.Controls.Image;
 
 namespace FoliCon.Modules.Extension;
 

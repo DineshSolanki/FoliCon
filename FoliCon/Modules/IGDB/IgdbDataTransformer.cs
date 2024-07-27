@@ -1,10 +1,4 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
-using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.IGDB;
+﻿namespace FoliCon.Modules.IGDB;
 
 public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref List<ImageToDownload> imgDownloadList)
 {

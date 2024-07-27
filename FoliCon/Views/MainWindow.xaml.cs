@@ -1,7 +1,4 @@
-﻿using FoliCon.Models.Enums;
-using FoliCon.Modules.utils;
-
-namespace FoliCon.Views;
+﻿namespace FoliCon.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

@@ -1,5 +1,4 @@
-﻿using NLog;
-using Logger = NLog.Logger;
+﻿using Size = System.Windows.Size;
 
 namespace FoliCon.Models.Data;
 
@@ -22,7 +21,7 @@ public abstract class PosterIconBase : UserControl
 
     private RenderTargetBitmap AsRenderTargetBitmap()
     {
-        var size = new System.Windows.Size(256, 256);
+        var size = new Size(256, 256);
         Measure(size);
         Arrange(new Rect(size));
 

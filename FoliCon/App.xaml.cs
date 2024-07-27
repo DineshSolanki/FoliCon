@@ -1,11 +1,6 @@
-﻿using FoliCon.Modules.Configuration;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using FoliCon.ViewModels;
-using NLog;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Sentry;
-using Logger = NLog.Logger;
+using Window = System.Windows.Window;
 
 namespace FoliCon;
 
@@ -15,7 +10,7 @@ namespace FoliCon;
 public partial class App
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    protected override System.Windows.Window CreateShell()
+    protected override Window CreateShell()
     {
         return Container.Resolve<MainWindow>();
     }

@@ -1,9 +1,5 @@
-﻿using NLog;
-using NLog.Config;
-using NLog.Targets;
-using Sentry;
+﻿using NLog.Targets;
 using Sentry.NLog;
-using Logger = NLog.Logger;
 
 namespace FoliCon.Modules.utils;
 

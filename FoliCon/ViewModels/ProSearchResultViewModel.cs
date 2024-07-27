@@ -1,14 +1,4 @@
-﻿
-using FoliCon.Models.Api;
-using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using ImTools;
-using NLog;
-using Logger = NLog.Logger;
+﻿using ImTools;
 
 namespace FoliCon.ViewModels;
 
@@ -86,7 +76,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>((link)=> UiUtils.ShowImageBrowser(link as string));
+        OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);

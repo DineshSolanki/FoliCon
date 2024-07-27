@@ -1,9 +1,4 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
-using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.Media;
+﻿namespace FoliCon.Modules.Media;
 
 public class ProIcon(string filePath)
 {

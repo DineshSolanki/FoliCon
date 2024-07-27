@@ -1,23 +1,11 @@
 ﻿using FoliCon.Models.Configs;
-using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Data.Dialog;
-using FoliCon.Models.Enums;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
 using HandyControl.Themes;
-using NLog;
 
 namespace FoliCon.ViewModels;
 
 public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
 
     private string _selectedFolder;

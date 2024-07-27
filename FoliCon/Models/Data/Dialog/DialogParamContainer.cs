@@ -1,7 +1,4 @@
-﻿using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-
-namespace FoliCon.Models.Data.Dialog;
+﻿namespace FoliCon.Models.Data.Dialog;
 
 public class DialogParamContainer
 {

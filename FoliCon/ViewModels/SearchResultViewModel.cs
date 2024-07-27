@@ -1,15 +1,4 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Data.Dialog;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using NLog;
-using DelegateCommand = Prism.Commands.DelegateCommand;
-using Logger = NLog.Logger;
+﻿using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace FoliCon.ViewModels;
 
@@ -454,7 +443,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
             if (result != null)
             {
-                var trailer = SearchResultViewModel.ChooseTrailer(result.Results);
+                var trailer = ChooseTrailer(result.Results);
                 if (trailer != null)
                 {
                     SetTrailer(trailer.Key);
@@ -480,7 +469,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        var i = SearchResultViewModel.ChooseTrailer(result.Results);
+        var i = ChooseTrailer(result.Results);
     
         if (i != null)
         {
@@ -492,7 +481,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private static dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
+    private static dynamic ChooseTrailer(IReadOnlyCollection<dynamic> results)
     {
         var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item.Site == "YouTube");
         return trailerYouTube != null ? trailerYouTube : results.FirstOrDefault();

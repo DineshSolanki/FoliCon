@@ -1,14 +1,5 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Data.Wrapper;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using NLog;
+﻿using FoliCon.Models.Data.Wrapper;
 using Artwork = IGDB.Models.Artwork;
-using Collection = TMDbLib.Objects.Collections.Collection;
-using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;
 

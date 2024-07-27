@@ -1,14 +1,5 @@
 ﻿using System.Security.AccessControl;
 using System.Security.Principal;
-using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using NLog;
-using Collection = TMDbLib.Objects.Collections.Collection;
-using Logger = NLog.Logger;
 
 namespace FoliCon.Modules.utils;
 

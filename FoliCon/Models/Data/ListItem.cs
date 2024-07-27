@@ -1,6 +1,4 @@
-﻿using FoliCon.Modules.utils;
-
-namespace FoliCon.Models.Data;
+﻿namespace FoliCon.Models.Data;
 
 public class ListItem : BindableBase
 {

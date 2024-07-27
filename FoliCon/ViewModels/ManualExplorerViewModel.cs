@@ -1,21 +1,14 @@
-﻿
-using FoliCon.Models.Api;
-using FoliCon.Models.Data;
-using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.utils;
-using NLog;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 public class ManualExplorerViewModel : BindableBase, IDialogAware
 {
-	private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+	private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 	
 	public ManualExplorerViewModel()
 	{
 		Directory = [];
 		PickCommand = new DelegateCommand<object>(PickMethod);
-		OpenImageCommand = new DelegateCommand<object>((link)=> UiUtils.ShowImageBrowser(link as string));
+		OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
 		CancelCommand = new DelegateCommand(CancelMethod);
 	}
 

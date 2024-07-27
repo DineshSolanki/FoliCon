@@ -1,9 +1,4 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.UI;
-using Microsoft.Web.WebView2.Core;
-using NLog;
-using Logger = NLog.Logger;
+﻿using Microsoft.Web.WebView2.Core;
 
 namespace FoliCon.Modules.utils;
 

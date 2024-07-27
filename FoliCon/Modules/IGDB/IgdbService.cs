@@ -1,14 +1,9 @@
-﻿using System.Text;
-using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using NLog;
-
-namespace FoliCon.Modules.IGDB;
+﻿namespace FoliCon.Modules.IGDB;
 
 public class IgdbService(ref IGDBClient serviceClient)
 {
     private const string ServiceClientIsNotInitialized = "Service Client is not initialized.";
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly IGDBClient _serviceClient = serviceClient ?? throw new ArgumentNullException(nameof(serviceClient));
 
     public IGDBClient GetClient()
