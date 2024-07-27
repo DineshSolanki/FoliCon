@@ -660,4 +660,10 @@ e renovar o cache dos Ícones?</value>
   <data name="Downloading" xml:space="preserve">
       <value>Baixando...</value>
     </data>
+  <data name="CreatingIconWithCount" xml:space="preserve">
+      <value>Criando ícone {0}/{1}...</value>
+    </data>
+  <data name="RefreshingFolder" xml:space="preserve">
+      <value>Atualizando pasta</value>
+    </data>
 </root>
