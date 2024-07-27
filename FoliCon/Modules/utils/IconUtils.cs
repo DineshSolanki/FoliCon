@@ -2,6 +2,7 @@
 
 namespace FoliCon.Modules.utils;
 
+[Localizable(false)]
 public static class IconUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -11,11 +12,12 @@ public static class IconUtils
     {
         return ImageName;
     }
+    
     /// <summary>
     /// Creates Icons from PNG
     /// </summary>
     public static int MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
-        bool isRatingVisible = false, bool isMockupVisible = true)
+        bool isRatingVisible, bool isMockupVisible)
     {
         Logger.Debug(
             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}",

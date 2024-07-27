@@ -108,16 +108,16 @@ public class DArt : BindableBase
     {
         await GetClientAccessTokenAsync();
         var dArtDownloadResponse = await GetDArtDownloadResponseAsync(deviationId);
-        await TryExtraction(deviationId, dArtDownloadResponse, CancellationToken.None, new Progress<ProgressInfo>(_ => { }));
+        await TryExtraction(deviationId, dArtDownloadResponse, CancellationToken.None, new Progress<ProgressBarData>(_ => { }));
 
         return dArtDownloadResponse;
     }
 
     private static async Task<DArtDownloadResponse> TryExtraction(string deviationId,
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
-        progressCallback.Report(new ProgressInfo(0, 1, LangProvider.Instance.Downloading));
+        progressCallback.Report(new ProgressBarData(0, 1, LangProvider.Instance.Downloading));
         var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(deviationId);
         dArtDownloadResponse.LocalDownloadPath = targetDirectoryPath;
         var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src, cancellationToken);
@@ -137,7 +137,7 @@ public class DArt : BindableBase
 
     public async Task<DArtDownloadResponse> ExtractDeviation(string deviationId,
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
         await GetClientAccessTokenAsync();
         return await TryExtraction(deviationId, dArtDownloadResponse, cancellationToken, progressCallback);
@@ -153,7 +153,7 @@ public class DArt : BindableBase
 
     private static async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath,
         CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
         await using var stream = await downloadResponse.Content.ReadAsStreamAsync(cancellationToken);
         stream.ExtractPngAndIcoToDirectory(targetDirectoryPath, cancellationToken, progressCallback);

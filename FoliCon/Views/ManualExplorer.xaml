@@ -35,13 +35,13 @@
                                 <MultiBinding StringFormat="{}{0}({1}) {2}/{3}">
                                     <Binding Path="Value.ProgressInfo.Text" Source="{StaticResource Proxy}"/>
                                     <Binding Path="Value.DArtDownloadResponse.FileSizeHumanReadable" Source="{StaticResource Proxy}"/>
-                                    <Binding Path="Value.ProgressInfo.Current" Source="{StaticResource Proxy}"/>
-                                    <Binding Path="Value.ProgressInfo.Total" Source="{StaticResource Proxy}"/>
+                                    <Binding Path="Value.ProgressInfo.Value" Source="{StaticResource Proxy}"/>
+                                    <Binding Path="Value.ProgressInfo.Max" Source="{StaticResource Proxy}"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                        <ProgressBar Style="{StaticResource ProgressBarInfo}" Value="{Binding Value.ProgressInfo.Current, Source={StaticResource Proxy}}" 
-                                     Maximum="{Binding Value.ProgressInfo.Total, Source={StaticResource Proxy}}" Height="15"/>
+                        <ProgressBar Style="{StaticResource ProgressBarInfo}" Value="{Binding Value.ProgressInfo.Value, Source={StaticResource Proxy}}" 
+                                     Maximum="{Binding Value.ProgressInfo.Max, Source={StaticResource Proxy}}" Height="15"/>
                     </StackPanel>
                     <Grid>
                         <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Cancel}}" Command="{Binding Value.CancelCommand,

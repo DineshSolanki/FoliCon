@@ -23,13 +23,13 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
-	private ProgressInfo _progressInfo = new(0,1,LangProvider.Instance.Downloading);
+	private ProgressBarData _progressInfo = new(0,1,LangProvider.Instance.Downloading);
 	private readonly CancellationTokenSource _cts = new();
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 	public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-	public ProgressInfo ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
+	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
 	public DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
 	
@@ -83,7 +83,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
 			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
 			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				_cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
+				_cts.Token, new Progress<ProgressBarData>(value => ProgressInfo = value)));
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 		}
 		catch (OperationCanceledException e)
