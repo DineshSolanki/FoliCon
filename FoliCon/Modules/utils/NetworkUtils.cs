@@ -1,7 +1,4 @@
-﻿using FoliCon.Modules.Configuration;
-using NLog;
-using Polly;
-using Logger = NLog.Logger;
+﻿using Polly;
 
 namespace FoliCon.Modules.utils;
 
@@ -33,7 +30,7 @@ public static class NetworkUtils
                 .Exception(e).Log();
             // ignored
         }
-        Logger.Debug("Network availability: {}", result);
+        Logger.Debug("Network availability: {IsNetworkAvailable}", result);
         return result;
     }
 

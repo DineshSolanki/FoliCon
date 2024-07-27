@@ -1,8 +1,4 @@
-﻿using FoliCon.Modules.Configuration;
-using FoliCon.Modules.UI;
-using Microsoft.Web.WebView2.Core;
-using NLog;
-using Logger = NLog.Logger;
+﻿using Microsoft.Web.WebView2.Core;
 
 namespace FoliCon.Modules.utils;
 
@@ -28,8 +24,10 @@ public static class ProcessUtils
         }
         catch (Exception e)
         {
-            Logger.Error($"Failed to start process: {e.Message}");
-            throw;
+            var detailedErrorMessage = $"Failed to start process at path: {path}. Exception: {e.Message}";
+            
+            Logger.Error(e, detailedErrorMessage);
+            throw new InvalidOperationException(detailedErrorMessage, e);
         }
     }
 
@@ -47,8 +45,11 @@ public static class ProcessUtils
             
             var result = MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("WebView2DownloadConfirmation"),
                 LangProvider.GetLang("WebView2DownloadConfirmationHeader")));
-            if (result != MessageBoxResult.Yes) return;
-            
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
             StartProcess("https://go.microsoft.com/fwlink/p/?LinkId=2124703");
         }
     }
@@ -94,7 +95,7 @@ public static class ProcessUtils
 
             using (var process = new Process())
             {
-                process.StartInfo = new ProcessStartInfo()
+                process.StartInfo = new ProcessStartInfo
                 {
                     FileName = exePath,
                     Arguments = "-ClearIconCache",
@@ -143,7 +144,10 @@ public static class ProcessUtils
             return null;
         }
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
-                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes) return false;
+                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes)
+        {
+            return false;
+        }
 
         StartAppAsAdmin();
         return true;
@@ -167,15 +171,18 @@ public static class ProcessUtils
     public static void AddToContextMenu()
     {
         Logger.Info("Modifying Context Menu");
-        if (IfNotAdminRestartAsAdmin() == false) return;
+        if (IfNotAdminRestartAsAdmin() == false)
+        {
+            return;
+        }
 
-        if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != LangProvider.GetLang("CreateIconsWithFoliCon"))
+        if (Services.Settings.IsExplorerIntegrated && Services.Settings.ContextEntryName != Lang.CreateIconsWithFoliCon)
         {
             Logger.Info("Removing Old Context Menu Entry");
             RemoveFromContextMenu();
         }
 
-        Services.Settings.ContextEntryName = LangProvider.GetLang("CreateIconsWithFoliCon");
+        Services.Settings.ContextEntryName = Lang.CreateIconsWithFoliCon;
         Services.Settings.IsExplorerIntegrated = true;
         Services.Settings.Save();
 
@@ -188,7 +195,7 @@ public static class ProcessUtils
     {
         foreach (var mode in modes)
         {
-            var modeName = mode == "Auto" ? "Auto (Movies & TV Shows)" : mode;
+            var modeName = mode == "Auto" ? MediaTypes.Mtv : mode;
             var command = $"""{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode {modeName}""";
             RegisterContextMenuOption(mode, command);
         }
@@ -196,18 +203,20 @@ public static class ProcessUtils
 
     private static void RegisterContextMenuOption(string modeName, string command)
     {
-        ApplicationHelper.RegisterCascadeContextMenuToDirectory(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command);
-        ApplicationHelper.RegisterCascadeContextMenuToBackground(LangProvider.GetLang("CreateIconsWithFoliCon"), LangProvider.GetLang(modeName), command.Replace("%1", "%V"));
+        ApplicationHelper.RegisterCascadeContextMenuToDirectory(Lang.CreateIconsWithFoliCon, LangProvider.GetLang(modeName), command);
+        ApplicationHelper.RegisterCascadeContextMenuToBackground(Lang.CreateIconsWithFoliCon, LangProvider.GetLang(modeName), command.Replace("%1", "%V"));
     }
 
     public static void RemoveFromContextMenu()
     {
-        if (IfNotAdminRestartAsAdmin() == false) return;
+        if (IfNotAdminRestartAsAdmin() == false)
+        {
+            return;
+        }
+
         Services.Settings.IsExplorerIntegrated = false;
         Services.Settings.Save();
         ApplicationHelper.UnRegisterCascadeContextMenuFromDirectory(Services.Settings.ContextEntryName, "");
         ApplicationHelper.UnRegisterCascadeContextMenuFromBackground(Services.Settings.ContextEntryName, "");
-
-        //Growl.InfoGlobal("Merge Subtitle option removed from context menu!");
     }
 }

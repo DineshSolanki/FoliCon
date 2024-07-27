@@ -10,9 +10,14 @@ public class PickedListItem: ListItem
         set => SetProperty(ref _folderName, value);
     }
 
-    public PickedListItem(string title, string year, string rating, string folder, string folderName, string poster) 
-        : base(title, year, rating, "", poster, folder)
+    public PickedListItem(string title, string year, string rating, string folder, string folderName, string poster)
     {
+        Title = title;
+        Year = year;
+        Rating = rating;
+        Folder = folder;
+        Poster = poster;
+        
         FolderName = folderName;
     } 
 }

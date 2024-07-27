@@ -1,22 +1,11 @@
 ﻿using FoliCon.Models.Configs;
-using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
 using HandyControl.Themes;
-using NLog;
 
 namespace FoliCon.ViewModels;
 
-public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
+public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
 
     private string _selectedFolder;
@@ -27,26 +16,20 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private bool _isMakeEnabled;
     private bool _isSkipAmbiguous;
     private string _iconMode = "Poster";
-    private string _searchMode = "Movie";
+    private string _searchMode = MediaTypes.Movie;
     private bool _isSearchModeVisible = true;
     private bool _stopIconDownload;
     private Languages _appLanguage;
     private TMDbClient _tmdbClient;
-    private IGDBClient _igdbClient;
     private IgdbClass _igdbObject;
     private Tmdb _tmdbObject;
     private DArt _dArtObject;
     private bool _isPosterWindowShown;
     private bool _enableErrorReporting;
 
-    private string _tmdbapiKey;
-    private string _igdbClientId;
-    private string _igdbClientSecret;
-    private string _devClientSecret;
-    private string _devClientId;
     private ListViewData _finalListViewData;
-    private List<ImageToDownload> _imgDownloadList;
-    private List<PickedListItem> _pickedListDataTable;
+    private List<ImageToDownload> _imgDownloadList = [];
+    private List<PickedListItem> _pickedListDataTable = [];
     private bool IsObjectsInitialized { get; set; }
 
     public bool IsPosterWindowShown
@@ -86,7 +69,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
     public ProgressBarData BusyIndicatorProperties { get; set; }
-    public List<string> Fnames { get; set; }
+    public List<string> Fnames { get; set; } = [];
 
     public bool IsMakeEnabled
     {
@@ -217,7 +200,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     public DelegateCommand RestartExCommand { get; } = new(delegate
     {
         if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
-                LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes) return;
+                LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
         ProcessUtils.RefreshIconCache();
         ProcessUtils.RestartExplorer();
     });
@@ -246,56 +233,17 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        ProcessUtils.CheckWebView2();
-        ShowPreviewer = new DelegateCommand(() =>
-        {
-            _dialogService.ShowPreviewer(_ => { });
-        });
-        Logger.Info("Application Started, Initializing MainWindowViewModel.");
         _dialogService = dialogService;
-        Services.Tracker.Configure<MainWindowViewModel>()
-            .Property(p => p.IsRatingVisible, false)
-            .Property(p => p.IsPosterMockupUsed, true)
-            .Property(p => p.IsPosterWindowShown, false)
-            .Property(p => p.AppLanguage, Languages.English)
-            .Property(p => p.Theme, FoliconThemes.System)
-            .Property(p => p.EnableErrorReporting, false)
-            .PersistOn(nameof(PropertyChanged));
-        Services.Tracker.Track(this);
-        var selectedLanguage = AppLanguage;
-        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
-        LangProvider.Culture = cultureInfo;
-        Thread.CurrentThread.CurrentCulture = cultureInfo;
-        Thread.CurrentThread.CurrentUICulture = cultureInfo;
-        Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
-        InitializeProperties();
+        Logger.Info("Application Started, Initializing MainWindowViewModel.");
+        ProcessUtils.CheckWebView2();
+        TrackProperties();
+        SetCultureInfo();
         InitializeDelegates();
+        InitializeProperties();
         NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
-
-            
-        var cmdArgs = ProcessUtils.GetCmdArgs();
-        if (!cmdArgs.ContainsKey("path")) return;
-        
-        Logger.Info("Command Line Argument Found, Initializing with Command Line Argument.");
-        
-        SelectedFolder = cmdArgs["path"];
-        var mode = cmdArgs["mode"];
-        if (mode != "Professional" &&
-            new List<string> { "Auto (Movies & TV Shows)", "TV", "Movie", "Game" }.Contains(mode))
-        {
-            IconMode = "Poster";
-            SearchMode = mode;
-        }
-        else
-        {
-            IconMode = "Professional";
-        }
-        Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
-            SelectedFolder, IconMode);
-        SearchAndMakeMethod();
-
+        ProcessCommandLineArgs();
     }
-
+    
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
     {
         Logger.Debug("Network Availability Changed, Updating StatusBar.");
@@ -312,83 +260,138 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             Logger.Debug("LoadMethod:Already Selected Folder: {SelectedFolder}", SelectedFolder);
         }
         var dialogResult = folderBrowserDialog.ShowDialog();
-        if (dialogResult != null && (bool)!dialogResult) return;
+        if (dialogResult != null && (bool)!dialogResult)
+        {
+            return;
+        }
+
         SelectedFolder = folderBrowserDialog.SelectedPath;
         Logger.Debug("LoadMethod:Selected Folder: {SelectedFolder}", SelectedFolder);
         StatusBarProperties.ResetData();
         IsMakeEnabled = true;
     }
 
+    #region SearchAndMake
+    
     private async void SearchAndMakeMethod()
     {
         Logger.Debug("SearchAndMakeMethod Called.");
         try
         {
-            if (Directory.Exists(SelectedFolder))
+            if (!ValidateFolder())
             {
-                Fnames = FileUtils.GetFolderNames(SelectedFolder);
-            }
-            else
-            {
-                Logger.Error("Folder does not exist: {SelectedFolder}", SelectedFolder);
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"), LangProvider.GetLang("InvalidPath")));
                 return;
             }
 
-            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled)
+            if (!ValidateNetwork())
             {
-                if (NetworkUtils.IsNetworkAvailable())
-                {
-                    if (!IsObjectsInitialized)
-                    {
-                        Logger.Warn("SearchAndMakeMethod: Client Objects not initialized, Initializing now.");
-                        InitializeClientObjects();
-                        IsObjectsInitialized = true;
-                        Logger.Info("SearchAndMakeMethod: Client Objects Initialized.");
-                    }
+                return;
+            }
 
-                    StatusBarProperties.ResetData();
-                    FinalListViewData.Data.Clear();
-                    PrepareForSearch();
-                    if (IconMode == "Poster")
-                    {
-                        await ProcessPosterModeAsync();
-                    }
-                    else
-                    {
-                        ProcessProfessionalMode(SelectedFolder);
-                    }
-                    StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
-                        StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
-                    BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
-                    Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}", _imgDownloadList.Count);
-                    if (_imgDownloadList.Count > 0)
-                        await StartDownloadingAsync();
-                    else
-                        IsMakeEnabled = true;
-                }
-                else
-                {
-                    MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"), LangProvider.GetLang("NetworkError")));
-                }
+            await InitializeClientIfRequired();
+
+            PrepareForSearchOperations();
+
+            if (IconMode == "Poster")
+            {
+                await ProcessPosterModeAsync();
             }
             else
             {
-                Logger.Warn("SearchAndMakeMethod: Folder is empty: {SelectedFolder}", SelectedFolder);
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"), LangProvider.GetLang("FolderError")));
+                ProcessProfessionalMode(SelectedFolder);
             }
+
+            Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}",
+                _imgDownloadList.Count);
+            await DownloadIconsOrEnableMake();
         }
         catch (Exception e)
         {
-            Logger.ForErrorEvent().Message("SearchAndMakeMethod: Exception Occurred. message: {Message}", e.Message)
-                .Exception(e).Log();
-            MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
-            StatusBarProperties.ResetData();
-            IsMakeEnabled = true;
-            IsBusy = false;
+            HandleException(e);
         }
     }
 
+    private bool ValidateFolder()
+    {
+        if (Directory.Exists(SelectedFolder))
+        {
+            Fnames = FileUtils.GetFolderNames(SelectedFolder);
+            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled)
+            {
+                return true;
+            }
+
+            Logger.Warn("SearchAndMakeMethod: Folder is empty: {SelectedFolder}", SelectedFolder);
+            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"),
+                LangProvider.GetLang("FolderError")));
+            return false;
+        }
+
+        Logger.Error("Folder does not exist: {SelectedFolder}", SelectedFolder);
+        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"),
+            LangProvider.GetLang("InvalidPath")));
+        return false;
+    }
+
+    private static bool ValidateNetwork()
+    {
+        if (NetworkUtils.IsNetworkAvailable())
+        {
+            return true;
+        }
+
+        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"),
+            LangProvider.GetLang("NetworkError")));
+        return false;
+
+    }
+
+    private async Task InitializeClientIfRequired()
+    {
+        if (!IsObjectsInitialized)
+        {
+            Logger.Warn("SearchAndMakeMethod: Client Objects not initialized, Initializing now.");
+            await InitializeClientObjects();
+            IsObjectsInitialized = true;
+            Logger.Info("SearchAndMakeMethod: Client Objects Initialized.");
+        }
+    }
+
+    private void PrepareForSearchOperations()
+    {
+        StatusBarProperties.ResetData();
+        FinalListViewData.Data.Clear();
+        PrepareForSearch();
+    }
+
+    private async Task DownloadIconsOrEnableMake()
+    {
+        StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
+            StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
+        BusyIndicatorProperties.Text =
+            LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
+
+        if (_imgDownloadList.Count > 0)
+        {
+            await StartDownloadingAsync();
+        }
+        else
+        {
+            IsMakeEnabled = true;
+        }
+    }
+
+    private void HandleException(Exception e)
+    {
+        Logger.ForErrorEvent().Message("SearchAndMakeMethod: Exception Occurred. message: {Message}", e.Message)
+            .Exception(e).Log();
+        MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
+        StatusBarProperties.ResetData();
+        IsMakeEnabled = true;
+        IsBusy = false;
+    }
+    
+    #endregion
     private async Task ProcessPosterModeAsync()
     {
         Logger.Debug("Entered ProcessPosterModeAsync method");
@@ -403,76 +406,86 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
     {
         var folderQueue = new Queue<string>();
         folderQueue.Enqueue(rootFolderPath);
+
         while (folderQueue.Count > 0)
         {
             var folderPath = folderQueue.Dequeue();
             var subfolderNames = FileUtils.GetFolderNames(folderPath);
+
             if (subfolderNames.Count == 0)
             {
                 continue;
             }
-            StatusBarProperties.TotalFolders+= subfolderNames.Count;
+
+            StatusBarProperties.TotalFolders += subfolderNames.Count;
+
             foreach (var itemTitle in subfolderNames)
             {
-                var fullFolderPath = $@"{folderPath}\{itemTitle}";
-            
-                Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
-                var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
-
-                var resultCount = CalculateResultCount(response, isPickedById);
-                Logger.Info("Search Result Count: {ResultCount}", resultCount);
-                var dialogResult = false;
-                var isAutoPicked = false;
-                var skipAll = false;
-                switch (resultCount)
+                if (await ProcessItemAsync(folderPath, itemTitle))
                 {
-                    case 0:
-                        (dialogResult, skipAll) = await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
-                        break;
-                    case 1 when !IsPosterWindowShown:
-                    {
-                        isAutoPicked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
-                        break;
-                    }
-                    default:
-                    {
-                        if (resultCount >= 1)
-                        {
-                            (dialogResult, skipAll) = await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle.Title, isPickedById);
-                        }
-                        break;
-                    }
+                    break; // Skip All was selected
                 }
-
-                if (isAutoPicked || dialogResult)
-                {
-                    Logger.Debug("Auto picked:{IsAutoPicked}, dialog result : {DialogResult} for {ItemTitle}, " +
-                                 "adding to final list", isAutoPicked, dialogResult, itemTitle);
-                    if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
-                    {
-                        FinalListViewData.Data.Add(_pickedListDataTable.Last());
-                    }
-                    // TODO: Set cursor back to arrow here
-                }
-                StatusBarProperties.ProcessedFolder++;
-                if (!skipAll)
-                {
-                    continue;
-                }
-
-                Logger.Debug("Skip All selected, breaking loop");
-                break;
             }
 
-            if (!Services.Settings.SubfolderProcessingEnabled)
+            if (Services.Settings.SubfolderProcessingEnabled)
             {
-                continue;
+                ProcessSubfolders(folderPath, folderQueue);
             }
-
-            Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
-            var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            folders.ForEach(folderQueue.Enqueue);
         }
+    }
+
+    private async Task<bool> ProcessItemAsync(string folderPath, string itemTitle)
+    {
+        var fullFolderPath = Path.Combine(folderPath, itemTitle);
+        Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
+
+        var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
+        var resultCount = CalculateResultCount(response, isPickedById);
+        Logger.Info("Search Result Count: {ResultCount}", resultCount);
+
+        var (dialogResult, skipAll) = await ProcessResultsAsync(resultCount, itemTitle, response, fullFolderPath,
+            parsedTitle.Title, isPickedById, mediaType);
+
+        if (dialogResult)
+        {
+            AddToFinalList(itemTitle);
+        }
+
+        StatusBarProperties.ProcessedFolder++;
+        return skipAll;
+    }
+
+    private async Task<(bool dialogResult, bool skipAll)> ProcessResultsAsync(int resultCount, string itemTitle,
+        dynamic response, string fullFolderPath, string parsedTitle, bool isPickedById, string mediaType)
+    {
+        switch (resultCount)
+        {
+            case 0:
+                return await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById);
+            case 1 when !IsPosterWindowShown:
+                ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
+                return (true, false);
+            default:
+                return resultCount >= 1
+                    ? await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById)
+                    : (false, false);
+        }
+    }
+
+    private void AddToFinalList(string itemTitle)
+    {
+        Logger.Debug("Adding to final list for {ItemTitle}", itemTitle);
+        if (_pickedListDataTable is not null && _pickedListDataTable.Count != 0)
+        {
+            FinalListViewData.Data.Add(_pickedListDataTable[^1]);
+        }
+    }
+
+    private static void ProcessSubfolders(string folderPath, Queue<string> folderQueue)
+    {
+        Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
+        var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+        folders.ForEach(folderQueue.Enqueue);
     }
 
     private async Task<(ResultResponse response, ParsedTitle parsedTitle, bool isPickedById, string mediaType)> PerformPreprocessing(string itemTitle, string fullFolderPath)
@@ -487,16 +500,26 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
             isPickedById = true;
-            response = mediaType == "Game" ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+            response = mediaType == MediaTypes.Game ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
         }
         else
         {
             Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
-            response = SearchMode == "Game"
-                ? await _igdbObject.SearchGameAsync(parsedTitle.Title)
-                : DataUtils.ShouldUseParsedTitle(parsedTitle)
-                    ? await _tmdbObject.SearchAsync(parsedTitle, SearchMode)
-                    : await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
+            if (SearchMode == MediaTypes.Game)
+            {
+                response = await _igdbObject.SearchGameAsync(parsedTitle.Title);
+            }
+            else
+            {
+                if (DataUtils.ShouldUseParsedTitle(parsedTitle))
+                {
+                    response = await _tmdbObject.SearchAsync(parsedTitle, SearchMode);
+                }
+                else
+                {
+                    response = await _tmdbObject.SearchAsync(parsedTitle.Title, SearchMode);
+                }
+            }
         }
 
         return (response, parsedTitle, isPickedById, mediaType);
@@ -504,43 +527,33 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 
     private int CalculateResultCount(ResultResponse response, bool isPickedById)
     {
-        return isPickedById ? response.Result != null ? 1 : 0 :
-            SearchMode == "Game" ? response.Result.Length : response.Result.TotalResults;
+        if (isPickedById)
+        {
+            return response.Result != null ? 1 : 0;
+        }
+
+        return SearchMode == MediaTypes.Game ? response.Result.Length : response.Result.TotalResults;
     }
 
-    private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(
+        string itemTitle, ResultResponse response, string fullFolderPath, 
+        string parsedTitle, bool isPickedById)
     {
         Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
         MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
             LangProvider.GetLang("NoResultFound")));
-    
-        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
 
-        _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath, response,
-            _tmdbObject, _igdbObject, isPickedById,
-            r =>
-            {
-                var dialogResult = r.Result switch
-                {
-                    ButtonResult.None => false,
-                    ButtonResult.OK => true,
-                    ButtonResult.Cancel => false,
-                    _ => false
-                };
-                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
-                taskCompletionSource.SetResult((dialogResult, skipAll));
-            });
-        return await taskCompletionSource.Task;
+        return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
     }
 
-    private bool ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, bool isPickedById, string mediaType)
+    private void ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath,
+        bool isPickedById, string mediaType)
     {
-        bool isAutoPicked;
         Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
             itemTitle, SearchMode);
         try
         {
-            if (isPickedById ? mediaType == "Game" : SearchMode == "Game")
+            if (isPickedById ? mediaType == MediaTypes.Game : SearchMode == MediaTypes.Game)
             {
                 var result = response.Result[0];
                 _igdbObject.ResultPicked(result, fullFolderPath);
@@ -553,8 +566,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 _tmdbObject.ResultPicked(result, response.MediaType,
                     fullFolderPath, "", isPickedById);
             }
-
-            isAutoPicked = true;
         }
         catch (Exception ex)
         {
@@ -567,38 +578,54 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
 #if DEBUG
             MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
 #endif
-            isAutoPicked = false;
         }
-        return isAutoPicked;
     }
 
-    private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(string itemTitle, ResultResponse response, string fullFolderPath, string parsedTitle, bool isPickedById)
+    private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(
+        string itemTitle, ResultResponse response, string fullFolderPath, 
+        string parsedTitle, bool isPickedById)
     {
-        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
         if (!IsPosterWindowShown && IsSkipAmbiguous)
         {
-            taskCompletionSource.SetResult((false, false));
-            return await taskCompletionSource.Task;
+            return (false, false);
         }
 
         Logger.Debug("More than one result found for {ItemTitle}, {Mode}," +
-                     "always show poster window: {IsPosterWindowShown}, Skip ambigous titles: {IsSkipAmbiguous}," +
+                     "always show poster window: {IsPosterWindowShown}, Skip ambiguous titles: {IsSkipAmbiguous}," +
                      " showing poster window", itemTitle, SearchMode, IsPosterWindowShown, IsSkipAmbiguous);
-                            
-        _dialogService.ShowSearchResult(SearchMode, parsedTitle, fullFolderPath,
-            response, _tmdbObject, _igdbObject, isPickedById,
-            r =>
+
+        return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
+    }
+    
+    private async Task<(bool dialogResult, bool skipAll)> ShowSearchResultDialog(
+        string parsedTitle, string fullFolderPath, ResultResponse response, bool isPickedById)
+    {
+        var taskCompletionSource = new TaskCompletionSource<(bool dialogResult, bool skipAll)>();
+
+        var dialogParams = new SearchResultDialogParams
+        {
+            SearchMode = SearchMode,
+            Query = parsedTitle,
+            FolderPath = fullFolderPath,
+            Result = response,
+            TmdbObject = _tmdbObject,
+            IgdbObject = _igdbObject,
+            IsPickedById = isPickedById,
+            CallBack = dialog =>
             {
-                var dialogResult = r.Result switch
+                var dialogResult = dialog.Result switch
                 {
                     ButtonResult.None => false,
                     ButtonResult.OK => true,
                     ButtonResult.Cancel => false,
                     _ => false
                 };
-                r.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
+                dialog.Parameters.TryGetValue<bool>("skipAll", out var skipAll);
                 taskCompletionSource.SetResult((dialogResult, skipAll));
-            });
+            }
+        };
+        _dialogService.ShowSearchResult(dialogParams);
+
         return await taskCompletionSource.Task;
     }
     
@@ -621,7 +648,7 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             StatusBarProperties.AppStatus = "Searching";
             _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
-            Logger.Debug("ProcessProfessionalMode: found {_pickedListDataTable.Rows.Count} results, adding to final list");
+            Logger.Debug("ProcessProfessionalMode: found {ResultCount} results, adding to final list", _pickedListDataTable.Count);
             FinalListViewData.Data.AddRange(_pickedListDataTable);
             StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
             if (!Services.Settings.SubfolderProcessingEnabled)
@@ -671,14 +698,21 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
             }
         });
+        ShowPreviewer = new DelegateCommand(() => { _dialogService.ShowPreviewer(_ => { }); });
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
     }
 
     private static void ExplorerIntegrationMethod(string isIntegrationEnabled)
     {
         var value = Convert.ToBoolean(isIntegrationEnabled);
-        if (value) ProcessUtils.AddToContextMenu();
-        else ProcessUtils.RemoveFromContextMenu();
+        if (value)
+        {
+            ProcessUtils.AddToContextMenu();
+        }
+        else
+        {
+            ProcessUtils.RemoveFromContextMenu();
+        }
     }
 
     private void DeleteMediaInfo()
@@ -710,10 +744,9 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         
     }
 
-    private void InitializeProperties()
+    private async Task InitializeProperties()
     {
         Logger.Debug("Initializing Properties for MainWindow.");
-        Fnames = new List<string>();
         BusyIndicatorProperties = new ProgressBarData
         {
             Max = 100,
@@ -724,26 +757,37 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png",
             TotalIcons = 0,
-            AppStatus = "Idle",
-            AppStatusAdditional = ""
+            AppStatus = Lang.Idle,
+            AppStatusAdditional = "",
+            ProgressBarData =
+            {
+                Max = 100,
+                Value = 0
+            }
         };
         FinalListViewData = new ListViewData
         {
-            Data = new ObservableCollection<ListItem>(),
+            Data = [],
             SelectedItem = new ListItem(),
             SelectedCount = 0
         };
-        StatusBarProperties.ProgressBarData.Max = 100;
-        StatusBarProperties.ProgressBarData.Value = 0;
-        _imgDownloadList = new List<ImageToDownload>();
-        _pickedListDataTable = [];
-        if (NetworkUtils.IsNetworkAvailable())
+        try
         {
-            InitializeClientObjects();
-            IsObjectsInitialized = true;
+            if (NetworkUtils.IsNetworkAvailable())
+            {
+                await InitializeClientObjects();
+                IsObjectsInitialized = true;
+            }
+            else
+            {
+                IsObjectsInitialized = false;
+            }
         }
-        else
+        catch (Exception ex)
+        {
+            Logger.ForErrorEvent().Message("Failed to initialize client objects").Exception(ex).Log();
             IsObjectsInitialized = false;
+        }
     }
 
     private void PrepareForSearch()
@@ -766,7 +810,6 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         {
             if (Directory.Exists(SelectedFolder))
             {
-                //TODO: Replace with DialogService if efficient.
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
                         LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
                 {
@@ -801,7 +844,11 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
         
         var folder = selectedItem.Folder;
         Logger.Info("Double Clicked on ListView, selected folder: {SelectedFolder}",SelectedFolder);
-        if (folder == null) return;
+        if (folder == null)
+        {
+            return;
+        }
+
         if (Directory.Exists(folder))
         {
             ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
@@ -887,32 +934,31 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
             ConfirmStr = LangProvider.GetLang("Confirm")
         };
         Growl.SuccessGlobal(info);
-        switch (MessageBox.Show(
-                    CustomMessageBox.Ask($"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
-                        LangProvider.GetLang("IconCreated"))))
+        if (MessageBox.Show(
+                CustomMessageBox.Ask(
+                    $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
+                    LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
         {
-            case MessageBoxResult.Yes:
-                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
-                break;
+            ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
         }
     }
 
-    private void InitializeClientObjects()
+    private async Task InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
-        FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
-            out _devClientId);
-        if (string.IsNullOrEmpty(_tmdbapiKey)
-            || string.IsNullOrEmpty(_igdbClientId) || string.IsNullOrEmpty(_igdbClientSecret)
-            || string.IsNullOrEmpty(_devClientSecret) || string.IsNullOrEmpty(_devClientId))
+        FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret, out var devClientSecret,
+            out var devClientId);
+        if (string.IsNullOrEmpty(tmdbapiKey)
+            || string.IsNullOrEmpty(igdbClientId) || string.IsNullOrEmpty(igdbClientSecret)
+            || string.IsNullOrEmpty(devClientSecret) || string.IsNullOrEmpty(devClientId))
         {
             Logger.Warn("API Keys not provided, Showing API Config Window.");
             _dialogService.ShowApiConfig(r =>
             {
                 if (r.Result != ButtonResult.Cancel)
                 {
-                    FileUtils.ReadApiConfiguration(out _tmdbapiKey, out _igdbClientId, out _igdbClientSecret, out _devClientSecret,
-                        out _devClientId);
+                    FileUtils.ReadApiConfiguration(out tmdbapiKey, out igdbClientId, out igdbClientSecret, out devClientSecret,
+                        out devClientId);
                     return;
                 }
 
@@ -923,14 +969,63 @@ public class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposabl
                 Environment.Exit(0);
             });
         }
-        _tmdbClient = new TMDbClient(_tmdbapiKey);
-        _igdbClient = new IGDBClient(_igdbClientId, _igdbClientSecret, new IgdbJotTrackerStore());
-        _igdbObject = new IgdbClass(ref _pickedListDataTable, ref _igdbClient, ref _imgDownloadList);
+        _tmdbClient = new TMDbClient(tmdbapiKey);
+        var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
+        _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
         _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
-        _dArtObject = new DArt(_devClientSecret, _devClientId);
+        _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
         Logger.Debug("Client Objects Initialized.");
     }
 
+    private void TrackProperties()
+    {
+        Services.Tracker.Configure<MainWindowViewModel>()
+            .Property(p => p.IsRatingVisible, false)
+            .Property(p => p.IsPosterMockupUsed, true)
+            .Property(p => p.IsPosterWindowShown, false)
+            .Property(p => p.AppLanguage, Languages.English)
+            .Property(p => p.Theme, FoliconThemes.System)
+            .Property(p => p.EnableErrorReporting, false)
+            .PersistOn(nameof(PropertyChanged));
+        Services.Tracker.Track(this);
+    }
+
+    private void SetCultureInfo()
+    {
+        var selectedLanguage = AppLanguage;
+        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
+        LangProvider.Culture = cultureInfo;
+        Thread.CurrentThread.CurrentCulture = cultureInfo;
+        Thread.CurrentThread.CurrentUICulture = cultureInfo;
+        Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
+    }
+
+    private void ProcessCommandLineArgs()
+    {
+        var cmdArgs = ProcessUtils.GetCmdArgs();
+        if (!cmdArgs.TryGetValue("path", out var selectedFolder))
+        {
+            return;
+        }
+
+        SelectedFolder = selectedFolder;
+        var mode = cmdArgs["mode"];
+        if (mode != "Professional" &&
+            new List<string> { MediaTypes.Mtv, MediaTypes.Tv, MediaTypes.Movie, MediaTypes.Game }.Contains(mode))
+        {
+            IconMode = "Poster";
+            SearchMode = mode;
+        }
+        else
+        {
+            IconMode = "Professional";
+        }
+
+        Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
+            SelectedFolder, IconMode);
+        SearchAndMakeMethod();
+    }
+    
     private void AboutMethod()
     {
         _dialogService.ShowAboutBox(_ => { });

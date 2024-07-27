@@ -1,6 +1,4 @@
-﻿using FoliCon.Modules.utils;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 public class ApiConfigurationViewModel : BindableBase, IDialogAware
 {

@@ -1,7 +1,4 @@
-﻿using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.utils;
+﻿namespace FoliCon.Modules.utils;
 
 public static class DialogUtils
 {
@@ -32,7 +29,11 @@ public static class DialogUtils
             ShowDateTime = false,
             ActionBeforeClose = isConfirmed =>
             {
-                if (!isConfirmed) return true;
+                if (!isConfirmed)
+                {
+                    return true;
+                }
+
                 Logger.Debug("Update Confirmed. Starting Update Process");
                 ProcessUtils.StartProcess(ver.ReleaseUrl);
 

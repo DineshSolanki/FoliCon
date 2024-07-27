@@ -1,22 +1,24 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using NLog;
-
-namespace FoliCon.Modules.utils;
+﻿namespace FoliCon.Modules.utils;
 
 public static class DataUtils
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     
     public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
     {
-        return isPickedById ? result != null ? 1 : 0 : searchMode == "Game" ? result.Length : result.TotalResults;
+        if (isPickedById)
+        {
+            return result != null ? 1 : 0;
+        }
+
+        return searchMode == MediaTypes.Game ? result.Length : result.TotalResults;
     }
 
     /// <summary>
     /// Internal helper to format the Rating string for the selected Item.
-    /// The decimal points of rating should be limited to 2 digits : https://github.com/DineshSolanki/FoliCon/issues/145
-    /// Eg: X.XX -> 7.15
+    /// The decimal points of the rating should be limited to two digits:
+    /// https://github.com/DineshSolanki/FoliCon/issues/145
+    /// e.g.: X.XX -> 7.15
     /// </summary>
     /// <param name="ratingInput">Rating value.</param>
     /// <returns>Formatted Rating value.</returns>
@@ -45,7 +47,7 @@ public static class DataUtils
        }
        catch (ArgumentException e)
        {
-              Logger.Trace("Pattern {Pattern} is not a valid regex. reason: {Reason}", pattern, e.Message);
+              Logger.Trace(e, "Pattern {Pattern} is not a valid regex. reason: {Reason}", pattern, e.Message);
            return false;
        }
    }

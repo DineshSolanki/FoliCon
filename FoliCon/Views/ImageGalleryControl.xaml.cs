@@ -1,18 +1,16 @@
 ﻿using System.Collections;
-using Image = System.Windows.Controls.Image;
 
 namespace FoliCon.Views;
 
 public partial class ImageGalleryControl
 {
+    
     public ImageGalleryControl()
     {
         InitializeComponent();
     }
 
     #region Variables
-
-    private bool _autoScroll = true;
     
     public static readonly DependencyProperty CustomBusyContentTemplateProperty =
         DependencyProperty.Register(nameof(CustomBusyContentTemplate), typeof(DataTemplate), typeof(ImageGalleryControl), new PropertyMetadata(null));
@@ -81,21 +79,6 @@ public partial class ImageGalleryControl
     #endregion
 
     #region Methods
-
-    private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
-    {
-
-        if (e.ExtentHeightChange == 0)
-        {
-            _autoScroll = ScrollViewer.VerticalOffset == ScrollViewer.ScrollableHeight;
-        }
-
-
-        if (_autoScroll && e.ExtentHeightChange != 0)
-        {
-            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.ExtentHeight);
-        }
-    }
     
     private void FrameworkElement_OnUnloaded(object sender, RoutedEventArgs e)
     {

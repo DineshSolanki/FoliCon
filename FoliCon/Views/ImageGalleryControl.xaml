@@ -24,7 +24,7 @@
             </Grid.RowDefinitions>
             <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="0" HorizontalScrollBarVisibility="Disabled"
                              HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
+                             VerticalAlignment="Stretch" ui:ScrollViewerBehavior.AutoScroll="True">
                 <ItemsControl ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>

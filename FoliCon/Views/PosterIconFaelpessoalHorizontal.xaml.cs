@@ -3,43 +3,15 @@
 /// <summary>
 /// Interaction logic for PosterIconFaelpessoalHorizontal.xaml
 /// </summary>
-public partial class PosterIconFaelpessoalHorizontal : UserControl
+public partial class PosterIconFaelpessoalHorizontal
 {
     public PosterIconFaelpessoalHorizontal()
     {
         InitializeComponent();
     }
 
-    public PosterIconFaelpessoalHorizontal(object dataContext)
+    public PosterIconFaelpessoalHorizontal(object dataContext) : base(dataContext)
     {
-        DataContext = dataContext;
         InitializeComponent();
-    }
-    public Bitmap RenderToBitmap()
-    {
-        return RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
-    }
-
-    private RenderTargetBitmap AsRenderTargetBitmap()
-    {
-        var size = new System.Windows.Size(256, 256);
-        Measure(size);
-        Arrange(new Rect(size));
-
-        var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
-        RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
-        RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-        rtb.Render(this);
-
-        return rtb;
-    }
-
-    private static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)
-    {
-        var stream = new MemoryStream();
-        BitmapEncoder encoder = new PngBitmapEncoder();
-        encoder.Frames.Add(BitmapFrame.Create(rtb));
-        encoder.Save(stream);
-        return new Bitmap(stream);
     }
 }

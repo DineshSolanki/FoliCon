@@ -1,6 +1,4 @@
-﻿using FoliCon.Modules.utils;
-
-namespace FoliCon.Models.Data;
+﻿namespace FoliCon.Models.Data;
 
 public class PosterIcon: BindableBase
 {
@@ -35,7 +33,7 @@ public class PosterIcon: BindableBase
 
     public PosterIcon()
     {
-        var filePath = Path.GetTempPath() + "\\posterDummy.png";
+        var filePath = $"{Path.GetTempPath()}\\posterDummy.png";
         if (!File.Exists(filePath))
         {
             _ = NetworkUtils.DownloadImageFromUrlAsync(new Uri("https://image.tmdb.org/t/p/original/r0bgHi3MwGHTKPWyJdORsb4ukY8.jpg"), filePath);
@@ -56,13 +54,8 @@ public class PosterIcon: BindableBase
         var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
     }
-    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle="FoliCon")
+    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle):this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
     {
-        RatingVisibility = ratingVisibility;
-        Rating = rating;
-        MockupVisibility = mockupVisibility;
-        var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
-        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
         MediaTitle = mediaTitle;
     }
 }

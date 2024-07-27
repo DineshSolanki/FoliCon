@@ -22,8 +22,16 @@ public class LangProvider : INotifyPropertyChanged
         get => Lang.Culture;
         set
         {
-            if (value == null) return;
-            if (Equals(_cultureInfoStr, value.EnglishName)) return;
+            if (value == null)
+            {
+                return;
+            }
+
+            if (Equals(_cultureInfoStr, value.EnglishName))
+            {
+                return;
+            }
+
             Lang.Culture = value;
             _cultureInfoStr = value.EnglishName;
 

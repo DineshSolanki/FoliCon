@@ -1,9 +1,4 @@
-﻿using FoliCon.Models.Api;
-using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.utils;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 
 namespace FoliCon.Modules.DeviantArt;
 
@@ -35,7 +30,7 @@ public class DArt : BindableBase
         set => SetProperty(ref _clientAccessToken, value);
     }
 
-    public DArt(string clientSecret, string clientId)
+    private DArt(string clientSecret, string clientId)
     {
         Services.Tracker.Configure<DArt>()
             .Property(p => p.ClientAccessToken)
@@ -43,10 +38,16 @@ public class DArt : BindableBase
         ClientSecret = clientSecret;
         ClientId = clientId;
         Services.Tracker.Track(this);
-        GetClientAccessTokenAsync();
+    }
+    
+    public static async Task<DArt> GetInstanceAsync(string clientSecret, string clientId)
+    {
+        DArt dArt = new(clientSecret, clientId);
+        await dArt.GetClientAccessTokenAsync();
+        return dArt;
     }
 
-    public async void GetClientAccessTokenAsync()
+    private async Task GetClientAccessTokenAsync()
     {
         if (!_cache.TryGetValue("DArtToken", out string cachedToken))
         {
@@ -73,7 +74,11 @@ public class DArt : BindableBase
         var jsonData = await response.Content.ReadAsStringAsync();
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
-        if (tokenResponse == null) return string.Empty;
+        if (tokenResponse == null)
+        {
+            return string.Empty;
+        }
+
         var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(tokenResponse.ExpiresIn));
         _cache.Set("DArtToken", tokenResponse.AccessToken, cacheEntryOptions);
 
@@ -83,7 +88,7 @@ public class DArt : BindableBase
 
     public async Task<DArtBrowseResult> Browse(string query, int offset = 0)
     {
-        GetClientAccessTokenAsync();
+        await GetClientAccessTokenAsync();
 
         var url = GetBrowseApiUrl(query, offset);
         using var response = await Services.HttpC.GetAsync(new Uri(url));
@@ -101,18 +106,18 @@ public class DArt : BindableBase
     /// <returns>The DArtDownloadResponse object containing the download details.</returns>
     public async Task<DArtDownloadResponse> Download(string deviationId)
     {
-        GetClientAccessTokenAsync();
+        await GetClientAccessTokenAsync();
         var dArtDownloadResponse = await GetDArtDownloadResponseAsync(deviationId);
-        await TryExtraction(deviationId, dArtDownloadResponse, CancellationToken.None, new Progress<ProgressInfo>(_ => { }));
+        await TryExtraction(deviationId, dArtDownloadResponse, CancellationToken.None, new Progress<ProgressBarData>(_ => { }));
 
         return dArtDownloadResponse;
     }
 
-    private async Task<DArtDownloadResponse> TryExtraction(string deviationId,
+    private static async Task<DArtDownloadResponse> TryExtraction(string deviationId,
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
-        progressCallback.Report(new ProgressInfo(0, 1, LangProvider.Instance.Downloading));
+        progressCallback.Report(new ProgressBarData(0, 1, LangProvider.Instance.Downloading));
         var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(deviationId);
         dArtDownloadResponse.LocalDownloadPath = targetDirectoryPath;
         var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src, cancellationToken);
@@ -132,9 +137,9 @@ public class DArt : BindableBase
 
     public async Task<DArtDownloadResponse> ExtractDeviation(string deviationId,
         DArtDownloadResponse dArtDownloadResponse, CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
-        GetClientAccessTokenAsync();
+        await GetClientAccessTokenAsync();
         return await TryExtraction(deviationId, dArtDownloadResponse, cancellationToken, progressCallback);
 
     }
@@ -146,15 +151,15 @@ public class DArt : BindableBase
         return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
     }
 
-    private async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath,
+    private static async Task ProcessCompressedFiles(HttpResponseMessage downloadResponse, string targetDirectoryPath,
         CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
         await using var stream = await downloadResponse.Content.ReadAsStreamAsync(cancellationToken);
         stream.ExtractPngAndIcoToDirectory(targetDirectoryPath, cancellationToken, progressCallback);
     }
 
-    private async Task FileStreamToDestination(HttpResponseMessage downloadResponse, string targetDirectoryPath,
+    private static async Task FileStreamToDestination(HttpResponseMessage downloadResponse, string targetDirectoryPath,
         string filename)
     {
         await using var fileStream = await downloadResponse.Content.ReadAsStreamAsync();

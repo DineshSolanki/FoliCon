@@ -1,26 +1,23 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using FoliCon.Modules.Media;
-using NLog;
-using PosterIcon = FoliCon.Models.Data.PosterIcon;
+﻿using FoliCon.Modules.Media;
 
 namespace FoliCon.Modules.utils;
 
+[Localizable(false)]
 public static class IconUtils
 {
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string ImageName = "folicon";
 
     public static string GetImageName()
     {
         return ImageName;
     }
+    
     /// <summary>
     /// Creates Icons from PNG
     /// </summary>
     public static int MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
-        bool isRatingVisible = false, bool isMockupVisible = true)
+        bool isRatingVisible, bool isMockupVisible)
     {
         Logger.Debug(
             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}",
@@ -53,7 +50,11 @@ public static class IconUtils
 
                 File.Delete(pngFilePath); //<--IO Exception here
             }
-            if (!File.Exists(targetFile)) continue;
+            if (!File.Exists(targetFile))
+            {
+                continue;
+            }
+
             FileUtils.HideFile(targetFile);
             FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{parentFolder}\{folderName}");
         }

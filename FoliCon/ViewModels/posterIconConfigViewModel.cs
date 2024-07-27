@@ -1,8 +1,4 @@
-﻿using FoliCon.Modules.Configuration;
-using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 public class PosterIconConfigViewModel : BindableBase, IDialogAware
 {

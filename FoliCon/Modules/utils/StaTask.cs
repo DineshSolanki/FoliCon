@@ -1,7 +1,4 @@
-﻿using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.utils;
+﻿namespace FoliCon.Modules.utils;
 
 //Taken from-https://stackoverflow.com/a/16722767/8076598
 public static class StaTask

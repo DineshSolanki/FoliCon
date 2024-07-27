@@ -1,6 +1,4 @@
 ﻿using HandyControl.Themes;
-using NLog;
-using Logger = NLog.Logger;
 
 namespace FoliCon.Views;
 
@@ -36,8 +34,11 @@ public partial class HtmlBox
     
     private async Task ProcessBrowse()
     {
-        if (Browser is not {IsLoaded: true}) return;
-        
+        if (Browser is not {IsLoaded: true})
+        {
+            return;
+        }
+
         var content = !IsVideoAvailable
             ? $"""<html><body style="background-color: {_backgroundColor}"></body></html>"""
             : GenerateHtmlContent();

@@ -1,6 +1,4 @@
 ﻿using System.Text;
-using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
@@ -27,32 +25,26 @@ public static class StreamExtensions
     /// <param name="progressCallback">A Callback which can be used to report the progress of the extraction.</param>
     public static void ExtractPngAndIcoToDirectory(this Stream archiveStream, string targetPath,
         CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
         using var reader = ArchiveFactory.Open(archiveStream, ReaderOptions);
-        var pngAndIcoEntries = reader.Entries.Where(entry =>
-            !IsUnwantedDirectoryOrFileType(entry) && FileUtils.IsPngOrIco(entry.Key)).ToList();
+        var pngAndIcoEntries = reader.Entries.Where(IsValidFile).ToList();
         
         
         var totalCount = pngAndIcoEntries.Count;
-        var extractionProgress = new ProgressInfo(0, totalCount, LangProvider.Instance.Extracting);
+        var extractionProgress = new ProgressBarData(0, totalCount, LangProvider.Instance.Extracting);
         progressCallback.Report(extractionProgress);
         foreach (var entry in pngAndIcoEntries)
         {
             cancellationToken.ThrowIfCancellationRequested();
             entry.WriteToDirectory(targetPath, ExtractionSettings);
-            extractionProgress.Current++;
+            extractionProgress.Value++;
             progressCallback.Report(extractionProgress);
         }
     }
-
-    private static bool IsUnwantedDirectoryOrFileType(IEntry entry)
+    
+    private static bool IsValidFile(IEntry entry)
     {
-        return entry.Key != null && (entry.IsDirectory ||
-                                    entry.Key.Contains("ResourceForks") ||
-                                    entry.Key.Contains("__MACOSX") ||
-                                    entry.Key.StartsWith("._") ||
-                                    entry.Key.Equals(".DS_Store") ||
-                                    entry.Key.Equals("Thumbs.db"));
+        return !entry.IsDirectory && !FileUtils.IsExcludedFileIdentifier(entry.Key) && FileUtils.IsPngOrIco(entry.Key);
     }
 }

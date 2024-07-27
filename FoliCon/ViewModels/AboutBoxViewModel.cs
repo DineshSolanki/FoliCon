@@ -1,9 +1,4 @@
-﻿using FoliCon.Modules.Configuration;
-using FoliCon.Modules.utils;
-using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 public class AboutBoxViewModel : BindableBase, IDialogAware
 {
