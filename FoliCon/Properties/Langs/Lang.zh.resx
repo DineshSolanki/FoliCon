@@ -660,4 +660,10 @@ and refresh Icon Cache?</value>
   <data name="Downloading" xml:space="preserve">
       <value>Downloading...</value>
     </data>
+  <data name="CreatingIconWithCount" xml:space="preserve">
+      <value>Creating Icon {0}/{1}...</value>
+    </data>
+  <data name="RefreshingFolder" xml:space="preserve">
+      <value>Refreshing folder</value>
+    </data>
 </root>
