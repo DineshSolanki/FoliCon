@@ -1,11 +1,12 @@
 ﻿namespace FoliCon.Models.Constants;
 
+[Localizable(false)]
 internal static class GlobalVariables
 {
     
     public static IconOverlay IconOverlayType()
     {
-        return new PosterIconConfigViewModel().IconOverlay switch
+        return IconOverlayTypeString switch
         {
             "Legacy" => IconOverlay.Legacy,
             "Alternate" => IconOverlay.Alternate,
@@ -17,4 +18,7 @@ internal static class GlobalVariables
     }
 
     public static readonly string MediaInfoFile = "info.folicon";
+
+    private static string IconOverlayTypeString =>
+        Services.Tracker.Store.GetData("PosterIconConfigViewModel")["p.IconOverlay"].ToString();
 }
