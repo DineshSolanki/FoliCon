@@ -461,7 +461,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         switch (resultCount)
         {
-            case 0:
+            case 0 when !IsSkipAmbiguous:
                 return await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById);
             case 1 when !IsPosterWindowShown:
                 ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
