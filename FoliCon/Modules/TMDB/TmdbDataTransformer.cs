@@ -137,7 +137,7 @@ internal class TmdbDataTransformer(
                 }
                 default: continue;
             }
-
+            listItem.MediaType = mediaType;
             Logger.Trace("Adding {item}", listItem);
             items.Add(listItem);
             Logger.Info("Added {MediaName} to List", listItem.Title);
@@ -271,13 +271,13 @@ internal class TmdbDataTransformer(
     {
         var mediaType = details.Result.MediaType;
         id = 0;
-        details.ResultType = mediaType.ToString();
-        return mediaType switch
+        details.ResultType = mediaType switch
         {
-            MediaType.Tv => PickResult(details, out id),
-            MediaType.Movie => PickResult(details, out id),
+            MediaType.Tv => MediaTypes.Tv,
+            MediaType.Movie => MediaTypes.Movie,
             _ => mediaType
         };
+        return PickResult(details, out id);
     }
     
     private static dynamic CastResult(Type targetType, dynamic result)
