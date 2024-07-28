@@ -49,22 +49,27 @@ public static class FileUtils
     /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
     /// </summary>
     /// <param name="folderPath">Path to delete Icons from</param>
-    public static void DeleteIconsFromSubfolders(string folderPath)
+    public static async Task DeleteIconsFromSubfoldersAsync(string folderPath)
     {
         Logger.Debug("Deleting Icons from Subfolders of: {FolderPath}", folderPath);
         DeleteIconsFromFolder(folderPath);
-        foreach (var folder in Directory.EnumerateDirectories(folderPath))
-        {
-            DeleteIconsFromFolder(folder);
-        }
 
-        ProcessUtils.RefreshIconCache();
+        var subFolders = Directory.EnumerateDirectories(folderPath).ToList();
+
+        await Parallel.ForEachAsync(subFolders,
+            async (folder, cancellationToken) =>
+            {
+                await Task.Run(() => DeleteIconsFromFolder(folder), cancellationToken);
+            });
+
+        await ProcessUtils.RefreshIconCacheAsync();
         Logger.Debug("Icons Deleted from Subfolders of: {FolderPath}", folderPath);
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT, folderPath);
     }
 
     public static void DeleteIconsFromFolder(string folderPath)
     {
+        
         Logger.Debug("Deleting Icons from: {FolderPath}", folderPath);
         
         var icoFile = Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico");
