@@ -39,7 +39,7 @@ public static class IconUtils
              var targetFile = $@"{parentFolder}\{folderName}\{ImageName}.ico";
              var pngFilePath = $@"{parentFolder}\{folderName}\{ImageName}.png";
              
-             if (File.Exists(pngFilePath) && !File.Exists(targetFile))
+             if (FileUtils.FileExists(pngFilePath) && !FileUtils.FileExists(targetFile))
              {
                  var rating = item.Rating;
                  var mediaTitle = item.Title;
@@ -57,7 +57,7 @@ public static class IconUtils
                  File.Delete(pngFilePath); //<--IO Exception here
              }
              
-             if (File.Exists(targetFile))
+             if (FileUtils.FileExists(targetFile))
              {
                  FileUtils.HideFile(targetFile);
                  FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{parentFolder}\{folderName}");
@@ -91,7 +91,7 @@ public static class IconUtils
     {
         Logger.Debug("Converting From PNG to ICO, {IconProperties}", iconProperties);
         var filmFolderPath = iconProperties.FilmFolderPath;
-        if (!File.Exists(filmFolderPath))
+        if (!FileUtils.FileExists(filmFolderPath))
         {
             Logger.Warn("PNG File Not Found: {FilmFolderPath}", filmFolderPath);
             return;

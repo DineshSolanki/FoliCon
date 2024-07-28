@@ -34,7 +34,7 @@ public class PosterIcon: BindableBase
     public PosterIcon()
     {
         var filePath = $"{Path.GetTempPath()}\\posterDummy.png";
-        if (!File.Exists(filePath))
+        if (!FileUtils.FileExists(filePath))
         {
             _ = NetworkUtils.DownloadImageFromUrlAsync(new Uri("https://image.tmdb.org/t/p/original/r0bgHi3MwGHTKPWyJdORsb4ukY8.jpg"), filePath);
         }

@@ -41,6 +41,10 @@ public static class FileUtils
     public static bool IsExcludedFileIdentifier(string fileName) =>
         fileName != null && ExcludedFileIdentifiers.Any(fileName.Contains);
     
+    public static bool FileExists(string path)
+    {
+        return ShlwApi.PathFileExists(path);
+    }
     /// <summary>
     /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
     /// </summary>
@@ -67,7 +71,7 @@ public static class FileUtils
         var iniFile = Path.Combine(folderPath, "desktop.ini");
         try
         {
-            if (File.Exists(icoFile))
+            if (FileExists(icoFile))
             {
                 File.Delete(icoFile);
             }
@@ -76,7 +80,7 @@ public static class FileUtils
                 Logger.Debug("ICO File Not Found: {IcoFile}", icoFile);
             }
 
-            if (File.Exists(iniFile))
+            if (FileExists(iniFile))
             {
                 File.Delete(iniFile);
             }
@@ -114,7 +118,7 @@ public static class FileUtils
         if (!string.IsNullOrEmpty(folderPath))
         {
             folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
-                where !File.Exists($@"{folder}\{IconUtils.GetImageName()}.ico")
+                where !FileExists($@"{folder}\{IconUtils.GetImageName()}.ico")
                 select Path.GetFileName(folder));
         }
 
@@ -177,7 +181,7 @@ public static class FileUtils
     public static void HideFile(string icoFile)
     {
         Logger.Debug("Hiding File: {IcoFile}", icoFile);
-        if (!File.Exists(icoFile))
+        if (!FileExists(icoFile))
         {
             Logger.ForErrorEvent().Message("File Not Found: {IcoFile}", icoFile).Log();
             return;
@@ -206,7 +210,7 @@ public static class FileUtils
         var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
         try
         {
-            if (!File.Exists(filePath))
+            if (!FileExists(filePath))
             {
                 File.Create(filePath).Dispose();
             }
@@ -237,7 +241,7 @@ public static class FileUtils
         string mediaType = null;
         var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
 
-        if (File.Exists(filePath))
+        if (FileExists(filePath))
         {
             id = InIHelper.ReadValue("ID", null, filePath);
             mediaType = InIHelper.ReadValue("MediaType", null, filePath);
@@ -297,7 +301,7 @@ public static class FileUtils
     {
         var path = Path.Combine(Path.GetTempPath(), resource);
         Logger.Debug("Getting Resource Path, Resource: {Resource}, Path: {Path}", resource, path);
-        if (File.Exists(path))
+        if (FileExists(path))
         {
             return path;
         }
