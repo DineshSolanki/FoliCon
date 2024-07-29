@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.ViewModels
 {
+    [Localizable(false)]
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -25,7 +26,7 @@
         public PosterIcon PosterIconInstance
         {
             get => _posterIconInstance;
-            set => SetProperty(ref _posterIconInstance, value);
+            private set => SetProperty(ref _posterIconInstance, value);
         }
         public string Rating
         {

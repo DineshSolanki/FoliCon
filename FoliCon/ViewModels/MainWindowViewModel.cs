@@ -62,7 +62,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     public ListViewData FinalListViewData
     {
         get => _finalListViewData;
-        set => SetProperty(ref _finalListViewData, value);
+        private set => SetProperty(ref _finalListViewData, value);
     }
 
     private readonly IDialogService _dialogService;
@@ -70,7 +70,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
     public ProgressBarData BusyIndicatorProperties { get => _busyIndicatorProperties; set => SetProperty(ref _busyIndicatorProperties, value); }
-    public List<string> Fnames { get; set; } = [];
+    private List<string> Fnames { get; set; } = [];
 
     public bool IsMakeEnabled
     {
@@ -84,13 +84,13 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set => SetProperty(ref _isSkipAmbiguous, value);
     }
 
-    public bool StopIconDownload
+    private bool StopIconDownload
     {
         get => _stopIconDownload;
         set => SetProperty(ref _stopIconDownload, value);
     }
 
-    public string IconMode
+    private string IconMode
     {
         get => _iconMode;
         set
@@ -100,7 +100,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
     }
 
-    public string SearchMode
+    private string SearchMode
     {
         get => _searchMode;
         set => SetProperty(ref _searchMode, value);
@@ -405,7 +405,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         IsMakeEnabled = false;
         await ProcessPosterFolderAsync(SelectedFolder);
 
-        StatusBarProperties.AppStatus = "Idle";
+        StatusBarProperties.AppStatus = Lang.Idle;
         StatusBarProperties.AppStatusAdditional = "";
     }
 
@@ -497,7 +497,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     private async Task<(ResultResponse response, ParsedTitle parsedTitle, bool isPickedById, string mediaType)> PerformPreprocessing(string itemTitle, string fullFolderPath)
     {
-        StatusBarProperties.AppStatus = "Searching";
+        StatusBarProperties.AppStatus = Lang.Searching;
         StatusBarProperties.AppStatusAdditional = itemTitle;
         var parsedTitle = TitleCleaner.CleanAndParse(itemTitle);
         var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
@@ -652,7 +652,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 continue;
             }
             StatusBarProperties.TotalFolders+= subfolderNames.Count;
-            StatusBarProperties.AppStatus = "Searching";
+            StatusBarProperties.AppStatus = Lang.Searching;
             _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
             Logger.Debug("ProcessProfessionalMode: found {ResultCount} results, adding to final list", _pickedListDataTable.Count);
@@ -867,7 +867,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         IsMakeEnabled = false;
         StatusBarProperties.AppStatus = LangProvider.GetLang("Creating Icons");
         await DownloadAndMakeIconsAsync();
-        StatusBarProperties.AppStatus = "Idle";
+        StatusBarProperties.AppStatus = Lang.Idle;
         StatusBarProperties.AppStatusAdditional = "";
     }
 

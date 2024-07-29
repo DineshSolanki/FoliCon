@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.IGDB;
 
+[Localizable(false)]
 public class IgdbService(ref IGDBClient serviceClient)
 {
     private const string ServiceClientIsNotInitialized = "Service Client is not initialized.";
@@ -19,7 +20,7 @@ public class IgdbService(ref IGDBClient serviceClient)
         }
 
         var r = await _serviceClient.QueryAsync<Game>(IGDBClient.Endpoints.Games,
-            $"search \"{query}\"; fields artworks.image_id, name,first_release_date,total_rating,summary,cover.*;");
+            $"""search "{query}"; fields artworks.image_id, name,first_release_date,total_rating,summary,cover.*;""");
 
         return new ResultResponse
         {

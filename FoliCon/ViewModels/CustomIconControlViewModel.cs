@@ -4,6 +4,7 @@ using FoliCon.Modules.Media;
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -54,7 +55,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set => SetProperty(ref _isUndoEnable, value);
     }
 
-    public string SelectedDirectory
+    private string SelectedDirectory
     {
         get => _selectedDirectory;
         set
@@ -69,7 +70,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
     }
 
-    public string SelectedIconsDirectory
+    private string SelectedIconsDirectory
     {
         get => _selectedIconsDirectory;
         set
@@ -88,17 +89,17 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public ObservableCollection<string> Directories
     {
         get => _directories;
-        set => SetProperty(ref _directories, value);
+        private set => SetProperty(ref _directories, value);
     }
 
     public ObservableCollection<string> Icons
     {
         get => _icons;
-        set => SetProperty(ref _icons, value);
+        private set => SetProperty(ref _icons, value);
     }
     public int Index { get => _index; set => SetProperty(ref _index, value); }
     public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
-    public bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
+    private bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
     #region Declare Delegates
 
     public DelegateCommand LoadDirectory { get; set; }
@@ -201,7 +202,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult) =>
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult) =>
         RequestClose?.Invoke(dialogResult);
 
     public virtual bool CanCloseDialog() => true;

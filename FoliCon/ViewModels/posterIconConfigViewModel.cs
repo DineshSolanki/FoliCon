@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class PosterIconConfigViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -10,7 +11,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
     {
         Logger.Debug("PosterIconConfigViewModel created");
         Services.Tracker.Configure<PosterIconConfigViewModel>()
-            .Property(p => p.IconOverlay, defaultValue: "Liaher")
+            .Property(p => p.IconOverlay, defaultValue: Models.Enums.IconOverlay.Liaher.ToString())
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         Logger.Info("Current IconOverlay is {IconOverlay}", IconOverlay);

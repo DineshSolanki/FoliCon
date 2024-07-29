@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.utils;
 
+[Localizable(false)]
 internal static class TitleCleaner
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

@@ -3,6 +3,7 @@ using Window = HandyControl.Controls.Window;
 
 namespace FoliCon.Modules.UI;
 
+[Localizable(false)]
 public class HandyWindow : Window, IDialogWindow
 {
     static HandyWindow()

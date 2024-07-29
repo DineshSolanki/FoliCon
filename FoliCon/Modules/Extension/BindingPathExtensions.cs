@@ -2,6 +2,7 @@
 
 namespace FoliCon.Modules.Extension;
 
+[Localizable(false)]
 public static class BindingPathExtensions
 {
     private static readonly ImageCacheConverter ImageCacheConverter = new ();

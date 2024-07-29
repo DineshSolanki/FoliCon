@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class AboutBoxViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

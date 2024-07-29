@@ -3,6 +3,7 @@ using TMDbLib.Objects.Find;
 
 namespace FoliCon.Modules.TMDB;
 
+[Localizable(false)]
 internal class TmdbService
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -114,8 +115,8 @@ internal class TmdbService
     {
         Logger.Debug("Searching for {ParsedTitle} in {SearchMode}", parsedTitle, searchMode);
 
-        var mediaType = "";
-        object? searchResult = null;
+        string mediaType;
+        object? searchResult;
 
         switch (searchMode)
         {

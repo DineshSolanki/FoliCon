@@ -2,29 +2,30 @@
 
 namespace FoliCon.Modules.DeviantArt;
 
+[Localizable(false)]
 public class DArt : BindableBase
 {
     private string _clientAccessToken;
     private string _clientSecret;
-    private string _clientId;
+    private readonly string _clientId;
     
     private readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
     private static readonly JsonSerializerSettings SerializerSettings = new() { NullValueHandling = NullValueHandling.Ignore };
-    
-    public string ClientId
+
+    private string ClientId
     {
         get => _clientId;
-        set => SetProperty(ref _clientId, value);
+        init => SetProperty(ref _clientId, value);
     }
 
-    public string ClientSecret
+    private string ClientSecret
     {
         get => _clientSecret;
-        set => SetProperty(ref _clientSecret, value);
+        init => SetProperty(ref _clientSecret, value);
     }
 
-    public string ClientAccessToken
+    private string ClientAccessToken
     {
         get => _clientAccessToken;
         set => SetProperty(ref _clientAccessToken, value);

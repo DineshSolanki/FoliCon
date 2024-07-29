@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.Extension;
 
+[Localizable(false)]
 public static class DialogServiceExtensions
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

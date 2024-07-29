@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.UI;
 
+[Localizable(false)]
 internal static class CustomMessageBox
 {
     public static MessageBoxInfo Ask(string messageBoxText, string caption)

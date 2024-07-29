@@ -5,12 +5,15 @@ namespace FoliCon.Views;
 /// <summary>
 /// Interaction logic for HtmlBox.xaml
 /// </summary>
+[Localizable(false)]
 public partial class HtmlBox
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string VideoUnavailable = "Video not available!";
     private readonly string _backgroundColor;
-    
+    private const string DarkGray = "#1C1C1C";
+    private const string White = "#FFFFFF";
+
     public static readonly DependencyProperty HtmlTextProperty
         = DependencyProperty.Register(
             nameof(HtmlText), 
@@ -18,12 +21,12 @@ public partial class HtmlBox
             typeof(HtmlBox), 
             new PropertyMetadata(default(string), OnHtmlTextPropertyChanged));
 
-    public bool IsVideoAvailable { get; private set; }
+    private bool IsVideoAvailable { get; set; }
 
     public HtmlBox()
     {
         InitializeComponent();
-        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? "#1C1C1C" : "#FFFFFF";
+        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
     }
 
     public string HtmlText

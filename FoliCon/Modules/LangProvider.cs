@@ -2,6 +2,7 @@
 
 namespace FoliCon.Properties.Langs;
 
+[Localizable(false)]
 public class LangProvider : INotifyPropertyChanged
 {
     private static string _cultureInfoStr;

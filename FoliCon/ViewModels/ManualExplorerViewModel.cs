@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class ManualExplorerViewModel : BindableBase, IDialogAware
 {
 	private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -28,9 +29,9 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-	public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
+	private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
 	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
-	public DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
+	private DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
 	
 	public DelegateCommand<object> PickCommand { get; set; }
@@ -68,7 +69,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		RaiseRequestClose(new DialogResult(result, dialogParams));
 	}
 
-	public virtual void RaiseRequestClose(IDialogResult dialogResult)
+	protected virtual void RaiseRequestClose(IDialogResult dialogResult)
 	{
 		RequestClose?.Invoke(dialogResult);
 	}

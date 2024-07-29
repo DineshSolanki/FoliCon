@@ -54,10 +54,7 @@ public static class DialogUtils
         };
         return folderBrowser;
     }
-    public static VistaOpenFileDialog NewOpenFileDialog(string description)
-    {
-        return NewOpenFileDialog(description, "All files (*.*)|*.*");
-    }
+    
     public static VistaOpenFileDialog NewOpenFileDialog(string description, string filter)
     {
         Logger.Debug("Creating New Open File Dialog");

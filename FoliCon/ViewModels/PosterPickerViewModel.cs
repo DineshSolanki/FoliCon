@@ -3,6 +3,7 @@ using Artwork = IGDB.Models.Artwork;
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class PosterPickerViewModel : BindableBase, IDialogAware
 {
     private const string PosterPathMessage = "Poster Path: {PosterPath}";
@@ -68,7 +69,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }
@@ -93,7 +94,8 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         LoadData();
             
     }
-    public async Task LoadData()
+
+    private async Task LoadData()
     {
         var resultType = _result.MediaType;
         var response = GetResponse(resultType);

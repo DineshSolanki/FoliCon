@@ -2,6 +2,7 @@
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -163,7 +164,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result, parameters));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }
