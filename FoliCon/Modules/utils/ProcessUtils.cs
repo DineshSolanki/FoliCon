@@ -43,8 +43,8 @@ public static class ProcessUtils
         {
             Logger.ForErrorEvent().Message("WebView2 Runtime is not installed.").Exception(exception).Log();
             
-            var result = MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("WebView2DownloadConfirmation"),
-                LangProvider.GetLang("WebView2DownloadConfirmationHeader")));
+            var result = MessageBox.Show(CustomMessageBox.Ask(Lang.WebView2DownloadConfirmation,
+                Lang.WebView2DownloadConfirmationHeader));
             if (result != MessageBoxResult.Yes)
             {
                 return;
@@ -136,15 +136,15 @@ public static class ProcessUtils
         return arguments;
     }
 
-    public static bool? IfNotAdminRestartAsAdmin()
+    private static bool? IfNotAdminRestartAsAdmin()
     {
         if (ApplicationHelper.IsAdministrator())
         {
             Logger.Info("Application is running as Administrator");
             return null;
         }
-        if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartAsAdmin"),
-                LangProvider.GetLang("Error"))) != MessageBoxResult.Yes)
+        if (MessageBox.Show(CustomMessageBox.Ask(Lang.RestartAsAdmin,
+                Lang.ExceptionOccurred)) != MessageBoxResult.Yes)
         {
             return false;
         }

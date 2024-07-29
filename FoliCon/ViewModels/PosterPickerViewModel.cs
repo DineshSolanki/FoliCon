@@ -11,7 +11,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private string _title = "";
     private bool _stopSearch;
     private int _index;
-    private string _busyContent = LangProvider.GetLang("LoadingPosters");
+    private string _busyContent = Lang.LoadingPosters;
     private bool _isBusy;
     public event Action<IDialogResult> RequestClose;
     private ResultResponse _result;
@@ -249,7 +249,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private void HandleNoImagesFound()
     {
         Logger.Warn("No posters found for {Title}", Title);
-        MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
+        MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, Title));
     }
 
     #endregion

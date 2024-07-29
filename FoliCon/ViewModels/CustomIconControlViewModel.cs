@@ -17,12 +17,12 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private bool _keepExactOnly;
     private bool _isBusy;
     private bool _stopSearch;
-    public string Title => LangProvider.GetLang("CustomIconSetter");
+    public string Title => Lang.CustomIconSetter;
 
     private ObservableCollection<string> _undoDirectories = [];
     private ObservableCollection<string> _backupDirectories = [];
     private ObservableCollection<string> _backupIcons = [];
-    private string _busyContent = LangProvider.GetLang("CreatingIcons");
+    private string _busyContent = Lang.CreatingIcons;
     private int _index;
     private int _totalIcons;
     public bool KeepExactOnly
@@ -145,7 +145,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
         var info = new GrowlInfo
         {
-            Message = LangProvider.GetLang("UndoSuccessful"),
+            Message = Lang.UndoSuccessful,
             ShowDateTime = false,
             StaysOpen = false
         };
@@ -159,7 +159,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void LoadDirectoryMethod()
     {
-        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(Lang.SelectFolder);
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult)
         {
@@ -173,7 +173,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void LoadIconsMethod()
     {
-        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectIconsDirectory"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(Lang.SelectIconsDirectory);
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult)
         {
@@ -222,20 +222,20 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         if (Directories.Count <= 0 || SelectedDirectory is null)
         {
             Logger.Warn("No folders to process");
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoFolderOrIconAlready"), LangProvider.GetLang("NoFoldersToProcess")));
+            MessageBox.Show(CustomMessageBox.Error(Lang.NoFolderOrIconAlready, Lang.NoFoldersToProcess));
             return;
         }
 
         if (Icons.Count <= 0 || SelectedIconsDirectory is null)
         {
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoIconsSelected"), LangProvider.GetLang("NoIconsToApply")));
+            MessageBox.Show(CustomMessageBox.Error(Lang.NoIconsSelected, Lang.NoIconsToApply));
             return;
         }
 
         var iconProcessedCount = MakeIcons();
         var info = new GrowlInfo
         {
-            Message = LangProvider.GetLang("IconCreatedWithCount").Format(iconProcessedCount),
+            Message = Lang.IconCreatedWithCount.Format(iconProcessedCount),
             ShowDateTime = false,
             StaysOpen = false
         };
@@ -246,8 +246,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         Growl.SuccessGlobal(info);
         if (MessageBox.Show(
                 CustomMessageBox.Ask(
-                    $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
-                    LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
+                    $"{Lang.IconReloadMayTakeTime} {Environment.NewLine}{Lang.ToForceReload} {Environment.NewLine}{Lang.ConfirmToOpenFolder}",
+                    Lang.IconCreated)) == MessageBoxResult.Yes)
         {
             ProcessUtils.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
         }

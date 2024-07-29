@@ -20,7 +20,7 @@ public class StatusBarData : BindableBase
 
     public void ResetData()
     {
-        AppStatus = LangProvider.GetLang("Idle");
+        AppStatus = Lang.Idle;
         AppStatusAdditional = "";
         ProcessedFolder = 0;
         TotalFolders = 0;

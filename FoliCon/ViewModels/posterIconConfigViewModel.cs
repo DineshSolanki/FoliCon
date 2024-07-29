@@ -28,7 +28,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
         set => SetProperty(ref _iconOverlay, value);
     }
 
-    public string Title => LangProvider.GetLang("SelectPosterIconOverlay");
+    public string Title => Lang.SelectPosterIconOverlay;
 
     #region DialogMethods
 

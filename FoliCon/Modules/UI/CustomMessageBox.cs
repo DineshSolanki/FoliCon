@@ -11,8 +11,8 @@ internal static class CustomMessageBox
             Button = MessageBoxButton.YesNo,
             IconBrushKey = ResourceToken.AccentBrush,
             IconKey = ResourceToken.AskGeometry,
-            YesContent = LangProvider.GetLang("Confirm"),
-            NoContent = LangProvider.GetLang("Cancel")
+            YesContent = Lang.Confirm,
+            NoContent = Lang.Cancel
         };
     }
     public static MessageBoxInfo Error(string messageBoxText, string caption)
@@ -24,7 +24,7 @@ internal static class CustomMessageBox
             Button = MessageBoxButton.OK,
             IconBrushKey = ResourceToken.AccentBrush,
             IconKey = ResourceToken.ErrorGeometry,
-            ConfirmContent = LangProvider.GetLang("OK")
+            ConfirmContent = Lang.OK
         };
     }
     public static MessageBoxInfo Warning(string messageBoxText, string caption)
@@ -36,7 +36,7 @@ internal static class CustomMessageBox
             Button = MessageBoxButton.OK,
             IconBrushKey = ResourceToken.AccentBrush,
             IconKey = ResourceToken.WarningGeometry,
-            ConfirmContent = LangProvider.GetLang("OK")
+            ConfirmContent = Lang.OK
         };
     }
     public static MessageBoxInfo Info(string messageBoxText, string caption)
@@ -48,7 +48,7 @@ internal static class CustomMessageBox
             Button = MessageBoxButton.OK,
             IconBrushKey = ResourceToken.AccentBrush,
             IconKey = ResourceToken.InfoGeometry,
-            ConfirmContent = LangProvider.GetLang("OK")
+            ConfirmContent = Lang.OK
         };
     }
 }

@@ -73,7 +73,7 @@
         private void SelectImage()
         {
             Logger.Debug("Opening image selection dialog");
-            var fileDialog = DialogUtils.NewOpenFileDialog(LangProvider.GetLang("ChooseAnImage"), "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
+            var fileDialog = DialogUtils.NewOpenFileDialog(Lang.ChooseAnImage, "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
             var selected = fileDialog.ShowDialog();
 
             if (selected != null && (bool)!selected)

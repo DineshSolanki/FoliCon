@@ -18,7 +18,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		CloseDialog(ButtonResult.OK, (string)localImagePath);
 	}
 
-	private string _title = LangProvider.GetLang("ManualExplorer");
+	private string _title = Lang.ManualExplorer;
 	private bool _isBusy;
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;

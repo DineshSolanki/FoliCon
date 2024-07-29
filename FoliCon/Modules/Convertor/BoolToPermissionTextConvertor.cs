@@ -6,7 +6,7 @@ public class BoolToPermissionTextConverter : IValueConverter
     {
         if (value is bool hasWritePermission)
         {
-            return hasWritePermission ? LangProvider.GetLang("WritePermissionAllowed") : LangProvider.GetLang("WritePermissionNotAllowed");
+            return hasWritePermission ? Lang.WritePermissionAllowed : Lang.WritePermissionNotAllowed;
         }
 
         throw new InvalidOperationException("Must be a boolean value.");

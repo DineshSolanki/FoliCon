@@ -200,8 +200,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DelegateCommand RestartExCommand { get; } = new(delegate
     {
-        if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("RestartExplorerConfirmation"),
-                LangProvider.GetLang("ConfirmExplorerRestart"))) != MessageBoxResult.Yes)
+        if (MessageBox.Show(CustomMessageBox.Ask(Lang.RestartExplorerConfirmation,
+                Lang.ConfirmExplorerRestart)) != MessageBoxResult.Yes)
         {
             return;
         }
@@ -260,7 +260,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     private void LoadMethod()
     {
-        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(Lang.SelectFolder);
         if (!SelectedFolder.IsNullOrEmpty())
         {
             folderBrowserDialog.SelectedPath = SelectedFolder;
@@ -329,14 +329,14 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
 
             Logger.Warn("SearchAndMakeMethod: Folder is empty: {SelectedFolder}", SelectedFolder);
-            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("IconsAlready"),
-                LangProvider.GetLang("FolderError")));
+            MessageBox.Show(CustomMessageBox.Warning(Lang.IconsAlready,
+                Lang.FolderError));
             return false;
         }
 
         Logger.Error("Folder does not exist: {SelectedFolder}", SelectedFolder);
-        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FolderDoesNotExist"),
-            LangProvider.GetLang("InvalidPath")));
+        MessageBox.Show(CustomMessageBox.Error(Lang.FolderDoesNotExist,
+            Lang.InvalidPath));
         return false;
     }
 
@@ -347,8 +347,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             return true;
         }
 
-        MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoInternet"),
-            LangProvider.GetLang("NetworkError")));
+        MessageBox.Show(CustomMessageBox.Error(Lang.NoInternet,
+            Lang.NetworkError));
         return false;
 
     }
@@ -376,7 +376,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         StatusBarProperties.TotalIcons = BusyIndicatorProperties.Max =
             StatusBarProperties.ProgressBarData.Max = _imgDownloadList.Count;
         BusyIndicatorProperties.Text =
-            LangProvider.GetLang("DownloadingIconWithCount").Format(1, _imgDownloadList.Count);
+            Lang.DownloadingIconWithCount.Format(1, _imgDownloadList.Count);
 
         if (_imgDownloadList.Count > 0)
         {
@@ -392,7 +392,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         Logger.ForErrorEvent().Message("SearchAndMakeMethod: Exception Occurred. message: {Message}", e.Message)
             .Exception(e).Log();
-        MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
+        MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
         StatusBarProperties.ResetData();
         IsMakeEnabled = true;
         IsBusy = false;
@@ -547,8 +547,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         string parsedTitle, bool isPickedById)
     {
         Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
-        MessageBox.Show(CustomMessageBox.Info(LangProvider.GetLang("NothingFoundFor").Format(itemTitle),
-            LangProvider.GetLang("NoResultFound")));
+        MessageBox.Show(CustomMessageBox.Info(Lang.NothingFoundFor.Format(itemTitle),
+            Lang.NoResultFound));
 
         return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
     }
@@ -580,10 +580,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 .Exception(ex).Log();
             if (ex.Message == "NoPoster")
             {
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), itemTitle));
+                MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, itemTitle));
             }
 #if DEBUG
-            MessageBox.Show(CustomMessageBox.Warning(ex.Message, LangProvider.GetLang("ExceptionOccurred")));
+            MessageBox.Show(CustomMessageBox.Warning(ex.Message, Lang.ExceptionOccurred));
 #endif
         }
     }
@@ -729,8 +729,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             if (Directory.Exists(SelectedFolder))
             {
-                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteMediaInfoConfirmation"),
-                        LangProvider.GetLang("ConfirmMediaInfoDeletion"))) == MessageBoxResult.Yes)
+                if (MessageBox.Show(CustomMessageBox.Ask(Lang.DeleteMediaInfoConfirmation,
+                        Lang.ConfirmMediaInfoDeletion)) == MessageBoxResult.Yes)
                 {
                     FileUtils.DeleteMediaInfoFromSubfolders(SelectedFolder);
                 }
@@ -738,15 +738,15 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             else
             {
                 Logger.Debug("DeleteMediaInfoMethod: Directory does not exist: {SelectedFolder}", SelectedFolder);
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
-                    LangProvider.GetLang("EmptyDirectory")));
+                MessageBox.Show(CustomMessageBox.Error(Lang.DirectoryIsEmpty,
+                    Lang.EmptyDirectory));
             }
         }
         catch (Exception e)
         {
             Logger.ForErrorEvent().Message("DeleteMediaInfoMethod: Exception Occurred. message: {Message}", e.Message)
                 .Exception(e).Log();
-            MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred")));
+            MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
         }
         
     }
@@ -758,7 +758,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Max = 100,
             Value = 0,
-            Text = LangProvider.GetLang("DownloadIt")
+            Text = Lang.DownloadIt
         };
         StatusBarProperties = new StatusBarData
         {
@@ -817,8 +817,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             if (Directory.Exists(SelectedFolder))
             {
-                if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
-                        LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
+                if (MessageBox.Show(CustomMessageBox.Ask(Lang.DeleteIconsConfirmation,
+                        Lang.ConfirmIconDeletion)) == MessageBoxResult.Yes)
                 {
                     await FileUtils.DeleteIconsFromSubfoldersAsync(SelectedFolder);
                 }
@@ -826,8 +826,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             else
             {
                 Logger.Debug("DeleteIconsMethod: Directory does not exist: {SelectedFolder}", SelectedFolder);
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("DirectoryIsEmpty"),
-                    LangProvider.GetLang("EmptyDirectory")));
+                MessageBox.Show(CustomMessageBox.Error(Lang.DirectoryIsEmpty,
+                    Lang.EmptyDirectory));
             }
         }
         catch (Exception e)
@@ -905,12 +905,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                                                     " message: {Message}", e.Message)
                     .Property("Image", img)
                     .Log();
-                MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("FailedFileAccessAt").Format(Directory.GetParent(img.LocalPath)),
-                    LangProvider.GetLang("UnauthorizedAccess")));
+                MessageBox.Show(CustomMessageBox.Error(Lang.FailedFileAccessAt.Format(Directory.GetParent(img.LocalPath)),
+                    Lang.UnauthorizedAccess));
                 continue;
             }
             i += 1;
-            BusyIndicatorProperties.Text = LangProvider.GetLang("DownloadingIconWithCount")
+            BusyIndicatorProperties.Text = Lang.DownloadingIconWithCount
                 .Format(i, BusyIndicatorProperties.Max);
             BusyIndicatorProperties.Value = i;
             StatusBarProperties.ProgressBarData.Value = i;
@@ -940,16 +940,16 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         IsBusy = false;
         var info = new GrowlInfo
         {
-            Message = LangProvider.GetLang("IconCreatedWithCount").Format(iconProcessedCount),
+            Message = Lang.IconCreatedWithCount.Format(iconProcessedCount),
             ShowDateTime = false,
             StaysOpen = false,
-            ConfirmStr = LangProvider.GetLang("Confirm")
+            ConfirmStr = Lang.Confirm
         };
         Growl.SuccessGlobal(info);
         if (MessageBox.Show(
                 CustomMessageBox.Ask(
-                    $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
-                    LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
+                    $"{Lang.IconReloadMayTakeTime} {Environment.NewLine}{Lang.ToForceReload} {Environment.NewLine}{Lang.ConfirmToOpenFolder}",
+                    Lang.IconCreated)) == MessageBoxResult.Yes)
         {
             ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
         }
@@ -974,9 +974,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     return;
                 }
 
-                MessageBox.Show(CustomMessageBox.Error($"{LangProvider.GetLang("APIKeysNotProvided")}{Environment.NewLine}" +
-                                                       LangProvider.GetLang("AppWillClose"),
-                    LangProvider.GetLang("ClosingApplication")));
+                MessageBox.Show(CustomMessageBox.Error($"{Lang.APIKeysNotProvided}{Environment.NewLine}" +
+                                                       Lang.AppWillClose,
+                    Lang.ClosingApplication));
                 Logger.Warn("API Keys not provided, Closing Application.");
                 Environment.Exit(0);
             });

@@ -5,12 +5,12 @@ namespace FoliCon.ViewModels;
 public class ProSearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private string _title = LangProvider.GetLang("SearchResult");
+    private string _title = Lang.SearchResult;
     private bool _stopSearch;
     private string _searchTitle;
     private string _searchAgainTitle;
     private int _i;
-    private string _busyContent = LangProvider.GetLang("Searching");
+    private string _busyContent = Lang.Searching;
     private bool _isBusy;
     private DArt _dArtObject;
     private List<PickedListItem> _listDataTable;
@@ -104,9 +104,9 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ImageUrl.Clear();
         SearchTitle = null;
         SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.Clean(Fnames[_i]);
-        BusyContent = LangProvider.GetLang("SearchingWithName").Format(SearchTitle);
+        BusyContent = Lang.SearchingWithName.Format(SearchTitle);
         IsBusy = true;
-        Title = LangProvider.GetLang("PickIconWithName").Format(SearchTitle);
+        Title = Lang.PickIconWithName.Format(SearchTitle);
         await Search(SearchTitle);
         SearchAgainTitle = SearchTitle;
         IsBusy = false;
@@ -151,8 +151,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         {
             MessageBox.Show(
                 CustomMessageBox.Error(
-                    LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
-                    LangProvider.GetLang("NoResult")
+                    Lang.NoResultFoundTryCorrectTitle,
+                    Lang.NoResult
                 )
             );
         }

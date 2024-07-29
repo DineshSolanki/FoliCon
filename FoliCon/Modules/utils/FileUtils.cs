@@ -229,14 +229,14 @@ public static class FileUtils
                 mediaType, filePath).Log();
             MessageBox.Show(CustomMessageBox.Error(
                 e.Message.Contains("The process cannot access the file")
-                    ? LangProvider.GetLang("FileIsInUse")
-                    : LangProvider.GetLang("FailedToSaveMediaInfoAt").Format(filePath), LangProvider.GetLang("UnauthorizedAccess")));
+                    ? Lang.FileIsInUse
+                    : Lang.FailedToSaveMediaInfoAt.Format(filePath), Lang.UnauthorizedAccess));
         }
         catch (Exception e)
         {
             Logger.ForExceptionEvent(e, LogLevel.Error).Message("Error Occurred while Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
                 mediaType, folderPath).Log();
-            CustomMessageBox.Error(e.Message, LangProvider.GetLang("ExceptionOccurred"));
+            CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred);
         }
     }
 
@@ -337,7 +337,7 @@ public static class FileUtils
 
         if (!ApplicationHelper.IsConnectedToInternet())
         {
-            DialogUtils.ShowGrowlError(LangProvider.GetLang("NetworkNotAvailable"));
+            DialogUtils.ShowGrowlError(Lang.NetworkNotAvailable);
             return;
         }
 
@@ -349,7 +349,7 @@ public static class FileUtils
 
             if (!onlyShowIfUpdateAvailable)
             {
-                DialogUtils.ShowGrowlInfo(LangProvider.GetLang("ThisIsLatestVersion"));
+                DialogUtils.ShowGrowlInfo(Lang.ThisIsLatestVersion);
             }
 
             return;
@@ -363,8 +363,8 @@ public static class FileUtils
     {
         MessageBox.Show(CustomMessageBox.Error(
             ex.Message.Contains("The process cannot access the file")
-                ? LangProvider.GetLang("FileIsInUse")
-                : LangProvider.GetLang("FailedFileAccessAt").Format(path), LangProvider.GetLang("ExceptionOccurred")));
+                ? Lang.FileIsInUse
+                : Lang.FailedFileAccessAt.Format(path), Lang.ExceptionOccurred));
     }
 
     /// <summary>
