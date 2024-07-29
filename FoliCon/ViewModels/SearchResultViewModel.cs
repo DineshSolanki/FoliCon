@@ -391,6 +391,9 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             case MediaTypes.Mtv:
                 await HandleMtvMediaType(itemId);
                 break;
+            case MediaTypes.Collection:
+                Logger.Warn("Collection media type not supported for trailer");
+                break;
             default:
                 Logger.Warn("Unknown media type {MediaType}", SearchResult.MediaType);
                 break;
