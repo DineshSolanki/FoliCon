@@ -297,7 +297,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             {
                 if (SearchResult.MediaType == MediaTypes.Game)
                 {
-                    _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath, rating);
+                    _igdbObject.ResultPicked(SearchResult.Result.GetAt<Game>(pickedIndex), _fullFolderPath, rating);
                 }
                 else
                 {
@@ -307,7 +307,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             }
             else if (SearchMode == MediaTypes.Game)
             {
-                _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath, rating);
+                _igdbObject.ResultPicked(SearchResult.Result.GetAt<Game>(pickedIndex), _fullFolderPath, rating);
             }
             else
             {

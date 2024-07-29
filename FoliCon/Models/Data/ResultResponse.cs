@@ -1,7 +1,9 @@
-﻿namespace FoliCon.Models.Data;
+﻿using FoliCon.Models.Data.Wrapper;
+
+namespace FoliCon.Models.Data;
 
 public class ResultResponse
 {
-    public dynamic Result { get; set; }
+    public IResult Result { get; set; }
     public string MediaType { get; set; }
 }

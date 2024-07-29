@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Modules.TMDB;
+﻿using FoliCon.Models.Data.Wrapper;
+
+namespace FoliCon.Modules.TMDB;
 
 internal class TmdbDataTransformer(
     ref List<PickedListItem> listDataTable,
@@ -163,7 +165,7 @@ internal class TmdbDataTransformer(
             Id = id.ToString()
         };
     }
-    
+
     /// <summary>
     /// Prepares the Selected Result for Download And final List View
     /// </summary>
@@ -173,7 +175,8 @@ internal class TmdbDataTransformer(
     /// <param name="rating">Rating for media</param>
     /// <param name="isPickedById"> identifies if Title was picked by media ID.</param>
     /// TODO: Merge parameter response and resultType.
-    public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "", bool isPickedById = false)
+    public void ResultPicked(IResult result, string resultType, string fullFolderPath, string rating = "",
+        bool isPickedById = false)
     {
         Logger.Debug("Preparing the Selected Result for Download And final List View");
     
@@ -295,7 +298,7 @@ internal class TmdbDataTransformer(
         return GetPosterUrl(image.FilePath, posterSize, client);
     }
     
-    private static string GetPosterUrl(string posterPath, string posterSize, TMDbClient client)
+    public static string GetPosterUrl(string posterPath, string posterSize, TMDbClient client)
     {
         return posterPath is null ? string.Empty : client.GetImageUrl(posterSize, posterPath).ToString();
     }

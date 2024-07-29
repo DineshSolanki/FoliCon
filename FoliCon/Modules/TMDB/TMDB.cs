@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Modules.TMDB;
+﻿using FoliCon.Models.Data.Wrapper;
+
+namespace FoliCon.Modules.TMDB;
 
 public class Tmdb
 {
@@ -79,7 +81,7 @@ public class Tmdb
     /// <param name="rating">Rating for media</param>
     /// <param name="isPickedById"> identifies if Title was picked by media ID.</param>
     /// TODO: Merge parameter response and resultType.
-    public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "",
+    public void ResultPicked(IResult result, string resultType, string fullFolderPath, string rating = "",
         bool isPickedById = false)
     {
         _dataTransformer.ResultPicked(result, resultType, fullFolderPath, rating, isPickedById);

@@ -1,4 +1,6 @@
-﻿namespace FoliCon.Modules.IGDB;
+﻿using FoliCon.Models.Data.Wrapper;
+
+namespace FoliCon.Modules.IGDB;
 
 [Localizable(false)]
 public class IgdbService(ref IGDBClient serviceClient)
@@ -25,7 +27,7 @@ public class IgdbService(ref IGDBClient serviceClient)
         return new ResultResponse
         {
             MediaType = MediaTypes.Game,
-            Result = r
+            Result = new GamesWrapper(r)
         };
     }
 
@@ -55,7 +57,7 @@ public class IgdbService(ref IGDBClient serviceClient)
         return new ResultResponse
         {
             MediaType = MediaTypes.Game,
-            Result = result
+            Result = new GamesWrapper(result)
         };
     }
 
@@ -64,7 +66,7 @@ public class IgdbService(ref IGDBClient serviceClient)
         if (_serviceClient is null)
         {
             throw new InvalidOperationException(ServiceClientIsNotInitialized);
-        }
+        } 
 
         return _serviceClient.QueryAsync<Artwork>(IGDBClient.Endpoints.Artworks,
             $"fields image_id; where game = {id};");
