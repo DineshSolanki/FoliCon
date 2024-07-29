@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.ViewModels
 {
+    [Localizable(false)]
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -25,7 +26,7 @@
         public PosterIcon PosterIconInstance
         {
             get => _posterIconInstance;
-            set => SetProperty(ref _posterIconInstance, value);
+            private set => SetProperty(ref _posterIconInstance, value);
         }
         public string Rating
         {
@@ -73,7 +74,7 @@
         private void SelectImage()
         {
             Logger.Debug("Opening image selection dialog");
-            var fileDialog = DialogUtils.NewOpenFileDialog(LangProvider.GetLang("ChooseAnImage"), "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
+            var fileDialog = DialogUtils.NewOpenFileDialog(Lang.ChooseAnImage, "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
             var selected = fileDialog.ShowDialog();
 
             if (selected != null && (bool)!selected)

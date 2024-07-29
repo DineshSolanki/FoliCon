@@ -4,6 +4,7 @@
 /// Converts an image path to a BitmapImage with caching to improve performance and thread safety.
 /// CREDIT: https://stackoverflow.com/a/37652158/8076598
 /// </summary>
+[Localizable(false)]
 public class ImageCacheConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

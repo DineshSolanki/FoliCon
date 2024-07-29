@@ -7,6 +7,7 @@ namespace FoliCon;
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
+[Localizable(false)]
 public partial class App
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

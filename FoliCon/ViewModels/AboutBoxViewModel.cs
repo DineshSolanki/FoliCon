@@ -1,16 +1,17 @@
 ﻿namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class AboutBoxViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private string _title = AssemblyInfo.GetVersionWithoutBuild();
     private string _logo = "/Resources/icons/folicon Icon.png";
 
-    private string _description = LangProvider.GetLang("FoliConDescription");
+    private string _description = Lang.FoliConDescription;
 
     private string _website = "https://aprogrammers.wordpress.com";
-    private string _additionalNotes = LangProvider.GetLang("DevelopedByDinesh");
-    private string _license = LangProvider.GetLang("LicenseInfo");
+    private string _additionalNotes = Lang.DevelopedByDinesh;
+    private string _license = Lang.LicenseInfo;
     private string _version = AssemblyInfo.GetVersion();
 
     //These properties can also be initialized from Parameters for better re-usability. or From assembly

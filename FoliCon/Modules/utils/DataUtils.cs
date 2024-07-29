@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.utils;
 
+[Localizable(false)]
 public static class DataUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -24,10 +25,10 @@ public static class DataUtils
     /// <returns>Formatted Rating value.</returns>
     public static string FormatRating(double ratingInput)
     {
-        Logger.Debug("Start FormatRatingString() - Input received : {RatingInput}", ratingInput);
+        Logger.Trace("Start FormatRatingString() - Input received : {RatingInput}", ratingInput);
         var decimalPart = ratingInput % 1;
         var formattedRatingValue = decimalPart > 0 ? ratingInput.ToString("0.##") : ratingInput.ToString("0");
-        Logger.Debug("End FormatRatingString() - Formatted Rating : {FormattedRatingValue}", formattedRatingValue);
+        Logger.Trace("End FormatRatingString() - Formatted Rating : {FormattedRatingValue}", formattedRatingValue);
         return formattedRatingValue;
     }
     

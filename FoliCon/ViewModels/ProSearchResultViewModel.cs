@@ -2,15 +2,16 @@
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class ProSearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private string _title = LangProvider.GetLang("SearchResult");
+    private string _title = Lang.SearchResult;
     private bool _stopSearch;
     private string _searchTitle;
     private string _searchAgainTitle;
     private int _i;
-    private string _busyContent = LangProvider.GetLang("Searching");
+    private string _busyContent = Lang.Searching;
     private bool _isBusy;
     private DArt _dArtObject;
     private List<PickedListItem> _listDataTable;
@@ -25,15 +26,16 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private string _folderPath;
     private bool _isSearchFocused;
 
-    public string Title { get => _title; set => SetProperty(ref _title, value); }
+    public string Title { get => _title;
+        private set => SetProperty(ref _title, value); }
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
-    public string SearchTitle { get => _searchTitle; set => SetProperty(ref _searchTitle, value); }
+    private string SearchTitle { get => _searchTitle; set => SetProperty(ref _searchTitle, value); }
     public bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
-    public List<string> Fnames { get; set; }
+    private List<string> Fnames { get; set; }
     public string SearchAgainTitle { get => _searchAgainTitle; set => SetProperty(ref _searchAgainTitle, value); }
     public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
     public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-    public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
+    private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
     public int Index { get => _index; set => SetProperty(ref _index, value); }
     public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
 
@@ -104,9 +106,9 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ImageUrl.Clear();
         SearchTitle = null;
         SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.Clean(Fnames[_i]);
-        BusyContent = LangProvider.GetLang("SearchingWithName").Format(SearchTitle);
+        BusyContent = Lang.SearchingWithName.Format(SearchTitle);
         IsBusy = true;
-        Title = LangProvider.GetLang("PickIconWithName").Format(SearchTitle);
+        Title = Lang.PickIconWithName.Format(SearchTitle);
         await Search(SearchTitle);
         SearchAgainTitle = SearchTitle;
         IsBusy = false;
@@ -151,8 +153,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         {
             MessageBox.Show(
                 CustomMessageBox.Error(
-                    LangProvider.GetLang("NoResultFoundTryCorrectTitle"),
-                    LangProvider.GetLang("NoResult")
+                    Lang.NoResultFoundTryCorrectTitle,
+                    Lang.NoResult
                 )
             );
         }
@@ -218,7 +220,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
         var tempImage = new ImageToDownload
         {
-            LocalPath = $"{currentPath}\\{IconUtils.GetImageName()}.png",
+            LocalPath = $@"{currentPath}\{IconUtils.GetImageName()}.png",
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);
@@ -266,7 +268,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }

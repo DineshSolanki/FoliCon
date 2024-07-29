@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.IGDB;
 
+[Localizable(false)]
 public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref List<ImageToDownload> imgDownloadList)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

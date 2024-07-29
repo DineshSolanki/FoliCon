@@ -62,7 +62,7 @@ public class ListViewClickSortBehavior : Behavior<ListView>
             ? Application.Current.Resources["HeaderTemplateArrowUp"] as DataTemplate
             : Application.Current.Resources["HeaderTemplateArrowDown"] as DataTemplate;
 
-        // Remove arrow from previously sorted header
+        // Remove arrow from the previously sorted header
         if (_lastHeaderClicked != null && _lastHeaderClicked != headerClicked)
         {
             _lastHeaderClicked.Column.HeaderTemplate = null;

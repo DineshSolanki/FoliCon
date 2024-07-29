@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Models.Data;
 
+[Localizable(false)]
 public class PosterIcon: BindableBase
 {
     public ImageSource FolderJpg { get; set; }

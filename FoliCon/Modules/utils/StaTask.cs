@@ -1,6 +1,7 @@
 ﻿namespace FoliCon.Modules.utils;
 
 //Taken from-https://stackoverflow.com/a/16722767/8076598
+[Localizable(false)]
 public static class StaTask
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

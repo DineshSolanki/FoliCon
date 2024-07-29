@@ -5,6 +5,7 @@ using SharpCompress.Readers;
 
 namespace FoliCon.Modules.Extension;
 
+[Localizable(false)]
 public static class StreamExtensions
 {
     private static readonly ReaderOptions ReaderOptions = new() { ArchiveEncoding = 

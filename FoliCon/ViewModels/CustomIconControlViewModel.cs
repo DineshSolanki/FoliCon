@@ -4,6 +4,7 @@ using FoliCon.Modules.Media;
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -17,12 +18,12 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private bool _keepExactOnly;
     private bool _isBusy;
     private bool _stopSearch;
-    public string Title => LangProvider.GetLang("CustomIconSetter");
+    public string Title => Lang.CustomIconSetter;
 
     private ObservableCollection<string> _undoDirectories = [];
     private ObservableCollection<string> _backupDirectories = [];
     private ObservableCollection<string> _backupIcons = [];
-    private string _busyContent = LangProvider.GetLang("CreatingIcons");
+    private string _busyContent = Lang.CreatingIcons;
     private int _index;
     private int _totalIcons;
     public bool KeepExactOnly
@@ -54,7 +55,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set => SetProperty(ref _isUndoEnable, value);
     }
 
-    public string SelectedDirectory
+    private string SelectedDirectory
     {
         get => _selectedDirectory;
         set
@@ -69,7 +70,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
     }
 
-    public string SelectedIconsDirectory
+    private string SelectedIconsDirectory
     {
         get => _selectedIconsDirectory;
         set
@@ -88,17 +89,17 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public ObservableCollection<string> Directories
     {
         get => _directories;
-        set => SetProperty(ref _directories, value);
+        private set => SetProperty(ref _directories, value);
     }
 
     public ObservableCollection<string> Icons
     {
         get => _icons;
-        set => SetProperty(ref _icons, value);
+        private set => SetProperty(ref _icons, value);
     }
     public int Index { get => _index; set => SetProperty(ref _index, value); }
     public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
-    public bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
+    private bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
     #region Declare Delegates
 
     public DelegateCommand LoadDirectory { get; set; }
@@ -145,7 +146,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
         var info = new GrowlInfo
         {
-            Message = LangProvider.GetLang("UndoSuccessful"),
+            Message = Lang.UndoSuccessful,
             ShowDateTime = false,
             StaysOpen = false
         };
@@ -159,7 +160,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void LoadDirectoryMethod()
     {
-        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectFolder"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(Lang.SelectFolder);
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult)
         {
@@ -173,7 +174,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void LoadIconsMethod()
     {
-        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(LangProvider.GetLang("SelectIconsDirectory"));
+        var folderBrowserDialog = DialogUtils.NewFolderBrowserDialog(Lang.SelectIconsDirectory);
         var dialogResult = folderBrowserDialog.ShowDialog();
         if (dialogResult != null && (bool)!dialogResult)
         {
@@ -201,7 +202,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult) =>
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult) =>
         RequestClose?.Invoke(dialogResult);
 
     public virtual bool CanCloseDialog() => true;
@@ -222,20 +223,20 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         if (Directories.Count <= 0 || SelectedDirectory is null)
         {
             Logger.Warn("No folders to process");
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoFolderOrIconAlready"), LangProvider.GetLang("NoFoldersToProcess")));
+            MessageBox.Show(CustomMessageBox.Error(Lang.NoFolderOrIconAlready, Lang.NoFoldersToProcess));
             return;
         }
 
         if (Icons.Count <= 0 || SelectedIconsDirectory is null)
         {
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("NoIconsSelected"), LangProvider.GetLang("NoIconsToApply")));
+            MessageBox.Show(CustomMessageBox.Error(Lang.NoIconsSelected, Lang.NoIconsToApply));
             return;
         }
 
         var iconProcessedCount = MakeIcons();
         var info = new GrowlInfo
         {
-            Message = LangProvider.GetLang("IconCreatedWithCount").Format(iconProcessedCount),
+            Message = Lang.IconCreatedWithCount.Format(iconProcessedCount),
             ShowDateTime = false,
             StaysOpen = false
         };
@@ -246,8 +247,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         Growl.SuccessGlobal(info);
         if (MessageBox.Show(
                 CustomMessageBox.Ask(
-                    $"{LangProvider.GetLang("IconReloadMayTakeTime")} {Environment.NewLine}{LangProvider.GetLang("ToForceReload")} {Environment.NewLine}{LangProvider.GetLang("ConfirmToOpenFolder")}",
-                    LangProvider.GetLang("IconCreated"))) == MessageBoxResult.Yes)
+                    $"{Lang.IconReloadMayTakeTime} {Environment.NewLine}{Lang.ToForceReload} {Environment.NewLine}{Lang.ConfirmToOpenFolder}",
+                    Lang.IconCreated)) == MessageBoxResult.Yes)
         {
             ProcessUtils.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
         }

@@ -13,7 +13,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
     public string Message
     {
         get => _message;
-        set => SetProperty(ref _message, value);
+        private set => SetProperty(ref _message, value);
     }
 
     private string _title = "Notification";
@@ -21,7 +21,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
     public string Title
     {
         get => _title;
-        set => SetProperty(ref _title, value);
+        private set => SetProperty(ref _title, value);
     }
 
     public event Action<IDialogResult> RequestClose;
@@ -39,7 +39,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }

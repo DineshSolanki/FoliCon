@@ -16,10 +16,10 @@ public static class DialogUtils
 
     public static void ConfirmUpdate(ReleaseInfo ver)
     {
-        var message = LangProvider.GetLang("NewVersionFound")
+        var message = Lang.NewVersionFound
             .Format(ver.TagName, ver.Changelog.Replace("\\n", Environment.NewLine));
-        var confirmMessage = LangProvider.GetLang("UpdateNow");
-        var cancelMessage = LangProvider.GetLang("Ignore");
+        var confirmMessage = Lang.UpdateNow;
+        var cancelMessage = Lang.Ignore;
 
         var info = new GrowlInfo
         {
@@ -54,10 +54,7 @@ public static class DialogUtils
         };
         return folderBrowser;
     }
-    public static VistaOpenFileDialog NewOpenFileDialog(string description)
-    {
-        return NewOpenFileDialog(description, "All files (*.*)|*.*");
-    }
+    
     public static VistaOpenFileDialog NewOpenFileDialog(string description, string filter)
     {
         Logger.Debug("Creating New Open File Dialog");

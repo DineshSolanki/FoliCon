@@ -2,7 +2,7 @@
 
 public class ApiConfigurationViewModel : BindableBase, IDialogAware
 {
-    private string _title = "API Configuration";
+    private string _title = Lang.APIKeysConfiguration;
     private string _dartClient;
     private string _dartClientId;
     private string _tmdbKey;

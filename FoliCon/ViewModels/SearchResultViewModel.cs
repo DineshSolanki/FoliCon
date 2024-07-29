@@ -2,19 +2,20 @@
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
 
-    private string _title = LangProvider.GetLang("SearchResult");
+    private string _title = Lang.SearchResult;
     private string _searchTitle;
     private string _busyContent;
     private bool _isBusy;
     private string _searchMode;
     private ListViewData _resultListViewData;
     private string _searchAgainTitle;
-    private string _skipAllText = LangProvider.GetLang("SkipThisPlaceholder");
+    private string _skipAllText = Lang.SkipThisPlaceholder;
     private List<string> _fileList;
     private ResultResponse _searchResult;
     private string _fullFolderPath;
@@ -163,7 +164,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result, parameters));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }
@@ -189,7 +190,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         var parent = Directory.GetParent(_fullFolderPath);
         if (parent != null)
         {
-            SkipAllText = LangProvider.GetLang("SkipThisPlaceholderParent").Format(parent.Name);
+            SkipAllText = Lang.SkipThisPlaceholderParent.Format(parent.Name);
         }
         _dialogParams = new PosterPickerDialogParams
         {
@@ -215,7 +216,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _isPickedById = false;
         var titleToSearch = SearchAgainTitle ?? SearchTitle;
         Logger.Info("Searching for {TitleToSearch}", titleToSearch);
-        BusyContent = LangProvider.GetLang("SearchingWithName").Format(titleToSearch);
+        BusyContent = Lang.SearchingWithName.Format(titleToSearch);
         var result = SearchMode == MediaTypes.Game
             ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
             : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
@@ -320,7 +321,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 .Exception(ex)
                 .Log();
             MessageBox.Show(ex.Message == "NoPoster"
-                ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle)
+                ? CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle)
                 : CustomMessageBox.Error(ex.Message, SearchTitle));
         }
 
@@ -345,7 +346,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             if (SearchResult.MediaType == MediaTypes.Game && SearchResult.Result[pickedIndex].Artworks is null)
             {
                 Logger.Warn("No more poster found for {SearchTitle}", SearchTitle);
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
+                MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle));
                 return;
             }
             _dialogParams.PickedIndex = pickedIndex;
@@ -360,7 +361,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 .Log();
             if (ex.Message == "NoPoster")
             {
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
+                MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle));
             }
         }
     }

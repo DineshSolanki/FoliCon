@@ -2,6 +2,7 @@
 
 namespace FoliCon.Views;
 
+[Localizable(false)]
 public partial class ImageGalleryControl
 {
     

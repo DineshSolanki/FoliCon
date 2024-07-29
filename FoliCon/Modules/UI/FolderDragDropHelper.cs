@@ -59,7 +59,7 @@ public static class FolderDragDropHelper
         var dt = e.Data.GetData(DataFormats.FileDrop);
         var data = (dt as Array)?.GetValue(0)?.ToString();
         
-        Logger.Trace("Control_DragOver: Data: {Data}", data ?? "null");
+        Logger.Trace("Control_DragOver: Data: {Data}", data);
         
         e.Effects = Directory.Exists(data) ? DragDropEffects.Link : DragDropEffects.None;
         e.Handled = true;

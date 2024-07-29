@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.Extension;
 
+[Localizable(false)]
 public static class Extensions
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

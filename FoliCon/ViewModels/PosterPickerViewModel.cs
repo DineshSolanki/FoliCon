@@ -3,6 +3,7 @@ using Artwork = IGDB.Models.Artwork;
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class PosterPickerViewModel : BindableBase, IDialogAware
 {
     private const string PosterPathMessage = "Poster Path: {PosterPath}";
@@ -11,7 +12,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private string _title = "";
     private bool _stopSearch;
     private int _index;
-    private string _busyContent = LangProvider.GetLang("LoadingPosters");
+    private string _busyContent = Lang.LoadingPosters;
     private bool _isBusy;
     public event Action<IDialogResult> RequestClose;
     private ResultResponse _result;
@@ -68,7 +69,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }
@@ -93,7 +94,8 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         LoadData();
             
     }
-    public async Task LoadData()
+
+    private async Task LoadData()
     {
         var resultType = _result.MediaType;
         var response = GetResponse(resultType);
@@ -249,7 +251,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private void HandleNoImagesFound()
     {
         Logger.Warn("No posters found for {Title}", Title);
-        MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
+        MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, Title));
     }
 
     #endregion
