@@ -5,6 +5,7 @@ namespace FoliCon.Models.Data;
 public abstract class PosterIconBase : UserControl
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Size WindowRenderSize = new(256, 256);
     protected PosterIconBase()
     {
     }
@@ -16,16 +17,15 @@ public abstract class PosterIconBase : UserControl
 
     public Bitmap RenderToBitmap()
     {
-        return RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
+        var rtb = AsRenderTargetBitmap();
+        return RenderTargetBitmapTo32BppArgb(rtb);
     }
 
     private RenderTargetBitmap AsRenderTargetBitmap()
     {
-        var size = new Size(256, 256);
-        Measure(size);
-        Arrange(new Rect(size));
-
-        var rtb = new RenderTargetBitmap((int)size.Width, (int)size.Height, 96, 96, PixelFormats.Default);
+        Measure(WindowRenderSize);
+        Arrange(new Rect(WindowRenderSize));
+        var rtb = new RenderTargetBitmap((int)WindowRenderSize.Width, (int)WindowRenderSize.Height, 96, 96, PixelFormats.Default);
         RenderOptions.SetBitmapScalingMode(this, BitmapScalingMode.HighQuality);
         RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
         rtb.Render(this);

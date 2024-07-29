@@ -206,9 +206,15 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             return;
         }
 
-        ProcessUtils.RefreshIconCache();
-        ProcessUtils.RestartExplorer();
+        Task.Run(async () => await RefreshAndRestart());
+        
     });
+
+    private static async Task RefreshAndRestart()
+    {
+        await ProcessUtils.RefreshIconCacheAsync();
+        ProcessUtils.RestartExplorer();
+    }
 
     public DelegateCommand CustomIconsCommand { get; private set; }
     public DelegateCommand DeleteIconsCommand { get; private set; }
@@ -804,7 +810,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("PickedListDataTable Initialized.");
     }
 
-    private void DeleteIconsMethod()
+    private async void DeleteIconsMethod()
     {
         Logger.Debug("DeleteIconsMethod Called.");
         try
@@ -814,7 +820,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 if (MessageBox.Show(CustomMessageBox.Ask(LangProvider.GetLang("DeleteIconsConfirmation"),
                         LangProvider.GetLang("ConfirmIconDeletion"))) == MessageBoxResult.Yes)
                 {
-                    FileUtils.DeleteIconsFromSubfolders(SelectedFolder);
+                    await FileUtils.DeleteIconsFromSubfoldersAsync(SelectedFolder);
                 }
             }
             else

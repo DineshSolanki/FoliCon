@@ -130,7 +130,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
     }
 
-    private void UndoCreatedIcons()
+    private async void UndoCreatedIcons()
     {
         Logger.Debug("Deleting created icons from {Count} folders", _undoDirectories.Count);
         if (_undoDirectories.Count == 0)
@@ -150,7 +150,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             StaysOpen = false
         };
         Growl.SuccessGlobal(info);
-        ProcessUtils.RefreshIconCache();
+        await ProcessUtils.RefreshIconCacheAsync();
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST | SHCNF.SHCNF_FLUSHNOWAIT
             , Directory.GetParent(_undoDirectories[0])?.FullName);
 
@@ -284,7 +284,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             }
             Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
             File.Move(iconPath, newIconPath);
-            if (!File.Exists(newIconPath))
+            if (!FileUtils.FileExists(newIconPath))
             {
                 continue;
             }

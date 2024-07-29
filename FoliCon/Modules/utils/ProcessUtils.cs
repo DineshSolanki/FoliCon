@@ -82,7 +82,7 @@ public static class ProcessUtils
         Logger.Debug("Explorer.exe Restarted");
     }
 
-    public static void RefreshIconCache()
+    public static async Task RefreshIconCacheAsync()
     {
         try
         {
@@ -103,7 +103,7 @@ public static class ProcessUtils
                 };
 
                 process.Start();
-                process.WaitForExit();
+                await process.WaitForExitAsync();
             }
 
             Logger.Debug("Icon Cache Refreshed");
