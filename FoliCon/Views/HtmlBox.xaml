@@ -10,7 +10,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ComboBox Grid.Row="0" x:Name="VideoSelector" Margin="10" SelectionChanged="VideoSelector_OnSelectionChanged">
+        <ComboBox Grid.Row="0" x:Name="VideoSelector" Margin="10" SelectionChanged="VideoSelector_OnSelectionChanged" SelectedIndex="0">
         </ComboBox>
         <wv2:WebView2 Grid.Row="1" x:Name="Browser"/>
     </Grid>

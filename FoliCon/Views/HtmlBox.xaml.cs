@@ -46,11 +46,6 @@ public partial class HtmlBox
     {
         InitializeComponent();
         _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
-        Videos = new ObservableCollection<Video>()
-        {
-            new("Harry", "https://www.youtube.com/embed/l91Km49W9qI"),
-            new("Potter", "https://www.youtube.com/embed/DgeDDXcw--I"),
-        };
         VideoSelector.ItemsSource = Videos;
         VideoSelector.SelectedValuePath = "Id";
         VideoSelector.DisplayMemberPath = "Name";

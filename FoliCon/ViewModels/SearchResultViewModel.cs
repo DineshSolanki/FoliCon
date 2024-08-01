@@ -1,4 +1,5 @@
 ﻿using DelegateCommand = Prism.Commands.DelegateCommand;
+using Video = FoliCon.Models.Data.Video;
 
 namespace FoliCon.ViewModels;
 
@@ -434,10 +435,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return;
         }
-
+        SetVideos(r);
         var key = r.First(v => v.Name == "Trailer");
         SetTrailer(key.VideoId);
     }
+    
 
     private async Task GetMovieTrailer(string itemId)
     {
@@ -447,6 +449,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
             if (result != null)
             {
+                SetVideos(result.Results);
                 var trailer = ChooseTrailer(result.Results);
                 if (trailer != null)
                 {
@@ -472,7 +475,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return;
         }
-
+        SetVideos(result.Results);
         var i = ChooseTrailer(result.Results);
     
         if (i != null)
@@ -498,6 +501,29 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             new Uri($"https://www.youtube.com/embed/{trailerKey}");
         Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
             ResultListViewData.SelectedItem.Trailer);
+    }
+
+    private void SetVideos(List<TMDbLib.Objects.General.Video> videos)
+    {
+        if (videos == null)
+        {
+            return;
+        }
+
+        var videoList = videos
+            .Where(item=> item.Site == "YouTube")
+            .Select(video => new Video(video.Name, $"https://www.youtube.com/embed/{video.Key}"))
+            .ToList();
+
+        ResultListViewData.SelectedItem.Videos = videoList;
+    }
+    
+    private void SetVideos(GameVideo[] videos)
+    {
+        var videoList = videos
+            .Select(video => new Video(video.Name, $"https://www.youtube.com/embed/{video.VideoId}"))
+            .ToList();
+        ResultListViewData.SelectedItem.Videos = videoList;
     }
     private void ResetPoster()
     {
