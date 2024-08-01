@@ -1,4 +1,6 @@
-﻿using HandyControl.Themes;
+﻿using System.Collections;
+using HandyControl.Themes;
+using Video = FoliCon.Models.Data.Video;
 
 namespace FoliCon.Views;
 
@@ -21,12 +23,38 @@ public partial class HtmlBox
             typeof(HtmlBox), 
             new PropertyMetadata(default(string), OnHtmlTextPropertyChanged));
 
+    public static readonly DependencyProperty VideosProperty
+        = DependencyProperty.Register(
+            nameof(Videos), 
+            typeof(ICollection<Video>), 
+            typeof(HtmlBox), 
+            new PropertyMetadata(default(ICollection<Video>), OnVideosPropertyChanged));
+
+    private static void OnVideosPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not HtmlBox control)
+        {
+            return;
+        }
+
+        control.VideoSelector.ItemsSource = e.NewValue as ICollection;
+    }
+
     private bool IsVideoAvailable { get; set; }
 
     public HtmlBox()
     {
         InitializeComponent();
         _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
+        Videos = new ObservableCollection<Video>()
+        {
+            new("Harry", "https://www.youtube.com/embed/l91Km49W9qI"),
+            new("Potter", "https://www.youtube.com/embed/DgeDDXcw--I"),
+        };
+        VideoSelector.ItemsSource = Videos;
+        VideoSelector.SelectedValuePath = "Id";
+        VideoSelector.DisplayMemberPath = "Name";
+        VideoSelector.SelectedIndex = 0;
     }
 
     public string HtmlText
@@ -35,6 +63,11 @@ public partial class HtmlBox
         set => SetValue(HtmlTextProperty, value);
     }
     
+    public ICollection Videos
+    {
+        get => (ICollection)GetValue(VideosProperty);
+        set => SetValue(VideosProperty, value);
+    }
     private async Task ProcessBrowse()
     {
         if (Browser is not {IsLoaded: true})
@@ -122,4 +155,10 @@ public partial class HtmlBox
                                                         </body>
                                                     </html>
                                         """;
+
+    private void VideoSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        HtmlText = VideoSelector.SelectedValue?.ToString() ?? string.Empty;
+        ProcessBrowse();
+    }
 }
