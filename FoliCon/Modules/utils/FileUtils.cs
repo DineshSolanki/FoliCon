@@ -466,6 +466,11 @@ public static class FileUtils
     }
 
     #endregion
+    
+    public static bool IsSeasonFolder(string folderName)
+    {
+        return SeasonFolderRegex.IsMatch(folderName);
+    }
     /// <summary>
     /// Set folder icon for a given folder.
     /// </summary>
@@ -594,4 +599,5 @@ public static class FileUtils
     {
         return Path.Combine(FoliConTempPath(), "Deviations");
     }
+    private static Regex SeasonFolderRegex = new(GlobalVariables.SeasonRegexString);
 }
