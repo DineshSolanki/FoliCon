@@ -158,7 +158,7 @@
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>-->
                 </ListBox>
-                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Videos="{Binding Path=SelectedItem.(data:ListItem.Videos), ElementName=ListViewResult}"
                                HtmlText="{Binding Path=SelectedItem.(data:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}"
                                ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                Visibility="{Binding HtmlText, Converter={StaticResource TextToVisibilityConverter}, RelativeSource={RelativeSource Self}}"

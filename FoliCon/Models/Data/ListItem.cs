@@ -12,6 +12,8 @@ public class ListItem : BindableBase
     private Uri _trailerLink;
     private string _id;
     private MediaType _mediaType = MediaType.Unknown;
+
+    private ICollection<MediaVideo> _videos;
     
     private string _initialPoster;
     private bool _isInitialSet;
@@ -79,7 +81,12 @@ public class ListItem : BindableBase
         get => _trailerKey;
         set => SetProperty(ref _trailerKey, value);
     }
-
+    
+    public ICollection<MediaVideo> Videos
+    {
+        get => _videos;
+        set => SetProperty(ref _videos, value);
+    }
     public string Id
     {
         get => _id;

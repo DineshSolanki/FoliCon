@@ -6,6 +6,8 @@ namespace FoliCon.ViewModels;
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private const string YoutubeEmbedUrl = "https://www.youtube.com/embed/{0}";
+
     #region Variables
 
     private string _title = Lang.SearchResult;
@@ -434,10 +436,9 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return;
         }
-
-        var key = r.First(v => v.Name == "Trailer");
-        SetTrailer(key.VideoId);
+        SetVideos(r);
     }
+    
 
     private async Task GetMovieTrailer(string itemId)
     {
@@ -447,15 +448,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
             if (result != null)
             {
-                var trailer = ChooseTrailer(result.Results);
-                if (trailer != null)
-                {
-                    SetTrailer(trailer.Key);
-                }
-                else
-                {
-                    Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-                }
+                SetVideos(result.Results);
             }
         }
         catch (Exception ex)
@@ -472,32 +465,51 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return;
         }
-
-        var i = ChooseTrailer(result.Results);
-    
-        if (i != null)
-        {
-            SetTrailer(i.Key);
-        }
-        else
-        {
-            Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-        }
+        SetVideos(result.Results);
     }
 
-    private static dynamic ChooseTrailer(IReadOnlyCollection<dynamic> results)
+    private static Video ChooseTrailer(IReadOnlyCollection<Video> results)
     {
-        var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item.Site == "YouTube");
-        return trailerYouTube != null ? trailerYouTube : results.FirstOrDefault();
+        var trailerYouTube = results.FirstOrDefault(item => item is { Type: "Trailer", Site: "YouTube" });
+        return trailerYouTube ?? results.FirstOrDefault();
     }
 
-    private void SetTrailer(string trailerKey)
+    private void SetVideos(List<Video> videos)
     {
-        ResultListViewData.SelectedItem.TrailerKey = trailerKey;
-        ResultListViewData.SelectedItem.Trailer =
-            new Uri($"https://www.youtube.com/embed/{trailerKey}");
-        Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
-            ResultListViewData.SelectedItem.Trailer);
+        if (videos == null || videos.Count == 0)
+        {
+            return;
+        }
+
+        var trailer = ChooseTrailer(videos);
+        var videoList = new List<MediaVideo>
+        {
+            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.Key))
+        };
+
+        videoList.AddRange(
+            videos.Where(video => video != trailer)
+                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.Key)))
+        );
+        
+        ResultListViewData.SelectedItem.Videos = videoList;
+    }
+
+    private void SetVideos(GameVideo[] videos)
+    {
+        var trailer = videos.First(v => v.Name == "Trailer");
+        
+        var videoList = new List<MediaVideo>
+        {
+            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.VideoId))
+        };
+
+        videoList.AddRange(
+            videos.Where(video => video != trailer)
+                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId)))
+        );
+
+        ResultListViewData.SelectedItem.Videos = videoList;
     }
     private void ResetPoster()
     {

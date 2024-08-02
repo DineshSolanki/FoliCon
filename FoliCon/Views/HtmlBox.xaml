@@ -4,6 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
              mc:Ignorable="d" Background="{DynamicResource RegionBrush}">
-    <wv2:WebView2 x:Name="Browser"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <hc:ComboBox Grid.Row="0" x:Name="VideoSelector" Margin="10" SelectionChanged="VideoSelector_OnSelectionChanged"
+                  SelectedIndex="0">
+        </hc:ComboBox>
+        <wv2:WebView2 Grid.Row="1" x:Name="Browser"/>
+    </Grid>
 </UserControl>
