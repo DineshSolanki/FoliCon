@@ -1,5 +1,4 @@
 ﻿using DelegateCommand = Prism.Commands.DelegateCommand;
-using Video = FoliCon.Models.Data.Video;
 
 namespace FoliCon.ViewModels;
 
@@ -7,6 +6,8 @@ namespace FoliCon.ViewModels;
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private const string YoutubeEmbedUrl = "https://www.youtube.com/embed/{0}";
+
     #region Variables
 
     private string _title = Lang.SearchResult;
@@ -436,8 +437,6 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
         SetVideos(r);
-        var key = r.First(v => v.Name == "Trailer");
-        SetTrailer(key.VideoId);
     }
     
 
@@ -450,15 +449,6 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             if (result != null)
             {
                 SetVideos(result.Results);
-                var trailer = ChooseTrailer(result.Results);
-                if (trailer != null)
-                {
-                    SetTrailer(trailer.Key);
-                }
-                else
-                {
-                    Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-                }
             }
         }
         catch (Exception ex)
@@ -476,22 +466,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
         SetVideos(result.Results);
-        var i = ChooseTrailer(result.Results);
-    
-        if (i != null)
-        {
-            SetTrailer(i.Key);
-        }
-        else
-        {
-            Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-        }
     }
 
-    private static dynamic ChooseTrailer(IReadOnlyCollection<dynamic> results)
+    private static Video ChooseTrailer(IReadOnlyCollection<Video> results)
     {
-        var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item.Site == "YouTube");
-        return trailerYouTube != null ? trailerYouTube : results.FirstOrDefault();
+        var trailerYouTube = results.FirstOrDefault(item => item is { Type: "Trailer", Site: "YouTube" });
+        return trailerYouTube ?? results.FirstOrDefault();
     }
 
     private void SetTrailer(string trailerKey)
@@ -503,26 +483,41 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             ResultListViewData.SelectedItem.Trailer);
     }
 
-    private void SetVideos(List<TMDbLib.Objects.General.Video> videos)
+    private void SetVideos(List<Video> videos)
     {
-        if (videos == null)
+        if (videos == null || videos.Count == 0)
         {
             return;
         }
 
-        var videoList = videos
-            .Where(item=> item.Site == "YouTube")
-            .Select(video => new Video(video.Name, $"https://www.youtube.com/embed/{video.Key}"))
-            .ToList();
+        var trailer = ChooseTrailer(videos);
+        var videoList = new List<MediaVideo>
+        {
+            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.Key))
+        };
 
+        videoList.AddRange(
+            videos.Where(video => video != trailer)
+                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.Key)))
+        );
+        
         ResultListViewData.SelectedItem.Videos = videoList;
     }
-    
+
     private void SetVideos(GameVideo[] videos)
     {
-        var videoList = videos
-            .Select(video => new Video(video.Name, $"https://www.youtube.com/embed/{video.VideoId}"))
-            .ToList();
+        var trailer = videos.First(v => v.Name == "Trailer");
+        
+        var videoList = new List<MediaVideo>
+        {
+            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.VideoId))
+        };
+
+        videoList.AddRange(
+            videos.Where(video => video != trailer)
+                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId)))
+        );
+
         ResultListViewData.SelectedItem.Videos = videoList;
     }
     private void ResetPoster()

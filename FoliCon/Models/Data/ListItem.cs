@@ -13,7 +13,7 @@ public class ListItem : BindableBase
     private string _id;
     private MediaType _mediaType = MediaType.Unknown;
 
-    private ICollection<Video> _videos;
+    private ICollection<MediaVideo> _videos;
     
     private string _initialPoster;
     private bool _isInitialSet;
@@ -82,7 +82,7 @@ public class ListItem : BindableBase
         set => SetProperty(ref _trailerKey, value);
     }
     
-    public ICollection<Video> Videos
+    public ICollection<MediaVideo> Videos
     {
         get => _videos;
         set => SetProperty(ref _videos, value);

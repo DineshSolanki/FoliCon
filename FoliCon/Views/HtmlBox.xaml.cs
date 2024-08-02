@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using HandyControl.Themes;
-using Video = FoliCon.Models.Data.Video;
 
 namespace FoliCon.Views;
 
@@ -26,18 +25,21 @@ public partial class HtmlBox
     public static readonly DependencyProperty VideosProperty
         = DependencyProperty.Register(
             nameof(Videos), 
-            typeof(ICollection<Video>), 
+            typeof(ICollection<MediaVideo>), 
             typeof(HtmlBox), 
-            new PropertyMetadata(default(ICollection<Video>), OnVideosPropertyChanged));
+            new PropertyMetadata(default(ICollection<MediaVideo>), OnVideosPropertyChanged));
 
-    private static void OnVideosPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static async void OnVideosPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not HtmlBox control)
         {
             return;
         }
-
-        control.VideoSelector.ItemsSource = e.NewValue as ICollection;
+        await control.Dispatcher.InvokeAsync(() =>
+        {
+            control.VideoSelector.ItemsSource = e.NewValue as ICollection<MediaVideo>;
+            control.VideoSelector.SelectedIndex = 0;
+        });
     }
 
     private bool IsVideoAvailable { get; set; }
@@ -46,10 +48,7 @@ public partial class HtmlBox
     {
         InitializeComponent();
         _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
-        VideoSelector.ItemsSource = Videos;
-        VideoSelector.SelectedValuePath = "Id";
-        VideoSelector.DisplayMemberPath = "Name";
-        VideoSelector.SelectedIndex = 0;
+       InitializeVideoSelector();
     }
 
     public string HtmlText
@@ -58,9 +57,9 @@ public partial class HtmlBox
         set => SetValue(HtmlTextProperty, value);
     }
     
-    public ICollection Videos
+    public ICollection<MediaVideo> Videos
     {
-        get => (ICollection)GetValue(VideosProperty);
+        get => (ICollection<MediaVideo>)GetValue(VideosProperty);
         set => SetValue(VideosProperty, value);
     }
     private async Task ProcessBrowse()
@@ -70,11 +69,16 @@ public partial class HtmlBox
             return;
         }
 
-        var content = !IsVideoAvailable
-            ? $"""<html><body style="background-color: {_backgroundColor}"></body></html>"""
-            : GenerateHtmlContent();
+        var content = GenerateContentString();
 
         await InitializeAsync(content);
+    }
+
+    private string GenerateContentString()
+    {
+        return !IsVideoAvailable
+            ? $"""<html><body style="background-color: {_backgroundColor}"></body></html>"""
+            : GenerateHtmlContent();
     }
 
     private string GenerateHtmlContent()
@@ -151,9 +155,17 @@ public partial class HtmlBox
                                                     </html>
                                         """;
 
-    private void VideoSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void VideoSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         HtmlText = VideoSelector.SelectedValue?.ToString() ?? string.Empty;
-        ProcessBrowse();
+        await ProcessBrowse();
+    }
+    
+    private void InitializeVideoSelector()
+    {
+        VideoSelector.ItemsSource = Videos;
+        VideoSelector.SelectedValuePath = "Url";
+        VideoSelector.DisplayMemberPath = "Name";
+        VideoSelector.SelectedIndex = 0;
     }
 }
