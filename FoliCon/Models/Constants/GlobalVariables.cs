@@ -21,4 +21,6 @@ internal static class GlobalVariables
 
     private static string IconOverlayTypeString =>
         Services.Tracker.Store.GetData("PosterIconConfigViewModel")?["p.IconOverlay"]?.ToString() ?? IconOverlay.Liaher.ToString();
+    
+    public static string SeasonRegexString => @"(?i)\b(s|season)\s*(\d{1,2})\b";
 }
