@@ -474,15 +474,6 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         return trailerYouTube ?? results.FirstOrDefault();
     }
 
-    private void SetTrailer(string trailerKey)
-    {
-        ResultListViewData.SelectedItem.TrailerKey = trailerKey;
-        ResultListViewData.SelectedItem.Trailer =
-            new Uri($"https://www.youtube.com/embed/{trailerKey}");
-        Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
-            ResultListViewData.SelectedItem.Trailer);
-    }
-
     private void SetVideos(List<Video> videos)
     {
         if (videos == null || videos.Count == 0)

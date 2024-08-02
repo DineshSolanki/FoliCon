@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using HandyControl.Themes;
+﻿using HandyControl.Themes;
 
 namespace FoliCon.Views;
 
