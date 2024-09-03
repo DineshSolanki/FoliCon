@@ -19,6 +19,12 @@ internal static class GlobalVariables
 
     public const string MediaInfoFile = "info.folicon";
 
-    private static string IconOverlayTypeString =>
-        Services.Tracker.Store.GetData("PosterIconConfigViewModel")?["p.IconOverlay"]?.ToString() ?? IconOverlay.Liaher.ToString();
+    private static string IconOverlayTypeString
+    {
+        get
+        {
+            var data = Services.Tracker.Store.GetData("PosterIconConfigViewModel");
+            return data.TryGetValue("p.IconOverlay", out var value) ? value.ToString() : IconOverlay.Liaher.ToString();
+        }
+    }
 }
