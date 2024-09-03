@@ -180,7 +180,7 @@ public class DArt : BindableBase
 
     private string GetBrowseApiUrl(string query, int offset)
     {
-        return $"https://www.deviantart.com/api/v1/oauth2/browse/newest?timerange=alltime&offset={offset}&q={query} folder icon&limit=20&access_token={ClientAccessToken}";
+        return $"https://www.deviantart.com/api/v1/oauth2/browse/home?offset={offset}&q={query} folder icon&limit=20&access_token={ClientAccessToken}";
     }
     
     private string GetDownloadApiUrl(string deviationId)
