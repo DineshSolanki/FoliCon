@@ -32,7 +32,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="HandyControls" Version="3.4.4" />
     <PackageReference Include="IGDB" Version="5.1.0" />
     <PackageReference Include="Jot" Version="2.1.17" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />
     <PackageReference Include="NLog" Version="5.3.2" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
