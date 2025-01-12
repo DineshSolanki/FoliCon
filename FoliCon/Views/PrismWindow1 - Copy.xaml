@@ -1,0 +1,179 @@
+﻿<hc:Window x:Class="FoliCon.Views.PrismWindow1_Copy"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"              
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel (keeping original) -->
+        <DockPanel Grid.Column="0" Background="#F5F5F5" Margin="10">
+            <!-- Previous left panel content remains same -->
+            <TextBlock DockPanel.Dock="Top" Text="Current Folder" 
+                     Margin="10,5" Foreground="#666"/>
+            <TextBlock DockPanel.Dock="Top" Text="Action Movies 2025" 
+                     FontSize="20" FontWeight="SemiBold" Margin="10,0,10,20"/>
+            
+            <TextBlock DockPanel.Dock="Top" Text="Folder Content" 
+                     Margin="10,5" Foreground="#666"/>
+            <ListBox Margin="10,5" DockPanel.Dock="Top">
+                <ListBoxItem>The Dark Knight.mp4</ListBoxItem>
+                <ListBoxItem>Inception.mp4</ListBoxItem>
+                <ListBoxItem>Matrix.mp4</ListBoxItem>
+            </ListBox>
+
+            <StackPanel DockPanel.Dock="Bottom" Margin="10">
+                <TextBox Text="Search media..." Padding="5" Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Pick Selected" Background="#10B981" 
+                            Foreground="White" Padding="10,5" Margin="0,0,5,0"/>
+                    <Button Content="Skip" Background="#4B5563" 
+                            Foreground="White" Padding="10,5" Margin="0,0,5,0"/>
+                    <Button Content="Skip All" Background="#4B5563" 
+                            Foreground="White" Padding="10,5"/>
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+
+       <!-- Right Panel (modified) -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250"/> <!-- Increased height for media items -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Media Items List (expanded) -->
+            <ListView Grid.Row="0" BorderThickness="0" 
+                      Background="Transparent"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Margin="0,0,0,20">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Padding" Value="10,8"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <!-- ListViewItem content remains same -->
+            </ListView>
+
+            <!-- Movie Details Section -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="280"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Movie Poster (same as before) -->
+                <Grid>
+                    <Image Source="/Resources/inception-poster.jpg" 
+                           Height="400" Stretch="UniformToFill"/>
+                    <Button VerticalAlignment="Bottom" 
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,10"
+                            Background="#80000000"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Padding="15,5">
+                        <StackPanel>
+                            <TextBlock Text="INCEPTION" FontWeight="Bold"/>
+                            <TextBlock Text="More Posters" FontSize="12"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+
+                <!-- Right Content Area (reorganized) -->
+                <Grid Grid.Column="1" Margin="20,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120"/> <!-- Reduced trailer height -->
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/> <!-- More space for description -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Compact Video Player -->
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <!-- Smaller Video Player -->
+                        <Border Background="#1E293B" Margin="0,0,0,10">
+                            <Button Content="▶" FontSize="32" 
+                                    Background="Transparent" 
+                                    Foreground="White"/>
+                        </Border>
+
+                        <!-- Horizontal Trailer Buttons -->
+                        <StackPanel Grid.Row="1" 
+                                  Orientation="Horizontal" 
+                                  Margin="0,0,0,10">
+                            <Button Content="Trailer 1" 
+                                    Margin="0,0,5,0" 
+                                    Padding="8,3"/>
+                            <Button Content="Trailer 2" 
+                                    Margin="0,0,5,0" 
+                                    Padding="8,3"/>
+                            <Button Content="Trailer 3" 
+                                    Padding="8,3"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Description Section (expanded) -->
+                    <Border Grid.Row="2" 
+                            BorderBrush="#E5E7EB" 
+                            BorderThickness="1" 
+                            CornerRadius="4"
+                            Background="White">
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top" 
+                                     Background="#F9FAFB">
+                                <TextBlock Text="Description" 
+                                         FontWeight="SemiBold"/>
+                                <StackPanel Orientation="Horizontal" 
+                                          HorizontalAlignment="Right">
+                                    <Button Content="A-" Width="30" 
+                                            Margin="0,0,5,0"/>
+                                    <Button Content="A+" Width="30"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <ScrollViewer MaxHeight="300"> <!-- Increased height -->
+                                <TextBlock Padding="15" 
+                                         TextWrapping="Wrap" 
+                                         LineHeight="20"
+                                         x:Name="DescriptionText">
+                                    A thief who steals corporate secrets through 
+                                    the use of dream-sharing technology is given 
+                                    the inverse task of planting an idea into 
+                                    the mind of a C.E.O., but his tragic past 
+                                    may doom the project and his team to disaster.
+
+                                    Dom Cobb is a skilled thief, the absolute best 
+                                    in the dangerous art of extraction, stealing 
+                                    valuable secrets from deep within the subconscious 
+                                    during the dream state, when the mind is at its 
+                                    most vulnerable.
+                                </TextBlock>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Rating Section -->
+                    <StackPanel Grid.Row="3" 
+                              Orientation="Horizontal" 
+                              Margin="0,10,0,0">
+                        <TextBlock Text="Your Rating" 
+                                 VerticalAlignment="Center" 
+                                 Margin="0,0,10,0"/>
+                        <!-- Rating buttons remain same -->
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</hc:Window>
