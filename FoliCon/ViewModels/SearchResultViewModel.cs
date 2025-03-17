@@ -1,4 +1,4 @@
-﻿using DelegateCommand = Prism.Commands.DelegateCommand;
+using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace FoliCon.ViewModels;
 
@@ -137,7 +137,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _dialogService = dialogService;
         SearchAgainCommand = new DelegateCommand(SearchAgainMethod);
         SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
-        ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
+        ResultListViewData = new ListViewData { Data = new ObservableCollection<ListItem>(), SelectedItem = null };
         PickCommand = new DelegateCommand<MouseButtonEventArgs>(PickMethod);
         ResetPosterCommand = new DelegateCommand(ResetPoster);
         SkipAllCommand = new DelegateCommand(delegate
@@ -511,8 +511,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         ResultListViewData.SelectedItem.Videos = videoList;
     }
+    
     private void ResetPoster()
     {
+        if (ResultListViewData.SelectedItem == null)
+        {
+            Logger.Warn("ResetPoster called with null SelectedItem");
+            return;
+        }
         ResultListViewData.SelectedItem.ResetInitialPoster();
     }
     
