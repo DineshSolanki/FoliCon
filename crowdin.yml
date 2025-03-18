@@ -5,6 +5,6 @@ files:
 
 "preserve_hierarchy": true
 
-project_id: CROWDIN_PROJECT_ID
+project_id: 625616
 api_token: CROWDIN_API_TOKEN
 base_path: .
