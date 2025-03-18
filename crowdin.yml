@@ -5,6 +5,6 @@ files:
 
 "preserve_hierarchy": true
 
-project_id_env: CROWDIN_PROJECT_ID
-api_token_env: CROWDIN_API_TOKEN
+project_id: CROWDIN_PROJECT_ID
+api_token: CROWDIN_API_TOKEN
 base_path: .
