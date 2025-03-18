@@ -1,0 +1,30 @@
+name: Crowdin Integration
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'FoliCon/Properties/Langs/Lang.resx'
+  workflow_dispatch:
+
+jobs:
+  sync-with-crowdin:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Crowdin Action
+        uses: crowdin/github-action@v2
+        with:
+          upload_sources: true
+          download_translations: true
+          create_pull_request: true
+          pull_request_title: 'New Crowdin translations'
+          pull_request_body: 'Automated synchronization with translations from Crowdin'
+          pull_request_labels: 'crowdin, i18n, translations'
+          localization_branch_name: l10n_master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
