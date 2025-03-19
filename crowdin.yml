@@ -1,10 +1,10 @@
-files:
-  - source: /FoliCon/Properties/Langs/Lang.resx
-    translation: /FoliCon/Properties/Langs/Lang.%two_letters_code%.resx
-    update_option: update_as_unapproved
+"project_id_env": "CROWDIN_PROJECT_ID"
+"api_token_env": "CROWDIN_PERSONAL_TOKEN"
+"base_path": "."
 
-"preserve_hierarchy": true
-
-project_id: 625616
-api_token: CROWDIN_API_TOKEN
-base_path: .
+"files": [
+   {
+      "source": "/FoliCon/Properties/Langs/Lang.resx",
+      "translation": "/FoliCon/Properties/Langs/Lang.%two_letters_code%.resx"
+   }
+]
