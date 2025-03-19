@@ -1,104 +1,104 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
-
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+      Microsoft ResX Schema 
+      
+      Version 2.0
+      
+      The primary goals of this format is to allow a simple XML format 
+      that is mostly human readable. The generation and parsing of the 
+      various data types are done through the TypeConverter classes 
+      associated with the data types.
+      
+      Example:
+      
+      ... ado.net/XML headers & schema ...
+      <resheader name="resmimetype">text/microsoft-resx</resheader>
+      <resheader name="version">2.0</resheader>
+      <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+      <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+      <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+      <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+      <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+          <value>[base64 mime encoded serialized .NET Framework object]</value>
+      </data>
+      <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+          <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+          <comment>This is a comment</comment>
+      </data>
+                  
+      There are any number of "resheader" rows that contain simple 
+      name/value pairs.
+      
+      Each data row contains a name, and value. The row also contains a 
+      type or mimetype. Type corresponds to a .NET class that support 
+      text/value conversion through the TypeConverter architecture. 
+      Classes that don't support this are serialized and stored with the 
+      mimetype set.
+      
+      The mimetype is used for serialized objects, and tells the 
+      ResXResourceReader how to depersist the object. This is currently not 
+      extensible. For a given mimetype the value must be set accordingly:
+      
+      Note - application/x-microsoft.net.object.binary.base64 is the format 
+      that the ResXResourceWriter will generate, however the reader can 
+      read any of the formats listed below.
+      
+      mimetype: application/x-microsoft.net.object.binary.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+              : and then encoded with base64 encoding.
+      
+      mimetype: application/x-microsoft.net.object.soap.base64
+      value   : The object must be serialized with 
+              : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+              : and then encoded with base64 encoding.
+  
+      mimetype: application/x-microsoft.net.object.bytearray.base64
+      value   : The object must be serialized into a byte array 
+              : using a System.ComponentModel.TypeConverter
+              : and then encoded with base64 encoding.
+      -->
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -112,13 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=5.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=5.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
   </resheader>
   <data name="About" xml:space="preserve">
     <value>Acerca de</value>
+  </data>
+  <data name="AddToContextMenu" xml:space="preserve">
+    <value>Agregar al menú contextual</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Todos</value>
   </data>
   <data name="AlwaysShowPosterWindow" xml:space="preserve">
     <value>Mostrar siempre la ventana del póster</value>
@@ -132,6 +142,9 @@
   <data name="APIKeysNotProvided" xml:space="preserve">
     <value>No se proporcionan claves de API</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Solicitar</value>
+  </data>
   <data name="AppWillClose" xml:space="preserve">
     <value>La aplicación se cerrará.</value>
   </data>
@@ -140,6 +153,15 @@
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Automático (películas y programas de televisión)</value>
+  </data>
+  <data name="BestSuitedForHorizontal" xml:space="preserve">
+    <value>Más adecuado para imágenes horizontales, como obras de arte de juegos.</value>
+  </data>
+  <data name="BrowseFolderDropHere" xml:space="preserve">
+    <value>Examinar carpeta / Soltar aquí</value>
+  </data>
+  <data name="BrowseIconsDropHere" xml:space="preserve">
+    <value>Examinar iconos / soltar aquí</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
@@ -153,6 +175,15 @@
   <data name="CheckForUpdate" xml:space="preserve">
     <value>Buscar actualizaciones</value>
   </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>Identificación del cliente :</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>Secreto del cliente:</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Cerrar</value>
+  </data>
   <data name="ClosingApplication" xml:space="preserve">
     <value>Solicitud de cierre</value>
   </data>
@@ -165,11 +196,26 @@
   <data name="ConfirmIconDeletion" xml:space="preserve">
     <value>Confirmar la eliminación del icono</value>
   </data>
+  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
+    <value>Confirmar la eliminación de archivos de información multimedia</value>
+  </data>
   <data name="ConfirmToOpenFolder" xml:space="preserve">
     <value>Haga clic en "Confirmar" para abrir la carpeta.</value>
   </data>
+  <data name="CreateIconsWithFoliCon" xml:space="preserve">
+    <value>Crea iconos con FoliCon</value>
+  </data>
   <data name="CreatingIcons" xml:space="preserve">
     <value>Creación de iconos ...</value>
+  </data>
+  <data name="CustomIconSetter" xml:space="preserve">
+    <value>Establecedor de iconos personalizados</value>
+  </data>
+  <data name="CustomRating" xml:space="preserve">
+    <value>Calificación personalizada:</value>
+  </data>
+  <data name="CustomRatingTooltip" xml:space="preserve">
+    <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
   </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>Eliminar iconos</value>
@@ -179,6 +225,19 @@
   </data>
   <data name="DeleteIconsTooltip" xml:space="preserve">
     <value>Esto eliminará los iconos existentes de todas las subcarpetas.</value>
+  </data>
+  <data name="DeleteMediaInfo" xml:space="preserve">
+    <value>Eliminar información multimedia</value>
+  </data>
+  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar los archivos de información de medios de folicon?</value>
+  </data>
+  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
+    <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
+Esto ayuda a folicon a identificar los medios sin tener que elegir entre títulos ambiguos.</value>
+  </data>
+  <data name="DevelopedByDinesh" xml:space="preserve">
+    <value>Desarrollado por Dinesh Solanki.</value>
   </data>
   <data name="DirectoryIsEmpty" xml:space="preserve">
     <value>El directorio está vacío</value>
@@ -198,6 +257,15 @@
   <data name="English" xml:space="preserve">
     <value>inglés</value>
   </data>
+  <data name="EnterTitlePlaceholder" xml:space="preserve">
+    <value>Ingrese el título aquí para buscar nuevamente.</value>
+  </data>
+  <data name="ExceptionOccurred" xml:space="preserve">
+    <value>Ocurrió una excepción</value>
+  </data>
+  <data name="ExplorerIntegration" xml:space="preserve">
+    <value>Integración del explorador (menú contextual)</value>
+  </data>
   <data name="Folder" xml:space="preserve">
     <value>Carpeta</value>
   </data>
@@ -207,8 +275,16 @@
   <data name="FolderError" xml:space="preserve">
     <value>Error de carpeta</value>
   </data>
+  <data name="Folders" xml:space="preserve">
+    <value>Carpetas</value>
+  </data>
   <data name="FoldersProcessed" xml:space="preserve">
     <value>Carpetas procesadas:</value>
+  </data>
+  <data name="FoliConDescription" xml:space="preserve">
+    <value>FoliCon es más que un típico cambiador de iconos de carpetas
+Automatiza esta tarea en mayor medida, tiene dos modos diferentes para diferentes diseños de iconos de carpetas,
+y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpeta multimedia.</value>
   </data>
   <data name="Game" xml:space="preserve">
     <value>Juego</value>
@@ -225,6 +301,9 @@
   <data name="HelpDocument" xml:space="preserve">
     <value>Documento de ayuda</value>
   </data>
+  <data name="Hindi" xml:space="preserve">
+    <value>Hindi</value>
+  </data>
   <data name="IconCreated" xml:space="preserve">
     <value>Icono (s) creado (s)</value>
   </data>
@@ -236,6 +315,9 @@
   </data>
   <data name="IconReloadMayTakeTime" xml:space="preserve">
     <value>Nota: El icono puede tardar un tiempo en recargarse.</value>
+  </data>
+  <data name="Icons" xml:space="preserve">
+    <value>Iconos</value>
   </data>
   <data name="IconsAlready" xml:space="preserve">
     <value>La carpeta ya tiene íconos o está vacía.</value>
@@ -255,8 +337,17 @@
   <data name="InvalidPath" xml:space="preserve">
     <value>Ruta no válida</value>
   </data>
+  <data name="License" xml:space="preserve">
+    <value>Licencia:</value>
+  </data>
+  <data name="LicenseInfo" xml:space="preserve">
+    <value>Licencia pública general GNU v3.0</value>
+  </data>
   <data name="Load" xml:space="preserve">
     <value>Carga</value>
+  </data>
+  <data name="LoadingPosters" xml:space="preserve">
+    <value>Cargando carteles ...</value>
   </data>
   <data name="MakeIcons" xml:space="preserve">
     <value>Hacer iconos</value>
@@ -274,14 +365,32 @@
     <value>Se ha encontrado una nueva versión ({0}).
 Registro de cambios: {1}</value>
   </data>
+  <data name="NoFolderOrIconAlready" xml:space="preserve">
+    <value>No hay carpetas seleccionadas o las carpetas ya tienen iconos.</value>
+  </data>
+  <data name="NoFoldersToProcess" xml:space="preserve">
+    <value>No hay carpetas para procesar</value>
+  </data>
+  <data name="NoIconsSelected" xml:space="preserve">
+    <value>No se seleccionaron iconos</value>
+  </data>
+  <data name="NoIconsToApply" xml:space="preserve">
+    <value>No hay iconos para aplicar</value>
+  </data>
   <data name="NoInternet" xml:space="preserve">
     <value>Lo sentimos, Internet no está disponible.</value>
   </data>
   <data name="NoPosterFound" xml:space="preserve">
     <value>No se encontró ningún póster.</value>
   </data>
+  <data name="NoResult" xml:space="preserve">
+    <value>Sin resultados</value>
+  </data>
   <data name="NoResultFound" xml:space="preserve">
     <value>No se han encontrado resultados</value>
+  </data>
+  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
+    <value>No se ha encontrado ningún resultado. Intente buscar de nuevo con el título correcto.</value>
   </data>
   <data name="NothingFoundFor" xml:space="preserve">
     <value>No se encontró nada para {0}
@@ -291,11 +400,26 @@ Intente buscar con otro título
   <data name="OK" xml:space="preserve">
     <value>si</value>
   </data>
+  <data name="OnlyKeepExactMatches" xml:space="preserve">
+    <value>¿Conserva solo coincidencias exactas?</value>
+  </data>
+  <data name="Or" xml:space="preserve">
+    <value>~ O ~</value>
+  </data>
   <data name="OutOf" xml:space="preserve">
     <value>fuera de</value>
   </data>
+  <data name="PickIconWithName" xml:space="preserve">
+    <value>Elegir ícono para {0}</value>
+  </data>
+  <data name="PickSelected" xml:space="preserve">
+    <value>Elegir seleccionado</value>
+  </data>
   <data name="Poster" xml:space="preserve">
     <value>Póster</value>
+  </data>
+  <data name="PosterIconOverlay" xml:space="preserve">
+    <value>Superposición de icono de póster</value>
   </data>
   <data name="PosterOverlayTooltip" xml:space="preserve">
     <value>Controla si se utiliza la superposición de póster o pósters sencillos.</value>
@@ -305,6 +429,13 @@ Intente buscar con otro título
   </data>
   <data name="Rating" xml:space="preserve">
     <value>Clasificación</value>
+  </data>
+  <data name="RemoveFromContextMenu" xml:space="preserve">
+    <value>Eliminar del menú contextual</value>
+  </data>
+  <data name="RestartAsAdmin" xml:space="preserve">
+    <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
+¿Quieres reiniciar Folicon como administrador?</value>
   </data>
   <data name="RestartExplorer" xml:space="preserve">
     <value>Reiniciar el explorador</value>
@@ -319,20 +450,41 @@ y actualizar la caché de iconos?</value>
   <data name="Russian" xml:space="preserve">
     <value>ruso</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
   <data name="Searching" xml:space="preserve">
     <value>Buscando...</value>
   </data>
   <data name="SearchingWithCount" xml:space="preserve">
     <value>Buscando ... {0}</value>
   </data>
+  <data name="SearchingWithName" xml:space="preserve">
+    <value>Buscando {0} ...</value>
+  </data>
   <data name="SearchMode" xml:space="preserve">
     <value>Modo de búsqueda</value>
+  </data>
+  <data name="SearchResult" xml:space="preserve">
+    <value>Resultado de búsqueda</value>
+  </data>
+  <data name="SeeMorePosters" xml:space="preserve">
+    <value>Ver más carteles / portadas.</value>
   </data>
   <data name="SelectFolder" xml:space="preserve">
     <value>Seleccione la carpeta</value>
   </data>
+  <data name="SelectIconsDirectory" xml:space="preserve">
+    <value>Seleccionar directorio de iconos</value>
+  </data>
+  <data name="SelectPosterIconOverlay" xml:space="preserve">
+    <value>Seleccionar superposición de icono de póster</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Ajustes</value>
+  </data>
+  <data name="ShowMore" xml:space="preserve">
+    <value>Mostrar más...</value>
   </data>
   <data name="ShowPosterWindowTooltip" xml:space="preserve">
     <value>Mostrar la ventana del póster incluso si se encuentra el título exacto.Esto le permitirá elegir un póster diferente para ellos y una calificación personalizada también
@@ -344,69 +496,6 @@ y actualizar la caché de iconos?</value>
   <data name="ShowRatingBadgeTooltip" xml:space="preserve">
     <value>Controla si ocultar o mostrar el Escudo de clasificación</value>
   </data>
-  <data name="Spanish" xml:space="preserve">
-    <value>Español</value>
-  </data>
-  <data name="ThisIsLatestVersion" xml:space="preserve">
-    <value>¡Genial! está utilizando la última versión.</value>
-  </data>
-  <data name="Title" xml:space="preserve">
-    <value>Título</value>
-  </data>
-  <data name="ToForceReload" xml:space="preserve">
-    <value>Para forzar la recarga, haga clic en Reiniciar el explorador.</value>
-  </data>
-  <data name="TV" xml:space="preserve">
-    <value>televisor</value>
-  </data>
-  <data name="UpdateNow" xml:space="preserve">
-    <value>Actualizar ahora</value>
-  </data>
-  <data name="UsePosterOverlay" xml:space="preserve">
-    <value>Usar superposición de póster</value>
-  </data>
-  <data name="Year" xml:space="preserve">
-    <value>Año</value>
-  </data>
-  <data name="All" xml:space="preserve">
-    <value>Todos</value>
-  </data>
-  <data name="CustomRating" xml:space="preserve">
-    <value>Calificación personalizada:</value>
-  </data>
-  <data name="CustomRatingTooltip" xml:space="preserve">
-    <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
-  </data>
-  <data name="EnterTitlePlaceholder" xml:space="preserve">
-    <value>Ingrese el título aquí para buscar nuevamente.</value>
-  </data>
-  <data name="NoResult" xml:space="preserve">
-    <value>Sin resultados</value>
-  </data>
-  <data name="NoResultFoundTryCorrectTitle" xml:space="preserve">
-    <value>No se ha encontrado ningún resultado. Intente buscar de nuevo con el título correcto.</value>
-  </data>
-  <data name="Or" xml:space="preserve">
-    <value>~ O ~</value>
-  </data>
-  <data name="PickIconWithName" xml:space="preserve">
-    <value>Elegir ícono para {0}</value>
-  </data>
-  <data name="PickSelected" xml:space="preserve">
-    <value>Elegir seleccionado</value>
-  </data>
-  <data name="SearchingWithName" xml:space="preserve">
-    <value>Buscando {0} ...</value>
-  </data>
-  <data name="SearchResult" xml:space="preserve">
-    <value>Resultado de búsqueda</value>
-  </data>
-  <data name="SeeMorePosters" xml:space="preserve">
-    <value>Ver más carteles / portadas.</value>
-  </data>
-  <data name="ShowMore" xml:space="preserve">
-    <value>Mostrar más...</value>
-  </data>
   <data name="Skip" xml:space="preserve">
     <value>Saltar</value>
   </data>
@@ -416,132 +505,47 @@ y actualizar la caché de iconos?</value>
   <data name="SkipThisTitle" xml:space="preserve">
     <value>Omita este título.</value>
   </data>
+  <data name="Spanish" xml:space="preserve">
+    <value>Español</value>
+  </data>
   <data name="StopSearching" xml:space="preserve">
     <value>Deja de buscar</value>
   </data>
-  <data name="LoadingPosters" xml:space="preserve">
-    <value>Cargando carteles ...</value>
+  <data name="ThisIsLatestVersion" xml:space="preserve">
+    <value>¡Genial! está utilizando la última versión.</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Solicitar</value>
-  </data>
-  <data name="BrowseFolderDropHere" xml:space="preserve">
-    <value>Examinar carpeta / Soltar aquí</value>
-  </data>
-  <data name="BrowseIconsDropHere" xml:space="preserve">
-    <value>Examinar iconos / soltar aquí</value>
-  </data>
-  <data name="Folders" xml:space="preserve">
-    <value>Carpetas</value>
-  </data>
-  <data name="Icons" xml:space="preserve">
-    <value>Iconos</value>
-  </data>
-  <data name="OnlyKeepExactMatches" xml:space="preserve">
-    <value>¿Conserva solo coincidencias exactas?</value>
-  </data>
-  <data name="ClientSecret" xml:space="preserve">
-    <value>Secreto del cliente:</value>
-  </data>
-  <data name="ClientID" xml:space="preserve">
-    <value>Identificación del cliente :</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Cerrar</value>
-  </data>
-  <data name="CustomIconSetter" xml:space="preserve">
-    <value>Establecedor de iconos personalizados</value>
-  </data>
-  <data name="NoFolderOrIconAlready" xml:space="preserve">
-    <value>No hay carpetas seleccionadas o las carpetas ya tienen iconos.</value>
-  </data>
-  <data name="NoFoldersToProcess" xml:space="preserve">
-    <value>No hay carpetas para procesar</value>
-  </data>
-  <data name="NoIconsSelected" xml:space="preserve">
-    <value>No se seleccionaron iconos</value>
-  </data>
-  <data name="NoIconsToApply" xml:space="preserve">
-    <value>No hay iconos para aplicar</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salvar</value>
-  </data>
-  <data name="SelectIconsDirectory" xml:space="preserve">
-    <value>Seleccionar directorio de iconos</value>
+  <data name="Title" xml:space="preserve">
+    <value>Título</value>
   </data>
   <data name="TMDBAPIKey" xml:space="preserve">
     <value>Clave de API de TMDB:</value>
   </data>
-  <data name="UndoSuccessful" xml:space="preserve">
-    <value>Deshacer exitosamente</value>
+  <data name="ToForceReload" xml:space="preserve">
+    <value>Para forzar la recarga, haga clic en Reiniciar el explorador.</value>
+  </data>
+  <data name="TV" xml:space="preserve">
+    <value>televisor</value>
   </data>
   <data name="Undo" xml:space="preserve">
     <value>Deshacer</value>
   </data>
-  <data name="DevelopedByDinesh" xml:space="preserve">
-    <value>Desarrollado por Dinesh Solanki.</value>
+  <data name="UndoSuccessful" xml:space="preserve">
+    <value>Deshacer exitosamente</value>
   </data>
-  <data name="FoliConDescription" xml:space="preserve">
-    <value>FoliCon es más que un típico cambiador de iconos de carpetas
-Automatiza esta tarea en mayor medida, tiene dos modos diferentes para diferentes diseños de iconos de carpetas,
-y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpeta multimedia.</value>
+  <data name="UpdateNow" xml:space="preserve">
+    <value>Actualizar ahora</value>
   </data>
-  <data name="License" xml:space="preserve">
-    <value>Licencia:</value>
-  </data>
-  <data name="LicenseInfo" xml:space="preserve">
-    <value>Licencia pública general GNU v3.0</value>
+  <data name="UsePosterOverlay" xml:space="preserve">
+    <value>Usar superposición de póster</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Versión :</value>
   </data>
-  <data name="ExceptionOccurred" xml:space="preserve">
-    <value>Ocurrió una excepción</value>
-  </data>
-  <data name="ConfirmMediaInfoDeletion" xml:space="preserve">
-    <value>Confirmar la eliminación de archivos de información multimedia</value>
-  </data>
-  <data name="DeleteMediaInfo" xml:space="preserve">
-    <value>Eliminar información multimedia</value>
-  </data>
-  <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-    <value>¿Está seguro de que desea eliminar los archivos de información de medios de folicon?</value>
-  </data>
-  <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-    <value>Esto eliminará los archivos de información de medios utilizados por folicon para almacenar la identificación de medios después de seleccionar un título por primera vez.
-Esto ayuda a folicon a identificar los medios sin tener que elegir entre títulos ambiguos.</value>
-  </data>
-  <data name="PosterIconOverlay" xml:space="preserve">
-    <value>Superposición de icono de póster</value>
-  </data>
-  <data name="BestSuitedForHorizontal" xml:space="preserve">
-    <value>Más adecuado para imágenes horizontales, como obras de arte de juegos.</value>
-  </data>
-  <data name="SelectPosterIconOverlay" xml:space="preserve">
-    <value>Seleccionar superposición de icono de póster</value>
-  </data>
-  <data name="Hindi" xml:space="preserve">
-    <value>Hindi</value>
-  </data>
-  <data name="AddToContextMenu" xml:space="preserve">
-    <value>Agregar al menú contextual</value>
-  </data>
-  <data name="ExplorerIntegration" xml:space="preserve">
-    <value>Integración del explorador (menú contextual)</value>
-  </data>
-  <data name="RemoveFromContextMenu" xml:space="preserve">
-    <value>Eliminar del menú contextual</value>
-  </data>
-  <data name="RestartAsAdmin" xml:space="preserve">
-    <value>Esta función requiere derechos de administrador, úsela cuando se ejecute como administrador.
-¿Quieres reiniciar Folicon como administrador?</value>
-  </data>
-  <data name="CreateIconsWithFoliCon" xml:space="preserve">
-    <value>Crea iconos con FoliCon</value>
-  </data>
   <data name="VideoUnavailable" xml:space="preserve">
     <value>¡Video no disponible!</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Año</value>
   </data>
   <data name="FileIsInUse" xml:space="preserve">
     <value>El archivo ya está en uso.</value>
@@ -580,87 +584,87 @@ Esto ayuda a folicon a identificar los medios sin tener que elegir entre título
     <value>Sistema</value>
   </data>
   <data name="Portuguese(PT)" xml:space="preserve">
-    <value>Português (PT)</value>
-  </data>
+      <value>Português (PT)</value>
+    </data>
   <data name="ResetDefaultPoster" xml:space="preserve">
-    <value>Restablecer cartel por defecto</value>
-  </data>
+      <value>Restablecer cartel por defecto</value>
+    </data>
   <data name="Configuration" xml:space="preserve">
-    <value>Configuración</value>
-  </data>
+      <value>Configuración</value>
+    </data>
   <data name="ChoosePoster" xml:space="preserve">
-    <value>Elegir póster</value>
-  </data>
-  <data name="MediaTitle" xml:space="preserve">
-    <value>Título de los medios</value>
-  </data>
-  <data name="Overlay" xml:space="preserve">
-    <value>Superposición</value>
-  </data>
+      <value>Elegir póster</value>
+    </data>
   <data name="MediaRating" xml:space="preserve">
-    <value>Clasificación de los medios</value>
-  </data>
+      <value>Clasificación de los medios</value>
+    </data>
+  <data name="MediaTitle" xml:space="preserve">
+      <value>Título de los medios</value>
+    </data>
+  <data name="Overlay" xml:space="preserve">
+      <value>Superposición</value>
+    </data>
   <data name="Previewer" xml:space="preserve">
-    <value>Vista previa</value>
-  </data>
+      <value>Vista previa</value>
+    </data>
   <data name="ChooseAnImage" xml:space="preserve">
-    <value>Elige una imagen...</value>
-  </data>
+      <value>Elige una imagen...</value>
+    </data>
   <data name="WebView2DownloadConfirmation" xml:space="preserve">
-    <value>No se encuentra Microsoft WebView2 Runtime. Los videos no se mostrarán.&#x0a; ¿Desea descargarlo?</value>
-  </data>
+      <value>No se encuentra Microsoft WebView2 Runtime. Los videos no se mostrarán.&#x0a; ¿Desea descargarlo?</value>
+    </data>
   <data name="WebView2DownloadConfirmationHeader" xml:space="preserve">
-    <value>Instalar Runtime de WebView2</value>
-  </data>
+      <value>Instalar Runtime de WebView2</value>
+    </data>
   <data name="SkipThisPlaceholderParent" xml:space="preserve">
-    <value>Omitir este y todos los títulos restantes de {0}</value>
-  </data>
+      <value>Omitir este y todos los títulos restantes de {0}</value>
+    </data>
   <data name="SubfolderProcessing" xml:space="preserve">
-    <value>Procesamiento de subcarpetas</value>
-  </data>
+      <value>Procesamiento de subcarpetas</value>
+    </data>
   <data name="Patterns" xml:space="preserve">
-    <value>Patrones</value>
-  </data>
+      <value>Patrones</value>
+    </data>
   <data name="InvalidRegexMessage" xml:space="preserve">
-    <value>El patrón de expresión regular ingresado no es válido. Asegúrese de que sigue la sintaxis correcta (por ejemplo, ^[A-Za-z0-9]+$).</value>
-  </data>
+      <value>El patrón de expresión regular ingresado no es válido. Asegúrese de que sigue la sintaxis correcta (por ejemplo, ^[A-Za-z0-9]+$).</value>
+    </data>
   <data name="InvalidRegex" xml:space="preserve">
-    <value>Error en el patrón de expresión regular</value>
-  </data>
+      <value>Error en el patrón de expresión regular</value>
+    </data>
   <data name="Enabled" xml:space="preserve">
-    <value>Habilitado</value>
-  </data>
+      <value>Habilitado</value>
+    </data>
   <data name="Action" xml:space="preserve">
-    <value>Acción</value>
-  </data>
+      <value>Acción</value>
+    </data>
   <data name="Test" xml:space="preserve">
-    <value>Prueba</value>
-  </data>
+      <value>Prueba</value>
+    </data>
   <data name="EnableSubfolderProcessing" xml:space="preserve">
-    <value>Activar procesamiento de subcarpetas</value>
-  </data>
+      <value>Activar procesamiento de subcarpetas</value>
+    </data>
   <data name="EnterValidRegexPlaceholder" xml:space="preserve">
-    <value>Por favor, introduzca un patrón de expresión regular válido.</value>
-  </data>
+      <value>Por favor, introduzca un patrón de expresión regular válido.</value>
+    </data>
   <data name="Pattern" xml:space="preserve">
-    <value>Patrón</value>
-  </data>
+      <value>Patrón</value>
+    </data>
   <data name="ManualExplorer" xml:space="preserve">
-    <value>Explorador manual</value>
-  </data>
+      <value>Explorador manual</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
-    <value>Extraer galería</value>
-  </data>
+      <value>Extraer galería</value>
+    </data>
   <data name="Extracting" xml:space="preserve">
-    <value>Extrayendo...</value>
-  </data>
+      <value>Extrayendo...</value>
+    </data>
   <data name="Downloading" xml:space="preserve">
-    <value>Descargando...</value>
-  </data>
+      <value>Descargando...</value>
+    </data>
   <data name="CreatingIconWithCount" xml:space="preserve">
-    <value>Creando icono {0}/{1}...</value>
-  </data>
+      <value>Creando icono {0}/{1}...</value>
+    </data>
   <data name="RefreshingFolder" xml:space="preserve">
-    <value>Actualizando carpeta</value>
-  </data>
+      <value>Actualizando carpeta</value>
+    </data>
 </root>
