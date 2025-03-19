@@ -2,6 +2,8 @@
 "api_token_env": "CROWDIN_PERSONAL_TOKEN"
 "base_path": "."
 
+"preserve_hierarchy": true
+
 "files": [
    {
       "source": "/FoliCon/Properties/Langs/Lang.resx",
