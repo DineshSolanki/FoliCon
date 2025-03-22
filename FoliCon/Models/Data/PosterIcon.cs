@@ -10,33 +10,28 @@ public class PosterIcon : BindableBase
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public ImageSource FolderJpg { get; set; }
 
-    private string _rating;
-    private string _mockupVisibility;
-    private string _ratingVisibility;
-    private string _mediaTitle;
-
     public string Rating
     {
-        get => _rating;
-        set => SetProperty(ref _rating, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string RatingVisibility
     {
-        get => _ratingVisibility;
-        set => SetProperty(ref _ratingVisibility, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string MockupVisibility
     {
-        get => _mockupVisibility;
-        set => SetProperty(ref _mockupVisibility, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string MediaTitle
     {
-        get => _mediaTitle;
-        set => SetProperty(ref _mediaTitle, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public PosterIcon()
@@ -44,8 +39,8 @@ public class PosterIcon : BindableBase
         try
         {
             var filePath = FileUtils.GetResourcePath("posterDummy.png");
-            using var thisMemoryStream = new MemoryStream(File.ReadAllBytes(filePath));
-            FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
+            using var memoryStream = new MemoryStream(File.ReadAllBytes(filePath));
+            FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(memoryStream);
         }
         catch (Exception ex)
         {
@@ -64,8 +59,8 @@ public class PosterIcon : BindableBase
         RatingVisibility = ratingVisibility;
         Rating = rating;
         MockupVisibility = mockupVisibility;
-        var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
-        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
+        using var memoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
+        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(memoryStream);
     }
 
     public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility,
