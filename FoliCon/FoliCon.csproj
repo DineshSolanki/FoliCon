@@ -70,6 +70,7 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher front.png" />
     <Resource Include="Resources\poster_mockups\simple\PosterMockup.png" />
     <Resource Include="Resources\rating_mockup\shield.png" />
+    <Resource Include="Resources\posterDummy.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Langs\Lang.Designer.cs">
