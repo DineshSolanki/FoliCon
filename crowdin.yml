@@ -10,8 +10,8 @@
       "update_option": "update_as_unapproved",
       "languages_mapping": {
          "two_letters_code": {
-            "es": "es",
-            "pt": "pt",
+            "es-ES": "es",
+            "pt-PT": "pt",
             "ru": "ru",
             "ar": "ar",
             "hi": "hi"
