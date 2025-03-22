@@ -1,15 +1,11 @@
-using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using NLog;
-using Prism.Mvvm;
+using Brushes = System.Windows.Media.Brushes;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace FoliCon.Models.Data;
 
 [Localizable(false)]
-public class PosterIcon: BindableBase
+public class PosterIcon : BindableBase
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public ImageSource FolderJpg { get; set; }
@@ -19,22 +15,24 @@ public class PosterIcon: BindableBase
     private string _ratingVisibility;
     private string _mediaTitle;
 
-    public string Rating { 
-        get=> _rating;
-        set => SetProperty(ref _rating, value); 
-     }
+    public string Rating
+    {
+        get => _rating;
+        set => SetProperty(ref _rating, value);
+    }
 
     public string RatingVisibility
     {
         get => _ratingVisibility;
         set => SetProperty(ref _ratingVisibility, value);
     }
+
     public string MockupVisibility
     {
         get => _mockupVisibility;
         set => SetProperty(ref _mockupVisibility, value);
     }
-    
+
     public string MediaTitle
     {
         get => _mediaTitle;
@@ -46,7 +44,7 @@ public class PosterIcon: BindableBase
         try
         {
             var filePath = FileUtils.GetResourcePath("posterDummy.png");
-            var thisMemoryStream = new MemoryStream(File.ReadAllBytes(filePath));
+            using var thisMemoryStream = new MemoryStream(File.ReadAllBytes(filePath));
             FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
         }
         catch (Exception ex)
@@ -54,7 +52,7 @@ public class PosterIcon: BindableBase
             Logger.Error(ex, "Failed to load poster image. Using default placeholder.");
             FolderJpg = CreatePlaceholderImage();
         }
-        
+
         Rating = "7.8";
         MockupVisibility = "visible";
         RatingVisibility = "visible";
@@ -69,12 +67,14 @@ public class PosterIcon: BindableBase
         var thisMemoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream);
     }
-    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility, string mediaTitle):this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
+
+    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility,
+        string mediaTitle) : this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
     {
         MediaTitle = mediaTitle;
     }
-    
-    private ImageSource CreatePlaceholderImage()
+
+    private static ImageSource CreatePlaceholderImage()
     {
         // Create a simple colored rectangle as fallback
         var drawingVisual = new DrawingVisual();
@@ -85,7 +85,7 @@ public class PosterIcon: BindableBase
                 null,
                 new Rect(new Point(0, 0), new Size(300, 450)));
         }
-        
+
         var renderTargetBitmap = new RenderTargetBitmap(
             300, 450, 96, 96, PixelFormats.Pbgra32);
         renderTargetBitmap.Render(drawingVisual);
