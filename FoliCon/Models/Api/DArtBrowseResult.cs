@@ -26,7 +26,7 @@ public class PremiumFolderData
     public bool HasAccess { get; set; }
     
     [JsonProperty("gallery_id")]
-    public string GallaryId { get; set; }
+    public string GalleryId { get; set; }
 }
 
 public class Stats
