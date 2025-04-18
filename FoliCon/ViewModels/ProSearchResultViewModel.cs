@@ -78,7 +78,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
-        OpenImageCommand = new DelegateCommand<DArtImageList>(link=> UiUtils.ShowImageBrowser(link as string));
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
@@ -94,12 +94,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             parameter.MustWatch = false;
         }
         var link = parameter.Url;
-        var browser = new ImageBrowser(link)
-        {
-            ShowTitle = false,
-            IsFullScreen = true
-        };
-        browser.Show();
+        UiUtils.ShowImageBrowser(link);
     }
 
     private void ExtractManually(object parameter)
@@ -187,7 +182,6 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
         foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
         {
-            var mustWatch = false;
             ProcessResultItems(item);
 
             if (!_stopSearch)
@@ -212,16 +206,19 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private void ProcessResultItems(EnumeratorWithIndex<Result> item)
     {
         Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
-
-        if (IsItemDownloadable(item))
+        var mustWatch = false;
+        if (!IsItemDownloadable(item))
         {
-            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
-            Index++;
+            if (item.Value.PremiumFolderData is null || item.Value.PremiumFolderData.Type != "watchers")
+            {
+                Logger.Warn("Poster {URL} is not downloadable", item.Value.Url);
+                return;
+            }
+            mustWatch = true;
+            Logger.Warn("Poster {URL} is not downloadable, but can be watched to download", item.Value.Url);
         }
-        else
-        {
-            Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
-        }
+        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid, mustWatch));
+        Index++;
     }
 
     private static bool IsItemDownloadable(EnumeratorWithIndex<Result> item)

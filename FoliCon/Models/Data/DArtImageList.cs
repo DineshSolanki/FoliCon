@@ -13,7 +13,7 @@ public class DArtImageList : BindableBase
         ThumbnailUrl = thumbnailUrl ?? throw new ArgumentNullException(nameof(thumbnailUrl));
     }
 
-    public DArtImageList(string url, string thumbnailUrl, string deviationId, bool mustWatch) : this(url, thumbnailUrl)
+    public DArtImageList(string url, string thumbnailUrl, string deviationId, bool mustWatch=false) : this(url, thumbnailUrl)
     {
         DeviationId = deviationId ?? throw new ArgumentNullException(nameof(deviationId));
         MustWatch = mustWatch;
