@@ -1,12 +1,6 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Modules.DeviantArt;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using NLog;
-using Logger = NLog.Logger;
+﻿namespace FoliCon.Modules.Extension;
 
-namespace FoliCon.Modules.Extension;
-
+[Localizable(false)]
 public static class DialogServiceExtensions
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -18,19 +12,17 @@ public static class DialogServiceExtensions
         dialogService.ShowDialog("MessageBox", new DialogParameters($"message={message}"), callBack);
     }
 
-    public static void ShowSearchResult(this IDialogService dialogService, string searchMode, string query,
-        string folderPath, ResultResponse result, Tmdb tmdbObject, IgdbClass igdbObject, bool isPickedById,
-        Action<IDialogResult> callBack)
+    public static void ShowSearchResult(this IDialogService dialogService, SearchResultDialogParams searchResultDialogParams)
     {
-        Logger.Trace("ShowSearchResult called with query: {Query} and result: {@Result}", query, result);
+        Logger.Trace("ShowSearchResult called with query: {Query} and result: {@Result}", searchResultDialogParams.Query, searchResultDialogParams.Result);
         var p = new DialogParameters
         {
-            {"query", query}, {"result", result}, {"searchmode", searchMode}, {"tmdbObject", tmdbObject},
-            {"igdbObject", igdbObject},
-            {"folderpath", folderPath},
-            {"isPickedById" , isPickedById}
+            {"query", searchResultDialogParams.Query}, {"result", searchResultDialogParams.Result}, {"searchmode", searchResultDialogParams.SearchMode}, {"tmdbObject", searchResultDialogParams.TmdbObject},
+            {"igdbObject", searchResultDialogParams.IgdbObject},
+            {"folderpath", searchResultDialogParams.FolderPath},
+            {"isPickedById" , searchResultDialogParams.IsPickedById}
         };
-        dialogService.ShowDialog("SearchResult", p, callBack);
+        dialogService.ShowDialog("SearchResult", p, searchResultDialogParams.CallBack);
     }
     public static void ShowCustomIconWindow(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
@@ -85,15 +77,16 @@ public static class DialogServiceExtensions
         Logger.Trace("ShowAboutBox called");
         dialogService.ShowDialog("AboutBox", callBack);
     }
-    public static void ShowPosterPicker(this IDialogService dialogService, Tmdb tmdbObject, IgdbClass igdbObject, ResultResponse result,int pickedIndex, ObservableCollection<ListItem> resultData, bool isPickedById, Action<IDialogResult> callBack)
+    public static void ShowPosterPicker(this IDialogService dialogService, PosterPickerDialogParams dialogParams)
     {
-        Logger.Trace("ShowPosterPicker called with result: {@Result}", result);
+        Logger.Trace("ShowPosterPicker called with dialogParams: {@DialogParams}", dialogParams);
         var p = new DialogParameters
         {
-            {"pickedIndex", pickedIndex}, {"result", result}, {"tmdbObject",tmdbObject}, {"igdbObject", igdbObject} , {"resultList", resultData},
-            {"isPickedById" , isPickedById}
+            {"pickedIndex", dialogParams.PickedIndex}, {"result", dialogParams.Result}, {"tmdbObject", dialogParams.TmdbObject},
+            {"igdbObject", dialogParams.IgdbObject}, {"resultList", dialogParams.ResultData},
+            {"isPickedById" , dialogParams.IsPickedById}
         };
-        dialogService.ShowDialog("PosterPicker", p, callBack);
+        dialogService.ShowDialog("PosterPicker", p, dialogParams.CallBack);
     }
 
     public static void ShowPreviewer(this IDialogService dialogService, Action<IDialogResult> callBack)

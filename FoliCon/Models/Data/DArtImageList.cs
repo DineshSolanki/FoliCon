@@ -3,24 +3,24 @@
 public class DArtImageList : BindableBase
 {
     private string _url;
-    private BitmapSource _image;
+    private string  _thumbnailUrl;
     private string _deviationId;
     private bool _mustWatch;
 
-    public DArtImageList(string url, BitmapSource bmp)
+    public DArtImageList(string url, string thumbnailUrl)
     {
         Url = url ?? throw new ArgumentNullException(nameof(url));
-        Image = bmp ?? throw new ArgumentNullException(nameof(bmp));
+        ThumbnailUrl = thumbnailUrl ?? throw new ArgumentNullException(nameof(thumbnailUrl));
     }
 
-    public DArtImageList(string url, BitmapSource bmp, string deviationId, bool mustWatch) : this(url, bmp)
+    public DArtImageList(string url, string thumbnailUrl, string deviationId, bool mustWatch) : this(url, thumbnailUrl)
     {
         DeviationId = deviationId ?? throw new ArgumentNullException(nameof(deviationId));
         MustWatch = mustWatch;
     }
     
     public string Url { get => _url; set => SetProperty(ref _url, value); }
-    public BitmapSource Image { get => _image; set => SetProperty(ref _image, value); }
+    public string ThumbnailUrl { get => _thumbnailUrl; set => SetProperty(ref _thumbnailUrl, value); }
     public string DeviationId { get => _deviationId; set => SetProperty(ref _deviationId, value); }
     public bool MustWatch { get => _mustWatch; set => SetProperty(ref _mustWatch, value); }
 }

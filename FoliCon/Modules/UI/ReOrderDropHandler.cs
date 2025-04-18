@@ -1,6 +1,4 @@
-﻿using GongSolutions.Wpf.DragDrop;
-
-namespace FoliCon.Modules.UI;
+﻿namespace FoliCon.Modules.UI;
 
 public class ReOrderDropHandler : IDropTarget
 {

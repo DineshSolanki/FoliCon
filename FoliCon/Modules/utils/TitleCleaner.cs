@@ -1,10 +1,6 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
-using NLog;
-using Logger = NLog.Logger;
+﻿namespace FoliCon.Modules.utils;
 
-namespace FoliCon.Modules.utils;
-
+[Localizable(false)]
 internal static class TitleCleaner
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

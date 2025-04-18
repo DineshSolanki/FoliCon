@@ -1,4 +1,26 @@
-﻿global using FoliCon.Properties.Langs;
+﻿// Global using directives
+
+global using FoliCon.Models.Api;
+global using FoliCon.Models.Constants;
+global using FoliCon.Models.Data;
+global using FoliCon.Models.Data.Dialog;
+global using FoliCon.Models.Enums;
+global using FoliCon.Modules.Configuration;
+global using FoliCon.Modules.DeviantArt;
+global using FoliCon.Modules.Extension;
+global using FoliCon.Modules.IGDB;
+global using FoliCon.Modules.TMDB;
+global using FoliCon.Modules.UI;
+global using FoliCon.Modules.utils;
+global using FoliCon.ViewModels;
+global using GongSolutions.Wpf.DragDrop;
+global using NLog;
+global using NLog.Config;
+global using Collection = TMDbLib.Objects.Collections.Collection;
+global using Image = System.Windows.Controls.Image;
+global using Logger = NLog.Logger;
+global using PosterIcon = FoliCon.Models.Data.PosterIcon;
+global using FoliCon.Properties.Langs;
 global using FoliCon.Views;
 
 global using HandyControl.Controls;
@@ -26,14 +48,12 @@ global using System.Collections.Generic;
 global using System.Collections.ObjectModel;
 global using System.Collections.Specialized;
 global using System.ComponentModel;
-global using System.Data;
 global using System.Diagnostics;
 global using System.Drawing;
 global using System.Drawing.IconLib;
 global using System.Globalization;
 global using System.IO;
 global using System.Linq;
-global using System.Net;
 global using System.Net.Http;
 global using System.Net.NetworkInformation;
 global using System.Reflection;
@@ -63,6 +83,3 @@ global using static Vanara.PInvoke.Gdi32;
 global using static Vanara.PInvoke.Shell32;
 
 global using MessageBox = HandyControl.Controls.MessageBox;
-namespace FoliCon.Models;
-
-internal class Usings;

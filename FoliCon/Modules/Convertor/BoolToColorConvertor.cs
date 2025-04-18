@@ -1,6 +1,4 @@
-﻿using NLog;
-using Brushes = System.Windows.Media.Brushes;
-using Logger = NLog.Logger;
+﻿using Brushes = System.Windows.Media.Brushes;
 
 namespace FoliCon.Modules.Convertor;
 
@@ -10,7 +8,11 @@ public class BoolToColorConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         Logger.Debug("Converting {Value} to color", value);
-        if (value is not bool b) return Brushes.Transparent;
+        if (value is not bool b)
+        {
+            return Brushes.Transparent;
+        }
+
         Logger.Debug("Value is bool");
         return b ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
     }

@@ -1,8 +1,6 @@
-﻿using NLog;
-using Logger = NLog.Logger;
+﻿namespace FoliCon.Modules.Media;
 
-namespace FoliCon.Modules.Media;
-
+[Localizable(false)]
 public static class PngToIcoService
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

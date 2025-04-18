@@ -18,7 +18,7 @@ namespace FoliCon.Properties.Langs {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Lang {
@@ -357,6 +357,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creating Icon {0}/{1}....
+        /// </summary>
+        public static string CreatingIconWithCount {
+            get {
+                return ResourceManager.GetString("CreatingIconWithCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Custom icon setter.
         /// </summary>
         public static string CustomIconSetter {
@@ -583,20 +592,20 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Extract gallery.
+        /// </summary>
+        public static string ExtractGallery {
+            get {
+                return ResourceManager.GetString("ExtractGallery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Extracting....
         /// </summary>
         public static string Extracting {
             get {
                 return ResourceManager.GetString("Extracting", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Extract manually.
-        /// </summary>
-        public static string ExtractManually {
-            get {
-                return ResourceManager.GetString("ExtractManually", resourceCulture);
             }
         }
         
@@ -1196,6 +1205,15 @@ namespace FoliCon.Properties.Langs {
         public static string Rating {
             get {
                 return ResourceManager.GetString("Rating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshing folder.
+        /// </summary>
+        public static string RefreshingFolder {
+            get {
+                return ResourceManager.GetString("RefreshingFolder", resourceCulture);
             }
         }
         

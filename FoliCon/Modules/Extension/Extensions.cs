@@ -1,10 +1,6 @@
-﻿using FoliCon.Modules.utils;
-using NLog;
-using NLog.Config;
-using Logger = NLog.Logger;
+﻿namespace FoliCon.Modules.Extension;
 
-namespace FoliCon.Modules.Extension;
-
+[Localizable(false)]
 public static class Extensions
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -58,7 +54,11 @@ public static class Extensions
         }
         else
         {
-            if (target == null) return;
+            if (target == null)
+            {
+                return;
+            }
+
             config.RemoveTarget("sentry");
             LogManager.Configuration = config;
             Logger.Debug("Sentry disabled");

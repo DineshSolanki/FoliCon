@@ -7,9 +7,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
-             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
-             xmlns:ui="clr-namespace:FoliCon.Modules.UI"
+             xmlns:views="clr-namespace:FoliCon.Views"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:PosterPickerViewModel }">
@@ -20,50 +19,34 @@
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <hc:BusyIndicator IsBusy="{Binding IsBusy}">
-        <hc:BusyIndicator.BusyContent>
-            <StackPanel>
-                <TextBlock FontWeight="Bold">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}{1}/{2}">
-                            <Binding Path="BusyContent" />
-                            <Binding Path="Index" />
-                            <Binding Path="TotalPosters"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
-                        Command="{Binding StopSearchCommand}" />
-            </StackPanel>
-        </hc:BusyIndicator.BusyContent>
-        <Grid Margin="12,12,12,12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
-                <ItemsControl ItemsSource="{Binding ImageUrl}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding Image}" Tag="{Binding Url}" Height="128" Width="128"
-                                   RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
-                                <b:Interaction.Behaviors>
-                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:PosterPickerViewModel.PickCommand)}" 
-                                                         ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:PosterPickerViewModel.OpenImageCommand)}"/>
-                                </b:Interaction.Behaviors>
-                            </Image>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </hc:ScrollViewer>
-        </Grid>
-    </hc:BusyIndicator>
+    <UserControl.Resources>
+        <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
+    </UserControl.Resources>
+    <views:ImageGalleryControl ItemsSource="{Binding ImageUrl}" 
+                               ClickCommand="{Binding OpenImageCommand}"
+                               DoubleClickCommand="{Binding PickCommand}">
+        <views:ImageGalleryControl.CustomBusyContentTemplate>
+            <DataTemplate>
+                <StackPanel Margin="4">
+                    <StackPanel Margin="4">
+                    <TextBlock FontWeight="Bold">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}{1}/{2}">
+                                <Binding Path="Value.BusyContent" Source="{StaticResource Proxy}" />
+                                <Binding Path="Value.Index" Source="{StaticResource Proxy}"/>
+                                <Binding Path="Value.TotalPosters" Source="{StaticResource Proxy}"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <ProgressBar Style="{StaticResource ProgressBarInfo}" Value="{Binding Path=Value.Index, Source={StaticResource Proxy}}" 
+                                 Maximum="{Binding Path=Value.TotalPosters, Source={StaticResource Proxy}}" Height="15"/>
+                    </StackPanel>
+                    <Grid>
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
+                                Command="{Binding Path=Value.StopSearchCommand, Source={StaticResource Proxy}}" />
+                    </Grid>
+                </StackPanel>
+            </DataTemplate>
+        </views:ImageGalleryControl.CustomBusyContentTemplate>
+    </views:ImageGalleryControl>
 </UserControl>

@@ -2,6 +2,7 @@
 
 namespace FoliCon.Properties.Langs;
 
+[Localizable(false)]
 public class LangProvider : INotifyPropertyChanged
 {
     private static string _cultureInfoStr;
@@ -22,8 +23,16 @@ public class LangProvider : INotifyPropertyChanged
         get => Lang.Culture;
         set
         {
-            if (value == null) return;
-            if (Equals(_cultureInfoStr, value.EnglishName)) return;
+            if (value == null)
+            {
+                return;
+            }
+
+            if (Equals(_cultureInfoStr, value.EnglishName))
+            {
+                return;
+            }
+
             Lang.Culture = value;
             _cultureInfoStr = value.EnglishName;
 
@@ -64,6 +73,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(ConfirmIconDeletion));
         OnPropertyChanged(nameof(ConfirmMediaInfoDeletion));
         OnPropertyChanged(nameof(ConfirmToOpenFolder));
+        OnPropertyChanged(nameof(CreatingIconWithCount));
         OnPropertyChanged(nameof(CreatingIcons));
         OnPropertyChanged(nameof(CustomIconSetter));
         OnPropertyChanged(nameof(CustomRating));
@@ -89,7 +99,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(EnterTitlePlaceholder));
         OnPropertyChanged(nameof(EnterValidRegexPlaceholder));
         OnPropertyChanged(nameof(ExplorerIntegration));
-        OnPropertyChanged(nameof(ExtractManually));
+        OnPropertyChanged(nameof(ExtractGallery));
         OnPropertyChanged(nameof(Extracting));
         OnPropertyChanged(nameof(FailedFileAccessAt));
         OnPropertyChanged(nameof(FailedToSaveMediaInfoAt));
@@ -156,6 +166,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Previewer));
         OnPropertyChanged(nameof(Professional));
         OnPropertyChanged(nameof(Rating));
+        OnPropertyChanged(nameof(RefreshingFolder));
         OnPropertyChanged(nameof(RemoveFromContextMenu));
         OnPropertyChanged(nameof(ResetDefaultPoster));
         OnPropertyChanged(nameof(RestartAsAdmin));
@@ -239,6 +250,7 @@ public class LangProvider : INotifyPropertyChanged
     public string ConfirmIconDeletion => Lang.ConfirmIconDeletion;
     public string ConfirmMediaInfoDeletion => Lang.ConfirmMediaInfoDeletion;
     public string ConfirmToOpenFolder => Lang.ConfirmToOpenFolder;
+    public string CreatingIconWithCount => Lang.CreatingIconWithCount;
     public string CreatingIcons => Lang.CreatingIcons;
     public string CustomIconSetter => Lang.CustomIconSetter;
     public string CustomRating => Lang.CustomRating;
@@ -265,7 +277,7 @@ public class LangProvider : INotifyPropertyChanged
     public string EnterValidRegexPlaceholder => Lang.EnterValidRegexPlaceholder;
     public string ExceptionOccurred => Lang.ExceptionOccurred;
     public string ExplorerIntegration => Lang.ExplorerIntegration;
-    public string ExtractManually => Lang.ExtractManually;
+    public string ExtractGallery => Lang.ExtractGallery;
     public string Extracting => Lang.Extracting;
     public string FailedFileAccessAt => Lang.FailedFileAccessAt;
     public string FailedToSaveMediaInfoAt => Lang.FailedToSaveMediaInfoAt;
@@ -332,6 +344,7 @@ public class LangProvider : INotifyPropertyChanged
     public string Previewer => Lang.Previewer;
     public string Professional => Lang.Professional;
     public string Rating => Lang.Rating;
+    public string RefreshingFolder => Lang.RefreshingFolder;
     public string RemoveFromContextMenu => Lang.RemoveFromContextMenu;
     public string ResetDefaultPoster => Lang.ResetDefaultPoster;
     public string RestartAsAdmin => Lang.RestartAsAdmin;
@@ -423,6 +436,7 @@ public class LangKeys
     public static string ConfirmIconDeletion = nameof(ConfirmIconDeletion);
     public static string ConfirmMediaInfoDeletion = nameof(ConfirmMediaInfoDeletion);
     public static string ConfirmToOpenFolder = nameof(ConfirmToOpenFolder);
+    public static string CreatingIconWithCount = nameof(CreatingIconWithCount);
     public static string CreatingIcons = nameof(CreatingIcons);
     public static string CustomIconSetter = nameof(CustomIconSetter);
     public static string CustomRating = nameof(CustomRating);
@@ -449,7 +463,7 @@ public class LangKeys
     public static string EnterValidRegexPlaceholder = nameof(EnterValidRegexPlaceholder);
     public static string ExceptionOccurred = nameof(ExceptionOccurred);
     public static string ExplorerIntegration = nameof(ExplorerIntegration);
-    public static string ExtractManually = nameof(ExtractManually);
+    public static string ExtractGallery = nameof(ExtractGallery);
     public static string Extracting = nameof(Extracting);
     public static string FailedFileAccessAt = nameof(FailedFileAccessAt);
     public static string FailedToSaveMediaInfoAt = nameof(FailedToSaveMediaInfoAt);
@@ -516,6 +530,7 @@ public class LangKeys
     public static string Previewer = nameof(Previewer);
     public static string Professional = nameof(Professional);
     public static string Rating = nameof(Rating);
+    public static string RefreshingFolder = nameof(RefreshingFolder);
     public static string RemoveFromContextMenu = nameof(RemoveFromContextMenu);
     public static string ResetDefaultPoster = nameof(ResetDefaultPoster);
     public static string RestartAsAdmin = nameof(RestartAsAdmin);

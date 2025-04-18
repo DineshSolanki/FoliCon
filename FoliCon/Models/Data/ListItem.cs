@@ -1,19 +1,19 @@
-﻿using FoliCon.Modules.utils;
-
-namespace FoliCon.Models.Data;
+﻿namespace FoliCon.Models.Data;
 
 public class ListItem : BindableBase
 {
     private string _title;
     private string _year;
     private string _rating;
-    private string _folder;
-    private string _overview;
+    private string _folder = string.Empty;
+    private string _overview = string.Empty;
     private string _poster;
     private string _trailerKey;
     private Uri _trailerLink;
     private string _id;
-    private MediaType _mediaType;
+    private MediaType _mediaType = MediaType.Unknown;
+
+    private ICollection<MediaVideo> _videos;
     
     private string _initialPoster;
     private bool _isInitialSet;
@@ -81,7 +81,12 @@ public class ListItem : BindableBase
         get => _trailerKey;
         set => SetProperty(ref _trailerKey, value);
     }
-
+    
+    public ICollection<MediaVideo> Videos
+    {
+        get => _videos;
+        set => SetProperty(ref _videos, value);
+    }
     public string Id
     {
         get => _id;
@@ -94,32 +99,23 @@ public class ListItem : BindableBase
         set => SetProperty(ref _mediaType, value);
     }
 
-    public ListItem(string title, string year, string rating, string overview = null, string poster = null,
-        string folder = "", string id = "", MediaType mediaType = MediaType.Unknown)
-    {
-        Title = title;
-        Year = year;
-        Rating = rating;
-        Overview = overview;
-        Poster = poster;
-        Folder = folder;
-        Id = id;
-        MediaType = mediaType;
-    }
-
-    public ListItem()
-    {
-    }
-    
     public void ResetInitialPoster()
     {
-        if (!_isInitialSet) return;
+        if (!_isInitialSet)
+        {
+            return;
+        }
+
         Poster = _initialPoster;
         CanResetPoster = false;
     }
     public void SetInitialPoster()
     {
-        if (_isInitialSet) return;
+        if (_isInitialSet)
+        {
+            return;
+        }
+
         _initialPoster = _poster;
         CanResetPoster = true;
     }

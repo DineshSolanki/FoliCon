@@ -1,18 +1,19 @@
 ﻿using HandyControl.Themes;
-using NLog;
-using Logger = NLog.Logger;
 
 namespace FoliCon.Views;
 
 /// <summary>
 /// Interaction logic for HtmlBox.xaml
 /// </summary>
+[Localizable(false)]
 public partial class HtmlBox
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string VideoUnavailable = "Video not available!";
     private readonly string _backgroundColor;
-    
+    private const string DarkGray = "#1C1C1C";
+    private const string White = "#FFFFFF";
+
     public static readonly DependencyProperty HtmlTextProperty
         = DependencyProperty.Register(
             nameof(HtmlText), 
@@ -20,12 +21,33 @@ public partial class HtmlBox
             typeof(HtmlBox), 
             new PropertyMetadata(default(string), OnHtmlTextPropertyChanged));
 
-    public bool IsVideoAvailable { get; private set; }
+    public static readonly DependencyProperty VideosProperty
+        = DependencyProperty.Register(
+            nameof(Videos), 
+            typeof(ICollection<MediaVideo>), 
+            typeof(HtmlBox), 
+            new PropertyMetadata(default(ICollection<MediaVideo>), OnVideosPropertyChanged));
+
+    private static async void OnVideosPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not HtmlBox control)
+        {
+            return;
+        }
+        await control.Dispatcher.InvokeAsync(() =>
+        {
+            control.VideoSelector.ItemsSource = e.NewValue as ICollection<MediaVideo>;
+            control.VideoSelector.SelectedIndex = 0;
+        });
+    }
+
+    private bool IsVideoAvailable { get; set; }
 
     public HtmlBox()
     {
         InitializeComponent();
-        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? "#1C1C1C" : "#FFFFFF";
+        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
+       InitializeVideoSelector();
     }
 
     public string HtmlText
@@ -34,15 +56,28 @@ public partial class HtmlBox
         set => SetValue(HtmlTextProperty, value);
     }
     
+    public ICollection<MediaVideo> Videos
+    {
+        get => (ICollection<MediaVideo>)GetValue(VideosProperty);
+        set => SetValue(VideosProperty, value);
+    }
     private async Task ProcessBrowse()
     {
-        if (Browser is not {IsLoaded: true}) return;
-        
-        var content = !IsVideoAvailable
-            ? $"""<html><body style="background-color: {_backgroundColor}"></body></html>"""
-            : GenerateHtmlContent();
+        if (Browser is not {IsLoaded: true})
+        {
+            return;
+        }
+
+        var content = GenerateContentString();
 
         await InitializeAsync(content);
+    }
+
+    private string GenerateContentString()
+    {
+        return !IsVideoAvailable
+            ? $"""<html><body style="background-color: {_backgroundColor}"></body></html>"""
+            : GenerateHtmlContent();
     }
 
     private string GenerateHtmlContent()
@@ -118,4 +153,18 @@ public partial class HtmlBox
                                                         </body>
                                                     </html>
                                         """;
+
+    private async void VideoSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        HtmlText = VideoSelector.SelectedValue?.ToString() ?? string.Empty;
+        await ProcessBrowse();
+    }
+    
+    private void InitializeVideoSelector()
+    {
+        VideoSelector.ItemsSource = Videos;
+        VideoSelector.SelectedValuePath = "Url";
+        VideoSelector.DisplayMemberPath = "Name";
+        VideoSelector.SelectedIndex = 0;
+    }
 }

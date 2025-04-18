@@ -652,13 +652,19 @@ and refresh Icon Cache?</value>
     <data name="ManualExplorer" xml:space="preserve">
       <value>Manual Explorer</value>
     </data>
-    <data name="ExtractManually" xml:space="preserve">
-      <value>Extract manually</value>
+    <data name="ExtractGallery" xml:space="preserve">
+      <value>Extract gallery</value>
     </data>
     <data name="Extracting" xml:space="preserve">
       <value>Extracting...</value>
     </data>
     <data name="Downloading" xml:space="preserve">
       <value>Downloading...</value>
+    </data>
+    <data name="CreatingIconWithCount" xml:space="preserve">
+      <value>Creating Icon {0}/{1}...</value>
+    </data>
+    <data name="RefreshingFolder" xml:space="preserve">
+      <value>Refreshing folder</value>
     </data>
 </root>

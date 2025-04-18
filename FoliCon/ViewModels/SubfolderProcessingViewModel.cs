@@ -1,18 +1,12 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using NLog;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 public class SubfolderProcessingViewModel : BindableBase, IDialogAware
 {
 
     #region Variables
-    private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public string Title => LangProvider.GetLang("SubfolderProcessing");
+    public string Title => Lang.SubfolderProcessing;
 
     private ObservableCollection<Pattern> _patterns;
     private bool _subfolderProcessingEnabled;
@@ -72,8 +66,8 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
         }
         if (!DataUtils.IsValidRegex(pattern))
         {
-            MessageBox.Show(CustomMessageBox.Error(LangProvider.GetLang("InvalidRegexMessage"), 
-                LangProvider.GetLang("InvalidRegex")));
+            MessageBox.Show(CustomMessageBox.Error(Lang.InvalidRegexMessage, 
+                Lang.InvalidRegex));
         }
         return false;
     }

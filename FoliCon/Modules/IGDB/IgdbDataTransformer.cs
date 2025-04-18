@@ -1,10 +1,6 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
-using NLog;
-using Logger = NLog.Logger;
+﻿namespace FoliCon.Modules.IGDB;
 
-namespace FoliCon.Modules.IGDB;
-
+[Localizable(false)]
 public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref List<ImageToDownload> imgDownloadList)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -24,7 +20,16 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
     {
         const string placeholder = "";
         var (mediaName, year, overview, poster, id) = GetGameInfo(game);
-        return new ListItem(mediaName, year, placeholder, overview, poster, placeholder, id.ToString());
+        return new ListItem
+        {
+            Title = mediaName,
+            Year = year,
+            Overview = overview,
+            Poster = poster,
+            Id = id.ToString(),
+            Rating = placeholder,
+            Folder = placeholder
+        };
     }
 
     private static (string mediaName, string year, string overview, string poster, long? id) GetGameInfo(Game game)
@@ -36,7 +41,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             : string.Empty;
         var overview = game.Summary;
         var poster = game.Cover != null
-            ? $"https://{ImageHelper.GetImageUrl(game.Cover.Value.ImageId, ImageSize.HD720)[2..]}"
+            ? GetPosterUrl(game)
             : null;
         return (mediaName, year, overview, poster, id);
     }
@@ -51,7 +56,11 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
 
     private static void ValidateGamePoster(Game game)
     {
-        if (game.Cover != null) return;
+        if (game.Cover != null)
+        {
+            return;
+        }
+
         Logger.Warn($"No Poster Found for {game.Name}");
         throw new InvalidDataException("NoPoster");
     }
@@ -62,19 +71,35 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
         var year = game.FirstReleaseDate != null
             ? game.FirstReleaseDate.Value.Year.ToString(CultureInfo.InvariantCulture)
             : string.Empty;
-        var posterUrl = ImageHelper.GetImageUrl(game.Cover.Value.ImageId, ImageSize.HD720);
+        
 
         FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, game.Name, rating, fullFolderPath,
             folderName, year);
 
         if (game.Id != null)
-            FileUtils.SaveMediaInfo((int)game.Id, "Game", fullFolderPath);
+        {
+            FileUtils.SaveMediaInfo((int)game.Id, MediaTypes.Game, fullFolderPath);
+        }
 
+        var posterUrl = GetPosterUrl(game);
         var temporaryImage = new ImageToDownload
         {
             LocalPath = localPosterPath,
-            RemotePath = new Uri($"https://{posterUrl[2..]}")
+            RemotePath = new Uri(posterUrl)
         };
         _imgDownloadList.Add(temporaryImage);
+    }
+    
+    private static string GetPosterUrl(Game game)
+    {
+        return game.Cover != null
+            ? GetPosterUrl(game.Cover.Value.ImageId, ImageSize.HD720)
+            : string.Empty;
+    }
+
+    [Localizable(false)]
+    public static string GetPosterUrl(string imageId, ImageSize imageSize)
+    {
+        return $"https:{ImageHelper.GetImageUrl(imageId, imageSize)}";
     }
 }

@@ -1,14 +1,12 @@
-﻿using FoliCon.Models.Enums;
-using FoliCon.ViewModels;
+﻿namespace FoliCon.Models.Constants;
 
-namespace FoliCon.Models.Constants;
-
+[Localizable(false)]
 internal static class GlobalVariables
 {
     
     public static IconOverlay IconOverlayType()
     {
-        return new PosterIconConfigViewModel().IconOverlay switch
+        return IconOverlayTypeString switch
         {
             "Legacy" => IconOverlay.Legacy,
             "Alternate" => IconOverlay.Alternate,
@@ -19,5 +17,14 @@ internal static class GlobalVariables
         };
     }
 
-    public static string MediaInfoFile = "info.folicon";
+    public const string MediaInfoFile = "info.folicon";
+
+    private static string IconOverlayTypeString
+    {
+        get
+        {
+            var data = Services.Tracker.Store.GetData("PosterIconConfigViewModel");
+            return data.TryGetValue("p.IconOverlay", out var value) ? value.ToString() : IconOverlay.Liaher.ToString();
+        }
+    }
 }

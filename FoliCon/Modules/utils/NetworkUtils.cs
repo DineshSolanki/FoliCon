@@ -1,10 +1,8 @@
-﻿using FoliCon.Modules.Configuration;
-using NLog;
-using Polly;
-using Logger = NLog.Logger;
+﻿using Polly;
 
 namespace FoliCon.Modules.utils;
 
+[Localizable(false)]
 public static class NetworkUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -33,7 +31,7 @@ public static class NetworkUtils
                 .Exception(e).Log();
             // ignored
         }
-        Logger.Debug("Network availability: {}", result);
+        Logger.Debug("Network availability: {IsNetworkAvailable}", result);
         return result;
     }
 
@@ -44,32 +42,44 @@ public static class NetworkUtils
     /// <param name="saveFileName">The Local Path Of Downloaded Image</param>
     public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
     {
+        try
+        {
+            await ExecuteWithPoliciesAsync(async () => await DownloadAndSaveImageAsync(url, saveFileName));
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, $"Failed to download the image from URL: {url}. All attempts have failed.");
+        }
+    }
+
+    private static async Task ExecuteWithPoliciesAsync(Func<Task> action)
+    {
         const int maxRetry = 2;
-    
+
         var retryPolicy = Policy
             .Handle<HttpRequestException>()
-            .WaitAndRetryAsync(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), 
-                (exception, retryCount, _) => 
+            .WaitAndRetryAsync(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                onRetry: (exception, retryCount, _) =>
                 {
-                    Logger.Warn(exception, $"Failed to download image from URL: {url}. Retrying... Attempt {retryCount}");
+                    Logger.Warn(exception, $"Retry {retryCount} for action failed.");
                 });
 
         var fallbackPolicy = Policy
             .Handle<HttpRequestException>()
-            .FallbackAsync(async _ => 
-            { 
-                Logger.Error($"All attempts to download image from URL: {url} have failed.");
-                throw new HttpRequestException($"Failed to download the image after {maxRetry} attempts");
+            .FallbackAsync(async _ =>
+            {
+                Logger.Error("Executing fallback policy.");
+                throw new HttpRequestException($"Action failed after {maxRetry} retry attempts.");
             });
 
-        await fallbackPolicy.WrapAsync(retryPolicy).ExecuteAsync(async () => await DownloadAndSaveImageAsync(url, saveFileName));
+        await fallbackPolicy.WrapAsync(retryPolicy).ExecuteAsync(action);
     }
 
     private static async Task DownloadAndSaveImageAsync(Uri url, string saveFileName)
     {
         Logger.Info($"Downloading Image from URL: {url}");
         using var response = await Services.HttpC.GetAsync(url);
-        await using var fs = new FileStream(saveFileName, FileMode.Create);
+        await using var fs = new FileStream(saveFileName, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
         Logger.Info("Saving Image to Path: {Path}", saveFileName);
         await response.Content.CopyToAsync(fs);
     }

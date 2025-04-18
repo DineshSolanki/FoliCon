@@ -16,16 +16,11 @@ public class StatusBarData : BindableBase
     public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
     public int TotalFolders { get => _totalFolders; set => SetProperty(ref _totalFolders, value); }
     public string NetIcon { get => _netIcon; set => SetProperty(ref _netIcon, value); }
-    public ProgressBarData ProgressBarData { get; set; }
-
-    public StatusBarData()
-    {
-        ProgressBarData = new ProgressBarData();
-    }
+    public ProgressBarData ProgressBarData { get; set; } = new();
 
     public void ResetData()
     {
-        AppStatus = LangProvider.GetLang("Idle");
+        AppStatus = Lang.Idle;
         AppStatusAdditional = "";
         ProcessedFolder = 0;
         TotalFolders = 0;

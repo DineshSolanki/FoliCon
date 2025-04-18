@@ -1,25 +1,18 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Modules.Configuration;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using NLog;
-using Collection = TMDbLib.Objects.Collections.Collection;
-using Logger = NLog.Logger;
+﻿using FoliCon.Models.Data.Wrapper;
+using Artwork = IGDB.Models.Artwork;
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class PosterPickerViewModel : BindableBase, IDialogAware
 {
+    private const string PosterPathMessage = "Poster Path: {PosterPath}";
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
     private string _title = "";
     private bool _stopSearch;
     private int _index;
-    private string _busyContent = LangProvider.GetLang("LoadingPosters");
+    private string _busyContent = Lang.LoadingPosters;
     private bool _isBusy;
     public event Action<IDialogResult> RequestClose;
     private ResultResponse _result;
@@ -42,31 +35,25 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
 
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
-    public DelegateCommand<object> PickCommand { get; set; }
-    public DelegateCommand<object> OpenImageCommand { get; set; }
+    public DelegateCommand<DArtImageList> PickCommand { get; set; }
+    public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
     #endregion
     public PosterPickerViewModel()
     {
-        ImageUrl = new ObservableCollection<DArtImageList>();
+        ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
-        PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+        PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
     }
 
-    private void OpenImageMethod(object parameter)
+    private void OpenImageMethod(DArtImageList selectedImage)
     {
-        Logger.Info("Open Image Method called with parameter: {Parameter}, MediaType: {MediaType}",parameter, Result.MediaType );
-        var link = (string)parameter;
+        Logger.Info("Open Image Method called with parameter: {Parameter}, MediaType: {MediaType}",selectedImage, Result.MediaType );
+        var link = selectedImage.Url;
         link = Result.MediaType == MediaTypes.Game
-            ? $"https://{ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..]}"
+            ? IgdbDataTransformer.GetPosterUrl(selectedImage.DeviationId, ImageSize.HD720)
             : link;
-        Logger.Info("Opening Image: {Link}", link);
-        var browser = new ImageBrowser(link)
-        {
-            ShowTitle = false,
-            IsFullScreen = true
-        };
-        browser.Show();
+        UiUtils.ShowImageBrowser(link);
     }
 
     protected virtual void CloseDialog(string parameter)
@@ -82,7 +69,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }
@@ -107,177 +94,197 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         LoadData();
             
     }
-    public async void LoadData()
-    {
-        var resultType = Result.MediaType;
-        var response = _isPickedById
-            ? resultType == MediaTypes.Game ? Result.Result[0] : Result.Result
-            : resultType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
 
-        if (resultType != MediaTypes.Game)
+    private async Task LoadData()
+    {
+        var resultType = _result.MediaType;
+        var response = GetResponse(resultType);
+
+        if (resultType == MediaTypes.Game)
         {
-            ImagesWithId images = new();
-            if (resultType == MediaTypes.Tv)
-            {
-                dynamic pickedResult = _isPickedById ? (TvShow)response : (SearchTv)response;
-                Title = pickedResult.Name;
-                images = await TmdbObject.SearchTvImages(pickedResult.Id);
-            }
-            else if (resultType == MediaTypes.Movie)
-            {
-                dynamic pickedResult = _isPickedById ? (Movie)response : (SearchMovie)response;
-                Title = pickedResult.Title;
-                images = await TmdbObject.SearchMovieImages(pickedResult.Id);
-            }
-            else if (resultType == MediaTypes.Collection)
-            {
-                dynamic pickedResult = _isPickedById ? (Collection)response : (SearchCollection)response;
-                Title = pickedResult.Name;
-                images = await TmdbObject.SearchCollectionImages(pickedResult.Id);
-            }
-            else if (resultType == MediaTypes.Mtv)
-            {
-                MediaType mediaType = response.MediaType;
-                switch (mediaType)
-                {
-                    case MediaType.Tv:
-                    {
-                        SearchTv pickedResult = response;
-                        Title = pickedResult.Name;
-                        images = await TmdbObject.SearchTvImages(pickedResult.Id);
-                        break;
-                    }
-                    case MediaType.Movie:
-                    {
-                        SearchMovie pickedResult = response;
-                        Title = pickedResult.Title;
-                        images = await TmdbObject.SearchMovieImages(pickedResult.Id);
-                        break;
-                    }
-                }
-            }
-            LoadImages(images);
+            LoadGameData(response);
         }
         else
         {
-            Logger.Debug("Media Type is Game, loading images from IGDB");
-            Artwork[] images =response.Artworks.Values;
-            LoadImages(images);
+            await LoadMediaData(resultType, response);
         }
     }
 
-    private async void LoadImages(ImagesWithId images)
-    {
-            
-        StopSearch = false;
-        ImageUrl.Clear();
-        IsBusy = true;
-        if (images is not null && images.Posters.Count > 0)
-        {
-            TotalPosters = images.Posters.Count;
-            Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
-            foreach (var item in images.Posters.GetEnumeratorWithIndex())
-            {
-                var image = item.Value;
-                Index = item.Index + 1;
-                if (image is not null)
-                {
-                    var posterPath = image.FilePath != null ? TmdbObject.GetClient().GetImageUrl(PosterSize.W92, image.FilePath).ToString() : null;
-                    var qualityPath = TmdbObject.GetClient().GetImageUrl(PosterSize.W500, image.FilePath)
-                        .ToString(); //TODO: give user option to set quality of preview.-
-                    
-                    Logger.Info("Poster Path: {PosterPath}", posterPath);
-                    Logger.Info("Quality Path: {QualityPath}", qualityPath);
-                    var response = await Services.HttpC.GetAsync(posterPath);
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        Logger.ForErrorEvent().Message("Error getting poster from TMDb: {StatusCode}",
-                                response.StatusCode)
-                            .Property("Response", response).Log();
-                        
-                        continue;
-                    }
-                    var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(qualityPath, ImageUtils.LoadBitmap(bm)));
-                    bm.Dispose();
-                }
+    #region load data
 
-                if (!_stopSearch) continue;
-                Logger.Trace("Stop Search is true, breaking loop");
-                break;
-            }
+    private dynamic GetResponse(string resultType)
+    {
+        return (_isPickedById, resultType) switch
+        {
+            (true, MediaTypes.Game) => Result.Result[0],
+            (true, _) => Result.Result,
+            (false, MediaTypes.Game) => Result.Result[PickedIndex],
+            (false, _) => Result.Result.Results[PickedIndex]
+        };
+    }
+    private async Task LoadMediaData(string resultType, dynamic response)
+    {
+        ImagesWithId images = await GetTitleAndImages(resultType, response);
+
+        if (images != null)
+        {
+            var imageDataWrappers = images.Posters.Select(imageData => new ImageDataWrapper(images.Id, imageData, TmdbObject.GetClient()));
+            LoadImages(imageDataWrappers);
+        }
+    }
+
+    private async Task<ImagesWithId> GetTitleAndImages(string resultType, dynamic response)
+    {
+        (string title, ImagesWithId images) result = resultType switch
+        {
+            MediaTypes.Tv => await GetTvData(response),
+            MediaTypes.Movie => await GetMovieData(response),
+            MediaTypes.Collection => await GetCollectionData(response),
+            MediaTypes.Mtv => await GetMtvData(response),
+            _ => throw new ArgumentException($"Unexpected media type: {resultType}")
+        };
+        
+        Title = result.title;
+        return result.images;
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetTvData(dynamic response)
+    {
+        dynamic pickedResult = _isPickedById ? (TvShow)response : (SearchTv)response;
+        var images = await TmdbObject.SearchTvImages(pickedResult.Id);
+        return (pickedResult.Name, images);
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetMovieData(dynamic response)
+    {
+        dynamic pickedResult = _isPickedById ? (Movie)response : (SearchMovie)response;
+        var images = await TmdbObject.SearchMovieImages(pickedResult.Id);
+        return (pickedResult.Title, images);
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetCollectionData(dynamic response)
+    {
+        dynamic pickedResult = _isPickedById ? (Collection)response : (SearchCollection)response;
+        var images = await TmdbObject.SearchCollectionImages(pickedResult.Id);
+        return (pickedResult.Name, images);
+    }
+
+    private async Task<(string title, ImagesWithId images)> GetMtvData(dynamic response)
+    {
+        return response.MediaType switch
+        {
+            MediaType.Tv => await GetTvData(response),
+            MediaType.Movie => await GetMovieData(response),
+            _ => throw new ArgumentException($"Unexpected MTV media type: {response.MediaType}")
+        };
+    }
+
+    private void LoadGameData(dynamic response)
+    {
+        Logger.Debug("Media Type is Game, loading images from IGDB");
+        Artwork[] images = response.Artworks.Values;
+        var artworkWrappers = images.Select(artwork => new ArtworkWrapper(artwork));
+        LoadImages(artworkWrappers);
+    }
+
+    #endregion
+    
+    
+    private void LoadImages(IEnumerable<IImage> images)
+    {
+        ResetState();
+        IsBusy = true;
+        var imageList = images.ToList();
+        if (imageList.Any())
+        {
+            ProcessImages(imageList);
         }
         else
         {
-            Logger.Warn("No posters found for {Title}", Title);
-            IsBusy = false;
-            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
+            HandleNoImagesFound();
         }
         IsBusy = false;
     }
-    private async void LoadImages(Artwork[] images)
+
+    #region LoadImages
+
+    private void ResetState()
     {
         StopSearch = false;
         ImageUrl.Clear();
-        IsBusy = true;
-        if (images is not null && images.Length > 0)
+    }
+    
+    private void ProcessImages(IEnumerable<IImage> images)
+    {
+        var imageList = images.ToList();
+        TotalPosters = imageList.Count;
+        Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
+    
+        foreach (var item in imageList.GetEnumeratorWithIndex())
         {
-            TotalPosters = images.Length;
-            Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
-            foreach (var item in images.GetEnumeratorWithIndex())
+            Index = item.Index + 1;
+            TryLoadImage(item.Value);
+            if (!StopSearch)
             {
-                var image = item.Value;
-                Index = item.Index + 1;
-                if (image is not null)
-                {
-                    var posterPath = image.ImageId != null ? "https://" + ImageHelper.GetImageUrl(item.Value.ImageId, ImageSize.ScreenshotMed)[2..] : null;
-                    Logger.Info("Poster Path: {PosterPath}", posterPath);
-                    var response = await Services.HttpC.GetAsync(posterPath);
-                    if (response.StatusCode != HttpStatusCode.OK)
-                    {
-                        Logger.ForErrorEvent().Message("Error getting poster from IGDB: {StatusCode}",
-                                response.StatusCode)
-                            .Property("Response", response).Log();
-                        continue;
-                    }
-                    var bm = await response.GetBitmap();
-                    ImageUrl.Add(new DArtImageList(image.ImageId, ImageUtils.LoadBitmap(bm)));
-                    bm.Dispose();
-                }
-
-                if (!_stopSearch) continue;
-                Logger.Trace("Stop Search is true, breaking loop");
-                break;
+                continue;
             }
+
+            Logger.Trace("Stop Search is true, breaking loop");
+            break;
+        }
+    }
+    
+    private void TryLoadImage(IImage image)
+    {
+        var thumbnailUrl = image.GetThumbnailUrl();
+        var qualityPath = image.GetPosterUrl();
+        Logger.Info(PosterPathMessage, thumbnailUrl);
+        Logger.Trace("Quality Path: {QualityPath}", qualityPath);
+        AddImageToCollection(qualityPath,thumbnailUrl, image.Id);
+    }
+    
+    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id)
+    {
+        ImageUrl.Add(new DArtImageList(qualityUrl, thumbnailUrl, id));
+    }
+    
+    private void HandleNoImagesFound()
+    {
+        Logger.Warn("No posters found for {Title}", Title);
+        MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, Title));
+    }
+
+    #endregion
+    
+    private void PickMethod(DArtImageList pickedImage)
+    {
+        Logger.Info("Pick Method called with parameter: {Parameter}", pickedImage);
+        var link = pickedImage.Url;
+        dynamic result;
+        if (_isPickedById)
+        {
+            result = Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result;
         }
         else
         {
-            Logger.Warn("No posters found for {Title}", Title);
-            IsBusy = false;
-            MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), Title));
+            result = Result.MediaType == MediaTypes.Game
+                ? Result.Result[PickedIndex]
+                : Result.Result.Results[PickedIndex];
         }
-        IsBusy = false;
-    }
-    private void PickMethod(object parameter)
-    {
-        Logger.Info("Pick Method called with parameter: {Parameter}", parameter);
-        var link = (string)parameter;
-        var result = _isPickedById
-            ? Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result
-            : Result.MediaType == MediaTypes.Game ? Result.Result[PickedIndex] : Result.Result.Results[PickedIndex];
+
         _resultList[PickedIndex].SetInitialPoster();
         if (Result.MediaType == MediaTypes.Game)
         {
-            result.Cover.Value.ImageId = link;
-            _resultList[PickedIndex].Poster = "https://" + ImageHelper.GetImageUrl(link, ImageSize.HD720)[2..];
-            Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
+            result.Cover.Value.ImageId = pickedImage.DeviationId;
+            _resultList[PickedIndex].Poster =IgdbDataTransformer.GetPosterUrl(pickedImage.DeviationId, ImageSize.HD720);
         }
         else
         {
             result.PosterPath = link;
             _resultList[PickedIndex].Poster = link;
-            Logger.Trace("Poster Path: {PosterPath}", _resultList[PickedIndex].Poster);
         }
+
+        Logger.Trace(PosterPathMessage, _resultList[PickedIndex].Poster);
         CloseDialog("true");
     }
 

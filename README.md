@@ -53,6 +53,38 @@ To compile this Source you need to Create "AppConfig.json" file with structure g
   "IgdbClientSecret": "Your_Client_Secret_API_here"
 }
 ```
+
+## Localization
+FoliCon supports multiple languages through Crowdin integration. The application is currently available in English, Spanish, Arabic, Russian, Hindi, and Portuguese. 
+
+### Help with Translations
+We welcome contributions to translate FoliCon into more languages:
+
+1. Visit our [Crowdin project](https://crowdin.com/project/folicon)
+2. Sign up or log in to Crowdin
+3. Select the language you want to help translate
+4. Start translating strings
+
+### For Developers
+If you're working on the source code and want to manage translations:
+
+1. Set up your Crowdin API credentials
+   ```
+   $env:CROWDIN_PROJECT_ID = "your_project_id"
+   $env:CROWDIN_API_TOKEN = "your_api_token"
+   ```
+
+2. Use the provided PowerShell script for common operations:
+   ```
+   # Upload source files to Crowdin
+   .\crowdin-sync.ps1 -Action upload-sources
+
+   # Download latest translations
+   .\crowdin-sync.ps1 -Action download
+   ```
+
+3. GitHub Actions automatically synchronizes translations when changes are pushed to the main branch.
+
 ### Prerequisites (these are for compiling the source, to only use the application, you can download latest release)
 A TMDB API [Get it](https://www.themoviedb.org/settings/api)
 
@@ -70,6 +102,7 @@ DeviantArt API [Get it](https://www.deviantart.com/developers/register)
 * [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) - For File Dialogs
 * [NLog](https://nlog-project.org/) - For Logging
 * [Sentry](https://sentry.io) -  For Error Tracking
+* [Crowdin](https://crowdin.com) - For localization management
 
 ## Authors
 
@@ -100,5 +133,5 @@ Thank you to the following individuals who have provided invaluable inputs throu
     <td align="center"><a href="https://github.com/MasoudRahmani"><img src="https://github.com/MasoudRahmani.png?size=50" alt="MasoudRahmani" /><br /><sub><b>@MasoudRahmani</b></sub></a></td>
     <td align="center"><a href="PoetaGA"><img src="https://github.com/PoetaGA.png?size=50" alt="PoetaGA" /><br /><sub><b>@PoetaGA</b></sub></a></td>
   </tr>
-<table>
+</table>
 ... and many more who have interacted with us through issues and discussions.

@@ -1,40 +1,37 @@
-﻿using FoliCon.Models.Constants;
-using FoliCon.Models.Data;
-using FoliCon.Modules.Extension;
-using FoliCon.Modules.IGDB;
-using FoliCon.Modules.TMDB;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using NLog;
 using DelegateCommand = Prism.Commands.DelegateCommand;
-using Logger = NLog.Logger;
 
 namespace FoliCon.ViewModels;
 
+[Localizable(false)]
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private const string YoutubeEmbedUrl = "https://www.youtube.com/embed/{0}";
+
     #region Variables
 
-    private string _title = LangProvider.GetLang("SearchResult");
+    private string _title = Lang.SearchResult;
     private string _searchTitle;
     private string _busyContent;
     private bool _isBusy;
     private string _searchMode;
     private ListViewData _resultListViewData;
     private string _searchAgainTitle;
-    private string _skipAllText = LangProvider.GetLang("SkipThisPlaceholder");
+    private string _skipAllText = Lang.SkipThisPlaceholder;
     private List<string> _fileList;
     private ResultResponse _searchResult;
     private string _fullFolderPath;
     private readonly IDialogService _dialogService;
     private bool _isSearchFocused;
     private bool _isPickedById;
+    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
     public event Action<IDialogResult> RequestClose;
 
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
     private double _customRating;
+    
+    private PosterPickerDialogParams _dialogParams;
 
     #endregion Variables
 
@@ -111,6 +108,17 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         get => _isSearchFocused;
         set => SetProperty(ref _isSearchFocused, value);
     }
+    
+    public bool SubfolderProcessingEnabled
+    {
+        get => _subfolderProcessingEnabled;
+        set
+        {
+            SetProperty(ref _subfolderProcessingEnabled, value);
+            Services.Settings.SubfolderProcessingEnabled = value;
+            Services.Settings.Save();
+        }
+    }
 
     #endregion Properties
 
@@ -126,11 +134,10 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     public SearchResultViewModel(IDialogService dialogService)
     {
-        //TODO:Localize 'Video Not Available' string
         _dialogService = dialogService;
         SearchAgainCommand = new DelegateCommand(SearchAgainMethod);
         SkipCommand = new DelegateCommand(delegate { CloseDialog("false"); });
-        ResultListViewData = new ListViewData { Data = null, SelectedItem = null };
+        ResultListViewData = new ListViewData { Data = new ObservableCollection<ListItem>(), SelectedItem = null };
         PickCommand = new DelegateCommand<MouseButtonEventArgs>(PickMethod);
         ResetPosterCommand = new DelegateCommand(ResetPoster);
         SkipAllCommand = new DelegateCommand(delegate
@@ -159,7 +166,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         RaiseRequestClose(new DialogResult(result, parameters));
     }
 
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
+    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
     {
         RequestClose?.Invoke(dialogResult);
     }
@@ -185,15 +192,22 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         var parent = Directory.GetParent(_fullFolderPath);
         if (parent != null)
         {
-            SkipAllText = LangProvider.GetLang("SkipThisPlaceholderParent").Format(parent.Name);
+            SkipAllText = Lang.SkipThisPlaceholderParent.Format(parent.Name);
         }
-
+        _dialogParams = new PosterPickerDialogParams
+        {
+            TmdbObject = _tmdbObject,
+            IgdbObject = _igdbObject,
+            IsPickedById = _isPickedById,
+            Result = SearchResult,
+            ResultData = ResultListViewData.Data
+        };
         LoadData(SearchTitle);
         SearchAgainTitle = SearchTitle;
         FileList = FileUtils.GetFileNamesFromFolder(_fullFolderPath);
     }
 
-    private async void StartSearch(bool useBusy)
+    private async Task StartSearch(bool useBusy)
     {
         Logger.Debug("StartSearch called, show loader: {UseBusy}", useBusy);
         if (useBusy)
@@ -204,11 +218,15 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         _isPickedById = false;
         var titleToSearch = SearchAgainTitle ?? SearchTitle;
         Logger.Info("Searching for {TitleToSearch}", titleToSearch);
-        BusyContent = LangProvider.GetLang("SearchingWithName").Format(titleToSearch);
+        BusyContent = Lang.SearchingWithName.Format(titleToSearch);
         var result = SearchMode == MediaTypes.Game
             ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
             : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
-        if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0) return;
+        if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0)
+        {
+            return;
+        }
+
         SearchResult = result;
         if (useBusy)
         {
@@ -220,32 +238,33 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private void LoadData(string searchTitle)
     {
-        if (SearchResult != null
-            && (_isPickedById ? SearchResult.Result != null ? 1 :
-                null :
-                SearchMode == "Game" ? SearchResult.Result.Length : SearchResult.Result.TotalResults) != null
-            && (_isPickedById ? SearchResult?.Result != null ? 1 :
-                0 :
-                SearchMode == "Game" ? SearchResult?.Result?.Length : SearchResult?.Result?.TotalResults) != 0)
-        {
-            Logger.Info("Search result found for {SearchTitle}", searchTitle);
-            ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
-            if (ResultListViewData.Data.Count == 0) return;
-            ResultListViewData.SelectedItem = ResultListViewData.Data[0];
-            PerformSelectionChanged();
-            
-        }
-        else
+        if (SearchResult?.Result is null)
         {
             IsSearchFocused = true;
+            return;
         }
+        
+        if (!HasSearchResult())
+        {
+            return;
+        }
+
+        Logger.Info("Search result found for {SearchTitle}", searchTitle);
+        ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
+        if (ResultListViewData.Data.Count == 0)
+        {
+            return;
+        }
+
+        ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+        PerformSelectionChanged();
     }
 
-    private void SearchAgainMethod()
+    private async void SearchAgainMethod()
     {
         if (!string.IsNullOrWhiteSpace(SearchAgainTitle))
         {
-            StartSearch(false);
+            await StartSearch(false);
         }
     }
 
@@ -255,7 +274,10 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         if (eventArgs is not null)
         {
             var dataContext = ((FrameworkElement)eventArgs.OriginalSource).DataContext;
-            if (dataContext is not ListItem) return;
+            if (dataContext is not ListItem)
+            {
+                return;
+            }
         }
 
         if (ResultListViewData.SelectedItem == null)
@@ -301,7 +323,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 .Exception(ex)
                 .Log();
             MessageBox.Show(ex.Message == "NoPoster"
-                ? CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle)
+                ? CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle)
                 : CustomMessageBox.Error(ex.Message, SearchTitle));
         }
 
@@ -315,23 +337,24 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private void MouseDoubleClick()
     {
         Logger.Debug("MouseDoubleClick called with {@SelectedItem}", ResultListViewData.SelectedItem);
-        if (ResultListViewData.SelectedItem == null) return;
+        if (ResultListViewData.SelectedItem == null)
+        {
+            return;
+        }
+
         var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
         try
         {
-            if (SearchResult.MediaType == MediaTypes.Game)
+            if (SearchResult.MediaType == MediaTypes.Game && SearchResult.Result[pickedIndex].Artworks is null)
             {
-                if (SearchResult.Result[pickedIndex].Artworks is null)
-                {
-                    Logger.Warn("No more poster found for {SearchTitle}", SearchTitle);
-                    MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
-                    return;
-                }
+                Logger.Warn("No more poster found for {SearchTitle}", SearchTitle);
+                MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle));
+                return;
             }
-
-            _dialogService.ShowPosterPicker(_tmdbObject, _igdbObject, SearchResult, pickedIndex,
-                ResultListViewData.Data,
-                _isPickedById, _ => { });
+            _dialogParams.PickedIndex = pickedIndex;
+            _dialogParams.ResultData = ResultListViewData.Data;
+            _dialogParams.Result = SearchResult;
+            _dialogService.ShowPosterPicker(_dialogParams);
         }
         catch (Exception ex)
         {
@@ -340,7 +363,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                 .Log();
             if (ex.Message == "NoPoster")
             {
-                MessageBox.Show(CustomMessageBox.Warning(LangProvider.GetLang("NoPosterFound"), SearchTitle));
+                MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle));
             }
         }
     }
@@ -351,29 +374,32 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private async void PerformSelectionChanged()
     {
         if (ResultListViewData.SelectedItem == null || !ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
+        {
             return;
+        }
 
         var itemId = ResultListViewData.SelectedItem.Id;
 
-        if (SearchResult.MediaType == MediaTypes.Game)
+        switch (SearchResult.MediaType)
         {
-            await HandleMediaType(itemId, GetGameTrailer);
-        }
-        else if (SearchResult.MediaType == MediaTypes.Movie)
-        {
-            await HandleMediaType(itemId, GetMovieTrailer);
-        }
-        else if (SearchResult.MediaType == MediaTypes.Tv)
-        {
-            await HandleMediaType(itemId, GetTvTrailer);
-        }
-        else if (SearchResult.MediaType == MediaTypes.Mtv)
-        {
-            await HandleMtvMediaType(itemId);
-        }
-        else
-        {
-            Logger.Warn("Unknown media type {MediaType}", SearchResult.MediaType);
+            case MediaTypes.Game:
+                await HandleMediaType(itemId, GetGameTrailer);
+                break;
+            case MediaTypes.Movie:
+                await HandleMediaType(itemId, GetMovieTrailer);
+                break;
+            case MediaTypes.Tv:
+                await HandleMediaType(itemId, GetTvTrailer);
+                break;
+            case MediaTypes.Mtv:
+                await HandleMtvMediaType(itemId);
+                break;
+            case MediaTypes.Collection:
+                Logger.Warn("Collection media type not supported for trailer");
+                break;
+            default:
+                Logger.Warn("Unknown media type {MediaType}", SearchResult.MediaType);
+                break;
         }
     }
 
@@ -393,7 +419,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private async Task HandleMediaType(string itemId, Func<string, Task> handleAction)
+    private static async Task HandleMediaType(string itemId, Func<string, Task> handleAction)
     {
         await handleAction(itemId);
     }
@@ -401,11 +427,18 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private async Task GetGameTrailer(string itemId)
     {
         var r = await _igdbObject.GetGameVideo(itemId);
-        if (r == null || r.Length == 0) return;
-        if (r.All(v => v.Name != "Trailer")) return;
-        var key = r.First(v => v.Name == "Trailer");
-        SetTrailer(key.VideoId);
+        if (r == null || r.Length == 0)
+        {
+            return;
+        }
+
+        if (Array.TrueForAll(r, v => v.Name != "Trailer"))
+        {
+            return;
+        }
+        SetVideos(r);
     }
+    
 
     private async Task GetMovieTrailer(string itemId)
     {
@@ -415,15 +448,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
             if (result != null)
             {
-                var trailer = ChooseTrailer(result.Results);
-                if (trailer != null)
-                {
-                    SetTrailer(trailer.Key);
-                }
-                else
-                {
-                    Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-                }
+                SetVideos(result.Results);
             }
         }
         catch (Exception ex)
@@ -436,36 +461,79 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     {
         var result = await _tmdbObject.GetClient().GetTvShowVideosAsync(itemId.ConvertToInt());
 
-        if (result == null) return;
-    
-        var i = ChooseTrailer(result.Results);
-    
-        if (i != null)
+        if (result == null)
         {
-            SetTrailer(i.Key);
+            return;
         }
-        else
-        {
-            Logger.Warn("No trailer found for {Title}", ResultListViewData.SelectedItem.Title);
-        }
+        SetVideos(result.Results);
     }
 
-    private dynamic? ChooseTrailer(IReadOnlyCollection<dynamic> results)
+    private static Video ChooseTrailer(IReadOnlyCollection<Video> results)
     {
-        var trailerYouTube = results.FirstOrDefault(item => item?.Type == "Trailer" && item?.Site == "YouTube");
-        return trailerYouTube != null ? trailerYouTube : results.FirstOrDefault();
+        var trailerYouTube = results.FirstOrDefault(item => item is { Type: "Trailer", Site: "YouTube" });
+        return trailerYouTube ?? results.FirstOrDefault();
     }
 
-    private void SetTrailer(string trailerKey)
+    private void SetVideos(List<Video> videos)
     {
-        ResultListViewData.SelectedItem.TrailerKey = trailerKey;
-        ResultListViewData.SelectedItem.Trailer =
-            new Uri($"https://www.youtube.com/embed/{trailerKey}");
-        Logger.Debug("Trailer for {Title} is {Trailer}", ResultListViewData.SelectedItem.Title,
-            ResultListViewData.SelectedItem.Trailer);
+        if (videos == null || videos.Count == 0)
+        {
+            return;
+        }
+
+        var trailer = ChooseTrailer(videos);
+        var videoList = new List<MediaVideo>
+        {
+            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.Key))
+        };
+
+        videoList.AddRange(
+            videos.Where(video => video != trailer)
+                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.Key)))
+        );
+        
+        ResultListViewData.SelectedItem.Videos = videoList;
     }
+
+    private void SetVideos(GameVideo[] videos)
+    {
+        var trailer = videos.First(v => v.Name == "Trailer");
+        
+        var videoList = new List<MediaVideo>
+        {
+            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.VideoId))
+        };
+
+        videoList.AddRange(
+            videos.Where(video => video != trailer)
+                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId)))
+        );
+
+        ResultListViewData.SelectedItem.Videos = videoList;
+    }
+    
     private void ResetPoster()
     {
+        if (ResultListViewData.SelectedItem == null)
+        {
+            Logger.Warn("ResetPoster called with null SelectedItem");
+            return;
+        }
         ResultListViewData.SelectedItem.ResetInitialPoster();
+    }
+    
+    private bool HasSearchResult()
+    {
+        if (_isPickedById)
+        {
+            return SearchResult.Result != null;
+        }
+
+        if (SearchMode == MediaTypes.Game)
+        {
+            return (SearchResult.Result as Game[])?.Length != 0;
+        }
+    
+        return SearchResult.Result.TotalResults != 0;
     }
 }

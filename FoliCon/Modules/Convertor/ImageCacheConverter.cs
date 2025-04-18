@@ -4,6 +4,7 @@
 /// Converts an image path to a BitmapImage with caching to improve performance and thread safety.
 /// CREDIT: https://stackoverflow.com/a/37652158/8076598
 /// </summary>
+[Localizable(false)]
 public class ImageCacheConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -13,13 +14,13 @@ public class ImageCacheConverter : IValueConverter
         {
             return null;
         }
-
+        var uri = new Uri(path, UriKind.Absolute);
         try
         {
             var image = new BitmapImage();
             image.BeginInit();
             image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(path, UriKind.Absolute);
+            image.UriSource = uri;
             image.EndInit();
             image.Freeze(); // Improve performance and thread safety
             return image;

@@ -1,14 +1,11 @@
-﻿using NLog;
-using Logger = NLog.Logger;
-
-namespace FoliCon.Modules.UI;
+﻿namespace FoliCon.Modules.UI;
 
 public interface IFileDragDropTarget
 {
     void OnFileDrop(string[] filePaths, string senderName);
 }
 
-public class FolderDragDropHelper
+public static class FolderDragDropHelper
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     public static bool GetIsFileDragDropEnabled(DependencyObject obj)
@@ -62,7 +59,7 @@ public class FolderDragDropHelper
         var dt = e.Data.GetData(DataFormats.FileDrop);
         var data = (dt as Array)?.GetValue(0)?.ToString();
         
-        Logger.Trace("Control_DragOver: Data: {Data}", data ?? "null");
+        Logger.Trace("Control_DragOver: Data: {Data}", data);
         
         e.Effects = Directory.Exists(data) ? DragDropEffects.Link : DragDropEffects.None;
         e.Handled = true;

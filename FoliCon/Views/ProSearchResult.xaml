@@ -49,6 +49,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="107" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                         Command="{Binding SkipCommand}" IsCancel="True" />
@@ -65,13 +66,16 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </hc:SearchBar>
+                <CheckBox Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
+                          IsChecked="{Binding SubfolderProcessingEnabled}" 
+                          Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
             </Grid>
-            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch" ScrollChanged="ScrollViewer_ScrollChanged">
+            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" 
+                             VerticalAlignment="Stretch" ui:ScrollViewerBehavior.AutoScroll="True">
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Image}" Tag="{Binding }" Height="128" Width="128"
+                            <Image Source="{Binding ThumbnailUrl}" Tag="{Binding }" Height="128" Width="128"
                                    RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
                                 <i:Interaction.Behaviors>
                                     <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
@@ -82,7 +86,7 @@
                                 <Image.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem
-                                            Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractManually}}"
+                                            Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
                                             Command="{Binding Value.ExtractManuallyCommand,
                                              Source={StaticResource Proxy}}" 
                                             CommandParameter="{Binding PlacementTarget.Tag.DeviationId, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />

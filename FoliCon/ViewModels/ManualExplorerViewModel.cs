@@ -1,20 +1,15 @@
-﻿
-using FoliCon.Models.Api;
-using FoliCon.Models.Data;
-using FoliCon.Modules.DeviantArt;
-using NLog;
+﻿namespace FoliCon.ViewModels;
 
-namespace FoliCon.ViewModels;
-
+[Localizable(false)]
 public class ManualExplorerViewModel : BindableBase, IDialogAware
 {
-	private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
+	private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 	
 	public ManualExplorerViewModel()
 	{
 		Directory = [];
 		PickCommand = new DelegateCommand<object>(PickMethod);
-		OpenImageCommand = new DelegateCommand<object>(OpenImageMethod);
+		OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
 		CancelCommand = new DelegateCommand(CancelMethod);
 	}
 
@@ -24,19 +19,19 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		CloseDialog(ButtonResult.OK, (string)localImagePath);
 	}
 
-	private string _title = LangProvider.GetLang("ManualExplorer");
+	private string _title = Lang.ManualExplorer;
 	private bool _isBusy;
 	private ObservableCollection<string> _directory;
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
-	private ProgressInfo _progressInfo = new(0,1,LangProvider.Instance.Downloading);
+	private ProgressBarData _progressInfo = new(0,1,LangProvider.Instance.Downloading);
 	private readonly CancellationTokenSource _cts = new();
         
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-	public DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-	public ProgressInfo ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
-	public DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
+	private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
+	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
+	private DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
 	
 	public DelegateCommand<object> PickCommand { get; set; }
@@ -49,19 +44,6 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		_cts.Cancel();
 	}
 
-
-	private void OpenImageMethod(object parameter)
-	{
-		Logger.Debug("Opening Image {Image}", parameter);
-		var link = (string)parameter;
-		var browser = new ImageBrowser(link)
-		{
-			ShowTitle = false,
-			IsFullScreen = true
-		};
-		browser.Show();
-	}
-	
 	#region DialogMethods
 
 	public event Action<IDialogResult> RequestClose;
@@ -87,7 +69,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		RaiseRequestClose(new DialogResult(result, dialogParams));
 	}
 
-	public virtual void RaiseRequestClose(IDialogResult dialogResult)
+	protected virtual void RaiseRequestClose(IDialogResult dialogResult)
 	{
 		RequestClose?.Invoke(dialogResult);
 	}
@@ -100,19 +82,33 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		try
 		{
 			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
+			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
 			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				_cts.Token, new Progress<ProgressInfo>(value => ProgressInfo = value)));
+				_cts.Token, new Progress<ProgressBarData>(value => ProgressInfo = value)));
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 		}
 		catch (OperationCanceledException e)
 		{
-			Logger.Debug("User cancelled manual extraction");
+			Logger.Debug(e, "User cancelled manual extraction");
 			
-		} 
+		}
 
-		DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
-			.GetFiles()
-			.ForEach(fileInfo => Directory.AddOnUI(fileInfo.FullName));
+		var extractedFiles = DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
+			.GetFiles();
+		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
+		if (extractedFiles?.Length > 0)
+		{
+			var pngOrAvailableFile = extractedFiles
+				.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Name))
+				.Select(group =>
+				{
+					var pngFile = group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png");
+					return pngFile ?? group.First();
+				}).ToList();
+			
+			Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
+			pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
+		}
 
 		IsBusy = false;
 		_cts.Dispose();

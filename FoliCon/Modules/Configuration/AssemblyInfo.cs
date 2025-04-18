@@ -1,5 +1,6 @@
 ﻿namespace FoliCon.Modules.Configuration;
 
+[Localizable(false)]
 internal static class AssemblyInfo
 {
     public static string GetVersion()

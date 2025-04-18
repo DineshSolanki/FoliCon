@@ -1,21 +1,17 @@
-﻿using FoliCon.Modules.Configuration;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using FoliCon.ViewModels;
-using NLog;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Sentry;
-using Logger = NLog.Logger;
+using Window = System.Windows.Window;
 
 namespace FoliCon;
 
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
+[Localizable(false)]
 public partial class App
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    protected override System.Windows.Window CreateShell()
+    protected override Window CreateShell()
     {
         return Container.Resolve<MainWindow>();
     }
@@ -44,8 +40,8 @@ public partial class App
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
         containerRegistry.RegisterDialogWindow<HandyWindow>();
     }
-    
-    void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+
+    private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
         SentrySdk.CaptureException(e.Exception);
 

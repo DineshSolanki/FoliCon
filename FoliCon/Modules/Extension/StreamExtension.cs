@@ -1,12 +1,22 @@
-﻿using FoliCon.Models.Data;
-using FoliCon.Modules.utils;
+﻿using System.Text;
 using SharpCompress.Archives;
 using SharpCompress.Common;
+using SharpCompress.Readers;
 
 namespace FoliCon.Modules.Extension;
 
+[Localizable(false)]
 public static class StreamExtensions
 {
+    private static readonly ReaderOptions ReaderOptions = new() { ArchiveEncoding = 
+        new ArchiveEncoding(Encoding.GetEncoding("IBM437"), Encoding.GetEncoding("IBM437")) };
+    
+    private static readonly ExtractionOptions ExtractionSettings = new()
+    {
+        ExtractFullPath = false,
+        Overwrite = true
+    };
+    
     /// <summary>
     /// Extracts PNG and ICO files from a compressed stream and writes them to a directory.
     /// </summary>
@@ -16,36 +26,26 @@ public static class StreamExtensions
     /// <param name="progressCallback">A Callback which can be used to report the progress of the extraction.</param>
     public static void ExtractPngAndIcoToDirectory(this Stream archiveStream, string targetPath,
         CancellationToken cancellationToken,
-        IProgress<ProgressInfo> progressCallback)
+        IProgress<ProgressBarData> progressCallback)
     {
-        using var reader = ArchiveFactory.Open(archiveStream);
-        var pngAndIcoEntries = reader.Entries.Where(entry =>
-            (!entry.IsDirectory || !IsUnwantedDirectoryOrFileType(entry)) && FileUtils.IsPngOrIco(entry.Key));
-        var pngAndIcoFiles = pngAndIcoEntries as IArchiveEntry[] ?? pngAndIcoEntries.ToArray();
-        var totalCount = pngAndIcoFiles.Length;
-        var extractionProgress = new ProgressInfo(0, totalCount, LangProvider.Instance.Extracting);
+        using var reader = ArchiveFactory.Open(archiveStream, ReaderOptions);
+        var pngAndIcoEntries = reader.Entries.Where(IsValidFile).ToList();
+        
+        
+        var totalCount = pngAndIcoEntries.Count;
+        var extractionProgress = new ProgressBarData(0, totalCount, LangProvider.Instance.Extracting);
         progressCallback.Report(extractionProgress);
-        var extractionSettings = new ExtractionOptions
-        {
-            ExtractFullPath = false,
-            Overwrite = true
-        };
-        foreach (var entry in pngAndIcoFiles)
+        foreach (var entry in pngAndIcoEntries)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            entry.WriteToDirectory(targetPath, extractionSettings);
-            extractionProgress.Current++;
+            entry.WriteToDirectory(targetPath, ExtractionSettings);
+            extractionProgress.Value++;
             progressCallback.Report(extractionProgress);
         }
     }
-
-    private static bool IsUnwantedDirectoryOrFileType(IEntry entry)
+    
+    private static bool IsValidFile(IEntry entry)
     {
-        return entry.Key != null && (entry.IsDirectory ||
-                                    entry.Key.Contains("ResourceForks") ||
-                                    entry.Key.Contains("__MACOSX") ||
-                                    entry.Key.StartsWith("._") ||
-                                    entry.Key.Equals(".DS_Store") ||
-                                    entry.Key.Equals("Thumbs.db"));
+        return !entry.IsDirectory && !FileUtils.IsExcludedFileIdentifier(entry.Key) && FileUtils.IsPngOrIco(entry.Key);
     }
 }

@@ -1,7 +1,6 @@
-﻿using FoliCon.Models.Data;
+﻿namespace FoliCon.Modules.Configuration;
 
-namespace FoliCon.Modules.Configuration;
-
+[Localizable(false)]
 public class AppConfig : GlobalDataHelper
 {
     public string DevClientId { get; set; }

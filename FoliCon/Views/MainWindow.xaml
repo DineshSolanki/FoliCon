@@ -11,6 +11,7 @@
         xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
         xmlns:ui="clr-namespace:FoliCon.Modules.UI"
         xmlns:enums="clr-namespace:FoliCon.Models.Enums"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" Height="714" Width="851" MinWidth="850" MinHeight="630"
@@ -34,7 +35,7 @@
                     <StackPanel Margin="4">
                         <TextBlock
                             Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
-                        <ProgressBar Style="{DynamicResource ProgressBarFlat}"
+                        <ProgressBar Style="{DynamicResource ProgressBarSuccessStripe}"
                                      Value="{Binding Path=DataContext.BusyIndicatorProperties.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                      Maximum="{Binding Path=DataContext.BusyIndicatorProperties.Max, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                      Height="15" />
@@ -243,12 +244,15 @@
                 <ListView x:Name="FinalList" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
                           ItemsSource="{Binding FinalListViewData.Data}"
                           SelectedItem="{Binding FinalListViewData.SelectedItem}"
-                          hc:Empty.ShowEmpty="true" GridViewColumnHeader.Click="FinalList_OnClick" >
+                          hc:Empty.ShowEmpty="true">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:LaunchUriOrFileAction Path="{Binding FinalListViewData.SelectedItem.Folder}" />
                         </hc:EventTrigger>
                     </hc:Interaction.Triggers>
+                    <b:Interaction.Behaviors>
+                        <ui:ListViewClickSortBehavior/>
+                    </b:Interaction.Behaviors>
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Title}}" Width="Auto" DisplayMemberBinding="{Binding Title}" />
