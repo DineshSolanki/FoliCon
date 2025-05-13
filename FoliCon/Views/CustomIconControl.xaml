@@ -89,6 +89,19 @@
                 <Button Style="{StaticResource ButtonInfo}" Content="{extension:Lang Key={x:Static langs:LangKeys.Undo}}" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
             </VirtualizingStackPanel>
 
+            <!-- Shape and Options Selection Row -->
+            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <RadioButton GroupName="IconShape" Content="Legacy" Margin="5,0" IsChecked="{Binding SelectedIconOverlay, ConverterParameter=Legacy, Converter={StaticResource StringToBooleanConvertor}}" CommandParameter="Legacy" Command="{Binding IconOverlayChangedCommand}"/>
+                    <RadioButton GroupName="IconShape" Content="Alternate" Margin="5,0" IsChecked="{Binding SelectedIconOverlay, ConverterParameter=Alternate, Converter={StaticResource StringToBooleanConvertor}}" CommandParameter="Alternate" Command="{Binding IconOverlayChangedCommand}"/>
+                    <RadioButton GroupName="IconShape" Content="Faelpessoal" Margin="5,0" IsChecked="{Binding SelectedIconOverlay, ConverterParameter=Faelpessoal, Converter={StaticResource StringToBooleanConvertor}}" CommandParameter="Faelpessoal" Command="{Binding IconOverlayChangedCommand}"/>
+                    <RadioButton GroupName="IconShape" Content="Liaher" Margin="5,0" IsChecked="{Binding SelectedIconOverlay, ConverterParameter=Liaher, Converter={StaticResource StringToBooleanConvertor}}" CommandParameter="Liaher" Command="{Binding IconOverlayChangedCommand}"/>
+                    <RadioButton GroupName="IconShape" Content="Faelpessoal Horizontal" Margin="5,0" IsChecked="{Binding SelectedIconOverlay, ConverterParameter=FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}" CommandParameter="FaelpessoalHorizontal" Command="{Binding IconOverlayChangedCommand}"/>
+                </StackPanel>
+                <CheckBox Content="Overlay" Margin="20,0,5,0" IsChecked="{Binding IsOverlayEnabled}"/>
+                <CheckBox Content="Rating" Margin="5,0" IsChecked="{Binding IsRatingEnabled}"/>
+            </StackPanel>
+
             <Button Style="{StaticResource ButtonPrimary}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{extension:Lang Key={x:Static langs:LangKeys.Apply}}"
                      Command="{Binding Apply}" />
         </Grid>

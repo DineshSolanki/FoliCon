@@ -18,6 +18,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private bool _keepExactOnly;
     private bool _isBusy;
     private bool _stopSearch;
+    private string _selectedIconOverlay = "Liaher";
+    private bool _isOverlayEnabled = true;
+    private bool _isRatingEnabled = true;
     public string Title => Lang.CustomIconSetter;
 
     private ObservableCollection<string> _undoDirectories = [];
@@ -53,6 +56,24 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     {
         get => _isUndoEnable;
         set => SetProperty(ref _isUndoEnable, value);
+    }
+
+    public string SelectedIconOverlay
+    {
+        get => _selectedIconOverlay;
+        set => SetProperty(ref _selectedIconOverlay, value);
+    }
+
+    public bool IsOverlayEnabled
+    {
+        get => _isOverlayEnabled;
+        set => SetProperty(ref _isOverlayEnabled, value);
+    }
+
+    public bool IsRatingEnabled
+    {
+        get => _isRatingEnabled;
+        set => SetProperty(ref _isRatingEnabled, value);
     }
 
     private string SelectedDirectory
@@ -109,6 +130,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
     public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
+    public DelegateCommand<object> IconOverlayChangedCommand { get; }
     public string BusyContent
     {
         get => _busyContent;
@@ -129,6 +151,13 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         UndoIcons = new DelegateCommand(UndoCreatedIcons);
         KeyPressFolderList = new DelegateCommand<dynamic>(FolderListKeyPress);
         KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
+        IconOverlayChangedCommand = new DelegateCommand<object>(parameter =>
+        {
+            if (parameter is string overlay)
+            {
+                SelectedIconOverlay = overlay;
+            }
+        });
     }
 
     private async void UndoCreatedIcons()
@@ -260,6 +289,15 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         Index = 0;
         TotalIcons = Icons.Count;
         StopSearch = false;
+        var iconOverlay = SelectedIconOverlay switch
+        {
+            "Legacy" => Models.Enums.IconOverlay.Legacy,
+            "Alternate" => Models.Enums.IconOverlay.Alternate,
+            "Liaher" => Models.Enums.IconOverlay.Liaher,
+            "Faelpessoal" => Models.Enums.IconOverlay.Faelpessoal,
+            "FaelpessoalHorizontal" => Models.Enums.IconOverlay.FaelpessoalHorizontal,
+            _ => Models.Enums.IconOverlay.Liaher
+        };
         for (var i = 0; i < Directories.Count; ++i)
         {
             if (i >= Icons.Count)
@@ -270,14 +308,41 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
             var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
             var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
-            
-            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}", 
+
+            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
                 folderPath, iconPath, newIconPath);
-            
+
+            // Use PNG as input if not already ICO
             if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
             {
                 Logger.Info("Converting {Icon} to .ico", iconPath);
-                var icon = new ProIcon(iconPath).RenderToBitmap();
+                Bitmap icon = null;
+                // Use overlay logic similar to IconUtils.BuildFolderIco
+                var rating = IsRatingEnabled ? "8.0" : string.Empty; // Placeholder, can be improved
+                var ratingVisibility = IsRatingEnabled ? "visible" : "hidden";
+                var mockupVisibility = IsOverlayEnabled ? "visible" : "hidden";
+                var mediaTitle = string.Empty;
+                switch (iconOverlay)
+                {
+                    case Models.Enums.IconOverlay.Legacy:
+                        icon = new Views.PosterIcon(new Models.Data.PosterIcon(iconPath, rating, ratingVisibility, mockupVisibility)).RenderToBitmap();
+                        break;
+                    case Models.Enums.IconOverlay.Alternate:
+                        icon = new Views.PosterIconAlt(new Models.Data.PosterIcon(iconPath, rating, ratingVisibility, mockupVisibility)).RenderToBitmap();
+                        break;
+                    case Models.Enums.IconOverlay.Liaher:
+                        icon = new Views.PosterIconLiaher(new Models.Data.PosterIcon(iconPath, rating, ratingVisibility, mockupVisibility)).RenderToBitmap();
+                        break;
+                    case Models.Enums.IconOverlay.Faelpessoal:
+                        icon = new Views.PosterIconFaelpessoal(new Models.Data.PosterIcon(iconPath, rating, ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap();
+                        break;
+                    case Models.Enums.IconOverlay.FaelpessoalHorizontal:
+                        icon = new Views.PosterIconFaelpessoalHorizontal(new Models.Data.PosterIcon(iconPath, rating, ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap();
+                        break;
+                    default:
+                        icon = new Views.PosterIcon(new Models.Data.PosterIcon(iconPath, rating, ratingVisibility, mockupVisibility)).RenderToBitmap();
+                        break;
+                }
                 iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
                 PngToIcoService.Convert(icon, iconPath);
                 icon.Dispose();
@@ -300,7 +365,6 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
             Logger.Warn("User stopped search");
             break;
-
         }
 
         FileUtils.ApplyChanges(SelectedDirectory);
