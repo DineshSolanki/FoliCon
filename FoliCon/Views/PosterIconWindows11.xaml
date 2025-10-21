@@ -9,30 +9,57 @@
              prism:ViewModelLocator.AutoWireViewModel="False"  Width="256" Height="256"
              d:DataContext="{d:DesignInstance Type=data:PosterIcon, IsDesignTimeCreatable=True}">
     <Grid>
-        <!-- Windows 11 style folder background with rounded corners -->
-        <Border CornerRadius="8,8,8,8" Background="#FFE8C565" Margin="0,40,0,15">
+        <!-- Windows 11 style folder background with modern rounded corners and gradient -->
+        <Border CornerRadius="8,8,8,8" Margin="0,50,0,20">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFF3CA5D" Offset="0.0"/>
+                    <GradientStop Color="#FFE5B84C" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
             <Border.Effect>
-                <DropShadowEffect Color="#40000000" Direction="315" ShadowDepth="4" Opacity="0.5" BlurRadius="8"/>
+                <DropShadowEffect Color="#60000000" Direction="270" ShadowDepth="3" Opacity="0.4" BlurRadius="10"/>
             </Border.Effect>
         </Border>
         
-        <!-- Folder tab at the top -->
-        <Border CornerRadius="8,8,0,0" Background="#FFF7DC8F" Margin="10,20,156,201" />
-        
-        <!-- Poster image container with rounded corners -->
-        <Border CornerRadius="6,6,6,6" Margin="15,60,15,35" ClipToBounds="True">
+        <!-- Folder tab at the top with gradient -->
+        <Border CornerRadius="6,6,0,0" Margin="8,32,150,194">
             <Border.Background>
-                <ImageBrush Stretch="Uniform" ImageSource="{Binding FolderJpg}" />
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFF9D882" Offset="0.0"/>
+                    <GradientStop Color="#FFF3CA5D" Offset="1.0"/>
+                </LinearGradientBrush>
             </Border.Background>
         </Border>
         
-        <!-- Rating shield overlay -->
+        <!-- Poster image container with subtle rounded corners and inner glow -->
+        <Border CornerRadius="5,5,5,5" Margin="20,70,20,40" ClipToBounds="True">
+            <Border.Background>
+                <ImageBrush Stretch="Uniform" ImageSource="{Binding FolderJpg}" />
+            </Border.Background>
+            <Border.Effect>
+                <DropShadowEffect Color="#30000000" Direction="0" ShadowDepth="0" Opacity="0.5" BlurRadius="5"/>
+            </Border.Effect>
+        </Border>
+        
+        <!-- Rating badge with modern circular design -->
         <Grid Visibility="{Binding RatingVisibility}">
-            <Ellipse Width="50" Height="50" Fill="#E0FFFFFF" Margin="186,171,20,35" />
-            <Ellipse Width="46" Height="46" Fill="#F0F7DC8F" Margin="188,173,22,37" />
+            <Ellipse Width="54" Height="54" Fill="#E0FFFFFF" Margin="182,165,20,37">
+                <Ellipse.Effect>
+                    <DropShadowEffect Color="#80000000" Direction="315" ShadowDepth="2" Opacity="0.4" BlurRadius="6"/>
+                </Ellipse.Effect>
+            </Ellipse>
+            <Ellipse Width="50" Height="50" Margin="184,167,22,39">
+                <Ellipse.Fill>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="#FFF9D882" Offset="0.0"/>
+                        <GradientStop Color="#FFF3CA5D" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
             <TextBlock Text="{Binding Rating}" HorizontalAlignment="Center"
-                       VerticalAlignment="Center" FontFamily="Segoe UI" FontWeight="Bold"
-                       FontSize="18" Margin="186,171,20,35" Foreground="#333333"/>
+                       VerticalAlignment="Center" FontFamily="Segoe UI" FontWeight="SemiBold"
+                       FontSize="17" Margin="182,165,20,37" Foreground="#2D2D2D"/>
         </Grid>
     </Grid>
 </data:PosterIconBase>
