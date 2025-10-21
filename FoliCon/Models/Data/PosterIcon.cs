@@ -5,9 +5,12 @@ using Size = System.Windows.Size;
 namespace FoliCon.Models.Data;
 
 [Localizable(false)]
-public class PosterIcon : BindableBase
+public class PosterIcon : BindableBase, IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+    private MemoryStream _memoryStream;
+
     public ImageSource FolderJpg { get; set; }
 
     public string Rating
@@ -39,8 +42,9 @@ public class PosterIcon : BindableBase
         try
         {
             var filePath = FileUtils.GetResourcePath("posterDummy.png");
-            using var memoryStream = new MemoryStream(File.ReadAllBytes(filePath));
-            FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(memoryStream);
+            var bytes = File.ReadAllBytes(filePath);
+            _memoryStream = new MemoryStream(bytes);
+            FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(_memoryStream);
         }
         catch (Exception ex)
         {
@@ -59,8 +63,9 @@ public class PosterIcon : BindableBase
         RatingVisibility = ratingVisibility;
         Rating = rating;
         MockupVisibility = mockupVisibility;
-        using var memoryStream = new MemoryStream(File.ReadAllBytes(folderJpgPath));
-        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(memoryStream);
+        var bytes = File.ReadAllBytes(folderJpgPath);
+        _memoryStream = new MemoryStream(bytes);
+        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(_memoryStream);
     }
 
     public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility,
@@ -85,5 +90,11 @@ public class PosterIcon : BindableBase
             300, 450, 96, 96, PixelFormats.Pbgra32);
         renderTargetBitmap.Render(drawingVisual);
         return renderTargetBitmap;
+    }
+
+    public void Dispose()
+    {
+        _memoryStream?.Dispose();
+        _memoryStream = null;
     }
 }
