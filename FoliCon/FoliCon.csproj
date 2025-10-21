@@ -61,6 +61,7 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher.ico" />
     <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher2.ico" />
     <Resource Include="Resources\mockup_demos\simple\PosterIcon.ico" />
+    <Resource Include="Resources\mockup_demos\windows11\PosterIconWindows11.ico" />
     <Resource Include="Resources\poster_mockups\dvd\mockup cover cropped.png" />
     <Resource Include="Resources\poster_mockups\dvd\mockup2base.png" />
     <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal base horizontal.png" />

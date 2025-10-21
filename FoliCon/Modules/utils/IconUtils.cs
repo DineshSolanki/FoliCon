@@ -131,6 +131,9 @@ public static class IconUtils
                     new PosterIcon(
                         filmFolderPath, rating,
                         ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
+                IconOverlay.Windows11 => StaTask.Start(() =>
+                    new PosterIconWindows11(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
+                        .RenderToBitmap()),
                 _ => StaTask.Start(() =>
                     new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap())

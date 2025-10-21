@@ -6,5 +6,6 @@ public enum IconOverlay
     Alternate,
     Liaher,
     Faelpessoal,
-    FaelpessoalHorizontal
+    FaelpessoalHorizontal,
+    Windows11
 }
