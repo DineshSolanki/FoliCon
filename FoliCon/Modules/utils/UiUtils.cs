@@ -36,7 +36,8 @@ public static class UiUtils
         var browser = new ImageBrowser(imageLocation)
         {
             ShowTitle = false,
-            IsFullScreen = true
+            IsFullScreen = true,
+            AllowsTransparency = true
         };
         browser.Show();
     }
