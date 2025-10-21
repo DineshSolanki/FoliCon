@@ -10,14 +10,17 @@
              d:DataContext="{d:DesignInstance Type=data:PosterIcon, IsDesignTimeCreatable=True}">
     <Grid Margin="0,0,0,-11">
         <!-- Base mockup image in background -->
-        <Image Source="/Resources/poster_mockups/win11/base.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="-38,-42,-38,52" Visibility="{Binding MockupVisibility}" />
+        <Image Source="/Resources/poster_mockups/win11/base.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
         
         <!-- Poster image positioned to fit within the folder mockup -->
-        <Border CornerRadius="8,8,8,8" Margin="34,10,43,21" ClipToBounds="True">
+        <Border CornerRadius="7,7,7,7" Grid.Row="0" Margin="1,65,9,29">
             <Border.Background>
-                <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" />
+                <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" />
             </Border.Background>
         </Border>
+        
+        <!-- Front mockup image on top -->
+        <Image Source="/Resources/poster_mockups/win11/front.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,-4,8,9" Visibility="{Binding MockupVisibility}"/>
         
         <!-- Rating badge -->
         <Grid Grid.Row="0">
@@ -27,10 +30,10 @@
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
             <Image x:Name="Shield" Source="/Resources/rating_mockup/shield.png" RenderOptions.BitmapScalingMode="HighQuality"
-                   Margin="160,97,6,5" Panel.ZIndex="2" Visibility="{Binding RatingVisibility}" Grid.Row="1" Grid.RowSpan="2" />
-            <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Center"
-                       VerticalAlignment="Center" FontFamily="Castellar" FontStyle="Italic"
-                       Visibility="{Binding RatingVisibility}" FontSize="25" Margin="189,30,21,24" Panel.ZIndex="3"
+                   Margin="183,97,-17,5" Panel.ZIndex="2" Visibility="{Binding RatingVisibility}" Grid.Row="1" Grid.RowSpan="2" />
+            <TextBlock x:Name="Ratingtext" Text="{Binding Rating}" HorizontalAlignment="Left"
+                       VerticalAlignment="Top" FontFamily="Castellar" FontStyle="Italic"
+                       Visibility="{Binding RatingVisibility}" FontSize="25" Margin="209,30,0,0" Panel.ZIndex="3"
                        Grid.Row="2" Width="55" Height="46" Foreground="Black"/>
         </Grid>
     </Grid>
