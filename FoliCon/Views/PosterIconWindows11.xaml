@@ -9,59 +9,67 @@
              prism:ViewModelLocator.AutoWireViewModel="False"  Width="265" Height="256"
              d:DataContext="{d:DesignInstance Type=data:PosterIcon, IsDesignTimeCreatable=True}">
     <Grid Margin="0,0,0,-11">
-        <!-- Windows 11 style folder background with modern flat design -->
-        <Rectangle RadiusX="4" RadiusY="4" Margin="10,45,10,25">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Color="#FFFCD26C" Offset="0.0"/>
-                    <GradientStop Color="#FFF8C657" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-            <Rectangle.Effect>
-                <DropShadowEffect Color="#40000000" Direction="270" ShadowDepth="2" Opacity="0.3" BlurRadius="6"/>
-            </Rectangle.Effect>
-        </Rectangle>
-        
-        <!-- Folder tab - small and subtle like Windows 11 -->
-        <Rectangle RadiusX="3" RadiusY="3" Margin="16,32,165,210">
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Color="#FFFEE596" Offset="0.0"/>
-                    <GradientStop Color="#FFFCD26C" Offset="1.0"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        
-        <!-- Poster image container -->
-        <Border CornerRadius="3" Margin="25,65,25,50" ClipToBounds="True">
+        <!-- Poster image - fills most of the folder -->
+        <Border CornerRadius="6,6,6,6" Margin="15,42,15,22" ClipToBounds="True" Panel.ZIndex="1">
             <Border.Background>
                 <ImageBrush Stretch="UniformToFill" ImageSource="{Binding FolderJpg}" />
             </Border.Background>
         </Border>
         
-        <!-- Rating badge with clean Windows 11 style -->
-        <Grid Visibility="{Binding RatingVisibility}">
+        <!-- Windows 11 folder frame - wraps around poster like a real folder -->
+        <!-- Top part of folder -->
+        <Border CornerRadius="6,6,0,0" Margin="15,25,15,192" Panel.ZIndex="2" BorderThickness="5,5,5,0">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFFCD970" Offset="0.0"/>
+                    <GradientStop Color="#FFF5C864" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+        </Border>
+        
+        <!-- Folder tab -->
+        <Border CornerRadius="4,4,0,0" Margin="20,16,170,228" Panel.ZIndex="3">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFFEE188" Offset="0.0"/>
+                    <GradientStop Color="#FFFCD970" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+        
+        <!-- Bottom and sides of folder -->
+        <Border CornerRadius="0,0,6,6" Margin="15,52,15,22" Panel.ZIndex="2" BorderThickness="5,0,5,5">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFF5C864" Offset="0.0"/>
+                    <GradientStop Color="#FFF0C157" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+        </Border>
+        
+        <!-- Rating badge -->
+        <Grid Visibility="{Binding RatingVisibility}" Panel.ZIndex="4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
             </Grid.RowDefinitions>
-            <Ellipse Width="48" Height="48" Fill="#F0FFFFFF" Margin="195,90,22,18" Panel.ZIndex="1" Grid.Row="1" Grid.RowSpan="2">
+            <Ellipse Width="50" Height="50" Fill="#E5FFFFFF" Margin="192,88,23,18" Grid.Row="1" Grid.RowSpan="2">
                 <Ellipse.Effect>
-                    <DropShadowEffect Color="#60000000" Direction="315" ShadowDepth="1.5" Opacity="0.35" BlurRadius="4"/>
+                    <DropShadowEffect Color="#70000000" Direction="315" ShadowDepth="2" Opacity="0.4" BlurRadius="5"/>
                 </Ellipse.Effect>
             </Ellipse>
-            <Ellipse Width="44" Height="44" Margin="197,92,24,20" Panel.ZIndex="2" Grid.Row="1" Grid.RowSpan="2">
+            <Ellipse Width="46" Height="46" Margin="194,90,25,20" Grid.Row="1" Grid.RowSpan="2">
                 <Ellipse.Fill>
                     <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                        <GradientStop Color="#FFFEE596" Offset="0.0"/>
-                        <GradientStop Color="#FFFCD26C" Offset="1.0"/>
+                        <GradientStop Color="#FFFEE188" Offset="0.0"/>
+                        <GradientStop Color="#FFFCD970" Offset="1.0"/>
                     </LinearGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
             <TextBlock Text="{Binding Rating}" HorizontalAlignment="Center"
                        VerticalAlignment="Center" FontFamily="Segoe UI" FontWeight="SemiBold"
-                       FontSize="16" Margin="195,90,22,18" Panel.ZIndex="3" Foreground="#333333" Grid.Row="1" Grid.RowSpan="2"/>
+                       FontSize="16" Margin="192,88,23,18" Foreground="#2D2D2D" Grid.Row="1" Grid.RowSpan="2"/>
         </Grid>
     </Grid>
 </data:PosterIconBase>
