@@ -9,18 +9,12 @@
              prism:ViewModelLocator.AutoWireViewModel="False"  Width="265" Height="256"
              d:DataContext="{d:DesignInstance Type=data:PosterIcon, IsDesignTimeCreatable=True}">
     <Grid Margin="0,0,0,-11">
-        <!-- Base mockup image in background -->
-        <Image Source="/Resources/poster_mockups/win11/base.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
-        
-        <!-- Poster image positioned to fit within the folder mockup -->
-        <Border CornerRadius="7,7,7,7" Grid.Row="0" Margin="1,65,9,29">
-            <Border.Background>
-                <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" />
-            </Border.Background>
-        </Border>
-        
-        <!-- Front mockup image on top -->
-        <Image Source="/Resources/poster_mockups/win11/front.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,-4,8,9" Visibility="{Binding MockupVisibility}"/>
+        <Image Source="/Resources/poster_mockups/win11/base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="5,0,5,10" Visibility="{Binding MockupVisibility}"/>
+        <Image Source="{Binding FolderJpg}" Stretch="Fill" Margin="5,21,3,10" Visibility="{Binding MockupVisibility}">
+            <Image.OpacityMask>
+                <ImageBrush ImageSource="/Resources/poster_mockups/win11/front.png" Stretch="Fill"/>
+            </Image.OpacityMask>
+        </Image>
         
         <!-- Rating badge -->
         <Grid Grid.Row="0">
