@@ -69,6 +69,14 @@
                     <view:PosterIconFaelpessoalHorizontal DataContext="{Binding PosterIconInstance}"/>
                     <TextBlock Grid.Row="1" Text="Faelpessoal Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                 </Grid>
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <view:PosterIconWindows11 DataContext="{Binding PosterIconInstance}"/>
+                    <TextBlock Grid.Row="1" Text="Windows 11" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                </Grid>
                 <hc:ColorPicker x:Name="ColorPicker" Margin="32" SelectedBrush="{DynamicResource RegionBrush}"/>
             </hc:FlexPanel>
         </Grid>

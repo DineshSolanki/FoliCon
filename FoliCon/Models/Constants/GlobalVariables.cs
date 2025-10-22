@@ -13,6 +13,7 @@ internal static class GlobalVariables
             "Liaher" => IconOverlay.Liaher,
             "Faelpessoal" => IconOverlay.Faelpessoal,
             "FaelpessoalHorizontal" => IconOverlay.FaelpessoalHorizontal,
+            "Windows11" => IconOverlay.Windows11,
             _ => IconOverlay.Alternate
         };
     }

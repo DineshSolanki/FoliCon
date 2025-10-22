@@ -21,7 +21,7 @@
         <Style TargetType="Window">
             <Setter Property="Height" Value="300" />
             <!-- <Setter Property="Background" Value="{DynamicResource RegionBrush}" /> -->
-            <Setter Property="Width" Value="1066" />
+            <Setter Property="Width" Value="1266" />
             <Setter Property="WindowStyle" Value="SingleBorderWindow" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
@@ -33,6 +33,7 @@
         Background="{DynamicResource RegionBrush}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Center">
         <Grid Margin="15,0,15,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
@@ -85,6 +86,15 @@
                          IsChecked="{Binding IconOverlay, ConverterParameter= FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
                 <RadioButton.Content>
                     <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico" />
+                </RadioButton.Content>
+            </RadioButton>
+            <RadioButton x:Name="RPosterWindows11" Grid.Column="5" GroupName="PosterOverlay"
+                         Command="{Binding IconOverlayChangedCommand}"
+                         CommandParameter="Windows11" FontSize="16" hc:Poptip.Content="Windows 11" hc:Poptip.Placement="LeftTop"
+                         HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                         IsChecked="{Binding IconOverlay, ConverterParameter= Windows11, Converter={StaticResource StringToBooleanConvertor}}">
+                <RadioButton.Content>
+                    <Image Source="/Resources/mockup_demos/windows11/PosterIconWindows11.ico" />
                 </RadioButton.Content>
             </RadioButton>
         </Grid>

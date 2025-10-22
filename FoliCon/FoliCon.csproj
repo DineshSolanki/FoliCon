@@ -61,6 +61,7 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher.ico" />
     <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher2.ico" />
     <Resource Include="Resources\mockup_demos\simple\PosterIcon.ico" />
+    <Resource Include="Resources\mockup_demos\windows11\PosterIconWindows11.ico" />
     <Resource Include="Resources\poster_mockups\dvd\mockup cover cropped.png" />
     <Resource Include="Resources\poster_mockups\dvd\mockup2base.png" />
     <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal base horizontal.png" />
@@ -69,6 +70,8 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher base.png" />
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher front.png" />
     <Resource Include="Resources\poster_mockups\simple\PosterMockup.png" />
+    <Resource Include="Resources\poster_mockups\win11\base.png" />
+    <Resource Include="Resources\poster_mockups\win11\front.png" />
     <Resource Include="Resources\rating_mockup\shield.png" />
     <Resource Include="Resources\posterDummy.png" />
   </ItemGroup>
