@@ -1,7 +1,7 @@
 ﻿namespace FoliCon.Modules.utils;
 
 [Localizable(false)]
-internal static class TitleCleaner
+internal static partial class TitleCleaner
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private static readonly Dictionary<string, string> UnicodeToNonUnicode = new()
@@ -9,6 +9,13 @@ internal static class TitleCleaner
         { "\uA789", ":" },
         { "\u2236", ":" }
     };
+    [GeneratedRegex("\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
+    private static partial Regex QualityAndResolutionFormatRegex();
+    [GeneratedRegex(@"\[.*\]", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
+    private static partial Regex EnclosedInBracketsRegex();
+    [GeneratedRegex(" {2,}", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
+    private static partial Regex MultipleSpacesRegex();
+    
     public static string Clean(string title)
     {
         var normalizedTitle = NormalizeTitle(title);
@@ -41,9 +48,9 @@ internal static class TitleCleaner
         p?i? \)? --Not needed. To emphasize removal of 1080i, closing bracket etc, but not needed due to the last part
         .* --Remove all trailing information after having found year or resolution as junk usually follows*/
         
-        var cleanTitle = Regex.Replace(title, "\\s*\\(?((\\d{4})|(420)|(720)|(1080))p?i?\\)?.*", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        cleanTitle = Regex.Replace(cleanTitle, @"\[.*\]", "", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        cleanTitle = Regex.Replace(cleanTitle, " {2,}", " ", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        var cleanTitle = QualityAndResolutionFormatRegex().Replace(title, "");
+        cleanTitle = EnclosedInBracketsRegex().Replace(cleanTitle, "");
+        cleanTitle = MultipleSpacesRegex().Replace(cleanTitle, " ");
 
         return string.IsNullOrWhiteSpace(cleanTitle) ? title.Trim() : cleanTitle.Trim();
     }

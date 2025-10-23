@@ -84,7 +84,7 @@ internal class TmdbService
     {
         object r;
         string mediaType;
-        if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
+        if (query.Contains("collection", StringComparison.CurrentCultureIgnoreCase))
         {
             r = await _serviceClient.SearchCollectionAsync(query);
             mediaType = MediaTypes.Collection;
