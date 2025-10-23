@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
     <Version>3.13.0</Version>
@@ -41,7 +41,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Sentry" Version="5.0.1" />
     <PackageReference Include="Sentry.NLog" Version="5.0.1" />
     <PackageReference Include="SharpCompress" Version="0.38.0" />
-    <PackageReference Include="TMDbLib" Version="2.2.1-alpha.0.24" />
+    <PackageReference Include="TMDbLib" Version="2.3.0" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.4" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
@@ -61,6 +61,7 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher.ico" />
     <Resource Include="Resources\mockup_demos\liaher\PosterIconLiaher2.ico" />
     <Resource Include="Resources\mockup_demos\simple\PosterIcon.ico" />
+    <Resource Include="Resources\mockup_demos\windows11\PosterIconWindows11.ico" />
     <Resource Include="Resources\poster_mockups\dvd\mockup cover cropped.png" />
     <Resource Include="Resources\poster_mockups\dvd\mockup2base.png" />
     <Resource Include="Resources\poster_mockups\faelpessoal\mockup faelpessoal base horizontal.png" />
@@ -69,6 +70,8 @@ dineshsolanki.github.io/folicon/</Description>
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher base.png" />
     <Resource Include="Resources\poster_mockups\liaher\mockup liaher front.png" />
     <Resource Include="Resources\poster_mockups\simple\PosterMockup.png" />
+    <Resource Include="Resources\poster_mockups\win11\base.png" />
+    <Resource Include="Resources\poster_mockups\win11\front.png" />
     <Resource Include="Resources\rating_mockup\shield.png" />
     <Resource Include="Resources\posterDummy.png" />
   </ItemGroup>
