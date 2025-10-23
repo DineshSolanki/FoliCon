@@ -6,6 +6,7 @@ namespace FoliCon.Modules.utils;
 public static class FileUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly string[] Extensions = [".png", ".ico"];
     private static readonly List<string> CompressedExtensions = [
         ".zip",
         ".rar",
@@ -36,7 +37,7 @@ public static class FileUtils
     }
 
     public static bool IsPngOrIco(string fileName) =>
-        fileName != null && EndsIn(fileName, [".png", ".ico"]);
+        fileName != null && EndsIn(fileName, Extensions);
 
     public static bool IsExcludedFileIdentifier(string fileName) =>
         fileName != null && ExcludedFileIdentifiers.Any(fileName.Contains);
@@ -422,7 +423,7 @@ public static class FileUtils
     private static ObservableCollection<ListItem> FetchMovieOrCollectionDetails(ResultResponse result, string query,
         bool isPickedById)
     {
-        if (query.ToLower(CultureInfo.InvariantCulture).Contains("collection"))
+        if (query.Contains("collection", StringComparison.CurrentCultureIgnoreCase))
         {
             return FetchCollectionDetails(result, isPickedById);
         }
@@ -483,7 +484,7 @@ public static class FileUtils
                 dwSize = (uint)Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
                 cchIconFile = 0
             };
-            SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
+            _ = SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
             Logger.Info("Folder Icon Set, ICO File: {IcoFile}, Folder Path: {FolderPath}", icoFile, folderPath);
         }
         catch (Exception e)

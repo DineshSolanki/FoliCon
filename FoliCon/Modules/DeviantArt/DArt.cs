@@ -3,7 +3,7 @@
 namespace FoliCon.Modules.DeviantArt;
 
 [Localizable(false)]
-public class DArt : BindableBase
+public class DArt : BindableBase, IDisposable
 {
     private string _clientAccessToken;
     private string _clientSecret;
@@ -186,5 +186,11 @@ public class DArt : BindableBase
     private string GetDownloadApiUrl(string deviationId)
     {
         return $"https://www.deviantart.com/api/v1/oauth2/deviation/download/{deviationId}?access_token={ClientAccessToken}";
+    }
+    
+    public void Dispose()
+    {
+        _cache?.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

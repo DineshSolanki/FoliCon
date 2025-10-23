@@ -124,7 +124,7 @@ public static class ProcessUtils
     public static IDictionary<string, string> GetCmdArgs()
     {
         Logger.Info("Getting Command Line Arguments");
-        IDictionary<string, string> arguments = new Dictionary<string, string>();
+        var arguments = new Dictionary<string, string>();
         var args = Environment.GetCommandLineArgs();
 
         for (var index = 1; index < args.Length; index += 2)

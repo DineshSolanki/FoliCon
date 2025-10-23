@@ -23,6 +23,7 @@ public partial class App
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
         Logger.Info("FoliCon Initialized");
+        AppDomain.CurrentDomain.SetData("REGEX_DEFAULT_MATCH_TIMEOUT", TimeSpan.FromMilliseconds(1000));
     }
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)

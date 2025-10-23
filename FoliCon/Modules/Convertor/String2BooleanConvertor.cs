@@ -1,6 +1,6 @@
 ﻿namespace FoliCon.Modules.Convertor;
 
-public class String2BooleanConvertor : ResourceDictionary, IValueConverter
+public class String2BooleanConvertor : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
