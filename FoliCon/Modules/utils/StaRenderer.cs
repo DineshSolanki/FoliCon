@@ -81,14 +81,16 @@ public sealed class StaRenderer : IDisposable
 
     private void ThrowIfDisposed()
     {
-        if (_disposed)
-            throw new ObjectDisposedException(nameof(StaRenderer));
+        ObjectDisposedException.ThrowIf(_disposed, nameof(StaRenderer));
     }
 
     public void Dispose()
     {
-        if (_disposed) return;
-        
+        if (_disposed)
+        {
+            return;
+        }
+
         _disposed = true;
         _cancellationTokenSource.Cancel();
         _taskQueue.CompleteAdding();
@@ -109,16 +111,9 @@ public sealed class StaRenderer : IDisposable
         public abstract void Execute();
     }
 
-    private class RenderTask<T> : RenderTask
+    private class RenderTask<T>(Func<T> renderFunc) : RenderTask
     {
-        private readonly Func<T> _renderFunc;
-        private readonly TaskCompletionSource<T> _tcs;
-
-        public RenderTask(Func<T> renderFunc)
-        {
-            _renderFunc = renderFunc;
-            _tcs = new TaskCompletionSource<T>();
-        }
+        private readonly TaskCompletionSource<T> _tcs = new();
 
         public Task<T> Task => _tcs.Task;
 
@@ -126,7 +121,7 @@ public sealed class StaRenderer : IDisposable
         {
             try
             {
-                var result = _renderFunc();
+                var result = renderFunc();
                 _tcs.SetResult(result);
             }
             catch (Exception ex)
