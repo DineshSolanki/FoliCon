@@ -29,7 +29,7 @@ public static class Services
         };
 
         // Basic defaults to play nicely with CDNs/WAFs
-        if (!client.DefaultRequestHeaders.UserAgent.Any())
+        if (client.DefaultRequestHeaders.UserAgent.Count == 0)
         {
             client.DefaultRequestHeaders.UserAgent.ParseAdd("FoliCon");
         }
