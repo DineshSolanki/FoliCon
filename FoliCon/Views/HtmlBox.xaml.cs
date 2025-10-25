@@ -1,6 +1,8 @@
 ﻿using HandyControl.Themes;
 using Microsoft.Web.WebView2.Core;
 
+#nullable enable
+
 namespace FoliCon.Views;
 
 /// <summary>
