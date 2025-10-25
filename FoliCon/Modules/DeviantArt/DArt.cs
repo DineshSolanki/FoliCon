@@ -5,30 +5,28 @@ namespace FoliCon.Modules.DeviantArt;
 [Localizable(false)]
 public class DArt : BindableBase, IDisposable
 {
-    private string _clientAccessToken;
-    private string _clientSecret;
-    private readonly string _clientId;
-    
+    private bool _disposed;
+
     private readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
     private static readonly JsonSerializerSettings SerializerSettings = new() { NullValueHandling = NullValueHandling.Ignore };
 
     private string ClientId
     {
-        get => _clientId;
-        init => SetProperty(ref _clientId, value);
+        get;
+        init => SetProperty(ref field, value);
     }
 
     private string ClientSecret
     {
-        get => _clientSecret;
-        init => SetProperty(ref _clientSecret, value);
+        get;
+        init => SetProperty(ref field, value);
     }
 
     private string ClientAccessToken
     {
-        get => _clientAccessToken;
-        set => SetProperty(ref _clientAccessToken, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     private DArt(string clientSecret, string clientId)
@@ -61,8 +59,7 @@ public class DArt : BindableBase, IDisposable
     public static async Task<bool> IsTokenValidAsync(string clientAccessToken)
     {
         var url = GetPlaceboApiUrl(clientAccessToken);
-        using var response = await Services.HttpC.GetAsync(new Uri(url));
-        var jsonData = await response.Content.ReadAsStringAsync();
+        var jsonData = await GetStringWithRetryAsync(new Uri(url));
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
         return tokenResponse?.Status == "success";
@@ -70,14 +67,19 @@ public class DArt : BindableBase, IDisposable
 
     private async Task<string> GenerateNewAccessToken()
     {
-        var url = GetTokenApiUrl();
-        using var response = await Services.HttpC.GetAsync(new Uri(url));
-        var jsonData = await response.Content.ReadAsStringAsync();
+        var tokenUri = new Uri("https://www.deviantart.com/oauth2/token");
+        var form = new Dictionary<string, string>
+        {
+            ["client_id"] = ClientId,
+            ["client_secret"] = ClientSecret,
+            ["grant_type"] = "client_credentials"
+        };
+        var jsonData = await PostFormWithRetryAsync(tokenUri, form);
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
-        if (tokenResponse == null)
+        if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))
         {
-            return string.Empty;
+            throw new InvalidOperationException("Failed to obtain DeviantArt access token.");
         }
 
         var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(tokenResponse.ExpiresIn));
@@ -92,8 +94,7 @@ public class DArt : BindableBase, IDisposable
         await GetClientAccessTokenAsync();
 
         var url = GetBrowseApiUrl(query, offset);
-        using var response = await Services.HttpC.GetAsync(new Uri(url));
-        var jsonData = await response.Content.ReadAsStringAsync();
+        var jsonData = await GetStringWithRetryAsync(new Uri(url));
         
         var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, SerializerSettings);
 
@@ -147,8 +148,7 @@ public class DArt : BindableBase, IDisposable
     public async Task<DArtDownloadResponse> GetDArtDownloadResponseAsync(string deviationId)
     {
         var url = GetDownloadApiUrl(deviationId);
-        using var response = await Services.HttpC.GetAsync(new Uri(url));
-        var jsonData = await response.Content.ReadAsStringAsync();
+        var jsonData = await GetStringWithRetryAsync(new Uri(url));
         return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
     }
 
@@ -170,27 +170,82 @@ public class DArt : BindableBase, IDisposable
     
     private static string GetPlaceboApiUrl(string clientAccessToken)
     {
-        return $"https://www.deviantart.com/api/v1/oauth2/placebo?access_token={clientAccessToken}";
-    }
-
-    private string GetTokenApiUrl()
-    {
-        return $"https://www.deviantart.com/oauth2/token?client_id={ClientId}&client_secret={ClientSecret}&grant_type=client_credentials";
+        var token = Uri.EscapeDataString(clientAccessToken);
+        return $"https://www.deviantart.com/api/v1/oauth2/placebo?access_token={token}";
     }
 
     private string GetBrowseApiUrl(string query, int offset)
     {
-        return $"https://www.deviantart.com/api/v1/oauth2/browse/home?offset={offset}&q={query} folder icon&limit=20&access_token={ClientAccessToken}";
+        var q = Uri.EscapeDataString($"{query} folder icon");
+        var token = Uri.EscapeDataString(ClientAccessToken);
+        return $"https://www.deviantart.com/api/v1/oauth2/browse/home?offset={offset}&q={q}&limit=20&access_token={token}";
     }
     
     private string GetDownloadApiUrl(string deviationId)
     {
-        return $"https://www.deviantart.com/api/v1/oauth2/deviation/download/{deviationId}?access_token={ClientAccessToken}";
+        var id = Uri.EscapeDataString(deviationId);
+        var token = Uri.EscapeDataString(ClientAccessToken);
+        return $"https://www.deviantart.com/api/v1/oauth2/deviation/download/{id}?access_token={token}";
     }
     
     public void Dispose()
     {
-        _cache?.Dispose();
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+        if (disposing)
+        {
+            _cache?.Dispose();
+        }
+        _disposed = true;
+    }
+
+    private static async Task<string> GetStringWithRetryAsync(Uri uri, CancellationToken cancellationToken = default)
+    {
+        const int maxAttempts = 3;
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                using var response = await Services.HttpC.GetAsync(uri, cancellationToken);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+            catch (HttpRequestException) when (attempt < maxAttempts)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(200 * attempt), cancellationToken);
+            }
+        }
+        // If we get here, last attempt failed; let it throw for visibility
+        using var finalResponse = await Services.HttpC.GetAsync(uri, cancellationToken);
+        finalResponse.EnsureSuccessStatusCode();
+        return await finalResponse.Content.ReadAsStringAsync(cancellationToken);
+    }
+
+    private static async Task<string> PostFormWithRetryAsync(Uri uri, IDictionary<string, string> formValues, CancellationToken cancellationToken = default)
+    {
+        const int maxAttempts = 3;
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                using var content = new FormUrlEncodedContent(formValues);
+                using var response = await Services.HttpC.PostAsync(uri, content, cancellationToken);
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+            catch (HttpRequestException) when (attempt < maxAttempts)
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(200 * attempt), cancellationToken);
+            }
+        }
+        using var finalContent = new FormUrlEncodedContent(formValues);
+        using var finalResponse = await Services.HttpC.PostAsync(uri, finalContent, cancellationToken);
+        finalResponse.EnsureSuccessStatusCode();
+        return await finalResponse.Content.ReadAsStringAsync(cancellationToken);
     }
 }
