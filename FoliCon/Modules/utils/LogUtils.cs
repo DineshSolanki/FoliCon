@@ -32,12 +32,12 @@ public static class LogUtils
 
     private static string GetLogPath()
     {
-        return LogManager.Configuration.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
+        return LogManager.Configuration?.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
     }
 
     private static LogLevel GetFileLogLevel()
     {
-        return LogLevel.FromString(LogManager.Configuration.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()));
+        return LogLevel.FromString(LogManager.Configuration?.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()) ?? "Error");
     }
 
     private static FileTarget ConfigureFileTarget(string logPath)
@@ -63,9 +63,38 @@ public static class LogUtils
 
     private const string LogLayoutString = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
 
+    // Compute the app release version for Sentry. Prefer AssemblyVersion to avoid stale InformationalVersion (<Version> in csproj).
+    private static string GetAppRelease()
+    {
+        try
+        {
+            var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
+            var ver = asm?.GetName().Version;
+            if (ver != null)
+            {
+                // Trim a trailing .0 revision for cleaner display
+                return ver.Revision == 0 ? $"{ver.Major}.{ver.Minor}.{ver.Build}" : ver.ToString();
+            }
+
+            // Fallback to file version if available
+            var fileVer = asm.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
+            if (!string.IsNullOrWhiteSpace(fileVer))
+            {
+                return fileVer!;
+            }
+        }
+        catch
+        {
+            // ignore and fall through to default
+        }
+        return "unknown";
+    }
+
 
     internal static SentryTarget GetSentryTarget()
     {
+        var release = GetAppRelease();
+        Logger.Debug($"Configuring Sentry with release: {release}");
         var sentryTarget = new SentryTarget
         {
             Name = "sentry",
@@ -79,7 +108,8 @@ public static class LogUtils
             {
                 SendDefaultPii = true, ShutdownTimeoutSeconds = 5, Debug = false, IsGlobalModeEnabled = true,
                 AutoSessionTracking = true,
-                User = new SentryNLogUser { Username = Environment.MachineName }
+                User = new SentryNLogUser { Username = Environment.MachineName },
+                Release = release
             },
             IncludeEventDataOnBreadcrumbs = true
         };
