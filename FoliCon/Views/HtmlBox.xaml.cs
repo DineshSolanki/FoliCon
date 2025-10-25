@@ -1,4 +1,5 @@
 ﻿using HandyControl.Themes;
+using Microsoft.Web.WebView2.Core;
 
 namespace FoliCon.Views;
 
@@ -13,6 +14,13 @@ public partial class HtmlBox
     private readonly string _backgroundColor;
     private const string DarkGray = "#1C1C1C";
     private const string White = "#FFFFFF";
+
+    // Serialize and share WebView2 environment creation across controls
+    private static readonly SemaphoreSlim EnvLock = new(1, 1);
+    private static Task<CoreWebView2Environment>? _sharedEnvTask;
+
+    // Serialize initialization per control to avoid concurrent EnsureCoreWebView2Async
+    private readonly SemaphoreSlim _initLock = new(1, 1);
 
     public static readonly DependencyProperty HtmlTextProperty
         = DependencyProperty.Register(
@@ -105,12 +113,169 @@ public partial class HtmlBox
 
     private async Task InitializeAsync(string content)
     {
-        Logger.Info("Initializing WebView2");
-        await Browser.EnsureCoreWebView2Async(null);
-        Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
-        Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
-        Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
-        Browser.CoreWebView2.NavigateToString(content);
+        // Prevent re-entrant initialization on rapid property changes
+        await _initLock.WaitAsync();
+        try
+        {
+            if (Browser.CoreWebView2 == null)
+            {
+                Logger.Info("Initializing WebView2 environment and control");
+                var env = await EnsureSharedEnvironmentAsyncWithRetry();
+                await EnsureWebView2AsyncWithRetry(env);
+
+                // Apply settings once after initialization
+                Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
+                if (Browser.CoreWebView2 != null)
+                {
+                    Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+                    Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+                }
+            }
+
+            // Navigate after initialization (or if already initialized)
+            Browser.CoreWebView2?.NavigateToString(content);
+        }
+        finally
+        {
+            _initLock.Release();
+        }
+    }
+
+    // Create or reuse a shared environment with a dedicated, stable user data folder
+    private static async Task<CoreWebView2Environment> EnsureSharedEnvironmentAsyncWithRetry()
+    {
+        await EnvLock.WaitAsync();
+        try
+        {
+            if (_sharedEnvTask != null)
+            {
+                return await _sharedEnvTask.ConfigureAwait(false);
+            }
+
+            var userDataFolder = GetUserDataFolder();
+            EnsureUserDataFolderReady(userDataFolder);
+
+            _sharedEnvTask = CreateEnvironmentWithRetryAsync(userDataFolder);
+            return await _sharedEnvTask.ConfigureAwait(false);
+        }
+        finally
+        {
+            EnvLock.Release();
+        }
+    }
+
+    private static async Task<CoreWebView2Environment> CreateEnvironmentWithRetryAsync(string userDataFolder)
+    {
+        var delays = new[] { 200, 500, 1000 }; // milliseconds
+        for (var attempt = 0; attempt <= delays.Length; attempt++)
+        {
+            try
+            {
+                var options = new CoreWebView2EnvironmentOptions
+                {
+                    // Keep extensions off and defaults simple to reduce disk activity
+                    AreBrowserExtensionsEnabled = false
+                };
+                return await CoreWebView2Environment.CreateAsync(null, userDataFolder, options);
+            }
+            catch (COMException ex) when (IsAbortOrSharingViolation(ex))
+            {
+                if (attempt == delays.Length)
+                {
+                    Logger.ForErrorEvent().Message("WebView2 environment creation failed after retries: {Message}", ex.Message).Exception(ex).Log();
+                    throw;
+                }
+                await Task.Delay(delays[attempt]);
+            }
+            catch (Exception ex)
+            {
+                if (attempt == delays.Length)
+                {
+                    Logger.ForErrorEvent().Message("WebView2 environment creation failed: {Message}", ex.Message).Exception(ex).Log();
+                    throw;
+                }
+                await Task.Delay(delays[attempt]);
+            }
+        }
+        // Should not reach here
+        throw new InvalidOperationException("Failed to create WebView2 environment.");
+    }
+
+    private async Task EnsureWebView2AsyncWithRetry(CoreWebView2Environment env)
+    {
+        var delays = new[] { 200, 500, 1000 };
+        for (var attempt = 0; attempt <= delays.Length; attempt++)
+        {
+            try
+            {
+                await Browser.EnsureCoreWebView2Async(env);
+                return;
+            }
+            catch (COMException ex) when (IsAbortOrSharingViolation(ex))
+            {
+                if (attempt == delays.Length)
+                {
+                    Logger.ForErrorEvent().Message("WebView2 initialization failed after retries: {Message}", ex.Message).Exception(ex).Log();
+                    throw;
+                }
+                await Task.Delay(delays[attempt]);
+            }
+        }
+    }
+
+    private static bool IsAbortOrSharingViolation(COMException ex)
+    {
+        const int eAbort = unchecked((int)0x80004004);
+        const int errorSharingViolation = 0x20;
+        if (ex.HResult == eAbort)
+        {
+            return true;
+        }
+        // Some COMExceptions wrap Win32 errors; check Data if present
+        if (!ex.Data.Contains("HRForWin32Error")) return false;
+        try
+        {
+            var hr = Convert.ToInt32(ex.Data["HRForWin32Error"]);
+            return hr == errorSharingViolation;
+        }
+        catch
+        {
+            // ignore
+        }
+        return false;
+    }
+
+    private static string GetUserDataFolder()
+    {
+        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        // Use app-specific folder to avoid contention with other apps and avoid our own icon operations
+        var folder = Path.Combine(localAppData, "FoliCon", "WebView2UserData");
+        return folder;
+    }
+
+    private static void EnsureUserDataFolderReady(string userDataFolder)
+    {
+        if (userDataFolder == null) return;
+        try
+        {
+            if (!Directory.Exists(userDataFolder))
+            {
+                Directory.CreateDirectory(userDataFolder);
+            }
+
+            // Normalize attributes to avoid interference from Hidden/System flags
+            var attrs = File.GetAttributes(userDataFolder);
+            var normalized = attrs & ~(FileAttributes.Hidden | FileAttributes.System | FileAttributes.ReadOnly);
+            if (attrs != normalized)
+            {
+                File.SetAttributes(userDataFolder, normalized);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Non-fatal; log and continue. WebView2 will still attempt creation and may succeed.
+            Logger.ForWarnEvent().Message("Failed to normalize WebView2 user data folder attributes: {Message}", ex.Message).Exception(ex).Log();
+        }
     }
     
     private const string HtmlTemplate = """
