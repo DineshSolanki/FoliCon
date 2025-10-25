@@ -232,7 +232,11 @@ public partial class HtmlBox
             return true;
         }
         // Some COMExceptions wrap Win32 errors; check Data if present
-        if (!ex.Data.Contains("HRForWin32Error")) return false;
+        if (!ex.Data.Contains("HRForWin32Error"))
+        {
+            return false;
+        }
+
         try
         {
             var hr = Convert.ToInt32(ex.Data["HRForWin32Error"]);
@@ -255,7 +259,11 @@ public partial class HtmlBox
 
     private static void EnsureUserDataFolderReady(string userDataFolder)
     {
-        if (userDataFolder == null) return;
+        if (userDataFolder == null)
+        {
+            return;
+        }
+
         try
         {
             if (!Directory.Exists(userDataFolder))
