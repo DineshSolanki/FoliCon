@@ -30,19 +30,19 @@ dineshsolanki.github.io/folicon/</Description>
   <ItemGroup>
     <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
     <PackageReference Include="HandyControls" Version="3.4.4" />
-    <PackageReference Include="IGDB" Version="5.1.0" />
+    <PackageReference Include="IGDB" Version="6.1.0" />
     <PackageReference Include="Jot" Version="2.1.17" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
-    <PackageReference Include="NLog" Version="5.3.4" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0-rc.2.25502.107" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
+    <PackageReference Include="NLog" Version="6.0.5" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="Polly" Version="8.5.0" />
+    <PackageReference Include="Polly" Version="8.6.4" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-    <PackageReference Include="Sentry" Version="5.0.1" />
-    <PackageReference Include="Sentry.NLog" Version="5.0.1" />
-    <PackageReference Include="SharpCompress" Version="0.38.0" />
+    <PackageReference Include="Sentry" Version="5.16.1" />
+    <PackageReference Include="Sentry.NLog" Version="5.16.1" />
+    <PackageReference Include="SharpCompress" Version="0.41.0" />
     <PackageReference Include="TMDbLib" Version="2.3.0" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.0.4" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="4.2.1" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
