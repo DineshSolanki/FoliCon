@@ -13,7 +13,7 @@ public sealed class StaRenderer : IDisposable
     private static readonly Lazy<StaRenderer> Instance = new(() => new StaRenderer());
     
     private readonly Thread _staThread;
-    private readonly BlockingCollection<RenderTask> _taskQueue;
+    private readonly BlockingCollection<IRenderTask> _taskQueue;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private bool _disposed;
 
@@ -21,7 +21,7 @@ public sealed class StaRenderer : IDisposable
 
     private StaRenderer()
     {
-        _taskQueue = new BlockingCollection<RenderTask>();
+        _taskQueue = new BlockingCollection<IRenderTask>();
         _cancellationTokenSource = new CancellationTokenSource();
         
         _staThread = new Thread(ProcessQueue)
@@ -71,9 +71,12 @@ public sealed class StaRenderer : IDisposable
                 }
             }
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
-            Logger.Info("STA renderer thread cancelled");
+            Logger.ForInfoEvent()
+                .Message("STA renderer thread cancellation requested: {Message}", ex.Message)
+                .Exception(ex)
+                .Log();
         }
         
         Logger.Debug("STA renderer thread stopped");
@@ -106,18 +109,18 @@ public sealed class StaRenderer : IDisposable
         Logger.Info("StaRenderer disposed");
     }
 
-    private abstract class RenderTask
+    private interface IRenderTask
     {
-        public abstract void Execute();
+        void Execute();
     }
 
-    private class RenderTask<T>(Func<T> renderFunc) : RenderTask
+    private sealed class RenderTask<T>(Func<T> renderFunc) : IRenderTask
     {
         private readonly TaskCompletionSource<T> _tcs = new();
 
         public Task<T> Task => _tcs.Task;
 
-        public override void Execute()
+        public void Execute()
         {
             try
             {
