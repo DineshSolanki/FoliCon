@@ -431,11 +431,6 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return;
         }
-
-        if (Array.TrueForAll(r, v => v.Name != "Trailer"))
-        {
-            return;
-        }
         SetVideos(r);
     }
     
@@ -497,17 +492,25 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private void SetVideos(GameVideo[] videos)
     {
-        var trailer = videos.First(v => v.Name == "Trailer");
-        
-        var videoList = new List<MediaVideo>
-        {
-            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.VideoId))
-        };
+        var trailer = videos.FirstOrDefault(v => v.Name == "Trailer");
 
-        videoList.AddRange(
-            videos.Where(video => video != trailer)
-                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId)))
-        );
+        List<MediaVideo> videoList;
+
+        if (trailer != null)
+        {
+            videoList = [new MediaVideo(trailer.Name, YoutubeEmbedUrl.Format(trailer.VideoId))];
+
+            videoList.AddRange(
+                videos.Where(video => video != trailer)
+                    .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId)))
+            );
+        }
+        else
+        {
+            videoList = videos.Select(video =>
+                new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId))
+            ).ToList();
+        }
 
         ResultListViewData.SelectedItem.Videos = videoList;
     }
