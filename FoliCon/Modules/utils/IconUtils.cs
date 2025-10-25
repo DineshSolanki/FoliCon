@@ -113,32 +113,33 @@ public static class IconUtils
         {
             var mockupVisibility = iconProperties.MockupVisibility;
             var mediaTitle = iconProperties.MediaTitle;
-            using var task = iconOverlay switch
+            // Use dedicated STA renderer to avoid WPF PackagePart race conditions
+            // while still maintaining parallel processing through async queueing
+            icon = iconOverlay switch
             {
-                IconOverlay.Legacy => StaTask.Start(() =>
+                IconOverlay.Legacy => await StaRenderer.Default.EnqueueRender(() =>
                     new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap()),
-                IconOverlay.Alternate => StaTask.Start(() =>
+                IconOverlay.Alternate => await StaRenderer.Default.EnqueueRender(() =>
                     new PosterIconAlt(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap()),
-                IconOverlay.Liaher => StaTask.Start(() =>
+                IconOverlay.Liaher => await StaRenderer.Default.EnqueueRender(() =>
                     new PosterIconLiaher(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap()),
-                IconOverlay.Faelpessoal => StaTask.Start(() => new PosterIconFaelpessoal(new PosterIcon(
+                IconOverlay.Faelpessoal => await StaRenderer.Default.EnqueueRender(() => new PosterIconFaelpessoal(new PosterIcon(
                     filmFolderPath, rating,
                     ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
-                IconOverlay.FaelpessoalHorizontal => StaTask.Start(() => new PosterIconFaelpessoalHorizontal(
+                IconOverlay.FaelpessoalHorizontal => await StaRenderer.Default.EnqueueRender(() => new PosterIconFaelpessoalHorizontal(
                     new PosterIcon(
                         filmFolderPath, rating,
                         ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
-                IconOverlay.Windows11 => StaTask.Start(() =>
+                IconOverlay.Windows11 => await StaRenderer.Default.EnqueueRender(() =>
                     new PosterIconWindows11(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap()),
-                _ => StaTask.Start(() =>
+                _ => await StaRenderer.Default.EnqueueRender(() =>
                     new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
                         .RenderToBitmap())
             };
-            icon = await task;
         }
         Logger.Info("Converting PNG to ICO for Folder: {FilmFolderPath}", filmFolderPath);
         PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));
