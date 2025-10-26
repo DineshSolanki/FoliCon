@@ -94,6 +94,8 @@ public class DArt : BindableBase, IDisposable
         }
 
         ClientAccessToken = tokenResponse.AccessToken;
+        // Subtract 60 seconds from the token's expiration time to account for possible clock skew,
+        // network delays, and to prevent race conditions where the token might expire during use.
         TokenExpiresAt = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn - 60);
         
         Logger.Info("DeviantArt token obtained successfully (expires at {ExpiresAt})", TokenExpiresAt);
