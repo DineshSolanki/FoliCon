@@ -11,10 +11,11 @@
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
         <Image Source="/Resources/poster_mockups/faelpessoal/Mockup faelpessoal base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="-6,0,-2,10" Visibility="{Binding MockupVisibility}" />
-        <Border CornerRadius="7,7,7,7" Grid.Row="0"  Margin="28,4,53,26">
-            <Border.Background>
-                <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" />
-            </Border.Background>
+        <Border x:Name="ImageBorder" CornerRadius="7" Grid.Row="0" Margin="27,4,53,27" Background="Transparent">
+            <Border.Clip>
+                <RectangleGeometry RadiusX="7" RadiusY="7" Rect="0,0,186,267"/>
+            </Border.Clip>
+            <Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,-1" />
         </Border>
 
         <!--<Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="34,10,42,21" />-->
