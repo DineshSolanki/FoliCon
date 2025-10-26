@@ -217,6 +217,28 @@
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>This lets you set your own rating instead of one fetched by FoliCon.</value>
   </data>
+  <data name="DAConnectionFailedMessage" xml:space="preserve">
+    <value>DeviantArt APIへの接続に失敗しました。
+
+プロフェッショナルモードの検索は利用できませんが、ポスターモードの機能は正常に動作します。
+
+問題が解決しない場合は、別のネットワークまたはVPNを使用してみてください。</value>
+  </data>
+  <data name="DAConnectionFailedTitle" xml:space="preserve">
+    <value>DeviantArt接続失敗</value>
+  </data>
+  <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
+    <value>DeviantArt機能は利用できません。デビエーションを抽出できません。</value>
+  </data>
+  <data name="DAUnavailableRestartMessage" xml:space="preserve">
+    <value>DeviantArt機能は利用できません。アプリケーションを再起動してください。</value>
+  </data>
+  <data name="DAUnavailableRetryMessage" xml:space="preserve">
+    <value>DeviantArt機能は利用できません。接続を再試行するには、アプリケーションを再起動してください。</value>
+  </data>
+  <data name="DAUnavailableTitle" xml:space="preserve">
+    <value>DeviantArt利用不可</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>Delete Icons</value>
   </data>

@@ -985,7 +985,24 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
         _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
         _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
-        _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
+        
+        // Initialize DeviantArt with graceful failure handling
+        try
+        {
+            Logger.Debug("Initializing DeviantArt client...");
+            _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
+            Logger.Debug("DeviantArt client initialized successfully.");
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. Professional mode will be unavailable.", ex.Message);
+            _dArtObject = null;
+            
+            MessageBox.Show(CustomMessageBox.Warning(
+                Lang.DAConnectionFailedMessage,
+                Lang.DAConnectionFailedTitle));
+        }
+        
         Logger.Debug("Client Objects Initialized.");
     }
 

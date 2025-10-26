@@ -88,6 +88,14 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private void ExtractManually(object parameter)
     {
         Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter);
+        
+        if (DArtObject == null)
+        {
+            Logger.Warn("DeviantArt client is not available. Cannot extract manually.");
+            MessageBox.Show(CustomMessageBox.Warning(Lang.DAUnavailableRestartMessage, Lang.DAUnavailableTitle));
+            return;
+        }
+        
         var deviationId = (string)parameter;
         _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
         {
@@ -119,6 +127,13 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private async Task Search(string query, int offset = 0)
     {
         Logger.Trace("Search Started for {Query}, offset: {Offset}", query, offset);
+
+        if (DArtObject == null)
+        {
+            Logger.Warn("DeviantArt client is not available. Skipping DeviantArt search.");
+            MessageBox.Show(CustomMessageBox.Warning(Lang.DAUnavailableRetryMessage, Lang.DAUnavailableTitle));
+            return;
+        }
 
         while (true)
         {
