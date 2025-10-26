@@ -9,7 +9,29 @@ public class DArt : BindableBase, IDisposable
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private bool _disposed;
 
+    private const string DeviantArtApiBase = "https://www.deviantart.com/api/v1/oauth2";
+
     private static readonly JsonSerializerSettings SerializerSettings = new() { NullValueHandling = NullValueHandling.Ignore };
+
+    private static readonly ResiliencePipeline RetryPipeline = new ResiliencePipelineBuilder()
+        .AddRetry(new RetryStrategyOptions
+        {
+            MaxRetryAttempts = 3,
+            BackoffType = DelayBackoffType.Exponential,
+            Delay = TimeSpan.FromMilliseconds(500),
+            UseJitter = true,
+            OnRetry = args =>
+            {
+                var attempt = args.AttemptNumber + 1;
+                Logger.Warn($"DeviantArt API request attempt {attempt} failed: {args.Outcome.Exception?.Message}. Retrying...");
+                return ValueTask.CompletedTask;
+            },
+            ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
+                ex.InnerException is IOException ||
+                ex.InnerException is System.Net.Sockets.SocketException ||
+                ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
+        })
+        .Build();
 
     private string ClientId
     {
@@ -178,25 +200,20 @@ public class DArt : BindableBase, IDisposable
         await fileStream.CopyToAsync(file);
     }
     
-    private static string GetPlaceboApiUrl(string clientAccessToken)
-    {
-        var token = Uri.EscapeDataString(clientAccessToken);
-        return $"https://www.deviantart.com/api/v1/oauth2/placebo?access_token={token}";
-    }
+    private static string AppendAccessToken(string url, string token) =>
+        $"{url}?access_token={Uri.EscapeDataString(token)}";
+    
+    private static string GetPlaceboApiUrl(string clientAccessToken) =>
+        AppendAccessToken($"{DeviantArtApiBase}/placebo", clientAccessToken);
 
     private string GetBrowseApiUrl(string query, int offset)
     {
         var q = Uri.EscapeDataString($"{query} folder icon");
-        var token = Uri.EscapeDataString(ClientAccessToken);
-        return $"https://www.deviantart.com/api/v1/oauth2/browse/home?offset={offset}&q={q}&limit=20&access_token={token}";
+        return $"{DeviantArtApiBase}/browse/home?offset={offset}&q={q}&limit=20&access_token={Uri.EscapeDataString(ClientAccessToken)}";
     }
     
-    private string GetDownloadApiUrl(string deviationId)
-    {
-        var id = Uri.EscapeDataString(deviationId);
-        var token = Uri.EscapeDataString(ClientAccessToken);
-        return $"https://www.deviantart.com/api/v1/oauth2/deviation/download/{id}?access_token={token}";
-    }
+    private string GetDownloadApiUrl(string deviationId) =>
+        AppendAccessToken($"{DeviantArtApiBase}/deviation/download/{Uri.EscapeDataString(deviationId)}", ClientAccessToken);
     
     public void Dispose()
     {
@@ -218,84 +235,36 @@ public class DArt : BindableBase, IDisposable
         _disposed = true;
     }
 
-    private static async Task<string> GetStringWithRetryAsync(Uri uri, CancellationToken cancellationToken = default)
+    private static async Task<string> ExecuteWithRetryAsync(
+        Func<CancellationToken, Task<HttpResponseMessage>> requestFunc, 
+        string requestType,
+        CancellationToken cancellationToken = default)
     {
-        var retryPipeline = new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions
-            {
-                MaxRetryAttempts = 3,
-                BackoffType = DelayBackoffType.Exponential,
-                Delay = TimeSpan.FromMilliseconds(500),
-                UseJitter = true,
-                OnRetry = args =>
-                {
-                    var attempt = args.AttemptNumber + 1;
-                    Logger.Warn($"DeviantArt API GET request attempt {attempt} failed: {args.Outcome.Exception?.Message}. Retrying...");
-                    return ValueTask.CompletedTask;
-                },
-                ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
-                    ex.InnerException is IOException ||
-                    ex.InnerException is System.Net.Sockets.SocketException ||
-                    ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
-            })
-            .Build();
-
         try
         {
-            return await retryPipeline.ExecuteAsync(async ct =>
+            return await RetryPipeline.ExecuteAsync(async ct =>
             {
-                using var response = await Services.HttpC.GetAsync(uri, ct);
+                using var response = await requestFunc(ct);
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync(ct);
             }, cancellationToken);
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "DeviantArt API GET request failed after all retry attempts");
+            Logger.Error(ex, $"DeviantArt API {requestType} request failed after all retry attempts");
             throw new InvalidOperationException(
                 "Failed to connect to DeviantArt API. Please check your network connection and firewall settings.",
                 ex);
         }
     }
 
-    private static async Task<string> PostFormWithRetryAsync(Uri uri, IDictionary<string, string> formValues, CancellationToken cancellationToken = default)
-    {
-        var retryPipeline = new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions
-            {
-                MaxRetryAttempts = 3,
-                BackoffType = DelayBackoffType.Exponential,
-                Delay = TimeSpan.FromMilliseconds(500),
-                UseJitter = true,
-                OnRetry = args =>
-                {
-                    var attempt = args.AttemptNumber + 1;
-                    Logger.Warn($"DeviantArt API POST request attempt {attempt} failed: {args.Outcome.Exception?.Message}. Retrying...");
-                    return ValueTask.CompletedTask;
-                },
-                ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
-                    ex.InnerException is IOException ||
-                    ex.InnerException is System.Net.Sockets.SocketException ||
-                    ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
-            })
-            .Build();
+    private static Task<string> GetStringWithRetryAsync(Uri uri, CancellationToken cancellationToken = default) =>
+        ExecuteWithRetryAsync(ct => Services.HttpC.GetAsync(uri, ct), "GET", cancellationToken);
 
-        try
+    private static Task<string> PostFormWithRetryAsync(Uri uri, IDictionary<string, string> formValues, CancellationToken cancellationToken = default) =>
+        ExecuteWithRetryAsync(async ct =>
         {
-            return await retryPipeline.ExecuteAsync(async ct =>
-            {
-                using var content = new FormUrlEncodedContent(formValues);
-                using var response = await Services.HttpC.PostAsync(uri, content, ct);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync(ct);
-            }, cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error(ex, "DeviantArt API POST request failed after all retry attempts");
-            throw new InvalidOperationException(
-                "Failed to connect to DeviantArt API. Please check your network connection and firewall settings.",
-                ex);
-        }
-    }
+            using var content = new FormUrlEncodedContent(formValues);
+            return await Services.HttpC.PostAsync(uri, content, ct);
+        }, "POST", cancellationToken);
 }
