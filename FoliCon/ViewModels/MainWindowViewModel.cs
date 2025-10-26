@@ -999,10 +999,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             _dArtObject = null;
             
             MessageBox.Show(CustomMessageBox.Warning(
-                $"Failed to connect to DeviantArt API.{Environment.NewLine}{Environment.NewLine}" +
-                $"Professional mode search will be unavailable, but Poster mode features will work normally.{Environment.NewLine}{Environment.NewLine}" +
-                $"Try using a different network or VPN if the problem persists.",
-                "DeviantArt Connection Failed"));
+                Lang.DAConnectionFailedMessage,
+                Lang.DAConnectionFailedTitle));
         }
         
         Logger.Debug("Client Objects Initialized.");

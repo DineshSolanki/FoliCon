@@ -217,6 +217,28 @@
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>Esto le permite establecer su propia calificación en lugar de la obtenida por FoliCon.</value>
   </data>
+  <data name="DAConnectionFailedMessage" xml:space="preserve">
+    <value>Error al conectarse a la API de DeviantArt.
+
+La búsqueda en modo profesional no estará disponible, pero las funciones del modo póster funcionarán normalmente.
+
+Intente usar una red o VPN diferente si el problema persiste.</value>
+  </data>
+  <data name="DAConnectionFailedTitle" xml:space="preserve">
+    <value>Error de conexión a DeviantArt</value>
+  </data>
+  <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
+    <value>Las funciones de DeviantArt no están disponibles. No se puede extraer la desviación.</value>
+  </data>
+  <data name="DAUnavailableRestartMessage" xml:space="preserve">
+    <value>Las funciones de DeviantArt no están disponibles. Por favor, reinicie la aplicación.</value>
+  </data>
+  <data name="DAUnavailableRetryMessage" xml:space="preserve">
+    <value>Las funciones de DeviantArt no están disponibles. Por favor, reinicie la aplicación para reintentar la conexión.</value>
+  </data>
+  <data name="DAUnavailableTitle" xml:space="preserve">
+    <value>DeviantArt no disponible</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>Eliminar iconos</value>
   </data>

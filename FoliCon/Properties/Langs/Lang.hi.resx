@@ -217,6 +217,28 @@
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>यह आपको FoliCon द्वारा प्राप्त की गई रेटिंग के बजाय अपनी स्वयं की रेटिंग सेट करने देता है।</value>
   </data>
+  <data name="DAConnectionFailedMessage" xml:space="preserve">
+    <value>DeviantArt API से कनेक्ट करने में विफल।
+
+प्रोफेशनल मोड खोज उपलब्ध नहीं होगी, लेकिन पोस्टर मोड सुविधाएं सामान्य रूप से काम करेंगी।
+
+यदि समस्या बनी रहती है तो एक अलग नेटवर्क या VPN का उपयोग करने का प्रयास करें।</value>
+  </data>
+  <data name="DAConnectionFailedTitle" xml:space="preserve">
+    <value>DeviantArt कनेक्शन विफल</value>
+  </data>
+  <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
+    <value>DeviantArt सुविधाएं उपलब्ध नहीं हैं। विचलन निकाला नहीं जा सकता।</value>
+  </data>
+  <data name="DAUnavailableRestartMessage" xml:space="preserve">
+    <value>DeviantArt सुविधाएं उपलब्ध नहीं हैं। कृपया एप्लिकेशन को पुनः प्रारंभ करें।</value>
+  </data>
+  <data name="DAUnavailableRetryMessage" xml:space="preserve">
+    <value>DeviantArt सुविधाएं उपलब्ध नहीं हैं। कनेक्शन पुनः प्रयास करने के लिए कृपया एप्लिकेशन को पुनः प्रारंभ करें।</value>
+  </data>
+  <data name="DAUnavailableTitle" xml:space="preserve">
+    <value>DeviantArt उपलब्ध नहीं है</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>आइकन हटाएं</value>
   </data>

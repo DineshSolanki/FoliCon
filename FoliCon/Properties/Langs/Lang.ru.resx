@@ -217,6 +217,28 @@
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>Это позволяет вам установить свой собственный рейтинг вместо рейтинга, полученного FoliCon.</value>
   </data>
+  <data name="DAConnectionFailedMessage" xml:space="preserve">
+    <value>Не удалось подключиться к API DeviantArt.
+
+Поиск в профессиональном режиме будет недоступен, но функции режима постеров будут работать нормально.
+
+Попробуйте использовать другую сеть или VPN, если проблема не исчезнет.</value>
+  </data>
+  <data name="DAConnectionFailedTitle" xml:space="preserve">
+    <value>Ошибка подключения к DeviantArt</value>
+  </data>
+  <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
+    <value>Функции DeviantArt недоступны. Невозможно извлечь отклонение.</value>
+  </data>
+  <data name="DAUnavailableRestartMessage" xml:space="preserve">
+    <value>Функции DeviantArt недоступны. Пожалуйста, перезапустите приложение.</value>
+  </data>
+  <data name="DAUnavailableRetryMessage" xml:space="preserve">
+    <value>Функции DeviantArt недоступны. Пожалуйста, перезапустите приложение, чтобы повторить попытку подключения.</value>
+  </data>
+  <data name="DAUnavailableTitle" xml:space="preserve">
+    <value>DeviantArt недоступен</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>Удалить значки</value>
   </data>

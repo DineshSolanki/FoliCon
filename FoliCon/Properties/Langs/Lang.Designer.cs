@@ -393,6 +393,64 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to DeviantArt API.
+        ///
+        ///Professional mode search will be unavailable, but Poster mode features will work normally.
+        ///
+        ///Try using a different network or VPN if the problem persists..
+        /// </summary>
+        public static string DAConnectionFailedMessage {
+            get {
+                return ResourceManager.GetString("DAConnectionFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt Connection Failed.
+        /// </summary>
+        public static string DAConnectionFailedTitle {
+            get {
+                return ResourceManager.GetString("DAConnectionFailedTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt features are unavailable. Cannot extract deviation..
+        /// </summary>
+        public static string DAUnavailableCannotExtractMessage {
+            get {
+                return ResourceManager.GetString("DAUnavailableCannotExtractMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt features are unavailable. Please restart the application..
+        /// </summary>
+        public static string DAUnavailableRestartMessage {
+            get {
+                return ResourceManager.GetString("DAUnavailableRestartMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt features are unavailable. Please restart the application to retry connection..
+        /// </summary>
+        public static string DAUnavailableRetryMessage {
+            get {
+                return ResourceManager.GetString("DAUnavailableRetryMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt Unavailable.
+        /// </summary>
+        public static string DAUnavailableTitle {
+            get {
+                return ResourceManager.GetString("DAUnavailableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Icons.
         /// </summary>
         public static string DeleteIcons {

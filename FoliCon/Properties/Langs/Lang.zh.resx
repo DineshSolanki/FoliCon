@@ -217,6 +217,28 @@
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>This lets you set your own rating instead of one fetched by FoliCon.</value>
   </data>
+  <data name="DAConnectionFailedMessage" xml:space="preserve">
+    <value>无法连接到DeviantArt API。
+
+专业模式搜索将不可用，但海报模式功能将正常工作。
+
+如果问题仍然存在，请尝试使用不同的网络或VPN。</value>
+  </data>
+  <data name="DAConnectionFailedTitle" xml:space="preserve">
+    <value>DeviantArt连接失败</value>
+  </data>
+  <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
+    <value>DeviantArt功能不可用。无法提取偏差。</value>
+  </data>
+  <data name="DAUnavailableRestartMessage" xml:space="preserve">
+    <value>DeviantArt功能不可用。请重新启动应用程序。</value>
+  </data>
+  <data name="DAUnavailableRetryMessage" xml:space="preserve">
+    <value>DeviantArt功能不可用。请重新启动应用程序以重试连接。</value>
+  </data>
+  <data name="DAUnavailableTitle" xml:space="preserve">
+    <value>DeviantArt不可用</value>
+  </data>
   <data name="DeleteIcons" xml:space="preserve">
     <value>Delete Icons</value>
   </data>

@@ -92,7 +92,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         if (DArtObject == null)
         {
             Logger.Warn("DeviantArt client is not available. Cannot extract manually.");
-            MessageBox.Show(CustomMessageBox.Warning("DeviantArt features are unavailable. Please restart the application.", "DeviantArt Unavailable"));
+            MessageBox.Show(CustomMessageBox.Warning(Lang.DAUnavailableRestartMessage, Lang.DAUnavailableTitle));
             return;
         }
         
@@ -131,7 +131,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         if (DArtObject == null)
         {
             Logger.Warn("DeviantArt client is not available. Skipping DeviantArt search.");
-            MessageBox.Show(CustomMessageBox.Warning("DeviantArt features are unavailable. Please restart the application to retry connection.", "DeviantArt Unavailable"));
+            MessageBox.Show(CustomMessageBox.Warning(Lang.DAUnavailableRetryMessage, Lang.DAUnavailableTitle));
             return;
         }
 

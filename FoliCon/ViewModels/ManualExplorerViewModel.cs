@@ -82,7 +82,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		if (DArtObject == null)
 		{
 			Logger.Error("DeviantArt client is not available. Cannot extract deviation.");
-			MessageBox.Show(CustomMessageBox.Error("DeviantArt features are unavailable. Cannot extract deviation.", "DeviantArt Unavailable"));
+			MessageBox.Show(CustomMessageBox.Error(Lang.DAUnavailableCannotExtractMessage, Lang.DAUnavailableTitle));
 			CloseDialog(ButtonResult.Cancel, null);
 			return;
 		}
