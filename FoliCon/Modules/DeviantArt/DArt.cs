@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Polly;
+﻿using Polly;
 using Polly.Retry;
 
 namespace FoliCon.Modules.DeviantArt;
@@ -9,8 +8,6 @@ public class DArt : BindableBase, IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private bool _disposed;
-
-    private readonly MemoryCache _cache = new(new MemoryCacheOptions());
 
     private static readonly JsonSerializerSettings SerializerSettings = new() { NullValueHandling = NullValueHandling.Ignore };
 
@@ -32,10 +29,17 @@ public class DArt : BindableBase, IDisposable
         set => SetProperty(ref field, value);
     }
 
+    private DateTime TokenExpiresAt
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     private DArt(string clientSecret, string clientId)
     {
         Services.Tracker.Configure<DArt>()
             .Property(p => p.ClientAccessToken)
+            .Property(p => p.TokenExpiresAt)
             .PersistOn(nameof(PropertyChanged));
         ClientSecret = clientSecret;
         ClientId = clientId;
@@ -51,12 +55,15 @@ public class DArt : BindableBase, IDisposable
 
     private async Task GetClientAccessTokenAsync()
     {
-        if (!_cache.TryGetValue("DArtToken", out string cachedToken))
+
+        if (!string.IsNullOrEmpty(ClientAccessToken) && DateTime.UtcNow < TokenExpiresAt)
         {
-            cachedToken = await GenerateNewAccessToken();
+            Logger.Debug("Using cached DeviantArt token (expires at {ExpiresAt})", TokenExpiresAt);
+            return;
         }
 
-        ClientAccessToken = cachedToken;
+        Logger.Debug("Token expired or not available, generating new token");
+        await GenerateNewAccessToken();
     }
 
     public static async Task<bool> IsTokenValidAsync(string clientAccessToken)
@@ -68,8 +75,9 @@ public class DArt : BindableBase, IDisposable
         return tokenResponse?.Status == "success";
     }
 
-    private async Task<string> GenerateNewAccessToken()
+    private async Task GenerateNewAccessToken()
     {
+        Logger.Debug("Requesting new DeviantArt OAuth token");
         var tokenUri = new Uri("https://www.deviantart.com/oauth2/token");
         var form = new Dictionary<string, string>
         {
@@ -85,11 +93,10 @@ public class DArt : BindableBase, IDisposable
             throw new InvalidOperationException("Failed to obtain DeviantArt access token.");
         }
 
-        var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromSeconds(tokenResponse.ExpiresIn));
-        _cache.Set("DArtToken", tokenResponse.AccessToken, cacheEntryOptions);
-
-        return tokenResponse.AccessToken;
-
+        ClientAccessToken = tokenResponse.AccessToken;
+        TokenExpiresAt = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn - 60);
+        
+        Logger.Info("DeviantArt token obtained successfully (expires at {ExpiresAt})", TokenExpiresAt);
     }
 
     public async Task<DArtBrowseResult> Browse(string query, int offset = 0)
@@ -206,7 +213,7 @@ public class DArt : BindableBase, IDisposable
 
         if (disposing)
         {
-            _cache?.Dispose();
+            // Cleanup resources if needed in the future
         }
         _disposed = true;
     }
