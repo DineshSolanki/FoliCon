@@ -97,4 +97,7 @@ dineshsolanki.github.io/folicon/</Description>
   <PropertyGroup>
     <WebView2LoaderPreference>Static</WebView2LoaderPreference>
   </PropertyGroup>
+<PropertyGroup>
+	<HotReloadAutoRestart>true</HotReloadAutoRestart>
+</PropertyGroup>
 </Project>
