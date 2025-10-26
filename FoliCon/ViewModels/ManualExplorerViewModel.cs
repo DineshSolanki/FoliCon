@@ -101,6 +101,14 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			Logger.Debug(e, "User cancelled manual extraction");
 			
 		}
+		catch (Exception ex)
+		{
+			Logger.Error(ex, "Failed to extract deviation {DeviationId}", deviationId);
+			IsBusy = false;
+			MessageBox.Show(CustomMessageBox.Error(Lang.DAConnectionFailedMessage, Lang.DAConnectionFailedTitle));
+			CloseDialog(ButtonResult.Cancel, null);
+			return;
+		}
 
 		var extractedFiles = DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
 			.GetFiles();

@@ -135,23 +135,32 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        while (true)
+        try
         {
-            var searchResult = await DArtObject.Browse(query, offset);
-            Logger.Trace("Search Result for {Query} is {@SearchResult}", query, searchResult);
-
-            if (HasNoResults(searchResult))
+            while (true)
             {
-                ProcessNoResults(query, offset);
-                break;
-            }
+                var searchResult = await DArtObject.Browse(query, offset);
+                Logger.Trace("Search Result for {Query} is {@SearchResult}", query, searchResult);
 
-            offset = ProcessSearchResults(query, searchResult, offset);
+                if (HasNoResults(searchResult))
+                {
+                    ProcessNoResults(query, offset);
+                    break;
+                }
 
-            if (!searchResult.HasMore || _stopSearch)
-            {
-                break;
+                offset = ProcessSearchResults(query, searchResult, offset);
+
+                if (!searchResult.HasMore || _stopSearch)
+                {
+                    break;
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "DeviantArt search failed for query: {Query}", query);
+            IsBusy = false;
+            MessageBox.Show(CustomMessageBox.Error(Lang.DAConnectionFailedMessage, Lang.DAConnectionFailedTitle));
         }
     }
 
