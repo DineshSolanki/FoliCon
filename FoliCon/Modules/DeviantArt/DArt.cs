@@ -216,7 +216,7 @@ public class DArt : BindableBase, IDisposable
         var retryPipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
-                MaxRetryAttempts = 5,
+                MaxRetryAttempts = 3,
                 BackoffType = DelayBackoffType.Exponential,
                 Delay = TimeSpan.FromMilliseconds(500),
                 UseJitter = true,
@@ -256,7 +256,7 @@ public class DArt : BindableBase, IDisposable
         var retryPipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions
             {
-                MaxRetryAttempts = 5,
+                MaxRetryAttempts = 3,
                 BackoffType = DelayBackoffType.Exponential,
                 Delay = TimeSpan.FromMilliseconds(500),
                 UseJitter = true,

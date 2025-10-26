@@ -995,13 +995,13 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. DeviantArt features will be unavailable.", ex.Message);
+            Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. Professional mode will be unavailable.", ex.Message);
             _dArtObject = null;
             
-            // Show simple warning to user
             MessageBox.Show(CustomMessageBox.Warning(
                 $"Failed to connect to DeviantArt API.{Environment.NewLine}{Environment.NewLine}" +
-                $"DeviantArt poster search will be unavailable, but TMDB and IGDB features will work normally.",
+                $"Professional mode search will be unavailable, but Poster mode features will work normally.{Environment.NewLine}{Environment.NewLine}" +
+                $"Try using a different network or VPN if the problem persists.",
                 "DeviantArt Connection Failed"));
         }
         
