@@ -4,13 +4,13 @@
     <TargetFramework>net9.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
-    <Version>4.3.3</Version>
+    <Version>4.4.0</Version>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	  <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\icons\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
-    <PackageVersion>4.3.3</PackageVersion>
-    <AssemblyVersion>4.3.3</AssemblyVersion>
+    <PackageVersion>4.4.0</PackageVersion>
+    <AssemblyVersion>4.4.0</AssemblyVersion>
     <Company>Dinesh Solanki</Company>
     <Description>Creates Folder icons for Movies, Serials, Music, and Games Folders
 dineshsolanki.github.io/folicon/</Description>
