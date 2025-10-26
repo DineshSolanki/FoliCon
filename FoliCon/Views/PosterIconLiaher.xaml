@@ -11,8 +11,10 @@
     <!--DataContext="{DynamicResource PosterIcon}">-->
     <Grid Margin="0,0,0,-11">
         <Image Source="/Resources/poster_mockups/liaher/mockup liaher base.png" RenderOptions.BitmapScalingMode="HighQuality"  Margin="-8,0,0,10" Visibility="{Binding MockupVisibility}" />
-        <Border CornerRadius="8" Grid.Row="0" Margin="34,10,43,21" ClipToBounds="True">
-            <Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" />
+        <Border CornerRadius="8,8,8,8" Grid.Row="0"  Margin="34,10,43,21">
+            <Border.Background>
+                <ImageBrush Stretch="Fill" ImageSource="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" />
+            </Border.Background>
         </Border>
 
         <!--<Image Stretch="Fill" Source="{Binding FolderJpg}" RenderOptions.BitmapScalingMode="HighQuality" Grid.Row="0"  Margin="34,10,42,21" />-->
