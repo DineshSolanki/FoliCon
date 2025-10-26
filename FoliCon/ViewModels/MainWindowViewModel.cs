@@ -985,7 +985,26 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
         _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
         _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
-        _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
+        
+        // Initialize DeviantArt with graceful failure handling
+        try
+        {
+            Logger.Debug("Initializing DeviantArt client...");
+            _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
+            Logger.Debug("DeviantArt client initialized successfully.");
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. DeviantArt features will be unavailable.", ex.Message);
+            _dArtObject = null;
+            
+            // Show simple warning to user
+            MessageBox.Show(CustomMessageBox.Warning(
+                $"Failed to connect to DeviantArt API.{Environment.NewLine}{Environment.NewLine}" +
+                $"DeviantArt poster search will be unavailable, but TMDB and IGDB features will work normally.",
+                "DeviantArt Connection Failed"));
+        }
+        
         Logger.Debug("Client Objects Initialized.");
     }
 

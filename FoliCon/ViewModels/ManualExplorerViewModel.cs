@@ -78,6 +78,15 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	{
 		parameters.TryGetValue("DeviationId", out string deviationId);
 		DArtObject = parameters.GetValue<DArt>("dartobject");
+		
+		if (DArtObject == null)
+		{
+			Logger.Error("DeviantArt client is not available. Cannot extract deviation.");
+			MessageBox.Show(CustomMessageBox.Error("DeviantArt features are unavailable. Cannot extract deviation.", "DeviantArt Unavailable"));
+			CloseDialog(ButtonResult.Cancel, null);
+			return;
+		}
+		
 		IsBusy = true;
 		try
 		{

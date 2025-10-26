@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
+using Polly;
+using Polly.Retry;
 
 namespace FoliCon.Modules.DeviantArt;
 
 [Localizable(false)]
 public class DArt : BindableBase, IDisposable
 {
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private bool _disposed;
 
     private readonly MemoryCache _cache = new(new MemoryCacheOptions());
@@ -210,46 +213,82 @@ public class DArt : BindableBase, IDisposable
 
     private static async Task<string> GetStringWithRetryAsync(Uri uri, CancellationToken cancellationToken = default)
     {
-        const int maxAttempts = 3;
-        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        var retryPipeline = new ResiliencePipelineBuilder()
+            .AddRetry(new RetryStrategyOptions
+            {
+                MaxRetryAttempts = 5,
+                BackoffType = DelayBackoffType.Exponential,
+                Delay = TimeSpan.FromMilliseconds(500),
+                UseJitter = true,
+                OnRetry = args =>
+                {
+                    var attempt = args.AttemptNumber + 1;
+                    Logger.Warn($"DeviantArt API GET request attempt {attempt} failed: {args.Outcome.Exception?.Message}. Retrying...");
+                    return ValueTask.CompletedTask;
+                },
+                ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
+                    ex.InnerException is IOException ||
+                    ex.InnerException is System.Net.Sockets.SocketException ||
+                    ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
+            })
+            .Build();
+
+        try
         {
-            try
+            return await retryPipeline.ExecuteAsync(async ct =>
             {
-                using var response = await Services.HttpC.GetAsync(uri, cancellationToken);
+                using var response = await Services.HttpC.GetAsync(uri, ct);
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync(cancellationToken);
-            }
-            catch (HttpRequestException) when (attempt < maxAttempts)
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(200 * attempt), cancellationToken);
-            }
+                return await response.Content.ReadAsStringAsync(ct);
+            }, cancellationToken);
         }
-        // If we get here, last attempt failed; let it throw for visibility
-        using var finalResponse = await Services.HttpC.GetAsync(uri, cancellationToken);
-        finalResponse.EnsureSuccessStatusCode();
-        return await finalResponse.Content.ReadAsStringAsync(cancellationToken);
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "DeviantArt API GET request failed after all retry attempts");
+            throw new InvalidOperationException(
+                "Failed to connect to DeviantArt API. Please check your network connection and firewall settings.",
+                ex);
+        }
     }
 
     private static async Task<string> PostFormWithRetryAsync(Uri uri, IDictionary<string, string> formValues, CancellationToken cancellationToken = default)
     {
-        const int maxAttempts = 3;
-        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        var retryPipeline = new ResiliencePipelineBuilder()
+            .AddRetry(new RetryStrategyOptions
+            {
+                MaxRetryAttempts = 5,
+                BackoffType = DelayBackoffType.Exponential,
+                Delay = TimeSpan.FromMilliseconds(500),
+                UseJitter = true,
+                OnRetry = args =>
+                {
+                    var attempt = args.AttemptNumber + 1;
+                    Logger.Warn($"DeviantArt API POST request attempt {attempt} failed: {args.Outcome.Exception?.Message}. Retrying...");
+                    return ValueTask.CompletedTask;
+                },
+                ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
+                    ex.InnerException is IOException ||
+                    ex.InnerException is System.Net.Sockets.SocketException ||
+                    ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
+            })
+            .Build();
+
+        try
         {
-            try
+            return await retryPipeline.ExecuteAsync(async ct =>
             {
                 using var content = new FormUrlEncodedContent(formValues);
-                using var response = await Services.HttpC.PostAsync(uri, content, cancellationToken);
+                using var response = await Services.HttpC.PostAsync(uri, content, ct);
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync(cancellationToken);
-            }
-            catch (HttpRequestException) when (attempt < maxAttempts)
-            {
-                await Task.Delay(TimeSpan.FromMilliseconds(200 * attempt), cancellationToken);
-            }
+                return await response.Content.ReadAsStringAsync(ct);
+            }, cancellationToken);
         }
-        using var finalContent = new FormUrlEncodedContent(formValues);
-        using var finalResponse = await Services.HttpC.PostAsync(uri, finalContent, cancellationToken);
-        finalResponse.EnsureSuccessStatusCode();
-        return await finalResponse.Content.ReadAsStringAsync(cancellationToken);
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "DeviantArt API POST request failed after all retry attempts");
+            throw new InvalidOperationException(
+                "Failed to connect to DeviantArt API. Please check your network connection and firewall settings.",
+                ex);
+        }
     }
 }

@@ -3,37 +3,63 @@
 public static class Services
 {
     public static readonly Tracker Tracker = new();
-    // Configure a single shared HttpClient with explicit TLS 1.2 and sensible defaults
     public static readonly HttpClient HttpC = CreateHttpClient();
     public static readonly AppConfig Settings = GlobalDataHelper.Load<AppConfig>();
 
     private static HttpClient CreateHttpClient()
     {
-        // Use SocketsHttpHandler to control TLS and connection behavior explicitly
         var handler = new SocketsHttpHandler
         {
-            AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate,
-            AllowAutoRedirect = true,
-            PooledConnectionLifetime = TimeSpan.FromMinutes(10),
             SslOptions = new System.Net.Security.SslClientAuthenticationOptions
             {
-                // Force TLS 1.2 which is widely supported and avoids some TLS 1.3 middlebox issues
-                EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12
-            }
+                EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12 | System.Security.Authentication.SslProtocols.Tls13,
+                
+                // Enable ALPN (Application-Layer Protocol Negotiation) like browsers do
+                ApplicationProtocols =
+                [
+                    System.Net.Security.SslApplicationProtocol.Http2,
+                    System.Net.Security.SslApplicationProtocol.Http11
+                ],
+                RemoteCertificateValidationCallback = (_, _, _, errors) => errors == System.Net.Security.SslPolicyErrors.None
+            },
+            
+            PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+            PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2),
+            MaxConnectionsPerServer = 10,
+            
+            AutomaticDecompression = System.Net.DecompressionMethods.GZip | 
+                                    System.Net.DecompressionMethods.Deflate | 
+                                    System.Net.DecompressionMethods.Brotli,
+            
+            ConnectTimeout = TimeSpan.FromSeconds(15),
+            ResponseDrainTimeout = TimeSpan.FromSeconds(5),
+            Expect100ContinueTimeout = TimeSpan.Zero,
+            UseCookies = true,
+            CookieContainer = new System.Net.CookieContainer()
         };
 
         var client = new HttpClient(handler, disposeHandler: true)
         {
-            Timeout = TimeSpan.FromSeconds(30),
-            DefaultRequestVersion = System.Net.HttpVersion.Version11
+            Timeout = TimeSpan.FromSeconds(60),
+            DefaultRequestVersion = new Version(2, 0),
+            DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrLower
         };
-
-        // Basic defaults to play nicely with CDNs/WAFs
-        if (client.DefaultRequestHeaders.UserAgent.Count == 0)
-        {
-            client.DefaultRequestHeaders.UserAgent.ParseAdd("FoliCon");
-        }
-        // Do not set Accept globally; callers may download binary content
+        client.DefaultRequestHeaders.Clear();
+        client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", 
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Accept", 
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Language", 
+            "en-US,en;q=0.9");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Encoding", 
+            "gzip, deflate, br, zstd");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("DNT", "1");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Dest", "document");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Mode", "navigate");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Site", "none");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-User", "?1");
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Upgrade-Insecure-Requests", "1");
+        
         return client;
     }
 }
