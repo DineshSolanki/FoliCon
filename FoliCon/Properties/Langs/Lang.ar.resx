@@ -149,7 +149,7 @@
     <value>سيتم إغلاق التطبيق.</value>
   </data>
   <data name="Arabic" xml:space="preserve">
-    <value>عربى</value>
+    <value>اَلْعَرَبِيَّةُ</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>تلقائي (أفلام وبرامج تلفزيونية)</value>
@@ -191,7 +191,7 @@
     <value>يتأكد</value>
   </data>
   <data name="ConfirmExplorerRestart" xml:space="preserve">
-    <value>قم بتأكيد إعادة تشغيل Explorer</value>
+    <value>تأكيد إعادة تشغيل المستكشف</value>
   </data>
   <data name="ConfirmIconDeletion" xml:space="preserve">
     <value>تأكيد حذف الرمز</value>
@@ -203,16 +203,16 @@
     <value>انقر فوق "تأكيد" لفتح المجلد.</value>
   </data>
   <data name="CreateIconsWithFoliCon" xml:space="preserve">
-    <value>قم بإنشاء أيقونات باستخدام FoliCon</value>
+    <value>إنشاء أيقونات مع FoliCon</value>
   </data>
   <data name="CreatingIcons" xml:space="preserve">
-    <value>جاري إنشاء أيقونات ...</value>
+    <value>جاري إنشاء أيقونات...</value>
   </data>
   <data name="CustomIconSetter" xml:space="preserve">
     <value>محدد رمز مخصص</value>
   </data>
   <data name="CustomRating" xml:space="preserve">
-    <value>التصنيف المخصص:</value>
+    <value>التصنيف المخصص: </value>
   </data>
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>يتيح لك هذا تعيين التقييم الخاص بك بدلاً من التقييم الذي يجلبه FoliCon.</value>
@@ -252,11 +252,10 @@
     <value>حذف معلومات الوسائط</value>
   </data>
   <data name="DeleteMediaInfoConfirmation" xml:space="preserve">
-    <value>هل أنت متأكد أنك تريد حذف ملفات معلومات وسائط فوليكون؟</value>
+    <value>هل أنت متأكد أنك تريد حذف ملفات معلومات الوسائط folicon؟</value>
   </data>
   <data name="DeleteMediaInfoTooltip" xml:space="preserve">
-    <value>سيؤدي هذا إلى حذف ملفات معلومات الوسائط التي يستخدمها فوليكون لتخزين معرف الوسائط بعد تحديد العنوان لأول مرة.
-يساعد هذا فوليكون في التعرف على الوسائط دون الحاجة إلى الاختيار من بين العناوين الغامضة.</value>
+    <value>سيؤدي هذا إلى حذف ملفات معلومات الوسائط التي يستخدمها FoliCon لتخزين معرفات الوسائط بعد تحديد عنوان أول مرة. يساعد هذا FoliCon على تحديد الوسائط دون الحاجة إلى اختيار عناوين غامضة.</value>
   </data>
   <data name="DevelopedByDinesh" xml:space="preserve">
     <value>طوره دينيش سولانكي.</value>
@@ -268,7 +267,7 @@
     <value>تحميل الأيقونات</value>
   </data>
   <data name="DownloadingIconWithCount" xml:space="preserve">
-    <value>جارٍ تنزيل الرمز {0} / {1} ...</value>
+    <value>جارٍ تنزيل الرمز {0} / {1}...</value>
   </data>
   <data name="DownloadIt" xml:space="preserve">
     <value>تنزيله</value>
@@ -286,7 +285,7 @@
     <value>حدث استثناء</value>
   </data>
   <data name="ExplorerIntegration" xml:space="preserve">
-    <value>تكامل المستكشف (انقر بزر الماوس الأيمن فوق القائمة)</value>
+    <value>تكامل المستكشف (قائمة النقر بزر الماوس الأيمن)</value>
   </data>
   <data name="Folder" xml:space="preserve">
     <value>مجلد</value>
