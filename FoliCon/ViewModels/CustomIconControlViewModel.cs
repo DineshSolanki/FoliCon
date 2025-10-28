@@ -8,7 +8,7 @@ namespace FoliCon.ViewModels;
 public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     public IDropTarget ReOrderDropHandler { get; } = new ReOrderDropHandler();
     private string _selectedDirectory;
     private string _selectedIconsDirectory;
@@ -26,6 +26,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private string _busyContent = Lang.CreatingIcons;
     private int _index;
     private int _totalIcons;
+    private string _iconOverlay = IconOverlay.Liaher.ToString();
+    private bool _isRatingVisible;
+    private bool _isMockupVisible;
     public bool KeepExactOnly
     {
         get => _keepExactOnly;
@@ -53,6 +56,24 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     {
         get => _isUndoEnable;
         set => SetProperty(ref _isUndoEnable, value);
+    }
+
+    public string IconOverlay
+    {
+        get => _iconOverlay;
+        set => SetProperty(ref _iconOverlay, value);
+    }
+
+    public bool IsRatingVisible
+    {
+        get => _isRatingVisible;
+        set => SetProperty(ref _isRatingVisible, value);
+    }
+
+    public bool IsMockupVisible
+    {
+        get => _isMockupVisible;
+        set => SetProperty(ref _isMockupVisible, value);
     }
 
     private string SelectedDirectory
@@ -109,6 +130,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
     public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
+    public DelegateCommand<string> IconOverlayChangedCommand { get; set; }
     public string BusyContent
     {
         get => _busyContent;
@@ -129,6 +151,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         UndoIcons = new DelegateCommand(UndoCreatedIcons);
         KeyPressFolderList = new DelegateCommand<dynamic>(FolderListKeyPress);
         KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
+        IconOverlayChangedCommand = new DelegateCommand<string>(param => IconOverlay = param);
     }
 
     private async void UndoCreatedIcons()
@@ -270,14 +293,26 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
             var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
             var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
-            
+
             Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}", 
                 folderPath, iconPath, newIconPath);
-            
+
             if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
             {
-                Logger.Info("Converting {Icon} to .ico", iconPath);
-                var icon = new ProIcon(iconPath).RenderToBitmap();
+                Logger.Info("Converting {Icon} to .ico with overlay {Overlay}", iconPath, IconOverlay);
+
+                // Parse the IconOverlay string to the enum value
+                if (!Enum.TryParse<IconOverlay>(IconOverlay, out var iconOverlay))
+                {
+                    iconOverlay = IconOverlay.Legacy;
+                }
+
+                // Convert visibility booleans to strings
+                var ratingVisibility = IsRatingVisible ? "visible" : "hidden";
+                var mockupVisibility = IsMockupVisible ? "visible" : "hidden";
+
+                // Use the new ProIcon constructor with overlay settings
+                var icon = new ProIcon(iconPath, iconOverlay, "", ratingVisibility, mockupVisibility).RenderToBitmap();
                 iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
                 PngToIcoService.Convert(icon, iconPath);
                 icon.Dispose();
@@ -328,7 +363,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     {
         Logger.Debug("Restoring collections from backup icon count: {Count}, backup directory count: {DirectoryCount}", 
             _backupIcons.Count, _backupDirectories.Count);
-        
+
         if (_backupIcons.Count == 0 || _backupDirectories.Count == 0)
         {
             return;
