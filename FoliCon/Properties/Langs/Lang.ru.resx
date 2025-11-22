@@ -212,7 +212,7 @@
     <value>Настраиваемый набор иконок</value>
   </data>
   <data name="CustomRating" xml:space="preserve">
-    <value>Пользовательский рейтинг:</value>
+    <value>Пользовательский рейтинг: </value>
   </data>
   <data name="CustomRatingTooltip" xml:space="preserve">
     <value>Это позволяет вам установить свой собственный рейтинг вместо рейтинга, полученного FoliCon.</value>
@@ -585,16 +585,13 @@
     <value>Предоставлено разрешение на запись</value>
   </data>
   <data name="WritePermissionNotAllowed" xml:space="preserve">
-    <value>Нет разрешения на запись
-</value>
+    <value>Нет разрешения на запись</value>
   </data>
   <data name="EnableErrorReporting" xml:space="preserve">
-    <value>Включить отчеты об ошибках
-</value>
+    <value>Включить отчеты об ошибках</value>
   </data>
   <data name="EnableErrorReportingTip" xml:space="preserve">
-    <value>Отправлять отчеты об ошибках, чтобы помочь улучшить FoliCon
-</value>
+    <value>Отправлять отчеты об ошибках, чтобы помочь улучшить FoliCon</value>
   </data>
   <data name="Theme" xml:space="preserve">
     <value>тема</value>
