@@ -20,7 +20,7 @@
         ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
         ui:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" Closed="MainWindow_OnClosed"
-        ShowNonClientArea="True" WindowStyle="SingleBorderWindow"
+        NonClientAreaVisible="True" WindowStyle="SingleBorderWindow"
         Background="{DynamicResource RegionBrush}">
 
     <Window.Resources>
@@ -33,8 +33,11 @@
              <Setter Property="Background" Value="Transparent"/>
              <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
              <Setter Property="BorderBrush" Value="Transparent"/>
-             <Setter Property="Margin" Value="0,5"/>
+             <Setter Property="Margin" Value="0,8"/>
+             <Setter Property="Padding" Value="10,0,0,0"/>
              <Setter Property="FontSize" Value="14"/>
+             <Setter Property="HorizontalAlignment" Value="Stretch"/>
+             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
 
         <Style x:Key="TopBarButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -44,6 +47,17 @@
              <Setter Property="Margin" Value="5,0"/>
              <Setter Property="Padding" Value="5"/>
         </Style>
+
+        <Style x:Key="TopBarToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+             <Setter Property="Background" Value="Transparent"/>
+             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+             <Setter Property="BorderThickness" Value="0"/>
+             <Setter Property="Margin" Value="5,0"/>
+             <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Binding Proxy -->
+        <ui:BindingProxy x:Key="BindingProxy" Data="{Binding}"/>
 
         <Style x:Key="StatusBarSeparator" TargetType="Separator">
             <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
@@ -101,50 +115,51 @@
             <Grid Grid.Row="0" Background="{DynamicResource SecondaryRegionBrush}">
                 <StackPanel Orientation="Horizontal" Margin="10,5" VerticalAlignment="Center">
                     <!-- Settings Button with ContextMenu -->
-                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Settings}}" Style="{StaticResource TopBarButton}">
+                    <ToggleButton x:Name="SettingsBtn" Content="{extension:Lang Key={x:Static langs:LangKeys.Settings}}" Style="{StaticResource TopBarToggleButton}">
                         <hc:Poptip.Content>
                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Settings}}"/>
                         </hc:Poptip.Content>
-                        <Button.ContextMenu>
-                            <ContextMenu>
+                        <ToggleButton.ContextMenu>
+                            <ContextMenu IsOpen="{Binding IsChecked, ElementName=SettingsBtn, Mode=TwoWay}" StaysOpen="False">
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
                                     <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
-                                            IsChecked="{Binding IsRatingVisible}"/>
+                                            IsChecked="{Binding Data.IsRatingVisible, Source={StaticResource BindingProxy}}"/>
                                     <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
-                                            IsChecked="{Binding IsPosterWindowShown}"/>
+                                            IsChecked="{Binding Data.IsPosterWindowShown, Source={StaticResource BindingProxy}}"/>
                                     <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
-                                            IsChecked="{Binding IsPosterMockupUsed}"/>
+                                            IsChecked="{Binding Data.IsPosterMockupUsed, Source={StaticResource BindingProxy}}"/>
                                     <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
-                                            IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"/>
+                                            IsChecked="{Binding Data.IsSkipAmbiguous, Source={StaticResource BindingProxy}}"
+                                            IsEnabled="{Binding Data.IsSkipAmbiguousEnabled, Source={StaticResource BindingProxy}}"/>
                                 </MenuItem>
                                 <Separator />
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
-                                        Command="{Binding PosterIconConfigCommand}" />
+                                        Command="{Binding Data.PosterIconConfigCommand, Source={StaticResource BindingProxy}}" />
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
-                                          Command="{Binding SubfolderProcessingConfigCommand}"/>
+                                          Command="{Binding Data.SubfolderProcessingConfigCommand, Source={StaticResource BindingProxy}}"/>
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
-                                        Command="{Binding ApiConfigCommand}" />
+                                        Command="{Binding Data.ApiConfigCommand, Source={StaticResource BindingProxy}}" />
                                 <Separator />
                                 <!-- Explorer Integration Restored -->
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
                                     <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
-                                              Command="{Binding ExploreIntegrationCommand}" CommandParameter="True" />
+                                              Command="{Binding Data.ExploreIntegrationCommand, Source={StaticResource BindingProxy}}" CommandParameter="True" />
                                     <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
-                                              Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
+                                              Command="{Binding Data.ExploreIntegrationCommand, Source={StaticResource BindingProxy}}" CommandParameter="False"/>
                                 </MenuItem>
                                 <Separator />
                                 <!-- Languages and Theme -->
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Theme}}">
                                      <hc:ComboBox ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                                  SelectedItem="{Binding Path=Theme}" Width="150"/>
+                                                  SelectedItem="{Binding Data.Theme, Source={StaticResource BindingProxy}}" Width="150"/>
                                 </MenuItem>
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}">
                                      <hc:ComboBox x:Name="CmbLanguage" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"
-                                                  SelectedItem="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged" Width="150"/>
+                                                  SelectedItem="{Binding Data.AppLanguage, Source={StaticResource BindingProxy}}" SelectionChanged="CmbLanguage_OnSelectionChanged" Width="150"/>
                                 </MenuItem>
                             </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
+                        </ToggleButton.ContextMenu>
+                    </ToggleButton>
 
                     <Button Content="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
                             Command="{Binding RestartExCommand}" Style="{StaticResource TopBarButton}"/>
@@ -161,34 +176,34 @@
                     <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}"
                             Command="{Binding ShowPreviewer}" Style="{StaticResource TopBarButton}"/>
 
-                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Help}}" Style="{StaticResource TopBarButton}">
-                        <Button.ContextMenu>
-                            <ContextMenu>
+                    <ToggleButton x:Name="HelpBtn" Content="{extension:Lang Key={x:Static langs:LangKeys.Help}}" Style="{StaticResource TopBarToggleButton}">
+                        <ToggleButton.ContextMenu>
+                            <ContextMenu IsOpen="{Binding IsChecked, ElementName=HelpBtn, Mode=TwoWay}" StaysOpen="False">
                                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
                                     <MenuItem.Icon>
                                         <Path Data="{StaticResource DocGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}">
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding Data.UpdateCommand, Source={StaticResource BindingProxy}}">
                                     <MenuItem.Icon>
                                         <Path Data="{StaticResource UpdateGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                                 <!-- Error Reporting Restored -->
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}" Command="{Binding }"
-                                          IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}" Command="{Binding Data.EnableErrorReportingCommand, Source={StaticResource BindingProxy}}"
+                                          IsCheckable="True" IsChecked="{Binding Data.EnableErrorReporting, Source={StaticResource BindingProxy}}">
                                     <MenuItem.Icon>
                                         <Path Data="{StaticResource BlogsGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}">
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding Data.AboutCommand, Source={StaticResource BindingProxy}}">
                                     <MenuItem.Icon>
                                          <Path Data="{StaticResource InfoGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
+                        </ToggleButton.ContextMenu>
+                    </ToggleButton>
                 </StackPanel>
             </Grid>
 
@@ -246,7 +261,7 @@
                         </StackPanel>
 
                         <!-- Action Buttons -->
-                        <hc:SimpleStackPanel Grid.Row="3" VerticalAlignment="Bottom" Margin="10">
+                        <hc:SimpleStackPanel Grid.Row="3" VerticalAlignment="Bottom" Spacing="10">
                             <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Load}}"
                                     Command="{Binding LoadCommand}"
                                     Height="50" FontSize="16"

@@ -9,6 +9,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <hc:ThemeResources UsingSystemTheme="True" />
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+                <!-- Dark Purple Theme Override -->
+                <ResourceDictionary Source="/Resources/Themes/DarkPurpleTheme.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml" />
                 <ResourceDictionary Source="/Resources/Dictionaries/GeometryResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
