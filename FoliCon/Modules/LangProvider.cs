@@ -138,6 +138,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(MediaRating));
         OnPropertyChanged(nameof(MediaTitle));
         OnPropertyChanged(nameof(Movie));
+        OnPropertyChanged(nameof(NetworkConnected));
+        OnPropertyChanged(nameof(NetworkDisconnected));
         OnPropertyChanged(nameof(NetworkError));
         OnPropertyChanged(nameof(NetworkNotAvailable));
         OnPropertyChanged(nameof(NewVersionFound));
@@ -316,6 +318,8 @@ public class LangProvider : INotifyPropertyChanged
     public string MediaRating => Lang.MediaRating;
     public string MediaTitle => Lang.MediaTitle;
     public string Movie => Lang.Movie;
+    public string NetworkConnected => GetLang(LangKeys.NetworkConnected);
+    public string NetworkDisconnected => GetLang(LangKeys.NetworkDisconnected);
     public string NetworkError => Lang.NetworkError;
     public string NetworkNotAvailable => Lang.NetworkNotAvailable;
     public string NewVersionFound => Lang.NewVersionFound;
@@ -502,6 +506,8 @@ public class LangKeys
     public static string MediaRating = nameof(MediaRating);
     public static string MediaTitle = nameof(MediaTitle);
     public static string Movie = nameof(Movie);
+    public static string NetworkConnected = nameof(NetworkConnected);
+    public static string NetworkDisconnected = nameof(NetworkDisconnected);
     public static string NetworkError = nameof(NetworkError);
     public static string NetworkNotAvailable = nameof(NetworkNotAvailable);
     public static string NewVersionFound = nameof(NewVersionFound);

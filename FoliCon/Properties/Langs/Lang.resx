@@ -689,4 +689,10 @@ and refresh Icon Cache?</value>
     <data name="RefreshingFolder" xml:space="preserve">
       <value>Refreshing folder</value>
     </data>
+    <data name="NetworkConnected" xml:space="preserve">
+      <value>Internet connection available</value>
+    </data>
+    <data name="NetworkDisconnected" xml:space="preserve">
+      <value>No internet connection</value>
+    </data>
 </root>

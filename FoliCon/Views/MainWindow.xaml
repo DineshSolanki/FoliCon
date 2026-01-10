@@ -335,7 +335,7 @@
                         <Label Content="{Binding TotalIcons}" VerticalAlignment="Top" />
                     </StatusBarItem>
                     <Separator Grid.Column="13" />
-                    <StatusBarItem Grid.Column="14">
+                    <StatusBarItem Grid.Column="14" ToolTip="{Binding NetTooltip}">
                         <Image Source="{Binding NetIcon}" Stretch="Fill" Width="32" />
                     </StatusBarItem>
                 </StatusBar>

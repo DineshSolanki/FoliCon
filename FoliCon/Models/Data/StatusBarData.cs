@@ -9,6 +9,7 @@ public class StatusBarData : BindableBase
     private int _totalIcons;
     private int _totalFolders;
     private string _netIcon;
+    private string _netTooltip;
     public string AppStatus { get => _appStatus; set => SetProperty(ref _appStatus, value); }
     public string AppStatusAdditional { get => _appStatusAdditional; set => SetProperty(ref _appStatusAdditional, value); }
     public int ProcessedFolder { get => _processedFolder; set => SetProperty(ref _processedFolder, value); }
@@ -16,6 +17,7 @@ public class StatusBarData : BindableBase
     public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
     public int TotalFolders { get => _totalFolders; set => SetProperty(ref _totalFolders, value); }
     public string NetIcon { get => _netIcon; set => SetProperty(ref _netIcon, value); }
+    public string NetTooltip { get => _netTooltip; set => SetProperty(ref _netTooltip, value); }
     public ProgressBarData ProgressBarData { get; set; } = new();
 
     public void ResetData()

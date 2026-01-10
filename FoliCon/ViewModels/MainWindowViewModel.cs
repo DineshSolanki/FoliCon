@@ -254,8 +254,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
     {
         Logger.Debug("Network Availability Changed, Updating StatusBar.");
+        var isConnected = ApplicationHelper.IsConnectedToInternet();
         StatusBarProperties.NetIcon =
-            ApplicationHelper.IsConnectedToInternet() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
+            isConnected ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
+        StatusBarProperties.NetTooltip = isConnected
+            ? LangProvider.GetLang(LangKeys.NetworkConnected)
+            : LangProvider.GetLang(LangKeys.NetworkDisconnected);
     }
 
     private void LoadMethod()
@@ -763,6 +767,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         StatusBarProperties = new StatusBarData
         {
             NetIcon = NetworkUtils.IsNetworkAvailable() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png",
+            NetTooltip = NetworkUtils.IsNetworkAvailable()
+                ? LangProvider.GetLang(LangKeys.NetworkConnected)
+                : LangProvider.GetLang(LangKeys.NetworkDisconnected),
             TotalIcons = 0,
             AppStatus = Lang.Idle,
             AppStatusAdditional = "",
