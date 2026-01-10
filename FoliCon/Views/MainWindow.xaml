@@ -1,4 +1,4 @@
-﻿<hc:Window x:Class="FoliCon.Views.MainWindow"
+<hc:Window x:Class="FoliCon.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:prism="http://prismlibrary.com/"
@@ -14,17 +14,52 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="714" Width="851" MinWidth="850" MinHeight="630"
+        Title="{Binding Title}" Height="750" Width="1000" MinWidth="850" MinHeight="630"
         WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
            Icon="/Resources/icons/folicon Icon.ico"
         ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
         ui:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
-        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" Closed="MainWindow_OnClosed">
+        d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" Closed="MainWindow_OnClosed"
+        NonClientAreaVisible="True" WindowStyle="SingleBorderWindow"
+        Background="{DynamicResource RegionBrush}">
 
     <Window.Resources>
         <convertor:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <convertor:BoolToPermissionTextConverter x:Key="BoolToPermissionTextConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+
+        <!-- Custom Styles -->
+        <Style x:Key="SidebarRadioButton" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+             <Setter Property="Background" Value="Transparent"/>
+             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+             <Setter Property="BorderBrush" Value="Transparent"/>
+             <Setter Property="Margin" Value="0,5"/>
+             <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style x:Key="TopBarButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+             <Setter Property="Background" Value="Transparent"/>
+             <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+             <Setter Property="BorderThickness" Value="0"/>
+             <Setter Property="Margin" Value="5,0"/>
+             <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style x:Key="StatusBarSeparator" TargetType="Separator">
+            <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
+            <Setter Property="Width" Value="1"/>
+            <Setter Property="Height" Value="14"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Separator">
+                        <Border Background="{TemplateBinding Background}"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
@@ -53,293 +88,286 @@
                 <Setter Property="Visibility" Value="Collapsed" />
             </Style>
         </hc:BusyIndicator.ProgressBarStyle>
+
+        <!-- Main Layout -->
         <Grid>
-            <Menu IsMainMenu="True" Grid.Row="0">
-                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
-                    <CheckBox x:Name="ChkIsRatingVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}" 
-                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" IsChecked="{Binding IsRatingVisible}"/>
-                    <CheckBox x:Name="ChkPosterShown" Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
-                              IsChecked="{Binding IsPosterWindowShown}"
-                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}" />
-                    <CheckBox x:Name="ChkIsPosterOverlayVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
-                              IsChecked="{Binding IsPosterMockupUsed}"
-                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}" />
-                    <CheckBox x:Name="ChkIgnoreAmbiguous" Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
-                              IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
-                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
-                    <Separator />
-                    <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
-                              Command="{Binding PosterIconConfigCommand}" />
-                    <MenuItem x:Name="MenuSubfolderProcessingConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}" Command="{Binding SubfolderProcessingConfigCommand}"/>
-                    <MenuItem x:Name="MenuApiConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
-                              Command="{Binding ApiConfigCommand}" />
-                    <Separator />
-                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
-                                  Command="{Binding ExploreIntegrationCommand}" CommandParameter="True" />
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
-                                  Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
-                    </MenuItem>
-                    <hc:ComboBox x:Name="CmbTheme" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"  IsEditable="False" SelectedItem ="{Binding Path=Theme}" hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.Theme}}" hc:TitleElement.TitlePlacement="Left"/>
-                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"  IsEditable="False" hc:Poptip.Content="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}" hc:Poptip.Placement="BottomRight" SelectedItem ="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged"/>
-                </MenuItem>
-                <MenuItem x:Name="MenuRExbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
-                          ToolTip="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
-                          Command="{Binding RestartExCommand}" />
-                <MenuItem x:Name="MenuDeleteIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
-                          ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteIconsTooltip}}"
-                          Command="{Binding DeleteIconsCommand}" />
-                <MenuItem x:Name="MenuDeleteMediaInfoBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfo}}"
-                          ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfoTooltip}}"
-                          Command="{Binding DeleteMediaInfoCommand}" />
-                <MenuItem x:Name="MenuCustomIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
-                          ToolTip="{extension:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
-                          Command="{Binding CustomIconsCommand}" />
-                <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}"/>
-                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Help}}">
-                    <MenuItem x:Name="MenubtnHelp" Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
-                        <MenuItem.Icon>
-                            <Path Data="{StaticResource DocGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}">
-                        <MenuItem.Icon>
-                            <Path Data="{StaticResource UpdateGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}" Command="{Binding }"
-                                  IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
-                        <MenuItem.Icon>
-                            <Path Data="{StaticResource BlogsGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" >
-                        <MenuItem.Icon>
-                            <Path Data="{StaticResource InfoGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
-            <Grid Margin="0,0,0,1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="314*" />
-                    <ColumnDefinition Width="227*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="160*" />
-                    <RowDefinition Height="291*" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <ContentControl Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" VerticalAlignment="Top">
-                    <hc:Interaction.Triggers>
-                        <hc:EventTrigger EventName="MouseDoubleClick">
-                            <hc:LaunchUriOrFileAction Path="{Binding SelectedFolder}" />
-                        </hc:EventTrigger>
-                    </hc:Interaction.Triggers>
-                    <Grid HorizontalAlignment="Stretch" >
-                        <TextBlock Text="{Binding SelectedFolder}" FontStyle="Italic" Foreground="{DynamicResource PrimaryTextBrush}"
-                                   HorizontalAlignment="Center" VerticalAlignment="Top" />
-                        
-                        <Path Data="M8,5C4.699219,5 2,7.699219 2,11 2,13.171875 3.261719,14.949219 5,16L5,24.40625 5.28125,24.71875 7.28125,26.71875 8,27.40625 8.71875,26.71875 10.71875,24.71875 11,24.40625 11,16C12.738281,14.949219 14,13.171875 14,11 14,7.699219 11.300781,5 8,5z M8,7C10.21875,7 12,8.78125 12,11 12,12.648438 11.003906,14.039063 9.59375,14.65625L9,14.9375 9,17 8,17 8,19 9,19 9,20 8,20 8,22 9,22 9,23.5625 8,24.5625 7,23.5625 7,14.9375 6.40625,14.65625C4.996094,14.039063 4,12.648438 4,11 4,8.78125 5.78125,7 8,7z M8,9C6.894531,9,6,9.894531,6,11L10,11C10,9.894531,9.105469,9,8,9z M16,9L16,15 30,15 30,9z M18,11L28,11 28,13 18,13z M16,16L16,22 30,22 30,16z M18,18L28,18 28,20 18,20z"
-                              HorizontalAlignment="Right" VerticalAlignment="Top" Margin="15,0"
-                              Fill="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToColorConverter}}">
-                            <Path.ToolTip>
-                                <TextBlock Text="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToPermissionTextConverter}}" />
-                            </Path.ToolTip>
-                        </Path>
-                    </Grid>
-                </ContentControl>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="40"/> <!-- Top Bar -->
+                <RowDefinition Height="*"/>    <!-- Main Area -->
+                <RowDefinition Height="Auto"/> <!-- Status Bar -->
+            </Grid.RowDefinitions>
 
-                <Grid Grid.Column="0" Grid.Row="2" Grid.IsSharedSizeScope="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="96" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.Background>
-                        <Binding ElementName="FinalList" Path="Background"/>
-                    </Grid.Background>
-                    <GroupBox hc:TitleElement.TitlePlacement="Top" Grid.Row="0" Header="{extension:Lang Key={x:Static langs:LangKeys.IconMode}}"
-                              Style="{StaticResource GroupBoxTab}" FontSize="18" FontFamily="Cambria"
-                               Foreground="BlueViolet" BorderThickness="0">
-                        <hc:TitleElement.Background>
-                            <Binding ElementName="FinalList" Path="Background"/>
-                        </hc:TitleElement.Background>
-                        <GroupBox.Background>
-                            <Binding ElementName="FinalList" Path="Background"/>
-                        </GroupBox.Background>
-                        <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition SharedSizeGroup="second" />
-                            </Grid.ColumnDefinitions>
+            <!-- Row 0: Top Bar -->
+            <Grid Grid.Row="0" Background="{DynamicResource SecondaryRegionBrush}">
+                <StackPanel Orientation="Horizontal" Margin="10,5" VerticalAlignment="Center">
+                    <!-- Settings Button with ContextMenu -->
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Settings}}" Style="{StaticResource TopBarButton}">
+                        <hc:Poptip.Content>
+                           <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Settings}}"/>
+                        </hc:Poptip.Content>
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
+                                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
+                                            IsChecked="{Binding IsRatingVisible}"/>
+                                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
+                                            IsChecked="{Binding IsPosterWindowShown}"/>
+                                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
+                                            IsChecked="{Binding IsPosterMockupUsed}"/>
+                                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
+                                            IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"/>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
+                                        Command="{Binding PosterIconConfigCommand}" />
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
+                                          Command="{Binding SubfolderProcessingConfigCommand}"/>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.APIKeysConfiguration}}"
+                                        Command="{Binding ApiConfigCommand}" />
+                                <Separator />
+                                <!-- Explorer Integration Restored -->
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
+                                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
+                                              Command="{Binding ExploreIntegrationCommand}" CommandParameter="True" />
+                                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
+                                              Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
+                                </MenuItem>
+                                <Separator />
+                                <!-- Languages and Theme -->
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Theme}}">
+                                     <hc:ComboBox ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
+                                                  SelectedItem="{Binding Path=Theme}" Width="150"/>
+                                </MenuItem>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}">
+                                     <hc:ComboBox x:Name="CmbLanguage" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"
+                                                  SelectedItem="{Binding Path=AppLanguage}" SelectionChanged="CmbLanguage_OnSelectionChanged" Width="150"/>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
 
-                            <RadioButton x:Name="RPoster" Content="{extension:Lang Key={x:Static langs:LangKeys.Poster}}" Grid.Column="0"
-                                         Command="{Binding IconModeChangedCommand}"
-                                         CommandParameter="Poster" GroupName="IconMode"
-                                         Margin="0,4,0,4" FontSize="16" VerticalAlignment="Stretch"
-                                         HorizontalAlignment="Left" IsChecked="True" />
-                            <RadioButton x:Name="RProf" Content="{extension:Lang Key={x:Static langs:LangKeys.Professional}}" Grid.Column="2"
-                                         Command="{Binding IconModeChangedCommand}" GroupName="IconMode"
-                                         CommandParameter="Professional" FontSize="16"
-                                         HorizontalAlignment="Left" VerticalAlignment="Stretch" />
-                        </Grid>
-                    </GroupBox>
-                    <GroupBox
-                        Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}"
-                        hc:TitleElement.TitlePlacement="Top" Header="{extension:Lang Key={x:Static langs:LangKeys.SearchMode}}" Style="{StaticResource GroupBoxTab}"
-                        Grid.Row="1" Margin="0,1,0,0" FontFamily="Cambria" FontSize="18"
-                        Foreground="BlueViolet" BorderThickness="0">
-                        <hc:TitleElement.Background>
-                            <Binding ElementName="FinalList" Path="Background"/>
-                        </hc:TitleElement.Background>
-                        <GroupBox.Background>
-                            <Binding ElementName="FinalList" Path="Background"/>
-                        </GroupBox.Background>
-                        <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="20" />
-                                <ColumnDefinition SharedSizeGroup="second" Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <RadioButton x:Name="RMovie" Content="{extension:Lang Key={x:Static langs:LangKeys.Movie}}" Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="Movie" FontSize="16"
-                                         Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" IsChecked="True" />
-                            <RadioButton x:Name="RGame" Content="{extension:Lang Key={x:Static langs:LangKeys.Game}}" Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="Game" FontSize="16"
-                                         Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" />
-                            <RadioButton x:Name="RTv" Content="{extension:Lang Key={x:Static langs:LangKeys.TV}}" Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="TV" FontSize="16"
-                                         Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" />
-                            <RadioButton x:Name="RAuto" Content="{extension:Lang Key={x:Static langs:LangKeys.Auto}}"
-                                         Command="{Binding SearchModeChangedCommand}"
-                                         CommandParameter="Auto (Movies &amp; TV Shows)" FontSize="16"
-                                         Grid.Row="1" Grid.Column="2" HorizontalAlignment="Left" />
-                        </Grid>
-                    </GroupBox>
-                </Grid>
-                <Grid Grid.Column="1" Grid.Row="2">
-                    <Grid.Background>
-                        <Binding ElementName="FinalList" Path="Background"/>
-                    </Grid.Background>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Load}}" Grid.Row="0" Command="{Binding LoadCommand}" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Bottom" Height="76" Margin="3,0,3,0" hc:IconElement.Geometry="{StaticResource FolderGeometry}" hc:IconElement.Height="25"/>
-                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.MakeIcons}}" Grid.Row="1" IsEnabled="{Binding IsMakeEnabled}"
-                            Command="{Binding SearchAndMakeCommand}" HorizontalAlignment="Stretch" Margin="3,0,3,0"
-                            Height="76" hc:IconElement.Geometry="{StaticResource MakeIconsGeometry}" hc:IconElement.Height="25"/>
-                </Grid>
-                <ListView x:Name="FinalList" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
-                          ItemsSource="{Binding FinalListViewData.Data}"
-                          SelectedItem="{Binding FinalListViewData.SelectedItem}"
-                          hc:Empty.ShowEmpty="true">
-                    <hc:Interaction.Triggers>
-                        <hc:EventTrigger EventName="MouseDoubleClick">
-                            <hc:LaunchUriOrFileAction Path="{Binding FinalListViewData.SelectedItem.Folder}" />
-                        </hc:EventTrigger>
-                    </hc:Interaction.Triggers>
-                    <b:Interaction.Behaviors>
-                        <ui:ListViewClickSortBehavior/>
-                    </b:Interaction.Behaviors>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Title}}" Width="Auto" DisplayMemberBinding="{Binding Title}" />
-                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}" />
-                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Rating}}" Width="63" DisplayMemberBinding="{Binding Rating}" />
-                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Folder}}" Width="Auto" DisplayMemberBinding="{Binding Folder}" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <StatusBar Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0" DataContext="{Binding StatusBarProperties}">
-                    <StatusBar.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="auto" />
-                                    <!--separator-->
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="auto" />
-                                    <!--separator-->
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="auto" />
-                                    <!--separator-->
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="auto" />
-                                    <!--separator-->
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                            </Grid>
-                        </ItemsPanelTemplate>
-                    </StatusBar.ItemsPanel>
-                    <StatusBarItem Grid.Column="0">
-                        <Label BorderThickness="0">
-                            <Label.Content>
-                                <hc:SimpleStackPanel Orientation="Horizontal">
-                                    <Label BorderThickness="0" Content="{extension:Lang Key={Binding AppStatus}}"/>
-                                    <Label BorderThickness="0"  Content="{Binding AppStatusAdditional}"/>
-                                </hc:SimpleStackPanel>
-                            </Label.Content>
-                        </Label>
-                    </StatusBarItem>
-                    <Separator Grid.Column="1" />
-                    <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Stretch">
-                        <ProgressBar Style="{DynamicResource ProgressBarFlat}" Value="{Binding ProgressBarData.Value}"
-                                     Maximum="{Binding ProgressBarData.Max}" Height="17" />
-                    </StatusBarItem>
-                    <Separator Grid.Column="3" />
-                    <StatusBarItem Grid.Column="4">
-                        <Label Content="{extension:Lang Key={x:Static langs:LangKeys.FoldersProcessed}}" VerticalAlignment="Top" BorderThickness="0" />
-                    </StatusBarItem>
-                    <StatusBarItem Grid.Column="5">
-                        <Label Content="{Binding ProcessedFolder}" VerticalAlignment="Top" />
-                    </StatusBarItem>
-                    <StatusBarItem Grid.Column="6">
-                        <Label FontSize="12" Content="{extension:Lang Key={x:Static langs:LangKeys.OutOf}}" VerticalAlignment="Top" BorderThickness="0" />
-                    </StatusBarItem>
-                    <StatusBarItem Grid.Column="7">
-                        <Label Content="{Binding TotalFolders}" VerticalAlignment="Top" />
-                    </StatusBarItem>
-                    <Separator Grid.Column="8" />
-                    <StatusBarItem Grid.Column="9">
-                        <Label Content="{extension:Lang Key={x:Static langs:LangKeys.IconsCreated}}" VerticalAlignment="Top" BorderThickness="0" />
-                    </StatusBarItem>
-                    <StatusBarItem Grid.Column="10">
-                        <Label Content="{Binding ProcessedIcon}" />
-                    </StatusBarItem>
-                    <StatusBarItem Grid.Column="11">
-                        <Label FontSize="12" Content="{extension:Lang Key={x:Static langs:LangKeys.OutOf}}" VerticalAlignment="Top" BorderThickness="0" />
-                    </StatusBarItem>
-                    <StatusBarItem Grid.Column="12">
-                        <Label Content="{Binding TotalIcons}" VerticalAlignment="Top" />
-                    </StatusBarItem>
-                    <Separator Grid.Column="13" />
-                    <StatusBarItem Grid.Column="14">
-                        <Image Source="{Binding NetIcon}" Stretch="Fill" Width="32" />
-                    </StatusBarItem>
-                </StatusBar>
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
+                            Command="{Binding RestartExCommand}" Style="{StaticResource TopBarButton}"/>
+
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
+                            Command="{Binding DeleteIconsCommand}" Style="{StaticResource TopBarButton}"/>
+
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfo}}"
+                            Command="{Binding DeleteMediaInfoCommand}" Style="{StaticResource TopBarButton}"/>
+
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
+                            Command="{Binding CustomIconsCommand}" Style="{StaticResource TopBarButton}"/>
+
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}"
+                            Command="{Binding ShowPreviewer}" Style="{StaticResource TopBarButton}"/>
+
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Help}}" Style="{StaticResource TopBarButton}">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}" Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
+                                    <MenuItem.Icon>
+                                        <Path Data="{StaticResource DocGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}">
+                                    <MenuItem.Icon>
+                                        <Path Data="{StaticResource UpdateGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <!-- Error Reporting Restored -->
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}" Command="{Binding }"
+                                          IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
+                                    <MenuItem.Icon>
+                                        <Path Data="{StaticResource BlogsGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}">
+                                    <MenuItem.Icon>
+                                         <Path Data="{StaticResource InfoGeometry}" Fill="{DynamicResource PrimaryTextBrush}" Stretch="Uniform"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
             </Grid>
+
+            <!-- Row 1: Sidebar + Content -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sidebar -->
+                <Border Grid.Column="0" Background="{DynamicResource RegionBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+                    <Grid Margin="15">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <!-- Icon Mode -->
+                            <RowDefinition Height="Auto"/> <!-- Search Mode -->
+                            <RowDefinition Height="*"/>    <!-- Spacer -->
+                            <RowDefinition Height="Auto"/> <!-- Action Buttons -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Icon Mode -->
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.IconMode}}"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" FontWeight="Bold" Margin="0,0,0,10" Opacity="0.6"/>
+                            <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.Poster}}"
+                                         GroupName="IconMode" IsChecked="True"
+                                         Command="{Binding IconModeChangedCommand}" CommandParameter="Poster"
+                                         Style="{StaticResource SidebarRadioButton}"/>
+                            <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.Professional}}"
+                                         GroupName="IconMode"
+                                         Command="{Binding IconModeChangedCommand}" CommandParameter="Professional"
+                                         Style="{StaticResource SidebarRadioButton}"/>
+                        </StackPanel>
+
+                        <!-- Search Mode -->
+                        <StackPanel Grid.Row="1" Margin="0,20,0,0" Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SearchMode}}"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" FontWeight="Bold" Margin="0,0,0,10" Opacity="0.6"/>
+                            <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.Movie}}"
+                                         GroupName="SearchMode" IsChecked="True"
+                                         Command="{Binding SearchModeChangedCommand}" CommandParameter="Movie"
+                                         Style="{StaticResource SidebarRadioButton}"/>
+                            <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.TV}}"
+                                         GroupName="SearchMode"
+                                         Command="{Binding SearchModeChangedCommand}" CommandParameter="TV"
+                                         Style="{StaticResource SidebarRadioButton}"/>
+                            <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.Game}}"
+                                         GroupName="SearchMode"
+                                         Command="{Binding SearchModeChangedCommand}" CommandParameter="Game"
+                                         Style="{StaticResource SidebarRadioButton}"/>
+                            <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.Auto}}"
+                                         GroupName="SearchMode"
+                                         Command="{Binding SearchModeChangedCommand}" CommandParameter="Auto (Movies &amp; TV Shows)"
+                                         Style="{StaticResource SidebarRadioButton}"/>
+                        </StackPanel>
+
+                        <!-- Action Buttons -->
+                        <hc:SimpleStackPanel Grid.Row="3" VerticalAlignment="Bottom" Spacing="10">
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Load}}"
+                                    Command="{Binding LoadCommand}"
+                                    Height="50" FontSize="16"
+                                    hc:IconElement.Geometry="{StaticResource FolderGeometry}"
+                                    Style="{StaticResource ButtonPrimary}"/>
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.MakeIcons}}"
+                                    Command="{Binding SearchAndMakeCommand}"
+                                    IsEnabled="{Binding IsMakeEnabled}"
+                                    Height="50" FontSize="16"
+                                    hc:IconElement.Geometry="{StaticResource MakeIconsGeometry}"
+                                    Style="{StaticResource ButtonPrimary}"/>
+                        </hc:SimpleStackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Content Area -->
+                <Grid Grid.Column="1" Background="{DynamicResource RegionBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Selected Path -->
+                        <RowDefinition Height="*"/>    <!-- DataGrid -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Selected Path Display -->
+                    <Border Grid.Row="0" Margin="20" Background="{DynamicResource SecondaryRegionBrush}" CornerRadius="5" Padding="10">
+                         <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding SelectedFolder}"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" FontSize="14"
+                                       VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                            <!-- Permission Icon -->
+                            <Path Grid.Column="1"
+                                  Data="M8,5C4.699219,5 2,7.699219 2,11 2,13.171875 3.261719,14.949219 5,16L5,24.40625 5.28125,24.71875 7.28125,26.71875 8,27.40625 8.71875,26.71875 10.71875,24.71875 11,24.40625 11,16C12.738281,14.949219 14,13.171875 14,11 14,7.699219 11.300781,5 8,5z M8,7C10.21875,7 12,8.78125 12,11 12,12.648438 11.003906,14.039063 9.59375,14.65625L9,14.9375 9,17 8,17 8,19 9,19 9,20 8,20 8,22 9,22 9,23.5625 8,24.5625 7,23.5625 7,14.9375 6.40625,14.65625C4.996094,14.039063 4,12.648438 4,11 4,8.78125 5.78125,7 8,7z M8,9C6.894531,9,6,9.894531,6,11L10,11C10,9.894531,9.105469,9,8,9z M16,9L16,15 30,15 30,9z M18,11L28,11 28,13 18,13z M16,16L16,22 30,22 30,16z M18,18L28,18 28,20 18,20z"
+                                  Height="20" Width="20" Stretch="Uniform"
+                                  Fill="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToColorConverter}}"
+                                  ToolTip="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToPermissionTextConverter}}"/>
+                         </Grid>
+                    </Border>
+
+                    <!-- File List -->
+                    <ListView x:Name="FinalList" Grid.Row="1" Margin="20,0,20,20"
+                              ItemsSource="{Binding FinalListViewData.Data}"
+                              SelectedItem="{Binding FinalListViewData.SelectedItem}"
+                              Background="Transparent" BorderThickness="0" Foreground="{DynamicResource PrimaryTextBrush}"
+                              hc:Empty.ShowEmpty="true">
+
+                         <hc:Interaction.Triggers>
+                            <hc:EventTrigger EventName="MouseDoubleClick">
+                                <hc:LaunchUriOrFileAction Path="{Binding FinalListViewData.SelectedItem.Folder}" />
+                            </hc:EventTrigger>
+                         </hc:Interaction.Triggers>
+
+                         <b:Interaction.Behaviors>
+                            <ui:ListViewClickSortBehavior/>
+                         </b:Interaction.Behaviors>
+
+                         <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Title}}" Width="300" DisplayMemberBinding="{Binding Title}"/>
+                                <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Year}}" Width="100" DisplayMemberBinding="{Binding Year}"/>
+                                <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Rating}}" Width="100" DisplayMemberBinding="{Binding Rating}"/>
+                                <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Folder}}" Width="300" DisplayMemberBinding="{Binding Folder}"/>
+                            </GridView>
+                         </ListView.View>
+                    </ListView>
+                </Grid>
+            </Grid>
+
+            <!-- Row 2: Status Bar -->
+            <StatusBar Grid.Row="2" Background="{DynamicResource PrimaryBrush}" Foreground="White" Padding="5" DataContext="{Binding StatusBarProperties}">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+
+                <!-- Status Text -->
+                <StatusBarItem Grid.Column="0">
+                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{extension:Lang Key={Binding AppStatus}}" Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding AppStatusAdditional}"/>
+                     </StackPanel>
+                </StatusBarItem>
+
+                <!-- Progress -->
+                <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch" Margin="10,0">
+                     <ProgressBar Value="{Binding ProgressBarData.Value}" Maximum="{Binding ProgressBarData.Max}" Height="10" Style="{DynamicResource ProgressBarFlat}"/>
+                </StatusBarItem>
+
+                <!-- Stats -->
+                <StatusBarItem Grid.Column="2">
+                    <StackPanel Orientation="Horizontal">
+                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.FoldersProcessed}}" Margin="0,0,5,0"/>
+                         <TextBlock Text="{Binding ProcessedFolder}"/>
+                         <TextBlock Text="/" Margin="5,0"/>
+                         <TextBlock Text="{Binding TotalFolders}" Margin="0,0,10,0"/>
+
+                         <Separator Style="{StaticResource StatusBarSeparator}" Margin="10,0"/>
+
+                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.IconsCreated}}" Margin="10,0,5,0"/>
+                         <TextBlock Text="{Binding ProcessedIcon}"/>
+                         <TextBlock Text="/" Margin="5,0"/>
+                         <TextBlock Text="{Binding TotalIcons}"/>
+                    </StackPanel>
+                </StatusBarItem>
+
+                <!-- Network Icon -->
+                <StatusBarItem Grid.Column="3">
+                    <Image Source="{Binding NetIcon}" Width="16" Height="16" Margin="10,0,0,0"/>
+                </StatusBarItem>
+            </StatusBar>
         </Grid>
     </hc:BusyIndicator>
 </hc:Window>
