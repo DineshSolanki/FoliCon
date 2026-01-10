@@ -20,7 +20,7 @@
         ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
         ui:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
         d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}" Closed="MainWindow_OnClosed"
-        NonClientAreaVisible="True" WindowStyle="SingleBorderWindow"
+        ShowNonClientArea="True" WindowStyle="SingleBorderWindow"
         Background="{DynamicResource RegionBrush}">
 
     <Window.Resources>
@@ -246,7 +246,7 @@
                         </StackPanel>
 
                         <!-- Action Buttons -->
-                        <hc:SimpleStackPanel Grid.Row="3" VerticalAlignment="Bottom" Spacing="10">
+                        <hc:SimpleStackPanel Grid.Row="3" VerticalAlignment="Bottom" Margin="10">
                             <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Load}}"
                                     Command="{Binding LoadCommand}"
                                     Height="50" FontSize="16"
