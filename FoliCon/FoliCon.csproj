@@ -37,7 +37,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="NLog" Version="6.1.2" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="Polly" Version="8.6.6" />
-    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+    <PackageReference Include="Prism.DryIoc" Version="9.0.537" />
     <PackageReference Include="Sentry" Version="6.4.1" />
     <PackageReference Include="Sentry.NLog" Version="5.16.1" />
     <PackageReference Include="SharpCompress" Version="0.47.4" />
