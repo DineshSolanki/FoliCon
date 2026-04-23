@@ -39,7 +39,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Polly" Version="8.6.6" />
     <PackageReference Include="Prism.DryIoc" Version="9.0.537" />
     <PackageReference Include="Sentry" Version="6.4.1" />
-    <PackageReference Include="Sentry.NLog" Version="5.16.1" />
+    <PackageReference Include="Sentry.NLog" Version="6.4.1" />
     <PackageReference Include="SharpCompress" Version="0.47.4" />
     <PackageReference Include="TMDbLib" Version="3.0.0" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="5.0.4" />
