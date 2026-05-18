@@ -42,7 +42,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Sentry.NLog" Version="6.5.0" />
     <PackageReference Include="SharpCompress" Version="0.48.1" />
     <PackageReference Include="TMDbLib" Version="3.0.0" />
-    <PackageReference Include="Vanara.PInvoke.Shell32" Version="5.0.4" />
+    <PackageReference Include="Vanara.PInvoke.Shell32" Version="5.0.5" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
     <!-- Security vulnerability fixes for transitive dependencies -->
     <PackageReference Include="System.Drawing.Common" Version="10.0.8" />
