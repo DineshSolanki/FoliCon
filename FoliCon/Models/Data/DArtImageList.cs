@@ -5,6 +5,7 @@ public class DArtImageList : BindableBase
     private string _url;
     private string  _thumbnailUrl;
     private string _deviationId;
+    private bool _mustWatch;
 
     public DArtImageList(string url, string thumbnailUrl)
     {
@@ -12,12 +13,14 @@ public class DArtImageList : BindableBase
         ThumbnailUrl = thumbnailUrl ?? throw new ArgumentNullException(nameof(thumbnailUrl));
     }
 
-    public DArtImageList(string url, string thumbnailUrl, string deviationId) : this(url, thumbnailUrl)
+    public DArtImageList(string url, string thumbnailUrl, string deviationId, bool mustWatch=false) : this(url, thumbnailUrl)
     {
         DeviationId = deviationId ?? throw new ArgumentNullException(nameof(deviationId));
+        MustWatch = mustWatch;
     }
     
     public string Url { get => _url; set => SetProperty(ref _url, value); }
     public string ThumbnailUrl { get => _thumbnailUrl; set => SetProperty(ref _thumbnailUrl, value); }
     public string DeviationId { get => _deviationId; set => SetProperty(ref _deviationId, value); }
+    public bool MustWatch { get => _mustWatch; set => SetProperty(ref _mustWatch, value); }
 }

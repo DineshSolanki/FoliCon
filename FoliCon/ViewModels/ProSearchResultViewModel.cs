@@ -66,8 +66,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     }
 
     public DelegateCommand SkipCommand { get; set; }
-    public DelegateCommand<object> PickCommand { get; set; }
-    public DelegateCommand<object> OpenImageCommand { get; set; }
+    public DelegateCommand<DArtImageList> PickCommand { get; set; }
+    public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
     public DelegateCommand<object> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
@@ -77,12 +77,24 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         Logger.Debug("ProSearchResultViewModel Constructor");
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
-        PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
+        PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
         _dialogService = dialogService;
+    }
+
+    private void OpenImageMethod(DArtImageList parameter)
+    {
+        Logger.Debug("Opening Image {Image}", parameter);
+        if (parameter.MustWatch)
+        {
+            //TODO:watch
+            parameter.MustWatch = false;
+        }
+        var link = parameter.Url;
+        UiUtils.ShowImageBrowser(link);
     }
 
     private void ExtractManually(object parameter)
@@ -218,16 +230,19 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private void ProcessResultItems(EnumeratorWithIndex<Result> item)
     {
         Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
-
-        if (IsItemDownloadable(item))
+        var mustWatch = false;
+        if (!IsItemDownloadable(item))
         {
-            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
-            Index++;
+            if (item.Value.PremiumFolderData is null || item.Value.PremiumFolderData.Type != "watchers")
+            {
+                Logger.Warn("Poster {URL} is not downloadable", item.Value.Url);
+                return;
+            }
+            mustWatch = true;
+            Logger.Warn("Poster {URL} is not downloadable, but can be watched to download", item.Value.Url);
         }
-        else
-        {
-            Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
-        }
+        ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid, mustWatch));
+        Index++;
     }
 
     private static bool IsItemDownloadable(EnumeratorWithIndex<Result> item)
@@ -236,15 +251,31 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     }
     
 
-    private void PickMethod(object parameter)
+    private void PickMethod(DArtImageList parameter)
     {
-        Logger.Debug("Picking Image {Image}", parameter);
+        if (parameter.MustWatch)
+        {
+            //TODO:Watch
+            parameter.MustWatch = false;
+        }
+        var link = parameter.Url;
+        ProcessPick(link);
+    }
+    
+    private void PickMethod(string link)
+    {
+        ProcessPick(link);
+    }
+
+    private void ProcessPick(string link)
+    {
+        Logger.Debug("Picking Image {Image}", link);
+        var extension = Path.GetExtension(new Uri(link).LocalPath) == ".ico" ? ".ico" : ".png";
         SearchAgainTitle = null;
-        var link = (string)parameter;
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
         var tempImage = new ImageToDownload
         {
-            LocalPath = $@"{currentPath}\{IconUtils.GetImageName()}.png",
+            LocalPath = $@"{currentPath}\{IconUtils.GetImageName()}{extension}",
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);
