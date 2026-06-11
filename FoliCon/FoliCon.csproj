@@ -36,7 +36,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
     <PackageReference Include="NLog" Version="6.1.3" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="Polly" Version="8.6.6" />
+    <PackageReference Include="Polly" Version="8.7.0" />
     <PackageReference Include="Prism.DryIoc" Version="9.0.537" />
     <PackageReference Include="Sentry" Version="6.6.0" />
     <PackageReference Include="Sentry.NLog" Version="6.6.0" />
