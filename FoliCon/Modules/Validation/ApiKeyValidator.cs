@@ -5,6 +5,8 @@ namespace FoliCon.Modules.Validation;
 
 /// <summary>
 /// Validates API keys by making lightweight authenticated calls to each service.
+/// DeviantArt is no longer validated here — its OAuth flow is self-validating
+/// (if AuthorizeAsync() succeeds, the token is valid by definition).
 /// </summary>
 public static class ApiKeyValidator
 {
@@ -102,92 +104,8 @@ public static class ApiKeyValidator
         }
     }
 
-    /// <summary>
-    /// Validates DeviantArt credentials by performing a lightweight OAuth token request.
-    /// Does NOT use DArt.GetInstanceAsync() to avoid singleton side effects.
-    /// </summary>
-    public static async Task<ApiKeyValidationResult> ValidateDeviantArtCredentialsAsync(string clientId,
-        string clientSecret, CancellationToken ct = default)
-    {
-        Logger.Debug("Validating DeviantArt credentials...");
-
-        if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
-            return ApiKeyValidationResult.Fail("Client ID and Client Secret cannot be empty.");
-
-        try
-        {
-            var tokenUri = new Uri("https://www.deviantart.com/oauth2/token");
-            var form = new Dictionary<string, string>
-            {
-                ["client_id"] = clientId,
-                ["client_secret"] = clientSecret,
-                ["grant_type"] = "client_credentials"
-            };
-
-            using var content = new FormUrlEncodedContent(form);
-            var response = await ValidationHttpClient.PostAsync(tokenUri, content, ct);
-            var responseBody = await response.Content.ReadAsStringAsync(ct);
-
-            if (response.IsSuccessStatusCode)
-            {
-                // Parse to confirm we got an access token
-                var tokenResponse =
-                    System.Text.Json.JsonSerializer.Deserialize<DArtValidationTokenResponse>(responseBody);
-                if (tokenResponse?.AccessToken != null)
-                {
-                    Logger.Info("DeviantArt credentials validated successfully.");
-                    return ApiKeyValidationResult.Success();
-                }
-
-                Logger.Warn("DeviantArt response was 200 but no access_token in body.");
-                return ApiKeyValidationResult.Fail("Unexpected response from DeviantArt.");
-            }
-
-            if (IsUnauthorized(response.StatusCode))
-            {
-                Logger.Warn("DeviantArt credentials are invalid (HTTP {StatusCode}).", response.StatusCode);
-                return ApiKeyValidationResult.Fail("Invalid Client ID or Client Secret.");
-            }
-
-            Logger.Warn("DeviantArt validation failed with HTTP {StatusCode}: {Body}", response.StatusCode,
-                responseBody);
-            return ApiKeyValidationResult.NetworkError(
-                $"DeviantArt returned HTTP {(int)response.StatusCode}. Please try again.");
-        }
-        catch (OperationCanceledException)
-        {
-            Logger.Warn("DeviantArt validation timed out.");
-            return ApiKeyValidationResult.NetworkError("Request timed out. Check your internet connection.");
-        }
-        catch (HttpRequestException ex)
-        {
-            Logger.Warn("DeviantArt validation network error: {Message}", ex.Message);
-            return ApiKeyValidationResult.NetworkError($"Could not reach DeviantArt: {ex.Message}");
-        }
-        catch (Exception ex)
-        {
-            Logger.Error(ex, "Unexpected error validating DeviantArt credentials.");
-            return ApiKeyValidationResult.Fail($"Unexpected error: {ex.Message}");
-        }
-    }
-
     private static bool IsUnauthorized(HttpRequestException ex)
     {
         return ex.StatusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden;
-    }
-
-    private static bool IsUnauthorized(System.Net.HttpStatusCode statusCode)
-    {
-        return statusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden;
-    }
-
-    /// <summary>
-    /// Lightweight DTO for deserializing the DeviantArt token response during validation.
-    /// Separate from DArtTokenResponse to avoid coupling to DArt internals.
-    /// </summary>
-    private class DArtValidationTokenResponse
-    {
-        [System.Text.Json.Serialization.JsonPropertyName("access_token")]
-        public string? AccessToken { get; set; }
     }
 }

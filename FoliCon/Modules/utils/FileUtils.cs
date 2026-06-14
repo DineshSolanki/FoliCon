@@ -506,24 +506,19 @@ public static class FileUtils
     }
 
     public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
-        out string igdbClientSecret, out string dartClientSecret, out string dartId)
+        out string igdbClientSecret)
     {
         var settings = GlobalDataHelper.Load<AppConfig>();
         tmdbkey = settings.TmdbKey;
         igdbClientId = settings.IgdbClientId;
         igdbClientSecret = settings.IgdbClientSecret;
-        dartClientSecret = settings.DevClientSecret;
-        dartId = settings.DevClientId;
     }
 
-    public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
-        string dartClientSecret, string dartId)
+    public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret)
     {
         Services.Settings.TmdbKey = tmdbkey;
         Services.Settings.IgdbClientId = igdbClientId;
         Services.Settings.IgdbClientSecret = igdbClientSecret;
-        Services.Settings.DevClientId = dartId;
-        Services.Settings.DevClientSecret = dartClientSecret;
         Services.Settings.Save();
     }
 

@@ -1008,8 +1008,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             // Re-read config after wizard (user may have entered keys)
         }
 
-        FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret, out var devClientSecret,
-            out var devClientId);
+        FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret);
 
         // Initialize TMDB (optional)
         if (!string.IsNullOrEmpty(tmdbapiKey))
@@ -1055,13 +1054,14 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             _igdbObject = null;
         }
 
-        // Initialize DeviantArt (optional — already had graceful failure)
-        if (!string.IsNullOrEmpty(devClientId) && !string.IsNullOrEmpty(devClientSecret))
+        // Initialize DeviantArt (optional — uses stored OAuth tokens)
+        var deviantArtAccessToken = Services.Settings.DeviantArtAccessToken;
+        if (!string.IsNullOrEmpty(deviantArtAccessToken))
         {
             try
             {
-                Logger.Debug("Initializing DeviantArt client...");
-                _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
+                Logger.Debug("Initializing DeviantArt client with stored tokens...");
+                _dArtObject = await DArt.GetInstanceAsync();
                 Logger.Debug("DeviantArt client initialized successfully.");
             }
             catch (Exception ex)
@@ -1076,7 +1076,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         else
         {
-            Logger.Info("DeviantArt credentials not configured. Professional mode will be unavailable.");
+            Logger.Info("DeviantArt not connected. Professional mode will be unavailable.");
             _dArtObject = null;
         }
 

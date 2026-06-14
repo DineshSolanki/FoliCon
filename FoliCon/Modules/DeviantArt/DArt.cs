@@ -33,19 +33,13 @@ public class DArt : BindableBase, IDisposable
         })
         .Build();
 
-    private string ClientId
-    {
-        get;
-        init => SetProperty(ref field, value);
-    }
-
-    private string ClientSecret
-    {
-        get;
-        init => SetProperty(ref field, value);
-    }
-
     private string ClientAccessToken
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    private string RefreshToken
     {
         get;
         set => SetProperty(ref field, value);
@@ -57,35 +51,73 @@ public class DArt : BindableBase, IDisposable
         set => SetProperty(ref field, value);
     }
 
-    private DArt(string clientSecret, string clientId)
+    private DArt(string accessToken, string refreshToken, int expiresIn)
     {
         Services.Tracker.Configure<DArt>()
             .Property(p => p.ClientAccessToken)
+            .Property(p => p.RefreshToken)
             .Property(p => p.TokenExpiresAt)
             .PersistOn(nameof(PropertyChanged));
-        ClientSecret = clientSecret;
-        ClientId = clientId;
+        ClientAccessToken = accessToken;
+        RefreshToken = refreshToken;
+        // Subtract 60 seconds to account for clock skew and network delays.
+        TokenExpiresAt = DateTime.UtcNow.AddSeconds(expiresIn - 60);
         Services.Tracker.Track(this);
+        Logger.Info("DeviantArt client initialized with existing token (expires at {ExpiresAt})", TokenExpiresAt);
     }
-    
-    public static async Task<DArt> GetInstanceAsync(string clientSecret, string clientId)
+
+    /// <summary>
+    /// Creates a DArt instance using stored tokens from config.
+    /// Use this for normal app startup when the user has already authorized.
+    /// </summary>
+    public static async Task<DArt> GetInstanceAsync()
     {
-        DArt dArt = new(clientSecret, clientId);
+        var accessToken = Services.Settings.DeviantArtAccessToken;
+        var refreshToken = Services.Settings.DeviantArtRefreshToken;
+        var expiresAt = Services.Settings.DeviantArtTokenExpiresAt;
+
+        if (string.IsNullOrEmpty(accessToken) && string.IsNullOrEmpty(refreshToken))
+        {
+            throw new InvalidOperationException("No DeviantArt tokens found. User needs to authorize via the Setup Wizard.");
+        }
+
+        var dArt = new DArt(accessToken ?? "", refreshToken ?? "", 0);
+        dArt.TokenExpiresAt = expiresAt; // Use the stored expiry time
+
+        // Ensure we have a valid token
         await dArt.GetClientAccessTokenAsync();
         return dArt;
     }
 
+    /// <summary>
+    /// Initiates the full OAuth2 PKCE authorization flow.
+    /// Opens the browser, waits for the user to authorize, and returns a new DArt instance.
+    /// Also persists the tokens to AppConfig.
+    /// </summary>
+    public static async Task<DArt> AuthorizeAsync()
+    {
+        Logger.Info("Starting DeviantArt authorization flow");
+        var result = await OAuthCallbackListener.AuthorizeAsync();
+
+        // Persist tokens to config
+        Services.Settings.DeviantArtAccessToken = result.AccessToken;
+        Services.Settings.DeviantArtRefreshToken = result.RefreshToken;
+        Services.Settings.DeviantArtTokenExpiresAt = DateTime.UtcNow.AddSeconds(result.ExpiresIn - 60);
+        Services.Settings.Save();
+
+        return new DArt(result.AccessToken, result.RefreshToken, result.ExpiresIn);
+    }
+
     private async Task GetClientAccessTokenAsync()
     {
-
         if (!string.IsNullOrEmpty(ClientAccessToken) && DateTime.UtcNow < TokenExpiresAt)
         {
             Logger.Debug("Using cached DeviantArt token (expires at {ExpiresAt})", TokenExpiresAt);
             return;
         }
 
-        Logger.Debug("Token expired or not available, generating new token");
-        await GenerateNewAccessToken();
+        Logger.Debug("Token expired or not available, refreshing");
+        await RefreshAccessTokenAsync();
     }
 
     public static async Task<bool> IsTokenValidAsync(string clientAccessToken)
@@ -97,30 +129,41 @@ public class DArt : BindableBase, IDisposable
         return tokenResponse?.Status == "success";
     }
 
-    private async Task GenerateNewAccessToken()
+    private async Task RefreshAccessTokenAsync()
     {
-        Logger.Debug("Requesting new DeviantArt OAuth token");
-        var tokenUri = new Uri("https://www.deviantart.com/oauth2/token");
-        var form = new Dictionary<string, string>
+        if (string.IsNullOrEmpty(RefreshToken))
         {
-            ["client_id"] = ClientId,
-            ["client_secret"] = ClientSecret,
-            ["grant_type"] = "client_credentials"
-        };
-        var jsonData = await PostFormWithRetryAsync(tokenUri, form);
-        var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
-
-        if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))
-        {
-            throw new InvalidOperationException("Failed to obtain DeviantArt access token.");
+            throw new InvalidOperationException("No refresh token available. User needs to re-authorize via the Setup Wizard.");
         }
 
-        ClientAccessToken = tokenResponse.AccessToken;
-        // Subtract 60 seconds from the token's expiration time to account for possible clock skew,
-        // network delays, and to prevent race conditions where the token might expire during use.
-        TokenExpiresAt = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn - 60);
-        
-        Logger.Info("DeviantArt token obtained successfully (expires at {ExpiresAt})", TokenExpiresAt);
+        Logger.Debug("Refreshing DeviantArt access token");
+        try
+        {
+            var result = await OAuthCallbackListener.RefreshTokenAsync(RefreshToken);
+
+            ClientAccessToken = result.AccessToken;
+            RefreshToken = result.RefreshToken;
+            // Subtract 60 seconds to account for clock skew and network delays.
+            TokenExpiresAt = DateTime.UtcNow.AddSeconds(result.ExpiresIn - 60);
+
+            // Persist updated tokens to config
+            Services.Settings.DeviantArtAccessToken = result.AccessToken;
+            Services.Settings.DeviantArtRefreshToken = result.RefreshToken;
+            Services.Settings.DeviantArtTokenExpiresAt = TokenExpiresAt;
+            Services.Settings.Save();
+
+            Logger.Info("DeviantArt token refreshed successfully (expires at {ExpiresAt})", TokenExpiresAt);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed to refresh DeviantArt token. User may need to re-authorize.");
+            // Clear invalid tokens so the app knows to re-authorize
+            Services.Settings.DeviantArtAccessToken = "";
+            Services.Settings.DeviantArtRefreshToken = "";
+            Services.Settings.DeviantArtTokenExpiresAt = DateTime.MinValue;
+            Services.Settings.Save();
+            throw;
+        }
     }
 
     public async Task<DArtBrowseResult> Browse(string query, int offset = 0)
@@ -129,10 +172,10 @@ public class DArt : BindableBase, IDisposable
 
         var url = GetBrowseApiUrl(query, offset);
         var jsonData = await GetStringWithRetryAsync(new Uri(url));
-        
+
         var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, SerializerSettings);
 
-        return result;        
+        return result;
     }
 
     /// <summary>
@@ -157,7 +200,7 @@ public class DArt : BindableBase, IDisposable
         var targetDirectoryPath = FileUtils.CreateDirectoryInFoliConTemp(deviationId);
         dArtDownloadResponse.LocalDownloadPath = targetDirectoryPath;
         var downloadResponse = await Services.HttpC.GetAsync(dArtDownloadResponse.Src, cancellationToken);
-        
+
         if (FileUtils.IsCompressedArchive(dArtDownloadResponse.Filename))
         {
             await ProcessCompressedFiles(downloadResponse, targetDirectoryPath,cancellationToken, progressCallback);
@@ -201,10 +244,10 @@ public class DArt : BindableBase, IDisposable
         await using var file = File.Create(Path.Combine(targetDirectoryPath, filename));
         await fileStream.CopyToAsync(file);
     }
-    
+
     private static string AppendAccessToken(string url, string token) =>
         $"{url}?access_token={Uri.EscapeDataString(token)}";
-    
+
     private static string GetPlaceboApiUrl(string clientAccessToken) =>
         AppendAccessToken($"{DeviantArtApiBase}/placebo", clientAccessToken);
 
@@ -213,10 +256,10 @@ public class DArt : BindableBase, IDisposable
         var q = Uri.EscapeDataString($"{query} folder icon");
         return $"{DeviantArtApiBase}/browse/home?offset={offset}&q={q}&limit=20&access_token={Uri.EscapeDataString(ClientAccessToken)}";
     }
-    
+
     private string GetDownloadApiUrl(string deviationId) =>
         AppendAccessToken($"{DeviantArtApiBase}/deviation/download/{Uri.EscapeDataString(deviationId)}", ClientAccessToken);
-    
+
     public void Dispose()
     {
         Dispose(true);
@@ -238,7 +281,7 @@ public class DArt : BindableBase, IDisposable
     }
 
     private static async Task<string> ExecuteWithRetryAsync(
-        Func<CancellationToken, Task<HttpResponseMessage>> requestFunc, 
+        Func<CancellationToken, Task<HttpResponseMessage>> requestFunc,
         string requestType,
         CancellationToken cancellationToken = default)
     {
@@ -262,11 +305,4 @@ public class DArt : BindableBase, IDisposable
 
     private static Task<string> GetStringWithRetryAsync(Uri uri, CancellationToken cancellationToken = default) =>
         ExecuteWithRetryAsync(ct => Services.HttpC.GetAsync(uri, ct), "GET", cancellationToken);
-
-    private static Task<string> PostFormWithRetryAsync(Uri uri, IDictionary<string, string> formValues, CancellationToken cancellationToken = default) =>
-        ExecuteWithRetryAsync(async ct =>
-        {
-            using var content = new FormUrlEncodedContent(formValues);
-            return await Services.HttpC.PostAsync(uri, content, ct);
-        }, "POST", cancellationToken);
 }

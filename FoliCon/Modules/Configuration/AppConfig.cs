@@ -5,11 +5,14 @@ namespace FoliCon.Modules.Configuration;
 [Localizable(false)]
 public class AppConfig : GlobalDataHelper
 {
+    // DeviantArt OAuth tokens (replaces DevClientId/DevClientSecret from client_credentials flow)
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
-    public string DevClientId { get; set; }
+    public string DeviantArtAccessToken { get; set; }
 
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
-    public string DevClientSecret { get; set; }
+    public string DeviantArtRefreshToken { get; set; }
+
+    public DateTime DeviantArtTokenExpiresAt { get; set; }
 
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
     public string TmdbKey { get; set; }

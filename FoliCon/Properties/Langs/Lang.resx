@@ -719,11 +719,23 @@ and refresh Icon Cache?</value>
     <data name="OnboardingDeviantArtStep" xml:space="preserve">
       <value>DeviantArt (Professional Mode)</value>
     </data>
-    <data name="OnboardingDeviantArtInstructions" xml:space="preserve">
-      <value>DeviantArt enables Professional mode for custom icon searches.</value>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>Log in to DeviantArt to enable Professional mode for custom icon searches.</value>
     </data>
-    <data name="OnboardingDeviantArtGetKey" xml:space="preserve">
-      <value>Register a DeviantArt app →</value>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>Connect to DeviantArt</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>Connected</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>Not connected</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>Connecting...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>Failed to connect. Please try again.</value>
     </data>
     <data name="OnboardingValidate" xml:space="preserve">
       <value>Validate</value>

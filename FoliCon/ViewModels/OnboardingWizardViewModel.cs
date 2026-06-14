@@ -104,38 +104,39 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     #region DeviantArt Properties
 
-    private string _devClientId = "";
-    public string DevClientId
+    public bool IsDeviantArtConnected
     {
-        get => _devClientId;
+        get;
         set
         {
-            if (SetProperty(ref _devClientId, value))
-                ResetDeviantArtValidation();
+            if (!SetProperty(ref field, value)) return;
+            RaisePropertyChanged(nameof(IsDeviantArtConfigured));
+            RaisePropertyChanged(nameof(DeviantArtConnectionStatus));
         }
     }
 
-    private string _devClientSecret = "";
-    public string DevClientSecret
+    private bool _isDeviantArtConnecting;
+    public bool IsDeviantArtConnecting { get => _isDeviantArtConnecting; set => SetProperty(ref _isDeviantArtConnecting, value); }
+
+    private string _deviantArtConnectionMessage = "";
+    public string DeviantArtConnectionMessage
     {
-        get => _devClientSecret;
+        get => _deviantArtConnectionMessage;
         set
         {
-            if (SetProperty(ref _devClientSecret, value))
-                ResetDeviantArtValidation();
+            if (SetProperty(ref _deviantArtConnectionMessage, value))
+                RaisePropertyChanged(nameof(HasDeviantArtConnectionMessage));
         }
     }
 
-    private bool _isDeviantArtValidating;
-    public bool IsDeviantArtValidating { get => _isDeviantArtValidating; set => SetProperty(ref _isDeviantArtValidating, value); }
+    public bool HasDeviantArtConnectionMessage => !string.IsNullOrEmpty(DeviantArtConnectionMessage);
 
-    private bool? _isDeviantArtValid;
-    public bool? IsDeviantArtValid { get => _isDeviantArtValid; set => SetProperty(ref _isDeviantArtValid, value); }
+    public bool IsDeviantArtConfigured => IsDeviantArtConnected;
 
-    private string _deviantArtValidationMessage = "";
-    public string DeviantArtValidationMessage { get => _deviantArtValidationMessage; set => SetProperty(ref _deviantArtValidationMessage, value); }
-
-    public bool IsDeviantArtConfigured => !string.IsNullOrWhiteSpace(DevClientId) && !string.IsNullOrWhiteSpace(DevClientSecret);
+    public string DeviantArtConnectionStatus =>
+        IsDeviantArtConnecting ? Lang.OnboardingDeviantArtConnecting :
+        IsDeviantArtConnected ? Lang.OnboardingDeviantArtConnected :
+        Lang.OnboardingDeviantArtNotConnected;
 
     #endregion
 
@@ -146,7 +147,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
     public DelegateCommand SkipCommand { get; }
     public DelegateCommand ValidateTmdbCommand { get; }
     public DelegateCommand ValidateIgdbCommand { get; }
-    public DelegateCommand ValidateDeviantArtCommand { get; }
+    public DelegateCommand ConnectDeviantArtCommand { get; }
     public DelegateCommand<string> CloseDialogCommand { get; }
 
     #endregion
@@ -165,17 +166,17 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         SkipCommand = new DelegateCommand(ExecuteSkip);
         ValidateTmdbCommand = new DelegateCommand(async () => await ValidateTmdbAsync());
         ValidateIgdbCommand = new DelegateCommand(async () => await ValidateIgdbAsync());
-        ValidateDeviantArtCommand = new DelegateCommand(async () => await ValidateDeviantArtAsync());
+        ConnectDeviantArtCommand = new DelegateCommand(async () => await ConnectDeviantArtAsync());
         CloseDialogCommand = new DelegateCommand<string>(CloseDialog);
 
-        // Pre-populate from existing config
-        FileUtils.ReadApiConfiguration(out var tmdbKey, out var igdbClientId, out var igdbClientSecret,
-            out var devClientSecret, out var devClientId);
+        // Pre-populate TMDB + IGDB from existing config
+        FileUtils.ReadApiConfiguration(out var tmdbKey, out var igdbClientId, out var igdbClientSecret);
         TmdbKey = tmdbKey ?? "";
         IgdbClientId = igdbClientId ?? "";
         IgdbClientSecret = igdbClientSecret ?? "";
-        DevClientId = devClientId ?? "";
-        DevClientSecret = devClientSecret ?? "";
+
+        // Check if DeviantArt is already connected (has stored tokens)
+        IsDeviantArtConnected = !string.IsNullOrEmpty(Services.Settings.DeviantArtAccessToken);
     }
 
     private void ExecuteNext()
@@ -199,20 +200,18 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
     private void ExecuteSkip()
     {
         // Skip means "don't configure this service right now" — advance without clearing fields.
-        // Pre-populated values from existing config are preserved.
-        // If the user deliberately cleared a field before hitting Skip, that change remains.
         CurrentStep++;
     }
 
     private void SaveConfiguration()
     {
         Logger.Info("Saving API configuration from onboarding wizard.");
-        FileUtils.WriteApiConfiguration(TmdbKey ?? "", IgdbClientId ?? "", IgdbClientSecret ?? "",
-            DevClientSecret ?? "", DevClientId ?? "");
+        FileUtils.WriteApiConfiguration(TmdbKey ?? "", IgdbClientId ?? "", IgdbClientSecret ?? "");
+        // DeviantArt tokens are already persisted by DArt.AuthorizeAsync() during the Connect step
         FileUtils.ClearCachedTokens();
     }
 
-    #region Validation Methods
+    #region Validation & Connection Methods
 
     private async Task ValidateTmdbAsync()
     {
@@ -276,34 +275,34 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         }
     }
 
-    private async Task ValidateDeviantArtAsync()
+    private async Task ConnectDeviantArtAsync()
     {
-        if (string.IsNullOrWhiteSpace(DevClientId) || string.IsNullOrWhiteSpace(DevClientSecret))
-        {
-            IsDeviantArtValid = false;
-            DeviantArtValidationMessage = Lang.OnboardingValidationFailed + "Client ID and Secret cannot be empty.";
-            return;
-        }
-
-        IsDeviantArtValidating = true;
-        IsDeviantArtValid = null;
-        DeviantArtValidationMessage = Lang.OnboardingValidating;
+        IsDeviantArtConnecting = true;
+        DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnecting;
 
         try
         {
-            var result = await ApiKeyValidator.ValidateDeviantArtCredentialsAsync(DevClientId, DevClientSecret);
-            IsDeviantArtValid = result.IsValid;
-            DeviantArtValidationMessage = result.IsValid ? Lang.OnboardingValidationSuccess : result.Message;
+            Logger.Info("Initiating DeviantArt OAuth authorization from wizard");
+            await DArt.AuthorizeAsync();
+            IsDeviantArtConnected = true;
+            DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnected;
+            Logger.Info("DeviantArt authorization successful");
+        }
+        catch (TimeoutException ex)
+        {
+            Logger.Warn(ex, "DeviantArt authorization timed out");
+            IsDeviantArtConnected = false;
+            DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnectFailed + " " + Lang.OnboardingNetworkError;
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "Error during DeviantArt validation.");
-            IsDeviantArtValid = false;
-            DeviantArtValidationMessage = Lang.OnboardingValidationFailed + ex.Message;
+            Logger.Error(ex, "DeviantArt authorization failed");
+            IsDeviantArtConnected = false;
+            DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnectFailed + " " + ex.Message;
         }
         finally
         {
-            IsDeviantArtValidating = false;
+            IsDeviantArtConnecting = false;
         }
     }
 
@@ -317,12 +316,6 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
     {
         if (IsIgdbValid != null) { IsIgdbValid = null; IgdbValidationMessage = ""; }
         RaisePropertyChanged(nameof(IsIgdbConfigured));
-    }
-
-    private void ResetDeviantArtValidation()
-    {
-        if (IsDeviantArtValid != null) { IsDeviantArtValid = null; DeviantArtValidationMessage = ""; }
-        RaisePropertyChanged(nameof(IsDeviantArtConfigured));
     }
 
     #endregion
