@@ -31,11 +31,9 @@
         <GroupBox Style="{StaticResource GroupBoxTab}" Header="DeviantArt Api" Grid.Row="0"
                   hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <hc:TextBox hc:InfoElement.Necessary="True"
-                            Text="{Binding DArtClient, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                <hc:TextBox Text="{Binding DArtClient, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
-                <hc:TextBox hc:InfoElement.Necessary="True"
-                            Text="{Binding DArtClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                <hc:TextBox Text="{Binding DArtClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
             </StackPanel>
         </GroupBox>
@@ -43,16 +41,13 @@
                   hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal" FontStyle="Normal"
                   hc:TitleElement.Background="BlueViolet">
             <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <hc:TextBox hc:InfoElement.Necessary="True"
-                            Text="{Binding IgdbClientSecret, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                <hc:TextBox Text="{Binding IgdbClientSecret, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
-                <hc:TextBox hc:InfoElement.Necessary="True"
-                            Text="{Binding IgdbClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                <hc:TextBox Text="{Binding IgdbClientId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource TextBoxExtend}" hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
             </StackPanel>
         </GroupBox>
-        <hc:TextBox hc:InfoElement.Necessary="True"
-                    Text="{Binding TmdbKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"
+        <hc:TextBox Text="{Binding TmdbKey,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Row="2"
                     hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.TMDBAPIKey}}" Margin="8,7,8,0" />
         <Button Grid.Row="3" Command="{Binding SaveCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.Save}}" Style="{StaticResource ButtonPrimary}"
                  Width="75" Margin="266,5,0,0" FontSize="16" HorizontalAlignment="Left" Height="auto"

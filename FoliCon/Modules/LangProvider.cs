@@ -217,6 +217,32 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(WritePermissionAllowed));
         OnPropertyChanged(nameof(WritePermissionNotAllowed));
         OnPropertyChanged(nameof(Year));
+        OnPropertyChanged(nameof(OnboardingTitle));
+        OnPropertyChanged(nameof(OnboardingWelcome));
+        OnPropertyChanged(nameof(OnboardingGetStarted));
+        OnPropertyChanged(nameof(OnboardingTmdbStep));
+        OnPropertyChanged(nameof(OnboardingTmdbInstructions));
+        OnPropertyChanged(nameof(OnboardingTmdbGetKey));
+        OnPropertyChanged(nameof(OnboardingIgdbStep));
+        OnPropertyChanged(nameof(OnboardingIgdbInstructions));
+        OnPropertyChanged(nameof(OnboardingIgdbGetKey));
+        OnPropertyChanged(nameof(OnboardingDeviantArtStep));
+        OnPropertyChanged(nameof(OnboardingDeviantArtInstructions));
+        OnPropertyChanged(nameof(OnboardingDeviantArtGetKey));
+        OnPropertyChanged(nameof(OnboardingValidate));
+        OnPropertyChanged(nameof(OnboardingSkip));
+        OnPropertyChanged(nameof(OnboardingNext));
+        OnPropertyChanged(nameof(OnboardingBack));
+        OnPropertyChanged(nameof(OnboardingFinish));
+        OnPropertyChanged(nameof(OnboardingValidationSuccess));
+        OnPropertyChanged(nameof(OnboardingValidationFailed));
+        OnPropertyChanged(nameof(OnboardingNetworkError));
+        OnPropertyChanged(nameof(OnboardingValidating));
+        OnPropertyChanged(nameof(OnboardingSummary));
+        OnPropertyChanged(nameof(OnboardingConfigured));
+        OnPropertyChanged(nameof(OnboardingSkipped));
+        OnPropertyChanged(nameof(ServiceNotConfigured));
+        OnPropertyChanged(nameof(SetupWizard));
     }
 
     public string APIKeysConfiguration => Lang.APIKeysConfiguration;
@@ -395,6 +421,32 @@ public class LangProvider : INotifyPropertyChanged
     public string WritePermissionAllowed => Lang.WritePermissionAllowed;
     public string WritePermissionNotAllowed => Lang.WritePermissionNotAllowed;
     public string Year => Lang.Year;
+    public string OnboardingTitle => Lang.OnboardingTitle;
+    public string OnboardingWelcome => Lang.OnboardingWelcome;
+    public string OnboardingGetStarted => Lang.OnboardingGetStarted;
+    public string OnboardingTmdbStep => Lang.OnboardingTmdbStep;
+    public string OnboardingTmdbInstructions => Lang.OnboardingTmdbInstructions;
+    public string OnboardingTmdbGetKey => Lang.OnboardingTmdbGetKey;
+    public string OnboardingIgdbStep => Lang.OnboardingIgdbStep;
+    public string OnboardingIgdbInstructions => Lang.OnboardingIgdbInstructions;
+    public string OnboardingIgdbGetKey => Lang.OnboardingIgdbGetKey;
+    public string OnboardingDeviantArtStep => Lang.OnboardingDeviantArtStep;
+    public string OnboardingDeviantArtInstructions => Lang.OnboardingDeviantArtInstructions;
+    public string OnboardingDeviantArtGetKey => Lang.OnboardingDeviantArtGetKey;
+    public string OnboardingValidate => Lang.OnboardingValidate;
+    public string OnboardingSkip => Lang.OnboardingSkip;
+    public string OnboardingNext => Lang.OnboardingNext;
+    public string OnboardingBack => Lang.OnboardingBack;
+    public string OnboardingFinish => Lang.OnboardingFinish;
+    public string OnboardingValidationSuccess => Lang.OnboardingValidationSuccess;
+    public string OnboardingValidationFailed => Lang.OnboardingValidationFailed;
+    public string OnboardingNetworkError => Lang.OnboardingNetworkError;
+    public string OnboardingValidating => Lang.OnboardingValidating;
+    public string OnboardingSummary => Lang.OnboardingSummary;
+    public string OnboardingConfigured => Lang.OnboardingConfigured;
+    public string OnboardingSkipped => Lang.OnboardingSkipped;
+    public string ServiceNotConfigured => Lang.ServiceNotConfigured;
+    public string SetupWizard => Lang.SetupWizard;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -581,5 +633,32 @@ public class LangKeys
     public static string WritePermissionAllowed = nameof(WritePermissionAllowed);
     public static string WritePermissionNotAllowed = nameof(WritePermissionNotAllowed);
     public static string Year = nameof(Year);
-    
+
+    public static string OnboardingTitle = nameof(OnboardingTitle);
+    public static string OnboardingWelcome = nameof(OnboardingWelcome);
+    public static string OnboardingGetStarted = nameof(OnboardingGetStarted);
+    public static string OnboardingTmdbStep = nameof(OnboardingTmdbStep);
+    public static string OnboardingTmdbInstructions = nameof(OnboardingTmdbInstructions);
+    public static string OnboardingTmdbGetKey = nameof(OnboardingTmdbGetKey);
+    public static string OnboardingIgdbStep = nameof(OnboardingIgdbStep);
+    public static string OnboardingIgdbInstructions = nameof(OnboardingIgdbInstructions);
+    public static string OnboardingIgdbGetKey = nameof(OnboardingIgdbGetKey);
+    public static string OnboardingDeviantArtStep = nameof(OnboardingDeviantArtStep);
+    public static string OnboardingDeviantArtInstructions = nameof(OnboardingDeviantArtInstructions);
+    public static string OnboardingDeviantArtGetKey = nameof(OnboardingDeviantArtGetKey);
+    public static string OnboardingValidate = nameof(OnboardingValidate);
+    public static string OnboardingSkip = nameof(OnboardingSkip);
+    public static string OnboardingNext = nameof(OnboardingNext);
+    public static string OnboardingBack = nameof(OnboardingBack);
+    public static string OnboardingFinish = nameof(OnboardingFinish);
+    public static string OnboardingValidationSuccess = nameof(OnboardingValidationSuccess);
+    public static string OnboardingValidationFailed = nameof(OnboardingValidationFailed);
+    public static string OnboardingNetworkError = nameof(OnboardingNetworkError);
+    public static string OnboardingValidating = nameof(OnboardingValidating);
+    public static string OnboardingSummary = nameof(OnboardingSummary);
+    public static string OnboardingConfigured = nameof(OnboardingConfigured);
+    public static string OnboardingSkipped = nameof(OnboardingSkipped);
+    public static string ServiceNotConfigured = nameof(ServiceNotConfigured);
+    public static string SetupWizard = nameof(SetupWizard);
+
 }

@@ -689,4 +689,82 @@ and refresh Icon Cache?</value>
     <data name="RefreshingFolder" xml:space="preserve">
       <value>Refreshing folder</value>
     </data>
+    <data name="OnboardingTitle" xml:space="preserve">
+      <value>Set Up FoliCon</value>
+    </data>
+    <data name="OnboardingWelcome" xml:space="preserve">
+      <value>FoliCon needs API keys to search for media artwork. Each service is optional — configure only what you need.</value>
+    </data>
+    <data name="OnboardingGetStarted" xml:space="preserve">
+      <value>Get Started</value>
+    </data>
+    <data name="OnboardingTmdbStep" xml:space="preserve">
+      <value>TMDB (Movies &amp; TV)</value>
+    </data>
+    <data name="OnboardingTmdbInstructions" xml:space="preserve">
+      <value>TMDB provides movie and TV show metadata and artwork.</value>
+    </data>
+    <data name="OnboardingTmdbGetKey" xml:space="preserve">
+      <value>Get your TMDB API key →</value>
+    </data>
+    <data name="OnboardingIgdbStep" xml:space="preserve">
+      <value>IGDB / Twitch (Games)</value>
+    </data>
+    <data name="OnboardingIgdbInstructions" xml:space="preserve">
+      <value>IGDB provides game metadata. You need a Twitch application to access it.</value>
+    </data>
+    <data name="OnboardingIgdbGetKey" xml:space="preserve">
+      <value>Register a Twitch application →</value>
+    </data>
+    <data name="OnboardingDeviantArtStep" xml:space="preserve">
+      <value>DeviantArt (Professional Mode)</value>
+    </data>
+    <data name="OnboardingDeviantArtInstructions" xml:space="preserve">
+      <value>DeviantArt enables Professional mode for custom icon searches.</value>
+    </data>
+    <data name="OnboardingDeviantArtGetKey" xml:space="preserve">
+      <value>Register a DeviantArt app →</value>
+    </data>
+    <data name="OnboardingValidate" xml:space="preserve">
+      <value>Validate</value>
+    </data>
+    <data name="OnboardingSkip" xml:space="preserve">
+      <value>Skip</value>
+    </data>
+    <data name="OnboardingNext" xml:space="preserve">
+      <value>Next</value>
+    </data>
+    <data name="OnboardingBack" xml:space="preserve">
+      <value>Back</value>
+    </data>
+    <data name="OnboardingFinish" xml:space="preserve">
+      <value>Done</value>
+    </data>
+    <data name="OnboardingValidationSuccess" xml:space="preserve">
+      <value>Key validated successfully!</value>
+    </data>
+    <data name="OnboardingValidationFailed" xml:space="preserve">
+      <value>Validation failed: </value>
+    </data>
+    <data name="OnboardingNetworkError" xml:space="preserve">
+      <value>Could not reach the service. Check your internet connection.</value>
+    </data>
+    <data name="OnboardingValidating" xml:space="preserve">
+      <value>Validating...</value>
+    </data>
+    <data name="OnboardingSummary" xml:space="preserve">
+      <value>Setup Summary</value>
+    </data>
+    <data name="OnboardingConfigured" xml:space="preserve">
+      <value>Configured</value>
+    </data>
+    <data name="OnboardingSkipped" xml:space="preserve">
+      <value>Skipped</value>
+    </data>
+    <data name="ServiceNotConfigured" xml:space="preserve">
+      <value>{0} is not configured. Go to Settings → API Keys to set it up.</value>
+    </data>
+    <data name="SetupWizard" xml:space="preserve">
+      <value>Setup Wizard</value>
+    </data>
 </root>

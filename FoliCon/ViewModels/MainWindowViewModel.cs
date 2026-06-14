@@ -193,6 +193,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     #region SettingMenu
 
     public DelegateCommand ApiConfigCommand { get; set; }
+    public DelegateCommand SetupWizardCommand { get; set; }
     public DelegateCommand PosterIconConfigCommand { get; set; }
     public DelegateCommand SubfolderProcessingConfigCommand { get; set; }
 
@@ -295,6 +296,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 return;
             }
 
+            if (!IsServiceAvailableForCurrentMode())
+            {
+                return;
+            }
+
             await InitializeClientIfRequired();
 
             PrepareForSearchOperations();
@@ -316,6 +322,43 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             HandleException(e);
         }
+    }
+
+    /// <summary>
+    /// Checks whether the required API service is configured for the current search mode.
+    /// Shows a warning if the service is not available and returns false.
+    /// </summary>
+    private bool IsServiceAvailableForCurrentMode()
+    {
+        if (IconMode == "Professional")
+        {
+            if (_dArtObject != null) return true;
+            Logger.Warn("DeviantArt not configured. Professional mode unavailable.");
+            MessageBox.Show(CustomMessageBox.Warning(
+                Lang.ServiceNotConfigured.Format("DeviantArt"),
+                Lang.Configuration));
+            return false;
+        }
+
+        // Poster mode
+        if (SearchMode == MediaTypes.Game)
+        {
+            if (_igdbObject != null) return true;
+            Logger.Warn("IGDB not configured. Game search unavailable.");
+            MessageBox.Show(CustomMessageBox.Warning(
+                Lang.ServiceNotConfigured.Format("IGDB/Twitch"),
+                Lang.Configuration));
+            return false;
+        }
+
+        // Movie, TV, Auto — all require TMDB
+        if (_tmdbObject != null) return true;
+        Logger.Warn("TMDB not configured. Movie/TV search unavailable.");
+        MessageBox.Show(CustomMessageBox.Warning(
+            Lang.ServiceNotConfigured.Format("TMDB"),
+            Lang.Configuration));
+        return false;
+
     }
 
     private bool ValidateFolder()
@@ -672,6 +715,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         Logger.Debug("Initializing Delegates for MainWindow.");
         ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(_ => { }); });
+        SetupWizardCommand = new DelegateCommand(delegate { _dialogService.ShowOnboardingWizard(_ => { }); });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
         SubfolderProcessingConfigCommand = new DelegateCommand(delegate { _dialogService.ShowSubfolderProcessingConfig(_ => { }); });
         AboutCommand = new DelegateCommand(AboutMethod);
@@ -958,51 +1002,86 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
+        
+        if (!Services.Settings.OnboardingCompleted)
+        {
+            Logger.Info("Onboarding not completed, showing Setup Wizard.");
+            _dialogService.ShowOnboardingWizard(_ => { });
+            // Re-read config after wizard (user may have entered keys)
+        }
+
         FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret, out var devClientSecret,
             out var devClientId);
-        if (string.IsNullOrEmpty(tmdbapiKey)
-            || string.IsNullOrEmpty(igdbClientId) || string.IsNullOrEmpty(igdbClientSecret)
-            || string.IsNullOrEmpty(devClientSecret) || string.IsNullOrEmpty(devClientId))
-        {
-            Logger.Warn("API Keys not provided, Showing API Config Window.");
-            _dialogService.ShowApiConfig(r =>
-            {
-                if (r.Result != ButtonResult.Cancel)
-                {
-                    FileUtils.ReadApiConfiguration(out tmdbapiKey, out igdbClientId, out igdbClientSecret, out devClientSecret,
-                        out devClientId);
-                    return;
-                }
 
-                MessageBox.Show(CustomMessageBox.Error($"{Lang.APIKeysNotProvided}{Environment.NewLine}" +
-                                                       Lang.AppWillClose,
-                    Lang.ClosingApplication));
-                Logger.Warn("API Keys not provided, Closing Application.");
-                Environment.Exit(0);
-            });
-        }
-        _tmdbClient = new TMDbClient(tmdbapiKey);
-        var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
-        _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
-        _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
-        
-        // Initialize DeviantArt with graceful failure handling
-        try
+        // Initialize TMDB (optional)
+        if (!string.IsNullOrEmpty(tmdbapiKey))
         {
-            Logger.Debug("Initializing DeviantArt client...");
-            _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
-            Logger.Debug("DeviantArt client initialized successfully.");
+            try
+            {
+                _tmdbClient = new TMDbClient(tmdbapiKey);
+                _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
+                Logger.Info("TMDB client initialized successfully.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to initialize TMDB client. Movie/TV search will be unavailable.");
+                _tmdbClient = null;
+                _tmdbObject = null;
+            }
         }
-        catch (Exception ex)
+        else
         {
-            Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. Professional mode will be unavailable.", ex.Message);
+            Logger.Info("TMDB API key not configured. Movie/TV search will be unavailable.");
+            _tmdbClient = null;
+            _tmdbObject = null;
+        }
+
+        // Initialize IGDB (optional)
+        if (!string.IsNullOrEmpty(igdbClientId) && !string.IsNullOrEmpty(igdbClientSecret))
+        {
+            try
+            {
+                var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
+                _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
+                Logger.Info("IGDB client initialized successfully.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to initialize IGDB client. Game search will be unavailable.");
+                _igdbObject = null;
+            }
+        }
+        else
+        {
+            Logger.Info("IGDB credentials not configured. Game search will be unavailable.");
+            _igdbObject = null;
+        }
+
+        // Initialize DeviantArt (optional — already had graceful failure)
+        if (!string.IsNullOrEmpty(devClientId) && !string.IsNullOrEmpty(devClientSecret))
+        {
+            try
+            {
+                Logger.Debug("Initializing DeviantArt client...");
+                _dArtObject = await DArt.GetInstanceAsync(devClientSecret, devClientId);
+                Logger.Debug("DeviantArt client initialized successfully.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. Professional mode will be unavailable.", ex.Message);
+                _dArtObject = null;
+
+                MessageBox.Show(CustomMessageBox.Warning(
+                    Lang.DAConnectionFailedMessage,
+                    Lang.DAConnectionFailedTitle));
+            }
+        }
+        else
+        {
+            Logger.Info("DeviantArt credentials not configured. Professional mode will be unavailable.");
             _dArtObject = null;
-            
-            MessageBox.Show(CustomMessageBox.Warning(
-                Lang.DAConnectionFailedMessage,
-                Lang.DAConnectionFailedTitle));
         }
-        
+
         Logger.Debug("Client Objects Initialized.");
     }
 

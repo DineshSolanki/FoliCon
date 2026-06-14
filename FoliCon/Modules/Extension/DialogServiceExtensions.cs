@@ -49,6 +49,13 @@ public static class DialogServiceExtensions
     {
         dialogService.ShowDialog("ApiConfig", callBack);
     }
+
+    public static void ShowOnboardingWizard(this IDialogService dialogService, Action<IDialogResult> callBack)
+    {
+        Logger.Debug("Showing Onboarding Wizard.");
+        dialogService.ShowDialog("OnboardingWizard", callBack);
+    }
+    
     public static void ShowPosterIconConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowPosterIconConfig called");

@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 public class ApiConfigurationViewModel : BindableBase, IDialogAware
 {
@@ -29,16 +29,12 @@ public class ApiConfigurationViewModel : BindableBase, IDialogAware
 
     private void SaveMethod()
     {
-        if (string.IsNullOrEmpty(TmdbKey) || string.IsNullOrEmpty(IgdbClientSecret) || string.IsNullOrEmpty(IgdbClientId) || string.IsNullOrEmpty(DArtClient) || string.IsNullOrEmpty(DArtClientId))
-        {
-            MessageBox.Error("All fields are required!", "Invalid Value");
-        }
-        else
-        {
-            FileUtils.WriteApiConfiguration(TmdbKey, IgdbClientId, IgdbClientSecret, DArtClient, DArtClientId);
-            MessageBox.Success("API configuration Saved.", "Success");
-            CloseDialog("true");
-        }
+        // Allow partial configuration — services are optional
+        FileUtils.WriteApiConfiguration(TmdbKey ?? "", IgdbClientId ?? "", IgdbClientSecret ?? "", DArtClient ?? "",
+            DArtClientId ?? "");
+        FileUtils.ClearCachedTokens();
+        MessageBox.Success("API configuration Saved.", "Success");
+        CloseDialog("true");
     }
 
     #region DialogMethods

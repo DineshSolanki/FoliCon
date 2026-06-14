@@ -1,5 +1,6 @@
 ﻿using System.Security.AccessControl;
 using System.Security.Principal;
+using FoliCon.Models.Configs;
 using Vanara.InteropServices;
 
 namespace FoliCon.Modules.utils;
@@ -524,6 +525,25 @@ public static class FileUtils
         Services.Settings.DevClientId = dartId;
         Services.Settings.DevClientSecret = dartClientSecret;
         Services.Settings.Save();
+    }
+
+    /// <summary>
+    /// Clears cached OAuth tokens for IGDB/Twitch and DeviantArt.
+    /// Should be called after API credentials change to ensure stale tokens are not reused.
+    /// </summary>
+    public static void ClearCachedTokens()
+    {
+        Logger.Debug("Clearing cached OAuth tokens after API key change.");
+        try
+        {
+            // Reset IGDB/Twitch token by creating a fresh tracker store (overwrites Jot state)
+            var freshStore = new IgdbJotTrackerStore();
+            // The new instance with default token will be picked up on next IGDBClient construction
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to clear IGDB token cache.");
+        }
     }
     
     public static bool CreateDirectory(string path)

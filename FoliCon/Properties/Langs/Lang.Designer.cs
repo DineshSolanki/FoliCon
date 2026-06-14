@@ -1737,5 +1737,161 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("Year", resourceCulture);
             }
         }
+
+        public static string OnboardingTitle {
+            get {
+                return ResourceManager.GetString("OnboardingTitle", resourceCulture);
+            }
+        }
+
+        public static string OnboardingWelcome {
+            get {
+                return ResourceManager.GetString("OnboardingWelcome", resourceCulture);
+            }
+        }
+
+        public static string OnboardingGetStarted {
+            get {
+                return ResourceManager.GetString("OnboardingGetStarted", resourceCulture);
+            }
+        }
+
+        public static string OnboardingTmdbStep {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbStep", resourceCulture);
+            }
+        }
+
+        public static string OnboardingTmdbInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbInstructions", resourceCulture);
+            }
+        }
+
+        public static string OnboardingTmdbGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbGetKey", resourceCulture);
+            }
+        }
+
+        public static string OnboardingIgdbStep {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbStep", resourceCulture);
+            }
+        }
+
+        public static string OnboardingIgdbInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbInstructions", resourceCulture);
+            }
+        }
+
+        public static string OnboardingIgdbGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbGetKey", resourceCulture);
+            }
+        }
+
+        public static string OnboardingDeviantArtStep {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtStep", resourceCulture);
+            }
+        }
+
+        public static string OnboardingDeviantArtInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtInstructions", resourceCulture);
+            }
+        }
+
+        public static string OnboardingDeviantArtGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtGetKey", resourceCulture);
+            }
+        }
+
+        public static string OnboardingValidate {
+            get {
+                return ResourceManager.GetString("OnboardingValidate", resourceCulture);
+            }
+        }
+
+        public static string OnboardingSkip {
+            get {
+                return ResourceManager.GetString("OnboardingSkip", resourceCulture);
+            }
+        }
+
+        public static string OnboardingNext {
+            get {
+                return ResourceManager.GetString("OnboardingNext", resourceCulture);
+            }
+        }
+
+        public static string OnboardingBack {
+            get {
+                return ResourceManager.GetString("OnboardingBack", resourceCulture);
+            }
+        }
+
+        public static string OnboardingFinish {
+            get {
+                return ResourceManager.GetString("OnboardingFinish", resourceCulture);
+            }
+        }
+
+        public static string OnboardingValidationSuccess {
+            get {
+                return ResourceManager.GetString("OnboardingValidationSuccess", resourceCulture);
+            }
+        }
+
+        public static string OnboardingValidationFailed {
+            get {
+                return ResourceManager.GetString("OnboardingValidationFailed", resourceCulture);
+            }
+        }
+
+        public static string OnboardingNetworkError {
+            get {
+                return ResourceManager.GetString("OnboardingNetworkError", resourceCulture);
+            }
+        }
+
+        public static string OnboardingValidating {
+            get {
+                return ResourceManager.GetString("OnboardingValidating", resourceCulture);
+            }
+        }
+
+        public static string OnboardingSummary {
+            get {
+                return ResourceManager.GetString("OnboardingSummary", resourceCulture);
+            }
+        }
+
+        public static string OnboardingConfigured {
+            get {
+                return ResourceManager.GetString("OnboardingConfigured", resourceCulture);
+            }
+        }
+
+        public static string OnboardingSkipped {
+            get {
+                return ResourceManager.GetString("OnboardingSkipped", resourceCulture);
+            }
+        }
+
+        public static string ServiceNotConfigured {
+            get {
+                return ResourceManager.GetString("ServiceNotConfigured", resourceCulture);
+            }
+        }
+
+        public static string SetupWizard {
+            get {
+                return ResourceManager.GetString("SetupWizard", resourceCulture);
+            }
+        }
     }
 }

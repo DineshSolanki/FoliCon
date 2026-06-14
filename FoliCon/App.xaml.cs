@@ -1,4 +1,4 @@
-﻿using Prism.Ioc;
+using Prism.Ioc;
 using Sentry;
 using Window = System.Windows.Window;
 
@@ -18,7 +18,7 @@ public partial class App
 
     public App()
     {
-        
+
         LogManager.Configuration = LogUtils.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
@@ -39,6 +39,7 @@ public partial class App
         containerRegistry.RegisterDialog<AboutBox, AboutBoxViewModel>("AboutBox");
         containerRegistry.RegisterDialog<PosterPicker, PosterPickerViewModel>("PosterPicker");
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
+        containerRegistry.RegisterDialog<OnboardingWizard, OnboardingWizardViewModel>("OnboardingWizard");
         containerRegistry.RegisterDialogWindow<HandyWindow>();
     }
 

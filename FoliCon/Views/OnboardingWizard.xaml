@@ -1,0 +1,238 @@
+<UserControl x:Class="FoliCon.Views.OnboardingWizard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             Background="{DynamicResource RegionBrush}"
+             d:DataContext="{d:DesignInstance viewModels:OnboardingWizardViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <hc:Boolean2VisibilityReConverter x:Key="InverseBoolToVis" />
+    </UserControl.Resources>
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="SizeToContent" Value="WidthAndHeight" />
+            <Setter Property="MaxWidth" Value="700" />
+            <Setter Property="MaxHeight" Value="600" />
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="WindowStyle" Value="SingleBorderWindow" />
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Grid Background="{DynamicResource RegionBrush}" Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Step Indicator -->
+        <hc:StepBar Grid.Row="0" Margin="0,0,0,16"
+                    StepIndex="{Binding CurrentStep}">
+            <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingGetStarted}}" />
+            <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbStep}}" />
+            <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbStep}}" />
+            <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtStep}}" />
+            <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSummary}}" />
+        </hc:StepBar>
+
+        <!-- Content Panels -->
+        <Grid Grid.Row="1">
+            <!-- Welcome Step -->
+            <StackPanel Visibility="{Binding IsWelcomeStep, Converter={StaticResource BoolToVis}}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,20">
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingWelcome}}"
+                           FontSize="16" TextWrapping="Wrap" HorizontalAlignment="Center"
+                           MaxWidth="500" Margin="0,0,0,20" />
+                <Button Command="{Binding NextCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingGetStarted}}"
+                        Style="{StaticResource ButtonPrimary}" Width="200" Height="40"
+                        HorizontalAlignment="Center" FontSize="16" />
+            </StackPanel>
+
+            <!-- TMDB Step -->
+            <StackPanel Visibility="{Binding IsTmdbStep, Converter={StaticResource BoolToVis}}"
+                        Margin="8,0">
+                <GroupBox Style="{StaticResource GroupBoxTab}"
+                          Header="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbStep}}"
+                          hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal">
+                    <StackPanel>
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbInstructions}}"
+                                   TextWrapping="Wrap" Margin="0,4,0,8" FontSize="14" />
+                        <TextBlock Margin="0,0,0,8" FontSize="14">
+                            <Hyperlink NavigateUri="https://www.themoviedb.org/settings/api"
+                                       Command="hc:ControlCommands.OpenLink"
+                                       CommandParameter="https://www.themoviedb.org/settings/api">
+                                <Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbGetKey}}" />
+                            </Hyperlink>
+                        </TextBlock>
+                        <hc:TextBox hc:InfoElement.Necessary="False"
+                                    Text="{Binding TmdbKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource TextBoxExtend}"
+                                    hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.TMDBAPIKey}}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Command="{Binding ValidateTmdbCommand}"
+                                    Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingValidate}}"
+                                    Style="{StaticResource ButtonPrimary}" Width="100" Height="30"
+                                    Margin="0,0,8,0" />
+                            <hc:LoadingCircle Visibility="{Binding IsTmdbValidating, Converter={StaticResource BoolToVis}}"
+                                               Width="24" Height="24" Margin="0,0,8,0" />
+                            <TextBlock Text="&#x2713;" Foreground="Green" FontSize="18" FontWeight="Bold"
+                                       Visibility="{Binding IsTmdbValid, Converter={StaticResource BoolToVis}}"
+                                       VerticalAlignment="Center" Margin="0,0,4,0" />
+                            <TextBlock Text="&#x2717;" Foreground="Red" FontSize="18" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="0,0,4,0"
+                                       Visibility="{Binding IsTmdbValid, Converter={StaticResource InverseBoolToVis}}" />
+                            <TextBlock Text="{Binding TmdbValidationMessage}" FontSize="13"
+                                       VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="350" />
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- IGDB Step -->
+            <StackPanel Visibility="{Binding IsIgdbStep, Converter={StaticResource BoolToVis}}"
+                        Margin="8,0">
+                <GroupBox Style="{StaticResource GroupBoxTab}"
+                          Header="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbStep}}"
+                          hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal"
+                          hc:TitleElement.Background="BlueViolet">
+                    <StackPanel>
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbInstructions}}"
+                                   TextWrapping="Wrap" Margin="0,4,0,8" FontSize="14" />
+                        <TextBlock Margin="0,0,0,8" FontSize="14">
+                            <Hyperlink NavigateUri="https://dev.twitch.tv/console/apps"
+                                       Command="hc:ControlCommands.OpenLink"
+                                       CommandParameter="https://dev.twitch.tv/console/apps">
+                                <Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbGetKey}}" />
+                            </Hyperlink>
+                        </TextBlock>
+                        <hc:TextBox hc:InfoElement.Necessary="False"
+                                    Text="{Binding IgdbClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource TextBoxExtend}"
+                                    hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
+                        <hc:TextBox hc:InfoElement.Necessary="False"
+                                    Text="{Binding IgdbClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource TextBoxExtend}"
+                                    hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Command="{Binding ValidateIgdbCommand}"
+                                    Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingValidate}}"
+                                    Style="{StaticResource ButtonPrimary}" Width="100" Height="30"
+                                    Margin="0,0,8,0" />
+                            <hc:LoadingCircle Visibility="{Binding IsIgdbValidating, Converter={StaticResource BoolToVis}}"
+                                               Width="24" Height="24" Margin="0,0,8,0" />
+                            <TextBlock Text="&#x2713;" Foreground="Green" FontSize="18" FontWeight="Bold"
+                                       Visibility="{Binding IsIgdbValid, Converter={StaticResource BoolToVis}}"
+                                       VerticalAlignment="Center" Margin="0,0,4,0" />
+                            <TextBlock Text="&#x2717;" Foreground="Red" FontSize="18" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="0,0,4,0"
+                                       Visibility="{Binding IsIgdbValid, Converter={StaticResource InverseBoolToVis}}" />
+           <TextBlock Text="{Binding IgdbValidationMessage}" FontSize="13"
+                                       VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="350" />
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- DeviantArt Step -->
+            <StackPanel Visibility="{Binding IsDeviantArtStep, Converter={StaticResource BoolToVis}}"
+                        Margin="8,0">
+                <GroupBox Style="{StaticResource GroupBoxTab}"
+                          Header="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtStep}}"
+                          hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal">
+                    <StackPanel>
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtInstructions}}"
+                                   TextWrapping="Wrap" Margin="0,4,0,8" FontSize="14" />
+                        <TextBlock Margin="0,0,0,8" FontSize="14">
+                            <Hyperlink NavigateUri="https://www.deviantart.com/developers/apps"
+                                       Command="hc:ControlCommands.OpenLink"
+                                       CommandParameter="https://www.deviantart.com/developers/apps">
+                                <Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtGetKey}}" />
+                            </Hyperlink>
+                        </TextBlock>
+                        <hc:TextBox hc:InfoElement.Necessary="False"
+                                    Text="{Binding DevClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource TextBoxExtend}"
+                                    hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
+                        <hc:TextBox hc:InfoElement.Necessary="False"
+                                    Text="{Binding DevClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource TextBoxExtend}"
+                                    hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Command="{Binding ValidateDeviantArtCommand}"
+                                    Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingValidate}}"
+                                    Style="{StaticResource ButtonPrimary}" Width="100" Height="30"
+                                    Margin="0,0,8,0" />
+                            <hc:LoadingCircle Visibility="{Binding IsDeviantArtValidating, Converter={StaticResource BoolToVis}}"
+                                               Width="24" Height="24" Margin="0,0,8,0" />
+                            <TextBlock Text="&#x2713;" Foreground="Green" FontSize="18" FontWeight="Bold"
+                                       Visibility="{Binding IsDeviantArtValid, Converter={StaticResource BoolToVis}}"
+                                       VerticalAlignment="Center" Margin="0,0,4,0" />
+                            <TextBlock Text="&#x2717;" Foreground="Red" FontSize="18" FontWeight="Bold"
+                                       VerticalAlignment="Center" Margin="0,0,4,0"
+                                       Visibility="{Binding IsDeviantArtValid, Converter={StaticResource InverseBoolToVis}}" />
+                            <TextBlock Text="{Binding DeviantArtValidationMessage}" FontSize="13"
+                                       VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="350" />
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- Summary Step -->
+            <StackPanel Visibility="{Binding IsSummaryStep, Converter={StaticResource BoolToVis}}"
+                        Margin="8,0" HorizontalAlignment="Center">
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSummary}}"
+                           FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,16" />
+                <!-- TMDB Status -->
+                <TextBlock FontSize="14" Margin="0,4" Visibility="{Binding IsTmdbConfigured, Converter={StaticResource BoolToVis}}">
+                    <Run Text="TMDB: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingConfigured}}" Foreground="Green" />
+                </TextBlock>
+                <TextBlock FontSize="14" Margin="0,4" Visibility="{Binding IsTmdbConfigured, Converter={StaticResource InverseBoolToVis}}">
+                    <Run Text="TMDB: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkipped}}" Foreground="Orange" />
+                </TextBlock>
+                <!-- IGDB Status -->
+                <TextBlock FontSize="14" Margin="0,4" Visibility="{Binding IsIgdbConfigured, Converter={StaticResource BoolToVis}}">
+                    <Run Text="IGDB: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingConfigured}}" Foreground="Green" />
+                </TextBlock>
+                <TextBlock FontSize="14" Margin="0,4" Visibility="{Binding IsIgdbConfigured, Converter={StaticResource InverseBoolToVis}}">
+                    <Run Text="IGDB: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkipped}}" Foreground="Orange" />
+                </TextBlock>
+                <!-- DeviantArt Status -->
+                <TextBlock FontSize="14" Margin="0,4" Visibility="{Binding IsDeviantArtConfigured, Converter={StaticResource BoolToVis}}">
+                    <Run Text="DeviantArt: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingConfigured}}" Foreground="Green" />
+                </TextBlock>
+                <TextBlock FontSize="14" Margin="0,4" Visibility="{Binding IsDeviantArtConfigured, Converter={StaticResource InverseBoolToVis}}">
+                    <Run Text="DeviantArt: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkipped}}" Foreground="Orange" />
+                </TextBlock>
+                <TextBlock TextWrapping="Wrap" FontSize="13" Margin="0,12,0,0" MaxWidth="450" HorizontalAlignment="Center"
+                           Text="You can configure or change API keys later from Settings." />
+            </StackPanel>
+        </Grid>
+
+        <!-- Navigation Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <Button Command="{Binding BackCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingBack}}"
+                    Style="{StaticResource ButtonDefault}" Width="80" Height="36" Margin="0,0,8,0"
+                    Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVis}}" />
+            <Button Command="{Binding SkipCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkip}}"
+                    Style="{StaticResource ButtonDefault}" Width="80" Height="36" Margin="0,0,8,0"
+                    Visibility="{Binding CanGoNext, Converter={StaticResource BoolToVis}}" />
+            <Button Command="{Binding NextCommand}" Content="{Binding NextButtonText}"
+                    Style="{StaticResource ButtonPrimary}" Width="100" Height="36"
+                    Visibility="{Binding CanGoNext, Converter={StaticResource BoolToVis}}" />
+            <Button Command="{Binding CloseDialogCommand}" CommandParameter="false"
+                    Content="{extension:Lang Key={x:Static langs:LangKeys.Close}}"
+                    Style="{StaticResource ButtonDanger}" Width="80" Height="36" Margin="8,0,0,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>
