@@ -192,7 +192,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     #region SettingMenu
 
-    public DelegateCommand ApiConfigCommand { get; set; }
     public DelegateCommand SetupWizardCommand { get; set; }
     public DelegateCommand PosterIconConfigCommand { get; set; }
     public DelegateCommand SubfolderProcessingConfigCommand { get; set; }
@@ -714,7 +713,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private void InitializeDelegates()
     {
         Logger.Debug("Initializing Delegates for MainWindow.");
-        ApiConfigCommand = new DelegateCommand(delegate { _dialogService.ShowApiConfig(_ => { }); });
         SetupWizardCommand = new DelegateCommand(delegate { _dialogService.ShowOnboardingWizard(_ => { }); });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
         SubfolderProcessingConfigCommand = new DelegateCommand(delegate { _dialogService.ShowSubfolderProcessingConfig(_ => { }); });
