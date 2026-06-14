@@ -41,7 +41,7 @@ global using Ookii.Dialogs.Wpf;
 
 global using Prism.Commands;
 global using Prism.Mvvm;
-global using Prism.Services.Dialogs;
+global using Prism.Dialogs;
 
 global using System;
 global using System.Collections.Generic;

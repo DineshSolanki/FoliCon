@@ -43,7 +43,7 @@ public class ApiConfigurationViewModel : BindableBase, IDialogAware
 
     #region DialogMethods
 
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     protected virtual void CloseDialog(string parameter)
     {
@@ -54,12 +54,7 @@ public class ApiConfigurationViewModel : BindableBase, IDialogAware
             _ => ButtonResult.None
         };
 
-        RaiseRequestClose(new DialogResult(result));
-    }
-
-    public virtual void RaiseRequestClose(IDialogResult dialogResult)
-    {
-        RequestClose?.Invoke(dialogResult);
+        RequestClose.Invoke(result);
     }
 
     public virtual bool CanCloseDialog()
