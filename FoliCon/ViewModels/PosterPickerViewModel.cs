@@ -14,7 +14,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private int _index;
     private string _busyContent = Lang.LoadingPosters;
     private bool _isBusy;
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
     private ResultResponse _result;
     private int _totalPosters;
     private bool _isPickedById;
@@ -66,12 +66,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
             _ => ButtonResult.None
         };
 
-        RaiseRequestClose(new DialogResult(result));
-    }
-
-    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
-    {
-        RequestClose?.Invoke(dialogResult);
+        RequestClose.Invoke(result);
     }
 
     public virtual bool CanCloseDialog()

@@ -74,7 +74,7 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
     
     #region DialogMethods
 
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     public virtual bool CanCloseDialog()
     {

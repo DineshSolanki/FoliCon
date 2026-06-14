@@ -1,5 +1,6 @@
 ﻿using System.Security.AccessControl;
 using System.Security.Principal;
+using Vanara.InteropServices;
 
 namespace FoliCon.Modules.utils;
 
@@ -480,7 +481,7 @@ public static class FileUtils
             var folderSettings = new SHFOLDERCUSTOMSETTINGS
             {
                 dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
-                pszIconFile = icoFile,
+                pszIconFile = new StrPtrAuto(icoFile),
                 dwSize = (uint)Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
                 cchIconFile = 0
             };

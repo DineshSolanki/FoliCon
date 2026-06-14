@@ -1,6 +1,4 @@
-﻿using ImTools;
-
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ProSearchResultViewModel : BindableBase, IDialogAware
@@ -21,7 +19,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private readonly IDialogService _dialogService;
     private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
     
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     private string _folderPath;
     private bool _isSearchFocused;
@@ -166,7 +164,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private static bool HasNoResults(DArtBrowseResult searchResult)
     {
-        return searchResult.Results.IsNullOrEmpty();
+        return searchResult.Results is null or { Length: 0 };
     }
 
     private void ProcessNoResults(string query, int offset)
@@ -289,12 +287,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             _ => ButtonResult.None
         };
 
-        RaiseRequestClose(new DialogResult(result));
-    }
-
-    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
-    {
-        RequestClose?.Invoke(dialogResult);
+        RequestClose.Invoke(result);
     }
 
     public virtual bool CanCloseDialog()

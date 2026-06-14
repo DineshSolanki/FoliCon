@@ -39,14 +39,15 @@ public class HandyWindow : Window, IDialogWindow
 
     private void HandleDataContextChanged()
     {
-        if (DataContext is not IDialogAware dialogAware)
+        if (DataContext is not IDialogAware)
         {
             return;
         }
 
-        // Set title and subscribe to updates
-        Title = dialogAware.Title;
-        if(dialogAware is INotifyPropertyChanged notifyPropertyChanged)
+        // Set title and subscribe to updates. Prism 9 removed IDialogAware.Title,
+        // so the title is read from the ViewModel's own Title property.
+        UpdateTitle(DataContext);
+        if(DataContext is INotifyPropertyChanged notifyPropertyChanged)
         {
             notifyPropertyChanged.PropertyChanged += DialogAwareOnPropertyChanged;
         }
@@ -55,9 +56,17 @@ public class HandyWindow : Window, IDialogWindow
     private void DialogAwareOnPropertyChanged(object sender, PropertyChangedEventArgs args)
     {
         // Only update when the 'Title' property changes
-        if(args.PropertyName == nameof(IDialogAware.Title) && sender is IDialogAware dialogAware)
+        if(args.PropertyName == "Title")
         {
-            Title = dialogAware.Title;
+            UpdateTitle(sender);
+        }
+    }
+
+    private void UpdateTitle(object dataContext)
+    {
+        if (dataContext?.GetType().GetProperty("Title")?.GetValue(dataContext) is string title)
+        {
+            Title = title;
         }
     }
 }

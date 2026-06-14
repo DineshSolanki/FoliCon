@@ -8,8 +8,8 @@ namespace FoliCon.Modules.Extension;
 [Localizable(false)]
 public static class StreamExtensions
 {
-    private static readonly ReaderOptions ReaderOptions = new() { ArchiveEncoding = 
-        new ArchiveEncoding(Encoding.GetEncoding("IBM437"), Encoding.GetEncoding("IBM437")) };
+    private static readonly ReaderOptions ReaderOptions = new() { ArchiveEncoding =
+        new ArchiveEncoding { Default = Encoding.GetEncoding("IBM437"), Forced = Encoding.GetEncoding("IBM437") } };
     
     private static readonly ExtractionOptions ExtractionSettings = new()
     {
@@ -28,7 +28,7 @@ public static class StreamExtensions
         CancellationToken cancellationToken,
         IProgress<ProgressBarData> progressCallback)
     {
-        using var reader = ArchiveFactory.Open(archiveStream, ReaderOptions);
+        using var reader = ArchiveFactory.OpenArchive(archiveStream, ReaderOptions);
         var pngAndIcoEntries = reader.Entries.Where(IsValidFile).ToList();
         
         

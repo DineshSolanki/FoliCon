@@ -46,7 +46,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	#region DialogMethods
 
-	public event Action<IDialogResult> RequestClose;
+	public DialogCloseListener RequestClose { get; }
 
 	public virtual bool CanCloseDialog()
 	{
@@ -66,12 +66,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			{"localPath", localPath}
 		};
 
-		RaiseRequestClose(new DialogResult(result, dialogParams));
-	}
-
-	protected virtual void RaiseRequestClose(IDialogResult dialogResult)
-	{
-		RequestClose?.Invoke(dialogResult);
+		RequestClose.Invoke(dialogParams, result);
 	}
 
 	public virtual async void OnDialogOpened(IDialogParameters parameters)

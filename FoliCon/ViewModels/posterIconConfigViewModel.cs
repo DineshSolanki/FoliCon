@@ -33,7 +33,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
     #region DialogMethods
 
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     protected virtual void CloseDialog(string parameter)
     {
@@ -45,11 +45,8 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
             _ => ButtonResult.None
         };
 
-        RaiseRequestClose(new DialogResult(result));
+        RequestClose.Invoke(result);
     }
-
-    public virtual void RaiseRequestClose(IDialogResult dialogResult) =>
-        RequestClose?.Invoke(dialogResult);
 
     public virtual bool CanCloseDialog() => true;
 

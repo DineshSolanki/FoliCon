@@ -188,7 +188,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     #region DialogMethods
 
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     protected virtual void CloseDialog(string parameter)
     {
@@ -199,11 +199,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             _ => ButtonResult.None
         };
 
-        RaiseRequestClose(new DialogResult(result));
+        RequestClose.Invoke(result);
     }
-
-    protected virtual void RaiseRequestClose(IDialogResult dialogResult) =>
-        RequestClose?.Invoke(dialogResult);
 
     public virtual bool CanCloseDialog() => true;
 

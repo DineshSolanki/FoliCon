@@ -94,7 +94,7 @@
         
         
         #region DialogMethods
-        public event Action<IDialogResult> RequestClose;
+        public DialogCloseListener RequestClose { get; }
         protected virtual void CloseDialog(string parameter)
         {
             Logger.Info("CloseDialog called with parameter {Parameter}", parameter);
@@ -105,11 +105,8 @@
                 _ => ButtonResult.None
             };
 
-            RaiseRequestClose(new DialogResult(result));
+            RequestClose.Invoke(result);
         }
-
-        public virtual void RaiseRequestClose(IDialogResult dialogResult) =>
-            RequestClose?.Invoke(dialogResult);
 
         public virtual bool CanCloseDialog() => true;
 

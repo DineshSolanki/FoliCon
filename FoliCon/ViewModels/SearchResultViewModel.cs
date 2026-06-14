@@ -25,7 +25,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private bool _isSearchFocused;
     private bool _isPickedById;
     private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
@@ -163,12 +163,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             { "skipAll", skipAll }
         };
-        RaiseRequestClose(new DialogResult(result, parameters));
-    }
-
-    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
-    {
-        RequestClose?.Invoke(dialogResult);
+        RequestClose.Invoke(parameters, result);
     }
 
     public virtual bool CanCloseDialog()

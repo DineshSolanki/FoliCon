@@ -24,7 +24,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
         private set => SetProperty(ref _title, value);
     }
 
-    public event Action<IDialogResult> RequestClose;
+    public DialogCloseListener RequestClose { get; }
 
     protected virtual void CloseDialog(string parameter)
     {
@@ -36,12 +36,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
             _ => ButtonResult.None
         };
 
-        RaiseRequestClose(new DialogResult(result));
-    }
-
-    protected virtual void RaiseRequestClose(IDialogResult dialogResult)
-    {
-        RequestClose?.Invoke(dialogResult);
+        RequestClose.Invoke(result);
     }
 
     public virtual bool CanCloseDialog()

@@ -17,6 +17,13 @@ public partial class HtmlBox
     private const string DarkGray = "#1C1C1C";
     private const string White = "#FFFFFF";
 
+    // Serve the player HTML from a real https origin instead of NavigateToString.
+    // NavigateToString gives the document a null origin, so the YouTube iframe sends
+    // no Referer/origin and the player fails with "Error 153" (configuration error).
+    private const string VirtualHostUrl = "https://folicon.local/";
+    private bool _webResourceHandlerRegistered;
+    private string _currentContent = string.Empty;
+
     // Serialize and share WebView2 environment creation across controls
     private static readonly SemaphoreSlim EnvLock = new(1, 1);
     private static Task<CoreWebView2Environment>? _sharedEnvTask;
@@ -169,11 +176,15 @@ public partial class HtmlBox
                 {
                     Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
                     Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+                    RegisterVirtualHostHandler();
                 }
             }
 
-            // Navigate after initialization (or if already initialized)
-            Browser.CoreWebView2?.NavigateToString(content);
+            // Navigate after initialization (or if already initialized).
+            // Serving via the virtual host (instead of NavigateToString) gives the page a
+            // real origin so the embedded YouTube player receives a valid Referer.
+            _currentContent = content;
+            Browser.CoreWebView2?.Navigate(VirtualHostUrl);
         }
         catch (ObjectDisposedException)
         {
@@ -183,6 +194,34 @@ public partial class HtmlBox
         {
             _initLock.Release();
         }
+    }
+
+    // Intercept requests to the virtual host and serve the current player HTML from memory.
+    // This gives the document a real https origin (https://folicon.local) so the YouTube
+    // iframe can send a valid Referer/origin, avoiding "Error 153".
+    private void RegisterVirtualHostHandler()
+    {
+        if (_webResourceHandlerRegistered || Browser.CoreWebView2 == null)
+        {
+            return;
+        }
+
+        Browser.CoreWebView2.AddWebResourceRequestedFilter($"{VirtualHostUrl}*",
+            CoreWebView2WebResourceContext.Document);
+        Browser.CoreWebView2.WebResourceRequested += OnWebResourceRequested;
+        _webResourceHandlerRegistered = true;
+    }
+
+    private void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
+    {
+        if (Browser.CoreWebView2 == null)
+        {
+            return;
+        }
+
+        var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(_currentContent));
+        e.Response = Browser.CoreWebView2.Environment.CreateWebResourceResponse(
+            stream, 200, "OK", "Content-Type: text/html; charset=utf-8");
     }
 
     // Create or reuse a shared environment with a dedicated, stable user data folder
@@ -352,8 +391,9 @@ public partial class HtmlBox
                                                             </style>
                                                         </head>
                                                         <body style="background-color: {1}">
-                                                            <iframe id='video' allow='autoplay; fullscreen; clipboard-write; encrypted-media; picture-in-picture' allowfullscreen
-                                                                src='{2}?hl={0}'
+                                                            <iframe id='video' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen' allowfullscreen
+                                                                referrerpolicy="strict-origin-when-cross-origin"
+                                                                src='{2}?hl={0}&origin=https://folicon.local'
                                                                 style="visibility:hidden;" onload="this.style.visibility='visible';">
                                                             </iframe>
                                                             <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
