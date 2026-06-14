@@ -11,15 +11,21 @@
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              xmlns:ui="clr-namespace:FoliCon.Modules.UI"
+             xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:CustomIconControlViewModel}"
              Background="{DynamicResource RegionBrush}"
              prism:ViewModelLocator.AutoWireViewModel="True" AllowDrop="True" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <convertor:String2BooleanConvertor x:Key="StringToBooleanConvertor" />
+        </ResourceDictionary>
+    </UserControl.Resources>
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Icon" Value="/Resources/icons/folicon Icon.ico"/>
-            <Setter Property="Height" Value="500" />
-            <Setter Property="Width" Value="636" />
+            <Setter Property="Height" Value="700" />
+            <Setter Property="Width" Value="800" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
@@ -84,13 +90,90 @@
                     </i:KeyTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
-            <VirtualizingStackPanel Grid.Row="3" Grid.Column="0">
-                <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OnlyKeepExactMatches}}" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
-                <Button Style="{StaticResource ButtonInfo}" Content="{extension:Lang Key={x:Static langs:LangKeys.Undo}}" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
-            </VirtualizingStackPanel>
+            <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <Button Style="{StaticResource ButtonPrimary}" Grid.Column="1" Grid.Row="3" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{extension:Lang Key={x:Static langs:LangKeys.Apply}}"
-                     Command="{Binding Apply}" />
+                <!-- Overlay Selection -->
+                <GroupBox Grid.Row="0" Header="Icon Overlay Style" Margin="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <RadioButton x:Name="RPoster" Grid.Column="0" GroupName="PosterOverlay"
+                                    Command="{Binding IconOverlayChangedCommand}"
+                                    CommandParameter="Legacy" hc:Poptip.Content="Legacy" hc:Poptip.Placement="LeftTop"
+                                    Margin="0,4,0,4" FontSize="16" VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Left"
+                                    IsChecked="{Binding IconOverlay, ConverterParameter=Legacy, Converter={StaticResource StringToBooleanConvertor}}">
+                            <RadioButton.Content>
+                                <Image Source="/Resources/mockup_demos/simple/PosterIcon.ico" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton x:Name="RPosterAlt" Grid.Column="1" GroupName="PosterOverlay"
+                                    Command="{Binding IconOverlayChangedCommand}"
+                                    CommandParameter="Alternate" FontSize="16" hc:Poptip.Content="Alternate" hc:Poptip.Placement="LeftTop"
+                                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                    IsChecked="{Binding IconOverlay, ConverterParameter=Alternate, Converter={StaticResource StringToBooleanConvertor}}">
+                            <RadioButton.Content>
+                                <Image Source="/Resources/mockup_demos/dvd/PosterIconAlt.ico" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton x:Name="RPosterFaelpessoal" Grid.Column="2" GroupName="PosterOverlay"
+                                    Command="{Binding IconOverlayChangedCommand}"
+                                    CommandParameter="Faelpessoal" FontSize="16" hc:Poptip.Content="Faelpessoal" hc:Poptip.Placement="LeftTop"
+                                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                    IsChecked="{Binding IconOverlay, ConverterParameter=Faelpessoal, Converter={StaticResource StringToBooleanConvertor}}">
+                            <RadioButton.Content>
+                                <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoal.ico" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton x:Name="RPosterLiaher" Grid.Column="3" GroupName="PosterOverlay"
+                                    Command="{Binding IconOverlayChangedCommand}"
+                                    CommandParameter="Liaher" FontSize="16" hc:Poptip.Content="Liaher" hc:Poptip.Placement="LeftTop"
+                                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                    IsChecked="{Binding IconOverlay, ConverterParameter=Liaher, Converter={StaticResource StringToBooleanConvertor}}">
+                            <RadioButton.Content>
+                                <Image Source="/Resources/mockup_demos/liaher/PosterIconLiaher.ico" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton x:Name="RPosterFaelpessoalHorizontal" Grid.Column="4" GroupName="PosterOverlay"
+                                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.BestSuitedForHorizontal}}"
+                                    Command="{Binding IconOverlayChangedCommand}"
+                                    CommandParameter="FaelpessoalHorizontal" FontSize="16" hc:Poptip.Content="Faelpessoal Horizontal" hc:Poptip.Placement="LeftTop"
+                                    HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                                    IsChecked="{Binding IconOverlay, ConverterParameter=FaelpessoalHorizontal, Converter={StaticResource StringToBooleanConvertor}}">
+                            <RadioButton.Content>
+                                <Image Source="/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico" />
+                            </RadioButton.Content>
+                        </RadioButton>
+                    </Grid>
+                </GroupBox>
+
+                <!-- Settings and Buttons -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <VirtualizingStackPanel Grid.Column="0">
+                        <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OnlyKeepExactMatches}}" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding KeepExactOnly}"/>
+                        <CheckBox Content="Show Rating" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding IsRatingVisible}"/>
+                        <CheckBox Content="Show Mockup" HorizontalAlignment="Center" Margin="5" IsChecked="{Binding IsMockupVisible}"/>
+                        <Button Style="{StaticResource ButtonInfo}" Content="{extension:Lang Key={x:Static langs:LangKeys.Undo}}" HorizontalAlignment="Stretch" Margin="5" IsEnabled="{Binding IsUndoEnable}" Command="{Binding UndoIcons}"/>
+                    </VirtualizingStackPanel>
+
+                    <Button Style="{StaticResource ButtonPrimary}" Grid.Column="1" Margin="10,10,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{extension:Lang Key={x:Static langs:LangKeys.Apply}}"
+                            Command="{Binding Apply}" />
+                </Grid>
+            </Grid>
         </Grid>
     </hc:BusyIndicator>
 </UserControl>
