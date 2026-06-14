@@ -13,13 +13,13 @@ public partial class MainWindow
 
     private void CmbLanguage_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-
-        if (CmbLanguage.SelectedItem is null)
+        var comboBox = sender as System.Windows.Controls.ComboBox;
+        if (comboBox?.SelectedItem is null)
         {
             return;
         }
 
-        var selectedLanguage = (Languages)CmbLanguage.SelectedValue;
+        var selectedLanguage = (Languages)comboBox.SelectedValue;
         var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
         LangProvider.Culture = cultureInfo;
         Thread.CurrentThread.CurrentCulture = cultureInfo;
