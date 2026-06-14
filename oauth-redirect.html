@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FoliCon OAuth Redirect</title>
+</head>
+<body>
+    <script>
+        // IMPORTANT: The port below must match DeviantArtAppConfig.CallbackPort in
+        // FoliCon/Modules/DeviantArt/DeviantArtAppConfig.cs
+        const PORT = 6818;
+
+        // Grab everything after the "?" in the address bar (code, state, etc.)
+        const searchParams = window.location.search;
+
+        // Immediately redirect the user's browser to the local FoliCon app
+        window.location.href = "http://localhost:" + PORT + "/" + searchParams;
+    </script>
+    <p>Redirecting back to FoliCon...</p>
+</body>
+</html>
