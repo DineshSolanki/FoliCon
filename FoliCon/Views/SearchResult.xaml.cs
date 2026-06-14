@@ -12,6 +12,6 @@ public partial class SearchResult
 
     private void UserControl_Unloaded(object sender, RoutedEventArgs e)
     {
-        WebBox.Browser.Dispose();
+        WebBox.DisposeBrowser();
     }
 }

@@ -52,12 +52,36 @@ public partial class HtmlBox
     }
 
     private bool IsVideoAvailable { get; set; }
+    private bool _isDisposed;
 
     public HtmlBox()
     {
         InitializeComponent();
         _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
        InitializeVideoSelector();
+       Unloaded += OnUnloaded;
+    }
+
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        DisposeBrowser();
+    }
+
+    public void DisposeBrowser()
+    {
+        if (_isDisposed)
+        {
+            return;
+        }
+        _isDisposed = true;
+        try
+        {
+            Browser?.Dispose();
+        }
+        catch (ObjectDisposedException)
+        {
+            // Already disposed; ignore.
+        }
     }
 
     public string HtmlText
@@ -73,7 +97,7 @@ public partial class HtmlBox
     }
     private async Task ProcessBrowse()
     {
-        if (Browser is not {IsLoaded: true})
+        if (_isDisposed || Browser is not {IsLoaded: true})
         {
             return;
         }
@@ -98,7 +122,7 @@ public partial class HtmlBox
     private static async void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
     {
         var htmlText = e.NewValue as string;
-        if (source is not HtmlBox control)
+        if (source is not HtmlBox control || control._isDisposed)
         {
             return;
         }
@@ -119,11 +143,25 @@ public partial class HtmlBox
         await _initLock.WaitAsync();
         try
         {
+            if (_isDisposed || Browser is not {IsLoaded: true})
+            {
+                return;
+            }
+
             if (Browser.CoreWebView2 == null)
             {
                 Logger.Info("Initializing WebView2 environment and control");
                 var env = await EnsureSharedEnvironmentAsyncWithRetry();
+                if (_isDisposed)
+                {
+                    return;
+                }
+
                 await EnsureWebView2AsyncWithRetry(env);
+                if (_isDisposed)
+                {
+                    return;
+                }
 
                 // Apply settings once after initialization
                 Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
@@ -136,6 +174,10 @@ public partial class HtmlBox
 
             // Navigate after initialization (or if already initialized)
             Browser.CoreWebView2?.NavigateToString(content);
+        }
+        catch (ObjectDisposedException)
+        {
+            // Control was closed while initializing; ignore.
         }
         finally
         {
@@ -221,6 +263,11 @@ public partial class HtmlBox
                     throw;
                 }
                 await Task.Delay(delays[attempt]);
+            }
+            catch (ObjectDisposedException)
+            {
+                // Control was disposed while initializing; this is expected on unload.
+                return;
             }
         }
     }
