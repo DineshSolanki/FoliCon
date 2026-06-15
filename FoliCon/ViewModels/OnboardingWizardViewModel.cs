@@ -51,7 +51,9 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         set
         {
             if (SetProperty(ref _tmdbKey, value))
+            {
                 ResetTmdbValidation();
+            }
         }
     }
 
@@ -77,7 +79,9 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         set
         {
             if (SetProperty(ref _igdbClientId, value))
+            {
                 ResetIgdbValidation();
+            }
         }
     }
 
@@ -88,7 +92,9 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         set
         {
             if (SetProperty(ref _igdbClientSecret, value))
+            {
                 ResetIgdbValidation();
+            }
         }
     }
 
