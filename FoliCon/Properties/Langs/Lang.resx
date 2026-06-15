@@ -809,4 +809,55 @@ and refresh Icon Cache?</value>
     <data name="MadeWithFoliCon" xml:space="preserve">
       <value>Made with ♥ by FoliCon</value>
     </data>
+    <data name="InvalidApiKey" xml:space="preserve">
+      <value>Invalid API key.</value>
+    </data>
+    <data name="InvalidClientIdOrSecret" xml:space="preserve">
+      <value>Invalid Client ID or Client Secret.</value>
+    </data>
+    <data name="RequestTimedOut" xml:space="preserve">
+      <value>Request timed out. Check your internet connection.</value>
+    </data>
+    <data name="CouldNotReachService" xml:space="preserve">
+      <value>Could not reach {0}: {1}</value>
+    </data>
+    <data name="UnexpectedError" xml:space="preserve">
+      <value>Unexpected error: {0}</value>
+    </data>
+    <data name="DeviantArtNoTokens" xml:space="preserve">
+      <value>No DeviantArt tokens found. Please authorize via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+      <value>DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+      <value>No refresh token available. Please re-authorize via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtAccessExpired" xml:space="preserve">
+      <value>DeviantArt access expired. Please re-authorize via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtConnectionFailed" xml:space="preserve">
+      <value>Failed to connect to DeviantArt API. Please check your network connection and firewall settings.</value>
+    </data>
+    <data name="DeviantArtAuthFailed" xml:space="preserve">
+      <value>DeviantArt authorization failed: {0}</value>
+    </data>
+    <data name="DeviantArtMissingCode" xml:space="preserve">
+      <value>DeviantArt authorization callback did not include a code parameter.</value>
+    </data>
+    <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+      <value>DeviantArt authorization timed out. Please try again.</value>
+    </data>
+    <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+      <value>Failed to obtain DeviantArt access token from authorization code.</value>
+    </data>
+    <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+      <value>Failed to refresh DeviantArt access token.</value>
+    </data>
+    <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+      <value>DeviantArt client credentials failed: {0}</value>
+    </data>
+    <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+      <value>Client authentication failed.</value>
+    </data>
 </root>

@@ -797,4 +797,55 @@
   <data name="MadeWithFoliCon" xml:space="preserve">
     <value>FoliCon द्वारा ♥ से बनाया गया</value>
   </data>
+  <data name="InvalidApiKey" xml:space="preserve">
+    <value>अमान्य API कुंजी।</value>
+  </data>
+  <data name="InvalidClientIdOrSecret" xml:space="preserve">
+    <value>अमान्य Client ID या Client Secret।</value>
+  </data>
+  <data name="RequestTimedOut" xml:space="preserve">
+    <value>अनुरोध का समय समाप्त हो गया। अपना इंटरनेट कनेक्शन जांचें।</value>
+  </data>
+  <data name="CouldNotReachService" xml:space="preserve">
+    <value>{0} तक नहीं पहुंच सका: {1}</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>अप्रत्याशित त्रुटि: {0}</value>
+  </data>
+  <data name="DeviantArtNoTokens" xml:space="preserve">
+    <value>DeviantArt टोकन नहीं मिले। कृपया सेटअप विज़ार्ड से अधिकृत करें।</value>
+  </data>
+  <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+    <value>DeviantArt Client Secret गायब है। कृपया सेटअप विज़ार्ड से पुनः कॉन्फ़िगर करें।</value>
+  </data>
+  <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+    <value>रिफ्रेश टोकन उपलब्ध नहीं है। कृपया सेटअप विज़ार्ड से पुनः अधिकृत करें।</value>
+  </data>
+  <data name="DeviantArtAccessExpired" xml:space="preserve">
+    <value>DeviantArt एक्सेस समाप्त हो गया। कृपया सेटअप विज़ार्ड से पुनः अधिकृत करें।</value>
+  </data>
+  <data name="DeviantArtConnectionFailed" xml:space="preserve">
+    <value>DeviantArt API से कनेक्ट नहीं हो सका। कृपया अपना इंटरनेट कनेक्शन और फ़ायरवॉल सेटिंग्स जांचें।</value>
+  </data>
+  <data name="DeviantArtAuthFailed" xml:space="preserve">
+    <value>DeviantArt अधिकृत करने में विफल: {0}</value>
+  </data>
+  <data name="DeviantArtMissingCode" xml:space="preserve">
+    <value>DeviantArt अधिकृत करने वाले रिस्पॉन्स में कोड पैरामीटर शामिल नहीं था।</value>
+  </data>
+  <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+    <value>DeviantArt अधिकृत करने का समय समाप्त हो गया। कृपया पुनः प्रयास करें।</value>
+  </data>
+  <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+    <value>अधिकृत कोड से DeviantArt एक्सेस टोकन प्राप्त करने में विफल।</value>
+  </data>
+  <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+    <value>DeviantArt एक्सेस टोकन रिफ्रेश करने में विफल।</value>
+  </data>
+  <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+    <value>DeviantArt क्लाइंट क्रेडेंशियल विफल: {0}</value>
+  </data>
+  <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+    <value>क्लाइंट प्रमाणीकरण विफल।</value>
+  </data>
 </root>

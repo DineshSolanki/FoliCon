@@ -797,4 +797,55 @@ y actualizar la caché de iconos?</value>
   <data name="MadeWithFoliCon" xml:space="preserve">
     <value>Hecho con ♥ por FoliCon</value>
   </data>
+  <data name="InvalidApiKey" xml:space="preserve">
+    <value>Clave de API inválida.</value>
+  </data>
+  <data name="InvalidClientIdOrSecret" xml:space="preserve">
+    <value>Client ID o Client Secret inválidos.</value>
+  </data>
+  <data name="RequestTimedOut" xml:space="preserve">
+    <value>La solicitud ha expirado. Comprueba tu conexión a internet.</value>
+  </data>
+  <data name="CouldNotReachService" xml:space="preserve">
+    <value>No se pudo conectar con {0}: {1}</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Error inesperado: {0}</value>
+  </data>
+  <data name="DeviantArtNoTokens" xml:space="preserve">
+    <value>No se encontraron tokens de DeviantArt. Por favor, autoriza desde el Asistente de configuración.</value>
+  </data>
+  <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+    <value>Falta el Client Secret de DeviantArt. Por favor, reconfigúralo desde el Asistente de configuración.</value>
+  </data>
+  <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+    <value>No hay token de actualización disponible. Por favor, reautoriza desde el Asistente de configuración.</value>
+  </data>
+  <data name="DeviantArtAccessExpired" xml:space="preserve">
+    <value>El acceso a DeviantArt ha expirado. Por favor, reautoriza desde el Asistente de configuración.</value>
+  </data>
+  <data name="DeviantArtConnectionFailed" xml:space="preserve">
+    <value>No se pudo conectar con la API de DeviantArt. Por favor, comprueba tu conexión a internet y la configuración del cortafuegos.</value>
+  </data>
+  <data name="DeviantArtAuthFailed" xml:space="preserve">
+    <value>La autorización de DeviantArt falló: {0}</value>
+  </data>
+  <data name="DeviantArtMissingCode" xml:space="preserve">
+    <value>La respuesta de autorización de DeviantArt no incluyó un parámetro de código.</value>
+  </data>
+  <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+    <value>La autorización de DeviantArt ha expirado. Por favor, inténtalo de nuevo.</value>
+  </data>
+  <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+    <value>No se pudo obtener el token de acceso de DeviantArt desde el código de autorización.</value>
+  </data>
+  <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+    <value>No se pudo actualizar el token de acceso de DeviantArt.</value>
+  </data>
+  <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+    <value>Las credenciales de cliente de DeviantArt fallaron: {0}</value>
+  </data>
+  <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+    <value>La autenticación del cliente falló.</value>
+  </data>
 </root>

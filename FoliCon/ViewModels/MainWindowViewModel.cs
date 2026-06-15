@@ -1066,7 +1066,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Failed to initialize DeviantArt client: {Message}. Professional mode will be unavailable.", ex.Message);
+                Logger.Error(ex, "Failed to initialize DeviantArt client. Professional mode will be unavailable.");
                 _dArtObject = null;
 
                 MessageBox.Show(CustomMessageBox.Warning(

@@ -797,4 +797,55 @@
   <data name="MadeWithFoliCon" xml:space="preserve">
     <value>Создано с ♥ в FoliCon</value>
   </data>
+  <data name="InvalidApiKey" xml:space="preserve">
+    <value>Недействительный ключ API.</value>
+  </data>
+  <data name="InvalidClientIdOrSecret" xml:space="preserve">
+    <value>Недействительный Client ID или Client Secret.</value>
+  </data>
+  <data name="RequestTimedOut" xml:space="preserve">
+    <value>Время ожидания запроса истекло. Проверьте подключение к интернету.</value>
+  </data>
+  <data name="CouldNotReachService" xml:space="preserve">
+    <value>Не удалось подключиться к {0}: {1}</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>Непредвиденная ошибка: {0}</value>
+  </data>
+  <data name="DeviantArtNoTokens" xml:space="preserve">
+    <value>Токены DeviantArt не найдены. Пожалуйста, авторизуйтесь через Мастер настройки.</value>
+  </data>
+  <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+    <value>Client Secret для DeviantArt отсутствует. Пожалуйста, настройте заново через Мастер настройки.</value>
+  </data>
+  <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+    <value>Refresh-токен недоступен. Пожалуйста, повторно авторизуйтесь через Мастер настройки.</value>
+  </data>
+  <data name="DeviantArtAccessExpired" xml:space="preserve">
+    <value>Доступ к DeviantArt истёк. Пожалуйста, повторно авторизуйтесь через Мастер настройки.</value>
+  </data>
+  <data name="DeviantArtConnectionFailed" xml:space="preserve">
+    <value>Не удалось подключиться к API DeviantArt. Пожалуйста, проверьте подключение к интернету и настройки файрвола.</value>
+  </data>
+  <data name="DeviantArtAuthFailed" xml:space="preserve">
+    <value>Авторизация DeviantArt не удалась: {0}</value>
+  </data>
+  <data name="DeviantArtMissingCode" xml:space="preserve">
+    <value>Ответ авторизации DeviantArt не содержит параметр code.</value>
+  </data>
+  <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+    <value>Время авторизации DeviantArt истекло. Пожалуйста, попробуйте снова.</value>
+  </data>
+  <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+    <value>Не удалось получить токен доступа DeviantArt из кода авторизации.</value>
+  </data>
+  <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+    <value>Не удалось обновить токен доступа DeviantArt.</value>
+  </data>
+  <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+    <value>Ошибка авторизации клиента DeviantArt: {0}</value>
+  </data>
+  <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+    <value>Аутентификация клиента не удалась.</value>
+  </data>
 </root>

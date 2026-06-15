@@ -5,6 +5,7 @@ global using FoliCon.Models.Constants;
 global using FoliCon.Models.Data;
 global using FoliCon.Models.Data.Dialog;
 global using FoliCon.Models.Enums;
+global using FoliCon.Modules;
 global using FoliCon.Modules.Configuration;
 global using FoliCon.Modules.DeviantArt;
 global using FoliCon.Modules.Extension;

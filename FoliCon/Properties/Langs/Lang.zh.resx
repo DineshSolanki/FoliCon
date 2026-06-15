@@ -796,4 +796,55 @@ and refresh Icon Cache?</value>
   <data name="MadeWithFoliCon" xml:space="preserve">
     <value>由 FoliCon 用心制作</value>
   </data>
+  <data name="InvalidApiKey" xml:space="preserve">
+    <value>API 密钥无效。</value>
+  </data>
+  <data name="InvalidClientIdOrSecret" xml:space="preserve">
+    <value>Client ID 或 Client Secret 无效。</value>
+  </data>
+  <data name="RequestTimedOut" xml:space="preserve">
+    <value>请求已超时。请检查您的网络连接。</value>
+  </data>
+  <data name="CouldNotReachService" xml:space="preserve">
+    <value>无法连接到 {0}：{1}</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>意外错误：{0}</value>
+  </data>
+  <data name="DeviantArtNoTokens" xml:space="preserve">
+    <value>未找到 DeviantArt 令牌。请通过设置向导进行授权。</value>
+  </data>
+  <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+    <value>DeviantArt Client Secret 缺失。请通过设置向导重新配置。</value>
+  </data>
+  <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+    <value>没有可用的刷新令牌。请通过设置向导重新授权。</value>
+  </data>
+  <data name="DeviantArtAccessExpired" xml:space="preserve">
+    <value>DeviantArt 访问已过期。请通过设置向导重新授权。</value>
+  </data>
+  <data name="DeviantArtConnectionFailed" xml:space="preserve">
+    <value>无法连接到 DeviantArt API。请检查您的网络连接和防火墙设置。</value>
+  </data>
+  <data name="DeviantArtAuthFailed" xml:space="preserve">
+    <value>DeviantArt 授权失败：{0}</value>
+  </data>
+  <data name="DeviantArtMissingCode" xml:space="preserve">
+    <value>DeviantArt 授权回调中未包含 code 参数。</value>
+  </data>
+  <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+    <value>DeviantArt 授权已超时。请重试。</value>
+  </data>
+  <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+    <value>无法从授权码获取 DeviantArt 访问令牌。</value>
+  </data>
+  <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+    <value>无法刷新 DeviantArt 访问令牌。</value>
+  </data>
+  <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+    <value>DeviantArt 客户端凭据验证失败：{0}</value>
+  </data>
+  <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+    <value>客户端身份验证失败。</value>
+  </data>
 </root>

@@ -78,7 +78,9 @@ public class DArt : BindableBase, IDisposable
 
         if (string.IsNullOrEmpty(accessToken) && string.IsNullOrEmpty(refreshToken))
         {
-            throw new InvalidOperationException("No DeviantArt tokens found. User needs to authorize via the Setup Wizard.");
+            throw new LocalizedException(
+                "No DeviantArt tokens found. User needs to authorize via the Setup Wizard.",
+                Lang.DeviantArtNoTokens);
         }
 
         var dArt = new DArt(accessToken ?? "", refreshToken ?? "", 0);
@@ -167,7 +169,9 @@ public class DArt : BindableBase, IDisposable
                 var customClientSecret = Services.Settings.DeviantArtClientSecret;
                 if (string.IsNullOrEmpty(customClientSecret))
                 {
-                    throw new InvalidOperationException("DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard.");
+                    throw new LocalizedException(
+                        "DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard.",
+                        Lang.DeviantArtClientSecretMissing);
                 }
 
                 var result = await OAuthCallbackListener.ClientCredentialsAsync(customClientId, customClientSecret);
@@ -195,7 +199,9 @@ public class DArt : BindableBase, IDisposable
         // OAuth PKCE mode: refresh with refresh token
         if (string.IsNullOrEmpty(RefreshToken))
         {
-            throw new InvalidOperationException("No refresh token available. User needs to re-authorize via the Setup Wizard.");
+            throw new LocalizedException(
+                "No refresh token available. User needs to re-authorize via the Setup Wizard.",
+                Lang.DeviantArtNoRefreshToken);
         }
 
         Logger.Debug("Refreshing DeviantArt access token");
@@ -369,8 +375,9 @@ public class DArt : BindableBase, IDisposable
                         throw new DeviantArtTokenExpiredException();
                     }
 
-                    throw new UnauthorizedAccessException(
-                        "DeviantArt access expired. Please re-authorize via the Setup Wizard.");
+                    throw new LocalizedException(
+                        "DeviantArt access expired. Please re-authorize via the Setup Wizard.",
+                        Lang.DeviantArtAccessExpired);
                 }
 
                 response.EnsureSuccessStatusCode();
@@ -389,8 +396,9 @@ public class DArt : BindableBase, IDisposable
         catch (Exception ex) when (ex is not DeviantArtTokenExpiredException)
         {
             Logger.Error(ex, $"DeviantArt API {requestType} request failed after all retry attempts");
-            throw new InvalidOperationException(
+            throw new LocalizedException(
                 "Failed to connect to DeviantArt API. Please check your network connection and firewall settings.",
+                Lang.DeviantArtConnectionFailed,
                 ex);
         }
     }

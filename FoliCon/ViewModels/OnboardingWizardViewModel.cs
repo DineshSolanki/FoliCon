@@ -290,7 +290,8 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         {
             Logger.Error(ex, "Error during TMDB validation.");
             IsTmdbValid = false;
-            TmdbValidationMessage = Lang.OnboardingValidationFailed + ex.Message;
+            var displayMessage = ex is LocalizedException le ? le.LocalizedMessage : ex.Message;
+            TmdbValidationMessage = Lang.OnboardingValidationFailed + displayMessage;
         }
         finally
         {
@@ -321,7 +322,8 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         {
             Logger.Error(ex, "Error during IGDB validation.");
             IsIgdbValid = false;
-            IgdbValidationMessage = Lang.OnboardingValidationFailed + ex.Message;
+            var displayMessage = ex is LocalizedException le ? le.LocalizedMessage : ex.Message;
+            IgdbValidationMessage = Lang.OnboardingValidationFailed + displayMessage;
         }
         finally
         {
@@ -357,11 +359,11 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
             DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnected;
             Logger.Info("DeviantArt authorization successful");
         }
-        catch (TimeoutException ex)
+        catch (LocalizedException ex)
         {
-            Logger.Warn(ex, "DeviantArt authorization timed out");
+            Logger.Warn(ex, "DeviantArt authorization failed");
             IsDeviantArtConnected = false;
-            DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnectFailed + " " + Lang.OnboardingNetworkError;
+            DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnectFailed + " " + ex.LocalizedMessage;
         }
         catch (Exception ex)
         {

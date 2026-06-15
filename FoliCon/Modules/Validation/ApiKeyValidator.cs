@@ -26,7 +26,7 @@ public static class ApiKeyValidator
         Logger.Debug("Validating TMDB API key...");
 
         if (string.IsNullOrWhiteSpace(key))
-            return ApiKeyValidationResult.Fail("API key cannot be empty.");
+            return ApiKeyValidationResult.Fail(Lang.ApiKeyCannotBeEmpty);
 
         try
         {
@@ -42,22 +42,22 @@ public static class ApiKeyValidator
         catch (OperationCanceledException)
         {
             Logger.Warn("TMDB validation timed out.");
-            return ApiKeyValidationResult.NetworkError("Request timed out. Check your internet connection.");
+            return ApiKeyValidationResult.NetworkError(Lang.RequestTimedOut);
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.Warn("TMDB API key is invalid: {Message}", ex.Message);
-            return ApiKeyValidationResult.Fail("Invalid API key.");
+            return ApiKeyValidationResult.Fail(Lang.InvalidApiKey);
         }
         catch (HttpRequestException ex)
         {
             Logger.Warn("TMDB validation network error: {Message}", ex.Message);
-            return ApiKeyValidationResult.NetworkError($"Could not reach TMDB: {ex.Message}");
+            return ApiKeyValidationResult.NetworkError(string.Format(Lang.CouldNotReachService, "TMDB", ex.Message));
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Unexpected error validating TMDB key.");
-            return ApiKeyValidationResult.Fail($"Unexpected error: {ex.Message}");
+            return ApiKeyValidationResult.Fail(string.Format(Lang.UnexpectedError, ex.Message));
         }
     }
 
@@ -70,7 +70,7 @@ public static class ApiKeyValidator
         Logger.Debug("Validating IGDB/Twitch credentials...");
 
         if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
-            return ApiKeyValidationResult.Fail("Client ID and Client Secret cannot be empty.");
+            return ApiKeyValidationResult.Fail(Lang.ClientIdAndSecretCannotBeEmpty);
 
         try
         {
@@ -85,22 +85,22 @@ public static class ApiKeyValidator
         catch (OperationCanceledException)
         {
             Logger.Warn("IGDB validation timed out.");
-            return ApiKeyValidationResult.NetworkError("Request timed out. Check your internet connection.");
+            return ApiKeyValidationResult.NetworkError(Lang.RequestTimedOut);
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
             Logger.Warn("IGDB credentials are invalid: {Message}", ex.Message);
-            return ApiKeyValidationResult.Fail("Invalid Client ID or Client Secret.");
+            return ApiKeyValidationResult.Fail(Lang.InvalidClientIdOrSecret);
         }
         catch (HttpRequestException ex)
         {
             Logger.Warn("IGDB validation network error: {Message}", ex.Message);
-            return ApiKeyValidationResult.NetworkError($"Could not reach IGDB/Twitch: {ex.Message}");
+            return ApiKeyValidationResult.NetworkError(string.Format(Lang.CouldNotReachService, "IGDB/Twitch", ex.Message));
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Unexpected error validating IGDB credentials.");
-            return ApiKeyValidationResult.Fail($"Unexpected error: {ex.Message}");
+            return ApiKeyValidationResult.Fail(string.Format(Lang.UnexpectedError, ex.Message));
         }
     }
 

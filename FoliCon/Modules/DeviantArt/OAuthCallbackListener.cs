@@ -86,7 +86,9 @@ public static class OAuthCallbackListener
 
             if (!string.IsNullOrEmpty(error))
             {
-                throw new InvalidOperationException($"DeviantArt authorization failed: {error}");
+                throw new LocalizedException(
+                    $"DeviantArt authorization failed: {error}",
+                    string.Format(Lang.DeviantArtAuthFailed, error));
             }
 
             if (string.IsNullOrEmpty(code))
@@ -101,7 +103,9 @@ public static class OAuthCallbackListener
         }
         catch (OperationCanceledException)
         {
-            throw new TimeoutException("DeviantArt authorization timed out. Please try again.");
+            throw new LocalizedException(
+                "DeviantArt authorization timed out. Please try again.",
+                Lang.DeviantArtAuthTimedOut);
         }
         finally
         {

@@ -257,6 +257,23 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(ClientIdAndSecretCannotBeEmpty));
         OnPropertyChanged(nameof(ImageFilesFilter));
         OnPropertyChanged(nameof(MadeWithFoliCon));
+        OnPropertyChanged(nameof(InvalidApiKey));
+        OnPropertyChanged(nameof(InvalidClientIdOrSecret));
+        OnPropertyChanged(nameof(RequestTimedOut));
+        OnPropertyChanged(nameof(CouldNotReachService));
+        OnPropertyChanged(nameof(UnexpectedError));
+        OnPropertyChanged(nameof(DeviantArtNoTokens));
+        OnPropertyChanged(nameof(DeviantArtClientSecretMissing));
+        OnPropertyChanged(nameof(DeviantArtNoRefreshToken));
+        OnPropertyChanged(nameof(DeviantArtAccessExpired));
+        OnPropertyChanged(nameof(DeviantArtConnectionFailed));
+        OnPropertyChanged(nameof(DeviantArtAuthFailed));
+        OnPropertyChanged(nameof(DeviantArtMissingCode));
+        OnPropertyChanged(nameof(DeviantArtAuthTimedOut));
+        OnPropertyChanged(nameof(DeviantArtTokenObtainFailed));
+        OnPropertyChanged(nameof(DeviantArtTokenRefreshFailed));
+        OnPropertyChanged(nameof(DeviantArtClientCredentialsFailed));
+        OnPropertyChanged(nameof(DeviantArtClientAuthFailed));
     }
 
     public string APIKeysConfiguration => Lang.APIKeysConfiguration;
@@ -475,6 +492,23 @@ public class LangProvider : INotifyPropertyChanged
     public string ClientIdAndSecretCannotBeEmpty => Lang.ClientIdAndSecretCannotBeEmpty;
     public string ImageFilesFilter => Lang.ImageFilesFilter;
     public string MadeWithFoliCon => Lang.MadeWithFoliCon;
+    public string InvalidApiKey => Lang.InvalidApiKey;
+    public string InvalidClientIdOrSecret => Lang.InvalidClientIdOrSecret;
+    public string RequestTimedOut => Lang.RequestTimedOut;
+    public string CouldNotReachService => Lang.CouldNotReachService;
+    public string UnexpectedError => Lang.UnexpectedError;
+    public string DeviantArtNoTokens => Lang.DeviantArtNoTokens;
+    public string DeviantArtClientSecretMissing => Lang.DeviantArtClientSecretMissing;
+    public string DeviantArtNoRefreshToken => Lang.DeviantArtNoRefreshToken;
+    public string DeviantArtAccessExpired => Lang.DeviantArtAccessExpired;
+    public string DeviantArtConnectionFailed => Lang.DeviantArtConnectionFailed;
+    public string DeviantArtAuthFailed => Lang.DeviantArtAuthFailed;
+    public string DeviantArtMissingCode => Lang.DeviantArtMissingCode;
+    public string DeviantArtAuthTimedOut => Lang.DeviantArtAuthTimedOut;
+    public string DeviantArtTokenObtainFailed => Lang.DeviantArtTokenObtainFailed;
+    public string DeviantArtTokenRefreshFailed => Lang.DeviantArtTokenRefreshFailed;
+    public string DeviantArtClientCredentialsFailed => Lang.DeviantArtClientCredentialsFailed;
+    public string DeviantArtClientAuthFailed => Lang.DeviantArtClientAuthFailed;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -702,5 +736,22 @@ public class LangKeys
     public static string ClientIdAndSecretCannotBeEmpty = nameof(ClientIdAndSecretCannotBeEmpty);
     public static string ImageFilesFilter = nameof(ImageFilesFilter);
     public static string MadeWithFoliCon = nameof(MadeWithFoliCon);
+    public static string InvalidApiKey = nameof(InvalidApiKey);
+    public static string InvalidClientIdOrSecret = nameof(InvalidClientIdOrSecret);
+    public static string RequestTimedOut = nameof(RequestTimedOut);
+    public static string CouldNotReachService = nameof(CouldNotReachService);
+    public static string UnexpectedError = nameof(UnexpectedError);
+    public static string DeviantArtNoTokens = nameof(DeviantArtNoTokens);
+    public static string DeviantArtClientSecretMissing = nameof(DeviantArtClientSecretMissing);
+    public static string DeviantArtNoRefreshToken = nameof(DeviantArtNoRefreshToken);
+    public static string DeviantArtAccessExpired = nameof(DeviantArtAccessExpired);
+    public static string DeviantArtConnectionFailed = nameof(DeviantArtConnectionFailed);
+    public static string DeviantArtAuthFailed = nameof(DeviantArtAuthFailed);
+    public static string DeviantArtMissingCode = nameof(DeviantArtMissingCode);
+    public static string DeviantArtAuthTimedOut = nameof(DeviantArtAuthTimedOut);
+    public static string DeviantArtTokenObtainFailed = nameof(DeviantArtTokenObtainFailed);
+    public static string DeviantArtTokenRefreshFailed = nameof(DeviantArtTokenRefreshFailed);
+    public static string DeviantArtClientCredentialsFailed = nameof(DeviantArtClientCredentialsFailed);
+    public static string DeviantArtClientAuthFailed = nameof(DeviantArtClientAuthFailed);
 
 }

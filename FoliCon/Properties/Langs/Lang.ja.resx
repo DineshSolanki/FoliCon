@@ -796,4 +796,55 @@ and refresh Icon Cache?</value>
   <data name="MadeWithFoliCon" xml:space="preserve">
     <value>FoliCon が ♥ を込めて制作</value>
   </data>
+  <data name="InvalidApiKey" xml:space="preserve">
+    <value>無効な API キーです。</value>
+  </data>
+  <data name="InvalidClientIdOrSecret" xml:space="preserve">
+    <value>無効な Client ID または Client Secret です。</value>
+  </data>
+  <data name="RequestTimedOut" xml:space="preserve">
+    <value>リクエストがタイムアウトしました。インターネット接続を確認してください。</value>
+  </data>
+  <data name="CouldNotReachService" xml:space="preserve">
+    <value>{0} に接続できませんでした: {1}</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>予期しないエラー: {0}</value>
+  </data>
+  <data name="DeviantArtNoTokens" xml:space="preserve">
+    <value>DeviantArt トークンが見つかりません。セットアップウィザードから認可してください。</value>
+  </data>
+  <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+    <value>DeviantArt の Client Secret がありません。セットアップウィザードから再設定してください。</value>
+  </data>
+  <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+    <value>リフレッシュトークンが利用できません。セットアップウィザードから再認可してください。</value>
+  </data>
+  <data name="DeviantArtAccessExpired" xml:space="preserve">
+    <value>DeviantArt のアクセスが期限切れです。セットアップウィザードから再認可してください。</value>
+  </data>
+  <data name="DeviantArtConnectionFailed" xml:space="preserve">
+    <value>DeviantArt API に接続できませんでした。インターネット接続とファイアウォール設定を確認してください。</value>
+  </data>
+  <data name="DeviantArtAuthFailed" xml:space="preserve">
+    <value>DeviantArt の認可に失敗しました: {0}</value>
+  </data>
+  <data name="DeviantArtMissingCode" xml:space="preserve">
+    <value>DeviantArt の認可コールバックにコードパラメータが含まれていませんでした。</value>
+  </data>
+  <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+    <value>DeviantArt の認可がタイムアウトしました。もう一度お試しください。</value>
+  </data>
+  <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+    <value>認証コードから DeviantArt アクセストークンを取得できませんでした。</value>
+  </data>
+  <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+    <value>DeviantArt アクセストークンの更新に失敗しました。</value>
+  </data>
+  <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+    <value>DeviantArt クライアント資格情報の認証に失敗しました: {0}</value>
+  </data>
+  <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+    <value>クライアント認証に失敗しました。</value>
+  </data>
 </root>

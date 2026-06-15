@@ -2097,5 +2097,158 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("MadeWithFoliCon", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid API key..
+        /// </summary>
+        public static string InvalidApiKey {
+            get {
+                return ResourceManager.GetString("InvalidApiKey", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Client ID or Client Secret..
+        /// </summary>
+        public static string InvalidClientIdOrSecret {
+            get {
+                return ResourceManager.GetString("InvalidClientIdOrSecret", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Request timed out. Check your internet connection..
+        /// </summary>
+        public static string RequestTimedOut {
+            get {
+                return ResourceManager.GetString("RequestTimedOut", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not reach {0}: {1}.
+        /// </summary>
+        public static string CouldNotReachService {
+            get {
+                return ResourceManager.GetString("CouldNotReachService", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error: {0}.
+        /// </summary>
+        public static string UnexpectedError {
+            get {
+                return ResourceManager.GetString("UnexpectedError", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No DeviantArt tokens found. Please authorize via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtNoTokens {
+            get {
+                return ResourceManager.GetString("DeviantArtNoTokens", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtClientSecretMissing {
+            get {
+                return ResourceManager.GetString("DeviantArtClientSecretMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No refresh token available. Please re-authorize via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtNoRefreshToken {
+            get {
+                return ResourceManager.GetString("DeviantArtNoRefreshToken", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt access expired. Please re-authorize via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtAccessExpired {
+            get {
+                return ResourceManager.GetString("DeviantArtAccessExpired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to DeviantArt API. Please check your network connection and firewall settings..
+        /// </summary>
+        public static string DeviantArtConnectionFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtConnectionFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt authorization failed: {0}.
+        /// </summary>
+        public static string DeviantArtAuthFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtAuthFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt authorization callback did not include a code parameter..
+        /// </summary>
+        public static string DeviantArtMissingCode {
+            get {
+                return ResourceManager.GetString("DeviantArtMissingCode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt authorization timed out. Please try again..
+        /// </summary>
+        public static string DeviantArtAuthTimedOut {
+            get {
+                return ResourceManager.GetString("DeviantArtAuthTimedOut", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain DeviantArt access token from authorization code..
+        /// </summary>
+        public static string DeviantArtTokenObtainFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtTokenObtainFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to refresh DeviantArt access token..
+        /// </summary>
+        public static string DeviantArtTokenRefreshFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtTokenRefreshFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt client credentials failed: {0}.
+        /// </summary>
+        public static string DeviantArtClientCredentialsFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtClientCredentialsFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Client authentication failed..
+        /// </summary>
+        public static string DeviantArtClientAuthFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtClientAuthFailed", resourceCulture);
+            }
+        }
     }
 }
