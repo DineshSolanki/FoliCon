@@ -365,19 +365,19 @@ public class DArt : BindableBase, IDisposable
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     Logger.Warn($"DeviantArt API {requestType} returned 401, attempting token refresh");
-                    var content = await response.Content.ReadAsStringAsync(ct);
                     response.Dispose();
 
-                    if (!string.IsNullOrEmpty(RefreshToken))
+                    if (string.IsNullOrEmpty(RefreshToken))
                     {
-                        await RefreshAccessTokenAsync();
-                        Logger.Info($"DeviantArt token refreshed, retrying {requestType} request");
-                        throw new DeviantArtTokenExpiredException();
+                        throw new LocalizedException(
+                            "DeviantArt access expired. Please re-authorize via the Setup Wizard.",
+                            Lang.DeviantArtAccessExpired);
                     }
 
-                    throw new LocalizedException(
-                        "DeviantArt access expired. Please re-authorize via the Setup Wizard.",
-                        Lang.DeviantArtAccessExpired);
+                    await RefreshAccessTokenAsync();
+                    Logger.Info($"DeviantArt token refreshed, retrying {requestType} request");
+                    throw new DeviantArtTokenExpiredException();
+
                 }
 
                 response.EnsureSuccessStatusCode();

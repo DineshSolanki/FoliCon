@@ -16,7 +16,9 @@ public class DpapiEncryptingConverter : STJ.JsonConverter<string>
     {
         var value = reader.GetString();
         if (string.IsNullOrEmpty(value))
+        {
             return value;
+        }
 
         try
         {

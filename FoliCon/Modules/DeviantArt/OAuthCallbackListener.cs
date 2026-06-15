@@ -39,7 +39,9 @@ public static class OAuthCallbackListener
     /// <returns>OAuth tokens if successful.</returns>
     /// <exception cref="TimeoutException">If the user doesn't authorize within the timeout.</exception>
     /// <exception cref="InvalidOperationException">If the authorization fails.</exception>
-    public static async Task<OAuthResult> AuthorizeAsync(int timeoutMs = 120_000)
+    public static async Task<OAuthResult> AuthorizeAsync() => await AuthorizeAsync(120_000, CancellationToken.None);
+
+    public static async Task<OAuthResult> AuthorizeAsync(int timeoutMs, CancellationToken ct)
     {
         var codeVerifier = GenerateCodeVerifier();
         var codeChallenge = GenerateCodeChallenge(codeVerifier);
@@ -68,7 +70,7 @@ public static class OAuthCallbackListener
             Logger.Debug("Opened browser for DeviantArt authorization");
 
             // Wait for the callback — the hosted page redirects to localhost:{port}/?code=...
-            var context = await listener.GetContextAsync().WaitAsync(TimeSpan.FromMilliseconds(timeoutMs));
+            var context = await listener.GetContextAsync().WaitAsync(TimeSpan.FromMilliseconds(timeoutMs), ct);
             var code = context.Request.QueryString["code"];
             var error = context.Request.QueryString["error"];
 

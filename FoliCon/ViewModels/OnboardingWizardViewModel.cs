@@ -112,7 +112,10 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         get;
         set
         {
-            if (!SetProperty(ref field, value)) return;
+            if (!SetProperty(ref field, value))
+            {
+                return;
+            }
             RaisePropertyChanged(nameof(IsDeviantArtConfigured));
             RaisePropertyChanged(nameof(DeviantArtConnectionStatus));
         }
@@ -128,7 +131,9 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         set
         {
             if (SetProperty(ref _deviantArtConnectionMessage, value))
+            {
                 RaisePropertyChanged(nameof(HasDeviantArtConnectionMessage));
+            }
         }
     }
 
@@ -136,10 +141,18 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     public bool IsDeviantArtConfigured => IsDeviantArtConnected;
 
-    public string DeviantArtConnectionStatus =>
-        IsDeviantArtConnecting ? Lang.OnboardingDeviantArtConnecting :
-        IsDeviantArtConnected ? Lang.OnboardingDeviantArtConnected :
-        Lang.OnboardingDeviantArtNotConnected;
+    public string DeviantArtConnectionStatus
+    {
+        get
+        {
+            if (IsDeviantArtConnecting)
+            {
+                return Lang.OnboardingDeviantArtConnecting;
+            }
+
+            return IsDeviantArtConnected ? Lang.OnboardingDeviantArtConnected : Lang.OnboardingDeviantArtNotConnected;
+        }
+    }
 
     private bool _isSyncingMode;
 
@@ -148,9 +161,15 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         get;
         set
         {
-            if (!SetProperty(ref field, value)) return;
+            if (!SetProperty(ref field, value))
+            {
+                return;
+            }
             RaisePropertyChanged(nameof(IsDeviantArtCustomCredentialsVisible));
-            if (_isSyncingMode) return;
+            if (_isSyncingMode)
+            {
+                return;
+            }
             _isSyncingMode = true;
             IsDeviantArtBuiltInMode = !value;
             _isSyncingMode = false;
@@ -163,8 +182,14 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         get => _isDeviantArtBuiltInMode;
         set
         {
-            if (!SetProperty(ref _isDeviantArtBuiltInMode, value)) return;
-            if (_isSyncingMode) return;
+            if (!SetProperty(ref _isDeviantArtBuiltInMode, value))
+            {
+                return;
+            }
+            if (_isSyncingMode)
+            {
+                return;
+            }
             _isSyncingMode = true;
             IsDeviantArtCustomMode = !value;
             _isSyncingMode = false;
@@ -219,7 +244,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         CloseDialogCommand = new DelegateCommand<string>(CloseDialog);
 
         // Pre-populate TMDB + IGDB from existing config
-        FileUtils.ReadApiConfiguration(out var tmdbKey, out var igdbClientId, out var igdbClientSecret);
+        var (tmdbKey, igdbClientId, igdbClientSecret) = FileUtils.ReadApiConfiguration();
         TmdbKey = tmdbKey ?? "";
         IgdbClientId = igdbClientId ?? "";
         IgdbClientSecret = igdbClientSecret ?? "";

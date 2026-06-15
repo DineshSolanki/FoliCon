@@ -505,13 +505,10 @@ public static class FileUtils
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_PATHW, folderPath);
     }
 
-    public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
-        out string igdbClientSecret)
+    public static (string TmdbKey, string IgdbClientId, string IgdbClientSecret) ReadApiConfiguration()
     {
         var settings = GlobalDataHelper.Load<AppConfig>();
-        tmdbkey = settings.TmdbKey;
-        igdbClientId = settings.IgdbClientId;
-        igdbClientSecret = settings.IgdbClientSecret;
+        return (settings.TmdbKey, settings.IgdbClientId, settings.IgdbClientSecret);
     }
 
     public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret)
@@ -532,7 +529,7 @@ public static class FileUtils
         try
         {
             // Reset IGDB/Twitch token by creating a fresh tracker store (overwrites Jot state)
-            var freshStore = new IgdbJotTrackerStore();
+            _ = new IgdbJotTrackerStore();
             // The new instance with default token will be picked up on next IGDBClient construction
         }
         catch (Exception ex)

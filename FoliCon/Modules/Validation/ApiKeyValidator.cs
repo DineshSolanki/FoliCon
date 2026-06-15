@@ -12,46 +12,42 @@ public static class ApiKeyValidator
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private static readonly HttpClient ValidationHttpClient = new()
-    {
-        Timeout = TimeSpan.FromSeconds(10)
-    };
-
     /// <summary>
     /// Validates a TMDB API key by calling GetConfigAsync.
     /// </summary>
+    public static async Task<ApiKeyValidationResult> ValidateTmdbKeyAsync(string key) =>
+        await ValidateTmdbKeyAsync(key, CancellationToken.None);
+
     public static async Task<ApiKeyValidationResult> ValidateTmdbKeyAsync(string key,
-        CancellationToken ct = default)
+        CancellationToken ct)
     {
         Logger.Debug("Validating TMDB API key...");
 
         if (string.IsNullOrWhiteSpace(key))
+        {
             return ApiKeyValidationResult.Fail(Lang.ApiKeyCannotBeEmpty);
+        }
 
         try
         {
-            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            cts.CancelAfter(TimeSpan.FromSeconds(10));
-            var linkedCt = cts.Token;
-
             using var client = new TMDbClient(key);
             await client.GetConfigAsync();
             Logger.Info("TMDB API key validated successfully.");
             return ApiKeyValidationResult.Success();
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
-            Logger.Warn("TMDB validation timed out.");
+            Logger.Warn(ex, "TMDB validation timed out.");
             return ApiKeyValidationResult.NetworkError(Lang.RequestTimedOut);
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
-            Logger.Warn("TMDB API key is invalid: {Message}", ex.Message);
+            Logger.Warn(ex, "TMDB API key is invalid: {Message}", ex.Message);
             return ApiKeyValidationResult.Fail(Lang.InvalidApiKey);
         }
         catch (HttpRequestException ex)
         {
-            Logger.Warn("TMDB validation network error: {Message}", ex.Message);
+            Logger.Warn(ex, "TMDB validation network error: {Message}", ex.Message);
             return ApiKeyValidationResult.NetworkError(string.Format(Lang.CouldNotReachService, "TMDB", ex.Message));
         }
         catch (Exception ex)
@@ -65,36 +61,42 @@ public static class ApiKeyValidator
     /// Validates IGDB/Twitch credentials by running a minimal game query.
     /// </summary>
     public static async Task<ApiKeyValidationResult> ValidateIgdbCredentialsAsync(string clientId,
-        string clientSecret, CancellationToken ct = default)
+        string clientSecret) =>
+        await ValidateIgdbCredentialsAsync(clientId, clientSecret, CancellationToken.None);
+
+    public static async Task<ApiKeyValidationResult> ValidateIgdbCredentialsAsync(string clientId,
+        string clientSecret, CancellationToken ct)
     {
         Logger.Debug("Validating IGDB/Twitch credentials...");
 
         if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
+        {
             return ApiKeyValidationResult.Fail(Lang.ClientIdAndSecretCannotBeEmpty);
+        }
 
         try
         {
             var store = new IgdbJotTrackerStore();
             var client = new IGDBClient(clientId, clientSecret, store);
             // Minimal query to force Twitch token fetch and API call
-            var games = await client.QueryAsync<Game>(IGDBClient.Endpoints.Games,
+            await client.QueryAsync<Game>(IGDBClient.Endpoints.Games,
                 "fields name; limit 1;");
             Logger.Info("IGDB credentials validated successfully.");
             return ApiKeyValidationResult.Success();
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
-            Logger.Warn("IGDB validation timed out.");
+            Logger.Warn(ex, "IGDB validation timed out.");
             return ApiKeyValidationResult.NetworkError(Lang.RequestTimedOut);
         }
         catch (HttpRequestException ex) when (IsUnauthorized(ex))
         {
-            Logger.Warn("IGDB credentials are invalid: {Message}", ex.Message);
+            Logger.Warn(ex, "IGDB credentials are invalid: {Message}", ex.Message);
             return ApiKeyValidationResult.Fail(Lang.InvalidClientIdOrSecret);
         }
         catch (HttpRequestException ex)
         {
-            Logger.Warn("IGDB validation network error: {Message}", ex.Message);
+            Logger.Warn(ex, "IGDB validation network error: {Message}", ex.Message);
             return ApiKeyValidationResult.NetworkError(string.Format(Lang.CouldNotReachService, "IGDB/Twitch", ex.Message));
         }
         catch (Exception ex)

@@ -6,6 +6,9 @@ namespace FoliCon.ViewModels;
 public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+    private const string ProfessionalMode = "Professional";
+
     #region Variables
 
     private string _selectedFolder;
@@ -96,7 +99,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set
         {
             SetProperty(ref _iconMode, value);
-            IsSearchModeVisible = value != "Professional";
+            IsSearchModeVisible = value != ProfessionalMode;
         }
     }
 
@@ -331,7 +334,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         if (IconMode == "Professional")
         {
-            if (_dArtObject != null) return true;
+            if (_dArtObject != null)
+            {
+                return true;
+            }
             Logger.Warn("DeviantArt not configured. Professional mode unavailable.");
             MessageBox.Show(CustomMessageBox.Warning(
                 Lang.ServiceNotConfigured.Format("DeviantArt"),
@@ -342,7 +348,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         // Poster mode
         if (SearchMode == MediaTypes.Game)
         {
-            if (_igdbObject != null) return true;
+            if (_igdbObject != null)
+            {
+                return true;
+            }
             Logger.Warn("IGDB not configured. Game search unavailable.");
             MessageBox.Show(CustomMessageBox.Warning(
                 Lang.ServiceNotConfigured.Format("IGDB/Twitch"),
@@ -351,7 +360,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
 
         // Movie, TV, Auto — all require TMDB
-        if (_tmdbObject != null) return true;
+        if (_tmdbObject != null)
+        {
+            return true;
+        }
         Logger.Warn("TMDB not configured. Movie/TV search unavailable.");
         MessageBox.Show(CustomMessageBox.Warning(
             Lang.ServiceNotConfigured.Format("TMDB"),
@@ -1008,7 +1020,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             // Re-read config after wizard (user may have entered keys)
         }
 
-        FileUtils.ReadApiConfiguration(out var tmdbapiKey, out var igdbClientId, out var igdbClientSecret);
+        var (tmdbapiKey, igdbClientId, igdbClientSecret) = FileUtils.ReadApiConfiguration();
 
         // Initialize TMDB (optional)
         if (!string.IsNullOrEmpty(tmdbapiKey))
@@ -1116,7 +1128,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         SelectedFolder = selectedFolder;
         var mode = cmdArgs["mode"];
-        if (mode != "Professional" &&
+        if (mode != ProfessionalMode &&
             new List<string> { MediaTypes.Mtv, MediaTypes.Tv, MediaTypes.Movie, MediaTypes.Game }.Contains(mode))
         {
             IconMode = "Poster";
@@ -1124,7 +1136,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         else
         {
-            IconMode = "Professional";
+            IconMode = ProfessionalMode;
         }
 
         Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
