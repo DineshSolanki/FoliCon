@@ -122,11 +122,19 @@ public class DArt : BindableBase, IDisposable
 
     public static async Task<bool> IsTokenValidAsync(string clientAccessToken)
     {
-        var url = GetPlaceboApiUrl(clientAccessToken);
-        var jsonData = await GetStringWithRetryAsync(new Uri(url));
-        var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
-
-        return tokenResponse?.Status == "success";
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{DeviantArtApiBase}/placebo");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", clientAccessToken);
+            using var response = await Services.HttpC.SendAsync(request);
+            var jsonData = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
+            return tokenResponse?.Status == "success";
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private async Task RefreshAccessTokenAsync()
@@ -170,8 +178,9 @@ public class DArt : BindableBase, IDisposable
     {
         await GetClientAccessTokenAsync();
 
-        var url = GetBrowseApiUrl(query, offset);
-        var jsonData = await GetStringWithRetryAsync(new Uri(url));
+        var jsonData = await ExecuteWithRetryAsync(
+            () => CreateAuthenticatedRequest($"{DeviantArtApiBase}/browse/home?offset={offset}&q={Uri.EscapeDataString($"{query} folder icon")}&limit=20"),
+            "Browse");
 
         var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, SerializerSettings);
 
@@ -224,8 +233,9 @@ public class DArt : BindableBase, IDisposable
     }
     public async Task<DArtDownloadResponse> GetDArtDownloadResponseAsync(string deviationId)
     {
-        var url = GetDownloadApiUrl(deviationId);
-        var jsonData = await GetStringWithRetryAsync(new Uri(url));
+        var jsonData = await ExecuteWithRetryAsync(
+            () => CreateAuthenticatedRequest($"{DeviantArtApiBase}/deviation/download/{Uri.EscapeDataString(deviationId)}"),
+            "Download");
         return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
     }
 
@@ -245,20 +255,16 @@ public class DArt : BindableBase, IDisposable
         await fileStream.CopyToAsync(file);
     }
 
-    private static string AppendAccessToken(string url, string token) =>
-        $"{url}?access_token={Uri.EscapeDataString(token)}";
-
-    private static string GetPlaceboApiUrl(string clientAccessToken) =>
-        AppendAccessToken($"{DeviantArtApiBase}/placebo", clientAccessToken);
-
-    private string GetBrowseApiUrl(string query, int offset)
+    /// <summary>
+    /// Creates an HttpRequestMessage with the current ClientAccessToken in the Authorization header.
+    /// Must be called inside the retry lambda so it picks up a refreshed token.
+    /// </summary>
+    private HttpRequestMessage CreateAuthenticatedRequest(string url)
     {
-        var q = Uri.EscapeDataString($"{query} folder icon");
-        return $"{DeviantArtApiBase}/browse/home?offset={offset}&q={q}&limit=20&access_token={Uri.EscapeDataString(ClientAccessToken)}";
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", ClientAccessToken);
+        return request;
     }
-
-    private string GetDownloadApiUrl(string deviationId) =>
-        AppendAccessToken($"{DeviantArtApiBase}/deviation/download/{Uri.EscapeDataString(deviationId)}", ClientAccessToken);
 
     public void Dispose()
     {
@@ -280,8 +286,8 @@ public class DArt : BindableBase, IDisposable
         _disposed = true;
     }
 
-    private static async Task<string> ExecuteWithRetryAsync(
-        Func<CancellationToken, Task<HttpResponseMessage>> requestFunc,
+    private async Task<string> ExecuteWithRetryAsync(
+        Func<HttpRequestMessage> requestFactory,
         string requestType,
         CancellationToken cancellationToken = default)
     {
@@ -289,12 +295,44 @@ public class DArt : BindableBase, IDisposable
         {
             return await RetryPipeline.ExecuteAsync(async ct =>
             {
-                using var response = await requestFunc(ct);
+                // Build request inside the lambda so it reads the current ClientAccessToken
+                // (which may have been refreshed by a previous 401 handler)
+                using var request = requestFactory();
+                using var response = await Services.HttpC.SendAsync(request, ct);
+
+                // Handle 401 Unauthorized: refresh token, then throw to exit the pipeline.
+                // The catch block below retries with a fresh request from requestFactory().
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Logger.Warn($"DeviantArt API {requestType} returned 401, attempting token refresh");
+                    var content = await response.Content.ReadAsStringAsync(ct);
+                    response.Dispose();
+
+                    if (!string.IsNullOrEmpty(RefreshToken))
+                    {
+                        await RefreshAccessTokenAsync();
+                        Logger.Info($"DeviantArt token refreshed, retrying {requestType} request");
+                        throw new DeviantArtTokenExpiredException();
+                    }
+
+                    throw new UnauthorizedAccessException(
+                        "DeviantArt access expired. Please re-authorize via the Setup Wizard.");
+                }
+
                 response.EnsureSuccessStatusCode();
                 return await response.Content.ReadAsStringAsync(ct);
             }, cancellationToken);
         }
-        catch (Exception ex)
+        catch (DeviantArtTokenExpiredException)
+        {
+            // Token was refreshed — retry with a fresh request that uses the new token
+            Logger.Info($"Retrying DeviantArt API {requestType} request after token refresh");
+            using var request = requestFactory();
+            using var response = await Services.HttpC.SendAsync(request, cancellationToken);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(cancellationToken);
+        }
+        catch (Exception ex) when (ex is not DeviantArtTokenExpiredException)
         {
             Logger.Error(ex, $"DeviantArt API {requestType} request failed after all retry attempts");
             throw new InvalidOperationException(
@@ -302,7 +340,4 @@ public class DArt : BindableBase, IDisposable
                 ex);
         }
     }
-
-    private static Task<string> GetStringWithRetryAsync(Uri uri, CancellationToken cancellationToken = default) =>
-        ExecuteWithRetryAsync(ct => Services.HttpC.GetAsync(uri, ct), "GET", cancellationToken);
 }

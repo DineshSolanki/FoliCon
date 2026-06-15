@@ -1132,6 +1132,258 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string OnboardingBack {
+            get {
+                return ResourceManager.GetString("OnboardingBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configured.
+        /// </summary>
+        public static string OnboardingConfigured {
+            get {
+                return ResourceManager.GetString("OnboardingConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect to DeviantArt.
+        /// </summary>
+        public static string OnboardingConnectDeviantArt {
+            get {
+                return ResourceManager.GetString("OnboardingConnectDeviantArt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in to DeviantArt to enable Professional mode for custom icon searches..
+        /// </summary>
+        public static string OnboardingDeviantArtAuthInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtAuthInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        public static string OnboardingDeviantArtConnected {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect. Please try again..
+        /// </summary>
+        public static string OnboardingDeviantArtConnectFailed {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtConnectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connecting....
+        /// </summary>
+        public static string OnboardingDeviantArtConnecting {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtConnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        public static string OnboardingDeviantArtNotConnected {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt (Professional Mode).
+        /// </summary>
+        public static string OnboardingDeviantArtStep {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string OnboardingFinish {
+            get {
+                return ResourceManager.GetString("OnboardingFinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Started.
+        /// </summary>
+        public static string OnboardingGetStarted {
+            get {
+                return ResourceManager.GetString("OnboardingGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register a Twitch application →.
+        /// </summary>
+        public static string OnboardingIgdbGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbGetKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IGDB provides game metadata. You need a Twitch application to access it..
+        /// </summary>
+        public static string OnboardingIgdbInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IGDB / Twitch (Games).
+        /// </summary>
+        public static string OnboardingIgdbStep {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not reach the service. Check your internet connection..
+        /// </summary>
+        public static string OnboardingNetworkError {
+            get {
+                return ResourceManager.GetString("OnboardingNetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string OnboardingNext {
+            get {
+                return ResourceManager.GetString("OnboardingNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip.
+        /// </summary>
+        public static string OnboardingSkip {
+            get {
+                return ResourceManager.GetString("OnboardingSkip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipped.
+        /// </summary>
+        public static string OnboardingSkipped {
+            get {
+                return ResourceManager.GetString("OnboardingSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup Summary.
+        /// </summary>
+        public static string OnboardingSummary {
+            get {
+                return ResourceManager.GetString("OnboardingSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Up FoliCon.
+        /// </summary>
+        public static string OnboardingTitle {
+            get {
+                return ResourceManager.GetString("OnboardingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get your TMDB API key →.
+        /// </summary>
+        public static string OnboardingTmdbGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbGetKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB provides movie and TV show metadata and artwork..
+        /// </summary>
+        public static string OnboardingTmdbInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB (Movies &amp; TV).
+        /// </summary>
+        public static string OnboardingTmdbStep {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate.
+        /// </summary>
+        public static string OnboardingValidate {
+            get {
+                return ResourceManager.GetString("OnboardingValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating....
+        /// </summary>
+        public static string OnboardingValidating {
+            get {
+                return ResourceManager.GetString("OnboardingValidating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation failed: .
+        /// </summary>
+        public static string OnboardingValidationFailed {
+            get {
+                return ResourceManager.GetString("OnboardingValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key validated successfully!.
+        /// </summary>
+        public static string OnboardingValidationSuccess {
+            get {
+                return ResourceManager.GetString("OnboardingValidationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FoliCon needs API keys to search for media artwork. Each service is optional — configure only what you need..
+        /// </summary>
+        public static string OnboardingWelcome {
+            get {
+                return ResourceManager.GetString("OnboardingWelcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only keep exact matches?.
         /// </summary>
         public static string OnlyKeepExactMatches {
@@ -1431,11 +1683,29 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not configured. Go to Settings → API Keys to set it up..
+        /// </summary>
+        public static string ServiceNotConfigured {
+            get {
+                return ResourceManager.GetString("ServiceNotConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup Wizard.
+        /// </summary>
+        public static string SetupWizard {
+            get {
+                return ResourceManager.GetString("SetupWizard", resourceCulture);
             }
         }
         
@@ -1735,162 +2005,6 @@ namespace FoliCon.Properties.Langs {
         public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
-            }
-        }
-
-        public static string OnboardingTitle {
-            get {
-                return ResourceManager.GetString("OnboardingTitle", resourceCulture);
-            }
-        }
-
-        public static string OnboardingWelcome {
-            get {
-                return ResourceManager.GetString("OnboardingWelcome", resourceCulture);
-            }
-        }
-
-        public static string OnboardingGetStarted {
-            get {
-                return ResourceManager.GetString("OnboardingGetStarted", resourceCulture);
-            }
-        }
-
-        public static string OnboardingTmdbStep {
-            get {
-                return ResourceManager.GetString("OnboardingTmdbStep", resourceCulture);
-            }
-        }
-
-        public static string OnboardingTmdbInstructions {
-            get {
-                return ResourceManager.GetString("OnboardingTmdbInstructions", resourceCulture);
-            }
-        }
-
-        public static string OnboardingTmdbGetKey {
-            get {
-                return ResourceManager.GetString("OnboardingTmdbGetKey", resourceCulture);
-            }
-        }
-
-        public static string OnboardingIgdbStep {
-            get {
-                return ResourceManager.GetString("OnboardingIgdbStep", resourceCulture);
-            }
-        }
-
-        public static string OnboardingIgdbInstructions {
-            get {
-                return ResourceManager.GetString("OnboardingIgdbInstructions", resourceCulture);
-            }
-        }
-
-        public static string OnboardingIgdbGetKey {
-            get {
-                return ResourceManager.GetString("OnboardingIgdbGetKey", resourceCulture);
-            }
-        }
-
-        public static string OnboardingDeviantArtStep {
-            get {
-                return ResourceManager.GetString("OnboardingDeviantArtStep", resourceCulture);
-            }
-        }
-
-        public static string OnboardingDeviantArtInstructions {
-            get {
-                return ResourceManager.GetString("OnboardingDeviantArtInstructions", resourceCulture);
-            }
-        }
-
-        public static string OnboardingDeviantArtGetKey {
-            get {
-                return ResourceManager.GetString("OnboardingDeviantArtGetKey", resourceCulture);
-            }
-        }
-
-        public static string OnboardingValidate {
-            get {
-                return ResourceManager.GetString("OnboardingValidate", resourceCulture);
-            }
-        }
-
-        public static string OnboardingSkip {
-            get {
-                return ResourceManager.GetString("OnboardingSkip", resourceCulture);
-            }
-        }
-
-        public static string OnboardingNext {
-            get {
-                return ResourceManager.GetString("OnboardingNext", resourceCulture);
-            }
-        }
-
-        public static string OnboardingBack {
-            get {
-                return ResourceManager.GetString("OnboardingBack", resourceCulture);
-            }
-        }
-
-        public static string OnboardingFinish {
-            get {
-                return ResourceManager.GetString("OnboardingFinish", resourceCulture);
-            }
-        }
-
-        public static string OnboardingValidationSuccess {
-            get {
-                return ResourceManager.GetString("OnboardingValidationSuccess", resourceCulture);
-            }
-        }
-
-        public static string OnboardingValidationFailed {
-            get {
-                return ResourceManager.GetString("OnboardingValidationFailed", resourceCulture);
-            }
-        }
-
-        public static string OnboardingNetworkError {
-            get {
-                return ResourceManager.GetString("OnboardingNetworkError", resourceCulture);
-            }
-        }
-
-        public static string OnboardingValidating {
-            get {
-                return ResourceManager.GetString("OnboardingValidating", resourceCulture);
-            }
-        }
-
-        public static string OnboardingSummary {
-            get {
-                return ResourceManager.GetString("OnboardingSummary", resourceCulture);
-            }
-        }
-
-        public static string OnboardingConfigured {
-            get {
-                return ResourceManager.GetString("OnboardingConfigured", resourceCulture);
-            }
-        }
-
-        public static string OnboardingSkipped {
-            get {
-                return ResourceManager.GetString("OnboardingSkipped", resourceCulture);
-            }
-        }
-
-        public static string ServiceNotConfigured {
-            get {
-                return ResourceManager.GetString("ServiceNotConfigured", resourceCulture);
-            }
-        }
-
-        public static string SetupWizard {
-            get {
-                return ResourceManager.GetString("SetupWizard", resourceCulture);
             }
         }
     }

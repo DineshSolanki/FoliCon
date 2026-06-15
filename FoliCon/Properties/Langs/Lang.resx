@@ -693,7 +693,7 @@ and refresh Icon Cache?</value>
       <value>Set Up FoliCon</value>
     </data>
     <data name="OnboardingWelcome" xml:space="preserve">
-      <value>FoliCon needs API keys to search for media artwork. Each service is optional — configure only what you need.</value>
+      <value>FoliCon uses free API keys to search for media artwork. Each service is optional — configure only what you need. No credit card required.</value>
     </data>
     <data name="OnboardingGetStarted" xml:space="preserve">
       <value>Get Started</value>
@@ -702,7 +702,7 @@ and refresh Icon Cache?</value>
       <value>TMDB (Movies &amp; TV)</value>
     </data>
     <data name="OnboardingTmdbInstructions" xml:space="preserve">
-      <value>TMDB provides movie and TV show metadata and artwork.</value>
+      <value>Free — provides movie and TV show metadata and artwork.</value>
     </data>
     <data name="OnboardingTmdbGetKey" xml:space="preserve">
       <value>Get your TMDB API key →</value>
@@ -711,7 +711,7 @@ and refresh Icon Cache?</value>
       <value>IGDB / Twitch (Games)</value>
     </data>
     <data name="OnboardingIgdbInstructions" xml:space="preserve">
-      <value>IGDB provides game metadata. You need a Twitch application to access it.</value>
+      <value>Free — provides game metadata. You need a free Twitch account to access it.</value>
     </data>
     <data name="OnboardingIgdbGetKey" xml:space="preserve">
       <value>Register a Twitch application →</value>
@@ -720,7 +720,7 @@ and refresh Icon Cache?</value>
       <value>DeviantArt (Professional Mode)</value>
     </data>
     <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
-      <value>Log in to DeviantArt to enable Professional mode for custom icon searches.</value>
+      <value>Free — log in to DeviantArt to enable Professional mode for custom icon searches.</value>
     </data>
     <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>Connect to DeviantArt</value>

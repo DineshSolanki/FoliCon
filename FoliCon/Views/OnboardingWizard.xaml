@@ -69,9 +69,8 @@
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbInstructions}}"
                                    TextWrapping="Wrap" Margin="0,4,0,8" FontSize="14" />
                         <TextBlock Margin="0,0,0,8" FontSize="14">
-                            <Hyperlink NavigateUri="https://www.themoviedb.org/settings/api"
-                                       Command="hc:ControlCommands.OpenLink"
-                                       CommandParameter="https://www.themoviedb.org/settings/api">
+                            <Hyperlink Command="hc:ControlCommands.OpenLink"
+                                       CommandParameter="{Binding TmdbPortalUrl}">
                                 <Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbGetKey}}" />
                             </Hyperlink>
                         </TextBlock>
@@ -110,9 +109,8 @@
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbInstructions}}"
                                    TextWrapping="Wrap" Margin="0,4,0,8" FontSize="14" />
                         <TextBlock Margin="0,0,0,8" FontSize="14">
-                            <Hyperlink NavigateUri="https://dev.twitch.tv/console/apps"
-                                       Command="hc:ControlCommands.OpenLink"
-                                       CommandParameter="https://dev.twitch.tv/console/apps">
+                            <Hyperlink Command="hc:ControlCommands.OpenLink"
+                                       CommandParameter="{Binding IgdbPortalUrl}">
                                 <Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbGetKey}}" />
                             </Hyperlink>
                         </TextBlock>
@@ -200,7 +198,7 @@
                     <Run Text="DeviantArt: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkipped}}" Foreground="Orange" />
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap" FontSize="13" Margin="0,12,0,0" MaxWidth="450" HorizontalAlignment="Center"
-                           Text="You can configure or change API keys later from Settings." />
+                           Text="All API keys are free. You can configure or change them later from Settings." />
             </StackPanel>
         </Grid>
 

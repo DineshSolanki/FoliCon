@@ -5,6 +5,9 @@ namespace FoliCon.ViewModels;
 public class OnboardingWizardViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    
+    public static string TmdbPortalUrl => TmdbAppConfig.ApiKeyPortalUrl;
+    public static string IgdbPortalUrl => IgdbAppConfig.CredentialsPortalUrl;
 
     #region Step Management
 
