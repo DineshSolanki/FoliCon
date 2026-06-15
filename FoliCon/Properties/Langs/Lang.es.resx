@@ -690,162 +690,174 @@ y actualizar la caché de iconos?</value>
       <value>Actualizando carpeta</value>
     </data>
   <data name="OnboardingTitle" xml:space="preserve">
-    <value>Configurar FoliCon</value>
-  </data>
+      <value>Configurar FoliCon</value>
+    </data>
   <data name="OnboardingWelcome" xml:space="preserve">
-    <value>FoliCon utiliza claves de API gratuitas para buscar obras de arte multimedia. Cada servicio es opcional — configura solo lo que necesitas. No se requiere tarjeta de crédito.</value>
-  </data>
+      <value>FoliCon utiliza claves de API gratuitas para buscar obras de arte multimedia. Cada servicio es opcional — configura solo lo que necesitas. No se requiere tarjeta de crédito.</value>
+    </data>
   <data name="OnboardingGetStarted" xml:space="preserve">
-    <value>Empezar</value>
-  </data>
+      <value>Empezar</value>
+    </data>
   <data name="OnboardingTmdbStep" xml:space="preserve">
-    <value>TMDB (Películas y TV)</value>
-  </data>
+      <value>TMDB (Películas y TV)</value>
+    </data>
   <data name="OnboardingTmdbInstructions" xml:space="preserve">
-    <value>Gratis — proporciona metadatos y obras de arte de películas y series de TV.</value>
-  </data>
+      <value>Gratis — proporciona metadatos y obras de arte de películas y series de TV.</value>
+    </data>
   <data name="OnboardingTmdbGetKey" xml:space="preserve">
-    <value>Obtén tu clave de API de TMDB →</value>
-  </data>
+      <value>Obtén tu clave de API de TMDB →</value>
+    </data>
   <data name="OnboardingIgdbStep" xml:space="preserve">
-    <value>IGDB / Twitch (Juegos)</value>
-  </data>
+      <value>IGDB / Twitch (Juegos)</value>
+    </data>
   <data name="OnboardingIgdbInstructions" xml:space="preserve">
-    <value>Gratis — proporciona metadatos de juegos. Necesitas una cuenta gratuita de Twitch para acceder.</value>
-  </data>
+      <value>Gratis — proporciona metadatos de juegos. Necesitas una cuenta gratuita de Twitch para acceder.</value>
+    </data>
   <data name="OnboardingIgdbGetKey" xml:space="preserve">
-    <value>Registra una aplicación de Twitch →</value>
-  </data>
+      <value>Registra una aplicación de Twitch →</value>
+    </data>
   <data name="OnboardingDeviantArtStep" xml:space="preserve">
-    <value>DeviantArt (Modo Profesional)</value>
-  </data>
-    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>DeviantArt (Modo Profesional)</value>
+    </data>
+  <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
       <value>Gratis — inicia sesión en DeviantArt para habilitar el modo Profesional para búsquedas de iconos personalizados.</value>
     </data>
-    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+  <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
+      <value>Use FoliCon's built-in app (recommended)</value>
+    </data>
+  <data name="OnboardingDeviantArtCustom" xml:space="preserve">
+      <value>Use my own DeviantArt app</value>
+    </data>
+  <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
+      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+    </data>
+  <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
+      <value>Validate &amp; Connect</value>
+    </data>
+  <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>Conectar a DeviantArt</value>
     </data>
-    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+  <data name="OnboardingDeviantArtConnected" xml:space="preserve">
       <value>Conectado</value>
     </data>
-    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+  <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
       <value>No conectado</value>
     </data>
-    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+  <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
       <value>Conectando...</value>
     </data>
-    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+  <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
       <value>Error al conectar. Por favor, inténtalo de nuevo.</value>
     </data>
   <data name="OnboardingValidate" xml:space="preserve">
-    <value>Validar</value>
-  </data>
+      <value>Validar</value>
+    </data>
   <data name="OnboardingSkip" xml:space="preserve">
-    <value>Omitir</value>
-  </data>
+      <value>Saltar</value>
+    </data>
   <data name="OnboardingNext" xml:space="preserve">
-    <value>Siguiente</value>
-  </data>
+      <value>Siguiente</value>
+    </data>
   <data name="OnboardingBack" xml:space="preserve">
-    <value>Atrás</value>
-  </data>
+      <value>Atrás</value>
+    </data>
   <data name="OnboardingFinish" xml:space="preserve">
-    <value>Finalizar</value>
-  </data>
+      <value>Finalizar</value>
+    </data>
   <data name="OnboardingValidationSuccess" xml:space="preserve">
-    <value>¡Clave validada exitosamente!</value>
-  </data>
+      <value>¡Clave validada exitosamente!</value>
+    </data>
   <data name="OnboardingValidationFailed" xml:space="preserve">
-    <value>Validación fallida: </value>
-  </data>
+      <value>Validación fallida: </value>
+    </data>
   <data name="OnboardingNetworkError" xml:space="preserve">
-    <value>No se pudo acceder al servicio. Verifica tu conexión a internet.</value>
-  </data>
+      <value>No se pudo acceder al servicio. Verifica tu conexión a internet.</value>
+    </data>
   <data name="OnboardingValidating" xml:space="preserve">
-    <value>Validando...</value>
-  </data>
+      <value>Validando...</value>
+    </data>
   <data name="OnboardingSummary" xml:space="preserve">
-    <value>Resumen de configuración</value>
-  </data>
+      <value>Resumen de configuración</value>
+    </data>
   <data name="OnboardingConfigured" xml:space="preserve">
-    <value>Configurado</value>
-  </data>
+      <value>Configurado</value>
+    </data>
   <data name="OnboardingSkipped" xml:space="preserve">
-    <value>Omitido</value>
-  </data>
+      <value>Omitido</value>
+    </data>
   <data name="ServiceNotConfigured" xml:space="preserve">
-    <value>{0} no está configurado. Ve a Ajustes → Claves de API para configurarlo.</value>
-  </data>
+      <value>{0} no está configurado. Ve a Ajustes → Claves de API para configurarlo.</value>
+    </data>
   <data name="SetupWizard" xml:space="preserve">
-    <value>Asistente de configuración</value>
-  </data>
+      <value>Asistente de configuración</value>
+    </data>
   <data name="AllApiKeysFree" xml:space="preserve">
-    <value>Todas las claves de API son gratuitas. Puedes configurarlas o cambiarlas después desde Ajustes.</value>
-  </data>
+      <value>Todas las claves de API son gratuitas. Puedes configurarlas o cambiarlas después desde Ajustes.</value>
+    </data>
   <data name="Notification" xml:space="preserve">
-    <value>Notificación</value>
-  </data>
+      <value>Notificación</value>
+    </data>
   <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
-    <value>La clave de API no puede estar vacía.</value>
-  </data>
+      <value>La clave de API no puede estar vacía.</value>
+    </data>
   <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
-    <value>El Client ID y el Secreto no pueden estar vacíos.</value>
-  </data>
+      <value>El Client ID y el Secreto no pueden estar vacíos.</value>
+    </data>
   <data name="ImageFilesFilter" xml:space="preserve">
-    <value>Archivos de imagen (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
-  </data>
+      <value>Archivos de imagen (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+    </data>
   <data name="MadeWithFoliCon" xml:space="preserve">
-    <value>Hecho con ♥ por FoliCon</value>
-  </data>
+      <value>Hecho con ♥ por FoliCon</value>
+    </data>
   <data name="InvalidApiKey" xml:space="preserve">
-    <value>Clave de API inválida.</value>
-  </data>
+      <value>Clave de API inválida.</value>
+    </data>
   <data name="InvalidClientIdOrSecret" xml:space="preserve">
-    <value>Client ID o Client Secret inválidos.</value>
-  </data>
+      <value>Client ID o Client Secret inválidos.</value>
+    </data>
   <data name="RequestTimedOut" xml:space="preserve">
-    <value>La solicitud ha expirado. Comprueba tu conexión a internet.</value>
-  </data>
+      <value>La solicitud ha expirado. Comprueba tu conexión a internet.</value>
+    </data>
   <data name="CouldNotReachService" xml:space="preserve">
-    <value>No se pudo conectar con {0}: {1}</value>
-  </data>
+      <value>No se pudo conectar con {0}: {1}</value>
+    </data>
   <data name="UnexpectedError" xml:space="preserve">
-    <value>Error inesperado: {0}</value>
-  </data>
+      <value>Error inesperado: {0}</value>
+    </data>
   <data name="DeviantArtNoTokens" xml:space="preserve">
-    <value>No se encontraron tokens de DeviantArt. Por favor, autoriza desde el Asistente de configuración.</value>
-  </data>
+      <value>No se encontraron tokens de DeviantArt. Por favor, autoriza desde el Asistente de configuración.</value>
+    </data>
   <data name="DeviantArtClientSecretMissing" xml:space="preserve">
-    <value>Falta el Client Secret de DeviantArt. Por favor, reconfigúralo desde el Asistente de configuración.</value>
-  </data>
+      <value>Falta el Client Secret de DeviantArt. Por favor, reconfigúralo desde el Asistente de configuración.</value>
+    </data>
   <data name="DeviantArtNoRefreshToken" xml:space="preserve">
-    <value>No hay token de actualización disponible. Por favor, reautoriza desde el Asistente de configuración.</value>
-  </data>
+      <value>No hay token de actualización disponible. Por favor, reautoriza desde el Asistente de configuración.</value>
+    </data>
   <data name="DeviantArtAccessExpired" xml:space="preserve">
-    <value>El acceso a DeviantArt ha expirado. Por favor, reautoriza desde el Asistente de configuración.</value>
-  </data>
+      <value>El acceso a DeviantArt ha expirado. Por favor, reautoriza desde el Asistente de configuración.</value>
+    </data>
   <data name="DeviantArtConnectionFailed" xml:space="preserve">
-    <value>No se pudo conectar con la API de DeviantArt. Por favor, comprueba tu conexión a internet y la configuración del cortafuegos.</value>
-  </data>
+      <value>No se pudo conectar con la API de DeviantArt. Por favor, comprueba tu conexión a internet y la configuración del cortafuegos.</value>
+    </data>
   <data name="DeviantArtAuthFailed" xml:space="preserve">
-    <value>La autorización de DeviantArt falló: {0}</value>
-  </data>
+      <value>La autorización de DeviantArt falló: {0}</value>
+    </data>
   <data name="DeviantArtMissingCode" xml:space="preserve">
-    <value>La respuesta de autorización de DeviantArt no incluyó un parámetro de código.</value>
-  </data>
+      <value>La respuesta de autorización de DeviantArt no incluyó un parámetro de código.</value>
+    </data>
   <data name="DeviantArtAuthTimedOut" xml:space="preserve">
-    <value>La autorización de DeviantArt ha expirado. Por favor, inténtalo de nuevo.</value>
-  </data>
+      <value>La autorización de DeviantArt ha expirado. Por favor, inténtalo de nuevo.</value>
+    </data>
   <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
-    <value>No se pudo obtener el token de acceso de DeviantArt desde el código de autorización.</value>
-  </data>
+      <value>No se pudo obtener el token de acceso de DeviantArt desde el código de autorización.</value>
+    </data>
   <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
-    <value>No se pudo actualizar el token de acceso de DeviantArt.</value>
-  </data>
+      <value>No se pudo actualizar el token de acceso de DeviantArt.</value>
+    </data>
   <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
-    <value>Las credenciales de cliente de DeviantArt fallaron: {0}</value>
-  </data>
+      <value>Las credenciales de cliente de DeviantArt fallaron: {0}</value>
+    </data>
   <data name="DeviantArtClientAuthFailed" xml:space="preserve">
-    <value>La autenticación del cliente falló.</value>
-  </data>
+      <value>La autenticación del cliente falló.</value>
+    </data>
 </root>

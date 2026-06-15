@@ -579,7 +579,7 @@
     <value>Не удалось получить доступ к файлу по адресу {0}. Возможно, у вас нет разрешения на доступ к этому файлуo intente ejecutarlo como administrador</value>
   </data>
   <data name="FailedToSaveMediaInfoAt" xml:space="preserve">
-    <value>Не удалось сохранить информацию о мультимедиа в {0}. Проверьте разрешения на доступ</value>
+    <value>Error al guardar la información de multimedia en {0}, compruebe los permisos de acceso.</value>
   </data>
   <data name="WritePermissionAllowed" xml:space="preserve">
     <value>Предоставлено разрешение на запись</value>
@@ -690,162 +690,174 @@
       <value>Обновление папки</value>
     </data>
   <data name="OnboardingTitle" xml:space="preserve">
-    <value>Настройка FoliCon</value>
-  </data>
+      <value>Настройка FoliCon</value>
+    </data>
   <data name="OnboardingWelcome" xml:space="preserve">
-    <value>FoliCon использует бесплатные ключи API для поиска обложек и изображений медиа. Каждый сервис необязателен — настройте только то, что вам нужно. Кредитная карта не требуется.</value>
-  </data>
+      <value>FoliCon использует бесплатные ключи API для поиска обложек и изображений медиа. Каждый сервис необязателен — настройте только то, что вам нужно. Кредитная карта не требуется.</value>
+    </data>
   <data name="OnboardingGetStarted" xml:space="preserve">
-    <value>Начать</value>
-  </data>
+      <value>Начать</value>
+    </data>
   <data name="OnboardingTmdbStep" xml:space="preserve">
-    <value>TMDB (Фильмы и сериалы)</value>
-  </data>
+      <value>TMDB (Фильмы и сериалы)</value>
+    </data>
   <data name="OnboardingTmdbInstructions" xml:space="preserve">
-    <value>Бесплатно — предоставляет метаданные и изображения для фильмов и сериалов.</value>
-  </data>
+      <value>Бесплатно — предоставляет метаданные и изображения для фильмов и сериалов.</value>
+    </data>
   <data name="OnboardingTmdbGetKey" xml:space="preserve">
-    <value>Получить ключ API TMDB →</value>
-  </data>
+      <value>Получить ключ API TMDB →</value>
+    </data>
   <data name="OnboardingIgdbStep" xml:space="preserve">
-    <value>IGDB / Twitch (Игры)</value>
-  </data>
+      <value>IGDB / Twitch (Игры)</value>
+    </data>
   <data name="OnboardingIgdbInstructions" xml:space="preserve">
-    <value>Бесплатно — предоставляет метаданные об играх. Для доступа необходим бесплатный аккаунт Twitch.</value>
-  </data>
+      <value>Бесплатно — предоставляет метаданные об играх. Для доступа необходим бесплатный аккаунт Twitch.</value>
+    </data>
   <data name="OnboardingIgdbGetKey" xml:space="preserve">
-    <value>Зарегистрировать приложение в Twitch →</value>
-  </data>
+      <value>Зарегистрировать приложение в Twitch →</value>
+    </data>
   <data name="OnboardingDeviantArtStep" xml:space="preserve">
-    <value>DeviantArt (Профессиональный режим)</value>
-  </data>
-    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>DeviantArt (Профессиональный режим)</value>
+    </data>
+  <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
       <value>Бесплатно — войдите в DeviantArt, чтобы включить профессиональный режим для поиска пользовательских иконок.</value>
     </data>
-    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+  <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
+      <value>Use FoliCon's built-in app (recommended)</value>
+    </data>
+  <data name="OnboardingDeviantArtCustom" xml:space="preserve">
+      <value>Use my own DeviantArt app</value>
+    </data>
+  <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
+      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+    </data>
+  <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
+      <value>Validate &amp; Connect</value>
+    </data>
+  <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>Подключиться к DeviantArt</value>
     </data>
-    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+  <data name="OnboardingDeviantArtConnected" xml:space="preserve">
       <value>Подключено</value>
     </data>
-    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+  <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
       <value>Не подключено</value>
     </data>
-    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+  <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
       <value>Подключение...</value>
     </data>
-    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+  <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
       <value>Не удалось подключиться. Пожалуйста, попробуйте снова.</value>
     </data>
   <data name="OnboardingValidate" xml:space="preserve">
-    <value>Проверить</value>
-  </data>
+      <value>Проверить</value>
+    </data>
   <data name="OnboardingSkip" xml:space="preserve">
-    <value>Пропустить</value>
-  </data>
+      <value>Пропускать</value>
+    </data>
   <data name="OnboardingNext" xml:space="preserve">
-    <value>Далее</value>
-  </data>
+      <value>Далее</value>
+    </data>
   <data name="OnboardingBack" xml:space="preserve">
-    <value>Назад</value>
-  </data>
+      <value>Назад</value>
+    </data>
   <data name="OnboardingFinish" xml:space="preserve">
-    <value>Готово</value>
-  </data>
+      <value>Готово</value>
+    </data>
   <data name="OnboardingValidationSuccess" xml:space="preserve">
-    <value>Ключ успешно проверен!</value>
-  </data>
+      <value>Ключ успешно проверен!</value>
+    </data>
   <data name="OnboardingValidationFailed" xml:space="preserve">
-    <value>Ошибка проверки: </value>
-  </data>
+      <value>Ошибка проверки: </value>
+    </data>
   <data name="OnboardingNetworkError" xml:space="preserve">
-    <value>Не удалось подключиться к сервису. Проверьте подключение к Интернету.</value>
-  </data>
+      <value>Не удалось подключиться к сервису. Проверьте подключение к Интернету.</value>
+    </data>
   <data name="OnboardingValidating" xml:space="preserve">
-    <value>Проверка...</value>
-  </data>
+      <value>Проверка...</value>
+    </data>
   <data name="OnboardingSummary" xml:space="preserve">
-    <value>Итоги настройки</value>
-  </data>
+      <value>Итоги настройки</value>
+    </data>
   <data name="OnboardingConfigured" xml:space="preserve">
-    <value>Настроено</value>
-  </data>
+      <value>Настроено</value>
+    </data>
   <data name="OnboardingSkipped" xml:space="preserve">
-    <value>Пропущено</value>
-  </data>
+      <value>Пропущено</value>
+    </data>
   <data name="ServiceNotConfigured" xml:space="preserve">
-    <value>{0} не настроен. Перейдите в «Настройки» → «Ключи API» для настройки.</value>
-  </data>
+      <value>{0} не настроен. Перейдите в «Настройки» → «Ключи API» для настройки.</value>
+    </data>
   <data name="SetupWizard" xml:space="preserve">
-    <value>Мастер настройки</value>
-  </data>
+      <value>Мастер настройки</value>
+    </data>
   <data name="AllApiKeysFree" xml:space="preserve">
-    <value>Все ключи API бесплатные. Вы можете настроить или изменить их позже в разделе «Настройки».</value>
-  </data>
+      <value>Все ключи API бесплатные. Вы можете настроить или изменить их позже в разделе «Настройки».</value>
+    </data>
   <data name="Notification" xml:space="preserve">
-    <value>Уведомление</value>
-  </data>
+      <value>Уведомление</value>
+    </data>
   <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
-    <value>Ключ API не может быть пустым.</value>
-  </data>
+      <value>Ключ API не может быть пустым.</value>
+    </data>
   <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
-    <value>Client ID и Secret не могут быть пустыми.</value>
-  </data>
+      <value>Client ID и Secret не могут быть пустыми.</value>
+    </data>
   <data name="ImageFilesFilter" xml:space="preserve">
-    <value>Файлы изображений (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
-  </data>
+      <value>Файлы изображений (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+    </data>
   <data name="MadeWithFoliCon" xml:space="preserve">
-    <value>Создано с ♥ в FoliCon</value>
-  </data>
+      <value>Создано с ♥ в FoliCon</value>
+    </data>
   <data name="InvalidApiKey" xml:space="preserve">
-    <value>Недействительный ключ API.</value>
-  </data>
+      <value>Недействительный ключ API.</value>
+    </data>
   <data name="InvalidClientIdOrSecret" xml:space="preserve">
-    <value>Недействительный Client ID или Client Secret.</value>
-  </data>
+      <value>Недействительный Client ID или Client Secret.</value>
+    </data>
   <data name="RequestTimedOut" xml:space="preserve">
-    <value>Время ожидания запроса истекло. Проверьте подключение к интернету.</value>
-  </data>
+      <value>Время ожидания запроса истекло. Проверьте подключение к интернету.</value>
+    </data>
   <data name="CouldNotReachService" xml:space="preserve">
-    <value>Не удалось подключиться к {0}: {1}</value>
-  </data>
+      <value>Не удалось подключиться к {0}: {1}</value>
+    </data>
   <data name="UnexpectedError" xml:space="preserve">
-    <value>Непредвиденная ошибка: {0}</value>
-  </data>
+      <value>Непредвиденная ошибка: {0}</value>
+    </data>
   <data name="DeviantArtNoTokens" xml:space="preserve">
-    <value>Токены DeviantArt не найдены. Пожалуйста, авторизуйтесь через Мастер настройки.</value>
-  </data>
+      <value>Токены DeviantArt не найдены. Пожалуйста, авторизуйтесь через Мастер настройки.</value>
+    </data>
   <data name="DeviantArtClientSecretMissing" xml:space="preserve">
-    <value>Client Secret для DeviantArt отсутствует. Пожалуйста, настройте заново через Мастер настройки.</value>
-  </data>
+      <value>Client Secret для DeviantArt отсутствует. Пожалуйста, настройте заново через Мастер настройки.</value>
+    </data>
   <data name="DeviantArtNoRefreshToken" xml:space="preserve">
-    <value>Refresh-токен недоступен. Пожалуйста, повторно авторизуйтесь через Мастер настройки.</value>
-  </data>
+      <value>Refresh-токен недоступен. Пожалуйста, повторно авторизуйтесь через Мастер настройки.</value>
+    </data>
   <data name="DeviantArtAccessExpired" xml:space="preserve">
-    <value>Доступ к DeviantArt истёк. Пожалуйста, повторно авторизуйтесь через Мастер настройки.</value>
-  </data>
+      <value>Доступ к DeviantArt истёк. Пожалуйста, повторно авторизуйтесь через Мастер настройки.</value>
+    </data>
   <data name="DeviantArtConnectionFailed" xml:space="preserve">
-    <value>Не удалось подключиться к API DeviantArt. Пожалуйста, проверьте подключение к интернету и настройки файрвола.</value>
-  </data>
+      <value>Не удалось подключиться к API DeviantArt. Пожалуйста, проверьте подключение к интернету и настройки файрвола.</value>
+    </data>
   <data name="DeviantArtAuthFailed" xml:space="preserve">
-    <value>Авторизация DeviantArt не удалась: {0}</value>
-  </data>
+      <value>Авторизация DeviantArt не удалась: {0}</value>
+    </data>
   <data name="DeviantArtMissingCode" xml:space="preserve">
-    <value>Ответ авторизации DeviantArt не содержит параметр code.</value>
-  </data>
+      <value>Ответ авторизации DeviantArt не содержит параметр code.</value>
+    </data>
   <data name="DeviantArtAuthTimedOut" xml:space="preserve">
-    <value>Время авторизации DeviantArt истекло. Пожалуйста, попробуйте снова.</value>
-  </data>
+      <value>Время авторизации DeviantArt истекло. Пожалуйста, попробуйте снова.</value>
+    </data>
   <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
-    <value>Не удалось получить токен доступа DeviantArt из кода авторизации.</value>
-  </data>
+      <value>Не удалось получить токен доступа DeviantArt из кода авторизации.</value>
+    </data>
   <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
-    <value>Не удалось обновить токен доступа DeviantArt.</value>
-  </data>
+      <value>Не удалось обновить токен доступа DeviantArt.</value>
+    </data>
   <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
-    <value>Ошибка авторизации клиента DeviantArt: {0}</value>
-  </data>
+      <value>Ошибка авторизации клиента DeviantArt: {0}</value>
+    </data>
   <data name="DeviantArtClientAuthFailed" xml:space="preserve">
-    <value>Аутентификация клиента не удалась.</value>
-  </data>
+      <value>Аутентификация клиента не удалась.</value>
+    </data>
 </root>
