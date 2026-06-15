@@ -688,4 +688,163 @@
   <data name="RefreshingFolder" xml:space="preserve">
       <value>تحديث المجلد</value>
     </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>إعداد FoliCon</value>
+  </data>
+  <data name="OnboardingWelcome" xml:space="preserve">
+    <value>يستخدم FoliCon مفاتيح API مجانية للبحث عن أعمال فنية للوسائط. كل خيار اختياري — قم بتكوين ما تحتاجه فقط. لا حاجة لبطاقة ائتمان.</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>ابدأ الآن</value>
+  </data>
+  <data name="OnboardingTmdbStep" xml:space="preserve">
+    <value>TMDB (أفلام ومسلسلات)</value>
+  </data>
+  <data name="OnboardingTmdbInstructions" xml:space="preserve">
+    <value>مجاني — يوفر بيانات الوصف والأعمال الفنية للأفلام والمسلسلات.</value>
+  </data>
+  <data name="OnboardingTmdbGetKey" xml:space="preserve">
+    <value>احصل على مفتاح TMDB API →</value>
+  </data>
+  <data name="OnboardingIgdbStep" xml:space="preserve">
+    <value>IGDB / Twitch (ألعاب)</value>
+  </data>
+  <data name="OnboardingIgdbInstructions" xml:space="preserve">
+    <value>مجاني — يوفر بيانات وصف الألعاب. تحتاج إلى حساب Twitch مجاني للوصول إليه.</value>
+  </data>
+  <data name="OnboardingIgdbGetKey" xml:space="preserve">
+    <value>سجّل تطبيق Twitch →</value>
+  </data>
+  <data name="OnboardingDeviantArtStep" xml:space="preserve">
+    <value>DeviantArt (الوضع الاحترافي)</value>
+  </data>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>مجاني — قم بتسجيل الدخول إلى DeviantArt لتفعيل الوضع الاحترافي للبحث عن أيقونات مخصصة.</value>
+    </data>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>الاتصال بـ DeviantArt</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>متصل</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>غير متصل</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>جارٍ الاتصال...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>فشل الاتصال. يرجى المحاولة مرة أخرى.</value>
+    </data>
+  <data name="OnboardingValidate" xml:space="preserve">
+    <value>تحقق</value>
+  </data>
+  <data name="OnboardingSkip" xml:space="preserve">
+    <value>تخطّي</value>
+  </data>
+  <data name="OnboardingNext" xml:space="preserve">
+    <value>التالي</value>
+  </data>
+  <data name="OnboardingBack" xml:space="preserve">
+    <value>السابق</value>
+  </data>
+  <data name="OnboardingFinish" xml:space="preserve">
+    <value>تم</value>
+  </data>
+  <data name="OnboardingValidationSuccess" xml:space="preserve">
+    <value>تم التحقق بنجاح!</value>
+  </data>
+  <data name="OnboardingValidationFailed" xml:space="preserve">
+    <value>فشل التحقق: </value>
+  </data>
+  <data name="OnboardingNetworkError" xml:space="preserve">
+    <value>تعذر الاتصال بالخدمة. تحقق من اتصالك بالإنترنت.</value>
+  </data>
+  <data name="OnboardingValidating" xml:space="preserve">
+    <value>جارٍ التحقق...</value>
+  </data>
+  <data name="OnboardingSummary" xml:space="preserve">
+    <value>ملخص الإعداد</value>
+  </data>
+  <data name="OnboardingConfigured" xml:space="preserve">
+    <value>تم التكوين</value>
+  </data>
+  <data name="OnboardingSkipped" xml:space="preserve">
+    <value>تم التخطي</value>
+  </data>
+  <data name="ServiceNotConfigured" xml:space="preserve">
+    <value>{0} غير مكوّن. انتقل إلى الإعدادات ← مفاتيح API لتكوينه.</value>
+  </data>
+  <data name="SetupWizard" xml:space="preserve">
+    <value>معالج الإعداد</value>
+  </data>
+  <data name="AllApiKeysFree" xml:space="preserve">
+    <value>جميع مفاتيح API مجانية. يمكنك تكوينها أو تغييرها لاحقاً من الإعدادات.</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>إشعار</value>
+  </data>
+  <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+    <value>لا يمكن أن يكون مفتاح API فارغاً.</value>
+  </data>
+  <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+    <value>لا يمكن أن يكون Client ID و Secret فارغين.</value>
+  </data>
+  <data name="ImageFilesFilter" xml:space="preserve">
+    <value>ملفات الصور (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+  </data>
+  <data name="MadeWithFoliCon" xml:space="preserve">
+    <value>صنع بواسطة ♥ FoliCon</value>
+  </data>
+  <data name="InvalidApiKey" xml:space="preserve">
+    <value>مفتاح API غير صالح.</value>
+  </data>
+  <data name="InvalidClientIdOrSecret" xml:space="preserve">
+    <value>Client ID أو Client Secret غير صالح.</value>
+  </data>
+  <data name="RequestTimedOut" xml:space="preserve">
+    <value>انتهت مهلة الطلب. تحقق من اتصالك بالإنترنت.</value>
+  </data>
+  <data name="CouldNotReachService" xml:space="preserve">
+    <value>تعذر الوصول إلى {0}: {1}</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>خطأ غير متوقع: {0}</value>
+  </data>
+  <data name="DeviantArtNoTokens" xml:space="preserve">
+    <value>لم يتم العثور على رموز DeviantArt. يرجى التفويض من معالج الإعداد.</value>
+  </data>
+  <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+    <value>Client Secret الخاص بـ DeviantArt مفقود. يرجى إعادة التكوين من معالج الإعداد.</value>
+  </data>
+  <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+    <value>لا يوجد رمز تجديد متاح. يرجى إعادة التفويض من معالج الإعداد.</value>
+  </data>
+  <data name="DeviantArtAccessExpired" xml:space="preserve">
+    <value>انتهت صلاحية وصول DeviantArt. يرجى إعادة التفويض من معالج الإعداد.</value>
+  </data>
+  <data name="DeviantArtConnectionFailed" xml:space="preserve">
+    <value>فشل الاتصال بـ DeviantArt API. يرجى التحقق من اتصالك بالإنترنت وإعدادات جدار الحماية.</value>
+  </data>
+  <data name="DeviantArtAuthFailed" xml:space="preserve">
+    <value>فشل تفويض DeviantArt: {0}</value>
+  </data>
+  <data name="DeviantArtMissingCode" xml:space="preserve">
+    <value>لم يتضمن رد تفويض DeviantArt معامل code.</value>
+  </data>
+  <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+    <value>انتهت مهلة تفويض DeviantArt. يرجى المحاولة مرة أخرى.</value>
+  </data>
+  <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+    <value>فشل في الحصول على رمز وصول DeviantArt من كود التفويض.</value>
+  </data>
+  <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+    <value>فشل في تحديث رمز وصول DeviantArt.</value>
+  </data>
+  <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+    <value>فشل اعتماد عميل DeviantArt: {0}</value>
+  </data>
+  <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+    <value>فشلت مصادقة العميل.</value>
+  </data>
 </root>

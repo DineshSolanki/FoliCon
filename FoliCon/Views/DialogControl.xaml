@@ -4,6 +4,8 @@
              xmlns:prism="http://prismlibrary.com/" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True" Width="auto" d:DataContext="{d:DesignInstance viewModels:DialogControlViewModel}">
     <prism:Dialog.WindowStyle>
@@ -21,6 +23,6 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="{Binding Message}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" TextWrapping="Wrap" />
-        <Button Command="{Binding CloseDialogCommand}" CommandParameter="true" Content="OK" Width="75" Height="36" Margin="0,9,0,0" Grid.Row="1" IsDefault="True" VerticalAlignment="Top" />
+        <Button Command="{Binding CloseDialogCommand}" CommandParameter="true" Content="{extension:Lang Key={x:Static langs:LangKeys.OK}}" Width="75" Height="36" Margin="0,9,0,0" Grid.Row="1" IsDefault="True" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

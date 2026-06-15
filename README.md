@@ -43,16 +43,16 @@ Folicon is a Folder icon changer which works for movie,music, games, and shows, 
 ## Getting Started
 *To Use this Application Instantly, Click the Download button Above or Go to "Release", and start using. (No Installation or Additional Libraries needed)*
 
-To compile this Source you need to Create "AppConfig.json" file with structure given below, or you will be guided to it on first Run so you can skip manual creation.
-```
-{
-  "DevClientID": "Your_DeviantArt_Client_ID_here",
-  "DevClientSecret": "Your_DeviantArt_Client_Secret_here",
-  "TMDBKey": "Your_TMDB_API_here",
-  "IgdbClientId": "Your_IGDB_Client_ID_here",
-  "IgdbClientSecret": "Your_Client_Secret_API_here"
-}
-```
+FoliCon uses **free** API keys from third-party services (TMDB, IGDB/Twitch, DeviantArt). No credit card required — just create a free account on each service you want to use.
+
+On first run, you'll be guided through a setup wizard to configure the services you need. You can also access it anytime from **Settings → Setup Wizard**.
+
+**Service overview:**
+- **TMDB** — Free. Movie & TV show metadata. Get your free API key at [themoviedb.org](https://www.themoviedb.org/settings/api)
+- **IGDB/Twitch** — Free. Game metadata. Create a free Twitch app at [dev.twitch.tv](https://dev.twitch.tv/console/apps)
+- **DeviantArt** — Free. Professional mode icon searches. Just log in with your DeviantArt account
+
+All services are optional — configure only what you need.
 
 ## Localization
 FoliCon supports multiple languages through Crowdin integration. The application is currently available in English, Spanish, Arabic, Russian, Hindi, and Portuguese. 

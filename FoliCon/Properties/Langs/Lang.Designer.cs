@@ -1132,6 +1132,294 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string OnboardingBack {
+            get {
+                return ResourceManager.GetString("OnboardingBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configured.
+        /// </summary>
+        public static string OnboardingConfigured {
+            get {
+                return ResourceManager.GetString("OnboardingConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect to DeviantArt.
+        /// </summary>
+        public static string OnboardingConnectDeviantArt {
+            get {
+                return ResourceManager.GetString("OnboardingConnectDeviantArt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in to DeviantArt to enable Professional mode for custom icon searches..
+        /// </summary>
+        public static string OnboardingDeviantArtAuthInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtAuthInstructions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use FoliCon's built-in app (recommended).
+        /// </summary>
+        public static string OnboardingDeviantArtBuiltIn {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtBuiltIn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use my own DeviantArt app.
+        /// </summary>
+        public static string OnboardingDeviantArtCustom {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtCustom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below..
+        /// </summary>
+        public static string OnboardingDeviantArtCustomInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtCustomInstructions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Validate &amp; Connect.
+        /// </summary>
+        public static string OnboardingDeviantArtValidateConnect {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtValidateConnect", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        public static string OnboardingDeviantArtConnected {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect. Please try again..
+        /// </summary>
+        public static string OnboardingDeviantArtConnectFailed {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtConnectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connecting....
+        /// </summary>
+        public static string OnboardingDeviantArtConnecting {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtConnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        public static string OnboardingDeviantArtNotConnected {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt (Professional Mode).
+        /// </summary>
+        public static string OnboardingDeviantArtStep {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        public static string OnboardingFinish {
+            get {
+                return ResourceManager.GetString("OnboardingFinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Started.
+        /// </summary>
+        public static string OnboardingGetStarted {
+            get {
+                return ResourceManager.GetString("OnboardingGetStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register a Twitch application →.
+        /// </summary>
+        public static string OnboardingIgdbGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbGetKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IGDB provides game metadata. You need a Twitch application to access it..
+        /// </summary>
+        public static string OnboardingIgdbInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IGDB / Twitch (Games).
+        /// </summary>
+        public static string OnboardingIgdbStep {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not reach the service. Check your internet connection..
+        /// </summary>
+        public static string OnboardingNetworkError {
+            get {
+                return ResourceManager.GetString("OnboardingNetworkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string OnboardingNext {
+            get {
+                return ResourceManager.GetString("OnboardingNext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skip.
+        /// </summary>
+        public static string OnboardingSkip {
+            get {
+                return ResourceManager.GetString("OnboardingSkip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skipped.
+        /// </summary>
+        public static string OnboardingSkipped {
+            get {
+                return ResourceManager.GetString("OnboardingSkipped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup Summary.
+        /// </summary>
+        public static string OnboardingSummary {
+            get {
+                return ResourceManager.GetString("OnboardingSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Up FoliCon.
+        /// </summary>
+        public static string OnboardingTitle {
+            get {
+                return ResourceManager.GetString("OnboardingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get your TMDB API key →.
+        /// </summary>
+        public static string OnboardingTmdbGetKey {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbGetKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB provides movie and TV show metadata and artwork..
+        /// </summary>
+        public static string OnboardingTmdbInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TMDB (Movies &amp; TV).
+        /// </summary>
+        public static string OnboardingTmdbStep {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validate.
+        /// </summary>
+        public static string OnboardingValidate {
+            get {
+                return ResourceManager.GetString("OnboardingValidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating....
+        /// </summary>
+        public static string OnboardingValidating {
+            get {
+                return ResourceManager.GetString("OnboardingValidating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation failed: .
+        /// </summary>
+        public static string OnboardingValidationFailed {
+            get {
+                return ResourceManager.GetString("OnboardingValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key validated successfully!.
+        /// </summary>
+        public static string OnboardingValidationSuccess {
+            get {
+                return ResourceManager.GetString("OnboardingValidationSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FoliCon needs API keys to search for media artwork. Each service is optional — configure only what you need..
+        /// </summary>
+        public static string OnboardingWelcome {
+            get {
+                return ResourceManager.GetString("OnboardingWelcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only keep exact matches?.
         /// </summary>
         public static string OnlyKeepExactMatches {
@@ -1431,11 +1719,29 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not configured. Go to Settings → API Keys to set it up..
+        /// </summary>
+        public static string ServiceNotConfigured {
+            get {
+                return ResourceManager.GetString("ServiceNotConfigured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setup Wizard.
+        /// </summary>
+        public static string SetupWizard {
+            get {
+                return ResourceManager.GetString("SetupWizard", resourceCulture);
             }
         }
         
@@ -1735,6 +2041,213 @@ namespace FoliCon.Properties.Langs {
         public static string Year {
             get {
                 return ResourceManager.GetString("Year", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to All API keys are free. You can configure or change them later from Settings..
+        /// </summary>
+        public static string AllApiKeysFree {
+            get {
+                return ResourceManager.GetString("AllApiKeysFree", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Notification.
+        /// </summary>
+        public static string Notification {
+            get {
+                return ResourceManager.GetString("Notification", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to API key cannot be empty..
+        /// </summary>
+        public static string ApiKeyCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("ApiKeyCannotBeEmpty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Client ID and Secret cannot be empty..
+        /// </summary>
+        public static string ClientIdAndSecretCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("ClientIdAndSecretCannotBeEmpty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico.
+        /// </summary>
+        public static string ImageFilesFilter {
+            get {
+                return ResourceManager.GetString("ImageFilesFilter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Made with ♥ by FoliCon.
+        /// </summary>
+        public static string MadeWithFoliCon {
+            get {
+                return ResourceManager.GetString("MadeWithFoliCon", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid API key..
+        /// </summary>
+        public static string InvalidApiKey {
+            get {
+                return ResourceManager.GetString("InvalidApiKey", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Client ID or Client Secret..
+        /// </summary>
+        public static string InvalidClientIdOrSecret {
+            get {
+                return ResourceManager.GetString("InvalidClientIdOrSecret", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Request timed out. Check your internet connection..
+        /// </summary>
+        public static string RequestTimedOut {
+            get {
+                return ResourceManager.GetString("RequestTimedOut", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not reach {0}: {1}.
+        /// </summary>
+        public static string CouldNotReachService {
+            get {
+                return ResourceManager.GetString("CouldNotReachService", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected error: {0}.
+        /// </summary>
+        public static string UnexpectedError {
+            get {
+                return ResourceManager.GetString("UnexpectedError", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No DeviantArt tokens found. Please authorize via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtNoTokens {
+            get {
+                return ResourceManager.GetString("DeviantArtNoTokens", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtClientSecretMissing {
+            get {
+                return ResourceManager.GetString("DeviantArtClientSecretMissing", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No refresh token available. Please re-authorize via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtNoRefreshToken {
+            get {
+                return ResourceManager.GetString("DeviantArtNoRefreshToken", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt access expired. Please re-authorize via the Setup Wizard..
+        /// </summary>
+        public static string DeviantArtAccessExpired {
+            get {
+                return ResourceManager.GetString("DeviantArtAccessExpired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to connect to DeviantArt API. Please check your network connection and firewall settings..
+        /// </summary>
+        public static string DeviantArtConnectionFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtConnectionFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt authorization failed: {0}.
+        /// </summary>
+        public static string DeviantArtAuthFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtAuthFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt authorization callback did not include a code parameter..
+        /// </summary>
+        public static string DeviantArtMissingCode {
+            get {
+                return ResourceManager.GetString("DeviantArtMissingCode", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt authorization timed out. Please try again..
+        /// </summary>
+        public static string DeviantArtAuthTimedOut {
+            get {
+                return ResourceManager.GetString("DeviantArtAuthTimedOut", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to obtain DeviantArt access token from authorization code..
+        /// </summary>
+        public static string DeviantArtTokenObtainFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtTokenObtainFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to refresh DeviantArt access token..
+        /// </summary>
+        public static string DeviantArtTokenRefreshFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtTokenRefreshFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt client credentials failed: {0}.
+        /// </summary>
+        public static string DeviantArtClientCredentialsFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtClientCredentialsFailed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Client authentication failed..
+        /// </summary>
+        public static string DeviantArtClientAuthFailed {
+            get {
+                return ResourceManager.GetString("DeviantArtClientAuthFailed", resourceCulture);
             }
         }
     }

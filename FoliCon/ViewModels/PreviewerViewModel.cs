@@ -18,8 +18,8 @@
         
         private PosterIcon _posterIconInstance;
         private string _rating = "3.5";
-        public string Title => "Previewer";
-        private string _mediaTitle = "Made with ♥ by FoliCon";
+        public string Title => Lang.Previewer;
+        private string _mediaTitle = Lang.MadeWithFoliCon;
         private bool _ratingVisibility = true;
         private bool _overlayVisibility = true;
         
@@ -74,7 +74,7 @@
         private void SelectImage()
         {
             Logger.Debug("Opening image selection dialog");
-            var fileDialog = DialogUtils.NewOpenFileDialog(Lang.ChooseAnImage, "Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico");
+            var fileDialog = DialogUtils.NewOpenFileDialog(Lang.ChooseAnImage, Lang.ImageFilesFilter);
             var selected = fileDialog.ShowDialog();
 
             if (selected != null && (bool)!selected)

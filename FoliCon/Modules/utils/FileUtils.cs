@@ -1,5 +1,6 @@
 ﻿using System.Security.AccessControl;
 using System.Security.Principal;
+using FoliCon.Models.Configs;
 using Vanara.InteropServices;
 
 namespace FoliCon.Modules.utils;
@@ -504,26 +505,37 @@ public static class FileUtils
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_PATHW, folderPath);
     }
 
-    public static void ReadApiConfiguration(out string tmdbkey, out string igdbClientId,
-        out string igdbClientSecret, out string dartClientSecret, out string dartId)
+    public static (string TmdbKey, string IgdbClientId, string IgdbClientSecret) ReadApiConfiguration()
     {
         var settings = GlobalDataHelper.Load<AppConfig>();
-        tmdbkey = settings.TmdbKey;
-        igdbClientId = settings.IgdbClientId;
-        igdbClientSecret = settings.IgdbClientSecret;
-        dartClientSecret = settings.DevClientSecret;
-        dartId = settings.DevClientId;
+        return (settings.TmdbKey, settings.IgdbClientId, settings.IgdbClientSecret);
     }
 
-    public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret,
-        string dartClientSecret, string dartId)
+    public static void WriteApiConfiguration(string tmdbkey, string igdbClientId, string igdbClientSecret)
     {
         Services.Settings.TmdbKey = tmdbkey;
         Services.Settings.IgdbClientId = igdbClientId;
         Services.Settings.IgdbClientSecret = igdbClientSecret;
-        Services.Settings.DevClientId = dartId;
-        Services.Settings.DevClientSecret = dartClientSecret;
         Services.Settings.Save();
+    }
+
+    /// <summary>
+    /// Clears cached OAuth tokens for IGDB/Twitch and DeviantArt.
+    /// Should be called after API credentials change to ensure stale tokens are not reused.
+    /// </summary>
+    public static void ClearCachedTokens()
+    {
+        Logger.Debug("Clearing cached OAuth tokens after API key change.");
+        try
+        {
+            // Reset IGDB/Twitch token by creating a fresh tracker store (overwrites Jot state)
+            _ = new IgdbJotTrackerStore();
+            // The new instance with default token will be picked up on next IGDBClient construction
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to clear IGDB token cache.");
+        }
     }
     
     public static bool CreateDirectory(string path)

@@ -689,4 +689,175 @@ and refresh Icon Cache?</value>
     <data name="RefreshingFolder" xml:space="preserve">
       <value>Refreshing folder</value>
     </data>
+    <data name="OnboardingTitle" xml:space="preserve">
+      <value>Set Up FoliCon</value>
+    </data>
+    <data name="OnboardingWelcome" xml:space="preserve">
+      <value>FoliCon uses free API keys to search for media artwork. Each service is optional — configure only what you need. No credit card required.</value>
+    </data>
+    <data name="OnboardingGetStarted" xml:space="preserve">
+      <value>Get Started</value>
+    </data>
+    <data name="OnboardingTmdbStep" xml:space="preserve">
+      <value>TMDB (Movies &amp; TV)</value>
+    </data>
+    <data name="OnboardingTmdbInstructions" xml:space="preserve">
+      <value>Free — provides movie and TV show metadata and artwork.</value>
+    </data>
+    <data name="OnboardingTmdbGetKey" xml:space="preserve">
+      <value>Get your TMDB API key →</value>
+    </data>
+    <data name="OnboardingIgdbStep" xml:space="preserve">
+      <value>IGDB / Twitch (Games)</value>
+    </data>
+    <data name="OnboardingIgdbInstructions" xml:space="preserve">
+      <value>Free — provides game metadata. You need a free Twitch account to access it.</value>
+    </data>
+    <data name="OnboardingIgdbGetKey" xml:space="preserve">
+      <value>Register a Twitch application →</value>
+    </data>
+    <data name="OnboardingDeviantArtStep" xml:space="preserve">
+      <value>DeviantArt (Professional Mode)</value>
+    </data>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>Free — log in to DeviantArt to enable Professional mode for custom icon searches.</value>
+    </data>
+    <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
+      <value>Use FoliCon's built-in app (recommended)</value>
+    </data>
+    <data name="OnboardingDeviantArtCustom" xml:space="preserve">
+      <value>Use my own DeviantArt app</value>
+    </data>
+    <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
+      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+    </data>
+    <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
+      <value>Validate &amp; Connect</value>
+    </data>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>Connect to DeviantArt</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>Connected</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>Not connected</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>Connecting...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>Failed to connect. Please try again.</value>
+    </data>
+    <data name="OnboardingValidate" xml:space="preserve">
+      <value>Validate</value>
+    </data>
+    <data name="OnboardingSkip" xml:space="preserve">
+      <value>Skip</value>
+    </data>
+    <data name="OnboardingNext" xml:space="preserve">
+      <value>Next</value>
+    </data>
+    <data name="OnboardingBack" xml:space="preserve">
+      <value>Back</value>
+    </data>
+    <data name="OnboardingFinish" xml:space="preserve">
+      <value>Done</value>
+    </data>
+    <data name="OnboardingValidationSuccess" xml:space="preserve">
+      <value>Key validated successfully!</value>
+    </data>
+    <data name="OnboardingValidationFailed" xml:space="preserve">
+      <value>Validation failed: </value>
+    </data>
+    <data name="OnboardingNetworkError" xml:space="preserve">
+      <value>Could not reach the service. Check your internet connection.</value>
+    </data>
+    <data name="OnboardingValidating" xml:space="preserve">
+      <value>Validating...</value>
+    </data>
+    <data name="OnboardingSummary" xml:space="preserve">
+      <value>Setup Summary</value>
+    </data>
+    <data name="OnboardingConfigured" xml:space="preserve">
+      <value>Configured</value>
+    </data>
+    <data name="OnboardingSkipped" xml:space="preserve">
+      <value>Skipped</value>
+    </data>
+    <data name="ServiceNotConfigured" xml:space="preserve">
+      <value>{0} is not configured. Go to Settings → API Keys to set it up.</value>
+    </data>
+    <data name="SetupWizard" xml:space="preserve">
+      <value>Setup Wizard</value>
+    </data>
+    <data name="AllApiKeysFree" xml:space="preserve">
+      <value>All API keys are free. You can configure or change them later from Settings.</value>
+    </data>
+    <data name="Notification" xml:space="preserve">
+      <value>Notification</value>
+    </data>
+    <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+      <value>API key cannot be empty.</value>
+    </data>
+    <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+      <value>Client ID and Secret cannot be empty.</value>
+    </data>
+    <data name="ImageFilesFilter" xml:space="preserve">
+      <value>Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+    </data>
+    <data name="MadeWithFoliCon" xml:space="preserve">
+      <value>Made with ♥ by FoliCon</value>
+    </data>
+    <data name="InvalidApiKey" xml:space="preserve">
+      <value>Invalid API key.</value>
+    </data>
+    <data name="InvalidClientIdOrSecret" xml:space="preserve">
+      <value>Invalid Client ID or Client Secret.</value>
+    </data>
+    <data name="RequestTimedOut" xml:space="preserve">
+      <value>Request timed out. Check your internet connection.</value>
+    </data>
+    <data name="CouldNotReachService" xml:space="preserve">
+      <value>Could not reach {0}: {1}</value>
+    </data>
+    <data name="UnexpectedError" xml:space="preserve">
+      <value>Unexpected error: {0}</value>
+    </data>
+    <data name="DeviantArtNoTokens" xml:space="preserve">
+      <value>No DeviantArt tokens found. Please authorize via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtClientSecretMissing" xml:space="preserve">
+      <value>DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtNoRefreshToken" xml:space="preserve">
+      <value>No refresh token available. Please re-authorize via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtAccessExpired" xml:space="preserve">
+      <value>DeviantArt access expired. Please re-authorize via the Setup Wizard.</value>
+    </data>
+    <data name="DeviantArtConnectionFailed" xml:space="preserve">
+      <value>Failed to connect to DeviantArt API. Please check your network connection and firewall settings.</value>
+    </data>
+    <data name="DeviantArtAuthFailed" xml:space="preserve">
+      <value>DeviantArt authorization failed: {0}</value>
+    </data>
+    <data name="DeviantArtMissingCode" xml:space="preserve">
+      <value>DeviantArt authorization callback did not include a code parameter.</value>
+    </data>
+    <data name="DeviantArtAuthTimedOut" xml:space="preserve">
+      <value>DeviantArt authorization timed out. Please try again.</value>
+    </data>
+    <data name="DeviantArtTokenObtainFailed" xml:space="preserve">
+      <value>Failed to obtain DeviantArt access token from authorization code.</value>
+    </data>
+    <data name="DeviantArtTokenRefreshFailed" xml:space="preserve">
+      <value>Failed to refresh DeviantArt access token.</value>
+    </data>
+    <data name="DeviantArtClientCredentialsFailed" xml:space="preserve">
+      <value>DeviantArt client credentials failed: {0}</value>
+    </data>
+    <data name="DeviantArtClientAuthFailed" xml:space="preserve">
+      <value>Client authentication failed.</value>
+    </data>
 </root>

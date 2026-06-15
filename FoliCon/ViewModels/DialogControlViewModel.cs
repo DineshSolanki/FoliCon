@@ -16,7 +16,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
         private set => SetProperty(ref _message, value);
     }
 
-    private string _title = "Notification";
+    private string _title = Lang.Notification;
 
     public string Title
     {
