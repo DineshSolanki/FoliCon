@@ -272,7 +272,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         if (string.IsNullOrWhiteSpace(TmdbKey))
         {
             IsTmdbValid = false;
-            TmdbValidationMessage = Lang.OnboardingValidationFailed + "API key cannot be empty.";
+            TmdbValidationMessage = Lang.OnboardingValidationFailed + Lang.ApiKeyCannotBeEmpty;
             return;
         }
 
@@ -303,7 +303,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         if (string.IsNullOrWhiteSpace(IgdbClientId) || string.IsNullOrWhiteSpace(IgdbClientSecret))
         {
             IsIgdbValid = false;
-            IgdbValidationMessage = Lang.OnboardingValidationFailed + "Client ID and Secret cannot be empty.";
+            IgdbValidationMessage = Lang.OnboardingValidationFailed + Lang.ClientIdAndSecretCannotBeEmpty;
             return;
         }
 

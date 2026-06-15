@@ -688,4 +688,112 @@ and refresh Icon Cache?</value>
   <data name="RefreshingFolder" xml:space="preserve">
       <value>Refreshing folder</value>
     </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>设置 FoliCon</value>
+  </data>
+  <data name="OnboardingWelcome" xml:space="preserve">
+    <value>FoliCon 使用免费的 API 密钥来搜索媒体封面和海报。每个服务均为可选 — 只需配置您需要的服务。无需信用卡。</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>开始使用</value>
+  </data>
+  <data name="OnboardingTmdbStep" xml:space="preserve">
+    <value>TMDB（电影和电视剧）</value>
+  </data>
+  <data name="OnboardingTmdbInstructions" xml:space="preserve">
+    <value>免费 — 提供电影和电视剧的元数据及封面图。</value>
+  </data>
+  <data name="OnboardingTmdbGetKey" xml:space="preserve">
+    <value>获取您的 TMDB API 密钥 →</value>
+  </data>
+  <data name="OnboardingIgdbStep" xml:space="preserve">
+    <value>IGDB / Twitch（游戏）</value>
+  </data>
+  <data name="OnboardingIgdbInstructions" xml:space="preserve">
+    <value>免费 — 提供游戏元数据。您需要一个免费的 Twitch 账户才能访问。</value>
+  </data>
+  <data name="OnboardingIgdbGetKey" xml:space="preserve">
+    <value>注册 Twitch 应用程序 →</value>
+  </data>
+  <data name="OnboardingDeviantArtStep" xml:space="preserve">
+    <value>DeviantArt（专业模式）</value>
+  </data>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>免费 — 登录 DeviantArt 以启用专业模式，用于自定义图标搜索。</value>
+    </data>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>连接到 DeviantArt</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>已连接</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>未连接</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>连接中...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>连接失败，请重试。</value>
+    </data>
+  <data name="OnboardingValidate" xml:space="preserve">
+    <value>验证</value>
+  </data>
+  <data name="OnboardingSkip" xml:space="preserve">
+    <value>跳过</value>
+  </data>
+  <data name="OnboardingNext" xml:space="preserve">
+    <value>下一步</value>
+  </data>
+  <data name="OnboardingBack" xml:space="preserve">
+    <value>上一步</value>
+  </data>
+  <data name="OnboardingFinish" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="OnboardingValidationSuccess" xml:space="preserve">
+    <value>密钥验证成功！</value>
+  </data>
+  <data name="OnboardingValidationFailed" xml:space="preserve">
+    <value>验证失败：</value>
+  </data>
+  <data name="OnboardingNetworkError" xml:space="preserve">
+    <value>无法连接到服务。请检查您的网络连接。</value>
+  </data>
+  <data name="OnboardingValidating" xml:space="preserve">
+    <value>验证中...</value>
+  </data>
+  <data name="OnboardingSummary" xml:space="preserve">
+    <value>配置摘要</value>
+  </data>
+  <data name="OnboardingConfigured" xml:space="preserve">
+    <value>已配置</value>
+  </data>
+  <data name="OnboardingSkipped" xml:space="preserve">
+    <value>已跳过</value>
+  </data>
+  <data name="ServiceNotConfigured" xml:space="preserve">
+    <value>{0} 尚未配置。请前往 设置 → API 密钥 进行设置。</value>
+  </data>
+  <data name="SetupWizard" xml:space="preserve">
+    <value>设置向导</value>
+  </data>
+  <data name="AllApiKeysFree" xml:space="preserve">
+    <value>所有 API 密钥均为免费。您可以稍后在设置中配置或更改。</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+    <value>API 密钥不能为空。</value>
+  </data>
+  <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+    <value>Client ID 和 Secret 不能为空。</value>
+  </data>
+  <data name="ImageFilesFilter" xml:space="preserve">
+    <value>图片文件 (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+  </data>
+  <data name="MadeWithFoliCon" xml:space="preserve">
+    <value>由 FoliCon 用心制作</value>
+  </data>
 </root>

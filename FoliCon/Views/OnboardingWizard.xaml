@@ -242,7 +242,7 @@
                     <Run Text="DeviantArt: " FontWeight="Bold" /><Run Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkipped}}" Foreground="Orange" />
                 </TextBlock>
                 <TextBlock TextWrapping="Wrap" FontSize="13" Margin="0,12,0,0" MaxWidth="450" HorizontalAlignment="Center"
-                           Text="All API keys are free. You can configure or change them later from Settings." />
+                           Text="{extension:Lang Key={x:Static langs:LangKeys.AllApiKeysFree}}" />
             </StackPanel>
         </Grid>
 

@@ -688,4 +688,112 @@ and refresh Icon Cache?</value>
   <data name="RefreshingFolder" xml:space="preserve">
       <value>Refreshing folder</value>
     </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>FoliCon のセットアップ</value>
+  </data>
+  <data name="OnboardingWelcome" xml:space="preserve">
+    <value>FoliCon は無料の API キーを使用してメディアのアートワークを検索します。各サービスはオプションです — 必要なものだけを設定してください。クレジットカードは不要です。</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>はじめに</value>
+  </data>
+  <data name="OnboardingTmdbStep" xml:space="preserve">
+    <value>TMDB（映画＆テレビ）</value>
+  </data>
+  <data name="OnboardingTmdbInstructions" xml:space="preserve">
+    <value>無料 — 映画やテレビ番組のメタデータとアートワークを提供します。</value>
+  </data>
+  <data name="OnboardingTmdbGetKey" xml:space="preserve">
+    <value>TMDB API キーを取得する →</value>
+  </data>
+  <data name="OnboardingIgdbStep" xml:space="preserve">
+    <value>IGDB / Twitch（ゲーム）</value>
+  </data>
+  <data name="OnboardingIgdbInstructions" xml:space="preserve">
+    <value>無料 — ゲームのメタデータを提供します。利用には無料の Twitch アカウントが必要です。</value>
+  </data>
+  <data name="OnboardingIgdbGetKey" xml:space="preserve">
+    <value>Twitch アプリケーションを登録する →</value>
+  </data>
+  <data name="OnboardingDeviantArtStep" xml:space="preserve">
+    <value>DeviantArt（プロフェッショナルモード）</value>
+  </data>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>無料 — DeviantArt にログインして、カスタムアイコン検索用のプロフェッショナルモードを有効にします。</value>
+    </data>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>DeviantArt に接続</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>接続済み</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>未接続</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>接続中...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>接続に失敗しました。もう一度お試しください。</value>
+    </data>
+  <data name="OnboardingValidate" xml:space="preserve">
+    <value>検証</value>
+  </data>
+  <data name="OnboardingSkip" xml:space="preserve">
+    <value>スキップ</value>
+  </data>
+  <data name="OnboardingNext" xml:space="preserve">
+    <value>次へ</value>
+  </data>
+  <data name="OnboardingBack" xml:space="preserve">
+    <value>戻る</value>
+  </data>
+  <data name="OnboardingFinish" xml:space="preserve">
+    <value>完了</value>
+  </data>
+  <data name="OnboardingValidationSuccess" xml:space="preserve">
+    <value>キーの検証に成功しました！</value>
+  </data>
+  <data name="OnboardingValidationFailed" xml:space="preserve">
+    <value>検証に失敗しました: </value>
+  </data>
+  <data name="OnboardingNetworkError" xml:space="preserve">
+    <value>サービスに接続できませんでした。インターネット接続を確認してください。</value>
+  </data>
+  <data name="OnboardingValidating" xml:space="preserve">
+    <value>検証中...</value>
+  </data>
+  <data name="OnboardingSummary" xml:space="preserve">
+    <value>セットアップの概要</value>
+  </data>
+  <data name="OnboardingConfigured" xml:space="preserve">
+    <value>設定済み</value>
+  </data>
+  <data name="OnboardingSkipped" xml:space="preserve">
+    <value>スキップ済み</value>
+  </data>
+  <data name="ServiceNotConfigured" xml:space="preserve">
+    <value>{0} が設定されていません。設定 → API キーから設定してください。</value>
+  </data>
+  <data name="SetupWizard" xml:space="preserve">
+    <value>セットアップウィザード</value>
+  </data>
+  <data name="AllApiKeysFree" xml:space="preserve">
+    <value>すべての API キーは無料です。後で設定から変更・再設定できます。</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>通知</value>
+  </data>
+  <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+    <value>API キーを入力してください。</value>
+  </data>
+  <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+    <value>Client ID と Secret を入力してください。</value>
+  </data>
+  <data name="ImageFilesFilter" xml:space="preserve">
+    <value>画像ファイル (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+  </data>
+  <data name="MadeWithFoliCon" xml:space="preserve">
+    <value>FoliCon が ♥ を込めて制作</value>
+  </data>
 </root>

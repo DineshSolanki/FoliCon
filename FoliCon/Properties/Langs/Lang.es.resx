@@ -689,4 +689,112 @@ y actualizar la caché de iconos?</value>
   <data name="RefreshingFolder" xml:space="preserve">
       <value>Actualizando carpeta</value>
     </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>Configurar FoliCon</value>
+  </data>
+  <data name="OnboardingWelcome" xml:space="preserve">
+    <value>FoliCon utiliza claves de API gratuitas para buscar obras de arte multimedia. Cada servicio es opcional — configura solo lo que necesitas. No se requiere tarjeta de crédito.</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>Empezar</value>
+  </data>
+  <data name="OnboardingTmdbStep" xml:space="preserve">
+    <value>TMDB (Películas y TV)</value>
+  </data>
+  <data name="OnboardingTmdbInstructions" xml:space="preserve">
+    <value>Gratis — proporciona metadatos y obras de arte de películas y series de TV.</value>
+  </data>
+  <data name="OnboardingTmdbGetKey" xml:space="preserve">
+    <value>Obtén tu clave de API de TMDB →</value>
+  </data>
+  <data name="OnboardingIgdbStep" xml:space="preserve">
+    <value>IGDB / Twitch (Juegos)</value>
+  </data>
+  <data name="OnboardingIgdbInstructions" xml:space="preserve">
+    <value>Gratis — proporciona metadatos de juegos. Necesitas una cuenta gratuita de Twitch para acceder.</value>
+  </data>
+  <data name="OnboardingIgdbGetKey" xml:space="preserve">
+    <value>Registra una aplicación de Twitch →</value>
+  </data>
+  <data name="OnboardingDeviantArtStep" xml:space="preserve">
+    <value>DeviantArt (Modo Profesional)</value>
+  </data>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>Gratis — inicia sesión en DeviantArt para habilitar el modo Profesional para búsquedas de iconos personalizados.</value>
+    </data>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>Conectar a DeviantArt</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>Conectado</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>No conectado</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>Conectando...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>Error al conectar. Por favor, inténtalo de nuevo.</value>
+    </data>
+  <data name="OnboardingValidate" xml:space="preserve">
+    <value>Validar</value>
+  </data>
+  <data name="OnboardingSkip" xml:space="preserve">
+    <value>Omitir</value>
+  </data>
+  <data name="OnboardingNext" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="OnboardingBack" xml:space="preserve">
+    <value>Atrás</value>
+  </data>
+  <data name="OnboardingFinish" xml:space="preserve">
+    <value>Finalizar</value>
+  </data>
+  <data name="OnboardingValidationSuccess" xml:space="preserve">
+    <value>¡Clave validada exitosamente!</value>
+  </data>
+  <data name="OnboardingValidationFailed" xml:space="preserve">
+    <value>Validación fallida: </value>
+  </data>
+  <data name="OnboardingNetworkError" xml:space="preserve">
+    <value>No se pudo acceder al servicio. Verifica tu conexión a internet.</value>
+  </data>
+  <data name="OnboardingValidating" xml:space="preserve">
+    <value>Validando...</value>
+  </data>
+  <data name="OnboardingSummary" xml:space="preserve">
+    <value>Resumen de configuración</value>
+  </data>
+  <data name="OnboardingConfigured" xml:space="preserve">
+    <value>Configurado</value>
+  </data>
+  <data name="OnboardingSkipped" xml:space="preserve">
+    <value>Omitido</value>
+  </data>
+  <data name="ServiceNotConfigured" xml:space="preserve">
+    <value>{0} no está configurado. Ve a Ajustes → Claves de API para configurarlo.</value>
+  </data>
+  <data name="SetupWizard" xml:space="preserve">
+    <value>Asistente de configuración</value>
+  </data>
+  <data name="AllApiKeysFree" xml:space="preserve">
+    <value>Todas las claves de API son gratuitas. Puedes configurarlas o cambiarlas después desde Ajustes.</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Notificación</value>
+  </data>
+  <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+    <value>La clave de API no puede estar vacía.</value>
+  </data>
+  <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+    <value>El Client ID y el Secreto no pueden estar vacíos.</value>
+  </data>
+  <data name="ImageFilesFilter" xml:space="preserve">
+    <value>Archivos de imagen (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+  </data>
+  <data name="MadeWithFoliCon" xml:space="preserve">
+    <value>Hecho con ♥ por FoliCon</value>
+  </data>
 </root>

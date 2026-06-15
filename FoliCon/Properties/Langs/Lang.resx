@@ -791,4 +791,22 @@ and refresh Icon Cache?</value>
     <data name="SetupWizard" xml:space="preserve">
       <value>Setup Wizard</value>
     </data>
+    <data name="AllApiKeysFree" xml:space="preserve">
+      <value>All API keys are free. You can configure or change them later from Settings.</value>
+    </data>
+    <data name="Notification" xml:space="preserve">
+      <value>Notification</value>
+    </data>
+    <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+      <value>API key cannot be empty.</value>
+    </data>
+    <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+      <value>Client ID and Secret cannot be empty.</value>
+    </data>
+    <data name="ImageFilesFilter" xml:space="preserve">
+      <value>Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+    </data>
+    <data name="MadeWithFoliCon" xml:space="preserve">
+      <value>Made with ♥ by FoliCon</value>
+    </data>
 </root>

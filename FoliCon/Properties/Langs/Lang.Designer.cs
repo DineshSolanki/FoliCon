@@ -2043,5 +2043,59 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("Year", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to All API keys are free. You can configure or change them later from Settings..
+        /// </summary>
+        public static string AllApiKeysFree {
+            get {
+                return ResourceManager.GetString("AllApiKeysFree", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Notification.
+        /// </summary>
+        public static string Notification {
+            get {
+                return ResourceManager.GetString("Notification", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to API key cannot be empty..
+        /// </summary>
+        public static string ApiKeyCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("ApiKeyCannotBeEmpty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Client ID and Secret cannot be empty..
+        /// </summary>
+        public static string ClientIdAndSecretCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("ClientIdAndSecretCannotBeEmpty", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Image files (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico.
+        /// </summary>
+        public static string ImageFilesFilter {
+            get {
+                return ResourceManager.GetString("ImageFilesFilter", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Made with ♥ by FoliCon.
+        /// </summary>
+        public static string MadeWithFoliCon {
+            get {
+                return ResourceManager.GetString("MadeWithFoliCon", resourceCulture);
+            }
+        }
     }
 }

@@ -251,6 +251,12 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(OnboardingSkipped));
         OnPropertyChanged(nameof(ServiceNotConfigured));
         OnPropertyChanged(nameof(SetupWizard));
+        OnPropertyChanged(nameof(AllApiKeysFree));
+        OnPropertyChanged(nameof(Notification));
+        OnPropertyChanged(nameof(ApiKeyCannotBeEmpty));
+        OnPropertyChanged(nameof(ClientIdAndSecretCannotBeEmpty));
+        OnPropertyChanged(nameof(ImageFilesFilter));
+        OnPropertyChanged(nameof(MadeWithFoliCon));
     }
 
     public string APIKeysConfiguration => Lang.APIKeysConfiguration;
@@ -463,6 +469,12 @@ public class LangProvider : INotifyPropertyChanged
     public string OnboardingSkipped => Lang.OnboardingSkipped;
     public string ServiceNotConfigured => Lang.ServiceNotConfigured;
     public string SetupWizard => Lang.SetupWizard;
+    public string AllApiKeysFree => Lang.AllApiKeysFree;
+    public string Notification => Lang.Notification;
+    public string ApiKeyCannotBeEmpty => Lang.ApiKeyCannotBeEmpty;
+    public string ClientIdAndSecretCannotBeEmpty => Lang.ClientIdAndSecretCannotBeEmpty;
+    public string ImageFilesFilter => Lang.ImageFilesFilter;
+    public string MadeWithFoliCon => Lang.MadeWithFoliCon;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -684,5 +696,11 @@ public class LangKeys
     public static string OnboardingSkipped = nameof(OnboardingSkipped);
     public static string ServiceNotConfigured = nameof(ServiceNotConfigured);
     public static string SetupWizard = nameof(SetupWizard);
+    public static string AllApiKeysFree = nameof(AllApiKeysFree);
+    public static string Notification = nameof(Notification);
+    public static string ApiKeyCannotBeEmpty = nameof(ApiKeyCannotBeEmpty);
+    public static string ClientIdAndSecretCannotBeEmpty = nameof(ClientIdAndSecretCannotBeEmpty);
+    public static string ImageFilesFilter = nameof(ImageFilesFilter);
+    public static string MadeWithFoliCon = nameof(MadeWithFoliCon);
 
 }

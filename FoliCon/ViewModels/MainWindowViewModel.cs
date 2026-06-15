@@ -876,7 +876,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.ForErrorEvent().Message("DeleteIconsMethod: Exception Occurred. message: {Message}", e.Message)
                 .Exception(e).Log();
-            MessageBox.Show(CustomMessageBox.Error(e.Message, LangProvider.GetLang(" ")));
+            MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
         }
        
     }
@@ -907,7 +907,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task StartDownloadingAsync()
     {
         IsMakeEnabled = false;
-        StatusBarProperties.AppStatus = LangProvider.GetLang("Creating Icons");
+        StatusBarProperties.AppStatus = Lang.CreatingIcons;
         await DownloadAndMakeIconsAsync();
         StatusBarProperties.AppStatus = Lang.Idle;
         StatusBarProperties.AppStatusAdditional = "";

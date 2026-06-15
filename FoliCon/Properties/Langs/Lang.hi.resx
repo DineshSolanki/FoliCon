@@ -689,4 +689,112 @@
   <data name="RefreshingFolder" xml:space="preserve">
       <value>फ़ोल्डर रीफ्रेश हो रहा है</value>
     </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>FoliCon सेट अप करें</value>
+  </data>
+  <data name="OnboardingWelcome" xml:space="preserve">
+    <value>FoliCon मीडिया आर्टवर्क खोजने के लिए मुफ्त API कुंजियों का उपयोग करता है। प्रत्येक सेवा वैकल्पिक है — केवल वही कॉन्फ़िगर करें जो आपको चाहिए। कोई क्रेडिट कार्ड की आवश्यकता नहीं है।</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>शुरू करें</value>
+  </data>
+  <data name="OnboardingTmdbStep" xml:space="preserve">
+    <value>TMDB (फिल्में और टीवी)</value>
+  </data>
+  <data name="OnboardingTmdbInstructions" xml:space="preserve">
+    <value>मुफ्त — फिल्मों और टीवी शो का मेटाडेटा और आर्टवर्क प्रदान करता है।</value>
+  </data>
+  <data name="OnboardingTmdbGetKey" xml:space="preserve">
+    <value>अपनी TMDB API कुंजी प्राप्त करें →</value>
+  </data>
+  <data name="OnboardingIgdbStep" xml:space="preserve">
+    <value>IGDB / Twitch (गेम्स)</value>
+  </data>
+  <data name="OnboardingIgdbInstructions" xml:space="preserve">
+    <value>मुफ्त — गेम मेटाडेटा प्रदान करता है। इसे एक्सेस करने के लिए आपको एक मुफ्त Twitch खाते की आवश्यकता है।</value>
+  </data>
+  <data name="OnboardingIgdbGetKey" xml:space="preserve">
+    <value>एक Twitch एप्लिकेशन रजिस्टर करें →</value>
+  </data>
+  <data name="OnboardingDeviantArtStep" xml:space="preserve">
+    <value>DeviantArt (प्रोफेशनल मोड)</value>
+  </data>
+    <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
+      <value>मुफ्त — कस्टम आइकन खोज के लिए प्रोफेशनल मोड सक्षम करने के लिए DeviantArt में लॉग इन करें।</value>
+    </data>
+    <data name="OnboardingConnectDeviantArt" xml:space="preserve">
+      <value>DeviantArt से कनेक्ट करें</value>
+    </data>
+    <data name="OnboardingDeviantArtConnected" xml:space="preserve">
+      <value>कनेक्टेड</value>
+    </data>
+    <data name="OnboardingDeviantArtNotConnected" xml:space="preserve">
+      <value>कनेक्ट नहीं है</value>
+    </data>
+    <data name="OnboardingDeviantArtConnecting" xml:space="preserve">
+      <value>कनेक्ट हो रहा है...</value>
+    </data>
+    <data name="OnboardingDeviantArtConnectFailed" xml:space="preserve">
+      <value>कनेक्ट करने में विफल। कृपया पुनः प्रयास करें।</value>
+    </data>
+  <data name="OnboardingValidate" xml:space="preserve">
+    <value>सत्यापित करें</value>
+  </data>
+  <data name="OnboardingSkip" xml:space="preserve">
+    <value>छोड़ें</value>
+  </data>
+  <data name="OnboardingNext" xml:space="preserve">
+    <value>अगला</value>
+  </data>
+  <data name="OnboardingBack" xml:space="preserve">
+    <value>पिछला</value>
+  </data>
+  <data name="OnboardingFinish" xml:space="preserve">
+    <value>हो गया</value>
+  </data>
+  <data name="OnboardingValidationSuccess" xml:space="preserve">
+    <value>कुंजी सफलतापूर्वक सत्यापित!</value>
+  </data>
+  <data name="OnboardingValidationFailed" xml:space="preserve">
+    <value>सत्यापन विफल: </value>
+  </data>
+  <data name="OnboardingNetworkError" xml:space="preserve">
+    <value>सेवा तक नहीं पहुँच सके। कृपया अपना इंटरनेट कनेक्शन जांचें।</value>
+  </data>
+  <data name="OnboardingValidating" xml:space="preserve">
+    <value>सत्यापन हो रहा है...</value>
+  </data>
+  <data name="OnboardingSummary" xml:space="preserve">
+    <value>सेटअप सारांश</value>
+  </data>
+  <data name="OnboardingConfigured" xml:space="preserve">
+    <value>कॉन्फ़िगर किया गया</value>
+  </data>
+  <data name="OnboardingSkipped" xml:space="preserve">
+    <value>छोड़ दिया गया</value>
+  </data>
+  <data name="ServiceNotConfigured" xml:space="preserve">
+    <value>{0} कॉन्फ़िगर नहीं है। इसे सेट करने के लिए विभिन्न विकल्प → API कुंजियाँ पर जाएं।</value>
+  </data>
+  <data name="SetupWizard" xml:space="preserve">
+    <value>सेटअप विज़ार्ड</value>
+  </data>
+  <data name="AllApiKeysFree" xml:space="preserve">
+    <value>सभी API कुंजियाँ मुफ्त हैं। आप इन्हें बाद में विभिन्न विकल्प से कॉन्फ़िगर या बदल सकते हैं।</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>अधिसूचना</value>
+  </data>
+  <data name="ApiKeyCannotBeEmpty" xml:space="preserve">
+    <value>API कुंजी खाली नहीं हो सकती।</value>
+  </data>
+  <data name="ClientIdAndSecretCannotBeEmpty" xml:space="preserve">
+    <value>Client ID और Secret खाली नहीं हो सकते।</value>
+  </data>
+  <data name="ImageFilesFilter" xml:space="preserve">
+    <value>छवि फ़ाइलें (*.png, *.jpg, *.gif, *.bmp, *.ico)|*.png;*.jpg;*.gif;*.bmp;*.ico</value>
+  </data>
+  <data name="MadeWithFoliCon" xml:space="preserve">
+    <value>FoliCon द्वारा ♥ से बनाया गया</value>
+  </data>
 </root>
