@@ -722,6 +722,18 @@ and refresh Icon Cache?</value>
     <data name="OnboardingDeviantArtAuthInstructions" xml:space="preserve">
       <value>Free — log in to DeviantArt to enable Professional mode for custom icon searches.</value>
     </data>
+    <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
+      <value>Use FoliCon's built-in app (recommended)</value>
+    </data>
+    <data name="OnboardingDeviantArtCustom" xml:space="preserve">
+      <value>Use my own DeviantArt app</value>
+    </data>
+    <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
+      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+    </data>
+    <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
+      <value>Validate &amp; Connect</value>
+    </data>
     <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>Connect to DeviantArt</value>
     </data>

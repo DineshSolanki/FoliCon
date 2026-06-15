@@ -148,25 +148,69 @@
                 <GroupBox Style="{StaticResource GroupBoxTab}"
                           Header="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtStep}}"
                           hc:TitleElement.TitlePlacement="Left" FontFamily="Open Sans" FontWeight="Normal">
-                    <StackPanel>
+                    <StackPanel HorizontalAlignment="Center">
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtAuthInstructions}}"
                                    TextWrapping="Wrap" Margin="0,4,0,12" FontSize="14" />
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Button Command="{Binding ConnectDeviantArtCommand}"
-                                    Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingConnectDeviantArt}}"
-                                    Style="{StaticResource ButtonPrimary}" Width="200" Height="36"
-                                    Margin="0,0,12,0" FontSize="14" />
-                            <hc:LoadingCircle Visibility="{Binding IsDeviantArtConnecting, Converter={StaticResource BoolToVis}}"
-                                               Width="24" Height="24" Margin="0,0,8,0" />
-                            <TextBlock Text="&#x2713;" Foreground="Green" FontSize="18" FontWeight="Bold"
-                                       Visibility="{Binding IsDeviantArtConnected, Converter={StaticResource BoolToVis}}"
-                                       VerticalAlignment="Center" Margin="0,0,8,0" />
-                            <TextBlock Text="{Binding DeviantArtConnectionStatus}" FontSize="14"
-                                       VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="300" />
+
+                        <!-- Mode Selection -->
+                        <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtBuiltIn}}" HorizontalAlignment="Left"
+                                     IsChecked="{Binding IsDeviantArtBuiltInMode}"
+                                     GroupName="DeviantArtMode" Margin="0,0,0,4" FontSize="14" />
+                        <RadioButton Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtCustom}}" HorizontalAlignment="Left"
+                                     IsChecked="{Binding IsDeviantArtCustomMode}"
+                                     GroupName="DeviantArtMode" Margin="0,0,0,8" FontSize="14" />
+
+                        <!-- Built-in mode: Connect button -->
+                        <StackPanel Visibility="{Binding IsDeviantArtBuiltInMode, Converter={StaticResource BoolToVis}}"
+                                    Margin="16,0,0,0">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <Button Command="{Binding ConnectDeviantArtCommand}"
+                                        Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingConnectDeviantArt}}"
+                                        Style="{StaticResource ButtonPrimary}" Width="200" Height="36"
+                                        Margin="0,0,12,0" FontSize="14" />
+                                <hc:LoadingCircle Visibility="{Binding IsDeviantArtConnecting, Converter={StaticResource BoolToVis}}"
+                                                   Width="24" Height="24" Margin="0,0,8,0" />
+                                <TextBlock Text="&#x2713;" Foreground="Green" FontSize="18" FontWeight="Bold"
+                                           Visibility="{Binding IsDeviantArtConnected, Converter={StaticResource BoolToVis}}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <TextBlock Text="{Binding DeviantArtConnectionStatus}" FontSize="14"
+                                           VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="300" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding DeviantArtConnectionMessage}" FontSize="13"
+                                       TextWrapping="Wrap" MaxWidth="450" Foreground="OrangeRed"
+                                       Visibility="{Binding HasDeviantArtConnectionMessage, Converter={StaticResource BoolToVis}}" />
                         </StackPanel>
-                        <TextBlock Text="{Binding DeviantArtConnectionMessage}" FontSize="13"
-                                   TextWrapping="Wrap" MaxWidth="450" Foreground="OrangeRed"
-                                   Visibility="{Binding HasDeviantArtConnectionMessage, Converter={StaticResource BoolToVis}}" />
+
+                        <!-- Custom credentials mode -->
+                        <StackPanel Visibility="{Binding IsDeviantArtCustomCredentialsVisible, Converter={StaticResource BoolToVis}}"
+                                    Margin="16,0,0,0">
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtCustomInstructions}}"
+                                       TextWrapping="Wrap" Margin="0,0,0,8" FontSize="13" Foreground="Gray" />
+                            <hc:TextBox hc:InfoElement.Necessary="False"
+                                        Text="{Binding DeviantArtCustomClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientID}}" />
+                            <hc:TextBox hc:InfoElement.Necessary="False"
+                                        Text="{Binding DeviantArtCustomClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource TextBoxExtend}"
+                                        hc:InfoElement.Title="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}" />
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Button Command="{Binding ConnectDeviantArtCommand}"
+                                        Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtValidateConnect}}"
+                                        Style="{StaticResource ButtonPrimary}" Width="200" Height="36"
+                                        Margin="0,0,12,0" FontSize="14" />
+                                <hc:LoadingCircle Visibility="{Binding IsDeviantArtConnecting, Converter={StaticResource BoolToVis}}"
+                                                   Width="24" Height="24" Margin="0,0,8,0" />
+                                <TextBlock Text="&#x2713;" Foreground="Green" FontSize="18" FontWeight="Bold"
+                                           Visibility="{Binding IsDeviantArtConnected, Converter={StaticResource BoolToVis}}"
+                                           VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <TextBlock Text="{Binding DeviantArtConnectionStatus}" FontSize="14"
+                                           VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="300" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding DeviantArtConnectionMessage}" FontSize="13"
+                                       TextWrapping="Wrap" MaxWidth="450" Foreground="OrangeRed"
+                                       Visibility="{Binding HasDeviantArtConnectionMessage, Converter={StaticResource BoolToVis}}" />
+                        </StackPanel>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>

@@ -43,13 +43,14 @@ public static class OAuthCallbackListener
     {
         var codeVerifier = GenerateCodeVerifier();
         var codeChallenge = GenerateCodeChallenge(codeVerifier);
+        const string clientId = DeviantArtAppConfig.ClientId;
 
-        Logger.Info("Starting DeviantArt OAuth PKCE flow (redirect via {RedirectUri})", DeviantArtAppConfig.RedirectUri);
+        Logger.Info("Starting DeviantArt OAuth PKCE flow (client_id={ClientId}, redirect via {RedirectUri})", clientId, DeviantArtAppConfig.RedirectUri);
 
         // Build the authorization URL — redirect_uri is the hosted HTTPS page
         var authorizeUrl = $"{DeviantArtAppConfig.AuthorizeUrl}" +
                            $"?response_type=code" +
-                           $"&client_id={Uri.EscapeDataString(DeviantArtAppConfig.ClientId)}" +
+                           $"&client_id={Uri.EscapeDataString(clientId)}" +
                            $"&redirect_uri={Uri.EscapeDataString(DeviantArtAppConfig.RedirectUri)}" +
                            $"&scope={Uri.EscapeDataString(DeviantArtAppConfig.Scope)}" +
                            $"&code_challenge={codeChallenge}" +
@@ -140,7 +141,7 @@ public static class OAuthCallbackListener
     }
 
     /// <summary>
-    /// Refreshes an expired access token using a refresh token.
+    /// Refreshes an expired access token using a refresh token (OAuth PKCE flow).
     /// </summary>
     public static async Task<OAuthResult> RefreshTokenAsync(string refreshToken)
     {
@@ -166,6 +167,40 @@ public static class OAuthCallbackListener
         {
             AccessToken = tokenResponse.AccessToken,
             RefreshToken = tokenResponse.RefreshToken ?? refreshToken, // Some providers don't rotate refresh tokens
+            ExpiresIn = tokenResponse.ExpiresIn
+        };
+    }
+
+    /// <summary>
+    /// Obtains an access token using client_credentials grant.
+    /// Used when the user provides their own Client ID and Client Secret.
+    /// Returns an access token only — no refresh token (must re-authenticate when expired).
+    /// </summary>
+    public static async Task<OAuthResult> ClientCredentialsAsync(string clientId, string clientSecret)
+    {
+        Logger.Debug("Requesting DeviantArt access token via client_credentials grant");
+
+        var form = new Dictionary<string, string>
+        {
+            ["grant_type"] = "client_credentials",
+            ["client_id"] = clientId,
+            ["client_secret"] = clientSecret
+        };
+
+        var jsonData = await PostFormAsync(DeviantArtAppConfig.TokenUrl, form);
+        var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
+
+        if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))
+        {
+            var error = tokenResponse?.ErrorDescription ?? "Client authentication failed.";
+            throw new InvalidOperationException($"DeviantArt client_credentials failed: {error}");
+        }
+
+        Logger.Info("DeviantArt access token obtained via client_credentials (expires in {ExpiresIn}s)", tokenResponse.ExpiresIn);
+        return new OAuthResult
+        {
+            AccessToken = tokenResponse.AccessToken,
+            RefreshToken = "", // client_credentials does not return a refresh token
             ExpiresIn = tokenResponse.ExpiresIn
         };
     }

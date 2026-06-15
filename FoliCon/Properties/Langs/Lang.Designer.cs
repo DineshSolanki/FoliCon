@@ -1166,7 +1166,43 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("OnboardingDeviantArtAuthInstructions", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use FoliCon's built-in app (recommended).
+        /// </summary>
+        public static string OnboardingDeviantArtBuiltIn {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtBuiltIn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use my own DeviantArt app.
+        /// </summary>
+        public static string OnboardingDeviantArtCustom {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtCustom", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below..
+        /// </summary>
+        public static string OnboardingDeviantArtCustomInstructions {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtCustomInstructions", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Validate &amp; Connect.
+        /// </summary>
+        public static string OnboardingDeviantArtValidateConnect {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtValidateConnect", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Connected.
         /// </summary>

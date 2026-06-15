@@ -141,6 +141,52 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         IsDeviantArtConnected ? Lang.OnboardingDeviantArtConnected :
         Lang.OnboardingDeviantArtNotConnected;
 
+    private bool _isSyncingMode;
+
+    public bool IsDeviantArtCustomMode
+    {
+        get;
+        set
+        {
+            if (!SetProperty(ref field, value)) return;
+            RaisePropertyChanged(nameof(IsDeviantArtCustomCredentialsVisible));
+            if (_isSyncingMode) return;
+            _isSyncingMode = true;
+            IsDeviantArtBuiltInMode = !value;
+            _isSyncingMode = false;
+        }
+    }
+
+    private bool _isDeviantArtBuiltInMode = true;
+    public bool IsDeviantArtBuiltInMode
+    {
+        get => _isDeviantArtBuiltInMode;
+        set
+        {
+            if (!SetProperty(ref _isDeviantArtBuiltInMode, value)) return;
+            if (_isSyncingMode) return;
+            _isSyncingMode = true;
+            IsDeviantArtCustomMode = !value;
+            _isSyncingMode = false;
+        }
+    }
+
+    public bool IsDeviantArtCustomCredentialsVisible => IsDeviantArtCustomMode;
+
+    private string _deviantArtCustomClientId = "";
+    public string DeviantArtCustomClientId
+    {
+        get => _deviantArtCustomClientId;
+        set => SetProperty(ref _deviantArtCustomClientId, value);
+    }
+
+    private string _deviantArtCustomClientSecret = "";
+    public string DeviantArtCustomClientSecret
+    {
+        get => _deviantArtCustomClientSecret;
+        set => SetProperty(ref _deviantArtCustomClientSecret, value);
+    }
+
     #endregion
 
     #region Commands
@@ -180,6 +226,11 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
         // Check if DeviantArt is already connected (has stored tokens)
         IsDeviantArtConnected = !string.IsNullOrEmpty(Services.Settings.DeviantArtAccessToken);
+
+        // Pre-populate DeviantArt custom credentials if set
+        DeviantArtCustomClientId = Services.Settings.DeviantArtClientId ?? "";
+        DeviantArtCustomClientSecret = Services.Settings.DeviantArtClientSecret ?? "";
+        IsDeviantArtCustomMode = !string.IsNullOrEmpty(DeviantArtCustomClientId);
     }
 
     private void ExecuteNext()
@@ -285,8 +336,23 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
         try
         {
-            Logger.Info("Initiating DeviantArt OAuth authorization from wizard");
-            await DArt.AuthorizeAsync();
+            if (IsDeviantArtCustomMode)
+            {
+                // client_credentials flow — no browser needed
+                Services.Settings.DeviantArtClientId = DeviantArtCustomClientId;
+                Services.Settings.DeviantArtClientSecret = DeviantArtCustomClientSecret;
+                Logger.Info("Using custom DeviantArt credentials (client_id={ClientId})", DeviantArtCustomClientId);
+                await DArt.AuthorizeWithCredentialsAsync(DeviantArtCustomClientId, DeviantArtCustomClientSecret);
+            }
+            else
+            {
+                // OAuth PKCE flow — browser-based
+                Services.Settings.DeviantArtClientId = "";
+                Services.Settings.DeviantArtClientSecret = "";
+                Logger.Info("Initiating DeviantArt OAuth PKCE authorization from wizard");
+                await DArt.AuthorizeAsync();
+            }
+
             IsDeviantArtConnected = true;
             DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnected;
             Logger.Info("DeviantArt authorization successful");

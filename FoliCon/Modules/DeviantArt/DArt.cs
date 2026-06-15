@@ -108,6 +108,24 @@ public class DArt : BindableBase, IDisposable
         return new DArt(result.AccessToken, result.RefreshToken, result.ExpiresIn);
     }
 
+    /// <summary>
+    /// Obtains an access token using client_credentials grant (user's own Client ID + Secret).
+    /// Returns a new DArt instance and persists the token.
+    /// </summary>
+    public static async Task<DArt> AuthorizeWithCredentialsAsync(string clientId, string clientSecret)
+    {
+        Logger.Info("Starting DeviantArt client_credentials flow");
+        var result = await OAuthCallbackListener.ClientCredentialsAsync(clientId, clientSecret);
+
+        // Persist to config — no refresh token for client_credentials
+        Services.Settings.DeviantArtAccessToken = result.AccessToken;
+        Services.Settings.DeviantArtRefreshToken = "";
+        Services.Settings.DeviantArtTokenExpiresAt = DateTime.UtcNow.AddSeconds(result.ExpiresIn - 60);
+        Services.Settings.Save();
+
+        return new DArt(result.AccessToken, "", result.ExpiresIn);
+    }
+
     private async Task GetClientAccessTokenAsync()
     {
         if (!string.IsNullOrEmpty(ClientAccessToken) && DateTime.UtcNow < TokenExpiresAt)
@@ -139,6 +157,42 @@ public class DArt : BindableBase, IDisposable
 
     private async Task RefreshAccessTokenAsync()
     {
+        // client_credentials mode: no refresh token — re-authenticate with stored credentials
+        var customClientId = Services.Settings.DeviantArtClientId;
+        if (string.IsNullOrEmpty(RefreshToken) && !string.IsNullOrEmpty(customClientId))
+        {
+            Logger.Debug("Re-authenticating DeviantArt via client_credentials (no refresh token)");
+            try
+            {
+                var customClientSecret = Services.Settings.DeviantArtClientSecret;
+                if (string.IsNullOrEmpty(customClientSecret))
+                {
+                    throw new InvalidOperationException("DeviantArt Client Secret is missing. Please reconfigure via the Setup Wizard.");
+                }
+
+                var result = await OAuthCallbackListener.ClientCredentialsAsync(customClientId, customClientSecret);
+
+                ClientAccessToken = result.AccessToken;
+                TokenExpiresAt = DateTime.UtcNow.AddSeconds(result.ExpiresIn - 60);
+
+                Services.Settings.DeviantArtAccessToken = result.AccessToken;
+                Services.Settings.DeviantArtTokenExpiresAt = TokenExpiresAt;
+                Services.Settings.Save();
+
+                Logger.Info("DeviantArt re-authenticated via client_credentials (expires at {ExpiresAt})", TokenExpiresAt);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to re-authenticate DeviantArt via client_credentials.");
+                Services.Settings.DeviantArtAccessToken = "";
+                Services.Settings.DeviantArtTokenExpiresAt = DateTime.MinValue;
+                Services.Settings.Save();
+                throw;
+            }
+            return;
+        }
+
+        // OAuth PKCE mode: refresh with refresh token
         if (string.IsNullOrEmpty(RefreshToken))
         {
             throw new InvalidOperationException("No refresh token available. User needs to re-authorize via the Setup Wizard.");

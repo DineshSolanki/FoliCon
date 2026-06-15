@@ -228,6 +228,10 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(OnboardingIgdbGetKey));
         OnPropertyChanged(nameof(OnboardingDeviantArtStep));
         OnPropertyChanged(nameof(OnboardingDeviantArtAuthInstructions));
+        OnPropertyChanged(nameof(OnboardingDeviantArtBuiltIn));
+        OnPropertyChanged(nameof(OnboardingDeviantArtCustom));
+        OnPropertyChanged(nameof(OnboardingDeviantArtCustomInstructions));
+        OnPropertyChanged(nameof(OnboardingDeviantArtValidateConnect));
         OnPropertyChanged(nameof(OnboardingConnectDeviantArt));
         OnPropertyChanged(nameof(OnboardingDeviantArtConnected));
         OnPropertyChanged(nameof(OnboardingDeviantArtNotConnected));
@@ -436,6 +440,10 @@ public class LangProvider : INotifyPropertyChanged
     public string OnboardingIgdbGetKey => Lang.OnboardingIgdbGetKey;
     public string OnboardingDeviantArtStep => Lang.OnboardingDeviantArtStep;
     public string OnboardingDeviantArtAuthInstructions => Lang.OnboardingDeviantArtAuthInstructions;
+    public string OnboardingDeviantArtBuiltIn => Lang.OnboardingDeviantArtBuiltIn;
+    public string OnboardingDeviantArtCustom => Lang.OnboardingDeviantArtCustom;
+    public string OnboardingDeviantArtCustomInstructions => Lang.OnboardingDeviantArtCustomInstructions;
+    public string OnboardingDeviantArtValidateConnect => Lang.OnboardingDeviantArtValidateConnect;
     public string OnboardingConnectDeviantArt => Lang.OnboardingConnectDeviantArt;
     public string OnboardingDeviantArtConnected => Lang.OnboardingDeviantArtConnected;
     public string OnboardingDeviantArtNotConnected => Lang.OnboardingDeviantArtNotConnected;
@@ -653,6 +661,10 @@ public class LangKeys
     public static string OnboardingIgdbGetKey = nameof(OnboardingIgdbGetKey);
     public static string OnboardingDeviantArtStep = nameof(OnboardingDeviantArtStep);
     public static string OnboardingDeviantArtAuthInstructions = nameof(OnboardingDeviantArtAuthInstructions);
+    public static string OnboardingDeviantArtBuiltIn = nameof(OnboardingDeviantArtBuiltIn);
+    public static string OnboardingDeviantArtCustom = nameof(OnboardingDeviantArtCustom);
+    public static string OnboardingDeviantArtCustomInstructions = nameof(OnboardingDeviantArtCustomInstructions);
+    public static string OnboardingDeviantArtValidateConnect = nameof(OnboardingDeviantArtValidateConnect);
     public static string OnboardingConnectDeviantArt = nameof(OnboardingConnectDeviantArt);
     public static string OnboardingDeviantArtConnected = nameof(OnboardingDeviantArtConnected);
     public static string OnboardingDeviantArtNotConnected = nameof(OnboardingDeviantArtNotConnected);

@@ -14,6 +14,13 @@ public class AppConfig : GlobalDataHelper
 
     public DateTime DeviantArtTokenExpiresAt { get; set; }
 
+    // DeviantArt custom credentials (user-provided)
+    [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
+    public string DeviantArtClientId { get; set; }
+
+    [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
+    public string DeviantArtClientSecret { get; set; }
+
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
     public string TmdbKey { get; set; }
 

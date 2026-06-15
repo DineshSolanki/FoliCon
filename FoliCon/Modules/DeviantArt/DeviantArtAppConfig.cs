@@ -1,8 +1,11 @@
 namespace FoliCon.Modules.DeviantArt;
 
 /// <summary>
-/// FoliCon's registered DeviantArt app configuration for OAuth2 PKCE (Public Client).
-/// Only the Client ID is needed — no Client Secret (PKCE replaces it).
+/// DeviantArt app configuration for OAuth2.
+///
+/// Two modes:
+/// 1. Built-in (FoliCon's registered app) — PKCE, no client secret needed.
+/// 2. Custom — user provides their own Client ID (and optionally Client Secret).
 ///
 /// Register/update at: https://www.deviantart.com/developers/apps
 /// App type: Public. Scopes: browse.
@@ -12,7 +15,7 @@ namespace FoliCon.Modules.DeviantArt;
 /// </summary>
 internal static class DeviantArtAppConfig
 {
-    // ── OAuth App Registration ────────────────────────────────────────────
+    // ── Built-in OAuth App Registration ──────────────────────────────────
     public const string ClientId = "69659";
     public const string Scope = "browse";
     public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize";
