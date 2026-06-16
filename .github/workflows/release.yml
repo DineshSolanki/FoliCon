@@ -45,19 +45,6 @@ jobs:
     name: Publish FoliCon
     needs: version
     runs-on: windows-latest
-    strategy:
-      matrix:
-        include:
-          - profile: "Self contained x64"
-            artifact: FoliCon-win-x64-self-contained
-            zip: FoliCon-win-x64-self-contained.zip
-          - profile: "64 dependent"
-            artifact: FoliCon-win-x64-framework-dependent
-            zip: FoliCon-win-x64-framework-dependent.zip
-          - profile: "32 dependent"
-            artifact: FoliCon-win-x86-framework-dependent
-            zip: FoliCon-win-x86-framework-dependent.zip
-
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -77,26 +64,23 @@ jobs:
           $csproj = $csproj -replace '<AssemblyVersion>.*?</AssemblyVersion>', "<AssemblyVersion>$version</AssemblyVersion>"
           Set-Content FoliCon/FoliCon.csproj $csproj
 
-      - name: Publish (${{ matrix.profile }})
+      - name: Publish
         run: >
           dotnet publish FoliCon/FoliCon.csproj
-          -p:PublishProfile="${{ matrix.profile }}"
+          -p:PublishProfile="64 dependent"
           --configuration Release
 
       - name: Zip output
         shell: pwsh
         run: |
-          $publishDir = "FoliCon/bin/Release/net9.0-windows/publish"
-          $subDir = if ("${{ matrix.profile }}" -eq "Self contained x64") { "frame64" }
-                    elseif ("${{ matrix.profile }}" -eq "64 dependent") { "64Dependant" }
-                    else { "32 dependent" }
-          Compress-Archive -Path "$publishDir/$subDir/*" -DestinationPath "${{ matrix.zip }}"
+          $publishDir = "FoliCon/bin/Release/net9.0-windows/publish/64Dependant"
+          Compress-Archive -Path "$publishDir/*" -DestinationPath "FoliCon-v${{ needs.version.outputs.version }}-x64.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
-          path: ${{ matrix.zip }}
+          name: FoliCon-v${{ needs.version.outputs.version }}-x64
+          path: FoliCon-v${{ needs.version.outputs.version }}-x64.zip
           retention-days: 1
 
   release:
