@@ -18,6 +18,8 @@ jobs:
         run: |
           # The release body is available from the event payload
           BODY=$(jq -r '.release.body' "$GITHUB_EVENT_PATH")
+          # Replace * with - to prevent YAML alias node errors during template expansion
+          BODY="${BODY//\*/-}"
           # Write to file to avoid shell escaping issues
           echo "$BODY" > /tmp/release-body.txt
           echo "version=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")" >> "$GITHUB_OUTPUT"
@@ -33,7 +35,6 @@ jobs:
             version: ${{ steps.release.outputs.version }}
             repo: ${{ github.repository }}
           model: openai/gpt-4o
-          temperature: 0.3
 
       - name: Update release title and body
         uses: actions/github-script@v7
