@@ -12,5 +12,23 @@ jobs:
     - uses: actions/first-interaction@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: "Congratulations, you are part of Folicon userbase"
-        pr-message: "Congratulations, You have officially contributed to folicon."
+        issue-message: |
+          Welcome to FoliCon! 👋
+
+          Thanks for opening your first issue. A maintainer will review it shortly.
+
+          In the meantime, check out:
+          - [Documentation](https://dineshsolanki.github.io/FoliCon-docs/)
+          - [Contributing Guide](https://github.com/DineshSolanki/FoliCon/blob/master/CONTRIBUTING.md)
+
+        pr-message: |
+          Welcome to FoliCon! 🎉
+
+          Thanks for your first contribution! Here's what to expect:
+          - CI will run a build and SonarCloud analysis automatically
+          - A maintainer will review your PR once checks pass
+          - Please make sure you've filled out the PR template
+
+          Useful resources:
+          - [Contributing Guide](https://github.com/DineshSolanki/FoliCon/blob/master/CONTRIBUTING.md)
+          - [Documentation](https://dineshsolanki.github.io/FoliCon-docs/)

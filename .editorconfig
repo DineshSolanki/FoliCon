@@ -1,5 +1,139 @@
-﻿[*.cs]
+root = true
 
-# IDE0011: Add braces
-csharp_prefer_braces = when_multiline
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+charset = utf-8-bom
+trim_trailing_whitespace = true
+insert_final_newline = true
 
+[*.{xml,csproj,props,targets}]
+indent_size = 2
+
+[*.{json,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.cs]
+# --- Naming conventions ---
+
+# Private fields: _camelCase
+dotnet_naming_rule.private_fields_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.private_fields_should_be_camel_case.symbols = private_fields
+dotnet_naming_rule.private_fields_should_be_camel_case.style = private_field_style
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private, protected, private_protected
+dotnet_naming_symbols.private_fields.required_modifiers =
+
+dotnet_naming_style.private_field_style.required_prefix = _
+dotnet_naming_style.private_field_style.capitalization = camel_case
+
+# Constants: camelCase (matches existing convention: ServiceClientIsNotInitialized)
+dotnet_naming_rule.constants_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.constants_should_be_camel_case.symbols = constants
+dotnet_naming_rule.constants_should_be_camel_case.style = constant_style
+
+dotnet_naming_symbols.constants.applicable_kinds = field, local
+dotnet_naming_symbols.constants.applicable_accessibilities = *
+dotnet_naming_symbols.constants.required_modifiers = const
+
+dotnet_naming_style.constant_style.capitalization = camel_case
+
+# Static readonly: PascalCase (Logger pattern)
+dotnet_naming_rule.static_readonly_should_be_pascal.severity = suggestion
+dotnet_naming_rule.static_readonly_should_be_pascal.symbols = static_readonly
+dotnet_naming_rule.static_readonly_should_be_pascal.style = pascal_case_style
+
+dotnet_naming_symbols.static_readonly.applicable_kinds = field
+dotnet_naming_symbols.static_readonly.applicable_accessibilities = *
+dotnet_naming_symbols.static_readonly.required_modifiers = static, readonly
+
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# Interfaces: I prefix + PascalCase
+dotnet_naming_rule.interfaces_should_begin_with_i.severity = suggestion
+dotnet_naming_rule.interfaces_should_begin_with_i.symbols = interfaces
+dotnet_naming_rule.interfaces_should_begin_with_i.style = interface_style
+
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+dotnet_naming_style.interface_style.required_prefix = I
+dotnet_naming_style.interface_style.capitalization = pascal_case
+
+# --- Code style ---
+
+# Prefer var everywhere
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = true:suggestion
+
+# File-scoped namespaces
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# Expression-bodied members (prefer for properties and one-liners)
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+
+# Braces: Allman style on new line
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+
+# Always require braces
+csharp_prefer_braces = always:warning
+
+# Prefer pattern matching null checks (is null over == null)
+csharp_style_prefer_is_null_check_over_reference_equality_method = true:suggestion
+csharp_style_prefer_null_check_over_type_check = true:suggestion
+
+# Using directives outside namespace
+csharp_using_directive_placement = outside_namespace:warning
+
+# Prefer switch expressions
+csharp_style_prefer_switch_expression = true:suggestion
+
+# Prefer simple using statements
+csharp_style_prefer_simple_using_statement = true:suggestion
+
+# No #region (not used in codebase)
+csharp_style_prefer_region_directive = false:suggestion
+
+# New line preferences
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_open_brace = all
+
+# Indentation
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+
+# Spacing
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+
+# --- Analyzer diagnostics ---
+
+# IDE0008: Use explicit type (prefer var)
+dotnet_style_predefined_types_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_types_for_member_access = true:suggestion
+
+# IDE0005: Remove unnecessary using
+dotnet_diagnostic.IDE0005.severity = warning
+
+# IDE0044: Add readonly modifier
+dotnet_style_readonly_field = true:suggestion
+
+# IDE0059: Unnecessary assignment
+dotnet_diagnostic.IDE0059.severity = suggestion
+
+# CA1816: Call GC.SuppressFinalize correctly
+dotnet_diagnostic.CA1816.severity = warning

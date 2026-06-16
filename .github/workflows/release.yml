@@ -5,6 +5,12 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      prerelease:
+        description: 'Publish as a pre-release (beta)'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   version:
@@ -14,6 +20,7 @@ jobs:
       contents: read
     outputs:
       version: ${{ steps.set-version.outputs.version }}
+      is_prerelease: ${{ steps.flags.outputs.is_prerelease }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -39,6 +46,15 @@ jobs:
         run: |
           VERSION="${{ steps.set-version-tag.outputs.version || steps.set-version-dispatch.outputs.version }}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Set flags
+        id: flags
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.prerelease }}" == "true" ]]; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
 
   publish:
     name: Publish FoliCon
@@ -70,19 +86,19 @@ jobs:
         shell: pwsh
         run: |
           $publishDir = "FoliCon/bin/Release/net9.0-windows/publish/64Dependant"
-          Compress-Archive -Path "$publishDir/*" -DestinationPath "FoliCon-v${{ needs.version.outputs.version }}-x64.zip"
+          $suffix = if ("${{ needs.version.outputs.is_prerelease }}" -eq "true") { "-beta" } else { "" }
+          Compress-Archive -Path "$publishDir/*" -DestinationPath "FoliCon-v${{ needs.version.outputs.version }}${suffix}-x64.zip"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: FoliCon-v${{ needs.version.outputs.version }}-x64
-          path: FoliCon-v${{ needs.version.outputs.version }}-x64.zip
+          path: FoliCon-v${{ needs.version.outputs.version }}*-x64.zip
           retention-days: 1
 
   release:
     name: Create GitHub Release
     needs: [version, publish]
-    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -97,13 +113,16 @@ jobs:
         id: create-release
         uses: softprops/action-gh-release@v2
         with:
-          name: "FoliCon v${{ needs.version.outputs.version }}"
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('v{0}', needs.version.outputs.version) }}
+          name: "FoliCon v${{ needs.version.outputs.version }}${{ needs.version.outputs.is_prerelease == 'true' && ' (Pre-release)' || '' }}"
+          prerelease: ${{ needs.version.outputs.is_prerelease == 'true' }}
           generate_release_notes: true
           files: artifacts/*.zip
 
   release-notes:
     name: Generate AI release notes
     needs: [version, release]
+    if: needs.version.outputs.is_prerelease == 'false'
     permissions:
       models: read
       contents: write
@@ -116,13 +135,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ needs.version.outputs.version }}"
-          BODY=$(gh api "repos/${{ github.repository }}/releases/tags/v${TAG}" --jq '.body')
-          echo "version=v${TAG}" >> "$GITHUB_OUTPUT"
+          TAG="v${{ needs.version.outputs.version }}"
+          BODY=$(gh api "repos/${{ github.repository }}/releases/tags/${TAG}" --jq '.body')
+          echo "version=${TAG}" >> "$GITHUB_OUTPUT"
           # Build the prompt file dynamically to avoid YAML parsing issues
-          # Copy the template, then append version and body as plain text
           cp ./.github/prompts/release-notes.prompt.yml /tmp/prompt.yml
-          echo "Version: v${TAG}" >> /tmp/prompt.yml
+          echo "Version: ${TAG}" >> /tmp/prompt.yml
           echo "Repository: ${{ github.repository }}" >> /tmp/prompt.yml
           echo "" >> /tmp/prompt.yml
           echo '```' >> /tmp/prompt.yml
@@ -165,3 +183,33 @@ jobs:
               name: title,
               body: body
             });
+
+  bump-version:
+    name: Commit version bump
+    needs: [version, release]
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Bump version in csproj
+        shell: pwsh
+        run: |
+          $version = "${{ needs.version.outputs.version }}"
+          $csproj = Get-Content FoliCon/FoliCon.csproj -Raw
+          $csproj = $csproj -replace '<Version>.*?</Version>', "<Version>$version</Version>"
+          $csproj = $csproj -replace '<PackageVersion>.*?</PackageVersion>', "<PackageVersion>$version</PackageVersion>"
+          $csproj = $csproj -replace '<AssemblyVersion>.*?</AssemblyVersion>', "<AssemblyVersion>$version</AssemblyVersion>"
+          Set-Content FoliCon/FoliCon.csproj $csproj
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add FoliCon/FoliCon.csproj
+          git diff --cached --quiet && echo "No version changes to commit" && exit 0
+          git commit -m "chore: bump version to v${{ needs.version.outputs.version }}"
+          git push
