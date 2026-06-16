@@ -12,12 +12,18 @@ messages:
       - Keep the tone concise and developer-friendly.
       - Do NOT invent features or changes not present in the input.
       - Output raw Markdown only, no wrapping code fences.
+      - The VERY FIRST LINE of your output must be the release title in this exact format:
+        TITLE: FoliCon <version> - <concise one-liner summarizing the release>
+        Then a blank line, then the body starting with ## 🚀.
+      - The one-liner should be short (under 80 chars), catchy, and summarize the theme of the release.
 
   - role: user
     content: |
       Generate formatted release notes for **{{version}}** of [{{repo}}](https://github.com/{{repo}}).
 
-      Use this template structure:
+      Remember: first line is `TITLE: FoliCon {{version}} - <one-liner>`, then a blank line, then the body.
+
+      Body template structure:
 
       ## 🚀 FoliCon {{version}}
 
