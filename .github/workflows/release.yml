@@ -1,0 +1,106 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+jobs:
+  version:
+    name: Determine version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.set-version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Version from tag
+        if: startsWith(github.ref, 'refs/tags/')
+        id: set-version-tag
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump minor version
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        id: set-version-dispatch
+        shell: pwsh
+        run: |
+          [xml]$csproj = Get-Content FoliCon/FoliCon.csproj
+          $current = $csproj.Project.PropertyGroup.Version
+          $parts = $current.Split('.')
+          $newVersion = "$($parts[0]).$([int]$parts[1] + 1).0"
+          echo "version=$newVersion" >> $env:GITHUB_OUTPUT
+
+      - name: Export version
+        id: set-version
+        run: |
+          VERSION="${{ steps.set-version-tag.outputs.version || steps.set-version-dispatch.outputs.version }}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+  publish:
+    name: Publish FoliCon
+    needs: version
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Set version
+        shell: pwsh
+        run: |
+          $version = "${{ needs.version.outputs.version }}"
+          $csproj = Get-Content FoliCon/FoliCon.csproj -Raw
+          $csproj = $csproj -replace '<Version>.*?</Version>', "<Version>$version</Version>"
+          $csproj = $csproj -replace '<PackageVersion>.*?</PackageVersion>', "<PackageVersion>$version</PackageVersion>"
+          $csproj = $csproj -replace '<AssemblyVersion>.*?</AssemblyVersion>', "<AssemblyVersion>$version</AssemblyVersion>"
+          Set-Content FoliCon/FoliCon.csproj $csproj
+
+      - name: Publish
+        run: >
+          dotnet publish FoliCon/FoliCon.csproj
+          -p:PublishProfile="64 dependent"
+          --configuration Release
+
+      - name: Zip output
+        shell: pwsh
+        run: |
+          $publishDir = "FoliCon/bin/Release/net9.0-windows/publish/64Dependant"
+          Compress-Archive -Path "$publishDir/*" -DestinationPath "FoliCon-v${{ needs.version.outputs.version }}-x64.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FoliCon-v${{ needs.version.outputs.version }}-x64
+          path: FoliCon-v${{ needs.version.outputs.version }}-x64.zip
+          retention-days: 1
+
+  release:
+    name: Create GitHub Release
+    needs: [version, publish]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "FoliCon v${{ needs.version.outputs.version }}"
+          generate_release_notes: true
+          files: artifacts/*.zip
