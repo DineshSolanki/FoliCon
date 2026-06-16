@@ -7,6 +7,10 @@ on:
       - 'FoliCon/Properties/Langs/Lang.resx'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   sync-with-crowdin:
     runs-on: ubuntu-latest
