@@ -49,8 +49,11 @@ jobs:
 
       - name: Set flags
         id: flags
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_PRERELEASE: ${{ inputs.prerelease }}
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.prerelease }}" == "true" ]]; then
+          if [[ "$EVENT_NAME" == "workflow_dispatch" && "$INPUT_PRERELEASE" == "true" ]]; then
             echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
           else
             echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
