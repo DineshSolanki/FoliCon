@@ -50,11 +50,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: global.json
-
       - name: Set version
         shell: pwsh
         run: |
