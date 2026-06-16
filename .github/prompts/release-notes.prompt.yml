@@ -23,13 +23,13 @@ messages:
 
   - role: user
     content: |
-      Generate formatted release notes for **{{version}}** of [{{repo}}](https://github.com/{{repo}}).
+      Generate formatted release notes for the version and raw body provided below.
 
-      Remember: first line is `TITLE: FoliCon {{version}} - <one-liner>`, then a blank line, then the body.
+      Remember: first line is `TITLE: FoliCon <version> - <one-liner>`, then a blank line, then the body.
 
       Body template structure:
 
-      ## 🚀 FoliCon {{version}}
+      ## 🚀 FoliCon <version>
 
       ### ✨ New Features
       (use <details> blocks for each major feature)
@@ -50,9 +50,9 @@ messages:
       - .NET 10 or higher
       - WebView2 Runtime (pre-installed on Windows 11)
 
-      **🔗 Full Changelog:** link comparing previous tag to {{version}}
+      **🔗 Full Changelog:** link comparing previous tag to current version
 
       ---
-      Here is the raw release body to transform:
+      Below is the version and raw release body to transform. Use them to fill in the template above.
 
-      {{release_body}}
+      VERSION_AND_BODY:

@@ -24,21 +24,22 @@ jobs:
         run: |
           TAG="${{ inputs.tag }}"
           BODY=$(gh api "repos/${{ github.repository }}/releases/tags/${TAG}" --jq '.body')
-          # Replace * with - to prevent YAML alias node errors during template expansion
-          BODY="${BODY//\*/-}"
-          echo "$BODY" > /tmp/release-body.txt
           echo "version=${TAG}" >> "$GITHUB_OUTPUT"
+          # Build the prompt file dynamically to avoid YAML parsing issues
+          # Copy the template, then append version and body as plain text
+          cp ./.github/prompts/release-notes.prompt.yml /tmp/prompt.yml
+          echo "Version: ${TAG}" >> /tmp/prompt.yml
+          echo "Repository: ${{ github.repository }}" >> /tmp/prompt.yml
+          echo "" >> /tmp/prompt.yml
+          echo '```' >> /tmp/prompt.yml
+          echo "$BODY" >> /tmp/prompt.yml
+          echo '```' >> /tmp/prompt.yml
 
       - name: Generate formatted release notes
         id: ai
         uses: actions/ai-inference@v1
         with:
-          prompt-file: './.github/prompts/release-notes.prompt.yml'
-          file_input: |
-            release_body: /tmp/release-body.txt
-          input: |
-            version: ${{ steps.release.outputs.version }}
-            repo: ${{ github.repository }}
+          prompt-file: '/tmp/prompt.yml'
           model: openai/gpt-4o
 
       - name: Update release title and body
