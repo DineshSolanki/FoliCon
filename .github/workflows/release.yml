@@ -94,8 +94,73 @@ jobs:
           merge-multiple: true
 
       - name: Create release
+        id: create-release
         uses: softprops/action-gh-release@v2
         with:
           name: "FoliCon v${{ needs.version.outputs.version }}"
           generate_release_notes: true
           files: artifacts/*.zip
+
+  release-notes:
+    name: Generate AI release notes
+    needs: [version, release]
+    permissions:
+      models: read
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get release body
+        id: get-body
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ needs.version.outputs.version }}"
+          BODY=$(gh api "repos/${{ github.repository }}/releases/tags/v${TAG}" --jq '.body')
+          # Replace * with - to prevent YAML alias node errors during template expansion
+          BODY="${BODY//\*/-}"
+          echo "$BODY" > /tmp/release-body.txt
+          echo "version=v${TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate formatted release notes
+        id: ai
+        uses: actions/ai-inference@v1
+        with:
+          prompt-file: './.github/prompts/release-notes.prompt.yml'
+          file_input: |
+            release_body: /tmp/release-body.txt
+          input: |
+            version: ${{ steps.get-body.outputs.version }}
+            repo: ${{ github.repository }}
+          model: openai/gpt-4o
+
+      - name: Update release title and body
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const responseFile = '${{ steps.ai.outputs.response-file }}';
+            const raw = fs.readFileSync(responseFile, 'utf8');
+
+            // Parse: first line is "TITLE: ...", then blank line, then body
+            const firstNewline = raw.indexOf('\n');
+            const titleLine = raw.substring(0, firstNewline).trim();
+            const title = titleLine.replace(/^TITLE:\s*/, '');
+            const body = raw.substring(firstNewline + 1).trim();
+
+            // Fetch release ID by tag
+            const tag = 'v${{ needs.version.outputs.version }}';
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: tag
+            });
+
+            await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.data.id,
+              name: title,
+              body: body
+            });

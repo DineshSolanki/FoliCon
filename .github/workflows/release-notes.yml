@@ -1,8 +1,12 @@
-name: Generate Release Notes
+name: Regenerate Release Notes
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v5.0.0)'
+        required: true
+        type: string
 
 jobs:
   generate-notes:
@@ -15,14 +19,15 @@ jobs:
 
       - name: Get release body
         id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # The release body is available from the event payload
-          BODY=$(jq -r '.release.body' "$GITHUB_EVENT_PATH")
+          TAG="${{ inputs.tag }}"
+          BODY=$(gh api "repos/${{ github.repository }}/releases/tags/${TAG}" --jq '.body')
           # Replace * with - to prevent YAML alias node errors during template expansion
           BODY="${BODY//\*/-}"
-          # Write to file to avoid shell escaping issues
           echo "$BODY" > /tmp/release-body.txt
-          echo "version=$(jq -r '.release.tag_name' "$GITHUB_EVENT_PATH")" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Generate formatted release notes
         id: ai
@@ -50,10 +55,18 @@ jobs:
             const title = titleLine.replace(/^TITLE:\s*/, '');
             const body = raw.substring(firstNewline + 1).trim();
 
+            // Fetch release ID by tag
+            const tag = '${{ inputs.tag }}';
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: tag
+            });
+
             await github.rest.repos.updateRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              release_id: context.payload.release.id,
+              release_id: release.data.id,
               name: title,
               body: body
             });
