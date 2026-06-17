@@ -47,6 +47,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"DineshSolanki_FoliCon" /o:"dineshsolanki" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          if ([string]::IsNullOrWhiteSpace($env:SONAR_TOKEN)) {
+            Write-Host "SONAR_TOKEN is not available. Running build without SonarCloud analysis."
+            dotnet build
+            exit $LASTEXITCODE
+          }
+
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"DineshSolanki_FoliCon" /o:"dineshsolanki" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
