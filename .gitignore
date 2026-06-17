@@ -5,6 +5,7 @@
 
 #Custom File Ignore
 App.config
+LanguageClassGenerator/LangProvider1.cs
 # User-specific files
 *.rsuser
 *.suo
