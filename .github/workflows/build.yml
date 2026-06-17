@@ -4,8 +4,24 @@ on:
     branches:
       - master
       - refactor
+    paths:
+      - 'FoliCon/**'
+      - 'LanguageClassGenerator/**'
+      - 'FoliconTest/**'
+      - '*.sln'
+      - '.editorconfig'
+      - 'Directory.Build.props'
+      - '.github/workflows/build.yml'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'FoliCon/**'
+      - 'LanguageClassGenerator/**'
+      - 'FoliconTest/**'
+      - '*.sln'
+      - '.editorconfig'
+      - 'Directory.Build.props'
+      - '.github/workflows/build.yml'
 permissions:
   contents: read
   pull-requests: read
