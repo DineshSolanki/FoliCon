@@ -274,6 +274,13 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(DeviantArtTokenRefreshFailed));
         OnPropertyChanged(nameof(DeviantArtClientCredentialsFailed));
         OnPropertyChanged(nameof(DeviantArtClientAuthFailed));
+        OnPropertyChanged(nameof(WatcherWallBadge));
+        OnPropertyChanged(nameof(WatcherWallConfirmTitle));
+        OnPropertyChanged(nameof(WatcherWallConfirmMessage));
+        OnPropertyChanged(nameof(WatcherWallWatchFailedTitle));
+        OnPropertyChanged(nameof(WatcherWallWatchFailedMessage));
+        OnPropertyChanged(nameof(WatcherWallWatchSuccess));
+        OnPropertyChanged(nameof(WatchingArtist));
     }
 
     public string APIKeysConfiguration => Lang.APIKeysConfiguration;
@@ -509,6 +516,13 @@ public class LangProvider : INotifyPropertyChanged
     public string DeviantArtTokenRefreshFailed => Lang.DeviantArtTokenRefreshFailed;
     public string DeviantArtClientCredentialsFailed => Lang.DeviantArtClientCredentialsFailed;
     public string DeviantArtClientAuthFailed => Lang.DeviantArtClientAuthFailed;
+    public string WatcherWallBadge => Lang.WatcherWallBadge;
+    public string WatcherWallConfirmTitle => Lang.WatcherWallConfirmTitle;
+    public string WatcherWallConfirmMessage => Lang.WatcherWallConfirmMessage;
+    public string WatcherWallWatchFailedTitle => Lang.WatcherWallWatchFailedTitle;
+    public string WatcherWallWatchFailedMessage => Lang.WatcherWallWatchFailedMessage;
+    public string WatcherWallWatchSuccess => Lang.WatcherWallWatchSuccess;
+    public string WatchingArtist => Lang.WatchingArtist;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -753,5 +767,12 @@ public class LangKeys
     public static string DeviantArtTokenRefreshFailed = nameof(DeviantArtTokenRefreshFailed);
     public static string DeviantArtClientCredentialsFailed = nameof(DeviantArtClientCredentialsFailed);
     public static string DeviantArtClientAuthFailed = nameof(DeviantArtClientAuthFailed);
+    public static string WatcherWallBadge = nameof(WatcherWallBadge);
+    public static string WatcherWallConfirmTitle = nameof(WatcherWallConfirmTitle);
+    public static string WatcherWallConfirmMessage = nameof(WatcherWallConfirmMessage);
+    public static string WatcherWallWatchFailedTitle = nameof(WatcherWallWatchFailedTitle);
+    public static string WatcherWallWatchFailedMessage = nameof(WatcherWallWatchFailedMessage);
+    public static string WatcherWallWatchSuccess = nameof(WatcherWallWatchSuccess);
+    public static string WatchingArtist = nameof(WatchingArtist);
 
 }

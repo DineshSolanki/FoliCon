@@ -860,4 +860,25 @@ and refresh Icon Cache?</value>
     <data name="DeviantArtClientAuthFailed" xml:space="preserve">
       <value>Client authentication failed.</value>
     </data>
+    <data name="WatcherWallBadge" xml:space="preserve">
+      <value>Watch</value>
+    </data>
+    <data name="WatcherWallConfirmTitle" xml:space="preserve">
+      <value>Watch Artist?</value>
+    </data>
+    <data name="WatcherWallConfirmMessage" xml:space="preserve">
+      <value>This icon is behind a watcher wall by "{0}". FoliCon will temporarily watch them to download, then unwatch automatically. Continue?</value>
+    </data>
+    <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
+      <value>Watch Failed</value>
+    </data>
+    <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
+      <value>Could not watch the artist. You may need to use a custom DeviantArt app (Non-Public) to enable this feature. Check your DeviantArt configuration in Settings.</value>
+    </data>
+    <data name="WatcherWallWatchSuccess" xml:space="preserve">
+      <value>Now watching {0} — icon unlocked!</value>
+    </data>
+    <data name="WatchingArtist" xml:space="preserve">
+      <value>Watching {0}...</value>
+    </data>
 </root>

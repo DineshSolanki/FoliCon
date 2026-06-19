@@ -5,10 +5,11 @@ namespace FoliCon.Modules.DeviantArt;
 ///
 /// Two modes:
 /// 1. Built-in (FoliCon's registered app) — PKCE, no client secret needed.
+///    App type: Public. Scopes: browse. Cannot unlock watcher-gated icons.
 /// 2. Custom — user provides their own Client ID (and optionally Client Secret).
+///    App type: Non-Public. Scopes: browse + watch. Can unlock watcher-gated icons.
 ///
 /// Register/update at: https://www.deviantart.com/developers/apps
-/// App type: Public. Scopes: browse.
 ///
 /// IMPORTANT: When changing any value here, also update docs/oauth-redirect.html
 /// to match the CallbackPort.
@@ -17,7 +18,7 @@ internal static class DeviantArtAppConfig
 {
     // ── Built-in OAuth App Registration ──────────────────────────────────
     public const string ClientId = "69659";
-    public const string Scope = "browse";
+    public const string Scope = "browse user";
     public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize";
     public const string TokenUrl = "https://www.deviantart.com/oauth2/token";
 

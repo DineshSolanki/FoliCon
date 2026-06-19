@@ -18,7 +18,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private int _totalPosters;
     private readonly IDialogService _dialogService;
     private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
-    
+    private readonly HashSet<string> _autoWatchedAuthors = new();
+
     public DialogCloseListener RequestClose { get; }
 
     private string _folderPath;
@@ -51,7 +52,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             SetProperty(ref _isSearchFocused, value);
         }
     }
-    
+
     public bool SubfolderProcessingEnabled
     {
         get => _subfolderProcessingEnabled;
@@ -64,8 +65,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     }
 
     public DelegateCommand SkipCommand { get; set; }
-    public DelegateCommand<object> PickCommand { get; set; }
-    public DelegateCommand<object> OpenImageCommand { get; set; }
+    public DelegateCommand<DArtImageList> PickCommand { get; set; }
+    public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
     public DelegateCommand<object> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
@@ -75,8 +76,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         Logger.Debug("ProSearchResultViewModel Constructor");
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
-        PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
+        PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
         ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
@@ -86,14 +87,14 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private void ExtractManually(object parameter)
     {
         Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter);
-        
+
         if (DArtObject == null)
         {
             Logger.Warn("DeviantArt client is not available. Cannot extract manually.");
             MessageBox.Show(CustomMessageBox.Warning(Lang.DAUnavailableRestartMessage, Lang.DAUnavailableTitle));
             return;
         }
-        
+
         var deviationId = (string)parameter;
         _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
         {
@@ -103,7 +104,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             }
 
             Logger.Debug("Manual Extraction Completed");
-            PickMethod(result.Parameters.GetValue<string>("localPath"));
+            ProcessPick(result.Parameters.GetValue<string>("localPath"));
         });
     }
     private async void PrepareForSearch()
@@ -186,8 +187,9 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private int ProcessSearchResults(string query, DArtBrowseResult searchResult, int offset)
     {
-        // Counter for the total posters
-        TotalPosters = searchResult.Results!.Count(result => result.IsDownloadable) + offset;
+        // Counter for the total posters (downloadable + watcher-gated)
+        TotalPosters = searchResult.Results!.Count(result =>
+            result.IsDownloadable || result.PremiumFolderData?.Type == "watchers") + offset;
         Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
 
         foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
@@ -217,28 +219,84 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     {
         Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
 
-        if (IsItemDownloadable(item))
+        if (item.Value.IsDownloadable)
         {
             ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
             Index++;
+            return;
+        }
+
+        // Watcher-gated: show if it's a "watchers" type premium folder
+        if (item.Value.PremiumFolderData?.Type == "watchers")
+        {
+            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src,
+                item.Value.Deviationid, true, item.Value.Author?.Username));
+            Index++;
+            Logger.Info("Watcher-gated poster {Url} added (author: {Author})",
+                item.Value.Url, item.Value.Author?.Username);
         }
         else
         {
-            Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
+            Logger.Warn("Poster {Url} is not downloadable", item.Value.Url);
         }
     }
 
-    private static bool IsItemDownloadable(EnumeratorWithIndex<Result> item)
-    {
-        return item.Value.IsDownloadable;
-    }
-    
 
-    private void PickMethod(object parameter)
+    private void OpenImageMethod(DArtImageList parameter)
+    {
+        Logger.Debug("Opening Image {Image}", parameter);
+        UiUtils.ShowImageBrowser(parameter.Url);
+    }
+
+    private async void PickMethod(DArtImageList parameter)
     {
         Logger.Debug("Picking Image {Image}", parameter);
+
+        if (parameter.RequiresWatch)
+        {
+            if (MessageBox.Show(CustomMessageBox.Ask(
+                    Lang.WatcherWallConfirmMessage.Format(parameter.AuthorUsername),
+                    Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            IsBusy = true;
+            BusyContent = Lang.WatchingArtist.Format(parameter.AuthorUsername);
+
+            var success = await DArtObject.WatchAsync(parameter.AuthorUsername);
+            IsBusy = false;
+
+            if (!success)
+            {
+                MessageBox.Show(CustomMessageBox.Error(
+                    Lang.WatcherWallWatchFailedMessage, Lang.WatcherWallWatchFailedTitle));
+                return;
+            }
+
+            parameter.RequiresWatch = false;
+            _autoWatchedAuthors.Add(parameter.AuthorUsername);
+            Growl.SuccessGlobal(new GrowlInfo
+            {
+                Message = Lang.WatcherWallWatchSuccess.Format(parameter.AuthorUsername),
+                ShowDateTime = false
+            });
+        }
+
         SearchAgainTitle = null;
-        var link = (string)parameter;
+
+        // Unwatch the artist now that we have the download URL
+        if (_autoWatchedAuthors.Remove(parameter.AuthorUsername))
+        {
+            _ = DArtObject.UnwatchAsync(parameter.AuthorUsername);
+        }
+
+        ProcessPick(parameter.Url);
+    }
+
+    private void ProcessPick(string link)
+    {
+        Logger.Debug("Picking Image {Image}", link);
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
         var tempImage = new ImageToDownload
         {

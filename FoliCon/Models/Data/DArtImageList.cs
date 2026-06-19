@@ -1,11 +1,7 @@
-﻿namespace FoliCon.Models.Data;
+namespace FoliCon.Models.Data;
 
 public class DArtImageList : BindableBase
 {
-    private string _url;
-    private string  _thumbnailUrl;
-    private string _deviationId;
-
     public DArtImageList(string url, string thumbnailUrl)
     {
         Url = url ?? throw new ArgumentNullException(nameof(url));
@@ -16,8 +12,42 @@ public class DArtImageList : BindableBase
     {
         DeviationId = deviationId ?? throw new ArgumentNullException(nameof(deviationId));
     }
-    
-    public string Url { get => _url; set => SetProperty(ref _url, value); }
-    public string ThumbnailUrl { get => _thumbnailUrl; set => SetProperty(ref _thumbnailUrl, value); }
-    public string DeviationId { get => _deviationId; set => SetProperty(ref _deviationId, value); }
+
+    public DArtImageList(string url, string thumbnailUrl, string deviationId,
+        bool requiresWatch, string authorUsername)
+        : this(url, thumbnailUrl, deviationId)
+    {
+        RequiresWatch = requiresWatch;
+        AuthorUsername = authorUsername;
+    }
+
+    public string Url
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string ThumbnailUrl
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string DeviationId
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool RequiresWatch
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string AuthorUsername
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 }
