@@ -94,7 +94,16 @@ public class PosterIcon : BindableBase, IDisposable
 
     public void Dispose()
     {
-        _memoryStream?.Dispose();
-        _memoryStream = null;
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _memoryStream?.Dispose();
+            _memoryStream = null;
+        }
     }
 }

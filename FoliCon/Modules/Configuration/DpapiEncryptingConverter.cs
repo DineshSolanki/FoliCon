@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
 using STJ = System.Text.Json.Serialization;
 
+#nullable enable
+
 namespace FoliCon.Modules.Configuration;
 
 /// <summary>

@@ -83,7 +83,7 @@ public static class OAuthCallbackListener
             context.Response.StatusCode = 200;
             context.Response.ContentType = "text/html; charset=utf-8";
             context.Response.ContentLength64 = responseBytes.Length;
-            await context.Response.OutputStream.WriteAsync(responseBytes);
+            await context.Response.OutputStream.WriteAsync(responseBytes, ct);
             context.Response.Close();
 
             if (!string.IsNullOrEmpty(error))

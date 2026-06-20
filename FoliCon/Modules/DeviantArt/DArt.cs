@@ -23,7 +23,7 @@ public class DArt : BindableBase, IDisposable
             OnRetry = args =>
             {
                 var attempt = args.AttemptNumber + 1;
-                Logger.Warn($"DeviantArt API request attempt {attempt} failed: {args.Outcome.Exception?.Message}. Retrying...");
+                Logger.Warn(args.Outcome.Exception, "DeviantArt API request attempt {Attempt} failed, retrying...", attempt);
                 return ValueTask.CompletedTask;
             },
             ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
@@ -109,7 +109,7 @@ public class DArt : BindableBase, IDisposable
         Services.Settings.DeviantArtAccessToken = result.AccessToken;
         Services.Settings.DeviantArtRefreshToken = result.RefreshToken;
         Services.Settings.DeviantArtTokenExpiresAt = DateTime.UtcNow.AddSeconds(result.ExpiresIn - 60);
-        Services.Settings.Save();
+        await Services.Settings.SaveAsync();
 
         return new DArt(result.AccessToken, result.RefreshToken, result.ExpiresIn);
     }
@@ -127,7 +127,7 @@ public class DArt : BindableBase, IDisposable
         Services.Settings.DeviantArtAccessToken = result.AccessToken;
         Services.Settings.DeviantArtRefreshToken = "";
         Services.Settings.DeviantArtTokenExpiresAt = DateTime.UtcNow.AddSeconds(result.ExpiresIn - 60);
-        Services.Settings.Save();
+        await Services.Settings.SaveAsync();
 
         return new DArt(result.AccessToken, "", result.ExpiresIn);
     }
@@ -186,7 +186,7 @@ public class DArt : BindableBase, IDisposable
 
                 Services.Settings.DeviantArtAccessToken = result.AccessToken;
                 Services.Settings.DeviantArtTokenExpiresAt = TokenExpiresAt;
-                Services.Settings.Save();
+                await Services.Settings.SaveAsync();
 
                 Logger.Info("DeviantArt re-authenticated via client_credentials (expires at {ExpiresAt})", TokenExpiresAt);
             }
@@ -195,7 +195,7 @@ public class DArt : BindableBase, IDisposable
                 Logger.Error(ex, "Failed to re-authenticate DeviantArt via client_credentials.");
                 Services.Settings.DeviantArtAccessToken = "";
                 Services.Settings.DeviantArtTokenExpiresAt = DateTime.MinValue;
-                Services.Settings.Save();
+                await Services.Settings.SaveAsync();
                 throw;
             }
             return;
@@ -225,7 +225,7 @@ public class DArt : BindableBase, IDisposable
             Services.Settings.DeviantArtAccessToken = result.AccessToken;
             Services.Settings.DeviantArtRefreshToken = result.RefreshToken;
             Services.Settings.DeviantArtTokenExpiresAt = TokenExpiresAt;
-            Services.Settings.Save();
+            await Services.Settings.SaveAsync();
 
             Logger.Info("DeviantArt token refreshed successfully (expires at {ExpiresAt})", TokenExpiresAt);
         }
@@ -236,7 +236,7 @@ public class DArt : BindableBase, IDisposable
             Services.Settings.DeviantArtAccessToken = "";
             Services.Settings.DeviantArtRefreshToken = "";
             Services.Settings.DeviantArtTokenExpiresAt = DateTime.MinValue;
-            Services.Settings.Save();
+            await Services.Settings.SaveAsync();
             throw;
         }
     }
@@ -433,7 +433,6 @@ public class DArt : BindableBase, IDisposable
                 if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
                     Logger.Warn($"DeviantArt API {requestType} returned 401, attempting token refresh");
-                    response.Dispose();
 
                     if (string.IsNullOrEmpty(RefreshToken))
                     {
@@ -453,8 +452,7 @@ public class DArt : BindableBase, IDisposable
                 Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
                     requestType, (int)response.StatusCode, errorBody);
                 response.EnsureSuccessStatusCode();
-
-                return await response.Content.ReadAsStringAsync(ct);
+                throw new InvalidOperationException("Unreachable — EnsureSuccessStatusCode throws on failure");
             }, cancellationToken);
         }
         catch (DeviantArtTokenExpiredException)
@@ -468,7 +466,7 @@ public class DArt : BindableBase, IDisposable
             Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
                 requestType, (int)response.StatusCode, errorBody);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync(cancellationToken);
+            throw new InvalidOperationException("Unreachable — EnsureSuccessStatusCode throws on failure");
         }
         catch (Exception ex) when (ex is not DeviantArtTokenExpiredException)
         {

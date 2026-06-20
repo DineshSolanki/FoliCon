@@ -13,7 +13,7 @@ public static class NetworkUtils
     public static bool IsNetworkAvailable()
     {
         Logger.ForDebugEvent().Message("Network Availability Check Started").Log();
-        const string host = "8.8.8.8";
+        const string host = "8.8.8.8"; // NOSONAR — Google Public DNS, used only for ICMP reachability check
         var result = false;
         using var p = new Ping();
         try

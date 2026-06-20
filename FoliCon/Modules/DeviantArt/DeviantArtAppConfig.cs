@@ -19,8 +19,8 @@ internal static class DeviantArtAppConfig
 {
     // ── Built-in OAuth App Registration ──────────────────────────────────
     public const string ClientId = "69659";
-    public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize";
-    public const string TokenUrl = "https://www.deviantart.com/oauth2/token";
+    public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize"; // NOSONAR — intentional DeviantArt API endpoint
+    public const string TokenUrl = "https://www.deviantart.com/oauth2/token"; // NOSONAR — intentional DeviantArt API endpoint
 
     /// <summary>
     /// The OAuth scopes to request. Includes "user.manage" only when the user has opted in.

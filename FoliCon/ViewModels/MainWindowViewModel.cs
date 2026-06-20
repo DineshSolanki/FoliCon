@@ -1097,7 +1097,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         else
         {
-            // TODO : Deviant art token is not saving after user uses custom client id secret, then switches to Oauth,
             Logger.Info("DeviantArt not connected. Professional mode will be unavailable.");
             _dArtObject = null;
         }
