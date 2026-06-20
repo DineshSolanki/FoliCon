@@ -4,65 +4,95 @@
 public class ProSearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private string _title = Lang.SearchResult;
     private bool _stopSearch;
-    private string _searchTitle;
-    private string _searchAgainTitle;
     private int _i;
-    private string _busyContent = Lang.Searching;
-    private bool _isBusy;
-    private DArt _dArtObject;
     private List<PickedListItem> _listDataTable;
     private List<ImageToDownload> _imgDownloadList;
-    private int _index;
-    private int _totalPosters;
     private readonly IDialogService _dialogService;
-    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
-    private readonly HashSet<string> _autoWatchedAuthors = new();
 
     public DialogCloseListener RequestClose { get; }
 
     private string _folderPath;
-    private bool _isSearchFocused;
 
-    public string Title { get => _title;
-        private set => SetProperty(ref _title, value); }
+    public string Title
+    {
+        get;
+        private set => SetProperty(ref field, value);
+    } = Lang.SearchResult;
+
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
-    private string SearchTitle { get => _searchTitle; set => SetProperty(ref _searchTitle, value); }
+
+    private string SearchTitle
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     public bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
     private List<string> Fnames { get; set; }
-    public string SearchAgainTitle { get => _searchAgainTitle; set => SetProperty(ref _searchAgainTitle, value); }
-    public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
-    public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-    private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-    public int Index { get => _index; set => SetProperty(ref _index, value); }
-    public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
+
+    public string SearchAgainTitle
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string BusyContent
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.Searching;
+
+    public bool IsBusy
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    private DArt DArtObject
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int Index
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int TotalPosters
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
     public bool IsSearchFocused
     {
-        get => _isSearchFocused;
+        get;
         set
         {
-            if (_isSearchFocused == value)
+            if (field == value)
 
             {
-                _isSearchFocused = false;
+                field = false;
                 RaisePropertyChanged();
             }
-            SetProperty(ref _isSearchFocused, value);
+
+            SetProperty(ref field, value);
         }
     }
 
     public bool SubfolderProcessingEnabled
     {
-        get => _subfolderProcessingEnabled;
+        get;
         set
         {
-            SetProperty(ref _subfolderProcessingEnabled, value);
+            SetProperty(ref field, value);
             Services.Settings.SubfolderProcessingEnabled = value;
             Services.Settings.Save();
         }
-    }
+    } = Services.Settings.SubfolderProcessingEnabled;
 
     public DelegateCommand SkipCommand { get; set; }
     public DelegateCommand<DArtImageList> PickCommand { get; set; }
@@ -314,7 +344,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     }
 
 
-    private void OpenImageMethod(DArtImageList parameter)
+    private static void OpenImageMethod(DArtImageList parameter)
     {
         Logger.Debug("Opening Image {Image}", parameter);
         UiUtils.ShowImageBrowser(parameter.Url);

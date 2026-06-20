@@ -4,7 +4,7 @@
 public class ManualExplorerViewModel : BindableBase, IDialogAware
 {
 	private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-	
+
 	public ManualExplorerViewModel()
 	{
 		Directory = [];
@@ -26,14 +26,14 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private DArtDownloadResponse _dArtDownloadResponse;
 	private ProgressBarData _progressInfo = new(0,1,LangProvider.Instance.Downloading);
 	private readonly CancellationTokenSource _cts = new();
-        
+
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
 	private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
 	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
 	private DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
 	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
-	
+
 	public DelegateCommand<object> PickCommand { get; set; }
 	public DelegateCommand<object> OpenImageCommand { get; set; }
 	public DelegateCommand CancelCommand { get; init; }
@@ -57,7 +57,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	{
 		Directory.Clear();
 	}
-	
+
 	protected virtual void CloseDialog(ButtonResult result, string localPath)
 	{
 		Logger.Info("Close Dialog called with result {Result}, localImagePath {LocalImagePath}", result, localPath);
@@ -73,7 +73,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	{
 		parameters.TryGetValue("DeviationId", out string deviationId);
 		DArtObject = parameters.GetValue<DArt>("dartobject");
-		
+
 		if (DArtObject == null)
 		{
 			Logger.Error("DeviantArt client is not available. Cannot extract deviation.");
@@ -81,7 +81,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			CloseDialog(ButtonResult.Cancel, null);
 			return;
 		}
-		
+
 		IsBusy = true;
 		try
 		{
@@ -94,7 +94,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		catch (OperationCanceledException e)
 		{
 			Logger.Debug(e, "User cancelled manual extraction");
-			
+
 		}
 		catch (Exception ex)
 		{
@@ -117,7 +117,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 					var pngFile = group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png");
 					return pngFile ?? group.First();
 				}).ToList();
-			
+
 			Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
 			pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
 		}

@@ -1,7 +1,15 @@
 ﻿// ReSharper disable InconsistentNaming
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace FoliCon.Properties.Langs;
 
+[SuppressMessage("Performance", "CA1822:Mark members as static",
+    Justification = "XAML data binding requires instance properties.")]
+[SuppressMessage("Sonar", "S2325:Methods and properties that don't access instance data should be static",
+    Justification = "If we make properties static, it will break MVVM change pattern, XAML bindings like " +
+                    "{Binding Source={StaticResource FoliConLangs}, Path=InvalidApiKey} would stop working because XAML " +
+                    "data binding requires instance properties.")]
 [Localizable(false)]
 public class LangProvider : INotifyPropertyChanged
 {
