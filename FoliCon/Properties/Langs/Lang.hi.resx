@@ -723,16 +723,16 @@
       <value>मुफ्त — कस्टम आइकन खोज के लिए प्रोफेशनल मोड सक्षम करने के लिए DeviantArt में लॉग इन करें।</value>
     </data>
   <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
-      <value>Use FoliCon's built-in app (recommended)</value>
+      <value>FoliCon का अंतर्निहित ऐप उपयोग करें (अनुशंसित)</value>
     </data>
   <data name="OnboardingDeviantArtCustom" xml:space="preserve">
-      <value>Use my own DeviantArt app</value>
+      <value>अपना DeviantArt ऐप उपयोग करें</value>
     </data>
   <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
-      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+      <value>deviantart.com/developers/apps पर अपना ऐप पंजीकृत करें। नीचे अपना Client ID और Client Secret दर्ज करें।</value>
     </data>
   <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
-      <value>Validate &amp; Connect</value>
+      <value>सत्यापित करें और कनेक्ट करें</value>
     </data>
   <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>DeviantArt से कनेक्ट करें</value>
@@ -860,4 +860,37 @@
   <data name="DeviantArtClientAuthFailed" xml:space="preserve">
       <value>क्लाइंट प्रमाणीकरण विफल।</value>
     </data>
+  <data name="WatcherWallBadge" xml:space="preserve">
+    <value>फ़ॉलो करें</value>
+  </data>
+  <data name="WatcherWallConfirmTitle" xml:space="preserve">
+    <value>कलाकार को फ़ॉलो करें?</value>
+  </data>
+  <data name="WatcherWallConfirmMessage" xml:space="preserve">
+    <value>यह आइकन "{0}" की फ़ॉलोवर वॉल के पीछे है। FoliCon डाउनलोड के लिए अस्थायी रूप से फ़ॉलो करेगा और बाद में स्वचालित रूप से अनफ़ॉलो कर देगा। जारी रखें?</value>
+  </data>
+  <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
+    <value>फ़ॉलो करने में विफल</value>
+  </data>
+  <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
+    <value>कलाकार को फ़ॉलो नहीं किया जा सका। DeviantArt सेटअप में "फ़ॉलोवर वॉल आइकन एक्सेस" सक्षम करें और पुनः कनेक्ट करें।</value>
+  </data>
+  <data name="WatcherWallWatchSuccess" xml:space="preserve">
+    <value>{0} को फ़ॉलो किया — आइकन अनलॉक!</value>
+  </data>
+  <data name="WatchingArtist" xml:space="preserve">
+    <value>{0} को फ़ॉलो कर रहे हैं...</value>
+  </data>
+  <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
+    <value>फ़ॉलोवर वॉल आइकन एक्सेस सक्षम करें</value>
+  </data>
+  <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
+    <value>user.manage स्कोप प्रदान करता है ताकि FoliCon फ़ॉलोवर वॉल आइकन अनलॉक करने के लिए कलाकारों को अस्थायी रूप से फ़ॉलो/अनफ़ॉलो कर सके। यह एक संवेदनशील अनुमति है — FoliCon केवल आइकन डाउनलोड के दौरान फ़ॉलो करता है और स्वचालित रूप से अनफ़ॉलो कर देता है। बदलने पर पुनः अधिकृत करना आवश्यक है।</value>
+  </data>
+  <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
+    <value>स्कोप बदला गया — नई अनुमतियाँ लागू करने के लिए कृपया DeviantArt से पुनः कनेक्ट करें।</value>
+  </data>
+  <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
+    <value>फ़ॉलोवर वॉल आइकन एक्सेस सक्षम नहीं है। इस सुविधा का उपयोग करने के लिए DeviantArt सेटअप में "फ़ॉलोवर वॉल आइकन एक्सेस" सक्षम करें और पुनः कनेक्ट करें।</value>
+  </data>
 </root>

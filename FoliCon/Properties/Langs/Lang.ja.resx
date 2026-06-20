@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-      Microsoft ResX Schema 
-      
+  <!--
+      Microsoft ResX Schema
+
       Version 2.0
-      
-      The primary goals of this format is to allow a simple XML format 
-      that is mostly human readable. The generation and parsing of the 
-      various data types are done through the TypeConverter classes 
+
+      The primary goals of this format is to allow a simple XML format
+      that is mostly human readable. The generation and parsing of the
+      various data types are done through the TypeConverter classes
       associated with the data types.
-      
+
       Example:
-      
+
       ... ado.net/XML headers & schema ...
       <resheader name="resmimetype">text/microsoft-resx</resheader>
       <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
           <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
           <comment>This is a comment</comment>
       </data>
-                  
-      There are any number of "resheader" rows that contain simple 
+
+      There are any number of "resheader" rows that contain simple
       name/value pairs.
-      
-      Each data row contains a name, and value. The row also contains a 
-      type or mimetype. Type corresponds to a .NET class that support 
-      text/value conversion through the TypeConverter architecture. 
-      Classes that don't support this are serialized and stored with the 
+
+      Each data row contains a name, and value. The row also contains a
+      type or mimetype. Type corresponds to a .NET class that support
+      text/value conversion through the TypeConverter architecture.
+      Classes that don't support this are serialized and stored with the
       mimetype set.
-      
-      The mimetype is used for serialized objects, and tells the 
-      ResXResourceReader how to depersist the object. This is currently not 
+
+      The mimetype is used for serialized objects, and tells the
+      ResXResourceReader how to depersist the object. This is currently not
       extensible. For a given mimetype the value must be set accordingly:
-      
-      Note - application/x-microsoft.net.object.binary.base64 is the format 
-      that the ResXResourceWriter will generate, however the reader can 
+
+      Note - application/x-microsoft.net.object.binary.base64 is the format
+      that the ResXResourceWriter will generate, however the reader can
       read any of the formats listed below.
-      
+
       mimetype: application/x-microsoft.net.object.binary.base64
-      value   : The object must be serialized with 
+      value   : The object must be serialized with
               : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
               : and then encoded with base64 encoding.
-      
+
       mimetype: application/x-microsoft.net.object.soap.base64
-      value   : The object must be serialized with 
+      value   : The object must be serialized with
               : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
               : and then encoded with base64 encoding.
-  
+
       mimetype: application/x-microsoft.net.object.bytearray.base64
-      value   : The object must be serialized into a byte array 
+      value   : The object must be serialized into a byte array
               : using a System.ComponentModel.TypeConverter
               : and then encoded with base64 encoding.
       -->
@@ -463,7 +463,7 @@ Do you want to restart Folicon as admin ?</value>
     <value>Restart Explorer</value>
   </data>
   <data name="RestartExplorerConfirmation" xml:space="preserve">
-    <value>Are you sure you want to Restart Explorer 
+    <value>Are you sure you want to Restart Explorer
 and refresh Icon Cache?</value>
   </data>
   <data name="RestartExplorerTooltip" xml:space="preserve">
@@ -722,16 +722,16 @@ and refresh Icon Cache?</value>
       <value>無料 — DeviantArt にログインして、カスタムアイコン検索用のプロフェッショナルモードを有効にします。</value>
     </data>
   <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
-      <value>Use FoliCon's built-in app (recommended)</value>
+      <value>FoliCon の組み込みアプリを使用（推奨）</value>
     </data>
   <data name="OnboardingDeviantArtCustom" xml:space="preserve">
-      <value>Use my own DeviantArt app</value>
+      <value>自分の DeviantArt アプリを使用</value>
     </data>
   <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
-      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+      <value>deviantart.com/developers/apps で自分のアプリを登録し、以下に Client ID と Client Secret を入力してください。</value>
     </data>
   <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
-      <value>Validate &amp; Connect</value>
+      <value>検証して接続</value>
     </data>
   <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>DeviantArt に接続</value>
@@ -859,4 +859,37 @@ and refresh Icon Cache?</value>
   <data name="DeviantArtClientAuthFailed" xml:space="preserve">
       <value>クライアント認証に失敗しました。</value>
     </data>
+  <data name="WatcherWallBadge" xml:space="preserve">
+    <value>フォロー</value>
+  </data>
+  <data name="WatcherWallConfirmTitle" xml:space="preserve">
+    <value>アーティストをフォローしますか？</value>
+  </data>
+  <data name="WatcherWallConfirmMessage" xml:space="preserve">
+    <value>このアイコンは「{0}」のフォローウォールの背後にあります。FoliCon が一時的にフォローしてダウンロードし、その後自動的にフォロー解除します。続行しますか？</value>
+  </data>
+  <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
+    <value>フォロー失敗</value>
+  </data>
+  <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
+    <value>アーティストをフォローできませんでした。DeviantArt の設定で「フォローウォール アイコンアクセス」を有効にして再接続してください。</value>
+  </data>
+  <data name="WatcherWallWatchSuccess" xml:space="preserve">
+    <value>{0} をフォローしました — アイコンを解除しました！</value>
+  </data>
+  <data name="WatchingArtist" xml:space="preserve">
+    <value>{0} をフォロー中...</value>
+  </data>
+  <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
+    <value>フォローウォール アイコンアクセスを有効にする</value>
+  </data>
+  <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
+    <value>user.manage スコープを付与し、FoliCon がフォローウォールで保護されたアイコンを解除するためにアーティストを一時的にフォロー/フォロー解除できるようにします。これは機密性の高い権限です。FoliCon はアイコンのダウンロード中にのみフォローし、自動的にフォロー解除します。変更時には再認可が必要です。</value>
+  </data>
+  <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
+    <value>スコープが変更されました — 新しい権限を適用するには DeviantArt に再接続してください。</value>
+  </data>
+  <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
+    <value>フォローウォール アイコンアクセスが有効ではありません。DeviantArt の設定で「フォローウォール アイコンアクセス」を有効にして再接続してください。</value>
+  </data>
 </root>

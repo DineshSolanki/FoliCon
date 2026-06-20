@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-      Microsoft ResX Schema 
-      
+  <!--
+      Microsoft ResX Schema
+
       Version 2.0
-      
-      The primary goals of this format is to allow a simple XML format 
-      that is mostly human readable. The generation and parsing of the 
-      various data types are done through the TypeConverter classes 
+
+      The primary goals of this format is to allow a simple XML format
+      that is mostly human readable. The generation and parsing of the
+      various data types are done through the TypeConverter classes
       associated with the data types.
-      
+
       Example:
-      
+
       ... ado.net/XML headers & schema ...
       <resheader name="resmimetype">text/microsoft-resx</resheader>
       <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
           <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
           <comment>This is a comment</comment>
       </data>
-                  
-      There are any number of "resheader" rows that contain simple 
+
+      There are any number of "resheader" rows that contain simple
       name/value pairs.
-      
-      Each data row contains a name, and value. The row also contains a 
-      type or mimetype. Type corresponds to a .NET class that support 
-      text/value conversion through the TypeConverter architecture. 
-      Classes that don't support this are serialized and stored with the 
+
+      Each data row contains a name, and value. The row also contains a
+      type or mimetype. Type corresponds to a .NET class that support
+      text/value conversion through the TypeConverter architecture.
+      Classes that don't support this are serialized and stored with the
       mimetype set.
-      
-      The mimetype is used for serialized objects, and tells the 
-      ResXResourceReader how to depersist the object. This is currently not 
+
+      The mimetype is used for serialized objects, and tells the
+      ResXResourceReader how to depersist the object. This is currently not
       extensible. For a given mimetype the value must be set accordingly:
-      
-      Note - application/x-microsoft.net.object.binary.base64 is the format 
-      that the ResXResourceWriter will generate, however the reader can 
+
+      Note - application/x-microsoft.net.object.binary.base64 is the format
+      that the ResXResourceWriter will generate, however the reader can
       read any of the formats listed below.
-      
+
       mimetype: application/x-microsoft.net.object.binary.base64
-      value   : The object must be serialized with 
+      value   : The object must be serialized with
               : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
               : and then encoded with base64 encoding.
-      
+
       mimetype: application/x-microsoft.net.object.soap.base64
-      value   : The object must be serialized with 
+      value   : The object must be serialized with
               : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
               : and then encoded with base64 encoding.
-  
+
       mimetype: application/x-microsoft.net.object.bytearray.base64
-      value   : The object must be serialized into a byte array 
+      value   : The object must be serialized into a byte array
               : using a System.ComponentModel.TypeConverter
               : and then encoded with base64 encoding.
       -->
@@ -723,16 +723,16 @@ y actualizar la caché de iconos?</value>
       <value>Gratis — inicia sesión en DeviantArt para habilitar el modo Profesional para búsquedas de iconos personalizados.</value>
     </data>
   <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
-      <value>Use FoliCon's built-in app (recommended)</value>
+      <value>Usar la aplicación integrada de FoliCon (recomendado)</value>
     </data>
   <data name="OnboardingDeviantArtCustom" xml:space="preserve">
-      <value>Use my own DeviantArt app</value>
+      <value>Usar mi propia aplicación de DeviantArt</value>
     </data>
   <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
-      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+      <value>Registra tu propia aplicación en deviantart.com/developers/apps. Ingresa tu Client ID y Client Secret a continuación.</value>
     </data>
   <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
-      <value>Validate &amp; Connect</value>
+      <value>Validar y conectar</value>
     </data>
   <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>Conectar a DeviantArt</value>
@@ -860,4 +860,37 @@ y actualizar la caché de iconos?</value>
   <data name="DeviantArtClientAuthFailed" xml:space="preserve">
       <value>La autenticación del cliente falló.</value>
     </data>
+  <data name="WatcherWallBadge" xml:space="preserve">
+    <value>Seguir</value>
+  </data>
+  <data name="WatcherWallConfirmTitle" xml:space="preserve">
+    <value>¿Seguir al artista?</value>
+  </data>
+  <data name="WatcherWallConfirmMessage" xml:space="preserve">
+    <value>Este icono está detrás de un muro de seguidores de "{0}". FoliCon lo seguirá temporalmente para descargarlo y luego dejará de seguirlo automáticamente. ¿Continuar?</value>
+  </data>
+  <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
+    <value>Error al seguir</value>
+  </data>
+  <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
+    <value>No se pudo seguir al artista. Activa el "Acceso a iconos por muro de seguidores" en la configuración de DeviantArt y vuelve a conectarte.</value>
+  </data>
+  <data name="WatcherWallWatchSuccess" xml:space="preserve">
+    <value>Ahora sigues a {0} — ¡icono desbloqueado!</value>
+  </data>
+  <data name="WatchingArtist" xml:space="preserve">
+    <value>Siguiendo a {0}...</value>
+  </data>
+  <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
+    <value>Activar acceso a iconos por muro de seguidores</value>
+  </data>
+  <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
+    <value>Otorga el permiso user.manage para que FoliCon pueda seguir/dejar de seguir artistas temporalmente y desbloquear iconos restringidos. Es un permiso sensible: FoliCon solo sigue artistas durante la descarga y deja de seguirlos automáticamente. Requiere reautorización al cambiar.</value>
+  </data>
+  <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
+    <value>Permiso cambiado — vuelve a conectarte a DeviantArt para aplicar los nuevos permisos.</value>
+  </data>
+  <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
+    <value>El acceso a iconos por muro de seguidores no está activado. Activa "Acceso a iconos por muro de seguidores" en la configuración de DeviantArt y vuelve a conectarte para usar esta función.</value>
+  </data>
 </root>
