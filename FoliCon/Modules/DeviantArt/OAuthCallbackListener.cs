@@ -149,9 +149,9 @@ public static class OAuthCallbackListener
     /// <summary>
     /// Refreshes an expired access token using a refresh token.
     /// For non-public (custom) apps, <paramref name="clientSecret"/> must be provided.
-    /// For the built-in public app, client_secret is not required by the OAuth2 spec,
+    /// For the built-in public app, client_secret is not required by the OAuth2 spec.
     /// </summary>
-    public static async Task<OAuthResult> RefreshTokenAsync(string refreshToken, string clientSecret = null)
+    public static async Task<OAuthResult> RefreshTokenAsync(string refreshToken, string clientSecret)
     {
         Logger.Debug("Refreshing DeviantArt access token");
 

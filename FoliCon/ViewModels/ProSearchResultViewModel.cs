@@ -84,6 +84,61 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         _dialogService = dialogService;
     }
 
+    /// <summary>
+    /// Ensures the deviation's author is watched if the deviation is watcher-gated.
+    /// Returns true if watching succeeded or was not required; false if the user cancelled or watching failed.
+    /// </summary>
+    private async Task<bool> EnsureWatchAsync(DArtImageList parameter)
+    {
+        if (!parameter.RequiresWatch)
+        {
+            return true;
+        }
+
+        var authorUsername = parameter.AuthorUsername;
+
+        if (string.IsNullOrEmpty(authorUsername))
+        {
+            return true;
+        }
+
+        if (!Services.Settings.DeviantArtWatchEnabled)
+        {
+            Logger.Warn("Watcher-gated deviation but watch scope is not enabled.");
+            MessageBox.Show(CustomMessageBox.Warning(Lang.DeviantArtWatchScopeNotEnabled, Lang.WatcherWallWatchFailedTitle));
+            return false;
+        }
+
+        if (MessageBox.Show(CustomMessageBox.Ask(
+                Lang.WatcherWallConfirmMessage.Format(authorUsername),
+                Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
+        {
+            return false;
+        }
+
+        IsBusy = true;
+        BusyContent = Lang.WatchingArtist.Format(authorUsername);
+
+        var success = await DArtObject.WatchAsync(authorUsername);
+        IsBusy = false;
+
+        if (!success)
+        {
+            MessageBox.Show(CustomMessageBox.Error(
+                Lang.WatcherWallWatchFailedMessage, Lang.WatcherWallWatchFailedTitle));
+            return false;
+        }
+
+        parameter.RequiresWatch = false;
+        Growl.SuccessGlobal(new GrowlInfo
+        {
+            Message = Lang.WatcherWallWatchSuccess.Format(authorUsername),
+            ShowDateTime = false
+        });
+
+        return true;
+    }
+
     private async void ExtractManually(DArtImageList parameter)
     {
         Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter?.DeviationId);
@@ -103,40 +158,9 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
         var authorUsername = parameter.AuthorUsername;
 
-        if (parameter.RequiresWatch && !string.IsNullOrEmpty(authorUsername))
+        if (!await EnsureWatchAsync(parameter))
         {
-            if (!Services.Settings.DeviantArtWatchEnabled)
-            {
-                Logger.Warn("Watcher-gated deviation but watch scope is not enabled.");
-                MessageBox.Show(CustomMessageBox.Warning(Lang.DeviantArtWatchScopeNotEnabled, Lang.WatcherWallWatchFailedTitle));
-                return;
-            }
-
-            if (MessageBox.Show(CustomMessageBox.Ask(
-                    Lang.WatcherWallConfirmMessage.Format(authorUsername),
-                    Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
-            {
-                return;
-            }
-
-            IsBusy = true;
-            BusyContent = Lang.WatchingArtist.Format(authorUsername);
-
-            var success = await DArtObject.WatchAsync(authorUsername);
-            IsBusy = false;
-
-            if (!success)
-            {
-                MessageBox.Show(CustomMessageBox.Error(
-                    Lang.WatcherWallWatchFailedMessage, Lang.WatcherWallWatchFailedTitle));
-                return;
-            }
-
-            Growl.SuccessGlobal(new GrowlInfo
-            {
-                Message = Lang.WatcherWallWatchSuccess.Format(authorUsername),
-                ShowDateTime = false
-            });
+            return;
         }
 
         _dialogService.ShowManualExplorer(parameter.DeviationId, DArtObject, result =>
@@ -302,39 +326,10 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
         if (parameter.RequiresWatch)
         {
-            if (!Services.Settings.DeviantArtWatchEnabled)
-            {
-                Logger.Warn("Watcher-gated deviation but watch scope is not enabled.");
-                MessageBox.Show(CustomMessageBox.Warning(Lang.DeviantArtWatchScopeNotEnabled, Lang.WatcherWallWatchFailedTitle));
-                return;
-            }
-
-            if (MessageBox.Show(CustomMessageBox.Ask(
-                    Lang.WatcherWallConfirmMessage.Format(parameter.AuthorUsername),
-                    Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
+            if (!await EnsureWatchAsync(parameter))
             {
                 return;
             }
-
-            IsBusy = true;
-            BusyContent = Lang.WatchingArtist.Format(parameter.AuthorUsername);
-
-            var success = await DArtObject.WatchAsync(parameter.AuthorUsername);
-            IsBusy = false;
-
-            if (!success)
-            {
-                MessageBox.Show(CustomMessageBox.Error(
-                    Lang.WatcherWallWatchFailedMessage, Lang.WatcherWallWatchFailedTitle));
-                return;
-            }
-
-            parameter.RequiresWatch = false;
-            Growl.SuccessGlobal(new GrowlInfo
-            {
-                Message = Lang.WatcherWallWatchSuccess.Format(parameter.AuthorUsername),
-                ShowDateTime = false
-            });
 
             // Open the Manual Explorer to handle download/extraction (may be a zip).
             // Unwatch after the user picks a file.
