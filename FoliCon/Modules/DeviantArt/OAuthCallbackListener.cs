@@ -253,7 +253,11 @@ public static class OAuthCallbackListener
         using var content = new FormUrlEncodedContent(formValues);
         var response = await Services.HttpC.PostAsync(url, content);
 
-        if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync();
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadAsStringAsync();
+        }
+
         var errorBody = await response.Content.ReadAsStringAsync();
         Logger.Error("DeviantArt token endpoint returned {StatusCode}: {ErrorBody}", response.StatusCode, errorBody);
         response.EnsureSuccessStatusCode(); // throws with status code

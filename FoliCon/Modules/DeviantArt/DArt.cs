@@ -447,7 +447,11 @@ public class DArt : BindableBase, IDisposable
 
                 }
 
-                if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync(ct);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync(ct);
+                }
+
                 var errorBody = await response.Content.ReadAsStringAsync(ct);
                 Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
                     requestType, (int)response.StatusCode, errorBody);
@@ -461,7 +465,11 @@ public class DArt : BindableBase, IDisposable
             Logger.Info($"Retrying DeviantArt API {requestType} request after token refresh");
             using var request = requestFactory();
             using var response = await Services.HttpC.SendAsync(request, cancellationToken);
-            if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync(cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+
             var errorBody = await response.Content.ReadAsStringAsync(cancellationToken);
             Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
                 requestType, (int)response.StatusCode, errorBody);

@@ -234,7 +234,11 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
             }
 
             // If the setting changed and user is already connected, they need to re-authorize
-            if (!IsDeviantArtConnected || value == Services.Settings.DeviantArtWatchEnabled) return;
+            if (!IsDeviantArtConnected || value == Services.Settings.DeviantArtWatchEnabled)
+            {
+                return;
+            }
+
             IsDeviantArtConnected = false;
             DeviantArtConnectionMessage = Lang.DeviantArtWatchScopeReauthNeeded;
         }
