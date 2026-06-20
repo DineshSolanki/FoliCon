@@ -860,36 +860,36 @@ e renovar o cache dos Ícones?</value>
       <value>A autenticação do cliente falhou.</value>
     </data>
   <data name="WatcherWallBadge" xml:space="preserve">
-    <value>Seguir</value>
-  </data>
+      <value>Seguir</value>
+    </data>
   <data name="WatcherWallConfirmTitle" xml:space="preserve">
-    <value>Seguir o artista?</value>
-  </data>
+      <value>Seguir o artista?</value>
+    </data>
   <data name="WatcherWallConfirmMessage" xml:space="preserve">
-    <value>Este ícone está atrás de um muro de seguidores de "{0}". O FoliCon irá segui-lo temporariamente para transferir e depois deixar de seguir automaticamente. Continuar?</value>
-  </data>
+      <value>Este ícone está atrás de um muro de seguidores de "{0}". O FoliCon irá segui-lo temporariamente para transferir e depois deixar de seguir automaticamente. Continuar?</value>
+    </data>
   <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
-    <value>Falha ao seguir</value>
-  </data>
+      <value>Falha ao seguir</value>
+    </data>
   <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
-    <value>Não foi possível seguir o artista. Ative o "Acesso a ícones por muro de seguidores" nas definições do DeviantArt e volte a ligar-se.</value>
-  </data>
+      <value>Não foi possível seguir o artista. Ative o "Acesso a ícones por muro de seguidores" nas definições do DeviantArt e volte a ligar-se.</value>
+    </data>
   <data name="WatcherWallWatchSuccess" xml:space="preserve">
-    <value>A seguir {0} — ícone desbloqueado!</value>
-  </data>
+      <value>A seguir {0} — ícone desbloqueado!</value>
+    </data>
   <data name="WatchingArtist" xml:space="preserve">
-    <value>A seguir {0}...</value>
-  </data>
+      <value>A seguir {0}...</value>
+    </data>
   <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
-    <value>Ativar acesso a ícones por muro de seguidores</value>
-  </data>
+      <value>Ativar acesso a ícones por muro de seguidores</value>
+    </data>
   <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
-    <value>Concede o âmbito user.manage para que o FoliCon possa seguir/deixar de seguir artistas temporariamente para desbloquear ícones restritos. Esta é uma permissão sensível — o FoliCon apenas segue artistas durante a transferência e deixa de seguir automaticamente. Requer reautorização ao alterar.</value>
-  </data>
+      <value>Concede o âmbito user.manage para que o FoliCon possa seguir/deixar de seguir artistas temporariamente para desbloquear ícones restritos. Esta é uma permissão sensível — o FoliCon apenas segue artistas durante a transferência e deixa de seguir automaticamente. Requer reautorização ao alterar.</value>
+    </data>
   <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
-    <value>Âmbito alterado — volte a ligar-se ao DeviantArt para aplicar as novas permissões.</value>
-  </data>
+      <value>Âmbito alterado — volte a ligar-se ao DeviantArt para aplicar as novas permissões.</value>
+    </data>
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
-    <value>O acesso a ícones por muro de seguidores não está ativado. Ative o "Acesso a ícones por muro de seguidores" nas definições do DeviantArt e volte a ligar-se para usar esta funcionalidade.</value>
-  </data>
+      <value>O acesso a ícones por muro de seguidores não está ativado. Ative o "Acesso a ícones por muro de seguidores" nas definições do DeviantArt e volte a ligar-se para usar esta funcionalidade.</value>
+    </data>
 </root>
