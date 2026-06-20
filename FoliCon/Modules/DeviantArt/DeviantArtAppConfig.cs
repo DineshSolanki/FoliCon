@@ -5,9 +5,10 @@ namespace FoliCon.Modules.DeviantArt;
 ///
 /// Two modes:
 /// 1. Built-in (FoliCon's registered app) — PKCE, no client secret needed.
-///    App type: Public. Scopes: browse. Cannot unlock watcher-gated icons.
 /// 2. Custom — user provides their own Client ID (and optionally Client Secret).
-///    App type: Non-Public. Scopes: browse + watch. Can unlock watcher-gated icons.
+///
+/// Only Built-in mode supports user.manage scope (opt-in via settings) for watcher-gated icons.
+/// When enabled, FoliCon temporarily watches/unwatches artists during icon download.
 ///
 /// Register/update at: https://www.deviantart.com/developers/apps
 ///
@@ -18,9 +19,15 @@ internal static class DeviantArtAppConfig
 {
     // ── Built-in OAuth App Registration ──────────────────────────────────
     public const string ClientId = "69659";
-    public const string Scope = "browse user.manage";
     public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize";
     public const string TokenUrl = "https://www.deviantart.com/oauth2/token";
+
+    /// <summary>
+    /// The OAuth scopes to request. Includes "user.manage" only when the user has opted in.
+    /// Changing this requires re-authorization to get a token with the new scope.
+    /// </summary>
+    public static string Scope =>
+        Services.Settings?.DeviantArtWatchEnabled == true ? "browse user.manage" : "browse";
 
     // ── Redirect Flow ────────────────────────────────────────────────────
     // DeviantArt doesn't support http://localhost redirect URIs, so we use a

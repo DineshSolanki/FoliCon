@@ -21,6 +21,8 @@ public class AppConfig : GlobalDataHelper
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
     public string DeviantArtClientSecret { get; set; }
 
+    public bool DeviantArtWatchEnabled { get; set; }
+
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
     public string TmdbKey { get; set; }
 

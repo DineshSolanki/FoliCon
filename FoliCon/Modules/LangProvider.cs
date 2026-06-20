@@ -281,6 +281,10 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(WatcherWallWatchFailedMessage));
         OnPropertyChanged(nameof(WatcherWallWatchSuccess));
         OnPropertyChanged(nameof(WatchingArtist));
+        OnPropertyChanged(nameof(DeviantArtWatchScopeLabel));
+        OnPropertyChanged(nameof(DeviantArtWatchScopeDescription));
+        OnPropertyChanged(nameof(DeviantArtWatchScopeReauthNeeded));
+        OnPropertyChanged(nameof(DeviantArtWatchScopeNotEnabled));
     }
 
     public string APIKeysConfiguration => Lang.APIKeysConfiguration;
@@ -523,6 +527,10 @@ public class LangProvider : INotifyPropertyChanged
     public string WatcherWallWatchFailedMessage => Lang.WatcherWallWatchFailedMessage;
     public string WatcherWallWatchSuccess => Lang.WatcherWallWatchSuccess;
     public string WatchingArtist => Lang.WatchingArtist;
+    public string DeviantArtWatchScopeLabel => Lang.DeviantArtWatchScopeLabel;
+    public string DeviantArtWatchScopeDescription => Lang.DeviantArtWatchScopeDescription;
+    public string DeviantArtWatchScopeReauthNeeded => Lang.DeviantArtWatchScopeReauthNeeded;
+    public string DeviantArtWatchScopeNotEnabled => Lang.DeviantArtWatchScopeNotEnabled;
 
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -774,5 +782,9 @@ public class LangKeys
     public static string WatcherWallWatchFailedMessage = nameof(WatcherWallWatchFailedMessage);
     public static string WatcherWallWatchSuccess = nameof(WatcherWallWatchSuccess);
     public static string WatchingArtist = nameof(WatchingArtist);
+    public static string DeviantArtWatchScopeLabel = nameof(DeviantArtWatchScopeLabel);
+    public static string DeviantArtWatchScopeDescription = nameof(DeviantArtWatchScopeDescription);
+    public static string DeviantArtWatchScopeReauthNeeded = nameof(DeviantArtWatchScopeReauthNeeded);
+    public static string DeviantArtWatchScopeNotEnabled = nameof(DeviantArtWatchScopeNotEnabled);
 
 }

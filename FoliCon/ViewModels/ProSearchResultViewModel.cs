@@ -105,6 +105,13 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
         if (parameter.RequiresWatch && !string.IsNullOrEmpty(authorUsername))
         {
+            if (!Services.Settings.DeviantArtWatchEnabled)
+            {
+                Logger.Warn("Watcher-gated deviation but watch scope is not enabled.");
+                MessageBox.Show(CustomMessageBox.Warning(Lang.DeviantArtWatchScopeNotEnabled, Lang.WatcherWallWatchFailedTitle));
+                return;
+            }
+
             if (MessageBox.Show(CustomMessageBox.Ask(
                     Lang.WatcherWallConfirmMessage.Format(authorUsername),
                     Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
@@ -295,6 +302,13 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
         if (parameter.RequiresWatch)
         {
+            if (!Services.Settings.DeviantArtWatchEnabled)
+            {
+                Logger.Warn("Watcher-gated deviation but watch scope is not enabled.");
+                MessageBox.Show(CustomMessageBox.Warning(Lang.DeviantArtWatchScopeNotEnabled, Lang.WatcherWallWatchFailedTitle));
+                return;
+            }
+
             if (MessageBox.Show(CustomMessageBox.Ask(
                     Lang.WatcherWallConfirmMessage.Format(parameter.AuthorUsername),
                     Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)

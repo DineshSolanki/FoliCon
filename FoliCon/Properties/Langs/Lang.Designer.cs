@@ -2313,5 +2313,41 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("WatchingArtist", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Watcher-Gated Icon Access.
+        /// </summary>
+        public static string DeviantArtWatchScopeLabel {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Grants the user.manage scope so FoliCon can temporarily watch/unwatch artists to unlock watcher-gated icons..
+        /// </summary>
+        public static string DeviantArtWatchScopeDescription {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scope changed — please reconnect to DeviantArt to apply the new permissions..
+        /// </summary>
+        public static string DeviantArtWatchScopeReauthNeeded {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeReauthNeeded", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Watcher-gated icon access is not enabled..
+        /// </summary>
+        public static string DeviantArtWatchScopeNotEnabled {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeNotEnabled", resourceCulture);
+            }
+        }
     }
 }
