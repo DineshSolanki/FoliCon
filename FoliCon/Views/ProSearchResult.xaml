@@ -91,7 +91,7 @@
                                                 Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
                                                 Command="{Binding Value.ExtractManuallyCommand,
                                                  Source={StaticResource Proxy}}"
-                                                CommandParameter="{Binding PlacementTarget.Tag.DeviationId, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                                CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
                                         </ContextMenu>
                                     </Image.ContextMenu>
                                 </Image>

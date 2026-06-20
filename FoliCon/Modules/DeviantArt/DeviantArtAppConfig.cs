@@ -18,7 +18,7 @@ internal static class DeviantArtAppConfig
 {
     // ── Built-in OAuth App Registration ──────────────────────────────────
     public const string ClientId = "69659";
-    public const string Scope = "browse user";
+    public const string Scope = "browse user.manage";
     public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize";
     public const string TokenUrl = "https://www.deviantart.com/oauth2/token";
 

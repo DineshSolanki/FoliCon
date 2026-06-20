@@ -58,11 +58,13 @@ public class DArt : BindableBase, IDisposable
             .Property(p => p.RefreshToken)
             .Property(p => p.TokenExpiresAt)
             .PersistOn(nameof(PropertyChanged));
+        // Track FIRST — this restores any persisted values from a previous session.
+        // Then overwrite with the fresh values passed in, so they always take precedence.
+        Services.Tracker.Track(this);
         ClientAccessToken = accessToken;
         RefreshToken = refreshToken;
         // Subtract 60 seconds to account for clock skew and network delays.
         TokenExpiresAt = DateTime.UtcNow.AddSeconds(expiresIn - 60);
-        Services.Tracker.Track(this);
         Logger.Info("DeviantArt client initialized with existing token (expires at {ExpiresAt})", TokenExpiresAt);
     }
 
@@ -84,7 +86,9 @@ public class DArt : BindableBase, IDisposable
         }
 
         var dArt = new DArt(accessToken ?? "", refreshToken ?? "", 0);
-        dArt.TokenExpiresAt = expiresAt; // Use the stored expiry time
+        // EnsureKind is Utc — System.Text.Json deserializes DateTime as DateTimeKind.Unspecified,
+        // which causes the comparison with DateTime.UtcNow to produce wrong results.
+        dArt.TokenExpiresAt = DateTime.SpecifyKind(expiresAt, DateTimeKind.Utc);
 
         // Ensure we have a valid token
         await dArt.GetClientAccessTokenAsync();
@@ -132,11 +136,12 @@ public class DArt : BindableBase, IDisposable
     {
         if (!string.IsNullOrEmpty(ClientAccessToken) && DateTime.UtcNow < TokenExpiresAt)
         {
-            Logger.Debug("Using cached DeviantArt token (expires at {ExpiresAt})", TokenExpiresAt);
+            Logger.Debug("Using cached DeviantArt token (expires at {ExpiresAt}, Kind={Kind})", TokenExpiresAt, TokenExpiresAt.Kind);
             return;
         }
 
-        Logger.Debug("Token expired or not available, refreshing");
+        Logger.Debug("Token expired or not available (now={Now}, expiresAt={ExpiresAt}, Kind={Kind}), refreshing",
+            DateTime.UtcNow, TokenExpiresAt, TokenExpiresAt.Kind);
         await RefreshAccessTokenAsync();
     }
 
@@ -207,7 +212,9 @@ public class DArt : BindableBase, IDisposable
         Logger.Debug("Refreshing DeviantArt access token");
         try
         {
-            var result = await OAuthCallbackListener.RefreshTokenAsync(RefreshToken);
+            // Include client_secret if the user configured custom credentials.
+            var clientSecret = Services.Settings.DeviantArtClientSecret;
+            var result = await OAuthCallbackListener.RefreshTokenAsync(RefreshToken, clientSecret);
 
             ClientAccessToken = result.AccessToken;
             RefreshToken = result.RefreshToken;
@@ -245,6 +252,65 @@ public class DArt : BindableBase, IDisposable
         var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, SerializerSettings);
 
         return result;
+    }
+
+    /// <summary>
+    /// Watches a DeviantArt user to unlock watcher-gated deviations.
+    /// Requires the "watch" OAuth scope
+    /// </summary>
+    public async Task<bool> WatchAsync(string username)
+    {
+        await GetClientAccessTokenAsync();
+        try
+        {
+            var jsonData = await ExecuteWithRetryAsync(
+                () =>
+                {
+                    var request = CreateAuthenticatedRequest(
+                        $"{DeviantArtApiBase}/user/friends/watch/{Uri.EscapeDataString(username)}",
+                        HttpMethod.Post);
+                    request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                    {
+                        ["watch[friend]"] = "1",
+                        ["watch[deviations]"] = "1",
+                        ["watch[journals]"] = "1",
+                        ["watch[forum_threads]"] = "0",
+                        ["watch[critiques]"] = "0",
+                        ["watch[scraps]"] = "0",
+                        ["watch[activity]"] = "1",
+                        ["watch[collections]"] = "0"
+                    });
+                    return request;
+                },
+                "Watch");
+            var response = JsonConvert.DeserializeObject<DArtSuccessResponse>(jsonData);
+            return response?.Success == true;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to watch DeviantArt user {Username}", username);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Unwatches a DeviantArt user after downloading a watcher-gated deviation.
+    /// Non-critical: failures are logged but not propagated.
+    /// </summary>
+    public async Task UnwatchAsync(string username)
+    {
+        await GetClientAccessTokenAsync();
+        try
+        {
+            await ExecuteWithRetryAsync(
+                () => CreateAuthenticatedRequest($"{DeviantArtApiBase}/user/friends/unwatch/{Uri.EscapeDataString(username)}"),
+                "Unwatch");
+            Logger.Info("Successfully unwatched DeviantArt user {Username}", username);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to unwatch DeviantArt user {Username} after download", username);
+        }
     }
 
     /// <summary>
@@ -319,9 +385,11 @@ public class DArt : BindableBase, IDisposable
     /// Creates an HttpRequestMessage with the current ClientAccessToken in the Authorization header.
     /// Must be called inside the retry lambda so it picks up a refreshed token.
     /// </summary>
-    private HttpRequestMessage CreateAuthenticatedRequest(string url)
+    private HttpRequestMessage CreateAuthenticatedRequest(string url) => CreateAuthenticatedRequest(url, HttpMethod.Get);
+
+    private HttpRequestMessage CreateAuthenticatedRequest(string url, HttpMethod method)
     {
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
+        var request = new HttpRequestMessage(method, url);
         request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", ClientAccessToken);
         return request;
     }
@@ -380,7 +448,12 @@ public class DArt : BindableBase, IDisposable
 
                 }
 
+                if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync(ct);
+                var errorBody = await response.Content.ReadAsStringAsync(ct);
+                Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
+                    requestType, (int)response.StatusCode, errorBody);
                 response.EnsureSuccessStatusCode();
+
                 return await response.Content.ReadAsStringAsync(ct);
             }, cancellationToken);
         }
@@ -390,6 +463,10 @@ public class DArt : BindableBase, IDisposable
             Logger.Info($"Retrying DeviantArt API {requestType} request after token refresh");
             using var request = requestFactory();
             using var response = await Services.HttpC.SendAsync(request, cancellationToken);
+            if (response.IsSuccessStatusCode) return await response.Content.ReadAsStringAsync(cancellationToken);
+            var errorBody = await response.Content.ReadAsStringAsync(cancellationToken);
+            Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
+                requestType, (int)response.StatusCode, errorBody);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync(cancellationToken);
         }

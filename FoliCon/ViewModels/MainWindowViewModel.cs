@@ -955,7 +955,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             {
                 if (img.RemotePath.IsFile)
                 {
-                    File.Move(img.RemotePath.LocalPath, img.LocalPath);
+                    File.Move(img.RemotePath.LocalPath, img.LocalPath, true);
                 }
                 else
                 {

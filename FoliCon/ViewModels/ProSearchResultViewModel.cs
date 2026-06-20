@@ -67,7 +67,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     public DelegateCommand SkipCommand { get; set; }
     public DelegateCommand<DArtImageList> PickCommand { get; set; }
     public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
-    public DelegateCommand<object> ExtractManuallyCommand { get; set; }
+    public DelegateCommand<DArtImageList> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
 
@@ -78,15 +78,15 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
         OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
-        ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
+        ExtractManuallyCommand = new DelegateCommand<DArtImageList>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
         _dialogService = dialogService;
     }
 
-    private void ExtractManually(object parameter)
+    private async void ExtractManually(DArtImageList parameter)
     {
-        Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter);
+        Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter?.DeviationId);
 
         if (DArtObject == null)
         {
@@ -95,9 +95,50 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        var deviationId = (string)parameter;
-        _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
+        if (parameter == null || string.IsNullOrEmpty(parameter.DeviationId))
         {
+            Logger.Warn("No deviation ID available for manual extraction.");
+            return;
+        }
+
+        var authorUsername = parameter.AuthorUsername;
+
+        if (parameter.RequiresWatch && !string.IsNullOrEmpty(authorUsername))
+        {
+            if (MessageBox.Show(CustomMessageBox.Ask(
+                    Lang.WatcherWallConfirmMessage.Format(authorUsername),
+                    Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            IsBusy = true;
+            BusyContent = Lang.WatchingArtist.Format(authorUsername);
+
+            var success = await DArtObject.WatchAsync(authorUsername);
+            IsBusy = false;
+
+            if (!success)
+            {
+                MessageBox.Show(CustomMessageBox.Error(
+                    Lang.WatcherWallWatchFailedMessage, Lang.WatcherWallWatchFailedTitle));
+                return;
+            }
+
+            Growl.SuccessGlobal(new GrowlInfo
+            {
+                Message = Lang.WatcherWallWatchSuccess.Format(authorUsername),
+                ShowDateTime = false
+            });
+        }
+
+        _dialogService.ShowManualExplorer(parameter.DeviationId, DArtObject, result =>
+        {
+            if (!string.IsNullOrEmpty(authorUsername))
+            {
+                _ = DArtObject.UnwatchAsync(authorUsername);
+            }
+
             if (result.Result != ButtonResult.OK)
             {
                 return;
@@ -275,22 +316,32 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             }
 
             parameter.RequiresWatch = false;
-            _autoWatchedAuthors.Add(parameter.AuthorUsername);
             Growl.SuccessGlobal(new GrowlInfo
             {
                 Message = Lang.WatcherWallWatchSuccess.Format(parameter.AuthorUsername),
                 ShowDateTime = false
             });
+
+            // Open the Manual Explorer to handle download/extraction (may be a zip).
+            // Unwatch after the user picks a file.
+            SearchAgainTitle = null;
+            var authorUsername = parameter.AuthorUsername;
+            _dialogService.ShowManualExplorer(parameter.DeviationId, DArtObject, result =>
+            {
+                _ = DArtObject.UnwatchAsync(authorUsername);
+
+                if (result.Result != ButtonResult.OK)
+                {
+                    return;
+                }
+
+                Logger.Debug("Watch+Extract completed for {Author}", authorUsername);
+                ProcessPick(result.Parameters.GetValue<string>("localPath"));
+            });
+            return;
         }
 
         SearchAgainTitle = null;
-
-        // Unwatch the artist now that we have the download URL
-        if (_autoWatchedAuthors.Remove(parameter.AuthorUsername))
-        {
-            _ = DArtObject.UnwatchAsync(parameter.AuthorUsername);
-        }
-
         ProcessPick(parameter.Url);
     }
 
