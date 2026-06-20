@@ -861,36 +861,36 @@
       <value>Аутентификация клиента не удалась.</value>
     </data>
   <data name="WatcherWallBadge" xml:space="preserve">
-    <value>Подписаться</value>
-  </data>
+      <value>Подписаться</value>
+    </data>
   <data name="WatcherWallConfirmTitle" xml:space="preserve">
-    <value>Подписаться на художника?</value>
-  </data>
+      <value>Подписаться на художника?</value>
+    </data>
   <data name="WatcherWallConfirmMessage" xml:space="preserve">
-    <value>Эта иконка заблокирована стеной подписчиков «{0}». FoliCon временно подпишется для скачивания, а затем автоматически отпишется. Продолжить?</value>
-  </data>
+      <value>Эта иконка заблокирована стеной подписчиков «{0}». FoliCon временно подпишется для скачивания, а затем автоматически отпишется. Продолжить?</value>
+    </data>
   <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
-    <value>Ошибка подписки</value>
-  </data>
+      <value>Ошибка подписки</value>
+    </data>
   <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
-    <value>Не удалось подписаться на художника. Включите «Доступ к иконкам через стену подписчиков» в настройках DeviantArt и подключитесь заново.</value>
-  </data>
+      <value>Не удалось подписаться на художника. Включите «Доступ к иконкам через стену подписчиков» в настройках DeviantArt и подключитесь заново.</value>
+    </data>
   <data name="WatcherWallWatchSuccess" xml:space="preserve">
-    <value>Подписка на {0} оформлена — иконка разблокирована!</value>
-  </data>
+      <value>Подписка на {0} оформлена — иконка разблокирована!</value>
+    </data>
   <data name="WatchingArtist" xml:space="preserve">
-    <value>Подписка на {0}...</value>
-  </data>
+      <value>Подписка на {0}...</value>
+    </data>
   <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
-    <value>Включить доступ к иконкам через стену подписчиков</value>
-  </data>
+      <value>Включить доступ к иконкам через стену подписчиков</value>
+    </data>
   <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
-    <value>Предоставляет разрешение user.manage, чтобы FoliCon мог временно подписываться/отписываться от художников для разблокировки иконок за стеной подписчиков. Это чувствительное разрешение — FoliCon подписывается только при скачивании иконок и автоматически отписывается afterwards. Требует повторной авторизации при изменении.</value>
-  </data>
+      <value>Предоставляет разрешение user.manage, чтобы FoliCon мог временно подписываться/отписываться от художников для разблокировки иконок за стеной подписчиков. Это чувствительное разрешение — FoliCon подписывается только при скачивании иконок и автоматически отписывается afterwards. Требует повторной авторизации при изменении.</value>
+    </data>
   <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
-    <value>Разрешение изменено — подключитесь к DeviantArt заново, чтобы применить новые разрешения.</value>
-  </data>
+      <value>Разрешение изменено — подключитесь к DeviantArt заново, чтобы применить новые разрешения.</value>
+    </data>
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
-    <value>Доступ к иконкам через стену подписчиков не включён. Включите «Доступ к иконкам через стену подписчиков» в настройках DeviantArt и подключитесь заново.</value>
-  </data>
+      <value>Доступ к иконкам через стену подписчиков не включён. Включите «Доступ к иконкам через стену подписчиков» в настройках DeviantArt и подключитесь заново.</value>
+    </data>
 </root>
