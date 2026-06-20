@@ -13,6 +13,8 @@ namespace FoliCon.Properties.Langs;
 [Localizable(false)]
 public class LangProvider : INotifyPropertyChanged
 {
+    protected LangProvider() { }
+
     private static string _cultureInfoStr;
     internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("FoliConLangs");
     public static string GetLang(string key) => Lang.ResourceManager.GetString(key, Culture);
