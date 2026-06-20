@@ -4,69 +4,100 @@
 public class ProSearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private string _title = Lang.SearchResult;
     private bool _stopSearch;
-    private string _searchTitle;
-    private string _searchAgainTitle;
     private int _i;
-    private string _busyContent = Lang.Searching;
-    private bool _isBusy;
-    private DArt _dArtObject;
     private List<PickedListItem> _listDataTable;
     private List<ImageToDownload> _imgDownloadList;
-    private int _index;
-    private int _totalPosters;
     private readonly IDialogService _dialogService;
-    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
-    
+
     public DialogCloseListener RequestClose { get; }
 
     private string _folderPath;
-    private bool _isSearchFocused;
 
-    public string Title { get => _title;
-        private set => SetProperty(ref _title, value); }
+    public string Title
+    {
+        get;
+        private set => SetProperty(ref field, value);
+    } = Lang.SearchResult;
+
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
-    private string SearchTitle { get => _searchTitle; set => SetProperty(ref _searchTitle, value); }
+
+    private string SearchTitle
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     public bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
     private List<string> Fnames { get; set; }
-    public string SearchAgainTitle { get => _searchAgainTitle; set => SetProperty(ref _searchAgainTitle, value); }
-    public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
-    public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-    private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-    public int Index { get => _index; set => SetProperty(ref _index, value); }
-    public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
+
+    public string SearchAgainTitle
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string BusyContent
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.Searching;
+
+    public bool IsBusy
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    private DArt DArtObject
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int Index
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int TotalPosters
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
     public bool IsSearchFocused
     {
-        get => _isSearchFocused;
+        get;
         set
         {
-            if (_isSearchFocused == value)
+            if (field == value)
 
             {
-                _isSearchFocused = false;
+                field = false;
                 RaisePropertyChanged();
             }
-            SetProperty(ref _isSearchFocused, value);
+
+            SetProperty(ref field, value);
         }
     }
-    
+
     public bool SubfolderProcessingEnabled
     {
-        get => _subfolderProcessingEnabled;
+        get;
         set
         {
-            SetProperty(ref _subfolderProcessingEnabled, value);
+            SetProperty(ref field, value);
             Services.Settings.SubfolderProcessingEnabled = value;
             Services.Settings.Save();
         }
-    }
+    } = Services.Settings.SubfolderProcessingEnabled;
 
     public DelegateCommand SkipCommand { get; set; }
-    public DelegateCommand<object> PickCommand { get; set; }
-    public DelegateCommand<object> OpenImageCommand { get; set; }
-    public DelegateCommand<object> ExtractManuallyCommand { get; set; }
+    public DelegateCommand<DArtImageList> PickCommand { get; set; }
+    public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
+    public DelegateCommand<DArtImageList> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
 
@@ -75,35 +106,107 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         Logger.Debug("ProSearchResultViewModel Constructor");
         ImageUrl = [];
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
-        PickCommand = new DelegateCommand<object>(PickMethod);
-        OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
-        ExtractManuallyCommand = new DelegateCommand<object>(ExtractManually);
+        PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
+        OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
+        ExtractManuallyCommand = new DelegateCommand<DArtImageList>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
         _dialogService = dialogService;
     }
 
-    private void ExtractManually(object parameter)
+    /// <summary>
+    /// Ensures the deviation's author is watched if the deviation is watcher-gated.
+    /// Returns true if watching succeeded or was not required; false if the user cancelled or watching failed.
+    /// </summary>
+    private async Task<bool> EnsureWatchAsync(DArtImageList parameter)
     {
-        Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter);
-        
+        if (!parameter.RequiresWatch)
+        {
+            return true;
+        }
+
+        var authorUsername = parameter.AuthorUsername;
+
+        if (string.IsNullOrEmpty(authorUsername))
+        {
+            return true;
+        }
+
+        if (!Services.Settings.DeviantArtWatchEnabled)
+        {
+            Logger.Warn("Watcher-gated deviation but watch scope is not enabled.");
+            MessageBox.Show(CustomMessageBox.Warning(Lang.DeviantArtWatchScopeNotEnabled, Lang.WatcherWallWatchFailedTitle));
+            return false;
+        }
+
+        if (MessageBox.Show(CustomMessageBox.Ask(
+                Lang.WatcherWallConfirmMessage.Format(authorUsername),
+                Lang.WatcherWallConfirmTitle)) != MessageBoxResult.Yes)
+        {
+            return false;
+        }
+
+        IsBusy = true;
+        BusyContent = Lang.WatchingArtist.Format(authorUsername);
+
+        var success = await DArtObject.WatchAsync(authorUsername);
+        IsBusy = false;
+
+        if (!success)
+        {
+            MessageBox.Show(CustomMessageBox.Error(
+                Lang.WatcherWallWatchFailedMessage, Lang.WatcherWallWatchFailedTitle));
+            return false;
+        }
+
+        parameter.RequiresWatch = false;
+        Growl.SuccessGlobal(new GrowlInfo
+        {
+            Message = Lang.WatcherWallWatchSuccess.Format(authorUsername),
+            ShowDateTime = false
+        });
+
+        return true;
+    }
+
+    private async void ExtractManually(DArtImageList parameter)
+    {
+        Logger.Debug("Extracting manually from Deviation ID {DeviationId}", parameter?.DeviationId);
+
         if (DArtObject == null)
         {
             Logger.Warn("DeviantArt client is not available. Cannot extract manually.");
             MessageBox.Show(CustomMessageBox.Warning(Lang.DAUnavailableRestartMessage, Lang.DAUnavailableTitle));
             return;
         }
-        
-        var deviationId = (string)parameter;
-        _dialogService.ShowManualExplorer(deviationId, DArtObject, result =>
+
+        if (parameter == null || string.IsNullOrEmpty(parameter.DeviationId))
         {
+            Logger.Warn("No deviation ID available for manual extraction.");
+            return;
+        }
+
+        var authorUsername = parameter.AuthorUsername;
+
+        if (!await EnsureWatchAsync(parameter))
+        {
+            return;
+        }
+
+        _dialogService.ShowManualExplorer(parameter.DeviationId, DArtObject, result =>
+        {
+            if (!string.IsNullOrEmpty(authorUsername))
+            {
+                _ = DArtObject.UnwatchAsync(authorUsername);
+            }
+
             if (result.Result != ButtonResult.OK)
             {
                 return;
             }
 
             Logger.Debug("Manual Extraction Completed");
-            PickMethod(result.Parameters.GetValue<string>("localPath"));
+            ProcessPick(result.Parameters.GetValue<string>("localPath"));
         });
     }
     private async void PrepareForSearch()
@@ -186,8 +289,9 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
     private int ProcessSearchResults(string query, DArtBrowseResult searchResult, int offset)
     {
-        // Counter for the total posters
-        TotalPosters = searchResult.Results!.Count(result => result.IsDownloadable) + offset;
+        // Counter for the total posters (downloadable + watcher-gated)
+        TotalPosters = searchResult.Results!.Count(result =>
+            result.IsDownloadable || result.PremiumFolderData?.Type == "watchers") + offset;
         Logger.Debug("Total Posters: {TotalPosters} for {Title}", TotalPosters, query);
 
         foreach (var item in searchResult.Results.GetEnumeratorWithIndex())
@@ -217,28 +321,72 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     {
         Logger.Trace("Deviation {Index} is {@Item}", item.Index, item.Value);
 
-        if (IsItemDownloadable(item))
+        if (item.Value.IsDownloadable)
         {
             ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
             Index++;
+            return;
+        }
+
+        // Watcher-gated: show if it's a "watchers" type premium folder
+        if (item.Value.PremiumFolderData?.Type == "watchers")
+        {
+            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src,
+                item.Value.Deviationid, true, item.Value.Author?.Username));
+            Index++;
+            Logger.Info("Watcher-gated poster {Url} added (author: {Author})",
+                item.Value.Url, item.Value.Author?.Username);
         }
         else
         {
-            Logger.Warn("Poster {Index} is not downloadable", item.Value.Url);
+            Logger.Warn("Poster {Url} is not downloadable", item.Value.Url);
         }
     }
 
-    private static bool IsItemDownloadable(EnumeratorWithIndex<Result> item)
-    {
-        return item.Value.IsDownloadable;
-    }
-    
 
-    private void PickMethod(object parameter)
+    private static void OpenImageMethod(DArtImageList parameter)
+    {
+        Logger.Debug("Opening Image {Image}", parameter);
+        UiUtils.ShowImageBrowser(parameter.Url);
+    }
+
+    private async void PickMethod(DArtImageList parameter)
     {
         Logger.Debug("Picking Image {Image}", parameter);
+
+        if (parameter.RequiresWatch)
+        {
+            if (!await EnsureWatchAsync(parameter))
+            {
+                return;
+            }
+
+            // Open the Manual Explorer to handle download/extraction (may be a zip).
+            // Unwatch after the user picks a file.
+            SearchAgainTitle = null;
+            var authorUsername = parameter.AuthorUsername;
+            _dialogService.ShowManualExplorer(parameter.DeviationId, DArtObject, result =>
+            {
+                _ = DArtObject.UnwatchAsync(authorUsername);
+
+                if (result.Result != ButtonResult.OK)
+                {
+                    return;
+                }
+
+                Logger.Debug("Watch+Extract completed for {Author}", authorUsername);
+                ProcessPick(result.Parameters.GetValue<string>("localPath"));
+            });
+            return;
+        }
+
         SearchAgainTitle = null;
-        var link = (string)parameter;
+        ProcessPick(parameter.Url);
+    }
+
+    private void ProcessPick(string link)
+    {
+        Logger.Debug("Picking Image {Image}", link);
         var currentPath = $@"{_folderPath}\{Fnames[_i]}";
         var tempImage = new ImageToDownload
         {

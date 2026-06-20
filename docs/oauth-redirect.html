@@ -11,10 +11,10 @@
         const PORT = 6818;
 
         // Grab everything after the "?" in the address bar (code, state, etc.)
-        const searchParams = window.location.search;
+        const searchParams = globalThis.location.search;
 
         // Immediately redirect the user's browser to the local FoliCon app
-        window.location.href = "http://localhost:" + PORT + "/" + searchParams;
+        globalThis.location.href = "http://localhost:" + PORT + "/" + searchParams;
     </script>
     <p>Redirecting back to FoliCon...</p>
 </body>

@@ -128,7 +128,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DirectoryPermissionsResult DirectoryPermissionsResult
     {
-        get => _directoryPermissionResult; 
+        get => _directoryPermissionResult;
         set => SetProperty(ref _directoryPermissionResult, value);
     }
 
@@ -169,11 +169,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             SetProperty(ref _theme, value);
             switch (value)
             {
-                case FoliconThemes.Light: 
+                case FoliconThemes.Light:
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                     ThemeManager.Current.UsingSystemTheme = false;
                     break;
-                case FoliconThemes.Dark: 
+                case FoliconThemes.Dark:
                     ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                     ThemeManager.Current.UsingSystemTheme = false;
                     break;
@@ -210,7 +210,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
 
         Task.Run(async () => await RefreshAndRestart());
-        
+
     });
 
     private static async Task RefreshAndRestart()
@@ -253,7 +253,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
         ProcessCommandLineArgs();
     }
-    
+
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
     {
         Logger.Debug("Network Availability Changed, Updating StatusBar.");
@@ -282,7 +282,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     #region SearchAndMake
-    
+
     private async void SearchAndMakeMethod()
     {
         Logger.Debug("SearchAndMakeMethod Called.");
@@ -451,7 +451,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         IsMakeEnabled = true;
         IsBusy = false;
     }
-    
+
     #endregion
     private async Task ProcessPosterModeAsync()
     {
@@ -597,7 +597,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(
-        string itemTitle, ResultResponse response, string fullFolderPath, 
+        string itemTitle, ResultResponse response, string fullFolderPath,
         string parsedTitle, bool isPickedById)
     {
         Logger.Debug("No result found for {ItemTitle}, {Mode}", itemTitle, SearchMode);
@@ -643,7 +643,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(
-        string itemTitle, ResultResponse response, string fullFolderPath, 
+        string itemTitle, ResultResponse response, string fullFolderPath,
         string parsedTitle, bool isPickedById)
     {
         if (!IsPosterWindowShown && IsSkipAmbiguous)
@@ -657,7 +657,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
     }
-    
+
     private async Task<(bool dialogResult, bool skipAll)> ShowSearchResultDialog(
         string parsedTitle, string fullFolderPath, ResultResponse response, bool isPickedById)
     {
@@ -689,7 +689,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         return await taskCompletionSource.Task;
     }
-    
+
     private void ProcessProfessionalMode(string initialFolderPath)
     {
         Logger.Debug("Entered ProcessProfessionalMode method");
@@ -725,7 +725,16 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private void InitializeDelegates()
     {
         Logger.Debug("Initializing Delegates for MainWindow.");
-        SetupWizardCommand = new DelegateCommand(delegate { _dialogService.ShowOnboardingWizard(_ => { }); });
+        SetupWizardCommand = new DelegateCommand(delegate
+        {
+            _dialogService.ShowOnboardingWizard(async result =>
+            {
+                if (result.Result == ButtonResult.OK)
+                {
+                    await ReinitializeDeviantArtAsync();
+                }
+            });
+        });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
         SubfolderProcessingConfigCommand = new DelegateCommand(delegate { _dialogService.ShowSubfolderProcessingConfig(_ => { }); });
         AboutCommand = new DelegateCommand(AboutMethod);
@@ -802,7 +811,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 .Exception(e).Log();
             MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
         }
-        
+
     }
 
     private async Task InitializeProperties()
@@ -890,7 +899,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 .Exception(e).Log();
             MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
         }
-       
+
     }
 
     private void ListViewDoubleClickMethod()
@@ -902,7 +911,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             Logger.Warn("No item was selected in the ListView.");
             return;
         }
-        
+
         var folder = selectedItem.Folder;
         Logger.Info("Double Clicked on ListView, selected folder: {SelectedFolder}",SelectedFolder);
         if (folder == null)
@@ -946,7 +955,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             {
                 if (img.RemotePath.IsFile)
                 {
-                    File.Move(img.RemotePath.LocalPath, img.LocalPath);
+                    File.Move(img.RemotePath.LocalPath, img.LocalPath, true);
                 }
                 else
                 {
@@ -1012,7 +1021,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task InitializeClientObjects()
     {
         Logger.Debug("Initializing Client Objects.");
-        
+
         if (!Services.Settings.OnboardingCompleted)
         {
             Logger.Info("Onboarding not completed, showing Setup Wizard.");
@@ -1095,6 +1104,33 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("Client Objects Initialized.");
     }
 
+    /// <summary>
+    /// Reinitializes the DeviantArt client after the setup wizard modifies OAuth tokens.
+    /// Called when the user completes the setup wizard from the menu (not the first-launch wizard).
+    /// </summary>
+    private async Task ReinitializeDeviantArtAsync()
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(Services.Settings.DeviantArtAccessToken))
+            {
+                Logger.Info("Reinitializing DeviantArt client after setup wizard...");
+                _dArtObject = await DArt.GetInstanceAsync();
+                Logger.Info("DeviantArt client reinitialized successfully.");
+            }
+            else
+            {
+                _dArtObject = null;
+                Logger.Info("DeviantArt not connected after setup wizard.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed to reinitialize DeviantArt client after setup wizard.");
+            _dArtObject = null;
+        }
+    }
+
     private void TrackProperties()
     {
         Services.Tracker.Configure<MainWindowViewModel>()
@@ -1143,7 +1179,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             SelectedFolder, IconMode);
         SearchAndMakeMethod();
     }
-    
+
     private void AboutMethod()
     {
         _dialogService.ShowAboutBox(_ => { });

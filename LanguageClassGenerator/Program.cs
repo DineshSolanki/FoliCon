@@ -110,7 +110,7 @@ static class Program
 
         foreach (var key in keys)
         {
-            sb.WriteLine($"        public static string {key} = nameof({key});");
+            sb.WriteLine($"        public static readonly string {key} = nameof({key});");
             sb.WriteLine();
         }
 

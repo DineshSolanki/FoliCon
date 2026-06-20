@@ -59,6 +59,18 @@ public class Thumb
     public bool Transparency { get; set; }
 }
 
+public class PremiumFolderData
+{
+    [JsonProperty("type")]
+    public string Type { get; set; }
+
+    [JsonProperty("has_access")]
+    public bool HasAccess { get; set; }
+
+    [JsonProperty("gallery_id")]
+    public string GalleryId { get; set; }
+}
+
 public class Result
 {
     [JsonProperty("deviationid")]
@@ -108,6 +120,9 @@ public class Result
 
     [JsonProperty("thumbs")]
     public Thumb[] Thumbs { get; set; }
+
+    [JsonProperty("premium_folder_data")]
+    public PremiumFolderData PremiumFolderData { get; set; }
 }
 
 public class DArtBrowseResult

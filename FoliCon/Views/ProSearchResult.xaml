@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoliCon.Views.ProSearchResult"
+<UserControl x:Class="FoliCon.Views.ProSearchResult"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -14,6 +14,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ProSearchResultViewModel }">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
     </UserControl.Resources>
     <prism:Dialog.WindowStyle>
@@ -67,32 +68,45 @@
                     </i:Interaction.Triggers>
                 </hc:SearchBar>
                 <CheckBox Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
-                          IsChecked="{Binding SubfolderProcessingEnabled}" 
+                          IsChecked="{Binding SubfolderProcessingEnabled}"
                           Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
             </Grid>
-            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" 
+            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch" ui:ScrollViewerBehavior.AutoScroll="True">
                 <ItemsControl ItemsSource="{Binding ImageUrl}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding ThumbnailUrl}" Tag="{Binding }" Height="128" Width="128"
-                                   RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
-                                <i:Interaction.Behaviors>
-                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag.Url, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.PickCommand)}" 
-                                                           ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                        AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.OpenImageCommand)}"/>
-                                </i:Interaction.Behaviors>
-                                <Image.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem
-                                            Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
-                                            Command="{Binding Value.ExtractManuallyCommand,
-                                             Source={StaticResource Proxy}}" 
-                                            CommandParameter="{Binding PlacementTarget.Tag.DeviationId, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
-                                    </ContextMenu>
-                                </Image.ContextMenu>
-                            </Image>
+                            <Grid Height="128" Width="128" Margin="5">
+                                <Image Source="{Binding ThumbnailUrl}" Tag="{Binding}"
+                                       RenderOptions.BitmapScalingMode="HighQuality">
+                                    <i:Interaction.Behaviors>
+                                        <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                            AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.PickCommand)}"
+                                                               ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
+                                                            AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.OpenImageCommand)}"/>
+                                    </i:Interaction.Behaviors>
+                                    <Image.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem
+                                                Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
+                                                Command="{Binding Value.ExtractManuallyCommand,
+                                                 Source={StaticResource Proxy}}"
+                                                CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                        </ContextMenu>
+                                    </Image.ContextMenu>
+                                </Image>
+                                <!-- Watcher-wall badge overlay -->
+                                <Border Background="#CC000000" CornerRadius="4" Padding="4,2"
+                                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4"
+                                        Visibility="{Binding RequiresWatch, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18"
+                                              Fill="White" Width="12" Height="12" Margin="0,0,4,0" Stretch="Uniform"/>
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.WatcherWallBadge}}"
+                                                   Foreground="White" FontSize="10" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemsPanel>

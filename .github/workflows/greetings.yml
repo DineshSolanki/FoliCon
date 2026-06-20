@@ -11,8 +11,8 @@ jobs:
     steps:
     - uses: actions/first-interaction@v3
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: |
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        issue_message: |
           Welcome to FoliCon! 👋
 
           Thanks for opening your first issue. A maintainer will review it shortly.
@@ -21,7 +21,7 @@ jobs:
           - [Documentation](https://dineshsolanki.github.io/FoliCon-docs/)
           - [Contributing Guide](https://github.com/DineshSolanki/FoliCon/blob/master/CONTRIBUTING.md)
 
-        pr-message: |
+        pr_message: |
           Welcome to FoliCon! 🎉
 
           Thanks for your first contribution! Here's what to expect:

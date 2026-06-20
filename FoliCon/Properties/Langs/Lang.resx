@@ -860,4 +860,37 @@ and refresh Icon Cache?</value>
     <data name="DeviantArtClientAuthFailed" xml:space="preserve">
       <value>Client authentication failed.</value>
     </data>
+    <data name="WatcherWallBadge" xml:space="preserve">
+      <value>Watch</value>
+    </data>
+    <data name="WatcherWallConfirmTitle" xml:space="preserve">
+      <value>Watch Artist?</value>
+    </data>
+    <data name="WatcherWallConfirmMessage" xml:space="preserve">
+      <value>This icon is behind a watcher wall by "{0}". FoliCon will temporarily watch them to download, then unwatch automatically. Continue?</value>
+    </data>
+    <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
+      <value>Watch Failed</value>
+    </data>
+    <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
+      <value>Could not watch the artist. Enable "Watcher-Gated Icon Access" in the DeviantArt setup and reconnect.</value>
+    </data>
+    <data name="WatcherWallWatchSuccess" xml:space="preserve">
+      <value>Now watching {0} — icon unlocked!</value>
+    </data>
+    <data name="WatchingArtist" xml:space="preserve">
+      <value>Watching {0}...</value>
+    </data>
+    <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
+      <value>Enable Watcher-Gated Icon Access</value>
+    </data>
+    <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
+      <value>Grants the user.manage scope so FoliCon can temporarily watch/unwatch artists to unlock watcher-gated icons. This is a sensitive permission — FoliCon only watches artists during icon download and automatically unwatches afterwards. Requires re-authorization when changed.</value>
+    </data>
+    <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
+      <value>Scope changed — please reconnect to DeviantArt to apply the new permissions.</value>
+    </data>
+    <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
+      <value>Watcher-gated icon access is not enabled. Enable "Watcher-Gated Icon Access" in the DeviantArt setup and reconnect to use this feature.</value>
+    </data>
 </root>

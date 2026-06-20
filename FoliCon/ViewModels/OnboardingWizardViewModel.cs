@@ -5,7 +5,7 @@ namespace FoliCon.ViewModels;
 public class OnboardingWizardViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     public static string TmdbPortalUrl => TmdbAppConfig.ApiKeyPortalUrl;
     public static string IgdbPortalUrl => IgdbAppConfig.CredentialsPortalUrl;
 
@@ -172,6 +172,11 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
                 return;
             }
             RaisePropertyChanged(nameof(IsDeviantArtCustomCredentialsVisible));
+            if (value)
+            {
+                // client_credentials tokens cannot perform user actions (watch/unwatch)
+                IsDeviantArtWatchEnabled = false;
+            }
             if (_isSyncingMode)
             {
                 return;
@@ -218,6 +223,27 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         set => SetProperty(ref _deviantArtCustomClientSecret, value);
     }
 
+    public bool IsDeviantArtWatchEnabled
+    {
+        get;
+        set
+        {
+            if (!SetProperty(ref field, value))
+            {
+                return;
+            }
+
+            // If the setting changed and user is already connected, they need to re-authorize
+            if (!IsDeviantArtConnected || value == Services.Settings.DeviantArtWatchEnabled)
+            {
+                return;
+            }
+
+            IsDeviantArtConnected = false;
+            DeviantArtConnectionMessage = Lang.DeviantArtWatchScopeReauthNeeded;
+        }
+    }
+
     #endregion
 
     #region Commands
@@ -262,6 +288,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         DeviantArtCustomClientId = Services.Settings.DeviantArtClientId ?? "";
         DeviantArtCustomClientSecret = Services.Settings.DeviantArtClientSecret ?? "";
         IsDeviantArtCustomMode = !string.IsNullOrEmpty(DeviantArtCustomClientId);
+        IsDeviantArtWatchEnabled = Services.Settings.DeviantArtWatchEnabled;
     }
 
     private void ExecuteNext()
@@ -366,6 +393,10 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
     {
         IsDeviantArtConnecting = true;
         DeviantArtConnectionMessage = Lang.OnboardingDeviantArtConnecting;
+
+        // Save watch scope setting before connecting so DeviantArtAppConfig.Scope picks it up
+        Services.Settings.DeviantArtWatchEnabled = IsDeviantArtWatchEnabled;
+        await Services.Settings.SaveAsync();
 
         try
         {

@@ -88,7 +88,7 @@ csharp_new_line_before_catch = true
 csharp_new_line_before_finally = true
 
 # Always require braces
-csharp_prefer_braces = always:warning
+csharp_prefer_braces = always:error
 
 # Prefer pattern matching null checks (is null over == null)
 csharp_style_prefer_is_null_check_over_reference_equality_method = true:suggestion

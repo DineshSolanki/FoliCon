@@ -8,15 +8,12 @@ namespace FoliCon.Modules.Extension;
 [Localizable(false)]
 public static class StreamExtensions
 {
-    private static readonly ReaderOptions ReaderOptions = new() { ArchiveEncoding =
-        new ArchiveEncoding { Default = Encoding.GetEncoding("IBM437"), Forced = Encoding.GetEncoding("IBM437") } };
-    
     private static readonly ExtractionOptions ExtractionSettings = new()
     {
         ExtractFullPath = false,
         Overwrite = true
     };
-    
+
     /// <summary>
     /// Extracts PNG and ICO files from a compressed stream and writes them to a directory.
     /// </summary>
@@ -28,10 +25,10 @@ public static class StreamExtensions
         CancellationToken cancellationToken,
         IProgress<ProgressBarData> progressCallback)
     {
-        using var reader = ArchiveFactory.OpenArchive(archiveStream, ReaderOptions);
+        using var reader = ArchiveFactory.OpenArchive(archiveStream);
         var pngAndIcoEntries = reader.Entries.Where(IsValidFile).ToList();
-        
-        
+
+
         var totalCount = pngAndIcoEntries.Count;
         var extractionProgress = new ProgressBarData(0, totalCount, LangProvider.Instance.Extracting);
         progressCallback.Report(extractionProgress);
@@ -43,7 +40,7 @@ public static class StreamExtensions
             progressCallback.Report(extractionProgress);
         }
     }
-    
+
     private static bool IsValidFile(IEntry entry)
     {
         return !entry.IsDirectory && !FileUtils.IsExcludedFileIdentifier(entry.Key) && FileUtils.IsPngOrIco(entry.Key);

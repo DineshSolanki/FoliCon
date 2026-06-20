@@ -1,6 +1,8 @@
 ﻿using System.Windows.Documents;
 using TMDbLib.Objects.Find;
 
+#nullable enable
+
 namespace FoliCon.Modules.TMDB;
 
 [Localizable(false)]

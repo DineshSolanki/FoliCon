@@ -722,16 +722,16 @@
       <value>مجاني — قم بتسجيل الدخول إلى DeviantArt لتفعيل الوضع الاحترافي للبحث عن أيقونات مخصصة.</value>
     </data>
   <data name="OnboardingDeviantArtBuiltIn" xml:space="preserve">
-      <value>Use FoliCon's built-in app (recommended)</value>
+      <value>استخدام تطبيق FoliCon المدمج (موصى به)</value>
     </data>
   <data name="OnboardingDeviantArtCustom" xml:space="preserve">
-      <value>Use my own DeviantArt app</value>
+      <value>استخدام تطبيق DeviantArt الخاص بي</value>
     </data>
   <data name="OnboardingDeviantArtCustomInstructions" xml:space="preserve">
-      <value>Register your own app at deviantart.com/developers/apps. Enter your Client ID and Client Secret below.</value>
+      <value>سجّل تطبيقك الخاص على deviantart.com/developers/apps. أدخل Client ID و Client Secret أدناه.</value>
     </data>
   <data name="OnboardingDeviantArtValidateConnect" xml:space="preserve">
-      <value>Validate &amp; Connect</value>
+      <value>التحقق والاتصال</value>
     </data>
   <data name="OnboardingConnectDeviantArt" xml:space="preserve">
       <value>الاتصال بـ DeviantArt</value>
@@ -859,4 +859,37 @@
   <data name="DeviantArtClientAuthFailed" xml:space="preserve">
       <value>فشلت مصادقة العميل.</value>
     </data>
+  <data name="WatcherWallBadge" xml:space="preserve">
+    <value>متابعة</value>
+  </data>
+  <data name="WatcherWallConfirmTitle" xml:space="preserve">
+    <value>متابعة الفنان؟</value>
+  </data>
+  <data name="WatcherWallConfirmMessage" xml:space="preserve">
+    <value>هذا الرمز خلف جدار المتابعة بواسطة "{0}". ستابعه FoliCon مؤقتاً للتنزيل ثم تلغي المتابعة تلقائياً. هل تريد المتابعة؟</value>
+  </data>
+  <data name="WatcherWallWatchFailedTitle" xml:space="preserve">
+    <value>فشلت المتابعة</value>
+  </data>
+  <data name="WatcherWallWatchFailedMessage" xml:space="preserve">
+    <value>تعذرت متابعة الفنان. فعّل "الوصول عبر جدار المتابعة" في إعدادات DeviantArt وأعد الاتصال.</value>
+  </data>
+  <data name="WatcherWallWatchSuccess" xml:space="preserve">
+    <value>تمت متابعة {0} — تم فتح الرمز!</value>
+  </data>
+  <data name="WatchingArtist" xml:space="preserve">
+    <value>متابعة {0}...</value>
+  </data>
+  <data name="DeviantArtWatchScopeLabel" xml:space="preserve">
+    <value>تفعيل الوصول عبر جدار المتابعة</value>
+  </data>
+  <data name="DeviantArtWatchScopeDescription" xml:space="preserve">
+    <value>يمنح صلاحية user.manage حتى يتمكن FoliCon من متابعة/إلغاء متابعة الفنانين مؤقتاً لفتح الرموز المقيدة. هذه صلاحية حساسة — يتابع FoliCon الفنانين فقط أثناء التنزيل ويلغي المتابعة تلقائياً. يتطلب إعادة التفويض عند التغيير.</value>
+  </data>
+  <data name="DeviantArtWatchScopeReauthNeeded" xml:space="preserve">
+    <value>تم تغيير الصلاحية — يرجى إعادة الاتصال بـ DeviantArt لتطبيق الأذونات الجديدة.</value>
+  </data>
+  <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
+    <value>الوصول عبر جدار المتابعة غير مفعّل. فعّل "الوصول عبر جدار المتابعة" في إعدادات DeviantArt وأعد الاتصال لاستخدام هذه الميزة.</value>
+  </data>
 </root>

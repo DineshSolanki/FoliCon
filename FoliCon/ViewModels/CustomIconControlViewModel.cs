@@ -378,6 +378,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             case "IconsList":
                 SelectedIconsDirectory = filePaths.GetValue(0)?.ToString();
                 break;
+            default:
+                Logger.Warn("Unknown drop target: {SenderName}", senderName);
+                break;
         }
     }
 }

@@ -2250,5 +2250,104 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("DeviantArtClientAuthFailed", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Watch.
+        /// </summary>
+        public static string WatcherWallBadge {
+            get {
+                return ResourceManager.GetString("WatcherWallBadge", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Watch Artist?.
+        /// </summary>
+        public static string WatcherWallConfirmTitle {
+            get {
+                return ResourceManager.GetString("WatcherWallConfirmTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This icon is behind a watcher wall by &quot;{0}&quot;. FoliCon will temporarily watch them to download, then unwatch automatically. Continue?.
+        /// </summary>
+        public static string WatcherWallConfirmMessage {
+            get {
+                return ResourceManager.GetString("WatcherWallConfirmMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Watch Failed.
+        /// </summary>
+        public static string WatcherWallWatchFailedTitle {
+            get {
+                return ResourceManager.GetString("WatcherWallWatchFailedTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Could not watch the artist. You may need to use a custom DeviantArt app (Non-Public) to enable this feature. Check your DeviantArt configuration in Settings..
+        /// </summary>
+        public static string WatcherWallWatchFailedMessage {
+            get {
+                return ResourceManager.GetString("WatcherWallWatchFailedMessage", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Now watching {0} — icon unlocked!.
+        /// </summary>
+        public static string WatcherWallWatchSuccess {
+            get {
+                return ResourceManager.GetString("WatcherWallWatchSuccess", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Watching {0}....
+        /// </summary>
+        public static string WatchingArtist {
+            get {
+                return ResourceManager.GetString("WatchingArtist", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Watcher-Gated Icon Access.
+        /// </summary>
+        public static string DeviantArtWatchScopeLabel {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeLabel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Grants the user.manage scope so FoliCon can temporarily watch/unwatch artists to unlock watcher-gated icons..
+        /// </summary>
+        public static string DeviantArtWatchScopeDescription {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeDescription", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Scope changed — please reconnect to DeviantArt to apply the new permissions..
+        /// </summary>
+        public static string DeviantArtWatchScopeReauthNeeded {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeReauthNeeded", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Watcher-gated icon access is not enabled..
+        /// </summary>
+        public static string DeviantArtWatchScopeNotEnabled {
+            get {
+                return ResourceManager.GetString("DeviantArtWatchScopeNotEnabled", resourceCulture);
+            }
+        }
     }
 }

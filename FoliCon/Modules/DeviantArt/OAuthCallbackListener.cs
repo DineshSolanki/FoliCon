@@ -83,7 +83,7 @@ public static class OAuthCallbackListener
             context.Response.StatusCode = 200;
             context.Response.ContentType = "text/html; charset=utf-8";
             context.Response.ContentLength64 = responseBytes.Length;
-            await context.Response.OutputStream.WriteAsync(responseBytes);
+            await context.Response.OutputStream.WriteAsync(responseBytes, ct);
             context.Response.Close();
 
             if (!string.IsNullOrEmpty(error))
@@ -147,9 +147,11 @@ public static class OAuthCallbackListener
     }
 
     /// <summary>
-    /// Refreshes an expired access token using a refresh token (OAuth PKCE flow).
+    /// Refreshes an expired access token using a refresh token.
+    /// For non-public (custom) apps, <paramref name="clientSecret"/> must be provided.
+    /// For the built-in public app, client_secret is not required by the OAuth2 spec.
     /// </summary>
-    public static async Task<OAuthResult> RefreshTokenAsync(string refreshToken)
+    public static async Task<OAuthResult> RefreshTokenAsync(string refreshToken, string clientSecret)
     {
         Logger.Debug("Refreshing DeviantArt access token");
 
@@ -159,6 +161,11 @@ public static class OAuthCallbackListener
             ["client_id"] = DeviantArtAppConfig.ClientId,
             ["refresh_token"] = refreshToken
         };
+
+        if (!string.IsNullOrEmpty(clientSecret))
+        {
+            form["client_secret"] = clientSecret;
+        }
 
         var jsonData = await PostFormAsync(DeviantArtAppConfig.TokenUrl, form);
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
@@ -245,7 +252,16 @@ public static class OAuthCallbackListener
     {
         using var content = new FormUrlEncodedContent(formValues);
         var response = await Services.HttpC.PostAsync(url, content);
-        response.EnsureSuccessStatusCode();
+
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        var errorBody = await response.Content.ReadAsStringAsync();
+        Logger.Error("DeviantArt token endpoint returned {StatusCode}: {ErrorBody}", response.StatusCode, errorBody);
+        response.EnsureSuccessStatusCode(); // throws with status code
+
         return await response.Content.ReadAsStringAsync();
     }
 }
