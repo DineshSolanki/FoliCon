@@ -82,10 +82,7 @@ public sealed class StaRenderer : IDisposable
         Logger.Debug("STA renderer thread stopped");
     }
 
-    private void ThrowIfDisposed()
-    {
-        ObjectDisposedException.ThrowIf(_disposed, nameof(StaRenderer));
-    }
+    private void ThrowIfDisposed() => ObjectDisposedException.ThrowIf(_disposed, nameof(StaRenderer));
 
     public void Dispose()
     {

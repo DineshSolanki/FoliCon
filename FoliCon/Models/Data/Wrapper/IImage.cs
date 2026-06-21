@@ -9,30 +9,18 @@
 
     public class ArtworkWrapper(Artwork artwork) : IImage
     {
-        public string GetThumbnailUrl()
-        {
-            return IgdbDataTransformer.GetPosterUrl(artwork.ImageId, ImageSize.ScreenshotMed);
-        }
+        public string GetThumbnailUrl() => IgdbDataTransformer.GetPosterUrl(artwork.ImageId, ImageSize.ScreenshotMed);
 
-        public string GetPosterUrl()
-        {
-            return IgdbDataTransformer.GetPosterUrl(artwork.ImageId, ImageSize.HD720);
-        }
+        public string GetPosterUrl() => IgdbDataTransformer.GetPosterUrl(artwork.ImageId, ImageSize.HD720);
 
         public string Id => artwork.ImageId;
     }
 
     public class ImageDataWrapper(int id, ImageData imageData, TMDbClient client) : IImage
     {
-        public string GetThumbnailUrl()
-        {
-            return TmdbDataTransformer.GetPosterUrl(imageData, PosterSize.W92, client);
-        }
+        public string GetThumbnailUrl() => TmdbDataTransformer.GetPosterUrl(imageData, PosterSize.W92, client);
 
-        public string GetPosterUrl()
-        {
-            return TmdbDataTransformer.GetPosterUrl(imageData, PosterSize.W500, client);
-        }
+        public string GetPosterUrl() => TmdbDataTransformer.GetPosterUrl(imageData, PosterSize.W500, client);
 
         public string Id => id.ToString();
     }

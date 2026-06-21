@@ -16,8 +16,5 @@ public class ReOrderDropHandler : IDropTarget
         _defaultDropHandler.DragOver(dropInfo);
     }
 
-    public void Drop(IDropInfo dropInfo)
-    {
-        _defaultDropHandler.Drop(dropInfo);
-    }
+    public void Drop(IDropInfo dropInfo) => _defaultDropHandler.Drop(dropInfo);
 }

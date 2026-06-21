@@ -39,10 +39,7 @@ public class DialogControlViewModel : BindableBase, IDialogAware
         RequestClose.Invoke(result);
     }
 
-    public virtual bool CanCloseDialog()
-    {
-        return true;
-    }
+    public virtual bool CanCloseDialog() => true;
 
     public virtual void OnDialogClosed()
     {

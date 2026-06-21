@@ -12,10 +12,7 @@ public class IgdbJotTrackerStore : BindableBase, ITokenStore
         Services.Tracker.Track(this);
 
     }
-    public Task<TwitchAccessToken> GetTokenAsync()
-    {
-        return Task.FromResult(CurrentToken);
-    }
+    public Task<TwitchAccessToken> GetTokenAsync() => Task.FromResult(CurrentToken);
 
     public Task<TwitchAccessToken> StoreTokenAsync(TwitchAccessToken token)
     {

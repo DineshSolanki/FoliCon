@@ -3,7 +3,7 @@
 [Localizable(false)]
 internal static class GlobalVariables
 {
-    
+
     public static IconOverlay IconOverlayType()
     {
         return IconOverlayTypeString switch
@@ -18,7 +18,7 @@ internal static class GlobalVariables
         };
     }
 
-    public const string MediaInfoFile = "info.folicon";
+    public const string mediaInfoFile = "info.folicon";
 
     private static string IconOverlayTypeString
     {

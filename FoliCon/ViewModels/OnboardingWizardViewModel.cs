@@ -6,8 +6,8 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    public static string TmdbPortalUrl => TmdbAppConfig.ApiKeyPortalUrl;
-    public static string IgdbPortalUrl => IgdbAppConfig.CredentialsPortalUrl;
+    public static string TmdbPortalUrl => TmdbAppConfig.apiKeyPortalUrl;
+    public static string IgdbPortalUrl => IgdbAppConfig.credentialsPortalUrl;
 
     #region Step Management
 
@@ -459,10 +459,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     public virtual void OnDialogClosed() { }
 
-    public virtual void OnDialogOpened(IDialogParameters parameters)
-    {
-        CurrentStep = 0;
-    }
+    public virtual void OnDialogOpened(IDialogParameters parameters) => CurrentStep = 0;
 
     protected virtual void CloseDialog(string parameter)
     {

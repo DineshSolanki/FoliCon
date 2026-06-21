@@ -10,5 +10,5 @@ internal static class TmdbAppConfig
     /// <summary>
     /// Portal URL where users obtain their TMDB API key.
     /// </summary>
-    public const string ApiKeyPortalUrl = "https://www.themoviedb.org/settings/api";
+    public const string apiKeyPortalUrl = "https://www.themoviedb.org/settings/api"; // NOSONAR — intentional external portal URL
 }

@@ -9,7 +9,7 @@ internal class TmdbDataTransformer(
     private readonly List<PickedListItem> _listDataTable = listDataTable;
     private readonly List<ImageToDownload> _imgDownloadList = imgDownloadList;
 
-    private const string SmallPosterBase = "https://image.tmdb.org/t/p/w200";
+    private const string smallPosterBase = "https://image.tmdb.org/t/p/w200";
 
     public static ObservableCollection<ListItem> ExtractCollectionDetailsIntoListItem(
         SearchContainer<SearchCollection> result)
@@ -138,7 +138,7 @@ internal class TmdbDataTransformer(
                 default: continue;
             }
             listItem.MediaType = mediaType;
-            Logger.Trace("Adding {item}", listItem);
+            Logger.Trace("Adding {Item}", listItem);
             items.Add(listItem);
             Logger.Info("Added {MediaName} to List", listItem.Title);
         }
@@ -151,7 +151,7 @@ internal class TmdbDataTransformer(
     {
         var year = date != null ? date.Value.Year.ToString(CultureInfo.InvariantCulture) : string.Empty;
         var rating = ratingValue != null ? ratingValue.Value.ToString(CultureInfo.CurrentCulture) : string.Empty;
-        var poster = posterPath != null ? SmallPosterBase + posterPath : null;
+        var poster = posterPath != null ? smallPosterBase + posterPath : null;
 
         return new ListItem
         {
@@ -172,7 +172,7 @@ internal class TmdbDataTransformer(
     /// <param name="fullFolderPath">Full Path to the current Media Folder</param>
     /// <param name="rating">Rating for media</param>
     /// <param name="isPickedById"> identifies if Title was picked by media ID.</param>
-    /// TODO: Merge parameter response and resultType.
+    // Note: Consider merging parameter response and resultType in a future refactor.
     public void ResultPicked(dynamic result, string resultType, string fullFolderPath, string rating = "", bool isPickedById = false)
     {
         Logger.Debug("Preparing the Selected Result for Download And final List View");
@@ -218,7 +218,7 @@ internal class TmdbDataTransformer(
     
     private static string PrepareRating(string resultType, string rating, dynamic result)
     {
-        if (!string.IsNullOrWhiteSpace(rating) || resultType == MediaTypes.Collection)
+        if (!string.IsNullOrWhiteSpace(rating) || resultType == MediaTypes.collection)
         {
             return rating;
         }
@@ -235,7 +235,7 @@ internal class TmdbDataTransformer(
         var mediaType = details.ResultType;
         switch (mediaType)
         {
-            case MediaTypes.Tv:
+            case MediaTypes.tv:
             {
                 var pickedResult = CastResult(details.IsPickedById ? typeof(TvShow) : typeof(SearchTv), details.Result);
                 var year = pickedResult.FirstAirDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
@@ -243,7 +243,7 @@ internal class TmdbDataTransformer(
                 id = pickedResult.Id;
                 break;
             }
-            case MediaTypes.Movie:
+            case MediaTypes.movie:
             {
                 var pickedResult = CastResult(details.IsPickedById ? typeof(Movie) : typeof(SearchMovie), details.Result);
                 var year = pickedResult.ReleaseDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
@@ -251,14 +251,14 @@ internal class TmdbDataTransformer(
                 id = pickedResult.Id;
                 break;
             }
-            case MediaTypes.Collection:
+            case MediaTypes.collection:
             {
                 var pickedResult = CastResult(details.IsPickedById ? typeof(Collection) : typeof(SearchCollection), details.Result);
                 AddToPickedList(pickedResult.Name, null, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
                 id = pickedResult.Id;
                 break;
             }
-            case MediaTypes.Mtv:
+            case MediaTypes.mtv:
                 mediaType = SelectMtvType(details, out id);
                 break;
             default: throw new InvalidDataException($"Invalid Result Type: {mediaType}");
@@ -273,30 +273,18 @@ internal class TmdbDataTransformer(
         id = 0;
         details.ResultType = mediaType switch
         {
-            MediaType.Tv => MediaTypes.Tv,
-            MediaType.Movie => MediaTypes.Movie,
+            MediaType.Tv => MediaTypes.tv,
+            MediaType.Movie => MediaTypes.movie,
             _ => mediaType
         };
         return PickResult(details, out id);
     }
     
-    private static dynamic CastResult(Type targetType, dynamic result)
-    {
-        return Convert.ChangeType(result, targetType);
-    }
-    
-    private void AddToPickedList(string title, string year, string rating, string fullFolderPath, string folderName, string localPosterPath)
-    {
-        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, title, rating, fullFolderPath, folderName, year);
-    }
+    private static dynamic CastResult(Type targetType, dynamic result) => Convert.ChangeType(result, targetType);
 
-    public static string GetPosterUrl(ImageData image,string posterSize, TMDbClient client)
-    {
-        return GetPosterUrl(image.FilePath, posterSize, client);
-    }
-    
-    private static string GetPosterUrl(string posterPath, string posterSize, TMDbClient client)
-    {
-        return posterPath is null ? string.Empty : client.GetImageUrl(posterSize, posterPath).ToString();
-    }
+    private void AddToPickedList(string title, string year, string rating, string fullFolderPath, string folderName, string localPosterPath) => FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, title, rating, fullFolderPath, folderName, year);
+
+    public static string GetPosterUrl(ImageData image,string posterSize, TMDbClient client) => GetPosterUrl(image.FilePath, posterSize, client);
+
+    private static string GetPosterUrl(string posterPath, string posterSize, TMDbClient client) => posterPath is null ? string.Empty : client.GetImageUrl(posterSize, posterPath).ToString();
 }

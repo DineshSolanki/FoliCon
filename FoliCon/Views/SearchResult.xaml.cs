@@ -10,8 +10,5 @@ public partial class SearchResult
         InitializeComponent();
     }
 
-    private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-    {
-        WebBox.DisposeBrowser();
-    }
+    private void UserControl_Unloaded(object sender, RoutedEventArgs e) => WebBox.DisposeBrowser();
 }

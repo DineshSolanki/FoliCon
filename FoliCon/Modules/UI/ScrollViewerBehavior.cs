@@ -4,21 +4,15 @@ namespace FoliCon.Modules.UI;
 
 public static class ScrollViewerBehavior
 {
-    private const double Tolerance = 1.01;
+    private const double tolerance = 1.01;
     private static bool _autoScroll = true;
     public static readonly DependencyProperty AutoScrollProperty =
         DependencyProperty.RegisterAttached("AutoScroll", typeof(bool), typeof(ScrollViewerBehavior), 
             new PropertyMetadata(false, AutoScrollChanged));
 
-    public static bool GetAutoScroll(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(AutoScrollProperty);
-    }
+    public static bool GetAutoScroll(DependencyObject obj) => (bool)obj.GetValue(AutoScrollProperty);
 
-    public static void SetAutoScroll(DependencyObject obj, bool value)
-    {
-        obj.SetValue(AutoScrollProperty, value);
-    }
+    public static void SetAutoScroll(DependencyObject obj, bool value) => obj.SetValue(AutoScrollProperty, value);
 
     private static void AutoScrollChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -34,7 +28,7 @@ public static class ScrollViewerBehavior
 
         if (Math.Abs(ea.ExtentHeightChange) <= double.Epsilon)
         {
-            _autoScroll = Math.Abs(scrollViewer!.VerticalOffset - scrollViewer.ScrollableHeight) <= Tolerance;
+            _autoScroll = Math.Abs(scrollViewer!.VerticalOffset - scrollViewer.ScrollableHeight) <= tolerance;
             return;
         }
 

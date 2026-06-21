@@ -4,15 +4,9 @@ public static class DialogUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     
-    public static void ShowGrowlError(string message)
-    {
-        Growl.ErrorGlobal(new GrowlInfo { Message = message, ShowDateTime = false });
-    }
+    public static void ShowGrowlError(string message) => Growl.ErrorGlobal(new GrowlInfo { Message = message, ShowDateTime = false });
 
-    public static void ShowGrowlInfo(string message)
-    {
-        Growl.InfoGlobal(new GrowlInfo { Message = message, ShowDateTime = false, StaysOpen = false });
-    }
+    public static void ShowGrowlInfo(string message) => Growl.InfoGlobal(new GrowlInfo { Message = message, ShowDateTime = false, StaysOpen = false });
 
     public static void ConfirmUpdate(ReleaseInfo ver)
     {

@@ -45,15 +45,15 @@ public static class OAuthCallbackListener
     {
         var codeVerifier = GenerateCodeVerifier();
         var codeChallenge = GenerateCodeChallenge(codeVerifier);
-        const string clientId = DeviantArtAppConfig.ClientId;
+        const string clientId = DeviantArtAppConfig.clientId;
 
-        Logger.Info("Starting DeviantArt OAuth PKCE flow (client_id={ClientId}, redirect via {RedirectUri})", clientId, DeviantArtAppConfig.RedirectUri);
+        Logger.Info("Starting DeviantArt OAuth PKCE flow (client_id={ClientId}, redirect via {RedirectUri})", clientId, DeviantArtAppConfig.redirectUri);
 
         // Build the authorization URL — redirect_uri is the hosted HTTPS page
-        var authorizeUrl = $"{DeviantArtAppConfig.AuthorizeUrl}" +
+        var authorizeUrl = $"{DeviantArtAppConfig.authorizeUrl}" +
                            $"?response_type=code" +
                            $"&client_id={Uri.EscapeDataString(clientId)}" +
-                           $"&redirect_uri={Uri.EscapeDataString(DeviantArtAppConfig.RedirectUri)}" +
+                           $"&redirect_uri={Uri.EscapeDataString(DeviantArtAppConfig.redirectUri)}" +
                            $"&scope={Uri.EscapeDataString(DeviantArtAppConfig.Scope)}" +
                            $"&code_challenge={codeChallenge}" +
                            $"&code_challenge_method=S256";
@@ -123,13 +123,13 @@ public static class OAuthCallbackListener
         var form = new Dictionary<string, string>
         {
             ["grant_type"] = "authorization_code",
-            ["client_id"] = DeviantArtAppConfig.ClientId,
+            ["client_id"] = DeviantArtAppConfig.clientId,
             ["code"] = code,
-            ["redirect_uri"] = DeviantArtAppConfig.RedirectUri,
+            ["redirect_uri"] = DeviantArtAppConfig.redirectUri,
             ["code_verifier"] = codeVerifier
         };
 
-        var jsonData = await PostFormAsync(DeviantArtAppConfig.TokenUrl, form);
+        var jsonData = await PostFormAsync(DeviantArtAppConfig.tokenUrl, form);
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
         if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))
@@ -158,7 +158,7 @@ public static class OAuthCallbackListener
         var form = new Dictionary<string, string>
         {
             ["grant_type"] = "refresh_token",
-            ["client_id"] = DeviantArtAppConfig.ClientId,
+            ["client_id"] = DeviantArtAppConfig.clientId,
             ["refresh_token"] = refreshToken
         };
 
@@ -167,7 +167,7 @@ public static class OAuthCallbackListener
             form["client_secret"] = clientSecret;
         }
 
-        var jsonData = await PostFormAsync(DeviantArtAppConfig.TokenUrl, form);
+        var jsonData = await PostFormAsync(DeviantArtAppConfig.tokenUrl, form);
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
         if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))
@@ -200,7 +200,7 @@ public static class OAuthCallbackListener
             ["client_secret"] = clientSecret
         };
 
-        var jsonData = await PostFormAsync(DeviantArtAppConfig.TokenUrl, form);
+        var jsonData = await PostFormAsync(DeviantArtAppConfig.tokenUrl, form);
         var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
 
         if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))

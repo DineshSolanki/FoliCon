@@ -33,10 +33,7 @@ public static class FileUtils
     /// <param name="fileExtensions">An iterable collection of file extensions.</param>
     /// <returns>A boolean indicating whether the string value ends with any of the provided file extensions.
     /// Returns true if the value ends with any of the file extensions; false otherwise.</returns>
-    private static bool EndsIn(string value, IEnumerable<string> fileExtensions)
-    {
-        return fileExtensions.Any(fileExtension => value.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase));
-    }
+    private static bool EndsIn(string value, IEnumerable<string> fileExtensions) => fileExtensions.Any(fileExtension => value.EndsWith(fileExtension, StringComparison.OrdinalIgnoreCase));
 
     public static bool IsPngOrIco(string fileName) =>
         fileName != null && EndsIn(fileName, Extensions);
@@ -44,10 +41,8 @@ public static class FileUtils
     public static bool IsExcludedFileIdentifier(string fileName) =>
         fileName != null && ExcludedFileIdentifiers.Any(fileName.Contains);
     
-    public static bool FileExists(string path)
-    {
-        return ShlwApi.PathFileExists(path);
-    }
+    public static bool FileExists(string path) => ShlwApi.PathFileExists(path);
+
     /// <summary>
     /// Deletes Icons (.ico and Desktop.ini files) from all subfolders of given path.
     /// </summary>
@@ -110,11 +105,11 @@ public static class FileUtils
     public static void DeleteMediaInfoFromSubfolders(string folderPath)
     {
         Logger.Debug("Deleting MediaInfo from Subfolders of: {FolderPath}", folderPath);
-        var icoFile = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
+        var icoFile = Path.Combine(folderPath, GlobalVariables.mediaInfoFile);
         File.Delete(icoFile);
         foreach (var folder in Directory.EnumerateDirectories(folderPath))
         {
-            icoFile = Path.Combine(folder, GlobalVariables.MediaInfoFile);
+            icoFile = Path.Combine(folder, GlobalVariables.mediaInfoFile);
             File.Delete(icoFile);
         }
         Logger.Debug("MediaInfo Deleted from Subfolders of: {FolderPath}", folderPath);
@@ -133,10 +128,8 @@ public static class FileUtils
         return folderNames;
     }
 
-    public static string[] GetAllSubFolders(string folderPath)
-    {
-        return Directory.GetDirectories(folderPath);
-    }
+    public static string[] GetAllSubFolders(string folderPath) => Directory.GetDirectories(folderPath);
+
     public static IEnumerable<string> GetAllSubFolders(string folderPath, ObservableCollection<Pattern> patterns)
     {
         return Directory.GetDirectories(folderPath)
@@ -154,10 +147,8 @@ public static class FileUtils
         return !isHiddenOrSystem && !startsWithDot;
     }
 
-    private static bool PatternsMatch(DirectoryInfo directoryInfo, IEnumerable<Pattern> patterns)
-    {
-        return patterns.Any(pattern => Regex.IsMatch(directoryInfo.Name, pattern.Regex));
-    }
+    private static bool PatternsMatch(DirectoryInfo directoryInfo, IEnumerable<Pattern> patterns) => patterns.Any(pattern => Regex.IsMatch(directoryInfo.Name, pattern.Regex));
+
     /// <summary>
     /// Get List of file in given folder.
     /// </summary>
@@ -215,7 +206,7 @@ public static class FileUtils
     {
         Logger.Debug("Saving Media Info, ID: {Id}, Media Type: {MediaType}, Folder Path: {FolderPath}", id,
             mediaType, folderPath);
-        var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
+        var filePath = Path.Combine(folderPath, GlobalVariables.mediaInfoFile);
         try
         {
             if (!FileExists(filePath))
@@ -247,7 +238,7 @@ public static class FileUtils
     {
         string id = null;
         string mediaType = null;
-        var filePath = Path.Combine(folderPath, GlobalVariables.MediaInfoFile);
+        var filePath = Path.Combine(folderPath, GlobalVariables.mediaInfoFile);
 
         if (FileExists(filePath))
         {
@@ -329,11 +320,8 @@ public static class FileUtils
 
     }
 
-    public static async Task CheckForUpdate()
-    {
-        await CheckForUpdate(false);
-    }
-    
+    public static async Task CheckForUpdate() => await CheckForUpdate(false);
+
     public static async Task CheckForUpdate(bool onlyShowIfUpdateAvailable)
     {
         Logger.Debug("Checking for Update");
@@ -402,11 +390,11 @@ public static class FileUtils
 
         var source = result.MediaType switch
         {
-            MediaTypes.Tv => FetchTvDetails(result, isPickedById),
-            MediaTypes.Movie => FetchMovieOrCollectionDetails(result, query, isPickedById),
-            MediaTypes.Collection => FetchMovieOrCollectionDetails(result, query, isPickedById),
-            MediaTypes.Mtv => FetchMtvDetails(result),
-            MediaTypes.Game => FetchGameDetails(result),
+            MediaTypes.tv => FetchTvDetails(result, isPickedById),
+            MediaTypes.movie => FetchMovieOrCollectionDetails(result, query, isPickedById),
+            MediaTypes.collection => FetchMovieOrCollectionDetails(result, query, isPickedById),
+            MediaTypes.mtv => FetchMtvDetails(result),
+            MediaTypes.game => FetchGameDetails(result),
             _ => []
         };
 
@@ -483,7 +471,7 @@ public static class FileUtils
             {
                 dwMask = FOLDERCUSTOMSETTINGSMASK.FCSM_ICONFILE,
                 pszIconFile = new StrPtrAuto(icoFile),
-                dwSize = (uint)Marshal.SizeOf(typeof(SHFOLDERCUSTOMSETTINGS)),
+                dwSize = (uint)Marshal.SizeOf<SHFOLDERCUSTOMSETTINGS>(),
                 cchIconFile = 0
             };
             _ = SHGetSetFolderCustomSettings(ref folderSettings, folderPath, FCS.FCS_FORCEWRITE);
@@ -599,13 +587,7 @@ public static class FileUtils
     }
     
     
-    private static string FoliConTempPath()
-    {
-        return Path.Combine(Path.GetTempPath(), "FoliCon");
-    }
-    
-    private static string FoliConTempDeviationsPath()
-    {
-        return Path.Combine(FoliConTempPath(), "Deviations");
-    }
+    private static string FoliConTempPath() => Path.Combine(Path.GetTempPath(), "FoliCon");
+
+    private static string FoliConTempDeviationsPath() => Path.Combine(FoliConTempPath(), "Deviations");
 }

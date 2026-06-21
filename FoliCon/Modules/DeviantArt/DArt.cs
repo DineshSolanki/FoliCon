@@ -9,7 +9,7 @@ public class DArt : BindableBase, IDisposable
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private bool _disposed;
 
-    private const string DeviantArtApiBase = "https://www.deviantart.com/api/v1/oauth2";
+    private const string deviantArtApiBase = "https://www.deviantart.com/api/v1/oauth2";
 
     private static readonly JsonSerializerSettings SerializerSettings = new() { NullValueHandling = NullValueHandling.Ignore };
 
@@ -149,7 +149,7 @@ public class DArt : BindableBase, IDisposable
     {
         try
         {
-            using var request = new HttpRequestMessage(HttpMethod.Get, $"{DeviantArtApiBase}/placebo");
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"{deviantArtApiBase}/placebo");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", clientAccessToken);
             using var response = await Services.HttpC.SendAsync(request);
             var jsonData = await response.Content.ReadAsStringAsync();
@@ -192,11 +192,13 @@ public class DArt : BindableBase, IDisposable
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Failed to re-authenticate DeviantArt via client_credentials.");
                 Services.Settings.DeviantArtAccessToken = "";
                 Services.Settings.DeviantArtTokenExpiresAt = DateTime.MinValue;
                 await Services.Settings.SaveAsync();
-                throw;
+                throw new LocalizedException(
+                    "Failed to re-authenticate DeviantArt via client_credentials.",
+                    Lang.DeviantArtClientCredentialsFailed,
+                    ex);
             }
             return;
         }
@@ -231,13 +233,15 @@ public class DArt : BindableBase, IDisposable
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "Failed to refresh DeviantArt token. User may need to re-authorize.");
             // Clear invalid tokens so the app knows to re-authorize
             Services.Settings.DeviantArtAccessToken = "";
             Services.Settings.DeviantArtRefreshToken = "";
             Services.Settings.DeviantArtTokenExpiresAt = DateTime.MinValue;
             await Services.Settings.SaveAsync();
-            throw;
+            throw new LocalizedException(
+                "Failed to refresh DeviantArt token. User may need to re-authorize.",
+                Lang.DeviantArtTokenRefreshFailed,
+                ex);
         }
     }
 
@@ -246,7 +250,7 @@ public class DArt : BindableBase, IDisposable
         await GetClientAccessTokenAsync();
 
         var jsonData = await ExecuteWithRetryAsync(
-            () => CreateAuthenticatedRequest($"{DeviantArtApiBase}/browse/home?offset={offset}&q={Uri.EscapeDataString($"{query} folder icon")}&limit=20"),
+            () => CreateAuthenticatedRequest($"{deviantArtApiBase}/browse/home?offset={offset}&q={Uri.EscapeDataString($"{query} folder icon")}&limit=20"),
             "Browse");
 
         var result = JsonConvert.DeserializeObject<DArtBrowseResult>(jsonData, SerializerSettings);
@@ -267,7 +271,7 @@ public class DArt : BindableBase, IDisposable
                 () =>
                 {
                     var request = CreateAuthenticatedRequest(
-                        $"{DeviantArtApiBase}/user/friends/watch/{Uri.EscapeDataString(username)}",
+                        $"{deviantArtApiBase}/user/friends/watch/{Uri.EscapeDataString(username)}",
                         HttpMethod.Post);
                     request.Content = new FormUrlEncodedContent(new Dictionary<string, string>
                     {
@@ -303,7 +307,7 @@ public class DArt : BindableBase, IDisposable
         try
         {
             await ExecuteWithRetryAsync(
-                () => CreateAuthenticatedRequest($"{DeviantArtApiBase}/user/friends/unwatch/{Uri.EscapeDataString(username)}"),
+                () => CreateAuthenticatedRequest($"{deviantArtApiBase}/user/friends/unwatch/{Uri.EscapeDataString(username)}"),
                 "Unwatch");
             Logger.Info("Successfully unwatched DeviantArt user {Username}", username);
         }
@@ -360,7 +364,7 @@ public class DArt : BindableBase, IDisposable
     public async Task<DArtDownloadResponse> GetDArtDownloadResponseAsync(string deviationId)
     {
         var jsonData = await ExecuteWithRetryAsync(
-            () => CreateAuthenticatedRequest($"{DeviantArtApiBase}/deviation/download/{Uri.EscapeDataString(deviationId)}"),
+            () => CreateAuthenticatedRequest($"{deviantArtApiBase}/deviation/download/{Uri.EscapeDataString(deviationId)}"),
             "Download");
         return JsonConvert.DeserializeObject<DArtDownloadResponse>(jsonData);
     }
@@ -459,10 +463,10 @@ public class DArt : BindableBase, IDisposable
                 throw new InvalidOperationException("Unreachable — EnsureSuccessStatusCode throws on failure");
             }, cancellationToken);
         }
-        catch (DeviantArtTokenExpiredException)
+        catch (DeviantArtTokenExpiredException ex)
         {
             // Token was refreshed — retry with a fresh request that uses the new token
-            Logger.Info($"Retrying DeviantArt API {requestType} request after token refresh");
+            Logger.Info(ex, "Retrying DeviantArt API {RequestType} request after token refresh", requestType);
             using var request = requestFactory();
             using var response = await Services.HttpC.SendAsync(request, cancellationToken);
             if (response.IsSuccessStatusCode)

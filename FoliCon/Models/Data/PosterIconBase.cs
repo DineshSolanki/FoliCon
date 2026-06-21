@@ -37,7 +37,7 @@ public abstract class PosterIconBase : UserControl
     {
         Logger.Trace("Converting RenderTargetBitmap to 32BppArgb");
         var stream = new MemoryStream();
-        BitmapEncoder encoder = new PngBitmapEncoder();
+        var encoder = new PngBitmapEncoder();
         encoder.Frames.Add(BitmapFrame.Create(rtb));
         encoder.Save(stream);
         Logger.Trace("RenderTargetBitmap converted to 32BppArgb");

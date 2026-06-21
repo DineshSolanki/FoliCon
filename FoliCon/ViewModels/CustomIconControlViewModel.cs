@@ -5,10 +5,14 @@ using FoliCon.Modules.Media;
 namespace FoliCon.ViewModels;
 
 [Localizable(false)]
+[SuppressMessage("Performance", "CA1822:Mark members as static",
+    Justification = "XAML data binding requires instance properties.")]
+[SuppressMessage("Sonar", "S2325:Methods and properties that don't access instance data should be static",
+    Justification = "XAML data binding requires instance properties.")]
 public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragDropTarget
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     public IDropTarget ReOrderDropHandler { get; } = new ReOrderDropHandler();
     private string _selectedDirectory;
     private string _selectedIconsDirectory;
@@ -23,7 +27,6 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private ObservableCollection<string> _undoDirectories = [];
     private ObservableCollection<string> _backupDirectories = [];
     private ObservableCollection<string> _backupIcons = [];
-    private string _busyContent = Lang.CreatingIcons;
     private int _index;
     private int _totalIcons;
     public bool KeepExactOnly
@@ -109,11 +112,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
     public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
-    public string BusyContent
-    {
-        get => _busyContent;
-        private set => SetProperty(ref _busyContent, value);
-    }
+    public string BusyContent { get; } = Lang.CreatingIcons;
 
     #endregion
 
@@ -267,10 +266,10 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
             var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
             var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
-            
-            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}", 
+
+            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
                 folderPath, iconPath, newIconPath);
-            
+
             if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
             {
                 Logger.Info("Converting {Icon} to .ico", iconPath);
@@ -323,9 +322,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void RestoreCollections()
     {
-        Logger.Debug("Restoring collections from backup icon count: {Count}, backup directory count: {DirectoryCount}", 
+        Logger.Debug("Restoring collections from backup icon count: {Count}, backup directory count: {DirectoryCount}",
             _backupIcons.Count, _backupDirectories.Count);
-        
+
         if (_backupIcons.Count == 0 || _backupDirectories.Count == 0)
         {
             return;

@@ -3,9 +3,9 @@
 [Localizable(false)]
 public static class MediaTypes
 {
-    public const string Game = "Game";
-    public const string Movie = "Movie";
-    public const string Collection = "Collection";
-    public const string Tv = "TV";
-    public const string Mtv = "Auto (Movies & TV Shows)";
+    public const string game = "Game";
+    public const string movie = "Movie";
+    public const string collection = "Collection";
+    public const string tv = "TV";
+    public const string mtv = "Auto (Movies & TV Shows)";
 }

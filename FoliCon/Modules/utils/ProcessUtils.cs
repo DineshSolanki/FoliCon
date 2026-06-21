@@ -5,7 +5,7 @@ namespace FoliCon.Modules.utils;
 public static class ProcessUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     /// <summary>
     /// Starts Process associated with given path.
     /// </summary>
@@ -25,7 +25,7 @@ public static class ProcessUtils
         catch (Exception e)
         {
             var detailedErrorMessage = $"Failed to start process at path: {path}. Exception: {e.Message}";
-            
+
             Logger.Error(e, detailedErrorMessage);
             throw new InvalidOperationException(detailedErrorMessage, e);
         }
@@ -42,7 +42,7 @@ public static class ProcessUtils
         catch (WebView2RuntimeNotFoundException exception)
         {
             Logger.ForErrorEvent().Message("WebView2 Runtime is not installed.").Exception(exception).Log();
-            
+
             var result = MessageBox.Show(CustomMessageBox.Ask(Lang.WebView2DownloadConfirmation,
                 Lang.WebView2DownloadConfirmationHeader));
             if (result != MessageBoxResult.Yes)
@@ -50,10 +50,11 @@ public static class ProcessUtils
                 return;
             }
 
-            StartProcess("https://go.microsoft.com/fwlink/p/?LinkId=2124703");
+            const string webView2DownloadUrl = "https://go.microsoft.com/fwlink/p/?LinkId=2124703"; // NOSONAR — intentional Microsoft download link
+            StartProcess(webView2DownloadUrl);
         }
     }
-    
+
     /// <summary>
     /// Terminates Explorer.exe Process.
     /// </summary>
@@ -156,7 +157,7 @@ public static class ProcessUtils
     private static void StartAppAsAdmin()
     {
         Logger.Info("Starting Application as Administrator");
-        
+
         try
         {
             ApplicationHelper.Restart(true);
@@ -195,7 +196,7 @@ public static class ProcessUtils
     {
         foreach (var mode in modes)
         {
-            var modeName = mode == "Auto" ? MediaTypes.Mtv : mode;
+            var modeName = mode == "Auto" ? MediaTypes.mtv : mode;
             var command = $"""{Process.GetCurrentProcess().MainModule?.FileName}" --path "%1" --mode {modeName}""";
             RegisterContextMenuOption(mode, command);
         }

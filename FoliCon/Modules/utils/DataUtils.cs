@@ -4,7 +4,7 @@
 public static class DataUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     public static int GetResultCount(bool isPickedById, dynamic result, string searchMode)
     {
         if (isPickedById)
@@ -12,7 +12,7 @@ public static class DataUtils
             return result != null ? 1 : 0;
         }
 
-        return searchMode == MediaTypes.Game ? result.Length : result.TotalResults;
+        return searchMode == MediaTypes.game ? result.Length : result.TotalResults;
     }
 
     /// <summary>
@@ -31,12 +31,9 @@ public static class DataUtils
         Logger.Trace("End FormatRatingString() - Formatted Rating : {FormattedRatingValue}", formattedRatingValue);
         return formattedRatingValue;
     }
-    
-   public static bool ShouldUseParsedTitle(ParsedTitle parsedTitle)
-   {
-       return parsedTitle != null && (parsedTitle.Year != 0 || (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0"));
-   }
-   
+
+   public static bool ShouldUseParsedTitle(ParsedTitle parsedTitle) => parsedTitle != null && (parsedTitle.Year != 0 || (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0"));
+
    public static bool IsValidRegex(string pattern)
    {
        try

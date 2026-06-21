@@ -74,7 +74,7 @@ public class PosterIcon : BindableBase, IDisposable
         MediaTitle = mediaTitle;
     }
 
-    private static ImageSource CreatePlaceholderImage()
+    private static RenderTargetBitmap CreatePlaceholderImage()
     {
         // Create a simple colored rectangle as fallback
         var drawingVisual = new DrawingVisual();

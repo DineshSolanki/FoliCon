@@ -14,15 +14,9 @@ public static class BindingPathExtensions
             typeof(BindingPathExtensions),
             new PropertyMetadata("", BindingPathPropertyChanged));
 
-    public static string GetBindingPath(DependencyObject obj)
-    {
-        return (string)obj.GetValue(BindingPathProperty);
-    }
+    public static string GetBindingPath(DependencyObject obj) => (string)obj.GetValue(BindingPathProperty);
 
-    public static void SetBindingPath(DependencyObject obj, string value)
-    {
-        obj.SetValue(BindingPathProperty, value);
-    }
+    public static void SetBindingPath(DependencyObject obj, string value) => obj.SetValue(BindingPathProperty, value);
 
     private static void BindingPathPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

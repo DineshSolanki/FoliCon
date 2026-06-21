@@ -48,17 +48,11 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	public DialogCloseListener RequestClose { get; }
 
-	public virtual bool CanCloseDialog()
-	{
-		return true;
-	}
+	public virtual bool CanCloseDialog() => true;
 
-	public virtual void OnDialogClosed()
-	{
-		Directory.Clear();
-	}
+    public virtual void OnDialogClosed() => Directory.Clear();
 
-	protected virtual void CloseDialog(ButtonResult result, string localPath)
+    protected virtual void CloseDialog(ButtonResult result, string localPath)
 	{
 		Logger.Info("Close Dialog called with result {Result}, localImagePath {LocalImagePath}", result, localPath);
 		var dialogParams = new DialogParameters

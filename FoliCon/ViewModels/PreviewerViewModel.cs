@@ -1,6 +1,10 @@
 ﻿namespace FoliCon.ViewModels
 {
     [Localizable(false)]
+    [SuppressMessage("Performance", "CA1822:Mark members as static",
+        Justification = "XAML data binding requires instance properties.")]
+    [SuppressMessage("Sonar", "S2325:Methods and properties that don't access instance data should be static",
+        Justification = "XAML data binding requires instance properties.")]
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

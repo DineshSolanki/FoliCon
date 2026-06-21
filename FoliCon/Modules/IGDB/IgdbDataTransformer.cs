@@ -78,7 +78,7 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
 
         if (game.Id != null)
         {
-            FileUtils.SaveMediaInfo((int)game.Id, MediaTypes.Game, fullFolderPath);
+            FileUtils.SaveMediaInfo((int)game.Id, MediaTypes.game, fullFolderPath);
         }
 
         var posterUrl = GetPosterUrl(game);
@@ -98,8 +98,5 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
     }
 
     [Localizable(false)]
-    public static string GetPosterUrl(string imageId, ImageSize imageSize)
-    {
-        return $"https:{ImageHelper.GetImageUrl(imageId, imageSize)}";
-    }
+    public static string GetPosterUrl(string imageId, ImageSize imageSize) => $"https:{ImageHelper.GetImageUrl(imageId, imageSize)}";
 }

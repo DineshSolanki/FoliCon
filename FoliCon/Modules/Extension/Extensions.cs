@@ -4,10 +4,8 @@
 public static class Extensions
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public static string WithoutExt(this string str)
-    {
-        return Path.GetFileNameWithoutExtension(str);
-    }
+    public static string WithoutExt(this string str) => Path.GetFileNameWithoutExtension(str);
+
     /// <summary>
     /// https://stackoverflow.com/a/15275682/8076598
     /// </summary>
@@ -28,10 +26,8 @@ public static class Extensions
     /// <summary>
     /// https://stackoverflow.com/a/13257600/8076598
     /// </summary>
-    public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> col)
-    {
-        return new ObservableCollection<T>(col);
-    }
+    public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> col) => new(col);
+
     public static async Task<Bitmap> GetBitmap(this HttpResponseMessage responseMessage)
     {
         Logger.Trace("GetBitmap from HttpResponseMessage");

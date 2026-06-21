@@ -8,25 +8,13 @@ public interface IFileDragDropTarget
 public static class FolderDragDropHelper
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public static bool GetIsFileDragDropEnabled(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(IsFileDragDropEnabledProperty);
-    }
+    public static bool GetIsFileDragDropEnabled(DependencyObject obj) => (bool)obj.GetValue(IsFileDragDropEnabledProperty);
 
-    public static void SetIsFileDragDropEnabled(DependencyObject obj, bool value)
-    {
-        obj.SetValue(IsFileDragDropEnabledProperty, value);
-    }
+    public static void SetIsFileDragDropEnabled(DependencyObject obj, bool value) => obj.SetValue(IsFileDragDropEnabledProperty, value);
 
-    public static bool GetFileDragDropTarget(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(FileDragDropTargetProperty);
-    }
+    public static bool GetFileDragDropTarget(DependencyObject obj) => (bool)obj.GetValue(FileDragDropTargetProperty);
 
-    public static void SetFileDragDropTarget(DependencyObject obj, bool value)
-    {
-        obj.SetValue(FileDragDropTargetProperty, value);
-    }
+    public static void SetFileDragDropTarget(DependencyObject obj, bool value) => obj.SetValue(FileDragDropTargetProperty, value);
 
     public static readonly DependencyProperty IsFileDragDropEnabledProperty =
         DependencyProperty.RegisterAttached("IsFileDragDropEnabled", typeof(bool), typeof(FolderDragDropHelper),

@@ -549,7 +549,7 @@ public class LangProvider : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
 
-public class LangKeys
+public static class LangKeys
 {
     public static readonly string APIKeysConfiguration = nameof(APIKeysConfiguration);
     public static readonly string APIKeysNotProvided = nameof(APIKeysNotProvided);

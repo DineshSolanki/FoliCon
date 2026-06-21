@@ -6,8 +6,5 @@ public static class Services
     public static readonly HttpClient HttpC = CreateHttpClient();
     public static readonly AppConfig Settings = GlobalDataHelper.Load<AppConfig>();
 
-    private static HttpClient CreateHttpClient()
-    {
-        return new HttpClient();
-    }
+    private static HttpClient CreateHttpClient() => new();
 }

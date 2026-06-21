@@ -32,8 +32,5 @@ public partial class MainWindow
 
     }
 
-    private void MainWindow_OnClosed(object sender, EventArgs e)
-    {
-        FileUtils.DeleteFoliConTempDeviationDirectory();
-    }
+    private void MainWindow_OnClosed(object sender, EventArgs e) => FileUtils.DeleteFoliConTempDeviationDirectory();
 }

@@ -5,10 +5,8 @@ public class IgdbClass
     private readonly IgdbDataTransformer _dataTransformer;
     private readonly IgdbService _igdbService;
 
-    public IGDBClient GetClient()
-    {
-        return _igdbService.GetClient();
-    }
+    public IGDBClient GetClient() => _igdbService.GetClient();
+
     /// <summary>
     /// IGDB Helper Class for Working with IGDB API efficiently for this project.
     /// </summary>
@@ -27,31 +25,15 @@ public class IgdbClass
     /// </summary>
     /// <param name="query">Title to search</param>
     /// <returns>Returns Search result with its Media Type</returns>
-    public Task<ResultResponse> SearchGameAsync(string query)
-    {
-        return _igdbService.SearchGameAsync(query);
-    }
+    public Task<ResultResponse> SearchGameAsync(string query) => _igdbService.SearchGameAsync(query);
 
-    public Task<GameVideo[]> GetGameVideo(string id)
-    {
-        return _igdbService.GetGameVideo(id);
-    }
-    public Task<ResultResponse> SearchGameByIdAsync(string id)
-    {
-        return _igdbService.SearchGameByIdAsync(id);
-    }
+    public Task<GameVideo[]> GetGameVideo(string id) => _igdbService.GetGameVideo(id);
 
-    public Task<Artwork[]> GetArtworksByGameIdAsync(string id)
-    {
-        return _igdbService.GetArtworksByGameIdAsync(id);
-    }
-    public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(Game[] result)
-    {
-        return IgdbDataTransformer.ExtractGameDetailsIntoListItem(result);
-    }
+    public Task<ResultResponse> SearchGameByIdAsync(string id) => _igdbService.SearchGameByIdAsync(id);
 
-    public void ResultPicked(Game result, string fullFolderPath, string rating = "")
-    {
-        _dataTransformer.ResultPicked(result, fullFolderPath, rating);
-    }
+    public Task<Artwork[]> GetArtworksByGameIdAsync(string id) => _igdbService.GetArtworksByGameIdAsync(id);
+
+    public static ObservableCollection<ListItem> ExtractGameDetailsIntoListItem(Game[] result) => IgdbDataTransformer.ExtractGameDetailsIntoListItem(result);
+
+    public void ResultPicked(Game result, string fullFolderPath, string rating = "") => _dataTransformer.ResultPicked(result, fullFolderPath, rating);
 }

@@ -17,7 +17,7 @@ public enum Languages
 
     //[LocalizedDescription("Hindi", typeof(Lang))]
     Hindi,
-    
+
     //[LocalizedDescription("Portuguese", typeof(Lang))]
     Portuguese
 }

@@ -6,7 +6,7 @@ namespace FoliCon.ViewModels;
 [Localizable(false)]
 public class PosterPickerViewModel : BindableBase, IDialogAware
 {
-    private const string PosterPathMessage = "Poster Path: {PosterPath}";
+    private const string posterPathMessage = "Poster Path: {PosterPath}";
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
     private string _title = "";
@@ -50,7 +50,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     {
         Logger.Info("Open Image Method called with parameter: {Parameter}, MediaType: {MediaType}",selectedImage, Result.MediaType );
         var link = selectedImage.Url;
-        link = Result.MediaType == MediaTypes.Game
+        link = Result.MediaType == MediaTypes.game
             ? IgdbDataTransformer.GetPosterUrl(selectedImage.DeviationId, ImageSize.HD720)
             : link;
         UiUtils.ShowImageBrowser(link);
@@ -69,10 +69,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         RequestClose.Invoke(result);
     }
 
-    public virtual bool CanCloseDialog()
-    {
-        return true;
-    }
+    public virtual bool CanCloseDialog() => true;
 
     public virtual void OnDialogClosed()
     {
@@ -95,7 +92,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         var resultType = _result.MediaType;
         var response = GetResponse(resultType);
 
-        if (resultType == MediaTypes.Game)
+        if (resultType == MediaTypes.game)
         {
             LoadGameData(response);
         }
@@ -111,9 +108,9 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     {
         return (_isPickedById, resultType) switch
         {
-            (true, MediaTypes.Game) => Result.Result[0],
+            (true, MediaTypes.game) => Result.Result[0],
             (true, _) => Result.Result,
-            (false, MediaTypes.Game) => Result.Result[PickedIndex],
+            (false, MediaTypes.game) => Result.Result[PickedIndex],
             (false, _) => Result.Result.Results[PickedIndex]
         };
     }
@@ -132,10 +129,10 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     {
         (string title, ImagesWithId images) result = resultType switch
         {
-            MediaTypes.Tv => await GetTvData(response),
-            MediaTypes.Movie => await GetMovieData(response),
-            MediaTypes.Collection => await GetCollectionData(response),
-            MediaTypes.Mtv => await GetMtvData(response),
+            MediaTypes.tv => await GetTvData(response),
+            MediaTypes.movie => await GetMovieData(response),
+            MediaTypes.collection => await GetCollectionData(response),
+            MediaTypes.mtv => await GetMtvData(response),
             _ => throw new ArgumentException($"Unexpected media type: {resultType}")
         };
         
@@ -190,7 +187,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         ResetState();
         IsBusy = true;
         var imageList = images.ToList();
-        if (imageList.Any())
+        if (imageList.Count > 0)
         {
             ProcessImages(imageList);
         }
@@ -233,16 +230,13 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     {
         var thumbnailUrl = image.GetThumbnailUrl();
         var qualityPath = image.GetPosterUrl();
-        Logger.Info(PosterPathMessage, thumbnailUrl);
+        Logger.Info(posterPathMessage, thumbnailUrl);
         Logger.Trace("Quality Path: {QualityPath}", qualityPath);
         AddImageToCollection(qualityPath,thumbnailUrl, image.Id);
     }
     
-    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id)
-    {
-        ImageUrl.Add(new DArtImageList(qualityUrl, thumbnailUrl, id));
-    }
-    
+    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id) => ImageUrl.Add(new DArtImageList(qualityUrl, thumbnailUrl, id));
+
     private void HandleNoImagesFound()
     {
         Logger.Warn("No posters found for {Title}", Title);
@@ -258,17 +252,17 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         dynamic result;
         if (_isPickedById)
         {
-            result = Result.MediaType == MediaTypes.Game ? Result.Result[0] : Result.Result;
+            result = Result.MediaType == MediaTypes.game ? Result.Result[0] : Result.Result;
         }
         else
         {
-            result = Result.MediaType == MediaTypes.Game
+            result = Result.MediaType == MediaTypes.game
                 ? Result.Result[PickedIndex]
                 : Result.Result.Results[PickedIndex];
         }
 
         _resultList[PickedIndex].SetInitialPoster();
-        if (Result.MediaType == MediaTypes.Game)
+        if (Result.MediaType == MediaTypes.game)
         {
             result.Cover.Value.ImageId = pickedImage.DeviationId;
             _resultList[PickedIndex].Poster =IgdbDataTransformer.GetPosterUrl(pickedImage.DeviationId, ImageSize.HD720);
@@ -279,7 +273,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
             _resultList[PickedIndex].Poster = link;
         }
 
-        Logger.Trace(PosterPathMessage, _resultList[PickedIndex].Poster);
+        Logger.Trace(posterPathMessage, _resultList[PickedIndex].Poster);
         CloseDialog("true");
     }
 

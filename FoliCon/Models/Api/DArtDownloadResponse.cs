@@ -22,8 +22,5 @@ public record DArtDownloadResponse
     
     public string FileSizeHumanReadable => GetFileSizeHumanReadable();
     
-    private string GetFileSizeHumanReadable()
-    {
-        return ConvertHelper.ToFileSize(FileSizeBytes);
-    }
+    private string GetFileSizeHumanReadable() => ConvertHelper.ToFileSize(FileSizeBytes);
 }

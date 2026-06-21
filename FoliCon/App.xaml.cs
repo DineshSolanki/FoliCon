@@ -11,10 +11,7 @@ namespace FoliCon;
 public partial class App
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    protected override Window CreateShell()
-    {
-        return Container.Resolve<MainWindow>();
-    }
+    protected override Window CreateShell() => Container.Resolve<MainWindow>();
 
     public App()
     {

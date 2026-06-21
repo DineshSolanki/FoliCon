@@ -10,5 +10,5 @@ internal static class IgdbAppConfig
     /// <summary>
     /// Portal URL where users register a Twitch application to get IGDB credentials.
     /// </summary>
-    public const string CredentialsPortalUrl = "https://dev.twitch.tv/console/apps";
+    public const string credentialsPortalUrl = "https://dev.twitch.tv/console/apps"; // NOSONAR — intentional external portal URL
 }

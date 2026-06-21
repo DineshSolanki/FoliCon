@@ -106,8 +106,5 @@ public static class ApiKeyValidator
         }
     }
 
-    private static bool IsUnauthorized(HttpRequestException ex)
-    {
-        return ex.StatusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden;
-    }
+    private static bool IsUnauthorized(HttpRequestException ex) => ex.StatusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden;
 }

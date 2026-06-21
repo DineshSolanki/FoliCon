@@ -7,7 +7,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private const string ProfessionalMode = "Professional";
+    private const string professionalMode = "Professional";
 
     #region Variables
 
@@ -19,7 +19,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private bool _isMakeEnabled;
     private bool _isSkipAmbiguous;
     private string _iconMode = "Poster";
-    private string _searchMode = MediaTypes.Movie;
+    private string _searchMode = MediaTypes.movie;
     private bool _isSearchModeVisible = true;
     private bool _stopIconDownload;
     private Languages _appLanguage;
@@ -99,7 +99,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set
         {
             SetProperty(ref _iconMode, value);
-            IsSearchModeVisible = value != ProfessionalMode;
+            IsSearchModeVisible = value != professionalMode;
         }
     }
 
@@ -346,7 +346,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
 
         // Poster mode
-        if (SearchMode == MediaTypes.Game)
+        if (SearchMode == MediaTypes.game)
         {
             if (_igdbObject != null)
             {
@@ -561,12 +561,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.Info("MediaInfo found for {ItemTitle}, mediaType: {MediaType}, id: {Id}", itemTitle, mediaType, id);
             isPickedById = true;
-            response = mediaType == MediaTypes.Game ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
+            response = mediaType == MediaTypes.game ? await _igdbObject.SearchGameByIdAsync(id) : await _tmdbObject.SearchByIdAsync(int.Parse(id), mediaType);
         }
         else
         {
             Logger.Info("MediaInfo not found for {ItemTitle}, Searching by Title", itemTitle);
-            if (SearchMode == MediaTypes.Game)
+            if (SearchMode == MediaTypes.game)
             {
                 response = await _igdbObject.SearchGameAsync(parsedTitle.Title);
             }
@@ -593,7 +593,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             return response.Result != null ? 1 : 0;
         }
 
-        return SearchMode == MediaTypes.Game ? response.Result.Length : response.Result.TotalResults;
+        return SearchMode == MediaTypes.game ? response.Result.Length : response.Result.TotalResults;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(
@@ -614,7 +614,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             itemTitle, SearchMode);
         try
         {
-            if (isPickedById ? mediaType == MediaTypes.Game : SearchMode == MediaTypes.Game)
+            if (isPickedById ? mediaType == MediaTypes.game : SearchMode == MediaTypes.game)
             {
                 var result = response.Result[0];
                 _igdbObject.ResultPicked(result, fullFolderPath);
@@ -1164,15 +1164,15 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         SelectedFolder = selectedFolder;
         var mode = cmdArgs["mode"];
-        if (mode != ProfessionalMode &&
-            new List<string> { MediaTypes.Mtv, MediaTypes.Tv, MediaTypes.Movie, MediaTypes.Game }.Contains(mode))
+        if (mode != professionalMode &&
+            new List<string> { MediaTypes.mtv, MediaTypes.tv, MediaTypes.movie, MediaTypes.game }.Contains(mode))
         {
             IconMode = "Poster";
             SearchMode = mode;
         }
         else
         {
-            IconMode = ProfessionalMode;
+            IconMode = professionalMode;
         }
 
         Logger.Info("Command Line argument initialized, selected folder: {SelectedFolder}, mode: {IconMode}",
@@ -1180,10 +1180,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         SearchAndMakeMethod();
     }
 
-    private void AboutMethod()
-    {
-        _dialogService.ShowAboutBox(_ => { });
-    }
+    private void AboutMethod() => _dialogService.ShowAboutBox(_ => { });
 
     public void OnFileDrop(string[] filePaths, string senderName)
     {

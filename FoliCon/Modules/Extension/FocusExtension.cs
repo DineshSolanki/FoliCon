@@ -23,15 +23,9 @@
 public static class FocusExtension
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public static bool GetIsFocused(DependencyObject depObj)
-    {
-        return (bool)depObj.GetValue(IsFocusedProperty);
-    }
+    public static bool GetIsFocused(DependencyObject depObj) => (bool)depObj.GetValue(IsFocusedProperty);
 
-    public static void SetIsFocused(DependencyObject depObj, bool isFocused)
-    {
-        depObj.SetValue(IsFocusedProperty, isFocused);
-    }
+    public static void SetIsFocused(DependencyObject depObj, bool isFocused) => depObj.SetValue(IsFocusedProperty, isFocused);
 
     public static readonly DependencyProperty IsFocusedProperty =
         DependencyProperty.RegisterAttached(

@@ -25,10 +25,7 @@ public static class UiUtils
         }
     }
 
-    public static Visibility BooleanToVisibility(bool value)
-    {
-        return value ? Visibility.Visible : Visibility.Hidden;
-    }
+    public static Visibility BooleanToVisibility(bool value) => value ? Visibility.Visible : Visibility.Hidden;
 
     public static void ShowImageBrowser(string imageLocation)
     {

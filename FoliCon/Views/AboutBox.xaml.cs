@@ -10,13 +10,7 @@ public partial class AboutBox
         InitializeComponent();
     }
 
-    private void TextBlock_MouseEnter(object sender, MouseEventArgs e)
-    {
-        Cursor = Cursors.Hand;
-    }
+    private void TextBlock_MouseEnter(object sender, MouseEventArgs e) => Cursor = Cursors.Hand;
 
-    private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
-    {
-        Cursor = Cursors.Arrow;
-    }
+    private void TextBlock_MouseLeave(object sender, MouseEventArgs e) => Cursor = Cursors.Arrow;
 }

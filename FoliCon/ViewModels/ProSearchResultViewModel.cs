@@ -265,10 +265,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private static bool HasNoResults(DArtBrowseResult searchResult)
-    {
-        return searchResult.Results is null or { Length: 0 };
-    }
+    private static bool HasNoResults(DArtBrowseResult searchResult) => searchResult.Results is null or { Length: 0 };
 
     private void ProcessNoResults(string query, int offset)
     {
@@ -438,10 +435,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         RequestClose.Invoke(result);
     }
 
-    public virtual bool CanCloseDialog()
-    {
-        return true;
-    }
+    public virtual bool CanCloseDialog() => true;
 
     public virtual void OnDialogClosed()
     {

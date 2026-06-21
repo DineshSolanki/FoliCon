@@ -6,13 +6,10 @@ namespace FoliCon.Modules.utils;
 public static class IconUtils
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private const string ImageName = "folicon";
+    private const string imageName = "folicon";
 
-    public static string GetImageName()
-    {
-        return ImageName;
-    }
-    
+    public static string GetImageName() => imageName;
+
     /// <summary>
     /// Creates Icons from PNG
     /// </summary>
@@ -28,7 +25,7 @@ public static class IconUtils
          var max = pickedListDataTable.Count;
          var extractionProgress = new ProgressBarData(0, max, Lang.CreatingIconWithCount.Format(0, max));
          progressCallback.Report(extractionProgress);
-         
+
          var lockObj = new object();
          var iconOverlay = GlobalVariables.IconOverlayType();
          await Parallel.ForEachAsync(pickedListDataTable, async (item, _) =>
@@ -36,33 +33,33 @@ public static class IconUtils
              var parent = Directory.GetParent(item.Folder);
              var parentFolder = parent != null ? parent.FullName : selectedFolder;
              var folderName = item.FolderName;
-             var targetFile = $@"{parentFolder}\{folderName}\{ImageName}.ico";
-             var pngFilePath = $@"{parentFolder}\{folderName}\{ImageName}.png";
-             
+             var targetFile = $@"{parentFolder}\{folderName}\{imageName}.ico";
+             var pngFilePath = $@"{parentFolder}\{folderName}\{imageName}.png";
+
              if (FileUtils.FileExists(pngFilePath) && !FileUtils.FileExists(targetFile))
              {
                  var rating = item.Rating;
                  var mediaTitle = item.Title;
                  var iconProperties = new IconProperties(iconMode, pngFilePath, rating, ratingVisibility, mockupVisibility, mediaTitle);
                  await BuildFolderIco(iconProperties, iconOverlay);
-                 
+
                  lock (lockObj)
                  {
                      iconProcessedCount += 1;
                  }
-                 
+
                  Logger.Info("Icon Created for Folder: {Folder}", folderName);
                  Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
-                 
+
                  File.Delete(pngFilePath); //<--IO Exception here
              }
-             
+
              if (FileUtils.FileExists(targetFile))
              {
                  FileUtils.HideFile(targetFile);
-                 FileUtils.SetFolderIcon($"{ImageName}.ico", $@"{parentFolder}\{folderName}");
+                 FileUtils.SetFolderIcon($"{imageName}.ico", $@"{parentFolder}\{folderName}");
              }
-             
+
              lock (lockObj)
              {
                  extractionProgress.Value = iconProcessedCount;
@@ -70,7 +67,7 @@ public static class IconUtils
                  progressCallback.Report(extractionProgress);
              }
          });
-     
+
          extractionProgress.Text = Lang.RefreshingFolder;
          progressCallback.Report(extractionProgress);
          FileUtils.ApplyChanges(selectedFolder);

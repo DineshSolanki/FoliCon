@@ -12,15 +12,15 @@ namespace FoliCon.Views;
 public partial class HtmlBox
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private const string VideoUnavailable = "Video not available!";
+    private const string videoUnavailable = "Video not available!";
     private readonly string _backgroundColor;
-    private const string DarkGray = "#1C1C1C";
-    private const string White = "#FFFFFF";
+    private const string darkGray = "#1C1C1C";
+    private const string white = "#FFFFFF";
 
     // Serve the player HTML from a real https origin instead of NavigateToString.
     // NavigateToString gives the document a null origin, so the YouTube iframe sends
     // no Referer/origin and the player fails with "Error 153" (configuration error).
-    private const string VirtualHostUrl = "https://folicon.local/";
+    private const string virtualHostUrl = "https://folicon.local/"; // NOSONAR — intentional WebView2 virtual host URL
     private bool _webResourceHandlerRegistered;
     private string _currentContent = string.Empty;
 
@@ -33,16 +33,16 @@ public partial class HtmlBox
 
     public static readonly DependencyProperty HtmlTextProperty
         = DependencyProperty.Register(
-            nameof(HtmlText), 
-            typeof(string), 
-            typeof(HtmlBox), 
+            nameof(HtmlText),
+            typeof(string),
+            typeof(HtmlBox),
             new PropertyMetadata(default(string), OnHtmlTextPropertyChanged));
 
     public static readonly DependencyProperty VideosProperty
         = DependencyProperty.Register(
-            nameof(Videos), 
-            typeof(ICollection<MediaVideo>), 
-            typeof(HtmlBox), 
+            nameof(Videos),
+            typeof(ICollection<MediaVideo>),
+            typeof(HtmlBox),
             new PropertyMetadata(default(ICollection<MediaVideo>), OnVideosPropertyChanged));
 
     private static async void OnVideosPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -64,15 +64,12 @@ public partial class HtmlBox
     public HtmlBox()
     {
         InitializeComponent();
-        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? DarkGray : White;
+        _backgroundColor = ThemeManager.Current.ApplicationTheme == ApplicationTheme.Dark ? darkGray : white;
        InitializeVideoSelector();
        Unloaded += OnUnloaded;
     }
 
-    private void OnUnloaded(object sender, RoutedEventArgs e)
-    {
-        DisposeBrowser();
-    }
+    private void OnUnloaded(object sender, RoutedEventArgs e) => DisposeBrowser();
 
     public void DisposeBrowser()
     {
@@ -96,7 +93,7 @@ public partial class HtmlBox
         get => (string)GetValue(HtmlTextProperty);
         set => SetValue(HtmlTextProperty, value);
     }
-    
+
     public ICollection<MediaVideo> Videos
     {
         get => (ICollection<MediaVideo>)GetValue(VideosProperty);
@@ -121,11 +118,8 @@ public partial class HtmlBox
             : GenerateHtmlContent();
     }
 
-    private string GenerateHtmlContent()
-    {
-        return string.Format(HtmlTemplate, LangProvider.Culture.TwoLetterISOLanguageName, _backgroundColor, HtmlText);
-    }
-    
+    private string GenerateHtmlContent() => string.Format(htmlTemplate, LangProvider.Culture.TwoLetterISOLanguageName, _backgroundColor, HtmlText);
+
     private static async void OnHtmlTextPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
     {
         var htmlText = e.NewValue as string;
@@ -133,7 +127,7 @@ public partial class HtmlBox
         {
             return;
         }
-        control.IsVideoAvailable = !string.IsNullOrEmpty(htmlText) && !htmlText.Contains(VideoUnavailable);
+        control.IsVideoAvailable = !string.IsNullOrEmpty(htmlText) && !htmlText.Contains(videoUnavailable);
         if (control.CheckAccess())
         {
             await control.ProcessBrowse();
@@ -184,7 +178,7 @@ public partial class HtmlBox
             // Serving via the virtual host (instead of NavigateToString) gives the page a
             // real origin so the embedded YouTube player receives a valid Referer.
             _currentContent = content;
-            Browser.CoreWebView2?.Navigate(VirtualHostUrl);
+            Browser.CoreWebView2?.Navigate(virtualHostUrl);
         }
         catch (ObjectDisposedException)
         {
@@ -206,7 +200,7 @@ public partial class HtmlBox
             return;
         }
 
-        Browser.CoreWebView2.AddWebResourceRequestedFilter($"{VirtualHostUrl}*",
+        Browser.CoreWebView2.AddWebResourceRequestedFilter($"{virtualHostUrl}*",
             CoreWebView2WebResourceContext.Document);
         Browser.CoreWebView2.WebResourceRequested += OnWebResourceRequested;
         _webResourceHandlerRegistered = true;
@@ -373,9 +367,9 @@ public partial class HtmlBox
             Logger.ForWarnEvent().Message("Failed to normalize WebView2 user data folder attributes: {Message}", ex.Message).Exception(ex).Log();
         }
     }
-    
-    private const string HtmlTemplate = """
-                                        
+
+    private const string htmlTemplate = """
+
                                                     <html lang="{0}">
                                                         <head>
                                                             <meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -421,7 +415,7 @@ public partial class HtmlBox
         HtmlText = VideoSelector.SelectedValue?.ToString() ?? string.Empty;
         await ProcessBrowse();
     }
-    
+
     private void InitializeVideoSelector()
     {
         VideoSelector.ItemsSource = Videos;

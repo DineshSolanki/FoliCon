@@ -18,9 +18,9 @@ namespace FoliCon.Modules.DeviantArt;
 internal static class DeviantArtAppConfig
 {
     // ── Built-in OAuth App Registration ──────────────────────────────────
-    public const string ClientId = "69659";
-    public const string AuthorizeUrl = "https://www.deviantart.com/oauth2/authorize"; // NOSONAR — intentional DeviantArt API endpoint
-    public const string TokenUrl = "https://www.deviantart.com/oauth2/token"; // NOSONAR — intentional DeviantArt API endpoint
+    public const string clientId = "69659";
+    public const string authorizeUrl = "https://www.deviantart.com/oauth2/authorize"; // NOSONAR — intentional DeviantArt API endpoint
+    public const string tokenUrl = "https://www.deviantart.com/oauth2/token"; // NOSONAR — intentional DeviantArt API endpoint
 
     /// <summary>
     /// The OAuth scopes to request. Includes "user.manage" only when the user has opted in.
@@ -33,9 +33,9 @@ internal static class DeviantArtAppConfig
     // DeviantArt doesn't support http://localhost redirect URIs, so we use a
     // hosted HTTPS page that reads ?code= from the URL and bounces back to localhost.
     // The hosted page URL (registered with DeviantArt):
-    public const string RedirectUri = "https://dineshsolanki.github.io/FoliCon/oauth-redirect.html";
+    public const string redirectUri = "https://dineshsolanki.github.io/FoliCon/oauth-redirect.html"; // NOSONAR — intentional hosted redirect page
     // The localhost port our HttpListener listens on (must match docs/oauth-redirect.html):
-    public const int CallbackPort = 6818;
+    public const int callbackPort = 6818;
     // Derived — the full local listener URL (used by OAuthCallbackListener):
-    public static readonly string LocalCallbackPrefix = $"http://localhost:{CallbackPort}/";
+    public static readonly string LocalCallbackPrefix = $"http://localhost:{callbackPort}/";
 }

@@ -18,7 +18,7 @@ public static class CultureUtils
     public static CultureInfo GetCultureInfoByLanguage(Languages language)
     {
         Logger.Debug("Getting CultureInfo by Language: {Language}", language);
-        
+
         var langCode = LanguageCodes.GetValueOrDefault(language, "en-US");
         ConfigHelper.Instance.SetLang(langCode.Split("-")[0]);
 

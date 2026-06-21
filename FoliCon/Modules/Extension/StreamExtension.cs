@@ -41,8 +41,5 @@ public static class StreamExtensions
         }
     }
 
-    private static bool IsValidFile(IEntry entry)
-    {
-        return !entry.IsDirectory && !FileUtils.IsExcludedFileIdentifier(entry.Key) && FileUtils.IsPngOrIco(entry.Key);
-    }
+    private static bool IsValidFile(IEntry entry) => !entry.IsDirectory && !FileUtils.IsExcludedFileIdentifier(entry.Key) && FileUtils.IsPngOrIco(entry.Key);
 }

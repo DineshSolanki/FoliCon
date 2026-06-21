@@ -3,11 +3,8 @@
 [Localizable(false)]
 internal static class AssemblyInfo
 {
-    public static string GetVersion()
-    {
-        return Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
-    }
-    
+    public static string GetVersion() => Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
+
     public static string GetVersionWithoutBuild()
     {
         var fullVersion = GetVersion();

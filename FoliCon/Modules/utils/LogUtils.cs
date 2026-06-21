@@ -25,20 +25,11 @@ public static class LogUtils
         return config;
     }
 
-    private static void LoadConfigurationFromNLog()
-    {
-        LogManager.Setup().LoadConfigurationFromFile(); 
-    }
+    private static void LoadConfigurationFromNLog() => LogManager.Setup().LoadConfigurationFromFile();
 
-    private static string GetLogPath()
-    {
-        return LogManager.Configuration?.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
-    }
+    private static string GetLogPath() => LogManager.Configuration?.Variables["logDirectory"].Render(LogEventInfo.CreateNullEvent());
 
-    private static LogLevel GetFileLogLevel()
-    {
-        return LogLevel.FromString(LogManager.Configuration?.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()) ?? "Error");
-    }
+    private static LogLevel GetFileLogLevel() => LogLevel.FromString(LogManager.Configuration?.Variables["fileLogLevel"].Render(LogEventInfo.CreateNullEvent()) ?? "Error");
 
     private static FileTarget ConfigureFileTarget(string logPath)
     {
@@ -46,7 +37,7 @@ public static class LogUtils
         {
             Name = "fileTarget",
             FileName = logPath,
-            Layout = LogLayoutString
+            Layout = logLayoutString
         };
     }
 
@@ -57,11 +48,11 @@ public static class LogUtils
             Name = "consoleTarget",
             UseDefaultRowHighlightingRules = true,
             EnableAnsiOutput = true,
-            Layout = LogLayoutString
+            Layout = logLayoutString
         };
     }
 
-    private const string LogLayoutString = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
+    private const string logLayoutString = "[${date:format=yyyy-MM-dd HH\\:mm\\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}";
 
     // Compute the app release version for Sentry. Prefer AssemblyVersion to avoid stale InformationalVersion (<Version> in csproj).
     private static string GetAppRelease()

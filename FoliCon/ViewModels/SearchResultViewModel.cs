@@ -6,7 +6,7 @@ namespace FoliCon.ViewModels;
 public class SearchResultViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private const string YoutubeEmbedUrl = "https://www.youtube.com/embed/{0}";
+    private const string youtubeEmbedUrl = "https://www.youtube.com/embed/{0}";
 
     #region Variables
 
@@ -146,10 +146,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         });
     }
 
-    protected virtual void CloseDialog(string parameter)
-    {
-        CloseDialog(parameter, false);
-    }
+    protected virtual void CloseDialog(string parameter) => CloseDialog(parameter, false);
 
     protected virtual void CloseDialog(string parameter, bool skipAll)
     {
@@ -166,10 +163,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         RequestClose.Invoke(parameters, result);
     }
 
-    public virtual bool CanCloseDialog()
-    {
-        return true;
-    }
+    public virtual bool CanCloseDialog() => true;
 
     public virtual void OnDialogClosed()
     {
@@ -214,7 +208,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         var titleToSearch = SearchAgainTitle ?? SearchTitle;
         Logger.Info("Searching for {TitleToSearch}", titleToSearch);
         BusyContent = Lang.SearchingWithName.Format(titleToSearch);
-        var result = SearchMode == MediaTypes.Game
+        var result = SearchMode == MediaTypes.game
             ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
             : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
         if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0)
@@ -292,7 +286,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             if (_isPickedById)
             {
-                if (SearchResult.MediaType == MediaTypes.Game)
+                if (SearchResult.MediaType == MediaTypes.game)
                 {
                     _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath, rating);
                 }
@@ -302,7 +296,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
                         _fullFolderPath, rating, _isPickedById);
                 }
             }
-            else if (SearchMode == MediaTypes.Game)
+            else if (SearchMode == MediaTypes.game)
             {
                 _igdbObject.ResultPicked(SearchResult.Result[pickedIndex], _fullFolderPath, rating);
             }
@@ -340,7 +334,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         var pickedIndex = ResultListViewData.Data.IndexOf(ResultListViewData.SelectedItem);
         try
         {
-            if (SearchResult.MediaType == MediaTypes.Game && SearchResult.Result[pickedIndex].Artworks is null)
+            if (SearchResult.MediaType == MediaTypes.game && SearchResult.Result[pickedIndex].Artworks is null)
             {
                 Logger.Warn("No more poster found for {SearchTitle}", SearchTitle);
                 MessageBox.Show(CustomMessageBox.Warning(Lang.NoPosterFound, SearchTitle));
@@ -377,19 +371,19 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         switch (SearchResult.MediaType)
         {
-            case MediaTypes.Game:
+            case MediaTypes.game:
                 await HandleMediaType(itemId, GetGameTrailer);
                 break;
-            case MediaTypes.Movie:
+            case MediaTypes.movie:
                 await HandleMediaType(itemId, GetMovieTrailer);
                 break;
-            case MediaTypes.Tv:
+            case MediaTypes.tv:
                 await HandleMediaType(itemId, GetTvTrailer);
                 break;
-            case MediaTypes.Mtv:
+            case MediaTypes.mtv:
                 await HandleMtvMediaType(itemId);
                 break;
-            case MediaTypes.Collection:
+            case MediaTypes.collection:
                 Logger.Warn("Collection media type not supported for trailer");
                 break;
             default:
@@ -414,10 +408,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
-    private static async Task HandleMediaType(string itemId, Func<string, Task> handleAction)
-    {
-        await handleAction(itemId);
-    }
+    private static async Task HandleMediaType(string itemId, Func<string, Task> handleAction) => await handleAction(itemId);
 
     private async Task GetGameTrailer(string itemId)
     {
@@ -474,12 +465,12 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         var trailer = ChooseTrailer(videos);
         var videoList = new List<MediaVideo>
         {
-            new(trailer.Name, YoutubeEmbedUrl.Format(trailer.Key))
+            new(trailer.Name, youtubeEmbedUrl.Format(trailer.Key))
         };
 
         videoList.AddRange(
             videos.Where(video => video != trailer)
-                .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.Key)))
+                .Select(video => new MediaVideo(video.Name, youtubeEmbedUrl.Format(video.Key)))
         );
         
         ResultListViewData.SelectedItem.Videos = videoList;
@@ -493,17 +484,17 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         if (trailer != null)
         {
-            videoList = [new MediaVideo(trailer.Name, YoutubeEmbedUrl.Format(trailer.VideoId))];
+            videoList = [new MediaVideo(trailer.Name, youtubeEmbedUrl.Format(trailer.VideoId))];
 
             videoList.AddRange(
                 videos.Where(video => video != trailer)
-                    .Select(video => new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId)))
+                    .Select(video => new MediaVideo(video.Name, youtubeEmbedUrl.Format(video.VideoId)))
             );
         }
         else
         {
             videoList = videos.Select(video =>
-                new MediaVideo(video.Name, YoutubeEmbedUrl.Format(video.VideoId))
+                new MediaVideo(video.Name, youtubeEmbedUrl.Format(video.VideoId))
             ).ToList();
         }
 
@@ -527,7 +518,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return SearchResult.Result != null;
         }
 
-        if (SearchMode == MediaTypes.Game)
+        if (SearchMode == MediaTypes.game)
         {
             return (SearchResult.Result as Game[])?.Length != 0;
         }
