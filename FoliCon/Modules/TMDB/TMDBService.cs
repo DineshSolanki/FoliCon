@@ -10,13 +10,13 @@ internal class TmdbService
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private readonly TMDbClient _serviceClient;
-    private readonly Dictionary<string, Func<int, Task<object>>> _mediaTypeHandlers;
+    private readonly Dictionary<string, Func<int, Task<object?>>> _mediaTypeHandlers;
 
     public TmdbService(TMDbClient serviceClient)
     {
         _serviceClient = serviceClient;
         _ = _serviceClient.GetConfigAsync().Result;
-        _mediaTypeHandlers = new Dictionary<string, Func<int, Task<object>>>
+        _mediaTypeHandlers = new Dictionary<string, Func<int, Task<object?>>>
         {
             { MediaTypes.Movie, async id => await _serviceClient.GetMovieAsync(id) },
             { MediaTypes.Collection, async id => await _serviceClient.GetCollectionAsync(id) },
@@ -26,7 +26,7 @@ internal class TmdbService
 
     public TMDbClient GetClient() => _serviceClient;
 
-    public Task<ImagesWithId> SearchMovieImages(int tvId)
+    public Task<ImagesWithId?> SearchMovieImages(int tvId)
     {
         return _serviceClient.GetMovieImagesAsync(tvId);
     }
@@ -49,12 +49,12 @@ internal class TmdbService
         };
     }
 
-    public Task<ImagesWithId> SearchTvImages(int tvId)
+    public Task<ImagesWithId?> SearchTvImages(int tvId)
     {
         return _serviceClient.GetTvShowImagesAsync(tvId);
     }
 
-    public Task<ImagesWithId> SearchCollectionImages(int collectionId)
+    public Task<ImagesWithId?> SearchCollectionImages(int collectionId)
     {
         return _serviceClient.GetCollectionImagesAsync(collectionId);
     }
@@ -73,7 +73,7 @@ internal class TmdbService
             MediaTypes.Movie => await SearchMoviesAsync(query),
             MediaTypes.Tv => await SearchTvShowAsync(query),
             MediaTypes.Mtv => await SearchMultiAsync(query),
-            _ => (null, "")
+            _ => ((object?)null, "")
         };
         return new ResultResponse
         {
@@ -82,9 +82,9 @@ internal class TmdbService
         };
     }
 
-    private async Task<(object Result, string MediaType)> SearchMoviesAsync(string query)
+    private async Task<(object? Result, string MediaType)> SearchMoviesAsync(string query)
     {
-        object r;
+        object? r;
         string mediaType;
         if (query.Contains("collection", StringComparison.CurrentCultureIgnoreCase))
         {
@@ -99,14 +99,14 @@ internal class TmdbService
         return (r, mediaType);
     }
 
-    private async Task<(object Result, string MediaType)> SearchTvShowAsync(string query)
+    private async Task<(object? Result, string MediaType)> SearchTvShowAsync(string query)
     {
         var r = await _serviceClient.SearchTvShowAsync(query);
         const string mediaType = MediaTypes.Tv;
         return (r, mediaType);
     }
 
-    private async Task<(object Result, string MediaType)> SearchMultiAsync(string query)
+    private async Task<(object? Result, string MediaType)> SearchMultiAsync(string query)
     {
         var r = await _serviceClient.SearchMultiAsync(query);
         const string mediaType = MediaTypes.Mtv;
@@ -148,7 +148,7 @@ internal class TmdbService
         };
     }
 
-    private async Task<object> SearchMovie(ParsedTitle parsedTitle)
+    private async Task<object?> SearchMovie(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
         return parsedTitle.IdType switch
@@ -166,7 +166,7 @@ internal class TmdbService
         };
     }
 
-    private async Task<object> SearchCollection(ParsedTitle parsedTitle)
+    private async Task<object?> SearchCollection(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
         return parsedTitle.IdType switch
@@ -182,7 +182,7 @@ internal class TmdbService
         };
     }
 
-    private async Task<object> SearchTvShow(ParsedTitle parsedTitle)
+    private async Task<object?> SearchTvShow(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
         return parsedTitle.IdType switch
@@ -201,7 +201,7 @@ internal class TmdbService
         };
     }
 
-    private async Task<object> SearchMulti(ParsedTitle parsedTitle)
+    private async Task<object?> SearchMulti(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
         return parsedTitle.IdType switch
@@ -219,16 +219,16 @@ internal class TmdbService
         };
     }
     
-    private static SearchContainer<SearchMovie> GetMovieSearchContainer(FindContainer findContainer)
+    private static SearchContainer<SearchMovie> GetMovieSearchContainer(FindContainer? findContainer)
     {
         return new SearchContainer<SearchMovie>
         {
-            TotalResults = findContainer.MovieResults.Count,
-            Results = findContainer.MovieResults
+            TotalResults = findContainer?.MovieResults?.Count ?? 0,
+            Results = findContainer?.MovieResults ?? []
         };
     }
     
-    private static SearchContainer<SearchMovie> GetMovieSearchContainer(Movie movie)
+    private static SearchContainer<SearchMovie> GetMovieSearchContainer(Movie? movie)
     {
         return new SearchContainer<SearchMovie>
         {
@@ -237,7 +237,7 @@ internal class TmdbService
         };
     }
     
-    private static SearchContainer<SearchCollection> GetCollectionSearchContainer(Collection collection)
+    private static SearchContainer<SearchCollection> GetCollectionSearchContainer(Collection? collection)
     {
         return new SearchContainer<SearchCollection>
         {
@@ -246,16 +246,16 @@ internal class TmdbService
         };
     }
     
-    private static SearchContainer<SearchTv> GetTvSearchContainer(FindContainer findContainer)
+    private static SearchContainer<SearchTv> GetTvSearchContainer(FindContainer? findContainer)
     {
         return new SearchContainer<SearchTv>
         {
-            TotalResults = findContainer.TvResults.Count,
-            Results = findContainer.TvResults
+            TotalResults = findContainer?.TvResults?.Count ?? 0,
+            Results = findContainer?.TvResults ?? []
         };
     }
     
-    private static SearchContainer<SearchTv> GetTvSearchContainer(TvShow tvShow)
+    private static SearchContainer<SearchTv> GetTvSearchContainer(TvShow? tvShow)
     {
         return new SearchContainer<SearchTv>
         {
@@ -264,16 +264,19 @@ internal class TmdbService
         };
     }
     
-    private static SearchContainer<dynamic> GetMultiSearchContainer(FindContainer findContainer)
+    private static SearchContainer<dynamic> GetMultiSearchContainer(FindContainer? findContainer)
     {
+        var movieResults = findContainer?.MovieResults;
+        var tvResults = findContainer?.TvResults;
+
         dynamic result;
-        if (findContainer.MovieResults.Count != 0)
+        if (movieResults is { Count: > 0 })
         {
-            result = findContainer.MovieResults;
+            result = movieResults;
         }
-        else if (findContainer.TvResults.Count != 0)
+        else if (tvResults is { Count: > 0 })
         {
-            result = findContainer.TvResults;
+            result = tvResults;
         }
         else
         {
@@ -281,7 +284,7 @@ internal class TmdbService
         }
         return new SearchContainer<dynamic>
         {
-            TotalResults = findContainer.MovieResults.Count + findContainer.TvResults.Count,
+            TotalResults = (movieResults?.Count ?? 0) + (tvResults?.Count ?? 0),
             Results = result
         };
     }
