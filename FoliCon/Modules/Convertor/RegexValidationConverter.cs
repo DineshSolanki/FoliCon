@@ -14,7 +14,7 @@ public class RegexValidationConverter : IMultiValueConverter
 
         try
         {
-            var regex = new Regex(pattern);
+            var regex = new Regex(pattern, RegexOptions.None, TimeSpan.FromSeconds(1));
             return regex.IsMatch(input);
         }
         catch (ArgumentException) // Handle invalid regex patterns

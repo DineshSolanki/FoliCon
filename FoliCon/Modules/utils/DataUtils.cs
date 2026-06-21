@@ -39,7 +39,7 @@ public static class DataUtils
        try
        {
            Logger.Trace("Checking if the pattern {Pattern}is a valid regex.", pattern);
-           _ = new Regex(pattern);
+           _ = new Regex(pattern, RegexOptions.None, TimeSpan.FromSeconds(1));
            Logger.Trace("Pattern {Pattern} is a valid regex.", pattern);
            return true;
        }

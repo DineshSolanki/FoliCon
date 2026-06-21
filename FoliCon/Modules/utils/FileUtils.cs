@@ -147,7 +147,7 @@ public static class FileUtils
         return !isHiddenOrSystem && !startsWithDot;
     }
 
-    private static bool PatternsMatch(DirectoryInfo directoryInfo, IEnumerable<Pattern> patterns) => patterns.Any(pattern => Regex.IsMatch(directoryInfo.Name, pattern.Regex));
+    private static bool PatternsMatch(DirectoryInfo directoryInfo, IEnumerable<Pattern> patterns) => patterns.Any(pattern => Regex.IsMatch(directoryInfo.Name, pattern.Regex, RegexOptions.None, TimeSpan.FromSeconds(1)));
 
     /// <summary>
     /// Get List of file in given folder.
