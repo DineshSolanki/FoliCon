@@ -905,9 +905,9 @@ e renovar o cache dos Ícones?</value>
       <value>Quando ativado, a pasta selecionada também será processada para criação de ícones, além de suas subpastas.</value>
     </data>
   <data name="MaxDepth" xml:space="preserve">
-    <value>Profundidade máxima</value>
-  </data>
+      <value>Profundidade máxima</value>
+    </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
-    <value>Profundidade máxima do processamento de subpastas. 0 = ilimitado (processar todos os níveis).</value>
-  </data>
+      <value>Profundidade máxima do processamento de subpastas. 0 = ilimitado (processar todos os níveis).</value>
+    </data>
 </root>

@@ -906,9 +906,9 @@ y actualizar la caché de iconos?</value>
       <value>Cuando está activado, la carpeta seleccionada también será procesada para la creación de iconos, además de sus subcarpetas.</value>
     </data>
   <data name="MaxDepth" xml:space="preserve">
-    <value>Profundidad máxima</value>
-  </data>
+      <value>Profundidad máxima</value>
+    </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
-    <value>Profundidad máxima del procesamiento de subcarpetas. 0 = sin límite (procesar todos los niveles).</value>
-  </data>
+      <value>Profundidad máxima del procesamiento de subcarpetas. 0 = sin límite (procesar todos los niveles).</value>
+    </data>
 </root>

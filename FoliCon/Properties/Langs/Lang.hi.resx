@@ -906,9 +906,9 @@
       <value>सक्षम होने पर, चयनित फ़ोल्डर को भी आइकन निर्माण के लिए प्रोसेस किया जाएगा, उसके सबफ़ोल्डर के अतिरिक्त।</value>
     </data>
   <data name="MaxDepth" xml:space="preserve">
-    <value>अधिकतम गहराई</value>
-  </data>
+      <value>अधिकतम गहराई</value>
+    </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
-    <value>सबफ़ोल्डर प्रोसेसिंग की अधिकतम गहराई। 0 = असीमित (सभी स्तरों को प्रोसेस करें)।</value>
-  </data>
+      <value>सबफ़ोल्डर प्रोसेसिंग की अधिकतम गहराई। 0 = असीमित (सभी स्तरों को प्रोसेस करें)।</value>
+    </data>
 </root>

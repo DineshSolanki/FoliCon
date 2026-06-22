@@ -905,9 +905,9 @@
       <value>عند التمكين، ستتم معالجة المجلد المحدد نفسه لإنشاء الأيقونات، بالإضافة إلى مجلداته الفرعية.</value>
     </data>
   <data name="MaxDepth" xml:space="preserve">
-    <value>الحد الأقصى للعمق</value>
-  </data>
+      <value>الحد الأقصى للعمق</value>
+    </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
-    <value>الحد الأقصى لعمق معالجة المجلدات الفرعية. 0 = غير محدود (معالجة جميع المستويات).</value>
-  </data>
+      <value>الحد الأقصى لعمق معالجة المجلدات الفرعية. 0 = غير محدود (معالجة جميع المستويات).</value>
+    </data>
 </root>
