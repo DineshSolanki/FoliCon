@@ -10,11 +10,8 @@ public static class IconUtils
 
     public static string GetImageName() => imageName;
 
-    /// <summary>
-    /// Creates Icons from PNG
-    /// </summary>
     public static async Task<int> MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
-         bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback, bool forceOverwrite = false)
+         bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback, bool forceOverwrite)
      {
          Logger.Debug(
              "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}, ForceOverwrite: {ForceOverwrite}",

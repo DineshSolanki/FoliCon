@@ -115,10 +115,15 @@ public static class FileUtils
         Logger.Debug("MediaInfo Deleted from Subfolders of: {FolderPath}", folderPath);
     }
 
-    public static List<string> GetFolderNames(string folderPath, bool includeAlreadyProcessed = false)
+    public static List<string> GetFolderNames(string folderPath) => GetFolderNames(folderPath, false);
+
+    public static List<string> GetFolderNames(string folderPath, bool includeAlreadyProcessed)
     {
         var folderNames = new List<string>();
-        if (string.IsNullOrEmpty(folderPath)) return folderNames;
+        if (string.IsNullOrEmpty(folderPath))
+        {
+            return folderNames;
+        }
         if (includeAlreadyProcessed)
         {
             folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
