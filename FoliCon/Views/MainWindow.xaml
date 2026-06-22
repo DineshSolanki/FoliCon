@@ -67,6 +67,12 @@
                     <CheckBox x:Name="ChkIgnoreAmbiguous" Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
                               IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
                               ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
+                    <CheckBox x:Name="ChkIncludeAlreadyProcessed" Content="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessed}}"
+                              IsChecked="{Binding IncludeAlreadyProcessed}"
+                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessedTooltip}}" />
+                    <CheckBox x:Name="ChkProcessSelectedFolder" Content="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolder}}"
+                              IsChecked="{Binding ProcessSelectedFolder}"
+                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolderTooltip}}" />
                     <Separator />
                     <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
                               Command="{Binding PosterIconConfigCommand}" />

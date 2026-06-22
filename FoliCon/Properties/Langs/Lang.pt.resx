@@ -892,4 +892,22 @@ e renovar o cache dos Ícones?</value>
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>O acesso a ícones por muro de seguidores não está ativado. Ative o "Acesso a ícones por muro de seguidores" nas definições do DeviantArt e volte a ligar-se para usar esta funcionalidade.</value>
     </data>
+  <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>Incluir pastas com ícones existentes</value>
+    </data>
+  <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>Quando ativado, as pastas que já possuem ícones do FoliCon também serão processadas e seus ícones poderão ser atualizados.</value>
+    </data>
+  <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>Incluir pasta selecionada</value>
+    </data>
+  <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>Quando ativado, a pasta selecionada também será processada para criação de ícones, além de suas subpastas.</value>
+    </data>
+  <data name="MaxDepth" xml:space="preserve">
+    <value>Profundidade máxima</value>
+  </data>
+  <data name="MaxDepthTooltip" xml:space="preserve">
+    <value>Profundidade máxima do processamento de subpastas. 0 = ilimitado (processar todos os níveis).</value>
+  </data>
 </root>

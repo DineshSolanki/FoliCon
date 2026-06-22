@@ -893,4 +893,22 @@
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>Доступ к иконкам через стену подписчиков не включён. Включите «Доступ к иконкам через стену подписчиков» в настройках DeviantArt и подключитесь заново.</value>
     </data>
+  <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>Включить папки с существующими иконками</value>
+    </data>
+  <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>Если включено, папки с уже существующими иконками FoliCon также будут обработаны, и их иконки могут быть обновлены.</value>
+    </data>
+  <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>Включить выбранную папку</value>
+    </data>
+  <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>Если включено, выбранная папка также будет обработана для создания иконок, в дополнение к её подпапкам.</value>
+    </data>
+  <data name="MaxDepth" xml:space="preserve">
+    <value>Макс. глубина</value>
+  </data>
+  <data name="MaxDepthTooltip" xml:space="preserve">
+    <value>Максимальная глубина обработки подпапок. 0 = без ограничений (обрабатывать все уровни).</value>
+  </data>
 </root>

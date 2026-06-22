@@ -13,7 +13,9 @@ namespace FoliCon.Properties.Langs;
 [Localizable(false)]
 public class LangProvider : INotifyPropertyChanged
 {
-    protected LangProvider() { }
+    protected LangProvider()
+    {
+    }
 
     private static string _cultureInfoStr;
     internal static LangProvider Instance => ResourceHelper.GetResource<LangProvider>("FoliConLangs");
@@ -21,11 +23,8 @@ public class LangProvider : INotifyPropertyChanged
 
     public static void SetLang(DependencyObject dependencyObject, DependencyProperty dependencyProperty, string key)
     {
-        BindingOperations.SetBinding(dependencyObject, dependencyProperty, new Binding(key)
-        {
-            Source = Instance,
-            Mode = BindingMode.OneWay
-        });
+        BindingOperations.SetBinding(dependencyObject, dependencyProperty,
+            new Binding(key) { Source = Instance, Mode = BindingMode.OneWay });
     }
 
     public static CultureInfo Culture
@@ -136,6 +135,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Idle));
         OnPropertyChanged(nameof(Ignore));
         OnPropertyChanged(nameof(IgnoreAmbiguousTitle));
+        OnPropertyChanged(nameof(IncludeAlreadyProcessed));
+        OnPropertyChanged(nameof(IncludeAlreadyProcessedTooltip));
         OnPropertyChanged(nameof(InvalidPath));
         OnPropertyChanged(nameof(InvalidRegex));
         OnPropertyChanged(nameof(InvalidRegexMessage));
@@ -144,6 +145,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Load));
         OnPropertyChanged(nameof(LoadingPosters));
         OnPropertyChanged(nameof(MakeIcons));
+        OnPropertyChanged(nameof(MaxDepth));
+        OnPropertyChanged(nameof(MaxDepthTooltip));
         OnPropertyChanged(nameof(ManualExplorer));
         OnPropertyChanged(nameof(MediaRating));
         OnPropertyChanged(nameof(MediaTitle));
@@ -174,6 +177,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(PosterIconOverlay));
         OnPropertyChanged(nameof(PosterOverlayTooltip));
         OnPropertyChanged(nameof(Previewer));
+        OnPropertyChanged(nameof(ProcessSelectedFolder));
+        OnPropertyChanged(nameof(ProcessSelectedFolderTooltip));
         OnPropertyChanged(nameof(Professional));
         OnPropertyChanged(nameof(Rating));
         OnPropertyChanged(nameof(RefreshingFolder));
@@ -349,6 +354,12 @@ public class LangProvider : INotifyPropertyChanged
     public string EnableErrorReporting => Lang.EnableErrorReporting;
     public string EnableErrorReportingTip => Lang.EnableErrorReportingTip;
     public string EnableSubfolderProcessing => Lang.EnableSubfolderProcessing;
+    public string IncludeAlreadyProcessed => Lang.IncludeAlreadyProcessed;
+    public string IncludeAlreadyProcessedTooltip => Lang.IncludeAlreadyProcessedTooltip;
+    public string ProcessSelectedFolder => Lang.ProcessSelectedFolder;
+    public string ProcessSelectedFolderTooltip => Lang.ProcessSelectedFolderTooltip;
+    public string MaxDepth => Lang.MaxDepth;
+    public string MaxDepthTooltip => Lang.MaxDepthTooltip;
     public string Enabled => Lang.Enabled;
     public string English => Lang.English;
     public string EnterTitlePlaceholder => Lang.EnterTitlePlaceholder;
@@ -741,7 +752,8 @@ public static class LangKeys
     public static readonly string OnboardingDeviantArtAuthInstructions = nameof(OnboardingDeviantArtAuthInstructions);
     public static readonly string OnboardingDeviantArtBuiltIn = nameof(OnboardingDeviantArtBuiltIn);
     public static readonly string OnboardingDeviantArtCustom = nameof(OnboardingDeviantArtCustom);
-    public static readonly string OnboardingDeviantArtCustomInstructions = nameof(OnboardingDeviantArtCustomInstructions);
+    public static readonly string OnboardingDeviantArtCustomInstructions =
+        nameof(OnboardingDeviantArtCustomInstructions);
     public static readonly string OnboardingDeviantArtValidateConnect = nameof(OnboardingDeviantArtValidateConnect);
     public static readonly string OnboardingConnectDeviantArt = nameof(OnboardingConnectDeviantArt);
     public static readonly string OnboardingDeviantArtConnected = nameof(OnboardingDeviantArtConnected);
@@ -796,5 +808,10 @@ public static class LangKeys
     public static readonly string DeviantArtWatchScopeDescription = nameof(DeviantArtWatchScopeDescription);
     public static readonly string DeviantArtWatchScopeReauthNeeded = nameof(DeviantArtWatchScopeReauthNeeded);
     public static readonly string DeviantArtWatchScopeNotEnabled = nameof(DeviantArtWatchScopeNotEnabled);
-
+    public static readonly string IncludeAlreadyProcessed = nameof(IncludeAlreadyProcessed);
+    public static readonly string IncludeAlreadyProcessedTooltip = nameof(IncludeAlreadyProcessedTooltip);
+    public static readonly string ProcessSelectedFolder = nameof(ProcessSelectedFolder);
+    public static readonly string ProcessSelectedFolderTooltip = nameof(ProcessSelectedFolderTooltip);
+    public static readonly string MaxDepth = nameof(MaxDepth);
+    public static readonly string MaxDepthTooltip = nameof(MaxDepthTooltip);
 }

@@ -892,4 +892,22 @@ and refresh Icon Cache?</value>
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>关注墙图标访问未启用。请在 DeviantArt 设置中启用「关注墙图标访问」并重新连接以使用此功能。</value>
     </data>
+  <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>包含已有图标的文件夹</value>
+    </data>
+  <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>启用后，已有 FoliCon 图标的文件夹也会被处理，其图标可以被更新。</value>
+    </data>
+  <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>包含所选文件夹</value>
+    </data>
+  <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>启用后，所选文件夹本身也会被处理以创建图标，此外还会处理其子文件夹。</value>
+    </data>
+  <data name="MaxDepth" xml:space="preserve">
+    <value>最大深度</value>
+  </data>
+  <data name="MaxDepthTooltip" xml:space="preserve">
+    <value>子文件夹处理的最大深度。0 = 无限制（处理所有层级）。</value>
+  </data>
 </root>

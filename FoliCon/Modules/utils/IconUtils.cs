@@ -10,15 +10,12 @@ public static class IconUtils
 
     public static string GetImageName() => imageName;
 
-    /// <summary>
-    /// Creates Icons from PNG
-    /// </summary>
     public static async Task<int> MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
-         bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback)
+         bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback, bool forceOverwrite)
      {
          Logger.Debug(
-             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}",
-             iconMode, selectedFolder, isRatingVisible, isMockupVisible);
+             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}, ForceOverwrite: {ForceOverwrite}",
+             iconMode, selectedFolder, isRatingVisible, isMockupVisible, forceOverwrite);
          var iconProcessedCount = 0;
          var ratingVisibility = isRatingVisible ? "visible" : "hidden";
          var mockupVisibility = isMockupVisible ? "visible" : "hidden";
@@ -36,32 +33,16 @@ public static class IconUtils
              var targetFile = $@"{parentFolder}\{folderName}\{imageName}.ico";
              var pngFilePath = $@"{parentFolder}\{folderName}\{imageName}.png";
 
-             if (FileUtils.FileExists(pngFilePath) && !FileUtils.FileExists(targetFile))
-             {
-                 var rating = item.Rating;
-                 var mediaTitle = item.Title;
-                 var iconProperties = new IconProperties(iconMode, pngFilePath, rating, ratingVisibility, mockupVisibility, mediaTitle);
-                 await BuildFolderIco(iconProperties, iconOverlay);
+             TryDeleteExistingIco(targetFile, forceOverwrite);
 
-                 lock (lockObj)
-                 {
-                     iconProcessedCount += 1;
-                 }
+             var created = await TryCreateIconFromPng(pngFilePath, targetFile, forceOverwrite, item,
+                 iconMode, ratingVisibility, mockupVisibility, iconOverlay);
 
-                 Logger.Info("Icon Created for Folder: {Folder}", folderName);
-                 Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
-
-                 File.Delete(pngFilePath); //<--IO Exception here
-             }
-
-             if (FileUtils.FileExists(targetFile))
-             {
-                 FileUtils.HideFile(targetFile);
-                 FileUtils.SetFolderIcon($"{imageName}.ico", $@"{parentFolder}\{folderName}");
-             }
+             ApplyFolderIcon(targetFile, folderName, parentFolder);
 
              lock (lockObj)
              {
+                 iconProcessedCount += created ? 1 : 0;
                  extractionProgress.Value = iconProcessedCount;
                  extractionProgress.Text = Lang.CreatingIconWithCount.Format(iconProcessedCount, max);
                  progressCallback.Report(extractionProgress);
@@ -74,6 +55,49 @@ public static class IconUtils
          SHChangeNotify(SHCNE.SHCNE_UPDATEITEM, SHCNF.SHCNF_PATHW, selectedFolder);
          return iconProcessedCount;
      }
+
+    private static void TryDeleteExistingIco(string targetFile, bool forceOverwrite)
+    {
+        if (!forceOverwrite || !FileUtils.FileExists(targetFile))
+        {
+            return;
+        }
+        try
+        {
+            File.Delete(targetFile);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to delete existing ICO: {TargetFile}", targetFile);
+        }
+    }
+
+    private static async Task<bool> TryCreateIconFromPng(string pngFilePath, string targetFile, bool forceOverwrite,
+        PickedListItem item, string iconMode, string ratingVisibility, string mockupVisibility, IconOverlay iconOverlay)
+    {
+        if (!FileUtils.FileExists(pngFilePath) || (FileUtils.FileExists(targetFile) && !forceOverwrite))
+        {
+            return false;
+        }
+
+        var iconProperties = new IconProperties(iconMode, pngFilePath, item.Rating, ratingVisibility, mockupVisibility, item.Title);
+        await BuildFolderIco(iconProperties, iconOverlay);
+
+        Logger.Info("Icon Created for Folder: {Folder}", item.FolderName);
+        Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
+        File.Delete(pngFilePath);
+        return true;
+    }
+
+    private static void ApplyFolderIcon(string targetFile, string folderName, string parentFolder)
+    {
+        if (!FileUtils.FileExists(targetFile))
+        {
+            return;
+        }
+        FileUtils.HideFile(targetFile);
+        FileUtils.SetFolderIcon($"{imageName}.ico", $@"{parentFolder}\{folderName}");
+    }
 
     /// <summary>
     /// Converts From PNG to ICO

@@ -892,4 +892,22 @@ and refresh Icon Cache?</value>
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>フォローウォール アイコンアクセスが有効ではありません。DeviantArt の設定で「フォローウォール アイコンアクセス」を有効にして再接続してください。</value>
     </data>
+  <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>既存のアイコンがあるフォルダーを含める</value>
+    </data>
+  <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>有効にすると、FoliConのアイコンが既にあるフォルダーも処理され、アイコンを更新できます。</value>
+    </data>
+  <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>選択したフォルダーを含める</value>
+    </data>
+  <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>有効にすると、サブフォルダーに加えて、選択したフォルダー自体もアイコン作成のために処理されます。</value>
+    </data>
+  <data name="MaxDepth" xml:space="preserve">
+    <value>最大深度</value>
+  </data>
+  <data name="MaxDepthTooltip" xml:space="preserve">
+    <value>サブフォルダー処理の最大深度。0 = 無制限（すべてのレベルを処理）。</value>
+  </data>
 </root>

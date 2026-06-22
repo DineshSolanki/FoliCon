@@ -892,4 +892,22 @@
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>الوصول عبر جدار المتابعة غير مفعّل. فعّل "الوصول عبر جدار المتابعة" في إعدادات DeviantArt وأعد الاتصال لاستخدام هذه الميزة.</value>
     </data>
+  <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>تضمين المجلدات ذات الأيقونات الموجودة</value>
+    </data>
+  <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>عند التمكين، ستتم معالجة المجلدات التي تحتوي بالفعل على أيقونات FoliCon ويمكن تحديث أيقوناتها.</value>
+    </data>
+  <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>تضمين المجلد المحدد</value>
+    </data>
+  <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>عند التمكين، ستتم معالجة المجلد المحدد نفسه لإنشاء الأيقونات، بالإضافة إلى مجلداته الفرعية.</value>
+    </data>
+  <data name="MaxDepth" xml:space="preserve">
+    <value>الحد الأقصى للعمق</value>
+  </data>
+  <data name="MaxDepthTooltip" xml:space="preserve">
+    <value>الحد الأقصى لعمق معالجة المجلدات الفرعية. 0 = غير محدود (معالجة جميع المستويات).</value>
+  </data>
 </root>
