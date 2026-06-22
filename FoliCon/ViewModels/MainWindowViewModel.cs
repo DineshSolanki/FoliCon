@@ -484,25 +484,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             var (folderPath, depth) = folderQueue.Dequeue();
             var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
 
-            // Process the selected folder itself if ProcessSelectedFolder is enabled
-            // Only if it doesn't already have an icon (unless IncludeAlreadyProcessed is checked)
-            if (!isRootProcessed && ProcessSelectedFolder && folderPath == rootFolderPath
-                && (IncludeAlreadyProcessed || !FileUtils.FileExists(Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico"))))
+            var (skipAll, processed) = await TryProcessSelectedFolder(rootFolderPath, folderPath, isRootProcessed);
+            isRootProcessed |= processed;
+            if (skipAll)
             {
-                isRootProcessed = true;
-                var folderName = Path.GetFileName(folderPath);
-                if (!string.IsNullOrEmpty(folderName))
-                {
-                    var parentPath = Path.GetDirectoryName(folderPath);
-                    if (!string.IsNullOrEmpty(parentPath))
-                    {
-                        StatusBarProperties.TotalFolders++;
-                        if (await ProcessItemAsync(parentPath, folderName))
-                        {
-                            break; // Skip All was selected
-                        }
-                    }
-                }
+                break;
             }
 
             if (subfolderNames.Count == 0)
@@ -511,13 +497,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
 
             StatusBarProperties.TotalFolders += subfolderNames.Count;
-
-            foreach (var itemTitle in subfolderNames)
+            skipAll = await ProcessFolderItems(folderPath, subfolderNames);
+            if (skipAll)
             {
-                if (await ProcessItemAsync(folderPath, itemTitle))
-                {
-                    break; // Skip All was selected
-                }
+                break;
             }
 
             if (Services.Settings.SubfolderProcessingEnabled && (maxDepth == 0 || depth + 1 < maxDepth))
@@ -525,6 +508,41 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ProcessSubfolders(folderPath, folderQueue, depth + 1);
             }
         }
+    }
+
+    private async Task<(bool skipAll, bool rootProcessed)> TryProcessSelectedFolder(string rootFolderPath, string folderPath, bool isRootProcessed)
+    {
+        if (isRootProcessed || !ProcessSelectedFolder || folderPath != rootFolderPath)
+        {
+            return (false, false);
+        }
+        if (!IncludeAlreadyProcessed && FileUtils.FileExists(Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico")))
+        {
+            return (false, true);
+        }
+
+        var folderName = Path.GetFileName(folderPath);
+        var parentPath = Path.GetDirectoryName(folderPath);
+        if (string.IsNullOrEmpty(folderName) || string.IsNullOrEmpty(parentPath))
+        {
+            return (false, true);
+        }
+
+        StatusBarProperties.TotalFolders++;
+        var skipAll = await ProcessItemAsync(parentPath, folderName);
+        return (skipAll, true);
+    }
+
+    private async Task<bool> ProcessFolderItems(string folderPath, List<string> subfolderNames)
+    {
+        foreach (var itemTitle in subfolderNames)
+        {
+            if (await ProcessItemAsync(folderPath, itemTitle))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private async Task<bool> ProcessItemAsync(string folderPath, string itemTitle)
@@ -739,40 +757,59 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             Logger.Trace($"Processing Folder: {folderPath}");
             var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
 
-            // Include the selected folder itself if ProcessSelectedFolder is enabled
-            // Only if it doesn't already have an icon (unless IncludeAlreadyProcessed is checked)
-            if (!isRootProcessed && ProcessSelectedFolder && folderPath == initialFolderPath
-                && (IncludeAlreadyProcessed || !FileUtils.FileExists(Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico"))))
-            {
-                isRootProcessed = true;
-                var folderName = Path.GetFileName(folderPath);
-                if (!string.IsNullOrEmpty(folderName))
-                {
-                    subfolderNames.Add(folderName);
-                }
-            }
+            TryIncludeSelectedFolder(subfolderNames, initialFolderPath, folderPath, ref isRootProcessed);
 
             if (subfolderNames.Count == 0)
             {
                 continue;
             }
-            StatusBarProperties.TotalFolders += subfolderNames.Count;
-            StatusBarProperties.AppStatus = Lang.Searching;
-            _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
-                _dArtObject, _ => { });
-            Logger.Debug("ProcessProfessionalMode: found {ResultCount} results, adding to final list", _pickedListDataTable.Count);
-            FinalListViewData.Data.AddRange(_pickedListDataTable);
-            StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
-            if (!Services.Settings.SubfolderProcessingEnabled || (maxDepth != 0 && depth + 1 >= maxDepth))
-            {
-                continue;
-            }
-            Logger.Trace("Subfolder Processing Enabled, Adding Subfolders.");
-            var subFolders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            foreach (var subFolder in subFolders)
-            {
-                foldersQueue.Enqueue((subFolder, depth + 1));
-            }
+
+            ProcessProfessionalFolder(folderPath, subfolderNames);
+            EnqueueSubfoldersIfEnabled(folderPath, depth, maxDepth, foldersQueue);
+        }
+    }
+
+    private void TryIncludeSelectedFolder(List<string> subfolderNames, string initialFolderPath, string folderPath, ref bool isRootProcessed)
+    {
+        if (isRootProcessed || !ProcessSelectedFolder || folderPath != initialFolderPath)
+        {
+            return;
+        }
+        if (!IncludeAlreadyProcessed && FileUtils.FileExists(Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico")))
+        {
+            isRootProcessed = true;
+            return;
+        }
+        isRootProcessed = true;
+        var folderName = Path.GetFileName(folderPath);
+        if (!string.IsNullOrEmpty(folderName))
+        {
+            subfolderNames.Add(folderName);
+        }
+    }
+
+    private void ProcessProfessionalFolder(string folderPath, List<string> subfolderNames)
+    {
+        StatusBarProperties.TotalFolders += subfolderNames.Count;
+        StatusBarProperties.AppStatus = Lang.Searching;
+        _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
+            _dArtObject, _ => { });
+        Logger.Debug("ProcessProfessionalMode: found {ResultCount} results, adding to final list", _pickedListDataTable.Count);
+        FinalListViewData.Data.AddRange(_pickedListDataTable);
+        StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
+    }
+
+    private static void EnqueueSubfoldersIfEnabled(string folderPath, int depth, int maxDepth, Queue<(string path, int depth)> foldersQueue)
+    {
+        if (!Services.Settings.SubfolderProcessingEnabled || (maxDepth != 0 && depth + 1 >= maxDepth))
+        {
+            return;
+        }
+        Logger.Trace("Subfolder Processing Enabled, Adding Subfolders.");
+        var subFolders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
+        foreach (var subFolder in subFolders)
+        {
+            foldersQueue.Enqueue((subFolder, depth + 1));
         }
     }
 
