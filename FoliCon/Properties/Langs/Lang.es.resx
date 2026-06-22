@@ -893,4 +893,22 @@ y actualizar la caché de iconos?</value>
   <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>El acceso a iconos por muro de seguidores no está activado. Activa "Acceso a iconos por muro de seguidores" en la configuración de DeviantArt y vuelve a conectarte para usar esta función.</value>
     </data>
+  <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>Incluir carpetas con iconos existentes</value>
+    </data>
+  <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>Cuando está activado, las carpetas que ya tienen iconos de FoliCon también serán procesadas y sus iconos podrán ser actualizados.</value>
+    </data>
+  <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>Incluir carpeta seleccionada</value>
+    </data>
+  <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>Cuando está activado, la carpeta seleccionada también será procesada para la creación de iconos, además de sus subcarpetas.</value>
+    </data>
+  <data name="MaxDepth" xml:space="preserve">
+    <value>Profundidad máxima</value>
+  </data>
+  <data name="MaxDepthTooltip" xml:space="preserve">
+    <value>Profundidad máxima del procesamiento de subcarpetas. 0 = sin límite (procesar todos los niveles).</value>
+  </data>
 </root>

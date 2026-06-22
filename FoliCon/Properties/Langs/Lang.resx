@@ -893,4 +893,22 @@ and refresh Icon Cache?</value>
     <data name="DeviantArtWatchScopeNotEnabled" xml:space="preserve">
       <value>Watcher-gated icon access is not enabled. Enable "Watcher-Gated Icon Access" in the DeviantArt setup and reconnect to use this feature.</value>
     </data>
+    <data name="IncludeAlreadyProcessed" xml:space="preserve">
+      <value>Include folders with existing icons</value>
+    </data>
+    <data name="IncludeAlreadyProcessedTooltip" xml:space="preserve">
+      <value>When enabled, folders that already have FoliCon icons will also be processed and their icons can be updated.</value>
+    </data>
+    <data name="ProcessSelectedFolder" xml:space="preserve">
+      <value>Include selected folder</value>
+    </data>
+    <data name="ProcessSelectedFolderTooltip" xml:space="preserve">
+      <value>When enabled, the selected folder itself will also be processed for icon creation, in addition to its subfolders.</value>
+    </data>
+    <data name="MaxDepth" xml:space="preserve">
+      <value>Max depth</value>
+    </data>
+    <data name="MaxDepthTooltip" xml:space="preserve">
+      <value>Maximum depth of subfolder processing. 0 = unlimited (process all levels).</value>
+    </data>
 </root>

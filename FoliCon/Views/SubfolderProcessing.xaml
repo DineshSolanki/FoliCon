@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="10">
@@ -78,6 +79,14 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <CheckBox x:Name="ChkEnableFeature" IsChecked="{Binding SubfolderProcessingEnabled}" Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}" Grid.Row="2" Margin="10" />
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,5,10,5"
+                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MaxDepthTooltip}}">
+            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.MaxDepth}}"
+                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <hc:NumericUpDown Value="{Binding SubfolderDepthLimit}"
+                              Minimum="0" Maximum="100" Width="120"
+                              hc:InfoElement.Placeholder="0 = unlimited"/>
+        </StackPanel>
+        <CheckBox x:Name="ChkEnableFeature" IsChecked="{Binding SubfolderProcessingEnabled}" Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}" Grid.Row="3" Margin="10" />
     </Grid>
 </UserControl>

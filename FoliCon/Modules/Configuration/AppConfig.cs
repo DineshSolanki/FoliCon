@@ -41,6 +41,7 @@ public class AppConfig : GlobalDataHelper
     public override int FileVersion { get; set; }
 
     public bool SubfolderProcessingEnabled { get; set; }
+    public int SubfolderDepthLimit { get; set; }
 
     public ObservableCollection<Pattern> Patterns { get; set; } =
         [new Pattern("^[0-9]{1,2}x[0-9]{1,2}", false, true), new Pattern("S[0-9]{1,2}E[0-9]", false, true),

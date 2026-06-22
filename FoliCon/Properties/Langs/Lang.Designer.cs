@@ -2349,5 +2349,59 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("DeviantArtWatchScopeNotEnabled", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include folders with existing icons.
+        /// </summary>
+        public static string IncludeAlreadyProcessed {
+            get {
+                return ResourceManager.GetString("IncludeAlreadyProcessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When enabled, folders that already have FoliCon icons will also be processed and their icons can be updated..
+        /// </summary>
+        public static string IncludeAlreadyProcessedTooltip {
+            get {
+                return ResourceManager.GetString("IncludeAlreadyProcessedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include selected folder.
+        /// </summary>
+        public static string ProcessSelectedFolder {
+            get {
+                return ResourceManager.GetString("ProcessSelectedFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When enabled, the selected folder itself will also be processed for icon creation, in addition to its subfolders..
+        /// </summary>
+        public static string ProcessSelectedFolderTooltip {
+            get {
+                return ResourceManager.GetString("ProcessSelectedFolderTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max depth.
+        /// </summary>
+        public static string MaxDepth {
+            get {
+                return ResourceManager.GetString("MaxDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum depth of subfolder processing. 0 = unlimited (process all levels)..
+        /// </summary>
+        public static string MaxDepthTooltip {
+            get {
+                return ResourceManager.GetString("MaxDepthTooltip", resourceCulture);
+            }
+        }
     }
 }

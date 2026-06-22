@@ -14,11 +14,11 @@ public static class IconUtils
     /// Creates Icons from PNG
     /// </summary>
     public static async Task<int> MakeIco(string iconMode, string selectedFolder, List<PickedListItem> pickedListDataTable,
-         bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback)
+         bool isRatingVisible, bool isMockupVisible, IProgress<ProgressBarData> progressCallback, bool forceOverwrite = false)
      {
          Logger.Debug(
-             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}",
-             iconMode, selectedFolder, isRatingVisible, isMockupVisible);
+             "Creating Icons from PNG, Icon Mode: {IconMode}, Selected Folder: {SelectedFolder}, isRatingVisible: {IsRatingVisible}, isMockupVisible: {IsMockupVisible}, ForceOverwrite: {ForceOverwrite}",
+             iconMode, selectedFolder, isRatingVisible, isMockupVisible, forceOverwrite);
          var iconProcessedCount = 0;
          var ratingVisibility = isRatingVisible ? "visible" : "hidden";
          var mockupVisibility = isMockupVisible ? "visible" : "hidden";
@@ -36,7 +36,19 @@ public static class IconUtils
              var targetFile = $@"{parentFolder}\{folderName}\{imageName}.ico";
              var pngFilePath = $@"{parentFolder}\{folderName}\{imageName}.png";
 
-             if (FileUtils.FileExists(pngFilePath) && !FileUtils.FileExists(targetFile))
+             if (forceOverwrite && FileUtils.FileExists(targetFile))
+             {
+                 try
+                 {
+                     File.Delete(targetFile);
+                 }
+                 catch (Exception ex)
+                 {
+                     Logger.Warn(ex, "Failed to delete existing ICO: {TargetFile}", targetFile);
+                 }
+             }
+
+             if (FileUtils.FileExists(pngFilePath) && (!FileUtils.FileExists(targetFile) || forceOverwrite))
              {
                  var rating = item.Rating;
                  var mediaTitle = item.Title;

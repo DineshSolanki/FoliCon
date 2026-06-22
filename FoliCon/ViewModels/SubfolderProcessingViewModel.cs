@@ -12,38 +12,42 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
 
     public string Title => Lang.SubfolderProcessing;
 
-    private ObservableCollection<Pattern> _patterns;
-    private bool _subfolderProcessingEnabled;
-        
     public ObservableCollection<Pattern> PatternsList
     {
-        get => _patterns;
-        set => SetProperty(ref _patterns, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-        
+
     public bool SubfolderProcessingEnabled
     {
-        get => _subfolderProcessingEnabled;
-        set => SetProperty(ref _subfolderProcessingEnabled, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-        
+
+    public int SubfolderDepthLimit
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     #endregion
 
     #region Commands
 
     public DelegateCommand<string> AddCommand { get; }
     public DelegateCommand<Pattern> RemoveCommand { get; }
-    
+
     #endregion
     public SubfolderProcessingViewModel()
     {
         AddCommand = new DelegateCommand<string>(AddPattern);
         RemoveCommand = new DelegateCommand<Pattern>(RemovePattern);
-            
+
         SubfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
+        SubfolderDepthLimit = Services.Settings.SubfolderDepthLimit;
         PatternsList = Services.Settings.Patterns;
     }
-        
+
     private void AddPattern(string regex)
     {
         var trimmedRegex = regex?.Trim();
@@ -54,13 +58,13 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
         Logger.Debug("Adding pattern: {Regex}", trimmedRegex);
         PatternsList.Add(new Pattern(trimmedRegex, true));
     }
-    
+
     private void RemovePattern(Pattern pattern)
     {
         Logger.Debug("Removing pattern: {Regex}", pattern.Regex);
         PatternsList.Remove(pattern);
     }
-    
+
     private bool IsValidPattern(string pattern)
     {
         if (!string.IsNullOrWhiteSpace(pattern)
@@ -70,12 +74,12 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
         }
         if (!DataUtils.IsValidRegex(pattern))
         {
-            MessageBox.Show(CustomMessageBox.Error(Lang.InvalidRegexMessage, 
+            MessageBox.Show(CustomMessageBox.Error(Lang.InvalidRegexMessage,
                 Lang.InvalidRegex));
         }
         return false;
     }
-    
+
     #region DialogMethods
 
     public DialogCloseListener RequestClose { get; }
@@ -86,6 +90,7 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
     {
         Services.Settings.Patterns = PatternsList;
         Services.Settings.SubfolderProcessingEnabled = SubfolderProcessingEnabled;
+        Services.Settings.SubfolderDepthLimit = SubfolderDepthLimit;
         Services.Settings.Save();
     }
 

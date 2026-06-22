@@ -11,103 +11,97 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     #region Variables
 
-    private string _selectedFolder;
-    private string _title = "FoliCon";
-    private bool _isRatingVisible = true;
-    private bool _isPosterMockupUsed = true;
-    private bool _isBusy;
-    private bool _isMakeEnabled;
-    private bool _isSkipAmbiguous;
-    private string _iconMode = "Poster";
-    private string _searchMode = MediaTypes.movie;
-    private bool _isSearchModeVisible = true;
-    private bool _stopIconDownload;
-    private Languages _appLanguage;
     private TMDbClient _tmdbClient;
     private IgdbClass _igdbObject;
     private Tmdb _tmdbObject;
     private DArt _dArtObject;
-    private bool _isPosterWindowShown;
-    private bool _enableErrorReporting;
-    private ProgressBarData _busyIndicatorProperties;
 
-    private ListViewData _finalListViewData;
     private List<ImageToDownload> _imgDownloadList = [];
     private List<PickedListItem> _pickedListDataTable = [];
     private bool IsObjectsInitialized { get; set; }
 
     public bool IsPosterWindowShown
     {
-        get => _isPosterWindowShown; set
+        get;
+        set
         {
             IsSkipAmbiguousEnabled = !value;
-            SetProperty(ref _isPosterWindowShown, value);
+            SetProperty(ref field, value);
         }
     }
-    private bool _isSkipAmbiguousEnabled;
-    public bool IsSkipAmbiguousEnabled { get => _isSkipAmbiguousEnabled; set => SetProperty(ref _isSkipAmbiguousEnabled, value); }
+
+    public bool IsSkipAmbiguousEnabled
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     public bool EnableErrorReporting
     {
-        get => _enableErrorReporting;
+        get;
         set
         {
             LogManager.Configuration.SentryConfig(value);
-            SetProperty(ref _enableErrorReporting, value);
+            SetProperty(ref field, value);
         }
     }
 
     public bool IsSearchModeVisible
     {
-        get => _isSearchModeVisible;
-        set => SetProperty(ref _isSearchModeVisible, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = true;
 
     public ListViewData FinalListViewData
     {
-        get => _finalListViewData;
-        private set => SetProperty(ref _finalListViewData, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
 
     private readonly IDialogService _dialogService;
-    private FoliconThemes _theme;
-    private DirectoryPermissionsResult _directoryPermissionResult;
     public StatusBarData StatusBarProperties { get; set; }
-    public ProgressBarData BusyIndicatorProperties { get => _busyIndicatorProperties; set => SetProperty(ref _busyIndicatorProperties, value); }
+
+    public ProgressBarData BusyIndicatorProperties
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     private List<string> Fnames { get; set; } = [];
 
     public bool IsMakeEnabled
     {
-        get => _isMakeEnabled;
-        set => SetProperty(ref _isMakeEnabled, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsSkipAmbiguous
     {
-        get => _isSkipAmbiguous;
-        set => SetProperty(ref _isSkipAmbiguous, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     private bool StopIconDownload
     {
-        get => _stopIconDownload;
-        set => SetProperty(ref _stopIconDownload, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     private string IconMode
     {
-        get => _iconMode;
+        get;
         set
         {
-            SetProperty(ref _iconMode, value);
+            SetProperty(ref field, value);
             IsSearchModeVisible = value != professionalMode;
         }
-    }
+    } = "Poster";
 
     private string SearchMode
     {
-        get => _searchMode;
-        set => SetProperty(ref _searchMode, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = MediaTypes.movie;
 
     #endregion Variables
 
@@ -115,10 +109,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public string SelectedFolder
     {
-        get => _selectedFolder;
+        get;
         set
         {
-            SetProperty(ref _selectedFolder, value);
+            SetProperty(ref field, value);
             if (value != null)
             {
                 DirectoryPermissionsResult = FileUtils.CheckDirectoryPermissions(value);
@@ -128,45 +122,46 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DirectoryPermissionsResult DirectoryPermissionsResult
     {
-        get => _directoryPermissionResult;
-        set => SetProperty(ref _directoryPermissionResult, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string Title
     {
-        get => _title;
-        set => SetProperty(ref _title, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = "FoliCon";
 
     public bool IsRatingVisible
     {
-        get => _isRatingVisible;
-        set => SetProperty(ref _isRatingVisible, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = true;
 
     public bool IsPosterMockupUsed
     {
-        get => _isPosterMockupUsed;
-        set => SetProperty(ref _isPosterMockupUsed, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = true;
 
     public bool IsBusy
     {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public Languages AppLanguage
     {
-        get => _appLanguage;
-        set => SetProperty(ref _appLanguage, value);
+        get;
+        set => SetProperty(ref field, value);
     }
+
     public FoliconThemes Theme
     {
-        get => _theme;
+        get;
         set
         {
-            SetProperty(ref _theme, value);
+            SetProperty(ref field, value);
             switch (value)
             {
                 case FoliconThemes.Light:
@@ -185,6 +180,18 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     break;
             }
         }
+    }
+
+    public bool IncludeAlreadyProcessed
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool ProcessSelectedFolder
+    {
+        get;
+        set => SetProperty(ref field, value);
     }
 
     #endregion GetterSetters
@@ -376,8 +383,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         if (Directory.Exists(SelectedFolder))
         {
-            Fnames = FileUtils.GetFolderNames(SelectedFolder);
-            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled)
+            Fnames = FileUtils.GetFolderNames(SelectedFolder, IncludeAlreadyProcessed);
+            var isProcessSelectedFolderEffective = ProcessSelectedFolder
+                && (IncludeAlreadyProcessed || !FileUtils.FileExists(Path.Combine(SelectedFolder, $"{IconUtils.GetImageName()}.ico")));
+            if (Fnames.Count != 0 || Services.Settings.SubfolderProcessingEnabled || isProcessSelectedFolderEffective)
             {
                 return true;
             }
@@ -465,13 +474,36 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     private async Task ProcessPosterFolderAsync(string rootFolderPath)
     {
-        var folderQueue = new Queue<string>();
-        folderQueue.Enqueue(rootFolderPath);
+        var folderQueue = new Queue<(string path, int depth)>();
+        folderQueue.Enqueue((rootFolderPath, 0));
+        var maxDepth = Services.Settings.SubfolderDepthLimit;
+        var isRootProcessed = false;
 
         while (folderQueue.Count > 0)
         {
-            var folderPath = folderQueue.Dequeue();
-            var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            var (folderPath, depth) = folderQueue.Dequeue();
+            var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
+
+            // Process the selected folder itself if ProcessSelectedFolder is enabled
+            // Only if it doesn't already have an icon (unless IncludeAlreadyProcessed is checked)
+            if (!isRootProcessed && ProcessSelectedFolder && folderPath == rootFolderPath
+                && (IncludeAlreadyProcessed || !FileUtils.FileExists(Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico"))))
+            {
+                isRootProcessed = true;
+                var folderName = Path.GetFileName(folderPath);
+                if (!string.IsNullOrEmpty(folderName))
+                {
+                    var parentPath = Path.GetDirectoryName(folderPath);
+                    if (!string.IsNullOrEmpty(parentPath))
+                    {
+                        StatusBarProperties.TotalFolders++;
+                        if (await ProcessItemAsync(parentPath, folderName))
+                        {
+                            break; // Skip All was selected
+                        }
+                    }
+                }
+            }
 
             if (subfolderNames.Count == 0)
             {
@@ -488,9 +520,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 }
             }
 
-            if (Services.Settings.SubfolderProcessingEnabled)
+            if (Services.Settings.SubfolderProcessingEnabled && (maxDepth == 0 || depth + 1 < maxDepth))
             {
-                ProcessSubfolders(folderPath, folderQueue);
+                ProcessSubfolders(folderPath, folderQueue, depth + 1);
             }
         }
     }
@@ -542,11 +574,14 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
     }
 
-    private static void ProcessSubfolders(string folderPath, Queue<string> folderQueue)
+    private static void ProcessSubfolders(string folderPath, Queue<(string path, int depth)> folderQueue, int depth)
     {
         Logger.Trace("Subfolder Processing Enabled, Processing Subfolders.");
         var folders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-        folders.ForEach(folderQueue.Enqueue);
+        foreach (var folder in folders)
+        {
+            folderQueue.Enqueue((folder, depth));
+        }
     }
 
     private async Task<(ResultResponse response, ParsedTitle parsedTitle, bool isPickedById, string mediaType)> PerformPreprocessing(string itemTitle, string fullFolderPath)
@@ -693,32 +728,51 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private void ProcessProfessionalMode(string initialFolderPath)
     {
         Logger.Debug("Entered ProcessProfessionalMode method");
-        // Create a queue to hold the folders
-        var foldersQueue = new Queue<string>();
-        foldersQueue.Enqueue(initialFolderPath);
+        var foldersQueue = new Queue<(string path, int depth)>();
+        foldersQueue.Enqueue((initialFolderPath, 0));
+        var maxDepth = Services.Settings.SubfolderDepthLimit;
+        var isRootProcessed = false;
+
         while (foldersQueue.Count > 0)
         {
-            var folderPath = foldersQueue.Dequeue();
+            var (folderPath, depth) = foldersQueue.Dequeue();
             Logger.Trace($"Processing Folder: {folderPath}");
-            var subfolderNames = FileUtils.GetFolderNames(folderPath);
+            var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
+
+            // Include the selected folder itself if ProcessSelectedFolder is enabled
+            // Only if it doesn't already have an icon (unless IncludeAlreadyProcessed is checked)
+            if (!isRootProcessed && ProcessSelectedFolder && folderPath == initialFolderPath
+                && (IncludeAlreadyProcessed || !FileUtils.FileExists(Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico"))))
+            {
+                isRootProcessed = true;
+                var folderName = Path.GetFileName(folderPath);
+                if (!string.IsNullOrEmpty(folderName))
+                {
+                    subfolderNames.Add(folderName);
+                }
+            }
+
             if (subfolderNames.Count == 0)
             {
                 continue;
             }
-            StatusBarProperties.TotalFolders+= subfolderNames.Count;
+            StatusBarProperties.TotalFolders += subfolderNames.Count;
             StatusBarProperties.AppStatus = Lang.Searching;
             _dialogService.ShowProSearchResult(folderPath, subfolderNames, _pickedListDataTable, _imgDownloadList,
                 _dArtObject, _ => { });
             Logger.Debug("ProcessProfessionalMode: found {ResultCount} results, adding to final list", _pickedListDataTable.Count);
             FinalListViewData.Data.AddRange(_pickedListDataTable);
             StatusBarProperties.ProcessedFolder = _pickedListDataTable.Count;
-            if (!Services.Settings.SubfolderProcessingEnabled)
+            if (!Services.Settings.SubfolderProcessingEnabled || (maxDepth != 0 && depth + 1 >= maxDepth))
             {
                 continue;
             }
             Logger.Trace("Subfolder Processing Enabled, Adding Subfolders.");
             var subFolders = FileUtils.GetAllSubFolders(folderPath, Services.Settings.Patterns);
-            subFolders.ForEach(foldersQueue.Enqueue);
+            foreach (var subFolder in subFolders)
+            {
+                foldersQueue.Enqueue((subFolder, depth + 1));
+            }
         }
     }
 
@@ -998,7 +1052,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             _pickedListDataTable,
             IsRatingVisible,
             IsPosterMockupUsed,
-            new Progress<ProgressBarData>(value => BusyIndicatorProperties = value)));
+            new Progress<ProgressBarData>(value => BusyIndicatorProperties = value),
+            IncludeAlreadyProcessed));
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;
         var info = new GrowlInfo
@@ -1140,6 +1195,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             .Property(p => p.AppLanguage, Languages.English)
             .Property(p => p.Theme, FoliconThemes.System)
             .Property(p => p.EnableErrorReporting, false)
+            .Property(p => p.IncludeAlreadyProcessed, false)
+            .Property(p => p.ProcessSelectedFolder, false)
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
     }

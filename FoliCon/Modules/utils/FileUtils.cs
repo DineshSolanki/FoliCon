@@ -25,7 +25,7 @@ public static class FileUtils
         ".DS_Store",
         "Thumbs.db"
     ];
-    
+
     /// <summary>
     /// Determines whether a given string value ends with any string within a collection of file extensions.
     /// </summary>
@@ -40,7 +40,7 @@ public static class FileUtils
 
     public static bool IsExcludedFileIdentifier(string fileName) =>
         fileName != null && ExcludedFileIdentifiers.Any(fileName.Contains);
-    
+
     public static bool FileExists(string path) => ShlwApi.PathFileExists(path);
 
     /// <summary>
@@ -67,9 +67,9 @@ public static class FileUtils
 
     public static void DeleteIconsFromFolder(string folderPath)
     {
-        
+
         Logger.Debug("Deleting Icons from: {FolderPath}", folderPath);
-        
+
         var icoFile = Path.Combine(folderPath, $"{IconUtils.GetImageName()}.ico");
         var iniFile = Path.Combine(folderPath, "desktop.ini");
         try
@@ -115,10 +115,16 @@ public static class FileUtils
         Logger.Debug("MediaInfo Deleted from Subfolders of: {FolderPath}", folderPath);
     }
 
-    public static List<string> GetFolderNames(string folderPath)
+    public static List<string> GetFolderNames(string folderPath, bool includeAlreadyProcessed = false)
     {
         var folderNames = new List<string>();
-        if (!string.IsNullOrEmpty(folderPath))
+        if (string.IsNullOrEmpty(folderPath)) return folderNames;
+        if (includeAlreadyProcessed)
+        {
+            folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
+                select Path.GetFileName(folder));
+        }
+        else
         {
             folderNames.AddRange(from folder in Directory.GetDirectories(folderPath)
                 where !FileExists($@"{folder}\{IconUtils.GetImageName()}.ico")
@@ -525,7 +531,7 @@ public static class FileUtils
             Logger.Warn(ex, "Failed to clear IGDB token cache.");
         }
     }
-    
+
     public static bool CreateDirectory(string path)
     {
         try
@@ -548,13 +554,13 @@ public static class FileUtils
         CreateDirectory(fullPath);
         return fullPath;
     }
-    
+
     public static bool IsCompressedArchive(string fileName)
     {
         var fileExtension = Path.GetExtension(fileName)?.ToLower();
         return CompressedExtensions.Contains(fileExtension);
     }
-    
+
     public static void DeleteDirectoryIfEmpty(string targetDirectoryPath)
     {
         if (!Directory.Exists(targetDirectoryPath))
@@ -585,8 +591,8 @@ public static class FileUtils
                 .Exception(e).Log();
         }
     }
-    
-    
+
+
     private static string FoliConTempPath() => Path.Combine(Path.GetTempPath(), "FoliCon");
 
     private static string FoliConTempDeviationsPath() => Path.Combine(FoliConTempPath(), "Deviations");
