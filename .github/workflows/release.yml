@@ -152,7 +152,7 @@ jobs:
 
       - name: Generate formatted release notes
         id: ai
-        uses: actions/ai-inference@v1
+        uses: actions/ai-inference@v2
         with:
           prompt-file: '/tmp/prompt.yml'
           model: openai/gpt-4o
