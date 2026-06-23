@@ -20,23 +20,7 @@ public static class CultureUtils
         Logger.Debug("Getting CultureInfo by Language: {Language}", language);
 
         var langCode = LanguageCodes.GetValueOrDefault(language, "en-US");
-        var pureLangCode = langCode.Split("-")[0];
-
-        // FIX: Defer the HandyControl initialization to prevent the startup deadlock.
-        // This allows the method to return the CultureInfo immediately to your view model
-        // without waiting for the uninitialized Dispatcher thread loop to finish.
-        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-        {
-            try
-            {
-                // Now safe to initialize the static HandyControl instance
-                ConfigHelper.Instance.SetLang(pureLangCode);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "Deferred internal HandyControl language configuration failed.");
-            }
-        }), DispatcherPriority.Background);
+        ConfigHelper.Instance.SetLang(langCode.Split("-")[0]);
 
         return new CultureInfo(langCode);
     }
