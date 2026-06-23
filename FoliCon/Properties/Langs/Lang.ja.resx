@@ -905,9 +905,9 @@ and refresh Icon Cache?</value>
       <value>有効にすると、サブフォルダーに加えて、選択したフォルダー自体もアイコン作成のために処理されます。</value>
     </data>
   <data name="MaxDepth" xml:space="preserve">
-    <value>最大深度</value>
-  </data>
+      <value>最大深度</value>
+    </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
-    <value>サブフォルダー処理の最大深度。0 = 無制限（すべてのレベルを処理）。</value>
-  </data>
+      <value>サブフォルダー処理の最大深度。0 = 無制限（すべてのレベルを処理）。</value>
+    </data>
 </root>
