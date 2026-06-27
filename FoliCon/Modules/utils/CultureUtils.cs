@@ -21,7 +21,7 @@ public static class CultureUtils
 
         var langCode = LanguageCodes.GetValueOrDefault(language, "en-US");
         ConfigHelper.Instance.SetLang(langCode.Split("-")[0]);
-
+        Logger.Debug("Language code for {Language}: {LangCode}", language, langCode);
         return new CultureInfo(langCode);
     }
 }

@@ -252,13 +252,20 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         _dialogService = dialogService;
         Logger.Info("Application Started, Initializing MainWindowViewModel.");
-        ProcessUtils.CheckWebView2();
-        TrackProperties();
-        SetCultureInfo();
-        InitializeDelegates();
-        InitializeProperties();
-        NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
-        ProcessCommandLineArgs();
+        try
+        {
+            ProcessUtils.CheckWebView2();
+            TrackProperties();
+            SetCultureInfo();
+            InitializeDelegates();
+            InitializeProperties();
+            NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
+            ProcessCommandLineArgs();
+        }
+        catch (Exception ex)
+        {
+            Logger.Fatal(ex, "Fatal error during MainWindowViewModel initialization");
+        }
     }
 
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
@@ -1225,6 +1232,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     private void TrackProperties()
     {
+        Logger.Debug("TrackProperties: Configuring tracker.");
         Services.Tracker.Configure<MainWindowViewModel>()
             .Property(p => p.IsRatingVisible, false)
             .Property(p => p.IsPosterMockupUsed, true)
@@ -1236,16 +1244,21 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             .Property(p => p.ProcessSelectedFolder, false)
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
+        Logger.Debug("TrackProperties: Tracker configured and tracking started.");
     }
 
     private void SetCultureInfo()
     {
         var selectedLanguage = AppLanguage;
+        Logger.Debug("SetCultureInfo: Selected language: {Language}", selectedLanguage);
         var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
+        Logger.Debug("SetCultureInfo: Got CultureInfo: {Culture}", cultureInfo.EnglishName);
         LangProvider.Culture = cultureInfo;
+        Logger.Debug("SetCultureInfo: LangProvider.Culture set successfully");
         Thread.CurrentThread.CurrentCulture = cultureInfo;
         Thread.CurrentThread.CurrentUICulture = cultureInfo;
         Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
+        Logger.Debug("SetCultureInfo: Completed successfully");
     }
 
     private void ProcessCommandLineArgs()

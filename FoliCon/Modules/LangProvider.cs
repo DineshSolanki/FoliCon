@@ -45,7 +45,7 @@ public class LangProvider : INotifyPropertyChanged
             Lang.Culture = value;
             _cultureInfoStr = value.EnglishName;
 
-            Instance.UpdateLangs();
+            Instance?.UpdateLangs();
         }
     }
 

@@ -41,6 +41,7 @@ public partial class App
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
+        Logger.Fatal(e.Exception, "Unhandled exception caught by DispatcherUnhandledException handler");
         SentrySdk.CaptureException(e.Exception);
 
         // If you want to avoid the application from crashing:
