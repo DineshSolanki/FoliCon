@@ -93,7 +93,7 @@ jobs:
           Compress-Archive -Path "$publishDir/*" -DestinationPath "FoliCon-v${{ needs.version.outputs.version }}${suffix}-x64.zip"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: FoliCon-v${{ needs.version.outputs.version }}-x64
           path: FoliCon-v${{ needs.version.outputs.version }}*-x64.zip
