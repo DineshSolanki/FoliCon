@@ -88,7 +88,7 @@ jobs:
       - name: Zip output
         shell: pwsh
         run: |
-          $publishDir = "FoliCon/bin/Release/net9.0-windows/publish/64Dependant"
+          $publishDir = "FoliCon/bin/Release/net-windows/publish/64Dependant"
           $suffix = if ("${{ needs.version.outputs.is_prerelease }}" -eq "true") { "-beta" } else { "" }
           Compress-Archive -Path "$publishDir/*" -DestinationPath "FoliCon-v${{ needs.version.outputs.version }}${suffix}-x64.zip"
 
