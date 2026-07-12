@@ -13,7 +13,7 @@ namespace FoliCon.Properties.Langs;
 [Localizable(false)]
 public class LangProvider : INotifyPropertyChanged
 {
-    protected LangProvider()
+    public LangProvider()
     {
     }
 
