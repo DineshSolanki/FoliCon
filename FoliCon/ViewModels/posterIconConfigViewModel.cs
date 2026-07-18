@@ -19,7 +19,9 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
         AvailableOverlays = [];
 
         Services.Tracker.Configure<PosterIconConfigViewModel>()
+#pragma warning disable CS0618 // Intentional: backward-compatible Tracker persistence migration from legacy enum
             .Property(p => p.IconOverlay, defaultValue: Models.Enums.IconOverlay.Liaher.ToString())
+#pragma warning restore CS0618
             .PersistOn(nameof(PropertyChanged));
         Services.Tracker.Track(this);
         Logger.Info("Current IconOverlay is {IconOverlay}", IconOverlay);

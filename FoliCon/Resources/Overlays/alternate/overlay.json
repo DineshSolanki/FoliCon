@@ -11,7 +11,7 @@
   "rootMargin": "0,0,0,-11",
   "renderWidth": 256,
   "renderHeight": 256,
-  "layerOrder": ["base", "poster", "rating", "front"],
+  "layerOrder": ["base", "poster", "front", "rating"],
   "baseLayer": {
     "imagePath": "/Resources/poster_mockups/dvd/mockup2base.png",
     "margin": "30,14,48,15"

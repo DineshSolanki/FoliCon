@@ -37,6 +37,9 @@ public partial class App
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
         containerRegistry.RegisterDialog<OnboardingWizard, OnboardingWizardViewModel>("OnboardingWizard");
         containerRegistry.RegisterDialogWindow<HandyWindow>();
+
+        // Overlay plugin system
+        containerRegistry.RegisterSingleton<IOverlayProvider, OverlayProvider>();
     }
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
