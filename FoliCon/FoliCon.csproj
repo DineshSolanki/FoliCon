@@ -101,6 +101,14 @@ dineshsolanki.github.io/folicon/</Description>
 	<HotReloadAutoRestart>true</HotReloadAutoRestart>
 	<SupportedOSPlatformVersion>10.0.26100.0</SupportedOSPlatformVersion>
 </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Overlays\legacy\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\alternate\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\liaher\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\faelpessoal\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\faelpessoal-horizontal\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\windows11\overlay.json" />
+  </ItemGroup>
 </Project>
 
 

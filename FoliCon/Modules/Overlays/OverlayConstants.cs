@@ -1,0 +1,56 @@
+namespace FoliCon.Modules.Overlays;
+
+/// <summary>
+/// Constants for the overlay plugin system.
+/// </summary>
+[Localizable(false)]
+internal static class OverlayConstants
+{
+    /// <summary>
+    /// Subfolder under %AppData% where user-installed overlays are stored.
+    /// </summary>
+    public const string OverlaysFolder = "Overlays";
+
+    /// <summary>
+    /// Subfolder under %LocalAppData% for catalog cache.
+    /// </summary>
+    public const string CacheFolder = "OverlayCache";
+
+    /// <summary>
+    /// Maximum size in bytes for a single image asset (2 MB).
+    /// </summary>
+    public const long MaxImageSizeBytes = 2 * 1024 * 1024;
+
+    /// <summary>
+    /// Maximum total size in bytes for an overlay package folder (5 MB).
+    /// </summary>
+    public const long MaxOverlayPackageSizeBytes = 5 * 1024 * 1024;
+
+    /// <summary>
+    /// Maximum supported schema version by this app version.
+    /// </summary>
+    public const int AppSupportedSchemaVersion = 1;
+
+    /// <summary>
+    /// Built-in overlay IDs that cannot be overridden by community overlays.
+    /// </summary>
+    public static readonly HashSet<string> BuiltInOverlayIds =
+    [
+        "legacy", "alternate", "liaher", "faelpessoal", "faelpessoal-horizontal", "windows11"
+    ];
+
+    /// <summary>
+    /// Default overlay ID when no selection is found or active overlay is invalid.
+    /// </summary>
+    public const string DefaultOverlayId = "liaher";
+
+    /// <summary>
+    /// JSON file name for the overlay definition within an overlay folder.
+    /// </summary>
+    public const string OverlayJsonFileName = "overlay.json";
+
+    /// <summary>
+    /// JSON file name for the catalog.
+    /// </summary>
+    public const string CatalogFileName = "catalog.json";
+}

@@ -24,7 +24,7 @@ public static class IconUtils
          progressCallback.Report(extractionProgress);
 
          var lockObj = new object();
-         var iconOverlay = GlobalVariables.IconOverlayType();
+         var activeOverlay = GlobalVariables.GetActiveOverlay();
          await Parallel.ForEachAsync(pickedListDataTable, async (item, _) =>
          {
              var parent = Directory.GetParent(item.Folder);
@@ -36,7 +36,7 @@ public static class IconUtils
              TryDeleteExistingIco(targetFile, forceOverwrite);
 
              var created = await TryCreateIconFromPng(pngFilePath, targetFile, forceOverwrite, item,
-                 iconMode, ratingVisibility, mockupVisibility, iconOverlay);
+                 iconMode, ratingVisibility, mockupVisibility, activeOverlay);
 
              ApplyFolderIcon(targetFile, folderName, parentFolder);
 
@@ -73,7 +73,7 @@ public static class IconUtils
     }
 
     private static async Task<bool> TryCreateIconFromPng(string pngFilePath, string targetFile, bool forceOverwrite,
-        PickedListItem item, string iconMode, string ratingVisibility, string mockupVisibility, IconOverlay iconOverlay)
+        PickedListItem item, string iconMode, string ratingVisibility, string mockupVisibility, PosterOverlayDefinition? overlayDefinition)
     {
         if (!FileUtils.FileExists(pngFilePath) || (FileUtils.FileExists(targetFile) && !forceOverwrite))
         {
@@ -81,7 +81,7 @@ public static class IconUtils
         }
 
         var iconProperties = new IconProperties(iconMode, pngFilePath, item.Rating, ratingVisibility, mockupVisibility, item.Title);
-        await BuildFolderIco(iconProperties, iconOverlay);
+        await BuildFolderIco(iconProperties, overlayDefinition);
 
         Logger.Info("Icon Created for Folder: {Folder}", item.FolderName);
         Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
@@ -108,7 +108,7 @@ public static class IconUtils
     /// <param name="ratingVisibility">Show rating or NOT</param>
     /// <param name="mockupVisibility">Is Cover Mockup visible. </param>
     /// <param name="mediaTitle">Title of the media.</param>
-    private static async Task BuildFolderIco(IconProperties iconProperties, IconOverlay iconOverlay)
+    private static async Task BuildFolderIco(IconProperties iconProperties, PosterOverlayDefinition? overlayDefinition)
     {
         Logger.Debug("Converting From PNG to ICO, {IconProperties}", iconProperties);
         var filmFolderPath = iconProperties.FilmFolderPath;
@@ -136,31 +136,9 @@ public static class IconUtils
             var mediaTitle = iconProperties.MediaTitle;
             // Use dedicated STA renderer to avoid WPF PackagePart race conditions
             // while still maintaining parallel processing through async queueing
-            icon = iconOverlay switch
-            {
-                IconOverlay.Legacy => await StaRenderer.Default.EnqueueRender(() =>
-                    new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
-                        .RenderToBitmap()),
-                IconOverlay.Alternate => await StaRenderer.Default.EnqueueRender(() =>
-                    new PosterIconAlt(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
-                        .RenderToBitmap()),
-                IconOverlay.Liaher => await StaRenderer.Default.EnqueueRender(() =>
-                    new PosterIconLiaher(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
-                        .RenderToBitmap()),
-                IconOverlay.Faelpessoal => await StaRenderer.Default.EnqueueRender(() => new PosterIconFaelpessoal(new PosterIcon(
-                    filmFolderPath, rating,
-                    ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
-                IconOverlay.FaelpessoalHorizontal => await StaRenderer.Default.EnqueueRender(() => new PosterIconFaelpessoalHorizontal(
-                    new PosterIcon(
-                        filmFolderPath, rating,
-                        ratingVisibility, mockupVisibility, mediaTitle)).RenderToBitmap()),
-                IconOverlay.Windows11 => await StaRenderer.Default.EnqueueRender(() =>
-                    new PosterIconWindows11(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
-                        .RenderToBitmap()),
-                _ => await StaRenderer.Default.EnqueueRender(() =>
-                    new Views.PosterIcon(new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility))
-                        .RenderToBitmap())
-            };
+            icon = await StaRenderer.Default.EnqueueRender(() =>
+                new DynamicPosterIcon(overlayDefinition, new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility, mediaTitle))
+                    .RenderToBitmap());
         }
         Logger.Info("Converting PNG to ICO for Folder: {FilmFolderPath}", filmFolderPath);
         PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));

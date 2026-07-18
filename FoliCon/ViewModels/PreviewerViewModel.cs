@@ -8,30 +8,38 @@
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public PreviewerViewModel()
+
+        public PreviewerViewModel(DialogCloseListener requestClose)
         {
-            Logger.Debug("PosterIconConfigViewModel created");
+            RequestClose = requestClose;
+            Logger.Debug("PreviewerViewModel created");
             PosterIconInstance = new PosterIcon
             {
                 Rating = Rating
             };
 
             SelectImageCommand = new DelegateCommand(SelectImage);
+
+            // Load all available overlays from the provider
+            OverlayDefinitions = [];
+            LoadOverlays();
         }
-        
+
         private PosterIcon _posterIconInstance;
         private string _rating = "3.5";
         public string Title => Lang.Previewer;
         private string _mediaTitle = Lang.MadeWithFoliCon;
         private bool _ratingVisibility = true;
         private bool _overlayVisibility = true;
-        
+
         public PosterIcon PosterIconInstance
         {
             get => _posterIconInstance;
             private set => SetProperty(ref _posterIconInstance, value);
         }
+
+        private ObservableCollection<PosterOverlayDefinition> OverlayDefinitions { get; }
+
         public string Rating
         {
             get => _rating;
@@ -51,7 +59,7 @@
                 PosterIconInstance.MediaTitle = value;
             }
         }
-        
+
         public bool RatingVisibility
         {
             get => _ratingVisibility;
@@ -61,7 +69,7 @@
                 PosterIconInstance.RatingVisibility = UiUtils.BooleanToVisibility(value).ToString();
             }
         }
-        
+
         public bool OverlayVisibility
         {
             get => _overlayVisibility;
@@ -71,9 +79,26 @@
                 PosterIconInstance.MockupVisibility = UiUtils.BooleanToVisibility(value).ToString();
             }
         }
-        
+
         public DelegateCommand SelectImageCommand { get; set; }
-        
+
+        private void LoadOverlays()
+        {
+            try
+            {
+                var provider = GlobalVariables.OverlayProvider;
+                var allOverlays = provider.GetAllOverlays();
+                OverlayDefinitions.Clear();
+                foreach (var overlay in allOverlays)
+                {
+                    OverlayDefinitions.Add(overlay);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to load overlays for previewer");
+            }
+        }
 
         private void SelectImage()
         {
@@ -95,8 +120,8 @@
             PosterIconInstance = rt;
             Logger.Info("Image selected: {FileName}", fileDialog.FileName);
         }
-        
-        
+
+
         #region DialogMethods
         public DialogCloseListener RequestClose { get; }
         protected virtual void CloseDialog(string parameter)

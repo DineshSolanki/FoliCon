@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "windows11",
+  "displayName": "Windows 11",
+  "author": "FoliCon",
+  "description": "Windows 11 style overlay with opacity mask effect",
+  "overlayVersion": "1.0.0",
+  "tags": ["modern", "windows11", "opacity"],
+  "designWidth": 265,
+  "designHeight": 256,
+  "rootMargin": "0,0,0,-11",
+  "renderWidth": 256,
+  "renderHeight": 256,
+  "layerOrder": ["base", "poster", "rating"],
+  "baseLayer": {
+    "imagePath": "/Resources/poster_mockups/win11/base.png",
+    "margin": "5,0,5,10"
+  },
+  "frontLayer": null,
+  "poster": {
+    "margin": "5,58,5,32",
+    "clipRadius": "0",
+    "opacityMaskPath": "/Resources/poster_mockups/win11/front.png"
+  },
+  "rating": {
+    "shieldMargin": "183,97,-17,5",
+    "textMargin": "209,30,0,0",
+    "fontSize": 25,
+    "fontFamily": "Castellar",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "textWidth": 55,
+    "textHeight": 46,
+    "textHorizontalAlignment": "Left",
+    "textVerticalAlignment": "Top"
+  },
+  "title": {
+    "isVisible": false,
+    "margin": "0,0,0,0",
+    "rotationAngle": 0,
+    "rotationOrigin": "0.5,0.5",
+    "fontFamily": "Cormorant",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "foreground": "White",
+    "trimming": "WordEllipsis",
+    "wrapping": "Wrap",
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Top"
+  }
+}

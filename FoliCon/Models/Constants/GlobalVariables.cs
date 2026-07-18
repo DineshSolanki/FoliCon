@@ -3,29 +3,40 @@
 [Localizable(false)]
 internal static class GlobalVariables
 {
+    private static IOverlayProvider? _overlayProvider;
 
-    public static IconOverlay IconOverlayType()
-    {
-        return IconOverlayTypeString switch
-        {
-            "Legacy" => IconOverlay.Legacy,
-            "Alternate" => IconOverlay.Alternate,
-            "Liaher" => IconOverlay.Liaher,
-            "Faelpessoal" => IconOverlay.Faelpessoal,
-            "FaelpessoalHorizontal" => IconOverlay.FaelpessoalHorizontal,
-            "Windows11" => IconOverlay.Windows11,
-            _ => IconOverlay.Alternate
-        };
-    }
+    /// <summary>
+    /// Gets or creates the static overlay provider instance.
+    /// </summary>
+    public static IOverlayProvider OverlayProvider => _overlayProvider ??= new OverlayProvider();
 
-    public const string mediaInfoFile = "info.folicon";
-
-    private static string IconOverlayTypeString
+    /// <summary>
+    /// Returns the active overlay string ID from the persisted tracker setting.
+    /// </summary>
+    public static string ActiveOverlayId
     {
         get
         {
             var data = Services.Tracker.Store.GetData("PosterIconConfigViewModel");
-            return data.TryGetValue("p.IconOverlay", out var value) ? value.ToString() : IconOverlay.Liaher.ToString();
+            if (!data.TryGetValue("p.IconOverlay", out var value)) return OverlayConstants.DefaultOverlayId;
+            var strValue = value.ToString();
+            return strValue switch
+            {
+                "Legacy" => "legacy",
+                "Alternate" => "alternate",
+                "Liaher" => "liaher",
+                "Faelpessoal" => "faelpessoal",
+                "FaelpessoalHorizontal" => "faelpessoal-horizontal",
+                "Windows11" => "windows11",
+                _ => strValue
+            };
         }
     }
+
+    /// <summary>
+    /// Returns the active overlay definition.
+    /// </summary>
+    public static PosterOverlayDefinition GetActiveOverlay() => OverlayProvider.ResolveActiveOverlayOrDefault(ActiveOverlayId);
+
+    public const string mediaInfoFile = "info.folicon";
 }

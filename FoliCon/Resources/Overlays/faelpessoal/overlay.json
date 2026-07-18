@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "faelpessoal",
+  "displayName": "Faelpessoal",
+  "author": "FoliCon",
+  "description": "Faelpessoal style overlay with rotated title text on the spine",
+  "overlayVersion": "1.0.0",
+  "tags": ["spine", "text", "rotated"],
+  "designWidth": 265,
+  "designHeight": 256,
+  "rootMargin": "0,0,0,-11",
+  "renderWidth": 256,
+  "renderHeight": 256,
+  "layerOrder": ["base", "poster", "front", "title", "rating"],
+  "baseLayer": {
+    "imagePath": "/Resources/poster_mockups/faelpessoal/Mockup faelpessoal base.png",
+    "margin": "-6,0,-2,10"
+  },
+  "frontLayer": {
+    "imagePath": "/Resources/poster_mockups/liaher/mockup liaher front.png",
+    "margin": "-9,-18,16,2"
+  },
+  "poster": {
+    "margin": "27,4,53,27",
+    "clipRadius": "7",
+    "clipRect": "0,0,186,267",
+    "posterInnerMargin": "0,0,0,-1",
+    "opacityMaskPath": null
+  },
+  "rating": {
+    "shieldMargin": "160,97,6,5",
+    "textMargin": "189,30,21,24",
+    "fontSize": 25,
+    "fontFamily": "Castellar",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "textWidth": 55,
+    "textHeight": 46,
+    "textHorizontalAlignment": "Center",
+    "textVerticalAlignment": "Center"
+  },
+  "title": {
+    "isVisible": true,
+    "margin": "190,14,-2,53",
+    "rotationAngle": 90,
+    "rotationOrigin": "0.5,0.5",
+    "fontFamily": "Cormorant",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "foreground": "White",
+    "trimming": "WordEllipsis",
+    "wrapping": "Wrap",
+    "container": "RatingGrid",
+    "gridRow": 1,
+    "horizontalAlignment": "Stretch",
+    "verticalAlignment": "Stretch"
+  }
+}

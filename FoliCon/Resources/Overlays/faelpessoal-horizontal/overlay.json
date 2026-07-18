@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "id": "faelpessoal-horizontal",
+  "displayName": "Faelpessoal Horizontal",
+  "author": "FoliCon",
+  "description": "Horizontal variant of Faelpessoal for landscape posters",
+  "overlayVersion": "1.0.0",
+  "tags": ["horizontal", "landscape", "text"],
+  "designWidth": 265,
+  "designHeight": 256,
+  "rootMargin": "0,0,0,-11",
+  "renderWidth": 256,
+  "renderHeight": 256,
+  "layerOrder": ["base", "poster", "title", "rating"],
+  "baseLayer": {
+    "imagePath": "/Resources/poster_mockups/faelpessoal/mockup faelpessoal base horizontal.png",
+    "margin": "-8,0,0,10"
+  },
+  "frontLayer": null,
+  "poster": {
+    "margin": "1,65,9,34",
+    "clipRadius": "7",
+    "clipRect": "0,0,255,164",
+    "posterInnerMargin": null,
+    "opacityMaskPath": null
+  },
+  "rating": {
+    "shieldMargin": "183,97,-17,5",
+    "textMargin": "209,30,0,0",
+    "fontSize": 25,
+    "fontFamily": "Castellar",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "textWidth": 55,
+    "textHeight": 46,
+    "textHorizontalAlignment": "Left",
+    "textVerticalAlignment": "Top"
+  },
+  "title": {
+    "isVisible": true,
+    "margin": "28,36,155,197",
+    "rotationAngle": 0,
+    "rotationOrigin": "0.5,0.5",
+    "fontFamily": "Cormorant",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "foreground": "White",
+    "trimming": "WordEllipsis",
+    "wrapping": "Wrap",
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Top"
+  }
+}
