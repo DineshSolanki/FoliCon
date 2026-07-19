@@ -53,4 +53,16 @@ internal static class OverlayConstants
     /// JSON file name for the catalog.
     /// </summary>
     public const string CatalogFileName = "catalog.json";
+
+    /// <summary>
+    /// Compares two version strings. Returns true if parsing succeeded;
+    /// <paramref name="aIsNewer"/> is true when <paramref name="a"/> is greater than <paramref name="b"/>.
+    /// </summary>
+    internal static bool TryCompareVersions(string a, string b, out bool aIsNewer)
+    {
+        aIsNewer = false;
+        if (!Version.TryParse(a, out var versionA) || !Version.TryParse(b, out var versionB)) return false;
+        aIsNewer = versionA > versionB;
+        return true;
+    }
 }

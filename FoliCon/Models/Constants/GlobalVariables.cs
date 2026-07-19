@@ -7,8 +7,15 @@ internal static class GlobalVariables
 
     /// <summary>
     /// Gets or creates the static overlay provider instance.
+    /// Prefer using <see cref="SetOverlayProvider"/> to inject the DI singleton.
     /// </summary>
     public static IOverlayProvider OverlayProvider => _overlayProvider ??= new OverlayProvider();
+
+    /// <summary>
+    /// Sets the overlay provider to the DI-registered singleton.
+    /// Called during app startup to ensure GlobalVariables and DI share the same instance.
+    /// </summary>
+    public static void SetOverlayProvider(IOverlayProvider provider) => _overlayProvider = provider;
 
     /// <summary>
     /// Returns the active overlay string ID from the persisted tracker setting.

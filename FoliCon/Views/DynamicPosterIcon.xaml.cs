@@ -14,9 +14,11 @@ public partial class DynamicPosterIcon : PosterIconBase
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private const string ShieldImagePath = "/Resources/rating_mockup/shield.png";
+    private const string shieldImagePath = "/Resources/rating_mockup/shield.png";
 
     private static readonly string[] DefaultLayerOrder = ["base", "poster", "front", "rating", "title"];
+
+    private readonly string? _overlayFolderPath;
 
     public DynamicPosterIcon(PosterOverlayDefinition definition, object dataContext)
         : base(dataContext)
@@ -25,6 +27,7 @@ public partial class DynamicPosterIcon : PosterIconBase
         DataContext = dataContext;
         Width = definition.DesignWidth;
         Height = definition.DesignHeight;
+        _overlayFolderPath = definition.OverlayFolderPath;
         BuildVisualTree(definition, dataContext);
     }
 
@@ -50,7 +53,9 @@ public partial class DynamicPosterIcon : PosterIconBase
         // --- Poster Image (with optional clip and opacity mask) ---
         var posterElement = CreatePosterElement(definition);
         if (posterElement != null)
+        {
             elements["poster"] = posterElement;
+        }
 
         // --- Front Layer ---
         if (definition.FrontLayer != null && !string.IsNullOrEmpty(definition.FrontLayer.ImagePath))
@@ -83,14 +88,18 @@ public partial class DynamicPosterIcon : PosterIconBase
             titleGridRow);
 
         if (titleBlock != null && !titleInRatingGrid)
+        {
             elements["title"] = titleBlock;
+        }
 
         // --- Add children in the order specified by LayerOrder (matches original XAML z-order) ---
         var layerOrder = definition.LayerOrder ?? DefaultLayerOrder;
         foreach (var key in layerOrder)
         {
             if (elements.TryGetValue(key, out var element))
+            {
                 rootGrid.Children.Add(element);
+            }
         }
 
         Content = rootGrid;
@@ -170,7 +179,9 @@ public partial class DynamicPosterIcon : PosterIconBase
 
         // Some overlays need a small margin on the inner Image (e.g. faelpessoal "0,0,0,-1")
         if (!string.IsNullOrWhiteSpace(definition.Poster.PosterInnerMargin))
+        {
             posterImageInner.Margin = ParseThickness(definition.Poster.PosterInnerMargin);
+        }
 
         RenderOptions.SetBitmapScalingMode(posterImageInner, BitmapScalingMode.HighQuality);
 
@@ -239,7 +250,7 @@ public partial class DynamicPosterIcon : PosterIconBase
 
         var shield = new Image
         {
-            Source = ResolveImageSource(ShieldImagePath),
+            Source = ResolveImageSource(shieldImagePath),
             Margin = ParseThickness(rating.ShieldMargin)
         };
         RenderOptions.SetBitmapScalingMode(shield, BitmapScalingMode.HighQuality);
@@ -326,9 +337,9 @@ public partial class DynamicPosterIcon : PosterIconBase
         }
     }
 
-    private static ImageSource ResolveImageSource(string path)
+    private ImageSource ResolveImageSource(string path)
     {
-        if (path.StartsWith("/", StringComparison.Ordinal))
+        if (path.StartsWith('/'))
         {
             // Use explicit pack URI with assembly name — works on any thread
             // (relative URIs depend on Application.Current.BaseUri which may not
@@ -343,33 +354,52 @@ public partial class DynamicPosterIcon : PosterIconBase
             return bitmap;
         }
 
+        // Resolve against the overlay's folder (community overlays use relative paths)
+        if (_overlayFolderPath != null)
+        {
+            var overlayPath = Path.Combine(_overlayFolderPath, path);
+            if (File.Exists(overlayPath))
+            {
+                return LoadBitmapFromPath(overlayPath);
+            }
+        }
+
         var fullPath = Path.IsPathRooted(path) ? path : Path.Combine(AppContext.BaseDirectory, path);
         if (File.Exists(fullPath))
         {
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(fullPath, UriKind.Absolute);
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.EndInit();
-            bitmap.Freeze();
-            return bitmap;
+            return LoadBitmapFromPath(fullPath);
         }
 
         var resourcePath = FileUtils.GetResourcePath(path);
-        if (File.Exists(resourcePath))
+        if (!File.Exists(resourcePath))
         {
-            var bytes = File.ReadAllBytes(resourcePath);
-            using var stream = new MemoryStream(bytes);
-            return (ImageSource)new ImageSourceConverter().ConvertFrom(stream);
+            throw new FileNotFoundException($"Image not found: {path}");
         }
 
-        throw new FileNotFoundException($"Image not found: {path}");
+        var bytes = File.ReadAllBytes(resourcePath);
+        using var stream = new MemoryStream(bytes);
+        return (ImageSource)new ImageSourceConverter().ConvertFrom(stream);
+
+    }
+
+    private static BitmapImage LoadBitmapFromPath(string fullPath)
+    {
+        var bitmap = new BitmapImage();
+        bitmap.BeginInit();
+        bitmap.UriSource = new Uri(fullPath, UriKind.Absolute);
+        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+        bitmap.EndInit();
+        bitmap.Freeze();
+        return bitmap;
     }
 
     private ImageSource? GetPosterImageSource()
     {
         if (DataContext is FoliCon.Models.Data.PosterIcon posterIcon)
+        {
             return posterIcon.FolderJpg;
+        }
+
         return null;
     }
 
@@ -378,7 +408,9 @@ public partial class DynamicPosterIcon : PosterIconBase
     private static Thickness ParseThickness(string margin)
     {
         if (string.IsNullOrWhiteSpace(margin))
+        {
             return new Thickness(0);
+        }
 
         var parts = margin.Split(',');
         return parts.Length switch
@@ -400,7 +432,9 @@ public partial class DynamicPosterIcon : PosterIconBase
     private static CornerRadius ParseCornerRadius(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return new CornerRadius(0);
+        }
 
         var parts = value.Split(',');
         return parts.Length switch
@@ -415,13 +449,17 @@ public partial class DynamicPosterIcon : PosterIconBase
     private static Point ParsePoint(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
+        {
             return new Point(0.5, 0.5);
+        }
 
         var parts = value.Split(',');
         if (parts.Length == 2 &&
             double.TryParse(parts[0].Trim(), CultureInfo.InvariantCulture, out var x) &&
             double.TryParse(parts[1].Trim(), CultureInfo.InvariantCulture, out var y))
+        {
             return new Point(x, y);
+        }
 
         return new Point(0.5, 0.5);
     }

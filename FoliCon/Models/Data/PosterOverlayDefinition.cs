@@ -15,6 +15,14 @@ public class PosterOverlayDefinition
     public string[] Tags { get; set; } = [];
     public bool IsBuiltIn { get; set; }
 
+    /// <summary>
+    /// Full path to the overlay's folder on disk. Set by OverlayProvider when loading.
+    /// Used by DynamicPosterIcon to resolve relative image paths for community overlays.
+    /// Null for built-in overlays (which use pack URIs).
+    /// </summary>
+    [JsonIgnore]
+    public string? OverlayFolderPath { get; set; }
+
     // Canvas compatibility — defaults preserve existing compiled overlay coordinates
     public double DesignWidth { get; set; } = 265;
     public double DesignHeight { get; set; } = 256;

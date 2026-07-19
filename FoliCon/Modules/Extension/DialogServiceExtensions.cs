@@ -4,7 +4,7 @@
 public static class DialogServiceExtensions
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     public static void ShowMessageBox(this IDialogService dialogService, string message,
         Action<IDialogResult> callBack)
     {
@@ -56,13 +56,13 @@ public static class DialogServiceExtensions
         Logger.Trace("ShowPosterIconConfig called");
         dialogService.ShowDialog("PosterIconConfig", callBack);
     }
-    
+
     public static void ShowSubfolderProcessingConfig(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
         Logger.Trace("ShowSubfolderProcessingConfig called");
         dialogService.ShowDialog("SubfolderProcessingConfig", callBack);
     }
-    
+
     public static void ShowManualExplorer(this IDialogService dialogService, string deviationId,
         DArt dartObject, Action<IDialogResult> callBack)
     {
@@ -96,5 +96,11 @@ public static class DialogServiceExtensions
         Logger.Trace("ShowPreviewer called");
         var p = new DialogParameters();
         dialogService.ShowDialog("Previewer", p, callBack);
+    }
+
+    public static void ShowOverlayStore(this IDialogService dialogService, Action<IDialogResult> callBack)
+    {
+        Logger.Trace("ShowOverlayStore called");
+        dialogService.ShowDialog("OverlayStore", callBack);
     }
 }

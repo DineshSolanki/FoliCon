@@ -210,8 +210,5 @@ public sealed class GoldenImageParityTests : IDisposable
         return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
     }
 
-    public void Dispose()
-    {
-        _host.Dispose();
-    }
+    public void Dispose() => _host.Dispose();
 }

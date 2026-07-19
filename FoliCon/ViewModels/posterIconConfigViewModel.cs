@@ -8,11 +8,14 @@
 public class PosterIconConfigViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private string _iconOverlay;
-    public DelegateCommand<object> IconOverlayChangedCommand { get; }
+    private readonly IDialogService _dialogService;
 
-    public PosterIconConfigViewModel()
+    public DelegateCommand<object> IconOverlayChangedCommand { get; }
+    public DelegateCommand BrowseOverlayStoreCommand { get; }
+
+    public PosterIconConfigViewModel(IDialogService dialogService)
     {
+        _dialogService = dialogService;
         Logger.Debug("PosterIconConfigViewModel created");
 
         // Initialize collections BEFORE tracker restores persisted values
@@ -34,14 +37,25 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
             Logger.Info("Icon overlay changed to {Parameter}", parameter);
             IconOverlay = (string)parameter;
         });
+
+        BrowseOverlayStoreCommand = new DelegateCommand(() =>
+        {
+            Logger.Info("Opening Overlay Store");
+            _dialogService.ShowOverlayStore(_ =>
+            {
+                // Refresh overlays after store closes (user may have installed/uninstalled)
+                LoadOverlays();
+                OverlayPreviewCache.InvalidateAll();
+            });
+        });
     }
 
     public string IconOverlay
     {
-        get => _iconOverlay;
+        get;
         set
         {
-            if (!SetProperty(ref _iconOverlay, value) || AvailableOverlays == null) return;
+            if (!SetProperty(ref field, value) || AvailableOverlays == null) return;
             // Update IsActive on overlay items
             foreach (var item in AvailableOverlays)
             {
@@ -129,9 +143,11 @@ public class OverlayItemViewModel : BindableBase
     }
 
     /// <summary>
-    /// Returns the demo icon path for built-in overlays.
+    /// Returns the demo icon. Built-in overlays return a pack URI string;
+    /// community overlays return a frozen in-memory BitmapImage (no file lock).
+    /// WPF Image.Source accepts both string and ImageSource.
     /// </summary>
-    public string DemoIconPath => OverlayId switch
+    public object DemoIconPath => OverlayId switch
     {
         "legacy" => "/Resources/mockup_demos/simple/PosterIcon.ico",
         "alternate" => "/Resources/mockup_demos/dvd/PosterIconAlt.ico",
@@ -139,6 +155,36 @@ public class OverlayItemViewModel : BindableBase
         "faelpessoal" => "/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoal.ico",
         "faelpessoal-horizontal" => "/Resources/mockup_demos/faelpessoal/PosterIconFaelpessoalHorizontal.ico",
         "windows11" => "/Resources/mockup_demos/windows11/PosterIconWindows11.ico",
-        _ => "/Resources/icons/NoPosterAvailable.png"
+        _ => (object?)LoadCommunityOverlayPreview(OverlayId, IsBuiltIn) ?? "/Resources/icons/NoPosterAvailable.png"
     };
+
+    /// <summary>
+    /// Returns a frozen in-memory BitmapImage for community overlay previews.
+    /// Loaded with BitmapCacheOption.OnLoad so no file lock is held on preview.png.
+    /// </summary>
+    private static BitmapImage LoadCommunityOverlayPreview(string overlayId, bool isBuiltIn)
+    {
+        if (isBuiltIn) return null;
+
+        var overlayDir = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "FoliCon", "Overlays", overlayId);
+        var previewPath = Path.Combine(overlayDir, "preview.png");
+        if (!File.Exists(previewPath)) return null;
+
+        try
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = new Uri(previewPath, UriKind.Absolute);
+            bitmap.EndInit();
+            bitmap.Freeze();
+            return bitmap;
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }

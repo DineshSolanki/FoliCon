@@ -1,0 +1,423 @@
+2026-07-19 21:18:10.4235 Debug Message Template Auto Format enabled
+2026-07-19 21:18:10.4434 Info NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 6.1.3.5285. Product version: 6.1.3+7f18a90739535f5ddc71c48e0fa28c59e5ee8969. GlobalAssemblyCache: False
+2026-07-19 21:18:10.4434 Debug AutoReload Config File Monitor refreshing after configuration changed
+2026-07-19 21:18:10.4434 Debug AutoReload Config File Monitor starting
+2026-07-19 21:18:10.4434 Debug Start watching file-filter 'NLog.config' in directory: E:\FoliCon-3.3-release.worktrees\master\FoliCon\bin\Debug\net10.0-windows10.0.26100.0
+2026-07-19 21:18:10.4434 Debug --- NLog configuration dump ---
+2026-07-19 21:18:10.4434 Debug Targets:
+2026-07-19 21:18:10.4434 Debug Rules:
+2026-07-19 21:18:10.4434 Debug --- End of NLog configuration dump ---
+2026-07-19 21:18:10.4538 Trace FindReachableObject<System.Object>:
+2026-07-19 21:18:10.4538 Info Configuration initialized: Targets=0, ConfigItems=0, AutoReload=true, FilePath=E:\FoliCon-3.3-release.worktrees\master\FoliCon\bin\Debug\net10.0-windows10.0.26100.0\NLog.config
+2026-07-19 21:18:10.4538 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.4538 Trace Scanning SimpleLayout 'logs/folicon_${shortdate}.log'
+2026-07-19 21:18:10.4538 Debug Object reflection needed to configure instance of type: NLog.Layouts.SimpleLayout
+2026-07-19 21:18:10.4538 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4538 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4538 Trace  Scanning ShortDateLayoutRenderer 'Layout Renderer: ${shortdate}'
+2026-07-19 21:18:10.4538 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4704 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.4704 Trace Scanning SimpleLayout 'Error'
+2026-07-19 21:18:10.4704 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4704 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4704 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.4704 Trace Scanning UppercaseLayoutRendererWrapper 'Layout Renderer: ${uppercase}'
+2026-07-19 21:18:10.4704 Trace  Scanning Property Inner '${level}' NLog.Layouts.Layout
+2026-07-19 21:18:10.4704 Trace  Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.4704 Trace   Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4704 Trace   Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.4704 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.4704 Trace Scanning UppercaseLayoutRendererWrapper 'Layout Renderer: ${uppercase}'
+2026-07-19 21:18:10.4704 Trace  Scanning Property Inner '${level}' NLog.Layouts.Layout
+2026-07-19 21:18:10.4704 Trace  Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.4704 Trace   Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4838 Trace   Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.4838 Info Registered target NLog.Targets.FileTarget(Name=fileTarget)
+2026-07-19 21:18:10.4838 Info Registered target NLog.Targets.ColoredConsoleTarget(Name=consoleTarget)
+2026-07-19 21:18:10.4838 Info Closing old configuration.
+2026-07-19 21:18:10.4838 Debug AutoReload Config File Monitor stopping, since no active configuration
+2026-07-19 21:18:10.4838 Debug Stop watching file-filter 'NLog.config' in directory: E:\FoliCon-3.3-release.worktrees\master\FoliCon\bin\Debug\net10.0-windows10.0.26100.0
+2026-07-19 21:18:10.4838 Debug LogFactory Starting Flush with timeout=15 secs
+2026-07-19 21:18:10.4838 Debug Closing logging configuration...
+2026-07-19 21:18:10.4838 Debug Finished closing logging configuration.
+2026-07-19 21:18:10.4838 Debug --- NLog configuration dump ---
+2026-07-19 21:18:10.4838 Debug Targets:
+2026-07-19 21:18:10.4838 Debug FileTarget(Name=fileTarget)
+2026-07-19 21:18:10.4838 Debug ColoredConsoleTarget(Name=consoleTarget)
+2026-07-19 21:18:10.4838 Debug Rules:
+2026-07-19 21:18:10.4838 Debug logNamePattern: (:All) levels: [ Error Fatal ] writeTo: [ fileTarget ]
+2026-07-19 21:18:10.4838 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ consoleTarget ]
+2026-07-19 21:18:10.4838 Debug --- End of NLog configuration dump ---
+2026-07-19 21:18:10.4838 Trace FindReachableObject<System.Object>:
+2026-07-19 21:18:10.4838 Trace Scanning LoggingRule 'logNamePattern: (:All) levels: [ Error Fatal ] writeTo: [ fileTarget ]'
+2026-07-19 21:18:10.4838 Trace  Scanning Property Targets 'System.Collections.Generic.List`1[NLog.Targets.Target]' System.Collections.Generic.IList`1[NLog.Targets.Target]
+2026-07-19 21:18:10.4838 Trace  Scanning FileTarget 'FileTarget(Name=fileTarget)'
+2026-07-19 21:18:10.4838 Debug Object reflection needed to configure instance of type: NLog.Targets.FileTarget
+2026-07-19 21:18:10.4838 Trace   Scanning Property FileName 'logs/folicon_2026-07-19.log' NLog.Layouts.Layout
+2026-07-19 21:18:10.4838 Trace   Scanning SimpleLayout 'logs/folicon_2026-07-19.log'
+2026-07-19 21:18:10.4838 Trace    Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace   Scanning Property Layout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}' NLog.Layouts.Layout
+2026-07-19 21:18:10.4838 Trace   Scanning SimpleLayout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}'
+2026-07-19 21:18:10.4838 Trace    Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning DateLayoutRenderer 'Layout Renderer: ${date}'
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning AssemblyVersionLayoutRenderer 'Layout Renderer: ${assembly-version}'
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning CallSiteLayoutRenderer 'Layout Renderer: ${callsite}'
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning CallSiteLineNumberLayoutRenderer 'Layout Renderer: ${callsite-linenumber}'
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning UppercaseLayoutRendererWrapper 'Layout Renderer: ${uppercase}'
+2026-07-19 21:18:10.4838 Trace     Scanning Property Inner '${level}' NLog.Layouts.Layout
+2026-07-19 21:18:10.4838 Trace     Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.4838 Trace      Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4838 Trace      Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning MessageLayoutRenderer 'Layout Renderer: ${message}'
+2026-07-19 21:18:10.4838 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4838 Trace    Scanning ExceptionLayoutRenderer 'Layout Renderer: ${exception}'
+2026-07-19 21:18:10.4838 Trace     Scanning Property Formats 'System.Collections.Generic.List`1[NLog.Config.ExceptionRenderingFormat]' System.Collections.Generic.IEnumerable`1[NLog.Config.ExceptionRenderingFormat]
+2026-07-19 21:18:10.4838 Trace  Scanning Property ChildRules 'System.Collections.Generic.List`1[NLog.Config.LoggingRule]' System.Collections.Generic.IList`1[NLog.Config.LoggingRule]
+2026-07-19 21:18:10.4838 Trace  Scanning Property Filters 'System.Collections.Generic.List`1[NLog.Filters.Filter]' System.Collections.Generic.IList`1[NLog.Filters.Filter]
+2026-07-19 21:18:10.4838 Trace Scanning LoggingRule 'logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ consoleTarget ]'
+2026-07-19 21:18:10.4838 Trace  Scanning Property Targets 'System.Collections.Generic.List`1[NLog.Targets.Target]' System.Collections.Generic.IList`1[NLog.Targets.Target]
+2026-07-19 21:18:10.4838 Trace  Scanning ColoredConsoleTarget 'ColoredConsoleTarget(Name=consoleTarget)'
+2026-07-19 21:18:10.4989 Debug Object reflection needed to configure instance of type: NLog.Targets.ColoredConsoleTarget
+2026-07-19 21:18:10.4989 Trace   Scanning Property NoColor 'System.Func`2[NLog.LogEventInfo,System.Boolean]' NLog.Layouts.Layout`1[System.Boolean]
+2026-07-19 21:18:10.4989 Trace   Scanning Layout`1 'System.Func`2[NLog.LogEventInfo,System.Boolean]'
+2026-07-19 21:18:10.4989 Trace   Scanning Property RowHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleRowHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleRowHighlightingRule]
+2026-07-19 21:18:10.4989 Trace   Scanning Property RowHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleRowHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleRowHighlightingRule]
+2026-07-19 21:18:10.4989 Trace   Scanning Property WordHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleWordHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleWordHighlightingRule]
+2026-07-19 21:18:10.4989 Trace   Scanning Property WordHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleWordHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleWordHighlightingRule]
+2026-07-19 21:18:10.4989 Trace   Scanning Property Layout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}' NLog.Layouts.Layout
+2026-07-19 21:18:10.4989 Trace   Scanning SimpleLayout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}'
+2026-07-19 21:18:10.4989 Trace    Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning DateLayoutRenderer 'Layout Renderer: ${date}'
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning AssemblyVersionLayoutRenderer 'Layout Renderer: ${assembly-version}'
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning CallSiteLayoutRenderer 'Layout Renderer: ${callsite}'
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning CallSiteLineNumberLayoutRenderer 'Layout Renderer: ${callsite-linenumber}'
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning UppercaseLayoutRendererWrapper 'Layout Renderer: ${uppercase}'
+2026-07-19 21:18:10.4989 Trace     Scanning Property Inner '${level}' NLog.Layouts.Layout
+2026-07-19 21:18:10.4989 Trace     Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.4989 Trace      Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4989 Trace      Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning MessageLayoutRenderer 'Layout Renderer: ${message}'
+2026-07-19 21:18:10.4989 Trace    Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.4989 Trace    Scanning ExceptionLayoutRenderer 'Layout Renderer: ${exception}'
+2026-07-19 21:18:10.4989 Trace     Scanning Property Formats 'System.Collections.Generic.List`1[NLog.Config.ExceptionRenderingFormat]' System.Collections.Generic.IEnumerable`1[NLog.Config.ExceptionRenderingFormat]
+2026-07-19 21:18:10.4989 Trace  Scanning Property ChildRules 'System.Collections.Generic.List`1[NLog.Config.LoggingRule]' System.Collections.Generic.IList`1[NLog.Config.LoggingRule]
+2026-07-19 21:18:10.4989 Trace  Scanning Property Filters 'System.Collections.Generic.List`1[NLog.Filters.Filter]' System.Collections.Generic.IList`1[NLog.Filters.Filter]
+2026-07-19 21:18:10.4989 Debug Unused target checking is started... Rule Count: 2, Target Count: 2
+2026-07-19 21:18:10.4989 Debug Unused target checking is completed. Total Rule Count: 2, Total Target Count: 2, Unused Target Count: 0
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${exception}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${message}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${level}
+2026-07-19 21:18:10.4989 Trace Initializing ${level}
+2026-07-19 21:18:10.4989 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.4989 Trace Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.4989 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.4989 Trace  Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${uppercase}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${callsite-linenumber}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${callsite}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${assembly-version}
+2026-07-19 21:18:10.4989 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${date}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing [${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}
+2026-07-19 21:18:10.5155 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.5155 Trace Scanning SimpleLayout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}'
+2026-07-19 21:18:10.5155 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning DateLayoutRenderer 'Layout Renderer: ${date}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning AssemblyVersionLayoutRenderer 'Layout Renderer: ${assembly-version}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning CallSiteLayoutRenderer 'Layout Renderer: ${callsite}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning CallSiteLineNumberLayoutRenderer 'Layout Renderer: ${callsite-linenumber}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning UppercaseLayoutRendererWrapper 'Layout Renderer: ${uppercase}'
+2026-07-19 21:18:10.5155 Trace   Scanning Property Inner '${level}' NLog.Layouts.Layout
+2026-07-19 21:18:10.5155 Trace   Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.5155 Trace    Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.5155 Trace    Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning MessageLayoutRenderer 'Layout Renderer: ${message}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning ExceptionLayoutRenderer 'Layout Renderer: ${exception}'
+2026-07-19 21:18:10.5155 Trace   Scanning Property Formats 'System.Collections.Generic.List`1[NLog.Config.ExceptionRenderingFormat]' System.Collections.Generic.IEnumerable`1[NLog.Config.ExceptionRenderingFormat]
+2026-07-19 21:18:10.5155 Trace Initializing System.Func`2[NLog.LogEventInfo,System.Boolean]
+2026-07-19 21:18:10.5155 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.5155 Trace Scanning Layout`1 'System.Func`2[NLog.LogEventInfo,System.Boolean]'
+2026-07-19 21:18:10.5155 Trace Initializing ColoredConsoleTarget(Name=consoleTarget)
+2026-07-19 21:18:10.5155 Trace FindReachableObject<NLog.Layouts.Layout>:
+2026-07-19 21:18:10.5155 Trace Scanning ColoredConsoleTarget 'ColoredConsoleTarget(Name=consoleTarget)'
+2026-07-19 21:18:10.5155 Trace  Scanning Property NoColor 'System.Func`2[NLog.LogEventInfo,System.Boolean]' NLog.Layouts.Layout`1[System.Boolean]
+2026-07-19 21:18:10.5155 Trace  Scanning Property RowHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleRowHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleRowHighlightingRule]
+2026-07-19 21:18:10.5155 Trace  Scanning Property RowHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleRowHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleRowHighlightingRule]
+2026-07-19 21:18:10.5155 Trace  Scanning Property WordHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleWordHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleWordHighlightingRule]
+2026-07-19 21:18:10.5155 Trace  Scanning Property WordHighlightingRules 'System.Collections.Generic.List`1[NLog.Targets.ConsoleWordHighlightingRule]' System.Collections.Generic.IList`1[NLog.Targets.ConsoleWordHighlightingRule]
+2026-07-19 21:18:10.5155 Trace  Scanning Property Layout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}' NLog.Layouts.Layout
+2026-07-19 21:18:10.5155 Trace ColoredConsoleTarget(Name=consoleTarget) has 2 layouts
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${exception}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${message}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${level}
+2026-07-19 21:18:10.5155 Trace Initializing ${level}
+2026-07-19 21:18:10.5155 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.5155 Trace Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.5155 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.5155 Trace  Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${uppercase}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${callsite-linenumber}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${callsite}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${assembly-version}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${date}
+2026-07-19 21:18:10.5155 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5155 Trace Initializing [${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}
+2026-07-19 21:18:10.5155 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.5155 Trace Scanning SimpleLayout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}'
+2026-07-19 21:18:10.5155 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning DateLayoutRenderer 'Layout Renderer: ${date}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning AssemblyVersionLayoutRenderer 'Layout Renderer: ${assembly-version}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning CallSiteLayoutRenderer 'Layout Renderer: ${callsite}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning CallSiteLineNumberLayoutRenderer 'Layout Renderer: ${callsite-linenumber}'
+2026-07-19 21:18:10.5155 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5155 Trace  Scanning UppercaseLayoutRendererWrapper 'Layout Renderer: ${uppercase}'
+2026-07-19 21:18:10.5300 Trace   Scanning Property Inner '${level}' NLog.Layouts.Layout
+2026-07-19 21:18:10.5300 Trace   Scanning SimpleLayout '${level}'
+2026-07-19 21:18:10.5300 Trace    Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.5300 Trace    Scanning LevelLayoutRenderer 'Layout Renderer: ${level}'
+2026-07-19 21:18:10.5300 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5300 Trace  Scanning MessageLayoutRenderer 'Layout Renderer: ${message}'
+2026-07-19 21:18:10.5300 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5300 Trace  Scanning ExceptionLayoutRenderer 'Layout Renderer: ${exception}'
+2026-07-19 21:18:10.5300 Trace   Scanning Property Formats 'System.Collections.Generic.List`1[NLog.Config.ExceptionRenderingFormat]' System.Collections.Generic.IEnumerable`1[NLog.Config.ExceptionRenderingFormat]
+2026-07-19 21:18:10.5300 Trace Initializing Layout Renderer: ${literal}
+2026-07-19 21:18:10.5300 Trace Initializing logs/folicon_2026-07-19.log
+2026-07-19 21:18:10.5300 Trace FindReachableObject<NLog.Internal.IRenderable>:
+2026-07-19 21:18:10.5300 Trace Scanning SimpleLayout 'logs/folicon_2026-07-19.log'
+2026-07-19 21:18:10.5300 Trace  Scanning Property LayoutRenderers 'NLog.LayoutRenderers.LayoutRenderer[]' System.Collections.Generic.IEnumerable`1[NLog.LayoutRenderers.LayoutRenderer]
+2026-07-19 21:18:10.5300 Trace  Scanning LiteralLayoutRenderer 'Layout Renderer: ${literal}'
+2026-07-19 21:18:10.5300 Trace Initializing FileTarget(Name=fileTarget)
+2026-07-19 21:18:10.5300 Trace FindReachableObject<NLog.Layouts.Layout>:
+2026-07-19 21:18:10.5300 Trace Scanning FileTarget 'FileTarget(Name=fileTarget)'
+2026-07-19 21:18:10.5300 Trace  Scanning Property FileName 'logs/folicon_2026-07-19.log' NLog.Layouts.Layout
+2026-07-19 21:18:10.5300 Trace  Scanning Property Layout '[${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}' NLog.Layouts.Layout
+2026-07-19 21:18:10.5300 Trace FileTarget(Name=fileTarget) has 2 layouts
+2026-07-19 21:18:10.5300 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.utils.LogUtils
+2026-07-19 21:18:10.5300 Debug Logger FoliCon.Modules.utils.LogUtils [Debug] => consoleTarget
+2026-07-19 21:18:10.5300 Debug Logger FoliCon.Modules.utils.LogUtils [Info] => consoleTarget
+2026-07-19 21:18:10.5300 Debug Logger FoliCon.Modules.utils.LogUtils [Warn] => consoleTarget
+2026-07-19 21:18:10.5300 Debug Logger FoliCon.Modules.utils.LogUtils [Error] => fileTarget consoleTarget
+2026-07-19 21:18:10.5300 Debug Logger FoliCon.Modules.utils.LogUtils [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:10.5300 Info Configuration initialized: TargetNames=fileTarget, consoleTarget, ConfigItems=41
+2026-07-19 21:18:10.6175 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.App
+2026-07-19 21:18:10.6175 Debug Logger FoliCon.App [Debug] => consoleTarget
+2026-07-19 21:18:10.6175 Debug Logger FoliCon.App [Info] => consoleTarget
+2026-07-19 21:18:10.6175 Debug Logger FoliCon.App [Warn] => consoleTarget
+2026-07-19 21:18:10.6175 Debug Logger FoliCon.App [Error] => fileTarget consoleTarget
+2026-07-19 21:18:10.6175 Debug Logger FoliCon.App [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:10.8806 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.ViewModels.MainWindowViewModel
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.ViewModels.MainWindowViewModel [Debug] => consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.ViewModels.MainWindowViewModel [Info] => consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.ViewModels.MainWindowViewModel [Warn] => consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.ViewModels.MainWindowViewModel [Error] => fileTarget consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.ViewModels.MainWindowViewModel [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:10.8806 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.utils.ProcessUtils
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.Modules.utils.ProcessUtils [Debug] => consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.Modules.utils.ProcessUtils [Info] => consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.Modules.utils.ProcessUtils [Warn] => consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.Modules.utils.ProcessUtils [Error] => fileTarget consoleTarget
+2026-07-19 21:18:10.8806 Debug Logger FoliCon.Modules.utils.ProcessUtils [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:10.9844 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.utils.CultureUtils
+2026-07-19 21:18:10.9844 Debug Logger FoliCon.Modules.utils.CultureUtils [Debug] => consoleTarget
+2026-07-19 21:18:10.9844 Debug Logger FoliCon.Modules.utils.CultureUtils [Info] => consoleTarget
+2026-07-19 21:18:10.9844 Debug Logger FoliCon.Modules.utils.CultureUtils [Warn] => consoleTarget
+2026-07-19 21:18:10.9844 Debug Logger FoliCon.Modules.utils.CultureUtils [Error] => fileTarget consoleTarget
+2026-07-19 21:18:10.9844 Debug Logger FoliCon.Modules.utils.CultureUtils [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:11.0192 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.utils.NetworkUtils
+2026-07-19 21:18:11.0192 Debug Logger FoliCon.Modules.utils.NetworkUtils [Debug] => consoleTarget
+2026-07-19 21:18:11.0192 Debug Logger FoliCon.Modules.utils.NetworkUtils [Info] => consoleTarget
+2026-07-19 21:18:11.0192 Debug Logger FoliCon.Modules.utils.NetworkUtils [Warn] => consoleTarget
+2026-07-19 21:18:11.0192 Debug Logger FoliCon.Modules.utils.NetworkUtils [Error] => fileTarget consoleTarget
+2026-07-19 21:18:11.0192 Debug Logger FoliCon.Modules.utils.NetworkUtils [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:11.0634 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.TMDB.Tmdb
+2026-07-19 21:18:11.0634 Debug Logger FoliCon.Modules.TMDB.Tmdb [Debug] => consoleTarget
+2026-07-19 21:18:11.0634 Debug Logger FoliCon.Modules.TMDB.Tmdb [Info] => consoleTarget
+2026-07-19 21:18:11.0634 Debug Logger FoliCon.Modules.TMDB.Tmdb [Warn] => consoleTarget
+2026-07-19 21:18:11.0634 Debug Logger FoliCon.Modules.TMDB.Tmdb [Error] => fileTarget consoleTarget
+2026-07-19 21:18:11.0634 Debug Logger FoliCon.Modules.TMDB.Tmdb [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:11.7767 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.DeviantArt.DArt
+2026-07-19 21:18:11.7767 Debug Logger FoliCon.Modules.DeviantArt.DArt [Debug] => consoleTarget
+2026-07-19 21:18:11.7767 Debug Logger FoliCon.Modules.DeviantArt.DArt [Info] => consoleTarget
+2026-07-19 21:18:11.7767 Debug Logger FoliCon.Modules.DeviantArt.DArt [Warn] => consoleTarget
+2026-07-19 21:18:11.7767 Debug Logger FoliCon.Modules.DeviantArt.DArt [Error] => fileTarget consoleTarget
+2026-07-19 21:18:11.7767 Debug Logger FoliCon.Modules.DeviantArt.DArt [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:11.7956 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.DeviantArt.OAuthCallbackListener
+2026-07-19 21:18:11.7956 Debug Logger FoliCon.Modules.DeviantArt.OAuthCallbackListener [Debug] => consoleTarget
+2026-07-19 21:18:11.7956 Debug Logger FoliCon.Modules.DeviantArt.OAuthCallbackListener [Info] => consoleTarget
+2026-07-19 21:18:11.7956 Debug Logger FoliCon.Modules.DeviantArt.OAuthCallbackListener [Warn] => consoleTarget
+2026-07-19 21:18:11.7956 Debug Logger FoliCon.Modules.DeviantArt.OAuthCallbackListener [Error] => fileTarget consoleTarget
+2026-07-19 21:18:11.7956 Debug Logger FoliCon.Modules.DeviantArt.OAuthCallbackListener [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:11.8420 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.UI.FolderDragDropHelper
+2026-07-19 21:18:11.8420 Debug Logger FoliCon.Modules.UI.FolderDragDropHelper [Debug] => consoleTarget
+2026-07-19 21:18:11.8420 Debug Logger FoliCon.Modules.UI.FolderDragDropHelper [Info] => consoleTarget
+2026-07-19 21:18:11.8420 Debug Logger FoliCon.Modules.UI.FolderDragDropHelper [Warn] => consoleTarget
+2026-07-19 21:18:11.8428 Debug Logger FoliCon.Modules.UI.FolderDragDropHelper [Error] => fileTarget consoleTarget
+2026-07-19 21:18:11.8428 Debug Logger FoliCon.Modules.UI.FolderDragDropHelper [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:12.1472 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.Overlays.OverlayProvider
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayProvider [Debug] => consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayProvider [Info] => consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayProvider [Warn] => consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayProvider [Error] => fileTarget consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayProvider [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:12.1472 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.Overlays.OverlayUpdateChecker
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayUpdateChecker [Debug] => consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayUpdateChecker [Info] => consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayUpdateChecker [Warn] => consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayUpdateChecker [Error] => fileTarget consoleTarget
+2026-07-19 21:18:12.1472 Debug Logger FoliCon.Modules.Overlays.OverlayUpdateChecker [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:12.1572 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.Overlays.OverlayRepositoryService
+2026-07-19 21:18:12.1572 Debug Logger FoliCon.Modules.Overlays.OverlayRepositoryService [Debug] => consoleTarget
+2026-07-19 21:18:12.1572 Debug Logger FoliCon.Modules.Overlays.OverlayRepositoryService [Info] => consoleTarget
+2026-07-19 21:18:12.1572 Debug Logger FoliCon.Modules.Overlays.OverlayRepositoryService [Warn] => consoleTarget
+2026-07-19 21:18:12.1572 Debug Logger FoliCon.Modules.Overlays.OverlayRepositoryService [Error] => fileTarget consoleTarget
+2026-07-19 21:18:12.1572 Debug Logger FoliCon.Modules.Overlays.OverlayRepositoryService [Fatal] => fileTarget consoleTarget
+2026-07-19 21:18:12.6554 Debug FileTarget(Name=fileTarget): Verify directory and creating writer to file: E:\FoliCon-3.3-release.worktrees\master\FoliCon\bin\Debug\net10.0-windows10.0.26100.0\logs\folicon_2026-07-19.log
+2026-07-19 21:29:50.8449 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.Extension.DialogServiceExtensions
+2026-07-19 21:29:50.8449 Debug Logger FoliCon.Modules.Extension.DialogServiceExtensions [Debug] => consoleTarget
+2026-07-19 21:29:50.8449 Debug Logger FoliCon.Modules.Extension.DialogServiceExtensions [Info] => consoleTarget
+2026-07-19 21:29:50.8449 Debug Logger FoliCon.Modules.Extension.DialogServiceExtensions [Warn] => consoleTarget
+2026-07-19 21:29:50.8449 Debug Logger FoliCon.Modules.Extension.DialogServiceExtensions [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8449 Debug Logger FoliCon.Modules.Extension.DialogServiceExtensions [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8680 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.ViewModels.PreviewerViewModel
+2026-07-19 21:29:50.8680 Debug Logger FoliCon.ViewModels.PreviewerViewModel [Debug] => consoleTarget
+2026-07-19 21:29:50.8680 Debug Logger FoliCon.ViewModels.PreviewerViewModel [Info] => consoleTarget
+2026-07-19 21:29:50.8680 Debug Logger FoliCon.ViewModels.PreviewerViewModel [Warn] => consoleTarget
+2026-07-19 21:29:50.8680 Debug Logger FoliCon.ViewModels.PreviewerViewModel [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8680 Debug Logger FoliCon.ViewModels.PreviewerViewModel [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8680 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.Overlays.OverlayPreviewCache
+2026-07-19 21:29:50.8680 Debug Logger FoliCon.Modules.Overlays.OverlayPreviewCache [Debug] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.Overlays.OverlayPreviewCache [Info] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.Overlays.OverlayPreviewCache [Warn] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.Overlays.OverlayPreviewCache [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.Overlays.OverlayPreviewCache [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8738 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.utils.StaRenderer
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.StaRenderer [Debug] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.StaRenderer [Info] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.StaRenderer [Warn] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.StaRenderer [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.StaRenderer [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8738 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Modules.utils.FileUtils
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.FileUtils [Debug] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.FileUtils [Info] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.FileUtils [Warn] => consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.FileUtils [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8738 Debug Logger FoliCon.Modules.utils.FileUtils [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8931 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Views.DynamicPosterIcon
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Views.DynamicPosterIcon [Debug] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Views.DynamicPosterIcon [Info] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Views.DynamicPosterIcon [Warn] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Views.DynamicPosterIcon [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Views.DynamicPosterIcon [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8931 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Models.Data.PosterIconBase
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIconBase [Debug] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIconBase [Info] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIconBase [Warn] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIconBase [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIconBase [Fatal] => fileTarget consoleTarget
+2026-07-19 21:29:50.8931 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.Models.Data.PosterIcon
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIcon [Debug] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIcon [Info] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIcon [Warn] => consoleTarget
+2026-07-19 21:29:50.8931 Debug Logger FoliCon.Models.Data.PosterIcon [Error] => fileTarget consoleTarget
+2026-07-19 21:29:50.9054 Debug Logger FoliCon.Models.Data.PosterIcon [Fatal] => fileTarget consoleTarget
+2026-07-19 21:32:34.4040 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.ViewModels.PosterIconConfigViewModel
+2026-07-19 21:32:34.4040 Debug Logger FoliCon.ViewModels.PosterIconConfigViewModel [Debug] => consoleTarget
+2026-07-19 21:32:34.4040 Debug Logger FoliCon.ViewModels.PosterIconConfigViewModel [Info] => consoleTarget
+2026-07-19 21:32:34.4040 Debug Logger FoliCon.ViewModels.PosterIconConfigViewModel [Warn] => consoleTarget
+2026-07-19 21:32:34.4040 Debug Logger FoliCon.ViewModels.PosterIconConfigViewModel [Error] => fileTarget consoleTarget
+2026-07-19 21:32:34.4056 Debug Logger FoliCon.ViewModels.PosterIconConfigViewModel [Fatal] => fileTarget consoleTarget
+2026-07-19 21:32:36.7207 Debug Targets configured when LogLevel >= Debug for Logger: FoliCon.ViewModels.OverlayStoreViewModel
+2026-07-19 21:32:36.7207 Debug Logger FoliCon.ViewModels.OverlayStoreViewModel [Debug] => consoleTarget
+2026-07-19 21:32:36.7207 Debug Logger FoliCon.ViewModels.OverlayStoreViewModel [Info] => consoleTarget
+2026-07-19 21:32:36.7207 Debug Logger FoliCon.ViewModels.OverlayStoreViewModel [Warn] => consoleTarget
+2026-07-19 21:32:36.7207 Debug Logger FoliCon.ViewModels.OverlayStoreViewModel [Error] => fileTarget consoleTarget
+2026-07-19 21:32:36.7207 Debug Logger FoliCon.ViewModels.OverlayStoreViewModel [Fatal] => fileTarget consoleTarget
+2026-07-19 21:32:47.0562 Info AppDomain Shutting down. LogFactory closing...
+2026-07-19 21:32:47.0562 Debug LogFactory Starting Flush with timeout=1.5 secs
+2026-07-19 21:32:47.0562 Trace Flushing all 2 targets...
+2026-07-19 21:32:47.0562 Trace FileTarget(Name=fileTarget): FlushAsync
+2026-07-19 21:32:47.0614 Debug Flush completed
+2026-07-19 21:32:47.0614 Trace FileTarget(Name=fileTarget): FlushAsync Done
+2026-07-19 21:32:47.0614 Debug Unregistered shutdown event handler for ProcessExit.
+2026-07-19 21:32:47.0614 Debug Closing logging configuration...
+2026-07-19 21:32:47.0614 Trace Closing FileTarget(Name=fileTarget)
+2026-07-19 21:32:47.0614 Debug FileTarget(Name=fileTarget): Closing...
+2026-07-19 21:32:47.0614 Debug FileTarget(Name=fileTarget): Closed.
+2026-07-19 21:32:47.0614 Trace Closing logs/folicon_2026-07-19.log
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing [${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${date}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${assembly-version}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${callsite}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${callsite-linenumber}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${uppercase}
+2026-07-19 21:32:47.0614 Trace Closing ${level}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${level}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${message}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${exception}
+2026-07-19 21:32:47.0614 Trace Closing ColoredConsoleTarget(Name=consoleTarget)
+2026-07-19 21:32:47.0614 Debug ColoredConsoleTarget(Name=consoleTarget): Closing...
+2026-07-19 21:32:47.0614 Debug ColoredConsoleTarget(Name=consoleTarget): Closed.
+2026-07-19 21:32:47.0614 Trace Closing System.Func`2[NLog.LogEventInfo,System.Boolean]
+2026-07-19 21:32:47.0614 Trace Closing [${date:format=yyyy-MM-dd HH\:mm\:ss.ffff}]-[v${assembly-version:format=Major.Minor.Build}]-${callsite}:${callsite-linenumber}-|${uppercase:${level}}: ${message} ${exception:format=tostring}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${date}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${assembly-version}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${callsite}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${callsite-linenumber}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${uppercase}
+2026-07-19 21:32:47.0614 Trace Closing ${level}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${level}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${message}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${literal}
+2026-07-19 21:32:47.0614 Trace Closing Layout Renderer: ${exception}
+2026-07-19 21:32:47.0614 Debug Finished closing logging configuration.
+2026-07-19 21:32:47.0614 Info LogFactory has been disposed.

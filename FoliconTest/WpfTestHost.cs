@@ -46,18 +46,12 @@ internal sealed class WpfTestHost : IDisposable
     /// <summary>
     /// Execute a function on the STA thread and return the result.
     /// </summary>
-    public T Invoke<T>(Func<T> func)
-    {
-        return _dispatcher!.Invoke(func, DispatcherPriority.Send);
-    }
+    public T Invoke<T>(Func<T> func) => _dispatcher!.Invoke(func, DispatcherPriority.Send);
 
     /// <summary>
     /// Execute an action on the STA thread.
     /// </summary>
-    public void Invoke(Action action)
-    {
-        _dispatcher!.Invoke(action, DispatcherPriority.Send);
-    }
+    public void Invoke(Action action) => _dispatcher!.Invoke(action, DispatcherPriority.Send);
 
     public void Dispose()
     {

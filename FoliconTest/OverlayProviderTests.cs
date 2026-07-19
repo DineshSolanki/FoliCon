@@ -25,9 +25,15 @@ public class OverlayProviderTests
     {
         var provider = new OverlayProvider();
 
-        var all = provider.GetAllOverlays();
-
-        Assert.All(all, o => Assert.True(o.IsBuiltIn, $"Overlay '{o.Id}' should have IsBuiltIn=true"));
+        // Only verify the 6 known built-in overlays have IsBuiltIn=true
+        // (user-installed overlays from AppData may also be present)
+        var builtInIds = new[] { "legacy", "alternate", "liaher", "faelpessoal", "faelpessoal-horizontal", "windows11" };
+        foreach (var id in builtInIds)
+        {
+            var overlay = provider.GetOverlayById(id);
+            Assert.NotNull(overlay);
+            Assert.True(overlay.IsBuiltIn, $"Built-in overlay '{id}' should have IsBuiltIn=true");
+        }
     }
 
     [Theory]

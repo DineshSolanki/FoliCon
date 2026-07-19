@@ -166,6 +166,7 @@ public class OverlayProvider : IOverlayProvider
                 }
 
                 _userOverlays.Add(definition);
+                definition.OverlayFolderPath = folder;
             }
             catch (Exception ex)
             {
