@@ -1,7 +1,5 @@
-﻿using System.Text;
-using SharpCompress.Archives;
+﻿using SharpCompress.Archives;
 using SharpCompress.Common;
-using SharpCompress.Readers;
 
 namespace FoliCon.Modules.Extension;
 

@@ -1,5 +1,4 @@
-using FoliCon.Models.Data;
-
+#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>
@@ -11,23 +10,29 @@ public interface IOverlayRepositoryService
     /// <summary>
     /// Fetches the catalog from the remote repository. Uses cached version if fresh (24h TTL).
     /// </summary>
-    Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct = default);
+    Task<OverlayCatalog> FetchCatalogAsync();
+    Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct);
 
     /// <summary>
     /// Fetches the manifest for a specific overlay from the repository.
     /// </summary>
-    Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct = default);
+    Task<OverlayManifest> FetchManifestAsync(string overlayId);
+    Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct);
 
     /// <summary>
     /// Downloads and installs an overlay. Validates schema, SHA256, and sizes before committing.
     /// </summary>
-    Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress = null, CancellationToken ct = default);
+    Task InstallOverlayAsync(OverlayCatalogEntry entry);
+    Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress);
+    Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress, CancellationToken ct);
 
     /// <summary>
     /// Updates an installed overlay to the version specified in the catalog.
     /// Backs up the current version before replacing.
     /// </summary>
-    Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress = null, CancellationToken ct = default);
+    Task UpdateOverlayAsync(string overlayId);
+    Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress);
+    Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress, CancellationToken ct);
 
     /// <summary>
     /// Uninstalls an overlay. If it was the active overlay, resets to the default.

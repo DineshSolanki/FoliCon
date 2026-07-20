@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
-using FoliCon.Models.Data;
 
+#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>
@@ -79,10 +79,14 @@ public static class OverlayPreviewCache
         foreach (var key in Cache.Keys)
         {
             if (key.StartsWith(overlayId, StringComparison.Ordinal) && Cache.TryRemove(key, out _))
+            {
                 removed++;
+            }
         }
         if (removed > 0)
+        {
             Logger.Debug("Invalidated {Count} cache entries for overlay '{Id}'", removed, overlayId);
+        }
     }
 
     /// <summary>
@@ -128,7 +132,7 @@ public static class OverlayPreviewCache
         return new PosterIcon();
     }
 
-    private static BitmapSource ConvertToBitmapSource(System.Drawing.Bitmap bitmap)
+    private static BitmapSource ConvertToBitmapSource(Bitmap bitmap)
     {
         // Note: stream is intentionally NOT disposed — BitmapImage reads lazily
         // and the BitmapImage will be frozen, making it self-contained.

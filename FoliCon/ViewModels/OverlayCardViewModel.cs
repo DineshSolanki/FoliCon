@@ -1,5 +1,4 @@
-using FoliCon.Models.Data;
-
+#nullable enable
 namespace FoliCon.ViewModels;
 
 /// <summary>
@@ -57,10 +56,13 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
     /// Downloads and sets the preview image from the URL.
     /// Call after construction; runs async to avoid blocking.
     /// </summary>
-    public async Task LoadPreviewAsync(CancellationToken ct = default)
+    public Task LoadPreviewAsync() => LoadPreviewAsync(CancellationToken.None);
+    public async Task LoadPreviewAsync(CancellationToken ct)
     {
         if (string.IsNullOrEmpty(PreviewUrl) || PreviewImage != null)
+        {
             return;
+        }
 
         try
         {
@@ -78,7 +80,7 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
         catch (Exception ex)
         {
             // Preview load failure is non-fatal; card shows without image
-            System.Diagnostics.Debug.WriteLine($"Failed to load preview for '{Id}': {ex.Message}");
+            Debug.WriteLine($"Failed to load preview for '{Id}': {ex.Message}");
         }
         finally
         {

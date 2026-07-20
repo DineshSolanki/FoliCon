@@ -80,7 +80,7 @@ public class OverlayStoreViewModelTests
     }
 
     [Fact]
-    public void StoreViewModel_FiltersBySearchQuery()
+    public async Task StoreViewModel_FiltersBySearchQuery()
     {
         var entries = new List<OverlayCatalogEntry>
         {
@@ -89,13 +89,12 @@ public class OverlayStoreViewModelTests
             CreateEntry("retro-wave", "Retro Wave", "Alice", "1.0.0", ["retro", "neon"], 3000),
         };
         var service = new StubRepositoryService(catalogEntries: entries);
-        var provider = new OverlayProvider();
 
         // Note: We can't easily construct OverlayStoreViewModel without a real
         // DialogCloseListener (it's a Prism-generated proxy). Test the filter
         // logic indirectly through the service stub.
         // This test verifies the stub returns correct data.
-        var catalog = service.FetchCatalogAsync().Result;
+        var catalog = await service.FetchCatalogAsync();
         Assert.Equal(3, catalog.Overlays.Count);
 
         // Filter by author
@@ -138,17 +137,23 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
     private readonly HashSet<string> _installed = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _updates = new(StringComparer.OrdinalIgnoreCase);
 
-    public Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct = default) => Task.FromResult(new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries });
+    public Task<OverlayCatalog> FetchCatalogAsync() => FetchCatalogAsync(default);
+    public Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct) => Task.FromResult(new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries });
 
-    public Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct = default) => Task.FromResult(new OverlayManifest { Id = overlayId });
+    public Task<OverlayManifest> FetchManifestAsync(string overlayId) => FetchManifestAsync(overlayId, default);
+    public Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct) => Task.FromResult(new OverlayManifest { Id = overlayId });
 
-    public Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress = null, CancellationToken ct = default)
+    public Task InstallOverlayAsync(OverlayCatalogEntry entry) => InstallOverlayAsync(entry, null, default);
+    public Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress) => InstallOverlayAsync(entry, progress, default);
+    public Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
     {
         _installed.Add(entry.Id);
         return Task.CompletedTask;
     }
 
-    public Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress = null, CancellationToken ct = default)
+    public Task UpdateOverlayAsync(string overlayId) => UpdateOverlayAsync(overlayId, null, default);
+    public Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress) => UpdateOverlayAsync(overlayId, progress, default);
+    public Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
     {
         _updates.Remove(overlayId);
         return Task.CompletedTask;
@@ -164,7 +169,10 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
     public bool IsUpdateAvailable(string overlayId) => _updates.ContainsKey(overlayId);
     public string? GetInstalledVersion(string overlayId) => _installed.Contains(overlayId) ? "1.0.0" : null;
     public string BaseUrl => "https://example.com/overlays";
-    public void InvalidateCache() { }
+    public void InvalidateCache()
+    {
+        // No-op for testing
+    }
 
     public void MarkInstalled(string id) => _installed.Add(id);
     public void MarkUpdateAvailable(string id, string version) => _updates[id] = version;

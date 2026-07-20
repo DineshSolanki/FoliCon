@@ -1,7 +1,4 @@
-using System.Drawing;
-using System.IO;
-using FoliCon.Models.Data;
-
+#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>
@@ -19,11 +16,11 @@ public static class ReferenceImageExporter
     private static readonly (string Id, Func<object, PosterIconBase> Factory)[] OldViews =
     [
         ("legacy", dc => new Views.PosterIcon(dc)),
-        ("alternate", dc => new Views.PosterIconAlt(dc)),
-        ("liaher", dc => new Views.PosterIconLiaher(dc)),
-        ("faelpessoal", dc => new Views.PosterIconFaelpessoal(dc)),
-        ("faelpessoal-horizontal", dc => new Views.PosterIconFaelpessoalHorizontal(dc)),
-        ("windows11", dc => new Views.PosterIconWindows11(dc)),
+        ("alternate", dc => new PosterIconAlt(dc)),
+        ("liaher", dc => new PosterIconLiaher(dc)),
+        ("faelpessoal", dc => new PosterIconFaelpessoal(dc)),
+        ("faelpessoal-horizontal", dc => new PosterIconFaelpessoalHorizontal(dc)),
+        ("windows11", dc => new PosterIconWindows11(dc)),
     ];
 
     /// <summary>
@@ -75,7 +72,9 @@ public static class ReferenceImageExporter
         while (dir != null)
         {
             if (dir.GetFiles("*.sln").Length > 0)
+            {
                 return dir.FullName;
+            }
             dir = dir.Parent;
         }
         return null;

@@ -61,7 +61,10 @@ internal static class OverlayConstants
     internal static bool TryCompareVersions(string a, string b, out bool aIsNewer)
     {
         aIsNewer = false;
-        if (!Version.TryParse(a, out var versionA) || !Version.TryParse(b, out var versionB)) return false;
+        if (!Version.TryParse(a, out var versionA) || !Version.TryParse(b, out var versionB))
+        {
+            return false;
+        }
         aIsNewer = versionA > versionB;
         return true;
     }

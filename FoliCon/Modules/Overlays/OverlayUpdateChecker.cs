@@ -34,10 +34,16 @@ public class OverlayUpdateChecker(IOverlayRepositoryService repositoryService, I
                 var catalogEntry = catalog.Overlays.FirstOrDefault(o =>
                     string.Equals(o.Id, overlay.Id, StringComparison.OrdinalIgnoreCase));
 
-                if (catalogEntry == null) continue;
+                if (catalogEntry == null)
+                {
+                    continue;
+                }
 
                 if (!OverlayConstants.TryCompareVersions(catalogEntry.OverlayVersion, overlay.OverlayVersion,
-                        out var isNewer) || !isNewer) continue;
+                        out var isNewer) || !isNewer)
+                {
+                    continue;
+                }
                 updateCount++;
                 Logger.Info("Update available for '{Id}': {Installed} → {Available}",
                     overlay.Id, overlay.OverlayVersion, catalogEntry.OverlayVersion);

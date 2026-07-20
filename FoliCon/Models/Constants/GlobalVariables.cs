@@ -1,4 +1,5 @@
-﻿namespace FoliCon.Models.Constants;
+﻿#nullable enable
+namespace FoliCon.Models.Constants;
 
 [Localizable(false)]
 internal static class GlobalVariables
@@ -25,7 +26,10 @@ internal static class GlobalVariables
         get
         {
             var data = Services.Tracker.Store.GetData("PosterIconConfigViewModel");
-            if (!data.TryGetValue("p.IconOverlay", out var value)) return OverlayConstants.DefaultOverlayId;
+            if (!data.TryGetValue("p.IconOverlay", out var value))
+            {
+                return OverlayConstants.DefaultOverlayId;
+            }
             var strValue = value.ToString();
             return strValue switch
             {

@@ -130,27 +130,31 @@ public sealed class GoldenImageParityTests : IDisposable
     /// </summary>
     private static (int diffCount, int maxChannelDiff) CompareBitmaps(Bitmap a, Bitmap b, int tolerance = 10)
     {
-        int diffCount = 0;
-        int maxChannelDiff = 0;
+        var diffCount = 0;
+        var maxChannelDiff = 0;
 
-        for (int y = 0; y < a.Height; y++)
+        for (var y = 0; y < a.Height; y++)
         {
-            for (int x = 0; x < a.Width; x++)
+            for (var x = 0; x < a.Width; x++)
             {
                 var pa = a.GetPixel(x, y);
                 var pb = b.GetPixel(x, y);
 
-                int dr = Math.Abs(pa.R - pb.R);
-                int dg = Math.Abs(pa.G - pb.G);
-                int db = Math.Abs(pa.B - pb.B);
-                int da = Math.Abs(pa.A - pb.A);
+                var dr = Math.Abs(pa.R - pb.R);
+                var dg = Math.Abs(pa.G - pb.G);
+                var db = Math.Abs(pa.B - pb.B);
+                var da = Math.Abs(pa.A - pb.A);
 
-                int channelMax = Math.Max(Math.Max(dr, dg), Math.Max(db, da));
+                var channelMax = Math.Max(Math.Max(dr, dg), Math.Max(db, da));
                 if (channelMax > maxChannelDiff)
+                {
                     maxChannelDiff = channelMax;
+                }
 
                 if (channelMax > tolerance)
+                {
                     diffCount++;
+                }
             }
         }
 
@@ -164,21 +168,21 @@ public sealed class GoldenImageParityTests : IDisposable
     private static void SaveDiffImage(Bitmap reference, Bitmap rendered, string path)
     {
         using var diff = new Bitmap(reference.Width, reference.Height);
-        for (int y = 0; y < reference.Height; y++)
+        for (var y = 0; y < reference.Height; y++)
         {
-            for (int x = 0; x < reference.Width; x++)
+            for (var x = 0; x < reference.Width; x++)
             {
                 var pr = reference.GetPixel(x, y);
                 var pn = rendered.GetPixel(x, y);
-                int dr = Math.Abs(pr.R - pn.R);
-                int dg = Math.Abs(pr.G - pn.G);
-                int db = Math.Abs(pr.B - pn.B);
-                int max = Math.Max(Math.Max(dr, dg), db);
+                var dr = Math.Abs(pr.R - pn.R);
+                var dg = Math.Abs(pr.G - pn.G);
+                var db = Math.Abs(pr.B - pn.B);
+                var max = Math.Max(Math.Max(dr, dg), db);
 
                 if (max <= 10)
                 {
                     // Identical (within tolerance): show as dim grayscale of original
-                    int gray = (pr.R + pr.G + pr.B) / 3 / 4; // darken to 25%
+                    var gray = (pr.R + pr.G + pr.B) / 3 / 4; // darken to 25%
                     diff.SetPixel(x, y, Color.FromArgb(255, gray, gray, gray));
                 }
                 else
@@ -200,10 +204,11 @@ public sealed class GoldenImageParityTests : IDisposable
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null)
         {
-            if (Directory.Exists(Path.Combine(dir.FullName, "Resources", "ReferenceOverlays")))
+            if (Directory.Exists(Path.Combine(dir.FullName, "Resources", "ReferenceOverlays")) || dir.Name == "FoliconTest")
+            {
                 return dir.FullName;
-            if (dir.Name == "FoliconTest")
-                return dir.FullName;
+            }
+
             dir = dir.Parent;
         }
         // Fallback: assume we're in bin/Debug/net10.0-windows10.0.26100.0/

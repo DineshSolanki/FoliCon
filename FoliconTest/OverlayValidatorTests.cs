@@ -1,6 +1,6 @@
 using System.IO;
 using FoliCon.Models.Data;
-using FoliCon.Modules.Overlays;
+using FoliCon.Modules.Overlays.Internal;
 
 namespace FoliconTest;
 
@@ -20,7 +20,9 @@ public class OverlayValidatorTests : IDisposable
     public void Dispose()
     {
         if (Directory.Exists(_tempDir))
+        {
             Directory.Delete(_tempDir, true);
+        }
         GC.SuppressFinalize(this);
     }
 

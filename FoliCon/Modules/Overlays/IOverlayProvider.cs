@@ -1,5 +1,4 @@
-using FoliCon.Models.Data;
-
+#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>

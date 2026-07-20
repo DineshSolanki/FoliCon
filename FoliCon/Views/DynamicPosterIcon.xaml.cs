@@ -1,9 +1,9 @@
-using FoliCon.Models.Data;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
 using FontFamily = System.Windows.Media.FontFamily;
 
+#nullable enable
 namespace FoliCon.Views;
 
 /// <summary>
@@ -39,7 +39,28 @@ public partial class DynamicPosterIcon : PosterIconBase
         // Cache created elements by key
         var elements = new Dictionary<string, UIElement>();
 
-        // --- Base Layer ---
+        AddBaseLayer(definition, dataContext, elements);
+        AddPosterLayer(definition, elements);
+        AddFrontLayer(definition, dataContext, elements);
+
+        // --- Title and Rating ---
+        AddTitleAndRating(definition, dataContext, elements);
+
+        // --- Add children in the order specified by LayerOrder (matches original XAML z-order) ---
+        var layerOrder = definition.LayerOrder ?? DefaultLayerOrder;
+        foreach (var key in layerOrder)
+        {
+            if (elements.TryGetValue(key, out var element))
+            {
+                rootGrid.Children.Add(element);
+            }
+        }
+
+        Content = rootGrid;
+    }
+
+    private void AddBaseLayer(PosterOverlayDefinition definition, object dataContext, Dictionary<string, UIElement> elements)
+    {
         if (definition.BaseLayer != null && !string.IsNullOrEmpty(definition.BaseLayer.ImagePath))
         {
             var baseImage = CreateLayerImage(definition.BaseLayer.ImagePath, definition.BaseLayer.Margin);
@@ -49,15 +70,19 @@ public partial class DynamicPosterIcon : PosterIconBase
                 elements["base"] = baseImage;
             }
         }
+    }
 
-        // --- Poster Image (with optional clip and opacity mask) ---
+    private void AddPosterLayer(PosterOverlayDefinition definition, Dictionary<string, UIElement> elements)
+    {
         var posterElement = CreatePosterElement(definition);
         if (posterElement != null)
         {
             elements["poster"] = posterElement;
         }
+    }
 
-        // --- Front Layer ---
+    private void AddFrontLayer(PosterOverlayDefinition definition, object dataContext, Dictionary<string, UIElement> elements)
+    {
         if (definition.FrontLayer != null && !string.IsNullOrEmpty(definition.FrontLayer.ImagePath))
         {
             var frontImage = CreateLayerImage(definition.FrontLayer.ImagePath, definition.FrontLayer.Margin);
@@ -67,8 +92,10 @@ public partial class DynamicPosterIcon : PosterIconBase
                 elements["front"] = frontImage;
             }
         }
+    }
 
-        // --- Title Text ---
+    private void AddTitleAndRating(PosterOverlayDefinition definition, object dataContext, Dictionary<string, UIElement> elements)
+    {
         TextBlock? titleBlock = null;
         var titleInRatingGrid = false;
         var titleGridRow = 0;
@@ -91,18 +118,6 @@ public partial class DynamicPosterIcon : PosterIconBase
         {
             elements["title"] = titleBlock;
         }
-
-        // --- Add children in the order specified by LayerOrder (matches original XAML z-order) ---
-        var layerOrder = definition.LayerOrder ?? DefaultLayerOrder;
-        foreach (var key in layerOrder)
-        {
-            if (elements.TryGetValue(key, out var element))
-            {
-                rootGrid.Children.Add(element);
-            }
-        }
-
-        Content = rootGrid;
     }
 
     private Image? CreateLayerImage(string imagePath, string margin)
@@ -128,43 +143,56 @@ public partial class DynamicPosterIcon : PosterIconBase
 
     private UIElement? CreatePosterElement(PosterOverlayDefinition definition)
     {
-        var hasClip = definition.Poster.ClipRadius != "0" &&
-                      !string.IsNullOrWhiteSpace(definition.Poster.ClipRadius);
+        var hasClip = !string.IsNullOrWhiteSpace(definition.Poster.ClipRadius) && definition.Poster.ClipRadius != "0";
         var hasOpacityMask = !string.IsNullOrEmpty(definition.Poster.OpacityMaskPath);
 
         // No clip and no opacity mask — plain Image with margin (direct child of root Grid)
         if (!hasClip && !hasOpacityMask)
         {
-            var posterImage = new Image
-            {
-                Source = GetPosterImageSource(),
-                Stretch = Stretch.Fill,
-                Margin = ParseThickness(definition.Poster.Margin)
-            };
-            RenderOptions.SetBitmapScalingMode(posterImage, BitmapScalingMode.HighQuality);
-            return posterImage;
+            return CreatePlainPosterImage(definition);
         }
 
         // Opacity mask only (no clip) — plain Image with margin and OpacityMask, no Border wrapper.
         // Matches original XAML where Windows11 poster is a direct Image in the Grid.
-        if (!hasClip && hasOpacityMask)
+        if (!hasClip) // hasOpacityMask must be true here
         {
-            var posterImage = new Image
-            {
-                Source = GetPosterImageSource(),
-                Stretch = Stretch.Fill,
-                Margin = ParseThickness(definition.Poster.Margin)
-            };
-            posterImage.OpacityMask = new ImageBrush(ResolveImageSource(definition.Poster.OpacityMaskPath!))
-            {
-                Stretch = Stretch.Fill
-            };
-            RenderOptions.SetBitmapScalingMode(posterImage, BitmapScalingMode.HighQuality);
-            return posterImage;
+            return CreatePosterImageWithOpacityMask(definition);
         }
 
         // Clip (with optional opacity mask) — wrap in Border.
-        // The Border gets the margin and clip; the Image inside may have its own margin (PosterInnerMargin).
+        return CreateClippedPosterElement(definition, hasOpacityMask);
+    }
+
+    private Image CreatePlainPosterImage(PosterOverlayDefinition definition)
+    {
+        var posterImage = new Image
+        {
+            Source = GetPosterImageSource(),
+            Stretch = Stretch.Fill,
+            Margin = ParseThickness(definition.Poster.Margin)
+        };
+        RenderOptions.SetBitmapScalingMode(posterImage, BitmapScalingMode.HighQuality);
+        return posterImage;
+    }
+
+    private Image CreatePosterImageWithOpacityMask(PosterOverlayDefinition definition)
+    {
+        var posterImage = new Image
+        {
+            Source = GetPosterImageSource(),
+            Stretch = Stretch.Fill,
+            Margin = ParseThickness(definition.Poster.Margin)
+        };
+        posterImage.OpacityMask = new ImageBrush(ResolveImageSource(definition.Poster.OpacityMaskPath!))
+        {
+            Stretch = Stretch.Fill
+        };
+        RenderOptions.SetBitmapScalingMode(posterImage, BitmapScalingMode.HighQuality);
+        return posterImage;
+    }
+
+    private UIElement CreateClippedPosterElement(PosterOverlayDefinition definition, bool hasOpacityMask)
+    {
         var border = new Border
         {
             Background = Brushes.Transparent,
@@ -188,6 +216,22 @@ public partial class DynamicPosterIcon : PosterIconBase
         var cornerRadius = ParseCornerRadius(definition.Poster.ClipRadius);
         border.CornerRadius = cornerRadius;
 
+        ApplyClipToBorder(border, definition, cornerRadius);
+
+        if (hasOpacityMask)
+        {
+            posterImageInner.OpacityMask = new ImageBrush(ResolveImageSource(definition.Poster.OpacityMaskPath!))
+            {
+                Stretch = Stretch.Fill
+            };
+        }
+
+        border.Child = posterImageInner;
+        return border;
+    }
+
+    private void ApplyClipToBorder(Border border, PosterOverlayDefinition definition, CornerRadius cornerRadius)
+    {
         // Use explicit ClipRect if provided, otherwise calculate from margins.
         if (!string.IsNullOrWhiteSpace(definition.Poster.ClipRect))
         {
@@ -218,17 +262,6 @@ public partial class DynamicPosterIcon : PosterIconBase
                 new Rect(0, 0, clipWidth, clipHeight),
                 cornerRadius.TopLeft, cornerRadius.TopLeft);
         }
-
-        if (hasOpacityMask)
-        {
-            posterImageInner.OpacityMask = new ImageBrush(ResolveImageSource(definition.Poster.OpacityMaskPath!))
-            {
-                Stretch = Stretch.Fill
-            };
-        }
-
-        border.Child = posterImageInner;
-        return border;
     }
 
     private Grid CreateRatingGrid(
@@ -283,7 +316,7 @@ public partial class DynamicPosterIcon : PosterIconBase
         return grid;
     }
 
-    private TextBlock? CreateTitleText(TitleConfig title, object dataContext)
+    private static TextBlock? CreateTitleText(TitleConfig title, object dataContext)
     {
         try
         {

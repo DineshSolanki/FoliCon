@@ -144,8 +144,8 @@ public class OverlayRepositoryServiceTests : IDisposable
     public async Task UninstallOverlay_NonExistent_DoesNotThrow()
     {
         var service = CreateService();
-        await service.UninstallOverlayAsync("nonexistent");
-        // Should not throw
+        var exception = await Record.ExceptionAsync(() => service.UninstallOverlayAsync("nonexistent"));
+        Assert.Null(exception);
     }
 
     [Fact]

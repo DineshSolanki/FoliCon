@@ -1,4 +1,5 @@
-﻿namespace FoliCon.ViewModels;
+﻿#nullable enable
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 [SuppressMessage("Performance", "CA1822:Mark members as static",
@@ -55,7 +56,10 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
         get;
         set
         {
-            if (!SetProperty(ref field, value) || AvailableOverlays == null) return;
+            if (!SetProperty(ref field, value) || AvailableOverlays == null)
+            {
+                return;
+            }
             // Update IsActive on overlay items
             foreach (var item in AvailableOverlays)
             {
@@ -164,13 +168,19 @@ public class OverlayItemViewModel : BindableBase
     /// </summary>
     private static BitmapImage LoadCommunityOverlayPreview(string overlayId, bool isBuiltIn)
     {
-        if (isBuiltIn) return null;
+        if (isBuiltIn)
+        {
+            return null;
+        }
 
         var overlayDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "FoliCon", "Overlays", overlayId);
         var previewPath = Path.Combine(overlayDir, "preview.png");
-        if (!File.Exists(previewPath)) return null;
+        if (!File.Exists(previewPath))
+        {
+            return null;
+        }
 
         try
         {

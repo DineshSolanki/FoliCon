@@ -1,7 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace FoliCon.Properties.Langs;
 
 [SuppressMessage("Performance", "CA1822:Mark members as static",

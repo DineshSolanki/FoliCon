@@ -1,10 +1,12 @@
-using System.IO;
 using System.Security.Cryptography;
-using System.Text;
-using FoliCon.Models.Data;
-using Newtonsoft.Json;
 
+#nullable enable
 namespace FoliCon.Modules.Overlays;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 /// <summary>
 /// Manages the overlay repository: catalog fetching with ETag caching,
@@ -15,6 +17,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+    [SuppressMessage("Sonar", "S1075:URIs should not be hardcoded", Justification = "This is the official repository base URL.")]
     private const string defaultBaseUrl = "https://raw.githubusercontent.com/DineshSolanki/FoliCon-Overlays/main";
     private static readonly TimeSpan CacheTtl = TimeSpan.FromHours(24);
 
@@ -80,7 +83,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
     public string BaseUrl { get; }
 
-    public async Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct = default)
+    public Task<OverlayCatalog> FetchCatalogAsync() => FetchCatalogAsync(default);
+    public async Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct)
     {
         // Return in-memory cache if fresh
         if (_cachedCatalog != null && DateTime.UtcNow - _cacheTimestamp < CacheTtl)
@@ -180,7 +184,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
-    public async Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct = default)
+    public Task<OverlayManifest> FetchManifestAsync(string overlayId) => FetchManifestAsync(overlayId, default);
+    public async Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct)
     {
         var url = $"{BaseUrl}/overlays/{overlayId}/manifest.json";
         Logger.Info("Fetching manifest for '{Id}' from {Url}", overlayId, url);
@@ -191,7 +196,9 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         return manifest ?? throw new InvalidOperationException($"Failed to deserialize manifest for '{overlayId}'");
     }
 
-    public async Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress = null, CancellationToken ct = default)
+    public Task InstallOverlayAsync(OverlayCatalogEntry entry) => InstallOverlayAsync(entry, null, default);
+    public Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress) => InstallOverlayAsync(entry, progress, default);
+    public async Task InstallOverlayAsync(OverlayCatalogEntry entry, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
     {
         Logger.Info("Installing overlay '{Id}' v{Version}", entry.Id, entry.OverlayVersion);
 
@@ -219,54 +226,11 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             var manifest = await FetchManifestAsync(entry.Id, ct);
 
             // Download all assets
-            var totalAssets = manifest.Assets.Length;
-            for (var i = 0; i < totalAssets; i++)
-            {
-                var asset = manifest.Assets[i];
-                var percent = 10 + (int)((i + 1) / (double)totalAssets * 70);
-                progress?.Report((percent, $"Downloading {asset}..."));
-
-                var assetUrl = $"{BaseUrl}/overlays/{entry.Id}/{asset}";
-                var bytes = await Services.HttpC.GetByteArrayAsync(assetUrl, ct);
-
-                // Size check
-                if (bytes.Length > OverlayConstants.MaxImageSizeBytes && asset != OverlayConstants.OverlayJsonFileName)
-                {
-                    throw new InvalidOperationException(
-                        $"Asset '{asset}' exceeds {OverlayConstants.MaxImageSizeBytes / 1024 / 1024}MB limit.");
-                }
-
-                // SHA256 verification
-                if (manifest.Sha256.TryGetValue(asset, out var expectedHash))
-                {
-                    var actualHash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
-                    if (!string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
-                    {
-                        throw new InvalidOperationException(
-                            $"SHA256 mismatch for '{asset}': expected {expectedHash}, got {actualHash}");
-                    }
-                }
-
-                var assetPath = Path.Combine(tmpDir, asset);
-                Directory.CreateDirectory(Path.GetDirectoryName(assetPath)!);
-                await File.WriteAllBytesAsync(assetPath, bytes, ct);
-            }
+            await DownloadAssetsAsync(entry.Id, manifest, tmpDir, progress, ct);
 
             // Validate overlay.json schema
             progress?.Report((85, "Validating..."));
-            var overlayJsonPath = Path.Combine(tmpDir, OverlayConstants.OverlayJsonFileName);
-            var definitionJson = await File.ReadAllTextAsync(overlayJsonPath, ct);
-            var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(definitionJson);
-            if (definition == null)
-            {
-                throw new InvalidOperationException("overlay.json deserialized to null");
-            }
-
-            var errors = OverlayValidator.Validate(tmpDir, definition);
-            if (errors.Count > 0)
-            {
-                throw new InvalidOperationException($"Validation failed: {string.Join("; ", errors)}");
-            }
+            await ValidateInstalledOverlayAsync(tmpDir, ct);
 
             // Atomic rename: tmp → final
             progress?.Report((95, "Installing..."));
@@ -298,7 +262,67 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
-    public async Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress = null, CancellationToken ct = default)
+    private async Task DownloadAssetsAsync(string overlayId, OverlayManifest manifest, string targetDir, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
+    {
+        var totalAssets = manifest.Assets.Length;
+        for (var i = 0; i < totalAssets; i++)
+        {
+            var asset = manifest.Assets[i];
+            var percent = 10 + (int)((i + 1) / (double)totalAssets * 70);
+            progress?.Report((percent, $"Downloading {asset}..."));
+
+            var assetUrl = $"{BaseUrl}/overlays/{overlayId}/{asset}";
+            var bytes = await Services.HttpC.GetByteArrayAsync(assetUrl, ct);
+
+            VerifyAsset(asset, bytes, manifest);
+
+            var assetPath = Path.Combine(targetDir, asset);
+            Directory.CreateDirectory(Path.GetDirectoryName(assetPath)!);
+            await File.WriteAllBytesAsync(assetPath, bytes, ct);
+        }
+    }
+
+    private void VerifyAsset(string asset, byte[] bytes, OverlayManifest manifest)
+    {
+        // Size check
+        if (bytes.Length > OverlayConstants.MaxImageSizeBytes && asset != OverlayConstants.OverlayJsonFileName)
+        {
+            throw new InvalidOperationException(
+                $"Asset '{asset}' exceeds {OverlayConstants.MaxImageSizeBytes / 1024 / 1024}MB limit.");
+        }
+
+        // SHA256 verification
+        if (manifest.Sha256.TryGetValue(asset, out var expectedHash))
+        {
+            var actualHash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+            if (!string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidOperationException(
+                    $"SHA256 mismatch for '{asset}': expected {expectedHash}, got {actualHash}");
+            }
+        }
+    }
+
+    private async Task ValidateInstalledOverlayAsync(string tmpDir, CancellationToken ct)
+    {
+        var overlayJsonPath = Path.Combine(tmpDir, OverlayConstants.OverlayJsonFileName);
+        var definitionJson = await File.ReadAllTextAsync(overlayJsonPath, ct);
+        var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(definitionJson);
+        if (definition == null)
+        {
+            throw new InvalidOperationException("overlay.json deserialized to null");
+        }
+
+        var errors = Internal.OverlayValidator.Validate(tmpDir, definition);
+        if (errors.Count > 0)
+        {
+            throw new InvalidOperationException($"Validation failed: {string.Join("; ", (IEnumerable<string>)errors)}");
+        }
+    }
+
+    public Task UpdateOverlayAsync(string overlayId) => UpdateOverlayAsync(overlayId, null, default);
+    public Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress) => UpdateOverlayAsync(overlayId, progress, default);
+    public async Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
     {
         Logger.Info("Updating overlay '{Id}'", overlayId);
 
@@ -339,10 +363,10 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             Logger.Info("Successfully updated overlay '{Id}'", overlayId);
         }
-        catch
+        catch (Exception ex)
         {
             // Rollback: restore backup
-            Logger.Warn("Update failed for '{Id}', rolling back", overlayId);
+            Logger.Warn(ex, "Update failed for '{Id}', rolling back", overlayId);
             if (Directory.Exists(finalDir))
             {
                 Directory.Delete(finalDir, true);
@@ -417,8 +441,6 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             return definition?.OverlayVersion;
         }
         catch { return null; }
-
-        return null;
     }
 
     public void MarkUpdateAvailable(string overlayId, string availableVersion) => _availableUpdates[overlayId] = availableVersion;

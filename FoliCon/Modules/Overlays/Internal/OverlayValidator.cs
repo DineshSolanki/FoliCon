@@ -1,12 +1,10 @@
-using FoliCon.Models.Data;
-
-namespace FoliCon.Modules.Overlays;
+namespace FoliCon.Modules.Overlays.Internal;
 
 /// <summary>
 /// Validates overlay.json files and overlay package folders.
 /// </summary>
 [Localizable(false)]
-public static class OverlayValidator
+public static partial class OverlayValidator
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -26,16 +24,39 @@ public static class OverlayValidator
             return errors; // Don't continue — app doesn't understand this schema
         }
 
+        ValidateMetadata(definition, errors);
+        ValidateLayers(overlayFolder, definition, errors);
+        ValidatePosterConfig(overlayFolder, definition, errors);
+        ValidateRatingConfig(definition, errors);
+        ValidateTitleConfig(definition, errors);
+
+        // Validate total package size
+        ValidatePackageSize(overlayFolder, errors);
+
+        return errors;
+    }
+
+    private static void ValidateMetadata(PosterOverlayDefinition definition, List<string> errors)
+    {
         // Required fields
         if (string.IsNullOrWhiteSpace(definition.Id))
+        {
             errors.Add("Overlay 'id' is required.");
+        }
         if (string.IsNullOrWhiteSpace(definition.DisplayName))
+        {
             errors.Add("Overlay 'displayName' is required.");
+        }
 
         // ID safety
         if (!string.IsNullOrWhiteSpace(definition.Id) && !IsValidId(definition.Id))
+        {
             errors.Add($"Overlay 'id' '{definition.Id}' contains invalid characters. Use lowercase alphanumeric and hyphens.");
+        }
+    }
 
+    private static void ValidateLayers(string overlayFolder, PosterOverlayDefinition definition, List<string> errors)
+    {
         // Validate base layer
         if (definition.BaseLayer != null)
         {
@@ -47,44 +68,44 @@ public static class OverlayValidator
         {
             ValidateLayer(overlayFolder, definition.FrontLayer, "frontLayer", errors);
         }
+    }
 
+    private static void ValidatePosterConfig(string overlayFolder, PosterOverlayDefinition definition, List<string> errors)
+    {
         // Validate poster config
-        if (definition.Poster != null)
+        ValidateMargin(definition.Poster.Margin, "poster.margin", errors);
+        if (definition.Poster.OpacityMaskPath == null) return;
+        var maskPath = Path.Combine(overlayFolder, definition.Poster.OpacityMaskPath);
+        if (!File.Exists(maskPath))
         {
-            ValidateMargin(definition.Poster.Margin, "poster.margin", errors);
-            if (definition.Poster.OpacityMaskPath != null)
-            {
-                var maskPath = Path.Combine(overlayFolder, definition.Poster.OpacityMaskPath);
-                if (!File.Exists(maskPath))
-                    errors.Add($"poster.opacityMaskPath '{definition.Poster.OpacityMaskPath}' file not found.");
-                else
-                    ValidateImageSize(maskPath, "poster.opacityMask", errors);
-            }
+            errors.Add($"poster.opacityMaskPath '{definition.Poster.OpacityMaskPath}' file not found.");
         }
+        else
+        {
+            ValidateImageSize(maskPath, "poster.opacityMask", errors);
+        }
+    }
 
+    private static void ValidateRatingConfig(PosterOverlayDefinition definition, List<string> errors)
+    {
         // Validate rating config
-        if (definition.Rating != null)
-        {
-            ValidateMargin(definition.Rating.ShieldMargin, "rating.shieldMargin", errors);
-            ValidateMargin(definition.Rating.TextMargin, "rating.textMargin", errors);
-        }
+        ValidateMargin(definition.Rating.ShieldMargin, "rating.shieldMargin", errors);
+        ValidateMargin(definition.Rating.TextMargin, "rating.textMargin", errors);
+    }
 
+    private static void ValidateTitleConfig(PosterOverlayDefinition definition, List<string> errors)
+    {
         // Validate title config
-        if (definition.Title != null && definition.Title.IsVisible)
+        if (definition.Title.IsVisible)
         {
             ValidateMargin(definition.Title.Margin, "title.margin", errors);
         }
 
         // Validate rotation origin
-        if (definition.Title != null && !string.IsNullOrWhiteSpace(definition.Title.RotationOrigin))
+        if (!string.IsNullOrWhiteSpace(definition.Title.RotationOrigin))
         {
             ValidateRotationOrigin(definition.Title.RotationOrigin, errors);
         }
-
-        // Validate total package size
-        ValidatePackageSize(overlayFolder, errors);
-
-        return errors;
     }
 
     private static void ValidateLayer(string overlayFolder, LayerDefinition layer, string prefix, List<string> errors)
@@ -125,7 +146,10 @@ public static class OverlayValidator
 
     private static void ValidateMargin(string margin, string field, List<string> errors)
     {
-        if (string.IsNullOrWhiteSpace(margin)) return;
+        if (string.IsNullOrWhiteSpace(margin))
+        {
+            return;
+        }
 
         var parts = margin.Split(',');
         if (parts.Length < 1 || parts.Length > 4)
@@ -179,8 +203,8 @@ public static class OverlayValidator
         }
     }
 
-    private static bool IsValidId(string id)
-    {
-        return Regex.IsMatch(id, @"^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$");
-    }
+    [GeneratedRegex(@"^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$")]
+    private static partial Regex IdRegex();
+
+    private static bool IsValidId(string id) => IdRegex().IsMatch(id);
 }

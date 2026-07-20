@@ -1,5 +1,6 @@
 ﻿using FoliCon.Modules.Media;
 
+#nullable enable
 namespace FoliCon.Modules.utils;
 
 [Localizable(false)]

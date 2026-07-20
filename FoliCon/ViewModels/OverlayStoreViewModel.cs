@@ -1,6 +1,4 @@
-using FoliCon.Models.Data;
-using FoliCon.Modules.Overlays;
-
+#nullable enable
 namespace FoliCon.ViewModels;
 
 /// <summary>
@@ -15,7 +13,6 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     private readonly IOverlayRepositoryService _repositoryService;
 
     private readonly Dictionary<string, (bool IsInstalled, bool IsUpdateAvailable)> _cardState = new(StringComparer.OrdinalIgnoreCase);
-    private bool _hasChanges;
 
     public OverlayStoreViewModel(
         DialogCloseListener requestClose,
@@ -34,7 +31,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     #region Properties
 
-    public string Title => "Overlay Store";
+    public static string Title => "Overlay Store";
 
     public ObservableCollection<OverlayCardViewModel> Overlays
     {
@@ -54,7 +51,9 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         set
         {
             if (SetProperty(ref field, value))
+            {
                 ApplyFilter();
+            }
         }
     } = string.Empty;
 
@@ -64,7 +63,9 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         set
         {
             if (SetProperty(ref field, value))
+            {
                 ApplyFilter();
+            }
         }
     } = string.Empty;
 
@@ -121,7 +122,9 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             StatusMessage = forceRefresh ? "Refreshing catalog..." : "Loading catalog...";
 
             if (forceRefresh)
+            {
                 _repositoryService.InvalidateCache();
+            }
 
             var catalog = await _repositoryService.FetchCatalogAsync();
             _allEntries = catalog.Overlays;
@@ -134,7 +137,9 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(t => t, StringComparer.OrdinalIgnoreCase);
             foreach (var tag in tags)
+            {
                 AvailableTags.Add(tag);
+            }
 
             // Build card ViewModels
             var cards = _allEntries.Select(CreateCardViewModel).ToList();
@@ -231,7 +236,10 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     private async Task InstallOverlayAsync(OverlayCardViewModel? card)
     {
-        if (card == null) return;
+        if (card == null)
+        {
+            return;
+        }
 
         try
         {
@@ -245,7 +253,6 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
             card.IsInstalled = true;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
-            _hasChanges = true;
             StatusMessage = $"{card.DisplayName} installed successfully";
             Logger.Info("Installed overlay '{Id}' from store", card.Id);
         }
@@ -265,7 +272,10 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     private async Task UpdateOverlayAsync(OverlayCardViewModel? card)
     {
-        if (card == null) return;
+        if (card == null)
+        {
+            return;
+        }
 
         try
         {
@@ -279,7 +289,6 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
-            _hasChanges = true;
             StatusMessage = $"{card.DisplayName} updated successfully";
         }
         catch (Exception ex)
@@ -296,7 +305,10 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     private async Task UninstallOverlayAsync(OverlayCardViewModel? card)
     {
-        if (card == null) return;
+        if (card == null)
+        {
+            return;
+        }
 
         try
         {
@@ -308,7 +320,6 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             card.IsInstalled = false;
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
-            _hasChanges = true;
             StatusMessage = $"{card.DisplayName} removed";
         }
         catch (Exception ex)

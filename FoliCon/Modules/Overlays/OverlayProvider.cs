@@ -1,6 +1,11 @@
-using FoliCon.Models.Data;
-
+#nullable enable
 namespace FoliCon.Modules.Overlays;
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.ComponentModel;
 
 /// <summary>
 /// Loads and manages overlay definitions from built-in resources and user-installed folders.
@@ -11,8 +16,8 @@ public class OverlayProvider : IOverlayProvider
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     private readonly string _userOverlaysPath;
-    private List<PosterOverlayDefinition> _builtInOverlays = [];
-    private List<PosterOverlayDefinition> _userOverlays = [];
+    private readonly List<PosterOverlayDefinition> _builtInOverlays = [];
+    private readonly List<PosterOverlayDefinition> _userOverlays = [];
 
     public OverlayProvider()
     {
@@ -24,15 +29,9 @@ public class OverlayProvider : IOverlayProvider
         LoadUserOverlays();
     }
 
-    public IReadOnlyList<PosterOverlayDefinition> GetAllOverlays()
-    {
-        return _builtInOverlays.Concat(_userOverlays).ToList().AsReadOnly();
-    }
+    public IReadOnlyList<PosterOverlayDefinition> GetAllOverlays() => _builtInOverlays.Concat(_userOverlays).ToList().AsReadOnly();
 
-    public IReadOnlyList<PosterOverlayDefinition> GetUserOverlays()
-    {
-        return _userOverlays.AsReadOnly();
-    }
+    public IReadOnlyList<PosterOverlayDefinition> GetUserOverlays() => _userOverlays.AsReadOnly();
 
     public PosterOverlayDefinition? GetOverlayById(string id)
     {
@@ -46,23 +45,24 @@ public class OverlayProvider : IOverlayProvider
         {
             var overlay = GetOverlayById(activeOverlayId);
             if (overlay != null)
+            {
                 return overlay;
+            }
 
             Logger.Warn("Active overlay '{ActiveId}' not found. Falling back to default.", activeOverlayId);
         }
 
         var defaultOverlay = GetOverlayById(OverlayConstants.DefaultOverlayId);
         if (defaultOverlay != null)
+        {
             return defaultOverlay;
+        }
 
         Logger.Error("Default overlay '{DefaultId}' not found. Using first available overlay.", OverlayConstants.DefaultOverlayId);
         return GetAllOverlays().FirstOrDefault() ?? CreateFallbackDefinition();
     }
 
-    public bool IsOverlayInstalled(string id)
-    {
-        return GetOverlayById(id) != null;
-    }
+    public bool IsOverlayInstalled(string id) => GetOverlayById(id) != null;
 
     public string GetOverlayFolderPath(string id)
     {
@@ -75,10 +75,7 @@ public class OverlayProvider : IOverlayProvider
         return Path.Combine(_userOverlaysPath, id);
     }
 
-    public void Refresh()
-    {
-        LoadUserOverlays();
-    }
+    public void Refresh() => LoadUserOverlays();
 
     private void LoadBuiltInOverlays()
     {
@@ -91,17 +88,13 @@ public class OverlayProvider : IOverlayProvider
                 // .NET SDK converts hyphens to underscores in embedded resource names
                 var resourceName = $"FoliCon.Resources.Overlays.{id.Replace('-', '_')}.{OverlayConstants.OverlayJsonFileName}";
                 var json = LoadEmbeddedResource(resourceName);
-                if (json != null)
-                {
-                    var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(json);
-                    if (definition != null)
-                    {
-                        definition.IsBuiltIn = true;
-                        // Built-in overlays use embedded resource paths for images
-                        // The DynamicPosterIcon will resolve these via GetResourcePath
-                        _builtInOverlays.Add(definition);
-                    }
-                }
+                if (json == null) continue;
+                var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(json);
+                if (definition == null) continue;
+                definition.IsBuiltIn = true;
+                // Built-in overlays use embedded resource paths for images
+                // The DynamicPosterIcon will resolve these via GetResourcePath
+                _builtInOverlays.Add(definition);
             }
             catch (Exception ex)
             {
@@ -158,10 +151,10 @@ public class OverlayProvider : IOverlayProvider
                 }
 
                 // Validate
-                var errors = OverlayValidator.Validate(folder, definition);
+                var errors = Internal.OverlayValidator.Validate(folder, definition);
                 if (errors.Count > 0)
                 {
-                    Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, string.Join("; ", errors));
+                    Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, String.Join("; ", (IEnumerable<string>)errors));
                     continue;
                 }
 
@@ -181,7 +174,10 @@ public class OverlayProvider : IOverlayProvider
     {
         var assembly = Assembly.GetExecutingAssembly();
         using var stream = assembly.GetManifestResourceStream(resourceName);
-        if (stream == null) return null;
+        if (stream == null)
+        {
+            return null;
+        }
         using var reader = new StreamReader(stream);
         return reader.ReadToEnd();
     }

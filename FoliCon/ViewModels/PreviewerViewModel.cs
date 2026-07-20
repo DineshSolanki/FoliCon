@@ -1,3 +1,4 @@
+#nullable enable
 namespace FoliCon.ViewModels
 {
     [Localizable(false)]
@@ -37,7 +38,9 @@ namespace FoliCon.ViewModels
             set
             {
                 if (SetProperty(ref _rating, value))
+                {
                     _ = RebuildPreviewsAsync();
+                }
             }
         }
 
@@ -53,7 +56,9 @@ namespace FoliCon.ViewModels
             set
             {
                 if (SetProperty(ref _ratingVisibility, value))
+                {
                     _ = RebuildPreviewsAsync();
+                }
             }
         }
 
@@ -63,7 +68,9 @@ namespace FoliCon.ViewModels
             set
             {
                 if (SetProperty(ref _overlayVisibility, value))
+                {
                     _ = RebuildPreviewsAsync();
+                }
             }
         }
 
