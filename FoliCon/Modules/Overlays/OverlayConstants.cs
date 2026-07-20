@@ -44,9 +44,7 @@ internal static class OverlayConstants
     /// </summary>
     public const string defaultOverlayId = "liaher";
 
-    /// <summary>
-    /// Base URL for the default remote overlay repository.
-    /// </summary>
+    [SuppressMessage("Sonar", "S1075:URIs should not be hardcoded", Justification = "This is the default repository base URL.")]
     public const string defaultBaseUrl = "https://raw.githubusercontent.com/DineshSolanki/FoliCon-Overlays/master";
 
     /// <summary>

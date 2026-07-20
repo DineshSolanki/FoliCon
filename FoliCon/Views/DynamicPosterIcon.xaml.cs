@@ -23,6 +23,7 @@ public partial class DynamicPosterIcon : PosterIconBase
     public DynamicPosterIcon(PosterOverlayDefinition definition, object dataContext)
         : base(dataContext)
     {
+        ArgumentNullException.ThrowIfNull(definition);
         InitializeComponent();
         DataContext = dataContext;
         Width = definition.DesignWidth;
@@ -411,7 +412,7 @@ public partial class DynamicPosterIcon : PosterIconBase
 
         var bytes = File.ReadAllBytes(resourcePath);
         using var stream = new MemoryStream(bytes);
-        return (ImageSource)new ImageSourceConverter().ConvertFrom(stream);
+        return (ImageSource)new ImageSourceConverter().ConvertFrom(stream)!;
 
     }
 
@@ -499,8 +500,14 @@ public partial class DynamicPosterIcon : PosterIconBase
 
     private static Brush ParseBrush(string color)
     {
-        try { return (Brush)new BrushConverter().ConvertFromString(color); }
-        catch { return Brushes.White; }
+        try
+        {
+            return (Brush)new BrushConverter().ConvertFromString(color)!;
+        }
+        catch
+        {
+            return Brushes.White;
+        }
     }
 
     private static HorizontalAlignment ParseHorizontalAlignment(string value) =>

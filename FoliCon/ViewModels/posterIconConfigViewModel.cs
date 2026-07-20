@@ -53,7 +53,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
     public string IconOverlay
     {
-        get;
+        get => field ??= string.Empty;
         set
         {
             if (!SetProperty(ref field, value) || AvailableOverlays == null)

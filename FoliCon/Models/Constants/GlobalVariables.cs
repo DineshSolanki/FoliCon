@@ -30,7 +30,7 @@ internal static class GlobalVariables
             {
                 return OverlayConstants.defaultOverlayId;
             }
-            var strValue = value.ToString();
+            var strValue = value?.ToString();
             return strValue switch
             {
                 "Legacy" => "legacy",
@@ -39,6 +39,7 @@ internal static class GlobalVariables
                 "Faelpessoal" => "faelpessoal",
                 "FaelpessoalHorizontal" => "faelpessoal-horizontal",
                 "Windows11" => "windows11",
+                null => OverlayConstants.defaultOverlayId,
                 _ => strValue
             };
         }

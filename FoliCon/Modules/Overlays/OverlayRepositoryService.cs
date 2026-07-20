@@ -42,8 +42,23 @@ public class OverlayRepositoryService : IOverlayRepositoryService
     ///
     /// Supports file:// URIs for local testing (e.g. "file:///E:/FoliCon-Overlays").
     /// </summary>
+    public OverlayRepositoryService(IOverlayProvider overlayProvider)
+        : this(overlayProvider, null, null, null)
+    {
+    }
+
+    public OverlayRepositoryService(IOverlayProvider overlayProvider, string? userOverlaysDir)
+        : this(overlayProvider, userOverlaysDir, null, null)
+    {
+    }
+
+    public OverlayRepositoryService(IOverlayProvider overlayProvider, string? userOverlaysDir, string? cacheDir)
+        : this(overlayProvider, userOverlaysDir, cacheDir, null)
+    {
+    }
+
     public OverlayRepositoryService(IOverlayProvider overlayProvider,
-        string? userOverlaysDir = null, string? cacheDir = null, string? baseUrl = null)
+        string? userOverlaysDir, string? cacheDir, string? baseUrl)
     {
         _overlayProvider = overlayProvider;
         _cacheDir = cacheDir ?? Path.Combine(
@@ -233,7 +248,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Failed to download assets for overlay '{entry.Id}'", ex);
+                throw new InvalidOperationException($"Failed to download assets for overlay '{entry.Id}': {ex.Message}", ex);
             }
 
             // Validate overlay.json schema
@@ -324,7 +339,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         var errors = Internal.OverlayValidator.Validate(tmpDir, definition);
         if (errors.Count > 0)
         {
-            throw new InvalidOperationException($"Validation failed: {string.Join("; ", errors)}");
+            throw new InvalidOperationException($"Validation failed: {string.Join("; ", errors.Select(e => e.ToString()))}");
         }
     }
 
@@ -371,21 +386,33 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             Logger.Info("Successfully updated overlay '{Id}'", overlayId);
         }
+        catch (OperationCanceledException)
+        {
+            // Rollback: restore backup
+            Logger.Info("Update cancelled for '{Id}', rolling back", overlayId);
+            RollbackUpdate(finalDir, backupDir);
+            throw;
+        }
         catch (Exception ex)
         {
             // Rollback: restore backup
             Logger.Warn(ex, "Update failed for '{Id}', rolling back", overlayId);
-            if (Directory.Exists(finalDir))
-            {
-                Directory.Delete(finalDir, true);
-            }
+            RollbackUpdate(finalDir, backupDir);
 
-            if (Directory.Exists(backupDir))
-            {
-                Directory.Move(backupDir, finalDir);
-            }
+            throw new InvalidOperationException($"Failed to update overlay '{overlayId}': {ex.Message}", ex);
+        }
+    }
 
-            throw new InvalidOperationException($"Failed to update overlay '{overlayId}'", ex);
+    private static void RollbackUpdate(string finalDir, string backupDir)
+    {
+        if (Directory.Exists(finalDir))
+        {
+            Directory.Delete(finalDir, true);
+        }
+
+        if (Directory.Exists(backupDir))
+        {
+            Directory.Move(backupDir, finalDir);
         }
     }
 

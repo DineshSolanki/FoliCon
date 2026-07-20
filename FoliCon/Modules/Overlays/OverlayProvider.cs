@@ -142,7 +142,7 @@ public class OverlayProvider : IOverlayProvider
                 }
 
                 // Reject community overlays that try to use built-in IDs
-                if (OverlayConstants.BuiltInOverlayIds.Contains(definition.Id, StringComparer.OrdinalIgnoreCase))
+                if (OverlayConstants.BuiltInOverlayIds.Contains(definition.Id))
                 {
                     Logger.Warn("Community overlay at '{Path}' uses reserved built-in ID '{Id}'. Skipping.", folder, definition.Id);
                     continue;
@@ -160,7 +160,7 @@ public class OverlayProvider : IOverlayProvider
                 var errors = Internal.OverlayValidator.Validate(folder, definition);
                 if (errors.Count > 0)
                 {
-                    Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, string.Join("; ", errors));
+                    Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, string.Join("; ", errors.Select(e => e.ToString())));
                     continue;
                 }
 
