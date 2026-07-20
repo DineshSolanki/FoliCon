@@ -137,6 +137,12 @@ public static class IconUtils
             var mediaTitle = iconProperties.MediaTitle;
             // Use dedicated STA renderer to avoid WPF PackagePart race conditions
             // while still maintaining parallel processing through async queueing
+            if (overlayDefinition == null)
+            {
+                Logger.Warn("No overlay definition provided for {FilmFolderPath}. Skipping icon creation.", filmFolderPath);
+                return;
+            }
+
             icon = await StaRenderer.Default.EnqueueRender(() =>
                 new DynamicPosterIcon(overlayDefinition, new PosterIcon(filmFolderPath, rating, ratingVisibility, mockupVisibility, mediaTitle))
                     .RenderToBitmap());

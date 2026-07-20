@@ -59,7 +59,8 @@ public class OverlayProvider : IOverlayProvider
         }
 
         Logger.Error("Default overlay '{DefaultId}' not found. Using first available overlay.", OverlayConstants.defaultOverlayId);
-        return GetAllOverlays().FirstOrDefault() ?? CreateFallbackDefinition();
+        var all = GetAllOverlays();
+        return (all.Count > 0 ? all[0] : null) ?? CreateFallbackDefinition();
     }
 
     public bool IsOverlayInstalled(string id) => GetOverlayById(id) != null;

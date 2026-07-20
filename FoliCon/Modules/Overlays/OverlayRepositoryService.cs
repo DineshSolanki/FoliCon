@@ -275,12 +275,10 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "Failed to install overlay '{Id}'", entry.Id);
+            Logger.Error(ex, "Failed to install overlay '{Id}': {Message}", entry.Id, ex.Message);
             // Clean up temp directory
-            if (Directory.Exists(tmpDir))
-            {
-                try { Directory.Delete(tmpDir, true); } catch { /* best effort */ }
-            }
+            if (!Directory.Exists(tmpDir)) throw;
+            try { Directory.Delete(tmpDir, true); } catch { /* best effort */ }
             throw;
         }
     }
@@ -399,7 +397,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             Logger.Warn(ex, "Update failed for '{Id}', rolling back", overlayId);
             RollbackUpdate(finalDir, backupDir);
 
-            throw new InvalidOperationException($"Failed to update overlay '{overlayId}': {ex.Message}", ex);
+            throw new InvalidOperationException($"Failed to update overlay '{overlayId}' from manifest: {ex.Message}", ex);
         }
     }
 
