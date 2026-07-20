@@ -17,10 +17,10 @@ public static partial class OverlayValidator
         var errors = new List<string>();
 
         // Schema version check
-        if (definition.SchemaVersion > OverlayConstants.AppSupportedSchemaVersion)
+        if (definition.SchemaVersion > OverlayConstants.appSupportedSchemaVersion)
         {
             errors.Add($"Overlay '{definition.Id}' requires schema v{definition.SchemaVersion}, " +
-                        $"app supports v{OverlayConstants.AppSupportedSchemaVersion}. Skipping.");
+                        $"app supports v{OverlayConstants.appSupportedSchemaVersion}. Skipping.");
             return errors; // Don't continue — app doesn't understand this schema
         }
 
@@ -74,7 +74,10 @@ public static partial class OverlayValidator
     {
         // Validate poster config
         ValidateMargin(definition.Poster.Margin, "poster.margin", errors);
-        if (definition.Poster.OpacityMaskPath == null) return;
+        if (definition.Poster.OpacityMaskPath == null)
+        {
+            return;
+        }
         var maskPath = Path.Combine(overlayFolder, definition.Poster.OpacityMaskPath);
         if (!File.Exists(maskPath))
         {
@@ -132,10 +135,10 @@ public static partial class OverlayValidator
         try
         {
             var fileInfo = new FileInfo(imagePath);
-            if (fileInfo.Length > OverlayConstants.MaxImageSizeBytes)
+            if (fileInfo.Length > OverlayConstants.maxImageSizeBytes)
             {
                 errors.Add($"{prefix} image '{imagePath}' exceeds maximum size " +
-                            $"({fileInfo.Length / 1024.0 / 1024.0:F1} MB > {OverlayConstants.MaxImageSizeBytes / 1024.0 / 1024.0:F0} MB).");
+                            $"({fileInfo.Length / 1024.0 / 1024.0:F1} MB > {OverlayConstants.maxImageSizeBytes / 1024.0 / 1024.0:F0} MB).");
             }
         }
         catch (Exception ex)
@@ -191,10 +194,10 @@ public static partial class OverlayValidator
         {
             var totalSize = Directory.GetFiles(overlayFolder, "*", SearchOption.AllDirectories)
                 .Sum(f => new FileInfo(f).Length);
-            if (totalSize > OverlayConstants.MaxOverlayPackageSizeBytes)
+            if (totalSize > OverlayConstants.maxOverlayPackageSizeBytes)
             {
                 errors.Add($"Overlay folder exceeds maximum total size " +
-                            $"({totalSize / 1024.0 / 1024.0:F1} MB > {OverlayConstants.MaxOverlayPackageSizeBytes / 1024.0 / 1024.0:F0} MB).");
+                            $"({totalSize / 1024.0 / 1024.0:F1} MB > {OverlayConstants.maxOverlayPackageSizeBytes / 1024.0 / 1024.0:F0} MB).");
             }
         }
         catch (Exception ex)

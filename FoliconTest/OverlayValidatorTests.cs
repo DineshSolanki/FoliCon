@@ -234,7 +234,7 @@ public class OverlayValidatorTests : IDisposable
         Assert.Contains(errors, e => e.Contains("opacityMask") && e.Contains("not found"));
     }
 
-    private PosterOverlayDefinition CreateValidDefinition()
+    private static PosterOverlayDefinition CreateValidDefinition()
     {
         return new PosterOverlayDefinition
         {

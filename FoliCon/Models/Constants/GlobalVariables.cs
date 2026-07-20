@@ -28,7 +28,7 @@ internal static class GlobalVariables
             var data = Services.Tracker.Store.GetData("PosterIconConfigViewModel");
             if (!data.TryGetValue("p.IconOverlay", out var value))
             {
-                return OverlayConstants.DefaultOverlayId;
+                return OverlayConstants.defaultOverlayId;
             }
             var strValue = value.ToString();
             return strValue switch

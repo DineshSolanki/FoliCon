@@ -23,7 +23,7 @@ public class OverlayProvider : IOverlayProvider
     {
         _userOverlaysPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "FoliCon", OverlayConstants.OverlaysFolder);
+            "FoliCon", OverlayConstants.overlaysFolder);
 
         LoadBuiltInOverlays();
         LoadUserOverlays();
@@ -52,13 +52,13 @@ public class OverlayProvider : IOverlayProvider
             Logger.Warn("Active overlay '{ActiveId}' not found. Falling back to default.", activeOverlayId);
         }
 
-        var defaultOverlay = GetOverlayById(OverlayConstants.DefaultOverlayId);
+        var defaultOverlay = GetOverlayById(OverlayConstants.defaultOverlayId);
         if (defaultOverlay != null)
         {
             return defaultOverlay;
         }
 
-        Logger.Error("Default overlay '{DefaultId}' not found. Using first available overlay.", OverlayConstants.DefaultOverlayId);
+        Logger.Error("Default overlay '{DefaultId}' not found. Using first available overlay.", OverlayConstants.defaultOverlayId);
         return GetAllOverlays().FirstOrDefault() ?? CreateFallbackDefinition();
     }
 
@@ -86,11 +86,17 @@ public class OverlayProvider : IOverlayProvider
             try
             {
                 // .NET SDK converts hyphens to underscores in embedded resource names
-                var resourceName = $"FoliCon.Resources.Overlays.{id.Replace('-', '_')}.{OverlayConstants.OverlayJsonFileName}";
+                var resourceName = $"FoliCon.Resources.Overlays.{id.Replace('-', '_')}.{OverlayConstants.overlayJsonFileName}";
                 var json = LoadEmbeddedResource(resourceName);
-                if (json == null) continue;
+                if (json == null)
+                {
+                    continue;
+                }
                 var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(json);
-                if (definition == null) continue;
+                if (definition == null)
+                {
+                    continue;
+                }
                 definition.IsBuiltIn = true;
                 // Built-in overlays use embedded resource paths for images
                 // The DynamicPosterIcon will resolve these via GetResourcePath
@@ -118,10 +124,10 @@ public class OverlayProvider : IOverlayProvider
         var overlayFolders = Directory.GetDirectories(_userOverlaysPath);
         foreach (var folder in overlayFolders)
         {
-            var jsonPath = Path.Combine(folder, OverlayConstants.OverlayJsonFileName);
+            var jsonPath = Path.Combine(folder, OverlayConstants.overlayJsonFileName);
             if (!File.Exists(jsonPath))
             {
-                Logger.Warn("Overlay folder '{Folder}' missing {JsonFile}", folder, OverlayConstants.OverlayJsonFileName);
+                Logger.Warn("Overlay folder '{Folder}' missing {JsonFile}", folder, OverlayConstants.overlayJsonFileName);
                 continue;
             }
 
@@ -143,10 +149,10 @@ public class OverlayProvider : IOverlayProvider
                 }
 
                 // Schema version check
-                if (definition.SchemaVersion > OverlayConstants.AppSupportedSchemaVersion)
+                if (definition.SchemaVersion > OverlayConstants.appSupportedSchemaVersion)
                 {
                     Logger.Warn("Overlay '{Id}' requires schema v{Version}, app supports v{AppVersion}. Skipping.",
-                        definition.Id, definition.SchemaVersion, OverlayConstants.AppSupportedSchemaVersion);
+                        definition.Id, definition.SchemaVersion, OverlayConstants.appSupportedSchemaVersion);
                     continue;
                 }
 
@@ -154,7 +160,7 @@ public class OverlayProvider : IOverlayProvider
                 var errors = Internal.OverlayValidator.Validate(folder, definition);
                 if (errors.Count > 0)
                 {
-                    Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, String.Join("; ", (IEnumerable<string>)errors));
+                    Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, string.Join("; ", errors));
                     continue;
                 }
 

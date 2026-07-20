@@ -13,7 +13,7 @@ public static class OverlayPreviewCache
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private static readonly ConcurrentDictionary<string, BitmapSource> Cache = new();
+    private static readonly ConcurrentDictionary<string, BitmapImage> Cache = new();
 
     /// <summary>
     /// Gets all overlay previews, using cached versions when available.
@@ -94,7 +94,7 @@ public static class OverlayPreviewCache
     /// </summary>
     public static int Count => Cache.Count;
 
-    private static async Task<BitmapSource> RenderPreviewAsync(
+    private static async Task<BitmapImage> RenderPreviewAsync(
         PosterOverlayDefinition overlay,
         string? posterPath,
         string rating,
@@ -109,9 +109,9 @@ public static class OverlayPreviewCache
             var dynamicIcon = new DynamicPosterIcon(overlay, posterIcon);
             using var bitmap = dynamicIcon.RenderToBitmap();
 
-            var bitmapSource = ConvertToBitmapSource(bitmap);
-            bitmapSource.Freeze();
-            return bitmapSource;
+            var bitmapImage = ConvertToBitmapSource(bitmap);
+            bitmapImage.Freeze();
+            return bitmapImage;
         });
     }
 
@@ -132,7 +132,7 @@ public static class OverlayPreviewCache
         return new PosterIcon();
     }
 
-    private static BitmapSource ConvertToBitmapSource(Bitmap bitmap)
+    private static BitmapImage ConvertToBitmapSource(Bitmap bitmap)
     {
         // Note: stream is intentionally NOT disposed — BitmapImage reads lazily
         // and the BitmapImage will be frozen, making it self-contained.
@@ -164,16 +164,9 @@ public static class OverlayPreviewCache
 /// <summary>
 /// A single preview item: overlay metadata + rendered frozen BitmapSource.
 /// </summary>
-public sealed class OverlayPreviewItem
+public sealed class OverlayPreviewItem(string overlayId, string displayName, BitmapImage previewImage)
 {
-    public string OverlayId { get; }
-    public string DisplayName { get; }
-    public BitmapSource PreviewImage { get; }
-
-    public OverlayPreviewItem(string overlayId, string displayName, BitmapSource previewImage)
-    {
-        OverlayId = overlayId;
-        DisplayName = displayName;
-        PreviewImage = previewImage;
-    }
+    public string OverlayId { get; } = overlayId;
+    public string DisplayName { get; } = displayName;
+    public BitmapImage PreviewImage { get; } = previewImage;
 }

@@ -17,8 +17,9 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    [SuppressMessage("Sonar", "S1075:URIs should not be hardcoded", Justification = "This is the official repository base URL.")]
-    private const string defaultBaseUrl = "https://raw.githubusercontent.com/DineshSolanki/FoliCon-Overlays/main";
+    [SuppressMessage("Sonar", "S1075:URIs should not be hardcoded", Justification = "This is the default repository base URL.")]
+    private const string defaultBaseUrl = OverlayConstants.defaultBaseUrl;
+
     private static readonly TimeSpan CacheTtl = TimeSpan.FromHours(24);
 
     private readonly IOverlayProvider _overlayProvider;
@@ -47,10 +48,10 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         _overlayProvider = overlayProvider;
         _cacheDir = cacheDir ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "FoliCon", OverlayConstants.CacheFolder);
+            "FoliCon", OverlayConstants.cacheFolder);
         _userOverlaysDir = userOverlaysDir ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "FoliCon", OverlayConstants.OverlaysFolder);
+            "FoliCon", OverlayConstants.overlaysFolder);
         BaseUrl = baseUrl
             ?? Environment.GetEnvironmentVariable("FOLICON_OVERLAY_REPO_URL")
             ?? ReadLocalOverrideFile()
@@ -94,7 +95,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
 
         // Try disk cache
-        var catalogPath = Path.Combine(_cacheDir, OverlayConstants.CatalogFileName);
+        var catalogPath = Path.Combine(_cacheDir, OverlayConstants.catalogFileName);
         if (!File.Exists(catalogPath))
         {
             return await FetchCatalogFromNetworkAsync(catalogPath, ct);
@@ -226,7 +227,14 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             var manifest = await FetchManifestAsync(entry.Id, ct);
 
             // Download all assets
-            await DownloadAssetsAsync(entry.Id, manifest, tmpDir, progress, ct);
+            try
+            {
+                await DownloadAssetsAsync(entry.Id, manifest, tmpDir, progress, ct);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to download assets for overlay '{entry.Id}'", ex);
+            }
 
             // Validate overlay.json schema
             progress?.Report((85, "Validating..."));
@@ -282,13 +290,13 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
-    private void VerifyAsset(string asset, byte[] bytes, OverlayManifest manifest)
+    private static void VerifyAsset(string asset, byte[] bytes, OverlayManifest manifest)
     {
         // Size check
-        if (bytes.Length > OverlayConstants.MaxImageSizeBytes && asset != OverlayConstants.OverlayJsonFileName)
+        if (bytes.Length > OverlayConstants.maxImageSizeBytes && asset != OverlayConstants.overlayJsonFileName)
         {
             throw new InvalidOperationException(
-                $"Asset '{asset}' exceeds {OverlayConstants.MaxImageSizeBytes / 1024 / 1024}MB limit.");
+                $"Asset '{asset}' exceeds {OverlayConstants.maxImageSizeBytes / 1024 / 1024}MB limit.");
         }
 
         // SHA256 verification
@@ -303,9 +311,9 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
-    private async Task ValidateInstalledOverlayAsync(string tmpDir, CancellationToken ct)
+    private static async Task ValidateInstalledOverlayAsync(string tmpDir, CancellationToken ct)
     {
-        var overlayJsonPath = Path.Combine(tmpDir, OverlayConstants.OverlayJsonFileName);
+        var overlayJsonPath = Path.Combine(tmpDir, OverlayConstants.overlayJsonFileName);
         var definitionJson = await File.ReadAllTextAsync(overlayJsonPath, ct);
         var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(definitionJson);
         if (definition == null)
@@ -316,7 +324,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         var errors = Internal.OverlayValidator.Validate(tmpDir, definition);
         if (errors.Count > 0)
         {
-            throw new InvalidOperationException($"Validation failed: {string.Join("; ", (IEnumerable<string>)errors)}");
+            throw new InvalidOperationException($"Validation failed: {string.Join("; ", errors)}");
         }
     }
 
@@ -377,7 +385,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
                 Directory.Move(backupDir, finalDir);
             }
 
-            throw;
+            throw new InvalidOperationException($"Failed to update overlay '{overlayId}'", ex);
         }
     }
 
@@ -414,7 +422,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
         var overlayDir = Path.Combine(_userOverlaysDir, overlayId);
         return Directory.Exists(overlayDir) &&
-               File.Exists(Path.Combine(overlayDir, OverlayConstants.OverlayJsonFileName));
+               File.Exists(Path.Combine(overlayDir, OverlayConstants.overlayJsonFileName));
     }
 
     public bool IsUpdateAvailable(string overlayId) => _availableUpdates.ContainsKey(overlayId);
@@ -428,7 +436,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
 
         // Try reading from disk
-        var overlayJsonPath = Path.Combine(_userOverlaysDir, overlayId, OverlayConstants.OverlayJsonFileName);
+        var overlayJsonPath = Path.Combine(_userOverlaysDir, overlayId, OverlayConstants.overlayJsonFileName);
         if (!File.Exists(overlayJsonPath))
         {
             return null;
@@ -451,7 +459,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         _cacheTimestamp = DateTime.MinValue;
         _availableUpdates.Clear();
 
-        var catalogPath = Path.Combine(_cacheDir, OverlayConstants.CatalogFileName);
+        var catalogPath = Path.Combine(_cacheDir, OverlayConstants.catalogFileName);
         if (File.Exists(catalogPath))
         {
             try { File.Delete(catalogPath); } catch { /* best effort */ }

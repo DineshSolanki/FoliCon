@@ -9,27 +9,27 @@ internal static class OverlayConstants
     /// <summary>
     /// Subfolder under %AppData% where user-installed overlays are stored.
     /// </summary>
-    public const string OverlaysFolder = "Overlays";
+    public const string overlaysFolder = "Overlays";
 
     /// <summary>
     /// Subfolder under %LocalAppData% for catalog cache.
     /// </summary>
-    public const string CacheFolder = "OverlayCache";
+    public const string cacheFolder = "OverlayCache";
 
     /// <summary>
     /// Maximum size in bytes for a single image asset (2 MB).
     /// </summary>
-    public const long MaxImageSizeBytes = 2 * 1024 * 1024;
+    public const long maxImageSizeBytes = 2 * 1024 * 1024;
 
     /// <summary>
     /// Maximum total size in bytes for an overlay package folder (5 MB).
     /// </summary>
-    public const long MaxOverlayPackageSizeBytes = 5 * 1024 * 1024;
+    public const long maxOverlayPackageSizeBytes = 5 * 1024 * 1024;
 
     /// <summary>
     /// Maximum supported schema version by this app version.
     /// </summary>
-    public const int AppSupportedSchemaVersion = 1;
+    public const int appSupportedSchemaVersion = 1;
 
     /// <summary>
     /// Built-in overlay IDs that cannot be overridden by community overlays.
@@ -42,17 +42,22 @@ internal static class OverlayConstants
     /// <summary>
     /// Default overlay ID when no selection is found or active overlay is invalid.
     /// </summary>
-    public const string DefaultOverlayId = "liaher";
+    public const string defaultOverlayId = "liaher";
+
+    /// <summary>
+    /// Base URL for the default remote overlay repository.
+    /// </summary>
+    public const string defaultBaseUrl = "https://raw.githubusercontent.com/DineshSolanki/FoliCon-Overlays/master";
 
     /// <summary>
     /// JSON file name for the overlay definition within an overlay folder.
     /// </summary>
-    public const string OverlayJsonFileName = "overlay.json";
+    public const string overlayJsonFileName = "overlay.json";
 
     /// <summary>
     /// JSON file name for the catalog.
     /// </summary>
-    public const string CatalogFileName = "catalog.json";
+    public const string catalogFileName = "catalog.json";
 
     /// <summary>
     /// Compares two version strings. Returns true if parsing succeeded;

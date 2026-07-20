@@ -191,7 +191,7 @@ public partial class DynamicPosterIcon : PosterIconBase
         return posterImage;
     }
 
-    private UIElement CreateClippedPosterElement(PosterOverlayDefinition definition, bool hasOpacityMask)
+    private Border CreateClippedPosterElement(PosterOverlayDefinition definition, bool hasOpacityMask)
     {
         var border = new Border
         {
@@ -230,7 +230,7 @@ public partial class DynamicPosterIcon : PosterIconBase
         return border;
     }
 
-    private void ApplyClipToBorder(Border border, PosterOverlayDefinition definition, CornerRadius cornerRadius)
+    private static void ApplyClipToBorder(Border border, PosterOverlayDefinition definition, CornerRadius cornerRadius)
     {
         // Use explicit ClipRect if provided, otherwise calculate from margins.
         if (!string.IsNullOrWhiteSpace(definition.Poster.ClipRect))

@@ -166,7 +166,7 @@ public class OverlayItemViewModel : BindableBase
     /// Returns a frozen in-memory BitmapImage for community overlay previews.
     /// Loaded with BitmapCacheOption.OnLoad so no file lock is held on preview.png.
     /// </summary>
-    private static BitmapImage LoadCommunityOverlayPreview(string overlayId, bool isBuiltIn)
+    private static BitmapImage? LoadCommunityOverlayPreview(string overlayId, bool isBuiltIn)
     {
         if (isBuiltIn)
         {
@@ -192,8 +192,10 @@ public class OverlayItemViewModel : BindableBase
             bitmap.Freeze();
             return bitmap;
         }
-        catch
+        catch (Exception ex)
         {
+            // Fallback: log warning and return null (XAML will show "No Poster Available" placeholder)
+            LogManager.GetCurrentClassLogger().Warn(ex, "Failed to load community overlay preview for '{OverlayId}'", overlayId);
             return null;
         }
     }

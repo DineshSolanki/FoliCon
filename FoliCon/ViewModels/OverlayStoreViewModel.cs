@@ -193,7 +193,10 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             IsInstalled = _repositoryService.IsOverlayInstalled(entry.Id), IsUpdateAvailable = _repositoryService.IsUpdateAvailable(entry.Id)
         };
 
-        if (!_cardState.TryGetValue(entry.Id, out var state)) return card;
+        if (!_cardState.TryGetValue(entry.Id, out var state))
+        {
+            return card;
+        }
         card.IsInstalled = state.IsInstalled;
         card.IsUpdateAvailable = state.IsUpdateAvailable;
 
