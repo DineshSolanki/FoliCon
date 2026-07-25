@@ -277,8 +277,10 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         {
             Logger.Error(ex, "Failed to install overlay '{Id}': {Message}", entry.Id, ex.Message);
             // Clean up temp directory
-            if (!Directory.Exists(tmpDir)) throw;
-            try { Directory.Delete(tmpDir, true); } catch { /* best effort */ }
+            if (Directory.Exists(tmpDir)) 
+            {
+                try { Directory.Delete(tmpDir, true); } catch { /* best effort */ }
+            }
             throw;
         }
     }

@@ -45,7 +45,7 @@ internal static class OverlayConstants
     public const string defaultOverlayId = "liaher";
 
     [SuppressMessage("Sonar", "S1075:URIs should not be hardcoded", Justification = "This is the default repository base URL.")]
-    public const string defaultBaseUrl = "https://raw.githubusercontent.com/DineshSolanki/FoliCon-Overlays/master";
+    public const string defaultBaseUrl = "https://raw.githubusercontent.com/DineshSolanki/FoliCon-Overlays/main";
 
     /// <summary>
     /// JSON file name for the overlay definition within an overlay folder.
