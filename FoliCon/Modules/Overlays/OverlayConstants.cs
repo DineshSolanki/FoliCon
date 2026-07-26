@@ -32,6 +32,28 @@ internal static class OverlayConstants
     public const int appSupportedSchemaVersion = 1;
 
     /// <summary>
+    /// Margin values beyond this distance from the canvas are almost certainly authoring
+    /// mistakes. Validation warns rather than errors — negative and off-canvas margins are
+    /// legitimate for built-in parity.
+    /// </summary>
+    public const double maxAbsoluteMarginValue = 2000;
+
+    /// <summary>
+    /// Subfolder under %AppData% where designer work-in-progress drafts are stored.
+    /// </summary>
+    public const string draftsFolder = "OverlayDrafts";
+
+    /// <summary>
+    /// File name of the generated store preview image within an overlay package.
+    /// </summary>
+    public const string previewImageFileName = "preview.png";
+
+    /// <summary>
+    /// JSON file name for the store manifest within an overlay package.
+    /// </summary>
+    public const string manifestFileName = "manifest.json";
+
+    /// <summary>
     /// Built-in overlay IDs that cannot be overridden by community overlays.
     /// </summary>
     public static readonly HashSet<string> BuiltInOverlayIds =

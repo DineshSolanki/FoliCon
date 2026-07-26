@@ -1528,6 +1528,24 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Overlay Store.
+        /// </summary>
+        public static string OverlayStore {
+            get {
+                return ResourceManager.GetString("OverlayStore", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Create Overlay.
+        /// </summary>
+        public static string OverlayDesigner {
+            get {
+                return ResourceManager.GetString("OverlayDesigner", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Previewer.
         /// </summary>
         public static string Previewer {

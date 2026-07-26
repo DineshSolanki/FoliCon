@@ -238,6 +238,10 @@
 
         <!-- Search + Filter Bar (persistent across sections) -->
         <Grid Grid.Row="0" Margin="0,0,0,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
@@ -245,7 +249,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <hc:SearchBar Grid.Column="0"
+            <hc:SearchBar Grid.Row="0" Grid.Column="0"
                           Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           hc:InfoElement.Placeholder="Search overlays..."
                           hc:InfoElement.ShowClearButton="True"
@@ -253,23 +257,73 @@
                           IsRealTime="True"
                           VerticalAlignment="Center" />
 
-            <ComboBox Grid.Column="1" Margin="8,0,0,0" MinWidth="120" VerticalAlignment="Center"
-                      ItemsSource="{Binding AvailableTags}"
-                      SelectedItem="{Binding SelectedTag}"
-                      hc:InfoElement.Placeholder="Filter by tag"
-                      ToolTip="Filter by tag" />
-
-            <ComboBox Grid.Column="2" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
                       ItemsSource="{Binding AvailableStatusFilters}"
-                      SelectedItem="{Binding SelectedStatusFilter}"
+                      DisplayMemberPath="DisplayText"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding SelectedStatusFilter}"
                       Visibility="{Binding IsDiscoverSection, Converter={StaticResource BoolToVis}}"
                       ToolTip="Filter by installation status" />
 
-            <Button Grid.Column="3" Margin="8,0,0,0" Content="↻ Refresh"
+            <Button Grid.Row="0" Grid.Column="2" Margin="8,0,0,0" Content="↻ Refresh"
                     Command="{Binding RefreshCommand}"
                     Style="{StaticResource ButtonDefault}"
                     ToolTip="Reload the overlay catalog"
                     VerticalAlignment="Center" />
+
+            <!-- Browsing overlays is when authors are most likely to want to make one. -->
+            <Button Grid.Row="0" Grid.Column="3" Margin="8,0,0,0" Content="✚ Create Overlay"
+                    Command="{Binding CreateOverlayCommand}"
+                    Style="{StaticResource ButtonPrimary}"
+                    ToolTip="Design your own overlay from a template"
+                    VerticalAlignment="Center" />
+
+            <!--
+                Tag chips on their own row: they wrap, several can be active at once, and each
+                shows its overlay count. A single-select dropdown could not express "dvd AND modern".
+            -->
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,8,0,0"
+                        Visibility="{Binding HasTagFilters, Converter={StaticResource BoolToVis}}">
+                <TextBlock Text="Tags" VerticalAlignment="Center" Margin="0,0,8,0"
+                           FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                <ItemsControl ItemsSource="{Binding TagFilters}" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!--
+                                hc:Tag is HandyControl's purpose-built chip: pill shape, its own
+                                selected visual, and Selectable/IsSelected built in. Styling a
+                                ToggleButton to imitate one only ever looked like a button.
+                                TagBaseStyle is the real style key (there is no "TagStyle").
+                            -->
+                            <hc:Tag Content="{Binding DisplayText}"
+                                    Selectable="True"
+                                    IsSelected="{Binding IsSelected, Mode=TwoWay}"
+                                    ShowCloseButton="False"
+                                    Margin="0,0,6,4"
+                                    FontSize="12"
+                                    Cursor="Hand"
+                                    Style="{StaticResource TagBaseStyle}"
+                                    ToolTip="{Binding Tag, StringFormat='Show only overlays tagged {0}'}"
+                                    AutomationProperties.Name="{Binding Tag,
+                                                                StringFormat='Filter by {0} tag'}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Button Content="Clear tags" Padding="10,4" Margin="4,0,0,4"
+                        FontSize="11" VerticalAlignment="Center"
+                        Visibility="{Binding HasSelectedTags, Converter={StaticResource BoolToVis}}"
+                        Command="{Binding ClearTagFiltersCommand}"
+                        Style="{StaticResource ButtonDefault}"
+                        ToolTip="Deselect all tags" />
+            </StackPanel>
         </Grid>
 
         <!-- Sections: Discover / Installed / Updates -->

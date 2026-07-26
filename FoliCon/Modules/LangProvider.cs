@@ -172,6 +172,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(PickIconWithName));
         OnPropertyChanged(nameof(PickSelected));
         OnPropertyChanged(nameof(Poster));
+        OnPropertyChanged(nameof(OverlayDesigner));
+        OnPropertyChanged(nameof(OverlayStore));
         OnPropertyChanged(nameof(PosterIconOverlay));
         OnPropertyChanged(nameof(PosterOverlayTooltip));
         OnPropertyChanged(nameof(Previewer));
@@ -426,6 +428,8 @@ public class LangProvider : INotifyPropertyChanged
     public string PickIconWithName => Lang.PickIconWithName;
     public string PickSelected => Lang.PickSelected;
     public string Poster => Lang.Poster;
+    public string OverlayDesigner => Lang.OverlayDesigner;
+    public string OverlayStore => Lang.OverlayStore;
     public string PosterIconOverlay => Lang.PosterIconOverlay;
     public string PosterOverlayTooltip => Lang.PosterOverlayTooltip;
     public string Previewer => Lang.Previewer;
@@ -680,6 +684,8 @@ public static class LangKeys
     public static readonly string PickIconWithName = nameof(PickIconWithName);
     public static readonly string PickSelected = nameof(PickSelected);
     public static readonly string Poster = nameof(Poster);
+    public static readonly string OverlayDesigner = nameof(OverlayDesigner);
+    public static readonly string OverlayStore = nameof(OverlayStore);
     public static readonly string PosterIconOverlay = nameof(PosterIconOverlay);
     public static readonly string PosterOverlayTooltip = nameof(PosterOverlayTooltip);
     public static readonly string Previewer = nameof(Previewer);

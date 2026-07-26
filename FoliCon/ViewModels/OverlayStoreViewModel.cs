@@ -11,30 +11,36 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     private readonly IOverlayRepositoryService _repositoryService;
+
+    /// <summary>Null when constructed outside the dialog service (tests, previews).</summary>
+    private readonly IDialogService _dialogService;
     private readonly Func<OverlayCardViewModel, bool> _confirmRemoval;
 
     private readonly Dictionary<string, (bool IsInstalled, bool IsUpdateAvailable)> _cardState = new(StringComparer.OrdinalIgnoreCase);
 
     public OverlayStoreViewModel(
         DialogCloseListener requestClose,
-        IOverlayRepositoryService repositoryService)
-        : this(repositoryService, ConfirmRemoval)
+        IOverlayRepositoryService repositoryService,
+        IDialogService dialogService)
+        : this(repositoryService, ConfirmRemoval, dialogService)
     {
         RequestClose = requestClose;
     }
 
     public OverlayStoreViewModel(IOverlayRepositoryService repositoryService)
-        : this(repositoryService, ConfirmRemoval)
+        : this(repositoryService, ConfirmRemoval, dialogService: null)
     {
     }
 
     private OverlayStoreViewModel(
         IOverlayRepositoryService repositoryService,
-        Func<OverlayCardViewModel, bool> confirmRemoval)
+        Func<OverlayCardViewModel, bool> confirmRemoval,
+        IDialogService dialogService)
     {
         RequestClose = default;
         _repositoryService = repositoryService;
         _confirmRemoval = confirmRemoval;
+        _dialogService = dialogService;
         VisibleOverlays = CollectionViewSource.GetDefaultView(Overlays);
         VisibleOverlays.Filter = FilterOverlay;
 
@@ -44,12 +50,17 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         UninstallCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UninstallOverlayAsync(o), o => o is { IsInstalled: true, IsLoading: false });
         UpdateAllCommand = new DelegateCommand(async () => await UpdateAllAsync(), () => UpdatesCount > 0 && !IsUpdatingAll);
 
+        // Only offered when the store was opened through the dialog service; the
+        // bare test/preview constructor has no way to launch another dialog.
+        CreateOverlayCommand = new DelegateCommand(OpenDesigner, () => _dialogService != null);
+        ClearTagFiltersCommand = new DelegateCommand(ClearTagFilters, () => HasSelectedTags);
+
         CatalogLoaded = LoadCatalogAsync();
     }
 
     public static OverlayStoreViewModel Create(
         IOverlayRepositoryService repositoryService,
-        Func<OverlayCardViewModel, bool> confirmRemoval) => new(repositoryService, confirmRemoval);
+        Func<OverlayCardViewModel, bool> confirmRemoval) => new(repositoryService, confirmRemoval, dialogService: null);
 
     #region Properties
 
@@ -79,27 +90,34 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         }
     } = string.Empty;
 
-    public string SelectedTag
-    {
-        get;
-        set
-        {
-            if (SetProperty(ref field, value))
-            {
-                ApplyFilter();
-            }
-        }
-    } = string.Empty;
+    /// <summary>
+    /// Tag chips, each independently selectable. Multiple active tags narrow the results
+    /// (AND), which a single-select dropdown could not express.
+    /// </summary>
+    public ObservableCollection<OverlayTagFilterViewModel> TagFilters { get; } = [];
 
-    public ObservableCollection<string> AvailableStatusFilters { get; } =
+    /// <summary>Currently active tags, in display order.</summary>
+    public IReadOnlyList<string> SelectedTags =>
+        [.. TagFilters.Where(t => t.IsSelected).Select(t => t.Tag)];
+
+    public bool HasSelectedTags => TagFilters.Any(t => t.IsSelected);
+
+    public bool HasTagFilters => TagFilters.Count > 0;
+
+    /// <summary>
+    /// The status dropdown's entries. This is the only place the filter labels appear;
+    /// filtering itself runs on <see cref="OverlayStatusFilterOption.Value"/> so translating
+    /// these strings cannot break it.
+    /// </summary>
+    public ObservableCollection<OverlayStatusFilterOption> AvailableStatusFilters { get; } =
     [
-        "All overlays",
-        "Installed",
-        "Not installed",
-        "Update available"
+        new(OverlayStatusFilter.All, "All overlays"),
+        new(OverlayStatusFilter.Installed, "Installed"),
+        new(OverlayStatusFilter.NotInstalled, "Not installed"),
+        new(OverlayStatusFilter.UpdateAvailable, "Update available")
     ];
 
-    public string SelectedStatusFilter
+    public OverlayStatusFilter SelectedStatusFilter
     {
         get;
         set
@@ -109,7 +127,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
                 ApplyFilter();
             }
         }
-    } = "All overlays";
+    } = OverlayStatusFilter.All;
 
     public OverlayStoreSection CurrentSection
     {
@@ -195,7 +213,6 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     /// <summary>
     /// All unique tags from the catalog for the tag filter dropdown.
     /// </summary>
-    public ObservableCollection<string> AvailableTags { get; } = [];
 
     #endregion
 
@@ -206,6 +223,12 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     public DelegateCommand<OverlayCardViewModel> UpdateCommand { get; }
     public DelegateCommand<OverlayCardViewModel> UninstallCommand { get; }
     public DelegateCommand UpdateAllCommand { get; }
+
+    /// <summary>Opens the Overlay Designer so a browsing author can start their own overlay.</summary>
+    public DelegateCommand CreateOverlayCommand { get; }
+
+    /// <summary>Deselects every tag chip in one action.</summary>
+    public DelegateCommand ClearTagFiltersCommand { get; }
 
     #endregion
 
@@ -229,17 +252,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             var catalog = await _repositoryService.FetchCatalogAsync();
             _allEntries = catalog.Overlays;
 
-            // Build tag list
-            AvailableTags.Clear();
-            AvailableTags.Add(""); // "All" tag
-            var tags = _allEntries
-                .SelectMany(e => e.Tags)
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(t => t, StringComparer.OrdinalIgnoreCase);
-            foreach (var tag in tags)
-            {
-                AvailableTags.Add(tag);
-            }
+            BuildTagFilters();
 
             var cards = _allEntries.Select(CreateCardViewModel).ToList();
             foreach (var existingCard in Overlays)
@@ -320,6 +333,61 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         UpdateViewState();
     }
 
+    /// <summary>
+    /// Rebuilds the chip list from the catalog, preserving which tags were already active so a
+    /// refresh does not silently reset the author's filter.
+    /// </summary>
+    private void BuildTagFilters()
+    {
+        var previouslySelected = new HashSet<string>(SelectedTags, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var existing in TagFilters)
+        {
+            existing.PropertyChanged -= OnTagFilterChanged;
+        }
+        TagFilters.Clear();
+
+        var counts = _allEntries
+            .SelectMany(e => e.Tags)
+            .GroupBy(t => t, StringComparer.OrdinalIgnoreCase)
+            .OrderByDescending(g => g.Count())
+            .ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var group in counts)
+        {
+            var chip = new OverlayTagFilterViewModel(group.Key, group.Count())
+            {
+                IsSelected = previouslySelected.Contains(group.Key)
+            };
+            chip.PropertyChanged += OnTagFilterChanged;
+            TagFilters.Add(chip);
+        }
+
+        RaisePropertyChanged(nameof(HasTagFilters));
+        RaisePropertyChanged(nameof(HasSelectedTags));
+    }
+
+    private void OnTagFilterChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(OverlayTagFilterViewModel.IsSelected))
+        {
+            return;
+        }
+
+        RaisePropertyChanged(nameof(SelectedTags));
+        RaisePropertyChanged(nameof(HasSelectedTags));
+        ClearTagFiltersCommand.RaiseCanExecuteChanged();
+        ApplyFilter();
+    }
+
+    private void ClearTagFilters()
+    {
+        foreach (var chip in TagFilters)
+        {
+            chip.IsSelected = false;
+        }
+    }
+
     private bool FilterOverlay(object item)
     {
         if (item is not OverlayCardViewModel card)
@@ -335,17 +403,19 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         if (CurrentSection == OverlayStoreSection.Discover && SelectedStatusFilter switch
             {
-                "Installed" => !card.IsInstalled,
-                "Not installed" => card.IsInstalled,
-                "Update available" => !card.IsUpdateAvailable,
+                OverlayStatusFilter.Installed => !card.IsInstalled,
+                OverlayStatusFilter.NotInstalled => card.IsInstalled,
+                OverlayStatusFilter.UpdateAvailable => !card.IsUpdateAvailable,
                 _ => false
             })
         {
             return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(SelectedTag) &&
-            !card.Tags.Contains(SelectedTag, StringComparer.OrdinalIgnoreCase))
+        // Multiple selected tags narrow the results: an overlay must carry all of them.
+        var selectedTags = SelectedTags;
+        if (selectedTags.Count > 0 &&
+            !selectedTags.All(tag => card.Tags.Contains(tag, StringComparer.OrdinalIgnoreCase)))
         {
             return false;
         }
@@ -387,10 +457,14 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         var visibleCount = VisibleOverlays.Cast<object>().Count();
         var hasFilters = !string.IsNullOrWhiteSpace(SearchQuery) ||
-                         !string.IsNullOrWhiteSpace(SelectedTag) ||
-                         SelectedStatusFilter != "All overlays";
-        StatusMessage = $"{visibleCount} overlay{(visibleCount == 1 ? string.Empty : "s")}" +
-                        (hasFilters ? " shown" : string.Empty);
+                         HasSelectedTags ||
+                         SelectedStatusFilter != OverlayStatusFilter.All;
+
+        // "Noun: count" instead of "{n} overlay(s)": English pluralises with a trailing "s",
+        // which has no equivalent in ru/ar/ja/hi. This phrasing needs no plural form at all.
+        StatusMessage = hasFilters
+            ? $"Overlays shown: {visibleCount}"
+            : $"Overlays: {visibleCount}";
     }
 
     #endregion
@@ -576,6 +650,12 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         MessageBox.Show(CustomMessageBox.Ask(
             $"Remove {card.DisplayName}? You can install it again later.",
             "Remove overlay")) == MessageBoxResult.Yes;
+
+    /// <summary>
+    /// Opens the designer on top of the store. The catalog is left as-is: a designed overlay
+    /// is not published, so nothing in the listing changes.
+    /// </summary>
+    private void OpenDesigner() => _dialogService?.ShowOverlayDesigner(_ => { });
 
     #endregion
 

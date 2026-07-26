@@ -115,6 +115,73 @@ public class OverlayStoreViewModelTests
         Assert.Equal("Alice", vm.SearchQuery);
     }
 
+    /// <summary>
+    /// Filtering must run on the enum, never on the dropdown label. It previously compared
+    /// against the English text, so translating the dropdown matched nothing.
+    /// </summary>
+    [Theory]
+    [InlineData(OverlayStatusFilter.All, 3)]
+    [InlineData(OverlayStatusFilter.Installed, 1)]
+    [InlineData(OverlayStatusFilter.NotInstalled, 2)]
+    [InlineData(OverlayStatusFilter.UpdateAvailable, 1)]
+    public async Task StoreViewModel_StatusFilter_SelectsByValue(OverlayStatusFilter filter, int expected)
+    {
+        using var host = new WpfTestHost();
+        var vm = await CreateFilterFixture(host);
+
+        host.Invoke(() => vm.SelectedStatusFilter = filter);
+
+        var results = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        Assert.Equal(expected, results.Count);
+    }
+
+    /// <summary>
+    /// The regression guard for the localization fix: translating every label must leave
+    /// filtering untouched, because the labels no longer participate in it.
+    /// </summary>
+    [Fact]
+    public async Task StoreViewModel_StatusFilter_SurvivesTranslatedLabels()
+    {
+        using var host = new WpfTestHost();
+        var vm = await CreateFilterFixture(host);
+
+        host.Invoke(() =>
+        {
+            // Stand in for a language switch: same values, entirely different display text.
+            var translated = vm.AvailableStatusFilters
+                .Select(o => new OverlayStatusFilterOption(o.Value, $"translated-{(int)o.Value}"))
+                .ToList();
+            vm.AvailableStatusFilters.Clear();
+            foreach (var option in translated)
+            {
+                vm.AvailableStatusFilters.Add(option);
+            }
+
+            vm.SelectedStatusFilter = OverlayStatusFilter.Installed;
+        });
+
+        var results = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        Assert.Single(results);
+        Assert.Equal("neon-glow", results[0].Id);
+    }
+
+    private static async Task<OverlayStoreViewModel> CreateFilterFixture(WpfTestHost host)
+    {
+        var entries = new List<OverlayCatalogEntry>
+        {
+            CreateEntry("neon-glow", "Neon Glow", "Alice", "1.0.0", ["neon"], 1000),
+            CreateEntry("dvd-case", "DVD Case", "Bob", "1.0.0", ["dvd"], 2000),
+            CreateEntry("retro-wave", "Retro Wave", "Alice", "1.0.0", ["retro"], 3000),
+        };
+        var service = new StubRepositoryService(catalogEntries: entries);
+        service.MarkInstalled("neon-glow");
+        service.MarkUpdateAvailable("neon-glow", "2.0.0");
+
+        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        await vm.CatalogLoaded;
+        return vm;
+    }
+
     [Fact]
     public async Task StoreViewModel_ReportsInstalledAndUpdateCounts()
     {
@@ -188,6 +255,182 @@ public class OverlayStoreViewModelTests
         }
     }
 
+    #region Tag filtering
+
+    [Fact]
+    public async Task TagFilters_AreBuiltFromTheCatalogWithCounts()
+    {
+        var vm = await LoadTagFixtureAsync();
+
+        var dvd = vm.TagFilters.Single(t => t.Tag == "dvd");
+        Assert.Equal(2, dvd.Count);
+        Assert.Equal("dvd (2)", dvd.DisplayText);
+    }
+
+    [Fact]
+    public async Task TagFilters_AreOrderedByPopularity()
+    {
+        // The most useful filters should be reachable first.
+        var vm = await LoadTagFixtureAsync();
+
+        Assert.Equal("dvd", vm.TagFilters[0].Tag);
+    }
+
+    [Fact]
+    public async Task TagFilters_ContainNoBlankEntry()
+    {
+        // The old ComboBox needed an empty "All" item; chips express that by selecting none.
+        var vm = await LoadTagFixtureAsync();
+
+        Assert.DoesNotContain(vm.TagFilters, t => string.IsNullOrWhiteSpace(t.Tag));
+    }
+
+    [Fact]
+    public async Task NoTagsSelected_ShowsEverything()
+    {
+        var vm = await LoadTagFixtureAsync();
+
+        Assert.False(vm.HasSelectedTags);
+        Assert.Equal(3, Visible(vm).Count);
+    }
+
+    [Fact]
+    public async Task SelectingOneTag_FiltersToThatTag()
+    {
+        var vm = await LoadTagFixtureAsync();
+
+        Select(vm, "modern");
+
+        var visible = Visible(vm);
+        Assert.Single(visible);
+        Assert.Equal("modern-only", visible[0].Id);
+    }
+
+    [Fact]
+    public async Task SelectingTwoTags_NarrowsToOverlaysCarryingBoth()
+    {
+        // This is the capability a single-select dropdown could not offer at all.
+        var vm = await LoadTagFixtureAsync();
+
+        Select(vm, "dvd");
+        Select(vm, "classic");
+
+        var visible = Visible(vm);
+        Assert.Single(visible);
+        Assert.Equal("dvd-classic", visible[0].Id);
+    }
+
+    [Fact]
+    public async Task SelectingMutuallyExclusiveTags_YieldsNothing()
+    {
+        var vm = await LoadTagFixtureAsync();
+
+        Select(vm, "modern");
+        Select(vm, "classic");
+
+        Assert.Empty(Visible(vm));
+    }
+
+    [Fact]
+    public async Task DeselectingATag_WidensTheResultsAgain()
+    {
+        var vm = await LoadTagFixtureAsync();
+        Select(vm, "dvd");
+        Select(vm, "classic");
+
+        Select(vm, "classic", selected: false);
+
+        Assert.Equal(2, Visible(vm).Count);
+    }
+
+    [Fact]
+    public async Task TagMatchingIsCaseInsensitive()
+    {
+        var vm = await LoadTagFixtureAsync(("upper", "Upper", ["DVD"]));
+
+        Select(vm, "dvd");
+
+        Assert.Contains(Visible(vm), c => c.Id == "upper");
+    }
+
+    [Fact]
+    public async Task ClearTagFilters_DeselectsEverything()
+    {
+        var vm = await LoadTagFixtureAsync();
+        Select(vm, "dvd");
+        Select(vm, "classic");
+
+        Assert.True(vm.ClearTagFiltersCommand.CanExecute());
+        vm.ClearTagFiltersCommand.Execute();
+
+        Assert.False(vm.HasSelectedTags);
+        Assert.Equal(3, Visible(vm).Count);
+    }
+
+    [Fact]
+    public async Task ClearTagFilters_IsDisabledWhenNothingIsSelected()
+    {
+        var vm = await LoadTagFixtureAsync();
+
+        Assert.False(vm.ClearTagFiltersCommand.CanExecute());
+    }
+
+    [Fact]
+    public async Task Refresh_PreservesTheActiveTagSelection()
+    {
+        // Losing the filter on refresh would silently change what the author is looking at.
+        var vm = await LoadTagFixtureAsync();
+        Select(vm, "dvd");
+
+        vm.RefreshCommand.Execute();
+        await WaitUntilAsync(() => vm.TagFilters.Count > 0 && !vm.IsLoading);
+
+        Assert.Contains("dvd", vm.SelectedTags);
+        Assert.True(vm.TagFilters.Single(t => t.Tag == "dvd").IsSelected);
+    }
+
+    [Fact]
+    public async Task TagFilterCombinesWithSearch()
+    {
+        var vm = await LoadTagFixtureAsync();
+
+        Select(vm, "dvd");
+        vm.SearchQuery = "Classic";
+
+        var visible = Visible(vm);
+        Assert.Single(visible);
+        Assert.Equal("dvd-classic", visible[0].Id);
+    }
+
+    private static List<OverlayCardViewModel> Visible(OverlayStoreViewModel vm) =>
+        [.. vm.VisibleOverlays.Cast<OverlayCardViewModel>()];
+
+    private static void Select(OverlayStoreViewModel vm, string tag, bool selected = true) =>
+        vm.TagFilters.Single(t => string.Equals(t.Tag, tag, StringComparison.OrdinalIgnoreCase)).IsSelected = selected;
+
+    /// <summary>
+    /// Three overlays: one tagged dvd+classic, one dvd only, one modern only.
+    /// </summary>
+    private static async Task<OverlayStoreViewModel> LoadTagFixtureAsync(
+        params (string Id, string Name, string[] Tags)[] extra)
+    {
+        var entries = new List<OverlayCatalogEntry>
+        {
+            CreateEntry("dvd-classic", "DVD Classic", "A", "1.0.0", ["dvd", "classic"], 1000),
+            CreateEntry("dvd-only", "DVD Only", "B", "1.0.0", ["dvd"], 1000),
+            CreateEntry("modern-only", "Modern Only", "C", "1.0.0", ["modern"], 1000)
+        };
+
+        entries.AddRange(extra.Select(e => CreateEntry(e.Id, e.Name, "D", "1.0.0", e.Tags, 1000)));
+
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(new StubRepositoryService(entries)));
+        await vm.CatalogLoaded;
+        return vm;
+    }
+
+    #endregion
+
     private static OverlayCatalogEntry CreateEntry(string id, string name, string author, string version, string[] tags, long size)
     {
         return new OverlayCatalogEntry
@@ -204,6 +447,51 @@ public class OverlayStoreViewModelTests
             OverlayPath = id
         };
     }
+
+    [Fact]
+    public void CreateOverlayCommand_IsDisabled_WithoutADialogService()
+    {
+        // The bare constructor (tests, design-time previews) has no way to launch the
+        // designer, so the button must not appear enabled and then do nothing.
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(new StubRepositoryService()));
+
+        Assert.False(vm.CreateOverlayCommand.CanExecute());
+    }
+
+    [Fact]
+    public void CreateOverlayCommand_IsEnabled_WhenOpenedThroughTheDialogService()
+    {
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(
+            new DialogCloseListener(), new StubRepositoryService(), new RecordingDialogService()));
+
+        Assert.True(vm.CreateOverlayCommand.CanExecute());
+    }
+
+    [Fact]
+    public void CreateOverlayCommand_OpensTheDesigner()
+    {
+        using var host = new WpfTestHost();
+        var dialogService = new RecordingDialogService();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(
+            new DialogCloseListener(), new StubRepositoryService(), dialogService));
+
+        host.Invoke(() => vm.CreateOverlayCommand.Execute());
+
+        Assert.Equal("OverlayDesigner", dialogService.LastDialogName);
+    }
+}
+
+/// <summary>Captures which dialog was requested instead of showing one.</summary>
+internal sealed class RecordingDialogService : IDialogService
+{
+    public string? LastDialogName { get; private set; }
+
+    public void ShowDialog(string name, IDialogParameters parameters, DialogCallback callback)
+    {
+        LastDialogName = name;
+    }
 }
 
 /// <summary>
@@ -218,7 +506,8 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
     public List<string> RemovedIds { get; } = [];
 
     public Task<OverlayCatalog> FetchCatalogAsync() => FetchCatalogAsync(default);
-    public Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct) => Task.FromResult(new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries });
+    // Virtual so tests can simulate the catalog being unreachable.
+    public virtual Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct) => Task.FromResult(new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries });
 
     public Task<OverlayManifest> FetchManifestAsync(string overlayId) => FetchManifestAsync(overlayId, default);
     public Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct) => Task.FromResult(new OverlayManifest { Id = overlayId });

@@ -626,6 +626,12 @@ and refresh Icon Cache?</value>
     <data name="Overlay" xml:space="preserve">
       <value>Overlay</value>
     </data>
+    <data name="OverlayStore" xml:space="preserve">
+      <value>Overlay Store</value>
+    </data>
+    <data name="OverlayDesigner" xml:space="preserve">
+      <value>Create Overlay</value>
+    </data>
     <data name="Previewer" xml:space="preserve">
       <value>Previewer</value>
     </data>

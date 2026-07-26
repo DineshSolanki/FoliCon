@@ -49,10 +49,25 @@ public partial class DynamicPosterIcon : PosterIconBase
 
         // --- Add children in the order specified by LayerOrder (matches original XAML z-order) ---
         var layerOrder = definition.LayerOrder ?? DefaultLayerOrder;
+        var added = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         foreach (var key in layerOrder)
         {
-            if (elements.TryGetValue(key, out var element))
+            if (elements.TryGetValue(key, out var element) && added.Add(key))
             {
+                rootGrid.Children.Add(element);
+            }
+        }
+
+        // An element that exists but is missing from layerOrder would otherwise be built and
+        // then silently dropped — e.g. turning on the title of an overlay whose layerOrder
+        // predates it. Append such elements in the default order so they still render.
+        foreach (var key in DefaultLayerOrder)
+        {
+            if (elements.TryGetValue(key, out var element) && added.Add(key))
+            {
+                Logger.Debug("Layer '{Key}' is missing from layerOrder for overlay '{Id}'; appending it.",
+                    key, definition.Id);
                 rootGrid.Children.Add(element);
             }
         }

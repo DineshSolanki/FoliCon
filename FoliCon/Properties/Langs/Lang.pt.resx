@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -624,6 +624,12 @@ e renovar o cache dos Ícones?</value>
     </data>
   <data name="Overlay" xml:space="preserve">
       <value>Sobreposição</value>
+    </data>
+  <data name="OverlayStore" xml:space="preserve">
+      <value>Loja de sobreposições</value>
+    </data>
+  <data name="OverlayDesigner" xml:space="preserve">
+      <value>Criar sobreposição</value>
     </data>
   <data name="Previewer" xml:space="preserve">
       <value>Visualizador</value>

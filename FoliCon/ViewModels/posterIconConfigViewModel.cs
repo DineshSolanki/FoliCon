@@ -13,6 +13,14 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
     public DelegateCommand<object> IconOverlayChangedCommand { get; }
     public DelegateCommand BrowseOverlayStoreCommand { get; }
+    public DelegateCommand CreateOverlayCommand { get; }
+
+    /// <summary>
+    /// Removes a user-installed overlay. Lives here rather than in the store because the store
+    /// can only remove overlays it knows from the catalog — an overlay installed from the
+    /// designer has no catalog entry and would otherwise be unremovable from the UI.
+    /// </summary>
+    public DelegateCommand<OverlayItemViewModel> RemoveOverlayCommand { get; }
 
     public PosterIconConfigViewModel(IDialogService dialogService)
     {
@@ -47,7 +55,69 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
                 OverlayPreviewCache.InvalidateAll();
             });
         });
+
+        CreateOverlayCommand = new DelegateCommand(() =>
+        {
+            Logger.Info("Opening Overlay Designer");
+            _dialogService.ShowOverlayDesigner(_ =>
+            {
+                // The designer can install an overlay locally, so re-read the list on close.
+                LoadOverlays();
+                OverlayPreviewCache.InvalidateAll();
+            });
+        });
+
+        RemoveOverlayCommand = new DelegateCommand<OverlayItemViewModel>(
+            RemoveOverlay,
+            item => item is { IsBuiltIn: false });
     }
+
+    /// <summary>
+    /// Deletes a user-installed overlay's folder and refreshes the list. If it was the active
+    /// overlay, selection falls back to the default so icon generation keeps working.
+    /// </summary>
+    private void RemoveOverlay(OverlayItemViewModel? item)
+    {
+        if (item is null or { IsBuiltIn: true } || !ConfirmRemoval(item.DisplayName))
+        {
+            return;
+        }
+
+        // Deletion lives in OverlayExporter alongside install, so both halves of the
+        // local-overlay lifecycle share one implementation and one set of guards.
+        var result = new Modules.Overlays.Designer.OverlayExporter().UninstallLocal(item.OverlayId);
+
+        if (!result.Succeeded)
+        {
+            MessageBox.Show(
+                result.FailureReason ?? $"Could not remove '{item.DisplayName}'.",
+                "Remove overlay",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            return;
+        }
+
+        var wasActive = string.Equals(IconOverlay, item.OverlayId, StringComparison.OrdinalIgnoreCase);
+
+        GlobalVariables.OverlayProvider.Refresh();
+        OverlayPreviewCache.InvalidateAll();
+        LoadOverlays();
+
+        if (wasActive)
+        {
+            // Leaving a deleted ID selected would fall back silently at render time;
+            // better to make the change visible in the picker.
+            IconOverlay = "liaher";
+        }
+    }
+
+    /// <summary>Overridable so tests can exercise removal without a modal.</summary>
+    protected virtual bool ConfirmRemoval(string displayName) =>
+        MessageBox.Show(
+            $"Remove '{displayName}'? Its files will be deleted from your overlays folder.",
+            "Remove overlay",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning) == MessageBoxResult.Yes;
 
     public string IconOverlay
     {

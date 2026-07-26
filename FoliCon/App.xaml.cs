@@ -67,6 +67,7 @@ public partial class App
         containerRegistry.RegisterSingleton<IOverlayRepositoryService, OverlayRepositoryService>();
         containerRegistry.RegisterSingleton<OverlayUpdateChecker>();
         containerRegistry.RegisterDialog<OverlayStore, OverlayStoreViewModel>("OverlayStore");
+        containerRegistry.RegisterDialog<OverlayDesigner, OverlayDesignerViewModel>("OverlayDesigner");
     }
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

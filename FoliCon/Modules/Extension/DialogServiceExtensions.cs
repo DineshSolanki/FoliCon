@@ -103,4 +103,21 @@ public static class DialogServiceExtensions
         Logger.Trace("ShowOverlayStore called");
         dialogService.ShowDialog("OverlayStore", callBack);
     }
+
+    /// <summary>
+    /// Opens the Overlay Designer. Pass <paramref name="overlayJsonPath"/> to edit an existing
+    /// package directly; omit it to land on the template picker.
+    /// </summary>
+    public static void ShowOverlayDesigner(this IDialogService dialogService, Action<IDialogResult> callBack,
+        string overlayJsonPath = null)
+    {
+        Logger.Trace("ShowOverlayDesigner called with path: {Path}", overlayJsonPath ?? "(none)");
+        var parameters = new DialogParameters();
+        if (!string.IsNullOrWhiteSpace(overlayJsonPath))
+        {
+            parameters.Add("overlayJsonPath", overlayJsonPath);
+        }
+
+        dialogService.ShowDialog("OverlayDesigner", parameters, callBack);
+    }
 }
