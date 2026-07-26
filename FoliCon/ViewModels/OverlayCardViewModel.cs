@@ -6,7 +6,7 @@ namespace FoliCon.ViewModels;
 /// Displays preview image, metadata, and install/update/remove actions.
 /// </summary>
 [Localizable(false)]
-public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
+public class OverlayCardViewModel(OverlayCatalogEntry entry, string? installedVersion = null) : BindableBase
 {
     public OverlayCatalogEntry CatalogEntry { get; } = entry;
 
@@ -27,6 +27,16 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
     };
 
     public string VersionDisplay => $"v{OverlayVersion}";
+    public string? InstalledVersion { get; } = installedVersion;
+    public string InstalledVersionDisplay => string.IsNullOrWhiteSpace(InstalledVersion)
+        ? "Installed"
+        : $"Installed v{InstalledVersion}";
+
+    public string AvailabilityStatus => IsUpdateAvailable
+        ? "Update available"
+        : IsInstalled
+            ? InstalledVersionDisplay
+            : "Available to install";
 
     public BitmapSource? PreviewImage
     {
@@ -37,16 +47,66 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
     public bool IsInstalled
     {
         get;
-        set => SetProperty(ref field, value);
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                RaisePropertyChanged(nameof(AvailabilityStatus));
+            }
+        }
     }
 
     public bool IsUpdateAvailable
     {
         get;
-        set => SetProperty(ref field, value);
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                RaisePropertyChanged(nameof(AvailabilityStatus));
+            }
+        }
     }
 
     public bool IsLoading
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool IsPreviewLoading
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int ProgressPercentage
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string OperationMessage
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                RaisePropertyChanged(nameof(HasOperationMessage));
+            }
+        }
+    } = string.Empty;
+
+    public bool HasOperationMessage => !string.IsNullOrWhiteSpace(OperationMessage);
+
+    public bool HasOperationError
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool IsOperationSuccessful
     {
         get;
         set => SetProperty(ref field, value);
@@ -66,7 +126,7 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
 
         try
         {
-            IsLoading = true;
+            IsPreviewLoading = true;
             var bytes = await Services.HttpC.GetByteArrayAsync(PreviewUrl, ct);
             using var stream = new MemoryStream(bytes);
             var bitmap = new BitmapImage();
@@ -84,7 +144,7 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry) : BindableBase
         }
         finally
         {
-            IsLoading = false;
+            IsPreviewLoading = false;
         }
     }
 }

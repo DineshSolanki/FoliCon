@@ -8,16 +8,18 @@ namespace FoliconTest;
 /// for rendering compiled XAML views in tests. Sets Application.BaseUri
 /// to the FoliCon assembly so that relative pack URIs in compiled XAML
 /// (e.g. /Resources/poster_mockups/...) resolve correctly.
+/// WPF allows only one Application per AppDomain, so a single dispatcher
+/// thread is shared by every WpfTestHost instance and outlives them all.
 /// </summary>
 internal sealed class WpfTestHost : IDisposable
 {
-    private readonly Thread _staThread;
-    private Dispatcher _dispatcher = null!;
-    private readonly ManualResetEventSlim _ready = new(false);
+    private static readonly Lazy<Dispatcher> SharedDispatcher = new(StartDispatcherThread, LazyThreadSafetyMode.ExecutionAndPublication);
 
-    public WpfTestHost()
+    private static Dispatcher StartDispatcherThread()
     {
-        _staThread = new Thread(() =>
+        Dispatcher dispatcher = null!;
+        using var ready = new ManualResetEventSlim(false);
+        var staThread = new Thread(() =>
         {
             // Creating Application sets Application.Current (required for relative pack URIs).
             // Set BaseUri to FoliCon assembly so relative URIs like /Resources/... resolve
@@ -30,33 +32,34 @@ internal sealed class WpfTestHost : IDisposable
                     ?.SetValue(app, new Uri("pack://application:,,,/FoliCon;component/"));
             }
 
-            _dispatcher = Dispatcher.CurrentDispatcher;
-            _ready.Set();
+            dispatcher = Dispatcher.CurrentDispatcher;
+            // ReSharper disable once AccessToDisposedClosure - Set() runs before ready is disposed
+            ready.Set();
             Dispatcher.Run();
         })
         {
             Name = "WPF-Test-Host",
             IsBackground = true
         };
-        _staThread.SetApartmentState(ApartmentState.STA);
-        _staThread.Start();
-        _ready.Wait();
+        staThread.SetApartmentState(ApartmentState.STA);
+        staThread.Start();
+        ready.Wait();
+        return dispatcher;
     }
 
     /// <summary>
     /// Execute a function on the STA thread and return the result.
     /// </summary>
-    public T Invoke<T>(Func<T> func) => _dispatcher!.Invoke(func, DispatcherPriority.Send);
+    public T Invoke<T>(Func<T> func) => SharedDispatcher.Value.Invoke(func, DispatcherPriority.Send);
 
     /// <summary>
     /// Execute an action on the STA thread.
     /// </summary>
-    public void Invoke(Action action) => _dispatcher!.Invoke(action, DispatcherPriority.Send);
+    public void Invoke(Action action) => SharedDispatcher.Value.Invoke(action, DispatcherPriority.Send);
 
     public void Dispose()
     {
-        _dispatcher?.InvokeShutdown();
-        _staThread.Join(5000);
-        _ready.Dispose();
+        // Intentionally empty: the shared dispatcher thread must survive for
+        // later tests and dies with the process (IsBackground = true).
     }
 }

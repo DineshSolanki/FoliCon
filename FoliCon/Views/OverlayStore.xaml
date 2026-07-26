@@ -14,6 +14,208 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <hc:Boolean2VisibilityReConverter x:Key="InvertedBoolToVis" />
+
+        <!-- Status glyph: paired with the status text so state is never conveyed by color alone -->
+        <Style x:Key="StatusIconStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Margin" Value="0,0,4,0" />
+            <Setter Property="Text" Value="" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                    <Setter Property="Text" Value="✓" />
+                    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                    <Setter Property="Text" Value="⟳" />
+                    <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="OperationMessageStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOperationSuccessful}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding HasOperationError}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Empty state shown when the active section has nothing to display -->
+        <DataTemplate x:Key="EmptyStateTemplate" DataType="{x:Type viewModels:OverlayStoreViewModel}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding EmptyStateTitle}" FontSize="15" FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="{Binding EmptyStateMessage}" FontSize="12" Margin="0,6,0,0"
+                           HorizontalAlignment="Center" TextWrapping="Wrap" MaxWidth="360"
+                           TextAlignment="Center"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Discover: visual card for browsing -->
+        <DataTemplate x:Key="OverlayCardTemplate" DataType="{x:Type viewModels:OverlayCardViewModel}">
+            <Border Width="210" Padding="10"
+                    CornerRadius="6"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1">
+                <StackPanel>
+                    <Grid Height="120" Margin="0,0,0,6">
+                        <Image Source="{Binding PreviewImage}"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
+                        <TextBlock Text="Loading preview..."
+                                   Visibility="{Binding IsPreviewLoading, Converter={StaticResource BoolToVis}}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+                    </Grid>
+
+                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"
+                               FontSize="13" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock FontSize="11" Margin="0,1,0,0" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource SecondaryTextBrush}">
+                        <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding VersionDisplay, Mode=OneWay}" />
+                    </TextBlock>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,6">
+                        <TextBlock Style="{StaticResource StatusIconStyle}" />
+                        <TextBlock Text="{Binding AvailabilityStatus}" Style="{StaticResource StatusTextStyle}" />
+                    </StackPanel>
+
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                    Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVis}}">
+                            <Button Content="Install"
+                                    Command="{Binding DataContext.InstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding IsInstalled, Converter={StaticResource InvertedBoolToVis}}"
+                                    Style="{StaticResource ButtonPrimary}"
+                                    Padding="12,4" FontSize="11" />
+                            <Button Content="Update"
+                                    Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVis}}"
+                                    Style="{StaticResource ButtonPrimary}"
+                                    Padding="12,4" FontSize="11" />
+                            <Button Content="Remove"
+                                    Command="{Binding DataContext.UninstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVis}}"
+                                    Style="{StaticResource ButtonDefault}"
+                                    Padding="12,4" FontSize="11" Margin="6,0,0,0"
+                                    ToolTip="Remove this overlay (asks for confirmation)" />
+                        </StackPanel>
+                        <ProgressBar Height="6" Maximum="100" VerticalAlignment="Center"
+                                     Value="{Binding ProgressPercentage}"
+                                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}" />
+                    </Grid>
+
+                    <TextBlock Text="{Binding OperationMessage}" Margin="0,4,0,0"
+                               Style="{StaticResource OperationMessageStyle}"
+                               Visibility="{Binding HasOperationMessage, Converter={StaticResource BoolToVis}}" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <!-- Installed / Updates: compact management row -->
+        <DataTemplate x:Key="OverlayRowTemplate" DataType="{x:Type viewModels:OverlayCardViewModel}">
+            <Border Padding="10,8"
+                    CornerRadius="4"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Width="56" Height="40" Margin="0,0,10,0"
+                            CornerRadius="3" ClipToBounds="True"
+                            Background="{DynamicResource RegionBrush}">
+                        <Image Source="{Binding PreviewImage}" Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
+                    </Border>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13"
+                                   TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                        <TextBlock FontSize="11" Margin="0,1,0,0" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource SecondaryTextBrush}">
+                            <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding SizeDisplay, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal"
+                                VerticalAlignment="Center" Margin="10,0">
+                        <TextBlock Style="{StaticResource StatusIconStyle}" />
+                        <TextBlock Text="{Binding AvailabilityStatus}" Style="{StaticResource StatusTextStyle}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVis}}">
+                        <Button Content="Update"
+                                Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"
+                                Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVis}}"
+                                Style="{StaticResource ButtonPrimary}"
+                                Padding="12,4" FontSize="11" />
+                        <Button Content="Remove"
+                                Command="{Binding DataContext.UninstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonDefault}"
+                                Padding="12,4" FontSize="11" Margin="6,0,0,0"
+                                ToolTip="Remove this overlay (asks for confirmation)" />
+                    </StackPanel>
+
+                    <ProgressBar Grid.Row="0" Grid.Column="3" Width="120" Height="6" Maximum="100"
+                                 VerticalAlignment="Center"
+                                 Value="{Binding ProgressPercentage}"
+                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,4,0,0"
+                               Text="{Binding OperationMessage}"
+                               Style="{StaticResource OperationMessageStyle}"
+                               Visibility="{Binding HasOperationMessage, Converter={StaticResource BoolToVis}}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <Style x:Key="RowContainerStyle" TargetType="ContentPresenter">
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
     </UserControl.Resources>
 
     <prism:Dialog.WindowStyle>
@@ -34,10 +236,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Search + Filter Bar -->
+        <!-- Search + Filter Bar (persistent across sections) -->
         <Grid Grid.Row="0" Margin="0,0,0,8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
@@ -53,95 +256,97 @@
             <ComboBox Grid.Column="1" Margin="8,0,0,0" MinWidth="120" VerticalAlignment="Center"
                       ItemsSource="{Binding AvailableTags}"
                       SelectedItem="{Binding SelectedTag}"
-                      hc:InfoElement.Placeholder="Filter by tag" />
+                      hc:InfoElement.Placeholder="Filter by tag"
+                      ToolTip="Filter by tag" />
 
-            <Button Grid.Column="2" Margin="8,0,0,0" Content="↻ Refresh"
+            <ComboBox Grid.Column="2" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
+                      ItemsSource="{Binding AvailableStatusFilters}"
+                      SelectedItem="{Binding SelectedStatusFilter}"
+                      Visibility="{Binding IsDiscoverSection, Converter={StaticResource BoolToVis}}"
+                      ToolTip="Filter by installation status" />
+
+            <Button Grid.Column="3" Margin="8,0,0,0" Content="↻ Refresh"
                     Command="{Binding RefreshCommand}"
-                    Style="{StaticResource ButtonPrimary}"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="Reload the overlay catalog"
                     VerticalAlignment="Center" />
         </Grid>
 
-        <!-- Overlay Grid -->
+        <!-- Sections: Discover / Installed / Updates -->
         <hc:BusyIndicator Grid.Row="1" IsBusy="{Binding IsLoading}"
                           BusyContent="Loading catalog...">
-            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Overlays}" HorizontalContentAlignment="Stretch">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel IsItemsHost="True" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style TargetType="ContentPresenter">
-                            <Setter Property="Margin" Value="4" />
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Width="200" Padding="8"
-                                       CornerRadius="4"
-                                       Background="{DynamicResource SecondaryRegionBrush}"
-                                       BorderBrush="{DynamicResource BorderBrush}"
-                                       BorderThickness="1">
-                                <StackPanel>
-                                    <!-- Preview Image -->
-                                    <Grid Height="120" Margin="0,0,0,6">
-                                        <Image Source="{Binding PreviewImage}"
-                                               Stretch="Uniform"
-                                               RenderOptions.BitmapScalingMode="HighQuality" />
-                                        <TextBlock Text="Loading..."
-                                                   Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontSize="11"
-                                                   Foreground="{DynamicResource SecondaryTextBrush}" />
-                                    </Grid>
+            <TabControl SelectedIndex="{Binding CurrentSectionIndex}"
+                        Style="{StaticResource TabControlInLine}"
+                        Background="Transparent"
+                        BorderThickness="0">
 
-                                    <!-- Name + Author -->
-                                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"
-                                               FontSize="13" TextTrimming="CharacterEllipsis"
-                                               Foreground="{DynamicResource PrimaryTextBrush}" />
-                                    <TextBlock Text="{Binding Author}" FontSize="11"
-                                               Foreground="{DynamicResource SecondaryTextBrush}"
-                                               Margin="0,1,0,0" />
-                                    <TextBlock Text="{Binding VersionDisplay}" FontSize="10"
-                                               Foreground="{DynamicResource SecondaryTextBrush}"
-                                               Margin="0,1,0,4" />
+                <TabItem Header="Discover">
+                    <Grid Margin="0,8,0,0">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding VisibleOverlays}"
+                                          ItemTemplate="{StaticResource OverlayCardTemplate}"
+                                          HorizontalContentAlignment="Stretch">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="Margin" Value="4" />
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <ContentControl Content="{Binding}"
+                                        ContentTemplate="{StaticResource EmptyStateTemplate}"
+                                        IsTabStop="False"
+                                        Visibility="{Binding HasVisibleOverlays, Converter={StaticResource InvertedBoolToVis}}" />
+                    </Grid>
+                </TabItem>
 
-                                    <!-- Action Buttons -->
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                        <Button Content="Install"
-                                                Command="{Binding DataContext.InstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}"
-                                                Visibility="{Binding IsInstalled, Converter={StaticResource InvertedBoolToVis}}"
-                                                Style="{StaticResource ButtonPrimary}"
-                                                Padding="12,4" FontSize="11" />
-                                        <Button Content="⟳ Update"
-                                                Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}"
-                                                Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVis}}"
-                                                Style="{StaticResource ButtonPrimary}"
-                                                Padding="12,4" FontSize="11" Margin="4,0,0,0" />
-                                        <TextBlock Text="✓ Installed"
-                                                   Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVis}}"
-                                                   VerticalAlignment="Center"
-                                                   Foreground="Green"
-                                                   FontSize="11" FontWeight="SemiBold" />
-                                        <Button Content="✕"
-                                                Command="{Binding DataContext.UninstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                CommandParameter="{Binding}"
-                                                Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVis}}"
-                                                Style="{StaticResource ButtonPrimary}"
-                                                Padding="6,4" FontSize="11" Margin="4,0,0,0"
-                                                ToolTip="Uninstall" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                <TabItem Header="{Binding InstalledSectionTitle}">
+                    <Grid Margin="0,8,0,0">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding VisibleOverlays}"
+                                          ItemTemplate="{StaticResource OverlayRowTemplate}"
+                                          ItemContainerStyle="{StaticResource RowContainerStyle}" />
+                        </ScrollViewer>
+                        <ContentControl Content="{Binding}"
+                                        ContentTemplate="{StaticResource EmptyStateTemplate}"
+                                        IsTabStop="False"
+                                        Visibility="{Binding HasVisibleOverlays, Converter={StaticResource InvertedBoolToVis}}" />
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="{Binding UpdatesSectionTitle}">
+                    <Grid Margin="0,8,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0" Content="⟳ Update all"
+                                Command="{Binding UpdateAllCommand}"
+                                Style="{StaticResource ButtonPrimary}"
+                                HorizontalAlignment="Right" Margin="0,0,0,8"
+                                Visibility="{Binding HasVisibleOverlays, Converter={StaticResource BoolToVis}}" />
+
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding VisibleOverlays}"
+                                          ItemTemplate="{StaticResource OverlayRowTemplate}"
+                                          ItemContainerStyle="{StaticResource RowContainerStyle}" />
+                        </ScrollViewer>
+                        <ContentControl Grid.Row="1" Content="{Binding}"
+                                        ContentTemplate="{StaticResource EmptyStateTemplate}"
+                                        IsTabStop="False"
+                                        Visibility="{Binding HasVisibleOverlays, Converter={StaticResource InvertedBoolToVis}}" />
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </hc:BusyIndicator>
 
         <!-- Status Bar -->
@@ -157,7 +362,7 @@
 
             <TextBlock Grid.Column="1" Text="{Binding ErrorMessage}"
                        Visibility="{Binding HasError, Converter={StaticResource BoolToVis}}"
-                       Foreground="Red"
+                       Foreground="{DynamicResource DangerBrush}"
                        FontSize="11" TextTrimming="CharacterEllipsis"
                        MaxWidth="400" />
         </Grid>

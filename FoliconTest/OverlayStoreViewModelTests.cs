@@ -1,5 +1,6 @@
 #nullable enable
 using FoliCon.Models.Data;
+using FoliCon.Models.Enums;
 using FoliCon.Modules.Overlays;
 using FoliCon.ViewModels;
 
@@ -61,10 +62,14 @@ public class OverlayStoreViewModelTests
         card.IsInstalled = true;
         card.IsUpdateAvailable = true;
         card.IsLoading = true;
+        card.ProgressPercentage = 42;
+        card.OperationMessage = "Downloading files";
 
         Assert.Contains("IsInstalled", notified);
         Assert.Contains("IsUpdateAvailable", notified);
         Assert.Contains("IsLoading", notified);
+        Assert.Contains("ProgressPercentage", notified);
+        Assert.Contains("OperationMessage", notified);
     }
 
     [Fact]
@@ -80,7 +85,7 @@ public class OverlayStoreViewModelTests
     }
 
     [Fact]
-    public async Task StoreViewModel_FiltersBySearchQuery()
+    public async Task StoreViewModel_FiltersWithoutRecreatingCards_AndKeepsSearchAcrossViews()
     {
         var entries = new List<OverlayCatalogEntry>
         {
@@ -89,25 +94,98 @@ public class OverlayStoreViewModelTests
             CreateEntry("retro-wave", "Retro Wave", "Alice", "1.0.0", ["retro", "neon"], 3000),
         };
         var service = new StubRepositoryService(catalogEntries: entries);
+        service.MarkInstalled("neon-glow");
+        service.MarkUpdateAvailable("neon-glow", "2.0.0");
 
-        // Note: We can't easily construct OverlayStoreViewModel without a real
-        // DialogCloseListener (it's a Prism-generated proxy). Test the filter
-        // logic indirectly through the service stub.
-        // This test verifies the stub returns correct data.
-        var catalog = await service.FetchCatalogAsync();
-        Assert.Equal(3, catalog.Overlays.Count);
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        await vm.CatalogLoaded;
 
-        // Filter by author
-        var aliceOverlays = catalog.Overlays
-            .Where(e => e.Author.Contains("Alice", StringComparison.OrdinalIgnoreCase))
-            .ToList();
-        Assert.Equal(2, aliceOverlays.Count);
+        var originalCard = host.Invoke(() => vm.Overlays.Single(o => o.Id == "neon-glow"));
+        host.Invoke(() => vm.SearchQuery = "Alice");
 
-        // Filter by tag
-        var neonOverlays = catalog.Overlays
-            .Where(e => e.Tags.Contains("neon", StringComparer.OrdinalIgnoreCase))
-            .ToList();
-        Assert.Equal(2, neonOverlays.Count);
+        var discoverResults = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        Assert.Equal(2, discoverResults.Count);
+        Assert.Contains(originalCard, discoverResults);
+
+        host.Invoke(() => vm.CurrentSection = OverlayStoreSection.Updates);
+        var updateResults = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        Assert.Single(updateResults);
+        Assert.Same(originalCard, updateResults[0]);
+        Assert.Equal("Alice", vm.SearchQuery);
+    }
+
+    [Fact]
+    public async Task StoreViewModel_ReportsInstalledAndUpdateCounts()
+    {
+        var service = new StubRepositoryService([
+            CreateEntry("one", "One", "A", "2.0.0", [], 100),
+            CreateEntry("two", "Two", "B", "1.0.0", [], 100),
+            CreateEntry("three", "Three", "C", "1.0.0", [], 100)
+        ]);
+        service.MarkInstalled("one");
+        service.MarkInstalled("two");
+        service.MarkUpdateAvailable("one", "2.0.0");
+
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        await vm.CatalogLoaded;
+
+        Assert.Equal(2, vm.InstalledCount);
+        Assert.Equal(1, vm.UpdatesCount);
+        Assert.Equal("Installed (2)", vm.InstalledSectionTitle);
+        Assert.Equal("Updates (1)", vm.UpdatesSectionTitle);
+    }
+
+    [Fact]
+    public async Task StoreViewModel_UpdateAll_UpdatesEveryAvailableOverlay()
+    {
+        var service = new StubRepositoryService([
+            CreateEntry("one", "One", "A", "2.0.0", [], 100),
+            CreateEntry("two", "Two", "B", "2.0.0", [], 100)
+        ]);
+        service.MarkInstalled("one");
+        service.MarkInstalled("two");
+        service.MarkUpdateAvailable("one", "2.0.0");
+        service.MarkUpdateAvailable("two", "2.0.0");
+
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        await vm.CatalogLoaded;
+
+        host.Invoke(() => vm.UpdateAllCommand.Execute());
+        await WaitUntilAsync(() => service.UpdatedIds.Count == 2 && !vm.IsUpdatingAll);
+
+        Assert.Equal(2, service.UpdatedIds.Count);
+        Assert.Equal(0, vm.UpdatesCount);
+        Assert.All(vm.Overlays, card => Assert.False(card.IsUpdateAvailable));
+    }
+
+    [Fact]
+    public async Task StoreViewModel_RemoveRequiresConfirmation()
+    {
+        var service = new StubRepositoryService([CreateEntry("one", "One", "A", "1.0.0", [], 100)]);
+        service.MarkInstalled("one");
+
+        using var host = new WpfTestHost();
+        var vm = host.Invoke(() => OverlayStoreViewModel.Create(service, _ => false));
+        await vm.CatalogLoaded;
+        var card = vm.Overlays.Single();
+
+        host.Invoke(() => vm.UninstallCommand.Execute(card));
+        await Task.Delay(100);
+
+        Assert.True(card.IsInstalled);
+        Assert.Empty(service.RemovedIds);
+    }
+
+    private static async Task WaitUntilAsync(Func<bool> condition)
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        while (!condition())
+        {
+            await Task.Delay(20, timeout.Token);
+        }
     }
 
     private static OverlayCatalogEntry CreateEntry(string id, string name, string author, string version, string[] tags, long size)
@@ -136,6 +214,8 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
     private readonly List<OverlayCatalogEntry> _catalogEntries = catalogEntries ?? [];
     private readonly HashSet<string> _installed = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string> _updates = new(StringComparer.OrdinalIgnoreCase);
+    public List<string> UpdatedIds { get; } = [];
+    public List<string> RemovedIds { get; } = [];
 
     public Task<OverlayCatalog> FetchCatalogAsync() => FetchCatalogAsync(default);
     public Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct) => Task.FromResult(new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries });
@@ -155,13 +235,16 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
     public Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress) => UpdateOverlayAsync(overlayId, progress, default);
     public Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
     {
+        progress?.Report((50, "Downloading"));
         _updates.Remove(overlayId);
+        UpdatedIds.Add(overlayId);
         return Task.CompletedTask;
     }
 
     public Task UninstallOverlayAsync(string overlayId)
     {
         _installed.Remove(overlayId);
+        RemovedIds.Add(overlayId);
         return Task.CompletedTask;
     }
 

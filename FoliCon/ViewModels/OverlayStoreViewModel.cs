@@ -11,33 +11,55 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     private readonly IOverlayRepositoryService _repositoryService;
+    private readonly Func<OverlayCardViewModel, bool> _confirmRemoval;
 
     private readonly Dictionary<string, (bool IsInstalled, bool IsUpdateAvailable)> _cardState = new(StringComparer.OrdinalIgnoreCase);
 
     public OverlayStoreViewModel(
         DialogCloseListener requestClose,
         IOverlayRepositoryService repositoryService)
+        : this(repositoryService, ConfirmRemoval)
     {
         RequestClose = requestClose;
+    }
+
+    public OverlayStoreViewModel(IOverlayRepositoryService repositoryService)
+        : this(repositoryService, ConfirmRemoval)
+    {
+    }
+
+    private OverlayStoreViewModel(
+        IOverlayRepositoryService repositoryService,
+        Func<OverlayCardViewModel, bool> confirmRemoval)
+    {
+        RequestClose = default;
         _repositoryService = repositoryService;
+        _confirmRemoval = confirmRemoval;
+        VisibleOverlays = CollectionViewSource.GetDefaultView(Overlays);
+        VisibleOverlays.Filter = FilterOverlay;
 
         RefreshCommand = new DelegateCommand(async () => await LoadCatalogAsync(forceRefresh: true));
-        InstallCommand = new DelegateCommand<OverlayCardViewModel>(async o => await InstallOverlayAsync(o), o => o is not { IsInstalled: true });
-        UpdateCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UpdateOverlayAsync(o), o => o is { IsUpdateAvailable: true });
-        UninstallCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UninstallOverlayAsync(o), o => o is { IsInstalled: true });
+        InstallCommand = new DelegateCommand<OverlayCardViewModel>(async o => await InstallOverlayAsync(o), o => o is { IsInstalled: false, IsLoading: false });
+        UpdateCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UpdateOverlayAsync(o), o => o is { IsUpdateAvailable: true, IsLoading: false });
+        UninstallCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UninstallOverlayAsync(o), o => o is { IsInstalled: true, IsLoading: false });
+        UpdateAllCommand = new DelegateCommand(async () => await UpdateAllAsync(), () => UpdatesCount > 0 && !IsUpdatingAll);
 
-        _ = LoadCatalogAsync();
+        CatalogLoaded = LoadCatalogAsync();
     }
+
+    public static OverlayStoreViewModel Create(
+        IOverlayRepositoryService repositoryService,
+        Func<OverlayCardViewModel, bool> confirmRemoval) => new(repositoryService, confirmRemoval);
 
     #region Properties
 
     public static string Title => "Overlay Store";
 
-    public ObservableCollection<OverlayCardViewModel> Overlays
-    {
-        get;
-        set => SetProperty(ref field, value);
-    } = [];
+    public ObservableCollection<OverlayCardViewModel> Overlays { get; } = [];
+
+    public ICollectionView VisibleOverlays { get; }
+
+    public Task CatalogLoaded { get; }
 
     public OverlayCardViewModel? SelectedOverlay
     {
@@ -69,10 +91,87 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         }
     } = string.Empty;
 
+    public ObservableCollection<string> AvailableStatusFilters { get; } =
+    [
+        "All overlays",
+        "Installed",
+        "Not installed",
+        "Update available"
+    ];
+
+    public string SelectedStatusFilter
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                ApplyFilter();
+            }
+        }
+    } = "All overlays";
+
+    public OverlayStoreSection CurrentSection
+    {
+        get;
+        set
+        {
+            if (!SetProperty(ref field, value))
+            {
+                return;
+            }
+
+            RaisePropertyChanged(nameof(CurrentSectionIndex));
+            RaisePropertyChanged(nameof(IsDiscoverSection));
+            ApplyFilter();
+        }
+    }
+
+    public int CurrentSectionIndex
+    {
+        get => (int)CurrentSection;
+        set => CurrentSection = (OverlayStoreSection)value;
+    }
+
+    public bool IsDiscoverSection => CurrentSection == OverlayStoreSection.Discover;
+
+    public int InstalledCount { get; private set; }
+    public int UpdatesCount { get; private set; }
+    public string InstalledSectionTitle => $"Installed ({InstalledCount})";
+    public string UpdatesSectionTitle => $"Updates ({UpdatesCount})";
+
+    public bool HasVisibleOverlays { get; private set; }
+
+    public string EmptyStateTitle => CurrentSection switch
+    {
+        OverlayStoreSection.Installed => "No installed overlays",
+        OverlayStoreSection.Updates => "Everything is up to date",
+        _ => "No overlays found"
+    };
+
+    public string EmptyStateMessage => CurrentSection switch
+    {
+        OverlayStoreSection.Installed => "Install an overlay from Discover and it will appear here.",
+        OverlayStoreSection.Updates => "Installed overlays will appear here when an update is available.",
+        _ => "Try another search, tag, or installation filter."
+    };
+
     public bool IsLoading
     {
         get;
         set => SetProperty(ref field, value);
+    }
+
+    public bool IsUpdatingAll
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                UpdateAllCommand.RaiseCanExecuteChanged();
+            }
+        }
     }
 
     public string StatusMessage
@@ -106,6 +205,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     public DelegateCommand<OverlayCardViewModel> InstallCommand { get; }
     public DelegateCommand<OverlayCardViewModel> UpdateCommand { get; }
     public DelegateCommand<OverlayCardViewModel> UninstallCommand { get; }
+    public DelegateCommand UpdateAllCommand { get; }
 
     #endregion
 
@@ -141,13 +241,20 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
                 AvailableTags.Add(tag);
             }
 
-            // Build card ViewModels
             var cards = _allEntries.Select(CreateCardViewModel).ToList();
+            foreach (var existingCard in Overlays)
+            {
+                existingCard.PropertyChanged -= OnCardPropertyChanged;
+            }
 
-            // Load previews in background (fire-and-forget)
+            Overlays.Clear();
+            foreach (var card in cards)
+            {
+                card.PropertyChanged += OnCardPropertyChanged;
+                Overlays.Add(card);
+            }
+
             _ = Task.WhenAll(cards.Select(c => c.LoadPreviewAsync()));
-
-            Overlays = new ObservableCollection<OverlayCardViewModel>(cards);
             StatusMessage = $"{cards.Count} overlays available";
             ApplyFilter();
         }
@@ -188,7 +295,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             };
         }
 
-        var card = new OverlayCardViewModel(entry)
+        var card = new OverlayCardViewModel(entry, _repositoryService.GetInstalledVersion(entry.Id))
         {
             IsInstalled = _repositoryService.IsOverlayInstalled(entry.Id), IsUpdateAvailable = _repositoryService.IsUpdateAvailable(entry.Id)
         };
@@ -209,28 +316,81 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     private void ApplyFilter()
     {
-        var filtered = _allEntries.AsEnumerable();
+        VisibleOverlays.Refresh();
+        UpdateViewState();
+    }
 
-        if (!string.IsNullOrWhiteSpace(SelectedTag))
+    private bool FilterOverlay(object item)
+    {
+        if (item is not OverlayCardViewModel card)
         {
-            filtered = filtered.Where(e =>
-                e.Tags.Contains(SelectedTag, StringComparer.OrdinalIgnoreCase));
+            return false;
         }
 
-        if (!string.IsNullOrWhiteSpace(SearchQuery))
+        if (CurrentSection == OverlayStoreSection.Installed && !card.IsInstalled ||
+            CurrentSection == OverlayStoreSection.Updates && !card.IsUpdateAvailable)
         {
-            var query = SearchQuery.Trim();
-            filtered = filtered.Where(e =>
-                e.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                e.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                e.Author.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                e.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase)));
+            return false;
         }
 
-        var cards = filtered.Select(CreateCardViewModel).ToList();
-        _ = Task.WhenAll(cards.Select(c => c.LoadPreviewAsync()));
-        Overlays = new ObservableCollection<OverlayCardViewModel>(cards);
-        StatusMessage = $"{cards.Count} overlays" + (string.IsNullOrWhiteSpace(SearchQuery) && string.IsNullOrWhiteSpace(SelectedTag) ? "" : " (filtered)");
+        if (CurrentSection == OverlayStoreSection.Discover && SelectedStatusFilter switch
+            {
+                "Installed" => !card.IsInstalled,
+                "Not installed" => card.IsInstalled,
+                "Update available" => !card.IsUpdateAvailable,
+                _ => false
+            })
+        {
+            return false;
+        }
+
+        if (!string.IsNullOrWhiteSpace(SelectedTag) &&
+            !card.Tags.Contains(SelectedTag, StringComparer.OrdinalIgnoreCase))
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(SearchQuery))
+        {
+            return true;
+        }
+
+        var query = SearchQuery.Trim();
+        return card.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+               card.Description.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+               card.Author.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+               card.Tags.Any(t => t.Contains(query, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private void OnCardPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is nameof(OverlayCardViewModel.IsInstalled) or nameof(OverlayCardViewModel.IsUpdateAvailable))
+        {
+            ApplyFilter();
+        }
+    }
+
+    private void UpdateViewState()
+    {
+        InstalledCount = Overlays.Count(card => card.IsInstalled);
+        UpdatesCount = Overlays.Count(card => card.IsUpdateAvailable);
+        HasVisibleOverlays = !VisibleOverlays.IsEmpty;
+
+        RaisePropertyChanged(nameof(InstalledCount));
+        RaisePropertyChanged(nameof(UpdatesCount));
+        RaisePropertyChanged(nameof(InstalledSectionTitle));
+        RaisePropertyChanged(nameof(UpdatesSectionTitle));
+        RaisePropertyChanged(nameof(HasVisibleOverlays));
+        RaisePropertyChanged(nameof(EmptyStateTitle));
+        RaisePropertyChanged(nameof(EmptyStateMessage));
+        UpdateAllCommand.RaiseCanExecuteChanged();
+
+        var visibleCount = VisibleOverlays.Cast<object>().Count();
+        var hasFilters = !string.IsNullOrWhiteSpace(SearchQuery) ||
+                         !string.IsNullOrWhiteSpace(SelectedTag) ||
+                         SelectedStatusFilter != "All overlays";
+        StatusMessage = $"{visibleCount} overlay{(visibleCount == 1 ? string.Empty : "s")}" +
+                        (hasFilters ? " shown" : string.Empty);
     }
 
     #endregion
@@ -246,22 +406,29 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         try
         {
-            card.IsLoading = true;
+            BeginOperation(card, $"Installing {card.DisplayName}...");
             StatusMessage = $"Installing {card.DisplayName}...";
 
             var progress = new Progress<(int Percent, string Status)>(p =>
-                StatusMessage = $"Installing {card.DisplayName}: {p.Status} ({p.Percent}%)");
+            {
+                card.ProgressPercentage = p.Percent;
+                card.OperationMessage = $"{p.Status} ({p.Percent}%)";
+                StatusMessage = $"Installing {card.DisplayName}: {p.Status} ({p.Percent}%)";
+            });
 
             await _repositoryService.InstallOverlayAsync(card.CatalogEntry, progress);
 
             card.IsInstalled = true;
+            card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
+            CompleteOperation(card, $"{card.DisplayName} installed successfully");
             StatusMessage = $"{card.DisplayName} installed successfully";
             Logger.Info("Installed overlay '{Id}' from store", card.Id);
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to install overlay '{Id}'", card.Id);
+            FailOperation(card, $"Install failed: {ex.Message}");
             StatusMessage = $"Install failed: {ex.Message}";
         }
         finally
@@ -282,21 +449,27 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         try
         {
-            card.IsLoading = true;
+            BeginOperation(card, $"Updating {card.DisplayName}...");
             StatusMessage = $"Updating {card.DisplayName}...";
 
             var progress = new Progress<(int Percent, string Status)>(p =>
-                StatusMessage = $"Updating {card.DisplayName}: {p.Status} ({p.Percent}%)");
+            {
+                card.ProgressPercentage = p.Percent;
+                card.OperationMessage = $"{p.Status} ({p.Percent}%)";
+                StatusMessage = $"Updating {card.DisplayName}: {p.Status} ({p.Percent}%)";
+            });
 
             await _repositoryService.UpdateOverlayAsync(card.Id, progress);
 
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
+            CompleteOperation(card, $"{card.DisplayName} is up to date");
             StatusMessage = $"{card.DisplayName} updated successfully";
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to update overlay '{Id}'", card.Id);
+            FailOperation(card, $"Update failed: {ex.Message}");
             StatusMessage = $"Update failed: {ex.Message}";
         }
         finally
@@ -313,9 +486,14 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             return;
         }
 
+        if (!_confirmRemoval(card))
+        {
+            return;
+        }
+
         try
         {
-            card.IsLoading = true;
+            BeginOperation(card, $"Removing {card.DisplayName}...");
             StatusMessage = $"Removing {card.DisplayName}...";
 
             await _repositoryService.UninstallOverlayAsync(card.Id);
@@ -323,11 +501,13 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             card.IsInstalled = false;
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
+            CompleteOperation(card, $"{card.DisplayName} removed");
             StatusMessage = $"{card.DisplayName} removed";
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to uninstall overlay '{Id}'", card.Id);
+            FailOperation(card, $"Remove failed: {ex.Message}");
             StatusMessage = $"Remove failed: {ex.Message}";
         }
         finally
@@ -337,6 +517,65 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             UninstallCommand.RaiseCanExecuteChanged();
         }
     }
+
+    private async Task UpdateAllAsync()
+    {
+        if (IsUpdatingAll)
+        {
+            return;
+        }
+
+        var pendingUpdates = Overlays.Where(card => card.IsUpdateAvailable).ToList();
+        if (pendingUpdates.Count == 0)
+        {
+            return;
+        }
+
+        IsUpdatingAll = true;
+        try
+        {
+            for (var index = 0; index < pendingUpdates.Count; index++)
+            {
+                StatusMessage = $"Updating {index + 1} of {pendingUpdates.Count}: {pendingUpdates[index].DisplayName}";
+                await UpdateOverlayAsync(pendingUpdates[index]);
+            }
+
+            StatusMessage = "All overlays are up to date";
+        }
+        finally
+        {
+            IsUpdatingAll = false;
+        }
+    }
+
+    private static void BeginOperation(OverlayCardViewModel card, string message)
+    {
+        card.IsLoading = true;
+        card.ProgressPercentage = 0;
+        card.OperationMessage = message;
+        card.HasOperationError = false;
+        card.IsOperationSuccessful = false;
+    }
+
+    private static void CompleteOperation(OverlayCardViewModel card, string message)
+    {
+        card.ProgressPercentage = 100;
+        card.OperationMessage = message;
+        card.HasOperationError = false;
+        card.IsOperationSuccessful = true;
+    }
+
+    private static void FailOperation(OverlayCardViewModel card, string message)
+    {
+        card.OperationMessage = message;
+        card.HasOperationError = true;
+        card.IsOperationSuccessful = false;
+    }
+
+    private static bool ConfirmRemoval(OverlayCardViewModel card) =>
+        MessageBox.Show(CustomMessageBox.Ask(
+            $"Remove {card.DisplayName}? You can install it again later.",
+            "Remove overlay")) == MessageBoxResult.Yes;
 
     #endregion
 
