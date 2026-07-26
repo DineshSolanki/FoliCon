@@ -1,10 +1,9 @@
-namespace FoliCon.Modules.Overlays;
+﻿namespace FoliCon.Modules.Overlays;
 
 /// <summary>
 /// Checks for overlay updates on app start. Non-blocking — runs in the background
 /// and marks updates available in the repository service for UI display.
 /// </summary>
-[Localizable(false)]
 public class OverlayUpdateChecker(IOverlayRepositoryService repositoryService, IOverlayProvider overlayProvider)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

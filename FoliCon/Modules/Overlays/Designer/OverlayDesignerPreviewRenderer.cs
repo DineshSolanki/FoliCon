@@ -1,11 +1,10 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
 /// Test-preview inputs. Kept outside <see cref="OverlayDesignerDocument"/> so changing the
 /// sample poster or rating never marks the overlay dirty.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayPreviewContext
 {
     /// <summary>Absolute path to the sample poster, or null for the bundled dummy.</summary>
@@ -44,7 +43,6 @@ public sealed class OverlayPreviewContext
 /// The global <see cref="OverlayPreviewCache"/> is deliberately not used — a draft changes on
 /// every keystroke and would poison a cache keyed by overlay ID and version.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayDesignerPreviewRenderer : IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -248,13 +246,11 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
     }
 }
 
-[Localizable(false)]
 public sealed class OverlayPreviewRenderedEventArgs(BitmapSource image) : EventArgs
 {
     public BitmapSource Image { get; } = image;
 }
 
-[Localizable(false)]
 public sealed class OverlayPreviewFailedEventArgs(Exception exception) : EventArgs
 {
     public Exception Exception { get; } = exception;

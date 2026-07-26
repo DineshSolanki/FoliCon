@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 #nullable enable
 namespace FoliCon.Modules.Overlays;
@@ -8,7 +8,6 @@ namespace FoliCon.Modules.Overlays;
 /// All WPF control creation and rendering goes through StaRenderer.Default.EnqueueRender().
 /// Cached BitmapSource instances are frozen before storage for cross-thread UI access.
 /// </summary>
-[Localizable(false)]
 public static class OverlayPreviewCache
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

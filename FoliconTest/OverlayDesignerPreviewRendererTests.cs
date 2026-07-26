@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.IO;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays.Designer;
@@ -9,6 +9,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayDesignerPreviewRenderer"/> — debouncing, stale-frame
 /// suppression, and STA-safe frozen output.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class OverlayDesignerPreviewRendererTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

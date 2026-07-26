@@ -5,7 +5,6 @@ namespace FoliCon.ViewModels;
 /// ViewModel for a single overlay card in the Overlay Store grid.
 /// Displays preview image, metadata, and install/update/remove actions.
 /// </summary>
-[Localizable(false)]
 public class OverlayCardViewModel(OverlayCatalogEntry entry, string? installedVersion = null) : BindableBase
 {
     public OverlayCatalogEntry CatalogEntry { get; } = entry;
@@ -19,24 +18,26 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry, string? installedVe
     private string PreviewUrl { get; } = entry.PreviewUrl;
     public long SizeBytes { get; } = entry.SizeBytes;
 
+    // The unit stays inside the resource rather than being appended: several languages put it
+    // before the number, and a few do not separate it with a space.
     public string SizeDisplay => SizeBytes switch
     {
-        < 1024 => $"{SizeBytes} B",
-        < 1024 * 1024 => $"{SizeBytes / 1024.0:F1} KB",
-        _ => $"{SizeBytes / (1024.0 * 1024.0):F1} MB"
+        < 1024 => string.Format(Lang.OverlaySizeBytes, SizeBytes),
+        < 1024 * 1024 => string.Format(Lang.OverlaySizeKilobytes, SizeBytes / 1024.0),
+        _ => string.Format(Lang.OverlaySizeMegabytes, SizeBytes / (1024.0 * 1024.0))
     };
 
-    public string VersionDisplay => $"v{OverlayVersion}";
+    public string VersionDisplay => string.Format(Lang.OverlayStoreVersionShort, OverlayVersion);
     public string? InstalledVersion { get; } = installedVersion;
     public string InstalledVersionDisplay => string.IsNullOrWhiteSpace(InstalledVersion)
-        ? "Installed"
-        : $"Installed v{InstalledVersion}";
+        ? Lang.OverlayStoreStatusInstalled
+        : string.Format(Lang.OverlayStoreStatusInstalledVersion, InstalledVersion);
 
     public string AvailabilityStatus => IsUpdateAvailable
-        ? "Update available"
+        ? Lang.OverlayStoreFilterUpdateAvailable
         : IsInstalled
             ? InstalledVersionDisplay
-            : "Available to install";
+            : Lang.OverlayStoreStatusAvailableToInstall;
 
     public BitmapSource? PreviewImage
     {

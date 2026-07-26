@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.IO;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
@@ -10,6 +10,7 @@ namespace FoliconTest;
 /// Tests for the first-run template picker: every offered template must be distinguishable
 /// in the list and must produce its own distinct overlay when chosen.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class OverlayTemplatePickerTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

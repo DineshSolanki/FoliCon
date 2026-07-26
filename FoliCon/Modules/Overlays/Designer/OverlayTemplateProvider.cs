@@ -1,10 +1,9 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
 /// A template the designer can start a new overlay from.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayTemplate(string id, string displayName, string description, PosterOverlayDefinition definition)
 {
     /// <summary>Template identity (the source overlay's ID), not the new overlay's ID.</summary>
@@ -27,7 +26,6 @@ public sealed class OverlayTemplate(string id, string displayName, string descri
 /// extract each referenced image into the working folder and rewrite the path to a plain
 /// relative filename, otherwise the clone would validate and export with unresolvable assets.
 /// </summary>
-[Localizable(false)]
 public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -45,7 +43,7 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
                 o.Id,
                 o.DisplayName,
                 string.IsNullOrWhiteSpace(o.Description)
-                    ? (o.IsBuiltIn ? "Built-in overlay" : "Installed overlay")
+                    ? (o.IsBuiltIn ? Lang.OverlayTemplateBuiltInDescription : Lang.OverlayTemplateInstalledDescription)
                     : o.Description,
                 o))];
 
@@ -73,7 +71,7 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
         if (!IsIdAvailable(newId))
         {
             throw new InvalidOperationException(
-                $"Overlay ID '{newId}' is already in use by a built-in or installed overlay.");
+                string.Format(Lang.OverlayTemplateIdInUse, newId));
         }
 
         Directory.CreateDirectory(workingFolder);

@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.Drawing;
 using System.IO;
 using FoliCon.Modules.Overlays;
@@ -19,6 +19,7 @@ namespace FoliconTest;
 /// actually work together: a cloned template produces a package that validates, renders,
 /// and reloads without drift.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public sealed class OverlayDesignerIntegrationTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -18,7 +18,6 @@ public enum OverlayElementKind
 /// Helpers for mapping <see cref="OverlayElementKind"/> to and from the lowercase
 /// schema strings used in <c>layerOrder</c>.
 /// </summary>
-[Localizable(false)]
 public static class OverlayElementKinds
 {
     /// <summary>Default z-order when a definition omits <c>layerOrder</c>.</summary>

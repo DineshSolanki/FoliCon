@@ -6,7 +6,6 @@ namespace FoliCon.ViewModels;
 /// <summary>
 /// One row in the designer's element list and one selectable region on the canvas.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayElementViewModel(OverlayElementKind kind, string displayName) : BindableBase
 {
     public OverlayElementKind Kind { get; } = kind;
@@ -45,7 +44,16 @@ public sealed class OverlayElementViewModel(OverlayElementKind kind, string disp
     /// <summary>
     /// Spoken by screen readers when the element gains focus, so keyboard users get the
     /// same position feedback sighted users read off the canvas.
+    ///
+    /// The whole sentence is one resource because the " by " between width and height is
+    /// English prose, not punctuation, and other languages put it elsewhere or drop it.
     /// </summary>
     public string BoundsDescription =>
-        $"{DisplayName}: {DesignBounds.X:0}, {DesignBounds.Y:0}, {DesignBounds.Width:0} by {DesignBounds.Height:0}";
+        string.Format(
+            Lang.OverlayDesignerBoundsDescription,
+            DisplayName,
+            DesignBounds.X.ToString("0", CultureInfo.CurrentCulture),
+            DesignBounds.Y.ToString("0", CultureInfo.CurrentCulture),
+            DesignBounds.Width.ToString("0", CultureInfo.CurrentCulture),
+            DesignBounds.Height.ToString("0", CultureInfo.CurrentCulture));
 }

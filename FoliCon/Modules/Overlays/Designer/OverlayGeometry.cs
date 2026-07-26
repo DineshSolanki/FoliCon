@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
@@ -11,7 +11,6 @@ namespace FoliCon.Modules.Overlays.Designer;
 /// All margin/bounds translation in the designer must route through here. Built-in overlays use a
 /// 265x256 design surface with a negative root margin, so a second implementation would drift.
 /// </summary>
-[Localizable(false)]
 public static class OverlayGeometry
 {
     /// <summary>

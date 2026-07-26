@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.IO;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
@@ -13,6 +13,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayDesignerViewModel"/>: selection, synchronization between the
 /// canvas and the numeric editors, command enablement, validation gating, and dirty tracking.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class OverlayDesignerViewModelTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

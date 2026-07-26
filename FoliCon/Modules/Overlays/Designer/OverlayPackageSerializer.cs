@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using Newtonsoft.Json.Serialization;
 using JsonProperty = Newtonsoft.Json.Serialization.JsonProperty;
 
@@ -17,7 +17,6 @@ namespace FoliCon.Modules.Overlays.Designer;
 /// - Output must be byte-identical for identical input so re-exporting does not churn
 ///   manifest hashes. Fixed indentation and invariant culture guarantee that.
 /// </summary>
-[Localizable(false)]
 public static class OverlayPackageSerializer
 {
     /// <summary>

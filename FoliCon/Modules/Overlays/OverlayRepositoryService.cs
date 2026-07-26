@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 #nullable enable
 namespace FoliCon.Modules.Overlays;
@@ -12,7 +12,6 @@ using System.Linq;
 /// Manages the overlay repository: catalog fetching with ETag caching,
 /// atomic install/update/uninstall, and SHA256 integrity verification.
 /// </summary>
-[Localizable(false)]
 public class OverlayRepositoryService : IOverlayRepositoryService
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -209,7 +208,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         var json = await Services.HttpC.GetStringAsync(url, ct);
         var manifest = JsonConvert.DeserializeObject<OverlayManifest>(json);
 
-        return manifest ?? throw new InvalidOperationException($"Failed to deserialize manifest for '{overlayId}'");
+        return manifest ?? throw new InvalidOperationException(
+            string.Format(Lang.OverlayManifestDeserializeFailed, overlayId));
     }
 
     public Task InstallOverlayAsync(OverlayCatalogEntry entry) => InstallOverlayAsync(entry, null, default);
@@ -221,7 +221,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         // Prevent installing over built-in overlays
         if (OverlayConstants.BuiltInOverlayIds.Contains(entry.Id, StringComparer.OrdinalIgnoreCase))
         {
-            throw new InvalidOperationException($"Cannot install '{entry.Id}': it is a built-in overlay.");
+            throw new InvalidOperationException(string.Format(Lang.OverlayInstallBuiltInRejected, entry.Id));
         }
 
         var tmpDir = Path.Combine(_userOverlaysDir, $"{entry.Id}.tmp");
@@ -238,7 +238,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             Directory.CreateDirectory(tmpDir);
 
             // Fetch manifest to get asset list and hashes
-            progress?.Report((10, "Fetching manifest..."));
+            progress?.Report((10, Lang.OverlayInstallProgressFetchingManifest));
             var manifest = await FetchManifestAsync(entry.Id, ct);
 
             // Download all assets
@@ -248,15 +248,16 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Failed to download assets for overlay '{entry.Id}': {ex.Message}", ex);
+                throw new InvalidOperationException(
+                    string.Format(Lang.OverlayInstallDownloadFailed, entry.Id, ex.Message), ex);
             }
 
             // Validate overlay.json schema
-            progress?.Report((85, "Validating..."));
+            progress?.Report((85, Lang.OverlayInstallProgressValidating));
             await ValidateInstalledOverlayAsync(tmpDir, ct);
 
             // Atomic rename: tmp → final
-            progress?.Report((95, "Installing..."));
+            progress?.Report((95, Lang.OverlayInstallProgressInstalling));
             if (Directory.Exists(finalDir))
             {
                 Directory.Delete(finalDir, true);
@@ -270,7 +271,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             // Clear update marker
             _availableUpdates.Remove(entry.Id);
 
-            progress?.Report((100, "Installed."));
+            progress?.Report((100, Lang.OverlayInstallProgressInstalled));
             Logger.Info("Successfully installed overlay '{Id}' v{Version}", entry.Id, entry.OverlayVersion);
         }
         catch (Exception ex)
@@ -292,7 +293,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         {
             var asset = manifest.Assets[i];
             var percent = 10 + (int)((i + 1) / (double)totalAssets * 70);
-            progress?.Report((percent, $"Downloading {asset}..."));
+            progress?.Report((percent, string.Format(Lang.OverlayInstallProgressDownloading, asset)));
 
             var assetUrl = $"{BaseUrl}/overlays/{overlayId}/{asset}";
             var bytes = await Services.HttpC.GetByteArrayAsync(assetUrl, ct);
@@ -310,8 +311,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         // Size check
         if (bytes.Length > OverlayConstants.maxImageSizeBytes && asset != OverlayConstants.overlayJsonFileName)
         {
-            throw new InvalidOperationException(
-                $"Asset '{asset}' exceeds {OverlayConstants.maxImageSizeBytes / 1024 / 1024}MB limit.");
+            throw new InvalidOperationException(string.Format(
+                Lang.OverlayInstallAssetTooLarge, asset, OverlayConstants.maxImageSizeBytes / 1024 / 1024));
         }
 
         // SHA256 verification
@@ -320,8 +321,12 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             var actualHash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
             if (!string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
             {
+                // The hashes go to the log, not the message box: they are 64 hex characters
+                // that tell the user nothing they can act on.
+                Logger.Error("SHA256 mismatch for '{Asset}': expected {Expected}, got {Actual}",
+                    asset, expectedHash, actualHash);
                 throw new InvalidOperationException(
-                    $"SHA256 mismatch for '{asset}': expected {expectedHash}, got {actualHash}");
+                    string.Format(Lang.OverlayInstallHashMismatch, asset));
             }
         }
     }
@@ -333,13 +338,14 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         var definition = JsonConvert.DeserializeObject<PosterOverlayDefinition>(definitionJson);
         if (definition == null)
         {
-            throw new InvalidOperationException("overlay.json deserialized to null");
+            throw new InvalidOperationException(Lang.OverlayInstallDefinitionUnreadable);
         }
 
         var errors = Internal.OverlayValidator.Validate(tmpDir, definition);
         if (errors.Count > 0)
         {
-            throw new InvalidOperationException($"Validation failed: {string.Join("; ", errors.Select(e => e.ToString()))}");
+            throw new InvalidOperationException(string.Format(
+                Lang.OverlayInstallValidationFailed, string.Join("; ", errors.Select(e => e.ToString()))));
         }
     }
 
@@ -355,7 +361,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
         if (entry == null)
         {
-            throw new InvalidOperationException($"Overlay '{overlayId}' not found in catalog.");
+            throw new InvalidOperationException(string.Format(Lang.OverlayUpdateNotInCatalog, overlayId));
         }
 
         var finalDir = Path.Combine(_userOverlaysDir, overlayId);
@@ -364,7 +370,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         // Backup current version
         if (Directory.Exists(finalDir))
         {
-            progress?.Report((5, "Backing up current version..."));
+            progress?.Report((5, Lang.OverlayUpdateProgressBackingUp));
             if (Directory.Exists(backupDir))
             {
                 Directory.Delete(backupDir, true);
@@ -399,7 +405,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             Logger.Warn(ex, "Update failed for '{Id}', rolling back", overlayId);
             RollbackUpdate(finalDir, backupDir);
 
-            throw new InvalidOperationException($"Failed to update overlay '{overlayId}' from manifest: {ex.Message}", ex);
+            throw new InvalidOperationException(
+                string.Format(Lang.OverlayUpdateFailed, overlayId, ex.Message), ex);
         }
     }
 

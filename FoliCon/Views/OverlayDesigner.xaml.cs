@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using FoliCon.Modules.Overlays.Designer;
 using Point = System.Windows.Point;
 using Rect = System.Windows.Rect;
@@ -373,7 +373,7 @@ public partial class OverlayDesigner
             WindowStyle = WindowStyle.None,
             MinWidth = 0,
             MinHeight = 0,
-            Title = "Title colour"
+            Title = Lang.OverlayDesignerColourPickerTitle
         };
 
         picker.SelectedBrush = viewModel.TitleForegroundBrush as SolidColorBrush ?? Brushes.White;

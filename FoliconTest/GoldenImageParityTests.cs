@@ -1,4 +1,4 @@
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
@@ -18,6 +18,7 @@ namespace FoliconTest;
 /// DynamicPosterIcon uses explicit pack URIs and works in headless test runners.
 /// The reference PNGs capture the old XAML view output from a real app context.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public sealed class GoldenImageParityTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

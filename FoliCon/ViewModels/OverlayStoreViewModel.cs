@@ -1,11 +1,10 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.ViewModels;
 
 /// <summary>
 /// ViewModel for the Overlay Store dialog. Shows available overlays from the catalog,
 /// supports search/filter, and handles install/update/uninstall operations.
 /// </summary>
-[Localizable(false)]
 public class OverlayStoreViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -64,7 +63,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     #region Properties
 
-    public static string Title => "Overlay Store";
+    public static string Title => Lang.OverlayStore;
 
     public ObservableCollection<OverlayCardViewModel> Overlays { get; } = [];
 
@@ -111,10 +110,10 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     /// </summary>
     public ObservableCollection<OverlayStatusFilterOption> AvailableStatusFilters { get; } =
     [
-        new(OverlayStatusFilter.All, "All overlays"),
-        new(OverlayStatusFilter.Installed, "Installed"),
-        new(OverlayStatusFilter.NotInstalled, "Not installed"),
-        new(OverlayStatusFilter.UpdateAvailable, "Update available")
+        new(OverlayStatusFilter.All, Lang.OverlayStoreFilterAll),
+        new(OverlayStatusFilter.Installed, Lang.OverlayStoreFilterInstalled),
+        new(OverlayStatusFilter.NotInstalled, Lang.OverlayStoreFilterNotInstalled),
+        new(OverlayStatusFilter.UpdateAvailable, Lang.OverlayStoreFilterUpdateAvailable)
     ];
 
     public OverlayStatusFilter SelectedStatusFilter
@@ -155,23 +154,23 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     public int InstalledCount { get; private set; }
     public int UpdatesCount { get; private set; }
-    public string InstalledSectionTitle => $"Installed ({InstalledCount})";
-    public string UpdatesSectionTitle => $"Updates ({UpdatesCount})";
+    public string InstalledSectionTitle => string.Format(Lang.OverlayStoreInstalledTab, InstalledCount);
+    public string UpdatesSectionTitle => string.Format(Lang.OverlayStoreUpdatesTab, UpdatesCount);
 
     public bool HasVisibleOverlays { get; private set; }
 
     public string EmptyStateTitle => CurrentSection switch
     {
-        OverlayStoreSection.Installed => "No installed overlays",
-        OverlayStoreSection.Updates => "Everything is up to date",
-        _ => "No overlays found"
+        OverlayStoreSection.Installed => Lang.OverlayStoreEmptyInstalledTitle,
+        OverlayStoreSection.Updates => Lang.OverlayStoreEmptyUpdatesTitle,
+        _ => Lang.OverlayStoreEmptyDiscoverTitle
     };
 
     public string EmptyStateMessage => CurrentSection switch
     {
-        OverlayStoreSection.Installed => "Install an overlay from Discover and it will appear here.",
-        OverlayStoreSection.Updates => "Installed overlays will appear here when an update is available.",
-        _ => "Try another search, tag, or installation filter."
+        OverlayStoreSection.Installed => Lang.OverlayStoreEmptyInstalledMessage,
+        OverlayStoreSection.Updates => Lang.OverlayStoreEmptyUpdatesMessage,
+        _ => Lang.OverlayStoreEmptyDiscoverMessage
     };
 
     public bool IsLoading
@@ -242,7 +241,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         {
             IsLoading = true;
             HasError = false;
-            StatusMessage = forceRefresh ? "Refreshing catalog..." : "Loading catalog...";
+            StatusMessage = forceRefresh ? Lang.OverlayStoreRefreshingCatalog : Lang.OverlayStoreLoadingCatalog;
 
             if (forceRefresh)
             {
@@ -268,15 +267,15 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             }
 
             _ = Task.WhenAll(cards.Select(c => c.LoadPreviewAsync()));
-            StatusMessage = $"{cards.Count} overlays available";
+            StatusMessage = string.Format(Lang.OverlayStoreOverlaysAvailable, cards.Count);
             ApplyFilter();
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to load overlay catalog");
             HasError = true;
-            ErrorMessage = $"Failed to load catalog: {ex.Message}";
-            StatusMessage = "Error loading catalog";
+            ErrorMessage = string.Format(Lang.OverlayStoreCatalogLoadFailed, ex.Message);
+            StatusMessage = Lang.OverlayStoreCatalogLoadError;
         }
         finally
         {
@@ -463,8 +462,8 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         // "Noun: count" instead of "{n} overlay(s)": English pluralises with a trailing "s",
         // which has no equivalent in ru/ar/ja/hi. This phrasing needs no plural form at all.
         StatusMessage = hasFilters
-            ? $"Overlays shown: {visibleCount}"
-            : $"Overlays: {visibleCount}";
+            ? string.Format(Lang.OverlayStoreVisibleCount, visibleCount)
+            : string.Format(Lang.OverlayStoreTotalCount, visibleCount);
     }
 
     #endregion
@@ -480,14 +479,15 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         try
         {
-            BeginOperation(card, $"Installing {card.DisplayName}...");
-            StatusMessage = $"Installing {card.DisplayName}...";
+            var installing = string.Format(Lang.OverlayStoreInstalling, card.DisplayName);
+            BeginOperation(card, installing);
+            StatusMessage = installing;
 
             var progress = new Progress<(int Percent, string Status)>(p =>
             {
                 card.ProgressPercentage = p.Percent;
-                card.OperationMessage = $"{p.Status} ({p.Percent}%)";
-                StatusMessage = $"Installing {card.DisplayName}: {p.Status} ({p.Percent}%)";
+                card.OperationMessage = string.Format(Lang.OverlayStoreProgressFormat, p.Status, p.Percent);
+                StatusMessage = string.Format(Lang.OverlayStoreInstallingProgress, card.DisplayName, p.Status, p.Percent);
             });
 
             await _repositoryService.InstallOverlayAsync(card.CatalogEntry, progress);
@@ -495,15 +495,17 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             card.IsInstalled = true;
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
-            CompleteOperation(card, $"{card.DisplayName} installed successfully");
-            StatusMessage = $"{card.DisplayName} installed successfully";
+            var installed = string.Format(Lang.OverlayStoreInstalledSuccess, card.DisplayName);
+            CompleteOperation(card, installed);
+            StatusMessage = installed;
             Logger.Info("Installed overlay '{Id}' from store", card.Id);
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to install overlay '{Id}'", card.Id);
-            FailOperation(card, $"Install failed: {ex.Message}");
-            StatusMessage = $"Install failed: {ex.Message}";
+            var installFailed = string.Format(Lang.OverlayStoreInstallFailed, ex.Message);
+            FailOperation(card, installFailed);
+            StatusMessage = installFailed;
         }
         finally
         {
@@ -523,28 +525,30 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         try
         {
-            BeginOperation(card, $"Updating {card.DisplayName}...");
-            StatusMessage = $"Updating {card.DisplayName}...";
+            var updating = string.Format(Lang.OverlayStoreUpdating, card.DisplayName);
+            BeginOperation(card, updating);
+            StatusMessage = updating;
 
             var progress = new Progress<(int Percent, string Status)>(p =>
             {
                 card.ProgressPercentage = p.Percent;
-                card.OperationMessage = $"{p.Status} ({p.Percent}%)";
-                StatusMessage = $"Updating {card.DisplayName}: {p.Status} ({p.Percent}%)";
+                card.OperationMessage = string.Format(Lang.OverlayStoreProgressFormat, p.Status, p.Percent);
+                StatusMessage = string.Format(Lang.OverlayStoreUpdatingProgress, card.DisplayName, p.Status, p.Percent);
             });
 
             await _repositoryService.UpdateOverlayAsync(card.Id, progress);
 
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
-            CompleteOperation(card, $"{card.DisplayName} is up to date");
-            StatusMessage = $"{card.DisplayName} updated successfully";
+            CompleteOperation(card, string.Format(Lang.OverlayStoreCardUpToDate, card.DisplayName));
+            StatusMessage = string.Format(Lang.OverlayStoreUpdatedSuccess, card.DisplayName);
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to update overlay '{Id}'", card.Id);
-            FailOperation(card, $"Update failed: {ex.Message}");
-            StatusMessage = $"Update failed: {ex.Message}";
+            var updateFailed = string.Format(Lang.OverlayStoreUpdateFailed, ex.Message);
+            FailOperation(card, updateFailed);
+            StatusMessage = updateFailed;
         }
         finally
         {
@@ -567,22 +571,25 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
         try
         {
-            BeginOperation(card, $"Removing {card.DisplayName}...");
-            StatusMessage = $"Removing {card.DisplayName}...";
+            var removing = string.Format(Lang.OverlayStoreRemoving, card.DisplayName);
+            BeginOperation(card, removing);
+            StatusMessage = removing;
 
             await _repositoryService.UninstallOverlayAsync(card.Id);
 
             card.IsInstalled = false;
             card.IsUpdateAvailable = false;
             _cardState[card.Id] = (card.IsInstalled, card.IsUpdateAvailable);
-            CompleteOperation(card, $"{card.DisplayName} removed");
-            StatusMessage = $"{card.DisplayName} removed";
+            var removed = string.Format(Lang.OverlayStoreRemoved, card.DisplayName);
+            CompleteOperation(card, removed);
+            StatusMessage = removed;
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to uninstall overlay '{Id}'", card.Id);
-            FailOperation(card, $"Remove failed: {ex.Message}");
-            StatusMessage = $"Remove failed: {ex.Message}";
+            var removeFailed = string.Format(Lang.OverlayStoreRemoveFailed, ex.Message);
+            FailOperation(card, removeFailed);
+            StatusMessage = removeFailed;
         }
         finally
         {
@@ -610,11 +617,12 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         {
             for (var index = 0; index < pendingUpdates.Count; index++)
             {
-                StatusMessage = $"Updating {index + 1} of {pendingUpdates.Count}: {pendingUpdates[index].DisplayName}";
+                StatusMessage = string.Format(Lang.OverlayStoreUpdatingNOfM,
+                    index + 1, pendingUpdates.Count, pendingUpdates[index].DisplayName);
                 await UpdateOverlayAsync(pendingUpdates[index]);
             }
 
-            StatusMessage = "All overlays are up to date";
+            StatusMessage = Lang.OverlayStoreAllUpToDate;
         }
         finally
         {
@@ -648,8 +656,8 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     private static bool ConfirmRemoval(OverlayCardViewModel card) =>
         MessageBox.Show(CustomMessageBox.Ask(
-            $"Remove {card.DisplayName}? You can install it again later.",
-            "Remove overlay")) == MessageBoxResult.Yes;
+            string.Format(Lang.OverlayStoreConfirmRemoveBody, card.DisplayName),
+            Lang.OverlayRemoveOverlayTitle)) == MessageBoxResult.Yes;
 
     /// <summary>
     /// Opens the designer on top of the store. The catalog is left as-is: a designed overlay

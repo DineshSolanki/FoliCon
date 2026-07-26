@@ -1,7 +1,6 @@
 ﻿#nullable enable
 namespace FoliCon.ViewModels;
 
-[Localizable(false)]
 [SuppressMessage("Performance", "CA1822:Mark members as static",
     Justification = "XAML data binding requires instance properties.")]
 [SuppressMessage("Sonar", "S2325:Methods and properties that don't access instance data should be static",
@@ -90,8 +89,8 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
         if (!result.Succeeded)
         {
             MessageBox.Show(
-                result.FailureReason ?? $"Could not remove '{item.DisplayName}'.",
-                "Remove overlay",
+                result.FailureReason ?? string.Format(Lang.OverlayRemoveFailedBody, item.DisplayName),
+                Lang.OverlayRemoveOverlayTitle,
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
             return;
@@ -114,8 +113,8 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
     /// <summary>Overridable so tests can exercise removal without a modal.</summary>
     protected virtual bool ConfirmRemoval(string displayName) =>
         MessageBox.Show(
-            $"Remove '{displayName}'? Its files will be deleted from your overlays folder.",
-            "Remove overlay",
+            string.Format(Lang.OverlayConfirmRemoveLocalBody, displayName),
+            Lang.OverlayRemoveOverlayTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning) == MessageBoxResult.Yes;
 
@@ -200,7 +199,6 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 /// <summary>
 /// ViewModel for an individual overlay item in the config dialog.
 /// </summary>
-[Localizable(false)]
 public class OverlayItemViewModel : BindableBase
 {
     public string OverlayId { get; init; } = string.Empty;

@@ -30,6 +30,25 @@ internal sealed class WpfTestHost : IDisposable
                 app.GetType().GetProperty("BaseUri",
                     System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
                     ?.SetValue(app, new Uri("pack://application:,,,/FoliCon;component/"));
+
+                // App.xaml is the Application definition, so its resources cannot be merged as a
+                // dictionary. The app-level entries the views resolve by name are declared here
+                // instead; without them a view that binds a localized string fails to load.
+                app.Resources["FoliConLangs"] = new FoliCon.Properties.Langs.LangProvider();
+                app.Resources["LocalizedFormat"] = new FoliCon.Modules.Convertor.LocalizedFormatConverter();
+
+                // Merged here rather than from each view test: test classes run in parallel, and
+                // adding to this collection while another thread's render enumerates it is a race.
+                // Doing it once, before any test body runs, removes the window entirely.
+                foreach (var source in new[]
+                         {
+                             "pack://application:,,,/HandyControl;component/Themes/Theme.xaml",
+                             "pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"
+                         })
+                {
+                    app.Resources.MergedDictionaries.Add(
+                        new ResourceDictionary { Source = new Uri(source) });
+                }
             }
 
             dispatcher = Dispatcher.CurrentDispatcher;

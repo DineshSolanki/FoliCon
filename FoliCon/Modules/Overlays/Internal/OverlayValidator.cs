@@ -1,10 +1,9 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Internal;
 
 /// <summary>
 /// Validates overlay.json files and overlay package folders.
 /// </summary>
-[Localizable(false)]
 public static partial class OverlayValidator
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -36,8 +35,8 @@ public static partial class OverlayValidator
         if (definition.SchemaVersion > OverlayConstants.appSupportedSchemaVersion)
         {
             result.AddError("schemaVersion",
-                $"Overlay '{definition.Id}' requires schema v{definition.SchemaVersion}, " +
-                $"app supports v{OverlayConstants.appSupportedSchemaVersion}. Skipping.");
+                string.Format(Lang.OverlayValidationSchemaTooNew,
+                    definition.Id, definition.SchemaVersion, OverlayConstants.appSupportedSchemaVersion));
             return result;
         }
 
@@ -57,28 +56,28 @@ public static partial class OverlayValidator
     {
         if (string.IsNullOrWhiteSpace(definition.Id))
         {
-            result.AddError("id", "Overlay 'id' is required.");
+            result.AddError("id", Lang.OverlayValidationIdRequired);
         }
         else if (!IsValidId(definition.Id))
         {
             result.AddError("id",
-                $"Overlay 'id' '{definition.Id}' contains invalid characters. Use lowercase alphanumeric and hyphens.");
+                string.Format(Lang.OverlayValidationIdInvalidChars, definition.Id));
         }
 
         if (string.IsNullOrWhiteSpace(definition.DisplayName))
         {
-            result.AddError("displayName", "Overlay 'displayName' is required.");
+            result.AddError("displayName", Lang.OverlayValidationDisplayNameRequired);
         }
 
         if (string.IsNullOrWhiteSpace(definition.Author))
         {
-            result.AddWarning("author", "Overlay 'author' is empty. Store submissions should name their author.");
+            result.AddWarning("author", Lang.OverlayValidationAuthorEmpty);
         }
 
         if (!string.IsNullOrWhiteSpace(definition.OverlayVersion) && !Version.TryParse(definition.OverlayVersion, out _))
         {
             result.AddError("overlayVersion",
-                $"Overlay 'overlayVersion' '{definition.OverlayVersion}' is not a valid version (expected e.g. '1.0.0').");
+                string.Format(Lang.OverlayValidationVersionInvalid, definition.OverlayVersion));
         }
     }
 
@@ -114,7 +113,8 @@ public static partial class OverlayValidator
 
         if (definition.Rating.FontSize <= 0)
         {
-            result.AddError("rating.fontSize", $"rating.fontSize must be greater than 0 (got {definition.Rating.FontSize}).");
+            result.AddError("rating.fontSize",
+                string.Format(Lang.OverlayValidationRatingFontSizeInvalid, definition.Rating.FontSize));
         }
     }
 
@@ -144,19 +144,20 @@ public static partial class OverlayValidator
             if (!KnownLayerKeys.Contains(key, StringComparer.OrdinalIgnoreCase))
             {
                 result.AddError("layerOrder",
-                    $"layerOrder contains unknown layer '{key}'. Valid values: {string.Join(", ", KnownLayerKeys)}.");
+                    string.Format(Lang.OverlayValidationLayerOrderUnknown,
+                        key, string.Join(", ", KnownLayerKeys)));
                 continue;
             }
 
             if (!seen.Add(key))
             {
-                result.AddError("layerOrder", $"layerOrder lists '{key}' more than once.");
+                result.AddError("layerOrder", string.Format(Lang.OverlayValidationLayerOrderDuplicate, key));
             }
         }
 
         if (!seen.Contains("poster"))
         {
-            result.AddWarning("layerOrder", "layerOrder does not include 'poster'; the media poster will not be drawn.");
+            result.AddWarning("layerOrder", Lang.OverlayValidationLayerOrderNoPoster);
         }
     }
 
@@ -164,7 +165,8 @@ public static partial class OverlayValidator
     {
         if (string.IsNullOrWhiteSpace(layer.ImagePath))
         {
-            result.AddError($"{prefix}.imagePath", $"{prefix}.imagePath is required when layer is defined.");
+            result.AddError($"{prefix}.imagePath",
+                string.Format(Lang.OverlayValidationLayerImagePathRequired, prefix));
             return;
         }
 
@@ -189,21 +191,21 @@ public static partial class OverlayValidator
         if (!IsSafeRelativePath(overlayFolder, assetPath))
         {
             result.AddError(field,
-                $"{field} '{assetPath}' must be a relative path inside the overlay folder (no absolute paths, no '..').");
+                string.Format(Lang.OverlayValidationAssetPathNotRelative, field, assetPath));
             return;
         }
 
         var extension = Path.GetExtension(assetPath);
         if (!AllowedAssetExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
         {
-            result.AddError(field, $"{field} '{assetPath}' must be a PNG file.");
+            result.AddError(field, string.Format(Lang.OverlayValidationAssetNotPng, field, assetPath));
             return;
         }
 
         var fullPath = Path.Combine(overlayFolder, assetPath);
         if (!File.Exists(fullPath))
         {
-            result.AddError(field, $"{field} '{assetPath}' file not found.");
+            result.AddError(field, string.Format(Lang.OverlayValidationAssetNotFound, field, assetPath));
             return;
         }
 
@@ -260,7 +262,7 @@ public static partial class OverlayValidator
                 if (byLowerName.TryGetValue(key, out var existing))
                 {
                     result.AddError("assets",
-                        $"Files '{existing}' and '{relative}' differ only by case and will collide on case-sensitive filesystems.");
+                        string.Format(Lang.OverlayValidationFilenameCaseCollision, existing, relative));
                     continue;
                 }
 
@@ -281,8 +283,11 @@ public static partial class OverlayValidator
             if (fileInfo.Length > OverlayConstants.maxImageSizeBytes)
             {
                 result.AddError(field,
-                    $"{field} image '{Path.GetFileName(imagePath)}' exceeds maximum size " +
-                    $"({fileInfo.Length / 1024.0 / 1024.0:F1} MB > {OverlayConstants.maxImageSizeBytes / 1024.0 / 1024.0:F0} MB).");
+                    string.Format(Lang.OverlayValidationImageTooLarge,
+                        field,
+                        Path.GetFileName(imagePath),
+                        fileInfo.Length / 1024.0 / 1024.0,
+                        OverlayConstants.maxImageSizeBytes / 1024.0 / 1024.0));
             }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
@@ -301,7 +306,7 @@ public static partial class OverlayValidator
         var parts = margin.Split(',');
         if (parts.Length is < 1 or > 4)
         {
-            result.AddError(field, $"{field} '{margin}' is not a valid Thickness string. Expected 1-4 numeric values.");
+            result.AddError(field, string.Format(Lang.OverlayValidationMarginInvalid, field, margin));
             return;
         }
 
@@ -309,12 +314,12 @@ public static partial class OverlayValidator
         {
             if (!double.TryParse(part.Trim(), CultureInfo.InvariantCulture, out var value))
             {
-                result.AddError(field, $"{field} contains non-numeric value '{part.Trim()}'.");
+                result.AddError(field, string.Format(Lang.OverlayValidationMarginNonNumeric, field, part.Trim()));
             }
             else if (Math.Abs(value) > OverlayConstants.maxAbsoluteMarginValue)
             {
                 result.AddWarning(field,
-                    $"{field} value {value:0.##} is far outside the canvas and may render nothing visible.");
+                    string.Format(Lang.OverlayValidationMarginOffCanvas, field, value));
             }
         }
     }
@@ -324,7 +329,8 @@ public static partial class OverlayValidator
         var parts = origin.Split(',');
         if (parts.Length != 2)
         {
-            result.AddError("title.rotationOrigin", $"title.rotationOrigin '{origin}' must be 'x,y' with exactly 2 values.");
+            result.AddError("title.rotationOrigin",
+                string.Format(Lang.OverlayValidationRotationOriginShape, origin));
             return;
         }
 
@@ -332,7 +338,8 @@ public static partial class OverlayValidator
         {
             if (!double.TryParse(part.Trim(), CultureInfo.InvariantCulture, out var val) || val is < 0.0 or > 1.0)
             {
-                result.AddError("title.rotationOrigin", $"title.rotationOrigin value '{part.Trim()}' must be between 0.0 and 1.0.");
+                result.AddError("title.rotationOrigin",
+                    string.Format(Lang.OverlayValidationRotationOriginRange, part.Trim()));
             }
         }
     }
@@ -351,8 +358,9 @@ public static partial class OverlayValidator
             if (totalSize > OverlayConstants.maxOverlayPackageSizeBytes)
             {
                 result.AddError("assets",
-                    $"Overlay folder exceeds maximum total size " +
-                    $"({totalSize / 1024.0 / 1024.0:F1} MB > {OverlayConstants.maxOverlayPackageSizeBytes / 1024.0 / 1024.0:F0} MB).");
+                    string.Format(Lang.OverlayValidationPackageTooLarge,
+                        totalSize / 1024.0 / 1024.0,
+                        OverlayConstants.maxOverlayPackageSizeBytes / 1024.0 / 1024.0));
             }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)

@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.IO;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays.Designer;
@@ -11,6 +11,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayExporter"/>: package layout, determinism, integrity metadata,
 /// and failure recovery.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class OverlayExporterTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

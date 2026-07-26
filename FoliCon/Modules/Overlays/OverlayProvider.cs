@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 using System;
@@ -10,7 +10,6 @@ using System.ComponentModel;
 /// <summary>
 /// Loads and manages overlay definitions from built-in resources and user-installed folders.
 /// </summary>
-[Localizable(false)]
 public class OverlayProvider : IOverlayProvider
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

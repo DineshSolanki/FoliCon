@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using Size = System.Windows.Size;
 
 namespace FoliCon.Modules.Overlays.Designer;
@@ -13,7 +13,6 @@ namespace FoliCon.Modules.Overlays.Designer;
 ///
 /// The document never mutates the definition it was loaded from.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayDesignerDocument
 {
     /// <summary>Absolute path of the folder holding this package's assets.</summary>

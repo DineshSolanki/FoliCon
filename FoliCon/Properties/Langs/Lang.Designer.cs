@@ -2421,5 +2421,2570 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("MaxDepthTooltip", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay Designer.
+        /// </summary>
+        public static string OverlayDesignerTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Templates.
+        /// </summary>
+        public static string OverlayDesignerBackToTemplates {
+            get {
+                return ResourceManager.GetString("OverlayDesignerBackToTemplates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go back to the template list to start a different overlay.
+        /// </summary>
+        public static string OverlayDesignerBackToTemplatesHelp {
+            get {
+                return ResourceManager.GetString("OverlayDesignerBackToTemplatesHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open….
+        /// </summary>
+        public static string OverlayDesignerOpen {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open an existing overlay.json for editing.
+        /// </summary>
+        public static string OverlayDesignerOpenHelp {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpenHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo the last change (Ctrl+Z).
+        /// </summary>
+        public static string OverlayDesignerUndoHelp {
+            get {
+                return ResourceManager.GetString("OverlayDesignerUndoHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redo.
+        /// </summary>
+        public static string OverlayDesignerRedo {
+            get {
+                return ResourceManager.GetString("OverlayDesignerRedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Redo the last undone change (Ctrl+Y).
+        /// </summary>
+        public static string OverlayDesignerRedoHelp {
+            get {
+                return ResourceManager.GetString("OverlayDesignerRedoHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoom.
+        /// </summary>
+        public static string OverlayDesignerZoom {
+            get {
+                return ResourceManager.GetString("OverlayDesignerZoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the overlay authoring guide (F1).
+        /// </summary>
+        public static string OverlayDesignerHelpTooltip {
+            get {
+                return ResourceManager.GetString("OverlayDesignerHelpTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes.
+        /// </summary>
+        public static string OverlayDesignerUnsavedChanges {
+            get {
+                return ResourceManager.GetString("OverlayDesignerUnsavedChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start a new overlay.
+        /// </summary>
+        public static string OverlayDesignerStartNew {
+            get {
+                return ResourceManager.GetString("OverlayDesignerStartNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick a template to copy. You get its layout and images as a starting point — edit anything, then export a package you can install or share..
+        /// </summary>
+        public static string OverlayDesignerTemplatePickerHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerTemplatePickerHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rendering….
+        /// </summary>
+        public static string OverlayDesignerRendering {
+            get {
+                return ResourceManager.GetString("OverlayDesignerRendering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this template.
+        /// </summary>
+        public static string OverlayDesignerUseTemplate {
+            get {
+                return ResourceManager.GetString("OverlayDesignerUseTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use {0} as a template.
+        /// </summary>
+        public static string OverlayDesignerUseTemplateAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerUseTemplateAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue a draft.
+        /// </summary>
+        public static string OverlayDesignerContinueDraft {
+            get {
+                return ResourceManager.GetString("OverlayDesignerContinueDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work you saved earlier. Picking one reopens it exactly where you left off..
+        /// </summary>
+        public static string OverlayDesignerDraftsHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDraftsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved {0:g}.
+        /// </summary>
+        public static string OverlayDesignerDraftSavedAt {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDraftSavedAt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string OverlayDesignerDeleteDraft {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDeleteDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete draft {0}.
+        /// </summary>
+        public static string OverlayDesignerDeleteDraftAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDeleteDraftAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resume.
+        /// </summary>
+        public static string OverlayDesignerResumeDraft {
+            get {
+                return ResourceManager.GetString("OverlayDesignerResumeDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resume draft {0}.
+        /// </summary>
+        public static string OverlayDesignerResumeDraftAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerResumeDraftAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already have an overlay folder? Use Open… in the toolbar..
+        /// </summary>
+        public static string OverlayDesignerOpenFolderHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpenFolderHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Designer.
+        /// </summary>
+        public static string OverlayDesignerCloseDesigner {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCloseDesigner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elements.
+        /// </summary>
+        public static string OverlayDesignerElements {
+            get {
+                return ResourceManager.GetString("OverlayDesignerElements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drawn top to bottom — the first is furthest back..
+        /// </summary>
+        public static string OverlayDesignerElementOrderHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerElementOrderHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move further back.
+        /// </summary>
+        public static string OverlayDesignerMoveLayerBack {
+            get {
+                return ResourceManager.GetString("OverlayDesignerMoveLayerBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move selected layer further back.
+        /// </summary>
+        public static string OverlayDesignerMoveLayerBackAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerMoveLayerBackAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move further forward.
+        /// </summary>
+        public static string OverlayDesignerMoveLayerForward {
+            get {
+                return ResourceManager.GetString("OverlayDesignerMoveLayerForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move selected layer further forward.
+        /// </summary>
+        public static string OverlayDesignerMoveLayerForwardAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerMoveLayerForwardAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        public static string OverlayDesignerShow {
+            get {
+                return ResourceManager.GetString("OverlayDesignerShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base layer.
+        /// </summary>
+        public static string OverlayLayerBase {
+            get {
+                return ResourceManager.GetString("OverlayLayerBase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Front layer.
+        /// </summary>
+        public static string OverlayLayerFront {
+            get {
+                return ResourceManager.GetString("OverlayLayerFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title text.
+        /// </summary>
+        public static string OverlayLayerTitleText {
+            get {
+                return ResourceManager.GetString("OverlayLayerTitleText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating badge.
+        /// </summary>
+        public static string OverlayLayerRatingBadge {
+            get {
+                return ResourceManager.GetString("OverlayLayerRatingBadge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay preview canvas.
+        /// </summary>
+        public static string OverlayDesignerCanvasAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCanvasAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rendered overlay preview.
+        /// </summary>
+        public static string OverlayDesignerPreviewAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerPreviewAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position and size in pixels. Arrow keys nudge by 1, Shift+arrow by 10..
+        /// </summary>
+        public static string OverlayDesignerGeometryHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerGeometryHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X.
+        /// </summary>
+        public static string OverlayDesignerAxisX {
+            get {
+                return ResourceManager.GetString("OverlayDesignerAxisX", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left position.
+        /// </summary>
+        public static string OverlayDesignerLeftPosition {
+            get {
+                return ResourceManager.GetString("OverlayDesignerLeftPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y.
+        /// </summary>
+        public static string OverlayDesignerAxisY {
+            get {
+                return ResourceManager.GetString("OverlayDesignerAxisY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top position.
+        /// </summary>
+        public static string OverlayDesignerTopPosition {
+            get {
+                return ResourceManager.GetString("OverlayDesignerTopPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to W.
+        /// </summary>
+        public static string OverlayDesignerWidthShort {
+            get {
+                return ResourceManager.GetString("OverlayDesignerWidthShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string OverlayDesignerWidth {
+            get {
+                return ResourceManager.GetString("OverlayDesignerWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to H.
+        /// </summary>
+        public static string OverlayDesignerHeightShort {
+            get {
+                return ResourceManager.GetString("OverlayDesignerHeightShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string OverlayDesignerHeight {
+            get {
+                return ResourceManager.GetString("OverlayDesignerHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metadata.
+        /// </summary>
+        public static string OverlayDesignerMetadata {
+            get {
+                return ResourceManager.GetString("OverlayDesignerMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string OverlayDesignerName {
+            get {
+                return ResourceManager.GetString("OverlayDesignerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID.
+        /// </summary>
+        public static string OverlayDesignerId {
+            get {
+                return ResourceManager.GetString("OverlayDesignerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lowercase letters, numbers and hyphens. Must be unique..
+        /// </summary>
+        public static string OverlayDesignerIdHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerIdHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string OverlayDesignerAuthor {
+            get {
+                return ResourceManager.GetString("OverlayDesignerAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string OverlayDesignerVersion {
+            get {
+                return ResourceManager.GetString("OverlayDesignerVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string OverlayDesignerDescription {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        public static string OverlayTags {
+            get {
+                return ResourceManager.GetString("OverlayTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comma separated..
+        /// </summary>
+        public static string OverlayDesignerTagsHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerTagsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layer images.
+        /// </summary>
+        public static string OverlayDesignerLayerImages {
+            get {
+                return ResourceManager.GetString("OverlayDesignerLayerImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base image.
+        /// </summary>
+        public static string OverlayDesignerBaseImage {
+            get {
+                return ResourceManager.GetString("OverlayDesignerBaseImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse….
+        /// </summary>
+        public static string OverlayDesignerBrowse {
+            get {
+                return ResourceManager.GetString("OverlayDesignerBrowse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string OverlayDesignerClear {
+            get {
+                return ResourceManager.GetString("OverlayDesignerClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Front image.
+        /// </summary>
+        public static string OverlayDesignerFrontImage {
+            get {
+                return ResourceManager.GetString("OverlayDesignerFrontImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opacity mask.
+        /// </summary>
+        public static string OverlayDesignerOpacityMask {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpacityMask", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Corner radius.
+        /// </summary>
+        public static string OverlayDesignerCornerRadius {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerRadius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 0 means square corners. Set each corner separately if you need an asymmetric shape..
+        /// </summary>
+        public static string OverlayDesignerCornerRadiusHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerRadiusHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TL.
+        /// </summary>
+        public static string OverlayDesignerCornerTopLeftShort {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerTopLeftShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top-left corner radius.
+        /// </summary>
+        public static string OverlayDesignerCornerTopLeft {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerTopLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TR.
+        /// </summary>
+        public static string OverlayDesignerCornerTopRightShort {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerTopRightShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Top-right corner radius.
+        /// </summary>
+        public static string OverlayDesignerCornerTopRight {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerTopRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BL.
+        /// </summary>
+        public static string OverlayDesignerCornerBottomLeftShort {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerBottomLeftShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom-left corner radius.
+        /// </summary>
+        public static string OverlayDesignerCornerBottomLeft {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerBottomLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BR.
+        /// </summary>
+        public static string OverlayDesignerCornerBottomRightShort {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerBottomRightShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bottom-right corner radius.
+        /// </summary>
+        public static string OverlayDesignerCornerBottomRight {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCornerBottomRight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font.
+        /// </summary>
+        public static string OverlayDesignerFont {
+            get {
+                return ResourceManager.GetString("OverlayDesignerFont", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Font size.
+        /// </summary>
+        public static string OverlayDesignerFontSize {
+            get {
+                return ResourceManager.GetString("OverlayDesignerFontSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Colour.
+        /// </summary>
+        public static string OverlayDesignerColour {
+            get {
+                return ResourceManager.GetString("OverlayDesignerColour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current title colour.
+        /// </summary>
+        public static string OverlayDesignerCurrentTitleColour {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCurrentTitleColour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title colour value.
+        /// </summary>
+        public static string OverlayDesignerTitleColourValue {
+            get {
+                return ResourceManager.GetString("OverlayDesignerTitleColourValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick….
+        /// </summary>
+        public static string OverlayDesignerPick {
+            get {
+                return ResourceManager.GetString("OverlayDesignerPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose a colour.
+        /// </summary>
+        public static string OverlayDesignerChooseColour {
+            get {
+                return ResourceManager.GetString("OverlayDesignerChooseColour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose title colour.
+        /// </summary>
+        public static string OverlayDesignerChooseTitleColour {
+            get {
+                return ResourceManager.GetString("OverlayDesignerChooseTitleColour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick a colour, or type a name like White or a hex value like #FF5500..
+        /// </summary>
+        public static string OverlayDesignerColourHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerColourHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rotation.
+        /// </summary>
+        public static string OverlayDesignerRotation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerRotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title rotation in degrees.
+        /// </summary>
+        public static string OverlayDesignerTitleRotationAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerTitleRotationAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced canvas.
+        /// </summary>
+        public static string OverlayDesignerAdvancedCanvas {
+            get {
+                return ResourceManager.GetString("OverlayDesignerAdvancedCanvas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to These control the design surface the overlay is laid out on. The template's values are already correct — change them only if you know you need to..
+        /// </summary>
+        public static string OverlayDesignerAdvancedCanvasHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerAdvancedCanvasHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Design width.
+        /// </summary>
+        public static string OverlayDesignerDesignWidth {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDesignWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Design height.
+        /// </summary>
+        public static string OverlayDesignerDesignHeight {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDesignHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root margin.
+        /// </summary>
+        public static string OverlayDesignerRootMargin {
+            get {
+                return ResourceManager.GetString("OverlayDesignerRootMargin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to left, top, right, bottom. Negative values expand the surface..
+        /// </summary>
+        public static string OverlayDesignerRootMarginHint {
+            get {
+                return ResourceManager.GetString("OverlayDesignerRootMarginHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview with:.
+        /// </summary>
+        public static string OverlayDesignerPreviewWith {
+            get {
+                return ResourceManager.GetString("OverlayDesignerPreviewWith", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample poster….
+        /// </summary>
+        public static string OverlayDesignerSamplePoster {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSamplePoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample rating value.
+        /// </summary>
+        public static string OverlayDesignerSampleRatingAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSampleRatingAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sample title text.
+        /// </summary>
+        public static string OverlayDesignerSampleTitleAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSampleTitleAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mockup.
+        /// </summary>
+        public static string OverlayDesignerMockup {
+            get {
+                return ResourceManager.GetString("OverlayDesignerMockup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string OverlayDesignerSeverityError {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSeverityError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string OverlayDesignerSeverityWarning {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSeverityWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Share this overlay.
+        /// </summary>
+        public static string OverlayDesignerShareHeading {
+            get {
+                return ResourceManager.GetString("OverlayDesignerShareHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide these steps.
+        /// </summary>
+        public static string OverlayDesignerHideSteps {
+            get {
+                return ResourceManager.GetString("OverlayDesignerHideSteps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide submission steps.
+        /// </summary>
+        public static string OverlayDesignerHideStepsAutomation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerHideStepsAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install for myself.
+        /// </summary>
+        public static string OverlayDesignerInstallLocally {
+            get {
+                return ResourceManager.GetString("OverlayDesignerInstallLocally", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy this overlay into FoliCon so you can use it now.
+        /// </summary>
+        public static string OverlayDesignerInstallLocallyTooltip {
+            get {
+                return ResourceManager.GetString("OverlayDesignerInstallLocallyTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open folder.
+        /// </summary>
+        public static string OverlayDesignerOpenFolder {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpenFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To submit it to the community store:.
+        /// </summary>
+        public static string OverlayDesignerSubmitHeading {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSubmitHeading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 1 done.
+        /// </summary>
+        public static string OverlayDesignerStep1Automation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerStep1Automation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fork the repository.
+        /// </summary>
+        public static string OverlayDesignerForkRepository {
+            get {
+                return ResourceManager.GetString("OverlayDesignerForkRepository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 2 done.
+        /// </summary>
+        public static string OverlayDesignerStep2Automation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerStep2Automation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy the exported folder into {0} in your fork.
+        /// </summary>
+        public static string OverlayDesignerCopyFolderInto {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCopyFolderInto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Step 3 done.
+        /// </summary>
+        public static string OverlayDesignerStep3Automation {
+            get {
+                return ResourceManager.GetString("OverlayDesignerStep3Automation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open a pull request.
+        /// </summary>
+        public static string OverlayDesignerOpenPullRequest {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpenPullRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export Package….
+        /// </summary>
+        public static string OverlayDesignerExportPackage {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExportPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write a store-ready folder you can install or submit.
+        /// </summary>
+        public static string OverlayDesignerExportPackageTooltip {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExportPackageTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Draft.
+        /// </summary>
+        public static string OverlayDesignerSaveDraft {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSaveDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep this work in progress so you can come back to it.
+        /// </summary>
+        public static string OverlayDesignerSaveDraftTooltip {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSaveDraftTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title colour.
+        /// </summary>
+        public static string OverlayDesignerColourPickerTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerColourPickerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading preview....
+        /// </summary>
+        public static string OverlayStoreLoadingPreview {
+            get {
+                return ResourceManager.GetString("OverlayStoreLoadingPreview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install.
+        /// </summary>
+        public static string OverlayStoreInstall {
+            get {
+                return ResourceManager.GetString("OverlayStoreInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string OverlayStoreUpdate {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string OverlayStoreRemove {
+            get {
+                return ResourceManager.GetString("OverlayStoreRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this overlay (asks for confirmation).
+        /// </summary>
+        public static string OverlayStoreRemoveTooltip {
+            get {
+                return ResourceManager.GetString("OverlayStoreRemoveTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search overlays....
+        /// </summary>
+        public static string OverlayStoreSearchPlaceholder {
+            get {
+                return ResourceManager.GetString("OverlayStoreSearchPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter by installation status.
+        /// </summary>
+        public static string OverlayStoreStatusFilterTooltip {
+            get {
+                return ResourceManager.GetString("OverlayStoreStatusFilterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string OverlayStoreRefresh {
+            get {
+                return ResourceManager.GetString("OverlayStoreRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reload the overlay catalog.
+        /// </summary>
+        public static string OverlayStoreRefreshTooltip {
+            get {
+                return ResourceManager.GetString("OverlayStoreRefreshTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Design your own overlay from a template.
+        /// </summary>
+        public static string OverlayCreateOverlayTooltip {
+            get {
+                return ResourceManager.GetString("OverlayCreateOverlayTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only overlays tagged {0}.
+        /// </summary>
+        public static string OverlayStoreTagChipTooltip {
+            get {
+                return ResourceManager.GetString("OverlayStoreTagChipTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter by {0} tag.
+        /// </summary>
+        public static string OverlayStoreTagChipAutomation {
+            get {
+                return ResourceManager.GetString("OverlayStoreTagChipAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear tags.
+        /// </summary>
+        public static string OverlayStoreClearTags {
+            get {
+                return ResourceManager.GetString("OverlayStoreClearTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deselect all tags.
+        /// </summary>
+        public static string OverlayStoreClearTagsTooltip {
+            get {
+                return ResourceManager.GetString("OverlayStoreClearTagsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading catalog....
+        /// </summary>
+        public static string OverlayStoreLoadingCatalog {
+            get {
+                return ResourceManager.GetString("OverlayStoreLoadingCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discover.
+        /// </summary>
+        public static string OverlayStoreDiscoverTab {
+            get {
+                return ResourceManager.GetString("OverlayStoreDiscoverTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update all.
+        /// </summary>
+        public static string OverlayStoreUpdateAll {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdateAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove this overlay.
+        /// </summary>
+        public static string OverlayRemoveTooltip {
+            get {
+                return ResourceManager.GetString("OverlayRemoveTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove {0}.
+        /// </summary>
+        public static string OverlayRemoveAutomation {
+            get {
+                return ResourceManager.GetString("OverlayRemoveAutomation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse Overlay Store....
+        /// </summary>
+        public static string OverlayBrowseStore {
+            get {
+                return ResourceManager.GetString("OverlayBrowseStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import Local Overlay....
+        /// </summary>
+        public static string OverlayImportLocal {
+            get {
+                return ResourceManager.GetString("OverlayImportLocal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coming in a future release.
+        /// </summary>
+        public static string OverlayComingSoon {
+            get {
+                return ResourceManager.GetString("OverlayComingSoon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing selected.
+        /// </summary>
+        public static string OverlayDesignerNothingSelected {
+            get {
+                return ResourceManager.GetString("OverlayDesignerNothingSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a PNG image.
+        /// </summary>
+        public static string OverlayDesignerSelectPngTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSelectPngTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PNG images (*.png)|*.png.
+        /// </summary>
+        public static string OverlayDesignerPngFilesFilter {
+            get {
+                return ResourceManager.GetString("OverlayDesignerPngFilesFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick an image inside the overlay folder so the package stays self-contained..
+        /// </summary>
+        public static string OverlayDesignerImageMustBeInFolder {
+            get {
+                return ResourceManager.GetString("OverlayDesignerImageMustBeInFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select a sample poster.
+        /// </summary>
+        public static string OverlayDesignerSelectSamplePoster {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSelectSamplePoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg.
+        /// </summary>
+        public static string OverlayDesignerSamplePosterFilter {
+            get {
+                return ResourceManager.GetString("OverlayDesignerSamplePosterFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview failed: {0}.
+        /// </summary>
+        public static string OverlayDesignerPreviewFailed {
+            get {
+                return ResourceManager.GetString("OverlayDesignerPreviewFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Draft saved to {0}.
+        /// </summary>
+        public static string OverlayDesignerDraftSavedTo {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDraftSavedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not save the draft: {0}.
+        /// </summary>
+        public static string OverlayDesignerDraftSaveFailed {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDraftSaveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Choose where to save the overlay package.
+        /// </summary>
+        public static string OverlayDesignerChooseExportFolder {
+            get {
+                return ResourceManager.GetString("OverlayDesignerChooseExportFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exporting….
+        /// </summary>
+        public static string OverlayDesignerExporting {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExporting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export cancelled..
+        /// </summary>
+        public static string OverlayDesignerExportCancelled {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExportCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export failed..
+        /// </summary>
+        public static string OverlayDesignerExportFailed {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExportFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported to {0}.
+        /// </summary>
+        public static string OverlayDesignerExportedTo {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExportedTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export failed: {0}.
+        /// </summary>
+        public static string OverlayDesignerExportFailedWithReason {
+            get {
+                return ResourceManager.GetString("OverlayDesignerExportFailedWithReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking the store for a name clash….
+        /// </summary>
+        public static string OverlayDesignerCheckingNameClash {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCheckingNameClash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install failed..
+        /// </summary>
+        public static string OverlayDesignerInstallFailed {
+            get {
+                return ResourceManager.GetString("OverlayDesignerInstallFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed. '{0}' is now available in your overlay list..
+        /// </summary>
+        public static string OverlayDesignerInstalledSuccess {
+            get {
+                return ResourceManager.GetString("OverlayDesignerInstalledSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install failed: {0}.
+        /// </summary>
+        public static string OverlayDesignerInstallFailedWithReason {
+            get {
+                return ResourceManager.GetString("OverlayDesignerInstallFailedWithReason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A folder named '{0}' already exists there. Replace it?.
+        /// </summary>
+        public static string OverlayDesignerReplaceExistingBody {
+            get {
+                return ResourceManager.GetString("OverlayDesignerReplaceExistingBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Replace existing package.
+        /// </summary>
+        public static string OverlayDesignerReplaceExistingTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerReplaceExistingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No issues.
+        /// </summary>
+        public static string OverlayDesignerNoIssues {
+            get {
+                return ResourceManager.GetString("OverlayDesignerNoIssues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warnings: {0}.
+        /// </summary>
+        public static string OverlayDesignerWarningCount {
+            get {
+                return ResourceManager.GetString("OverlayDesignerWarningCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors: {0}.
+        /// </summary>
+        public static string OverlayDesignerErrorCount {
+            get {
+                return ResourceManager.GetString("OverlayDesignerErrorCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors: {0}, warnings: {1}.
+        /// </summary>
+        public static string OverlayDesignerErrorAndWarningCount {
+            get {
+                return ResourceManager.GetString("OverlayDesignerErrorAndWarningCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My {0}.
+        /// </summary>
+        public static string OverlayDesignerNewOverlayNamePattern {
+            get {
+                return ResourceManager.GetString("OverlayDesignerNewOverlayNamePattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created '{0}' from {1}..
+        /// </summary>
+        public static string OverlayDesignerCreatedFromTemplate {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCreatedFromTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not create from template: {0}.
+        /// </summary>
+        public static string OverlayDesignerCreateFromTemplateFailed {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCreateFromTemplateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open overlay.json.
+        /// </summary>
+        public static string OverlayDesignerOpenPackageTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpenPackageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay definition (overlay.json)|overlay.json.
+        /// </summary>
+        public static string OverlayDesignerOverlayJsonFilter {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOverlayJsonFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not open that overlay..
+        /// </summary>
+        public static string OverlayDesignerCouldNotOpenOverlay {
+            get {
+                return ResourceManager.GetString("OverlayDesignerCouldNotOpenOverlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opened '{0}'..
+        /// </summary>
+        public static string OverlayDesignerOpened {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpened", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opened '{0}'. Problems to fix: {1}.
+        /// </summary>
+        public static string OverlayDesignerOpenedWithProblems {
+            get {
+                return ResourceManager.GetString("OverlayDesignerOpenedWithProblems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not open that page in your browser..
+        /// </summary>
+        public static string OverlayCouldNotOpenBrowser {
+            get {
+                return ResourceManager.GetString("OverlayCouldNotOpenBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have unsaved changes. Discard them? Use Save Draft or Export Package to keep your work..
+        /// </summary>
+        public static string OverlayDesignerDiscardChangesBody {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDiscardChangesBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discard changes.
+        /// </summary>
+        public static string OverlayDesignerDiscardChangesTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDiscardChangesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted draft '{0}'..
+        /// </summary>
+        public static string OverlayDesignerDraftDeleted {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDraftDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not delete the draft: {0}.
+        /// </summary>
+        public static string OverlayDesignerDraftDeleteFailed {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDraftDeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete the draft '{0}'? This cannot be undone..
+        /// </summary>
+        public static string OverlayDesignerDeleteDraftBody {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDeleteDraftBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete draft.
+        /// </summary>
+        public static string OverlayDesignerDeleteDraftTitle {
+            get {
+                return ResourceManager.GetString("OverlayDesignerDeleteDraftTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}: {1}, {2}, {3} by {4}.
+        /// </summary>
+        public static string OverlayDesignerBoundsDescription {
+            get {
+                return ResourceManager.GetString("OverlayDesignerBoundsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All overlays.
+        /// </summary>
+        public static string OverlayStoreFilterAll {
+            get {
+                return ResourceManager.GetString("OverlayStoreFilterAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed.
+        /// </summary>
+        public static string OverlayStoreFilterInstalled {
+            get {
+                return ResourceManager.GetString("OverlayStoreFilterInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not installed.
+        /// </summary>
+        public static string OverlayStoreFilterNotInstalled {
+            get {
+                return ResourceManager.GetString("OverlayStoreFilterNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        public static string OverlayStoreFilterUpdateAvailable {
+            get {
+                return ResourceManager.GetString("OverlayStoreFilterUpdateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed ({0}).
+        /// </summary>
+        public static string OverlayStoreInstalledTab {
+            get {
+                return ResourceManager.GetString("OverlayStoreInstalledTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updates ({0}).
+        /// </summary>
+        public static string OverlayStoreUpdatesTab {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdatesTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No installed overlays.
+        /// </summary>
+        public static string OverlayStoreEmptyInstalledTitle {
+            get {
+                return ResourceManager.GetString("OverlayStoreEmptyInstalledTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Everything is up to date.
+        /// </summary>
+        public static string OverlayStoreEmptyUpdatesTitle {
+            get {
+                return ResourceManager.GetString("OverlayStoreEmptyUpdatesTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No overlays found.
+        /// </summary>
+        public static string OverlayStoreEmptyDiscoverTitle {
+            get {
+                return ResourceManager.GetString("OverlayStoreEmptyDiscoverTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install an overlay from Discover and it will appear here..
+        /// </summary>
+        public static string OverlayStoreEmptyInstalledMessage {
+            get {
+                return ResourceManager.GetString("OverlayStoreEmptyInstalledMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed overlays will appear here when an update is available..
+        /// </summary>
+        public static string OverlayStoreEmptyUpdatesMessage {
+            get {
+                return ResourceManager.GetString("OverlayStoreEmptyUpdatesMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try another search, tag, or installation filter..
+        /// </summary>
+        public static string OverlayStoreEmptyDiscoverMessage {
+            get {
+                return ResourceManager.GetString("OverlayStoreEmptyDiscoverMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refreshing catalog....
+        /// </summary>
+        public static string OverlayStoreRefreshingCatalog {
+            get {
+                return ResourceManager.GetString("OverlayStoreRefreshingCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlays available: {0}.
+        /// </summary>
+        public static string OverlayStoreOverlaysAvailable {
+            get {
+                return ResourceManager.GetString("OverlayStoreOverlaysAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load catalog: {0}.
+        /// </summary>
+        public static string OverlayStoreCatalogLoadFailed {
+            get {
+                return ResourceManager.GetString("OverlayStoreCatalogLoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading catalog.
+        /// </summary>
+        public static string OverlayStoreCatalogLoadError {
+            get {
+                return ResourceManager.GetString("OverlayStoreCatalogLoadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlays shown: {0}.
+        /// </summary>
+        public static string OverlayStoreVisibleCount {
+            get {
+                return ResourceManager.GetString("OverlayStoreVisibleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlays: {0}.
+        /// </summary>
+        public static string OverlayStoreTotalCount {
+            get {
+                return ResourceManager.GetString("OverlayStoreTotalCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing {0}....
+        /// </summary>
+        public static string OverlayStoreInstalling {
+            get {
+                return ResourceManager.GetString("OverlayStoreInstalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} ({1}%).
+        /// </summary>
+        public static string OverlayStoreProgressFormat {
+            get {
+                return ResourceManager.GetString("OverlayStoreProgressFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing {0}: {1} ({2}%).
+        /// </summary>
+        public static string OverlayStoreInstallingProgress {
+            get {
+                return ResourceManager.GetString("OverlayStoreInstallingProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} installed successfully.
+        /// </summary>
+        public static string OverlayStoreInstalledSuccess {
+            get {
+                return ResourceManager.GetString("OverlayStoreInstalledSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install failed: {0}.
+        /// </summary>
+        public static string OverlayStoreInstallFailed {
+            get {
+                return ResourceManager.GetString("OverlayStoreInstallFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating {0}....
+        /// </summary>
+        public static string OverlayStoreUpdating {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating {0}: {1} ({2}%).
+        /// </summary>
+        public static string OverlayStoreUpdatingProgress {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdatingProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is up to date.
+        /// </summary>
+        public static string OverlayStoreCardUpToDate {
+            get {
+                return ResourceManager.GetString("OverlayStoreCardUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} updated successfully.
+        /// </summary>
+        public static string OverlayStoreUpdatedSuccess {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdatedSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update failed: {0}.
+        /// </summary>
+        public static string OverlayStoreUpdateFailed {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removing {0}....
+        /// </summary>
+        public static string OverlayStoreRemoving {
+            get {
+                return ResourceManager.GetString("OverlayStoreRemoving", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} removed.
+        /// </summary>
+        public static string OverlayStoreRemoved {
+            get {
+                return ResourceManager.GetString("OverlayStoreRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove failed: {0}.
+        /// </summary>
+        public static string OverlayStoreRemoveFailed {
+            get {
+                return ResourceManager.GetString("OverlayStoreRemoveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating {0} of {1}: {2}.
+        /// </summary>
+        public static string OverlayStoreUpdatingNOfM {
+            get {
+                return ResourceManager.GetString("OverlayStoreUpdatingNOfM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All overlays are up to date.
+        /// </summary>
+        public static string OverlayStoreAllUpToDate {
+            get {
+                return ResourceManager.GetString("OverlayStoreAllUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove {0}? You can install it again later..
+        /// </summary>
+        public static string OverlayStoreConfirmRemoveBody {
+            get {
+                return ResourceManager.GetString("OverlayStoreConfirmRemoveBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove overlay.
+        /// </summary>
+        public static string OverlayRemoveOverlayTitle {
+            get {
+                return ResourceManager.GetString("OverlayRemoveOverlayTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} B.
+        /// </summary>
+        public static string OverlaySizeBytes {
+            get {
+                return ResourceManager.GetString("OverlaySizeBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:F1} KB.
+        /// </summary>
+        public static string OverlaySizeKilobytes {
+            get {
+                return ResourceManager.GetString("OverlaySizeKilobytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:F1} MB.
+        /// </summary>
+        public static string OverlaySizeMegabytes {
+            get {
+                return ResourceManager.GetString("OverlaySizeMegabytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to v{0}.
+        /// </summary>
+        public static string OverlayStoreVersionShort {
+            get {
+                return ResourceManager.GetString("OverlayStoreVersionShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed.
+        /// </summary>
+        public static string OverlayStoreStatusInstalled {
+            get {
+                return ResourceManager.GetString("OverlayStoreStatusInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed v{0}.
+        /// </summary>
+        public static string OverlayStoreStatusInstalledVersion {
+            get {
+                return ResourceManager.GetString("OverlayStoreStatusInstalledVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available to install.
+        /// </summary>
+        public static string OverlayStoreStatusAvailableToInstall {
+            get {
+                return ResourceManager.GetString("OverlayStoreStatusAvailableToInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove '{0}'..
+        /// </summary>
+        public static string OverlayRemoveFailedBody {
+            get {
+                return ResourceManager.GetString("OverlayRemoveFailedBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove '{0}'? Its files will be deleted from your overlays folder..
+        /// </summary>
+        public static string OverlayConfirmRemoveLocalBody {
+            get {
+                return ResourceManager.GetString("OverlayConfirmRemoveLocalBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay '{0}' requires schema v{1}, app supports v{2}. Skipping..
+        /// </summary>
+        public static string OverlayValidationSchemaTooNew {
+            get {
+                return ResourceManager.GetString("OverlayValidationSchemaTooNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay 'id' is required..
+        /// </summary>
+        public static string OverlayValidationIdRequired {
+            get {
+                return ResourceManager.GetString("OverlayValidationIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay 'id' '{0}' contains invalid characters. Use lowercase alphanumeric and hyphens..
+        /// </summary>
+        public static string OverlayValidationIdInvalidChars {
+            get {
+                return ResourceManager.GetString("OverlayValidationIdInvalidChars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay 'displayName' is required..
+        /// </summary>
+        public static string OverlayValidationDisplayNameRequired {
+            get {
+                return ResourceManager.GetString("OverlayValidationDisplayNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay 'author' is empty. Store submissions should name their author..
+        /// </summary>
+        public static string OverlayValidationAuthorEmpty {
+            get {
+                return ResourceManager.GetString("OverlayValidationAuthorEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay 'overlayVersion' '{0}' is not a valid version (expected e.g. '1.0.0')..
+        /// </summary>
+        public static string OverlayValidationVersionInvalid {
+            get {
+                return ResourceManager.GetString("OverlayValidationVersionInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rating.fontSize must be greater than 0 (got {0})..
+        /// </summary>
+        public static string OverlayValidationRatingFontSizeInvalid {
+            get {
+                return ResourceManager.GetString("OverlayValidationRatingFontSizeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to layerOrder contains unknown layer '{0}'. Valid values: {1}..
+        /// </summary>
+        public static string OverlayValidationLayerOrderUnknown {
+            get {
+                return ResourceManager.GetString("OverlayValidationLayerOrderUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to layerOrder lists '{0}' more than once..
+        /// </summary>
+        public static string OverlayValidationLayerOrderDuplicate {
+            get {
+                return ResourceManager.GetString("OverlayValidationLayerOrderDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to layerOrder does not include 'poster'; the media poster will not be drawn..
+        /// </summary>
+        public static string OverlayValidationLayerOrderNoPoster {
+            get {
+                return ResourceManager.GetString("OverlayValidationLayerOrderNoPoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.imagePath is required when layer is defined..
+        /// </summary>
+        public static string OverlayValidationLayerImagePathRequired {
+            get {
+                return ResourceManager.GetString("OverlayValidationLayerImagePathRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} '{1}' must be a relative path inside the overlay folder (no absolute paths, no '..')..
+        /// </summary>
+        public static string OverlayValidationAssetPathNotRelative {
+            get {
+                return ResourceManager.GetString("OverlayValidationAssetPathNotRelative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} '{1}' must be a PNG file..
+        /// </summary>
+        public static string OverlayValidationAssetNotPng {
+            get {
+                return ResourceManager.GetString("OverlayValidationAssetNotPng", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} '{1}' file not found..
+        /// </summary>
+        public static string OverlayValidationAssetNotFound {
+            get {
+                return ResourceManager.GetString("OverlayValidationAssetNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Files '{0}' and '{1}' differ only by case and will collide on case-sensitive filesystems..
+        /// </summary>
+        public static string OverlayValidationFilenameCaseCollision {
+            get {
+                return ResourceManager.GetString("OverlayValidationFilenameCaseCollision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} image '{1}' exceeds maximum size ({2:F1} MB > {3:F0} MB)..
+        /// </summary>
+        public static string OverlayValidationImageTooLarge {
+            get {
+                return ResourceManager.GetString("OverlayValidationImageTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} '{1}' is not a valid Thickness string. Expected 1-4 numeric values..
+        /// </summary>
+        public static string OverlayValidationMarginInvalid {
+            get {
+                return ResourceManager.GetString("OverlayValidationMarginInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} contains non-numeric value '{1}'..
+        /// </summary>
+        public static string OverlayValidationMarginNonNumeric {
+            get {
+                return ResourceManager.GetString("OverlayValidationMarginNonNumeric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} value {1:0.##} is far outside the canvas and may render nothing visible..
+        /// </summary>
+        public static string OverlayValidationMarginOffCanvas {
+            get {
+                return ResourceManager.GetString("OverlayValidationMarginOffCanvas", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to title.rotationOrigin '{0}' must be 'x,y' with exactly 2 values..
+        /// </summary>
+        public static string OverlayValidationRotationOriginShape {
+            get {
+                return ResourceManager.GetString("OverlayValidationRotationOriginShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to title.rotationOrigin value '{0}' must be between 0.0 and 1.0..
+        /// </summary>
+        public static string OverlayValidationRotationOriginRange {
+            get {
+                return ResourceManager.GetString("OverlayValidationRotationOriginRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay folder exceeds maximum total size ({0:F1} MB > {1:F0} MB)..
+        /// </summary>
+        public static string OverlayValidationPackageTooLarge {
+            get {
+                return ResourceManager.GetString("OverlayValidationPackageTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The overlay needs an ID before it can be submitted..
+        /// </summary>
+        public static string OverlaySubmissionIdRequired {
+            get {
+                return ResourceManager.GetString("OverlaySubmissionIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is not in the store yet — this would be a new overlay..
+        /// </summary>
+        public static string OverlaySubmissionNewOverlay {
+            get {
+                return ResourceManager.GetString("OverlaySubmissionNewOverlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is already in the store at v{1}. Submitting v{2} would update it..
+        /// </summary>
+        public static string OverlaySubmissionWouldUpdate {
+            get {
+                return ResourceManager.GetString("OverlaySubmissionWouldUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is already in the store at v{1}. Raise the version above that before submitting..
+        /// </summary>
+        public static string OverlaySubmissionVersionNotIncremented {
+            get {
+                return ResourceManager.GetString("OverlaySubmissionVersionNotIncremented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not reach the store to check for a name clash. You can still submit..
+        /// </summary>
+        public static string OverlaySubmissionCatalogUnavailable {
+            get {
+                return ResourceManager.GetString("OverlaySubmissionCatalogUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The overlay needs an ID before it can be exported..
+        /// </summary>
+        public static string OverlayExportIdRequired {
+            get {
+                return ResourceManager.GetString("OverlayExportIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A folder named '{0}' already exists here. Choose another location or allow replacing it..
+        /// </summary>
+        public static string OverlayExportFolderExists {
+            get {
+                return ResourceManager.GetString("OverlayExportFolderExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fix the reported problems before exporting. Problems to fix: {0}.
+        /// </summary>
+        public static string OverlayExportBlockedByValidation {
+            get {
+                return ResourceManager.GetString("OverlayExportBlockedByValidation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export failed: {0}.
+        /// </summary>
+        public static string OverlayExportFailed {
+            get {
+                return ResourceManager.GetString("OverlayExportFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' does not contain {1}..
+        /// </summary>
+        public static string OverlayExportPackageMissingDefinition {
+            get {
+                return ResourceManager.GetString("OverlayExportPackageMissingDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is a built-in overlay ID and cannot be installed over..
+        /// </summary>
+        public static string OverlayExportBuiltInIdReserved {
+            get {
+                return ResourceManager.GetString("OverlayExportBuiltInIdReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Install failed: {0}.
+        /// </summary>
+        public static string OverlayExportInstallFailed {
+            get {
+                return ResourceManager.GetString("OverlayExportInstallFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No overlay was specified..
+        /// </summary>
+        public static string OverlayExportNoOverlaySpecified {
+            get {
+                return ResourceManager.GetString("OverlayExportNoOverlaySpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is a built-in overlay and cannot be removed..
+        /// </summary>
+        public static string OverlayExportBuiltInCannotRemove {
+            get {
+                return ResourceManager.GetString("OverlayExportBuiltInCannotRemove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is not installed..
+        /// </summary>
+        public static string OverlayExportNotInstalled {
+            get {
+                return ResourceManager.GetString("OverlayExportNotInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not remove '{0}': {1}.
+        /// </summary>
+        public static string OverlayExportRemoveFailed {
+            get {
+                return ResourceManager.GetString("OverlayExportRemoveFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not render the preview image for this overlay..
+        /// </summary>
+        public static string OverlayExportPreviewRenderFailed {
+            get {
+                return ResourceManager.GetString("OverlayExportPreviewRenderFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay file not found: {0}.
+        /// </summary>
+        public static string OverlayLoadFileNotFound {
+            get {
+                return ResourceManager.GetString("OverlayLoadFileNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not determine the overlay folder for '{0}'..
+        /// </summary>
+        public static string OverlayLoadFolderUnresolvable {
+            get {
+                return ResourceManager.GetString("OverlayLoadFolderUnresolvable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' is not valid JSON: {1}.
+        /// </summary>
+        public static string OverlayLoadInvalidJson {
+            get {
+                return ResourceManager.GetString("OverlayLoadInvalidJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not read '{0}': {1}.
+        /// </summary>
+        public static string OverlayLoadUnreadable {
+            get {
+                return ResourceManager.GetString("OverlayLoadUnreadable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to '{0}' did not contain an overlay definition..
+        /// </summary>
+        public static string OverlayLoadNoDefinition {
+            get {
+                return ResourceManager.GetString("OverlayLoadNoDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This overlay requires schema v{0}, but this version of FoliCon supports v{1}. Update FoliCon to edit it..
+        /// </summary>
+        public static string OverlayLoadSchemaTooNew {
+            get {
+                return ResourceManager.GetString("OverlayLoadSchemaTooNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The overlay needs an ID before it can be saved as a draft..
+        /// </summary>
+        public static string OverlayDraftIdRequired {
+            get {
+                return ResourceManager.GetString("OverlayDraftIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built-in overlay.
+        /// </summary>
+        public static string OverlayTemplateBuiltInDescription {
+            get {
+                return ResourceManager.GetString("OverlayTemplateBuiltInDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed overlay.
+        /// </summary>
+        public static string OverlayTemplateInstalledDescription {
+            get {
+                return ResourceManager.GetString("OverlayTemplateInstalledDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay ID '{0}' is already in use by a built-in or installed overlay..
+        /// </summary>
+        public static string OverlayTemplateIdInUse {
+            get {
+                return ResourceManager.GetString("OverlayTemplateIdInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fetching manifest....
+        /// </summary>
+        public static string OverlayInstallProgressFetchingManifest {
+            get {
+                return ResourceManager.GetString("OverlayInstallProgressFetchingManifest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validating....
+        /// </summary>
+        public static string OverlayInstallProgressValidating {
+            get {
+                return ResourceManager.GetString("OverlayInstallProgressValidating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing....
+        /// </summary>
+        public static string OverlayInstallProgressInstalling {
+            get {
+                return ResourceManager.GetString("OverlayInstallProgressInstalling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installed..
+        /// </summary>
+        public static string OverlayInstallProgressInstalled {
+            get {
+                return ResourceManager.GetString("OverlayInstallProgressInstalled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading {0}....
+        /// </summary>
+        public static string OverlayInstallProgressDownloading {
+            get {
+                return ResourceManager.GetString("OverlayInstallProgressDownloading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backing up current version....
+        /// </summary>
+        public static string OverlayUpdateProgressBackingUp {
+            get {
+                return ResourceManager.GetString("OverlayUpdateProgressBackingUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to deserialize manifest for '{0}'.
+        /// </summary>
+        public static string OverlayManifestDeserializeFailed {
+            get {
+                return ResourceManager.GetString("OverlayManifestDeserializeFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot install '{0}': it is a built-in overlay..
+        /// </summary>
+        public static string OverlayInstallBuiltInRejected {
+            get {
+                return ResourceManager.GetString("OverlayInstallBuiltInRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to download assets for overlay '{0}': {1}.
+        /// </summary>
+        public static string OverlayInstallDownloadFailed {
+            get {
+                return ResourceManager.GetString("OverlayInstallDownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asset '{0}' exceeds {1}MB limit..
+        /// </summary>
+        public static string OverlayInstallAssetTooLarge {
+            get {
+                return ResourceManager.GetString("OverlayInstallAssetTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Integrity check failed for '{0}': the downloaded file does not match the published checksum..
+        /// </summary>
+        public static string OverlayInstallHashMismatch {
+            get {
+                return ResourceManager.GetString("OverlayInstallHashMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to overlay.json did not contain an overlay definition..
+        /// </summary>
+        public static string OverlayInstallDefinitionUnreadable {
+            get {
+                return ResourceManager.GetString("OverlayInstallDefinitionUnreadable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation failed: {0}.
+        /// </summary>
+        public static string OverlayInstallValidationFailed {
+            get {
+                return ResourceManager.GetString("OverlayInstallValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlay '{0}' not found in catalog..
+        /// </summary>
+        public static string OverlayUpdateNotInCatalog {
+            get {
+                return ResourceManager.GetString("OverlayUpdateNotInCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to update overlay '{0}' from manifest: {1}.
+        /// </summary>
+        public static string OverlayUpdateFailed {
+            get {
+                return ResourceManager.GetString("OverlayUpdateFailed", resourceCulture);
+            }
+        }
     }
 }

@@ -85,21 +85,32 @@
                                         Visibility="{Binding IsBuiltIn, Converter={StaticResource InvertedBoolToVis}}"
                                         Command="{Binding DataContext.RemoveOverlayCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
-                                        ToolTip="Remove this overlay"
-                                        AutomationProperties.Name="{Binding DisplayName, StringFormat='Remove {0}'}" />
+                                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayRemoveTooltip}}">
+                                    <AutomationProperties.Name>
+                                        <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                            <Binding Source="{StaticResource FoliConLangs}"
+                                                     Path="OverlayRemoveAutomation" />
+                                            <Binding Path="DisplayName" />
+                                        </MultiBinding>
+                                    </AutomationProperties.Name>
+                                </Button>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
-                <Button Content="Create Overlay..." Margin="0,0,8,0" Padding="12,4"
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesigner}}"
+                        Margin="0,0,8,0" Padding="12,4"
                         Command="{Binding CreateOverlayCommand}"
-                        ToolTip="Design your own overlay from a template" />
-                <Button Content="Browse Overlay Store..." Margin="0,0,8,0" Padding="12,4"
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayCreateOverlayTooltip}}" />
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayBrowseStore}}"
+                        Margin="0,0,8,0" Padding="12,4"
                         Command="{Binding BrowseOverlayStoreCommand}" />
-                <Button Content="Import Local Overlay..." Margin="0,0,0,0" Padding="12,4"
-                        IsEnabled="False" ToolTip="Coming in a future release" />
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayImportLocal}}"
+                        Margin="0,0,0,0" Padding="12,4"
+                        IsEnabled="False"
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayComingSoon}}" />
             </StackPanel>
         </Grid>
     </GroupBox>

@@ -1,9 +1,8 @@
-namespace FoliCon.Modules.Overlays;
+﻿namespace FoliCon.Modules.Overlays;
 
 /// <summary>
 /// Constants for the overlay plugin system.
 /// </summary>
-[Localizable(false)]
 internal static class OverlayConstants
 {
     /// <summary>

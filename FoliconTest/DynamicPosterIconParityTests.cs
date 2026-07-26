@@ -1,4 +1,4 @@
-using FoliCon.Models.Data;
+﻿using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
 using FoliCon.Modules.utils;
 using FoliCon.Views;
@@ -15,6 +15,7 @@ namespace FoliconTest;
 /// These tests confirm the dynamic renderer handles all overlay configurations
 /// without errors.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class DynamicPosterIconParityTests
 {
     private static readonly string[] OverlayIds =

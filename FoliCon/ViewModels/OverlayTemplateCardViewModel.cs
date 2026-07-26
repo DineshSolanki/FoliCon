@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using FoliCon.Modules.Overlays.Designer;
 
 namespace FoliCon.ViewModels;
@@ -9,7 +9,6 @@ namespace FoliCon.ViewModels;
 /// Overlays are chosen by appearance, so each card renders the template through the real
 /// pipeline rather than listing its name alone.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayTemplateCardViewModel(OverlayTemplate template) : BindableBase
 {
     public OverlayTemplate Template { get; } = template;

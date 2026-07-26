@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -8,7 +8,6 @@ namespace FoliCon.Modules.Overlays.Designer;
 /// persist the stack. Dirty state is tracked against the last baseline marker rather than
 /// a simple flag, so undoing back to the saved state correctly reports "not dirty".
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayEditHistory(OverlayDesignerDocument document, int capacity = 100)
 {
     private readonly OverlayDesignerDocument _document = document

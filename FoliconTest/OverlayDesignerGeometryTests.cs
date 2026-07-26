@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using FoliCon.Modules.Overlays.Designer;
 using Size = System.Windows.Size;
 using Rect = System.Windows.Rect;
@@ -11,6 +11,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayGeometry"/> — the single conversion point between schema
 /// margin strings and the typed bounds the designer canvas manipulates.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class OverlayDesignerGeometryTests
 {
     #region Thickness parsing and formatting

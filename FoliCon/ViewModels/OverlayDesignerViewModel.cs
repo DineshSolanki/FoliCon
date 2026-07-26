@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using FoliCon.Modules.Overlays.Designer;
 using Thickness = System.Windows.Thickness;
 using Brush = System.Windows.Media.Brush;
@@ -15,7 +15,6 @@ namespace FoliCon.ViewModels;
 /// debounced live preview. Every mutation goes through the history so undo/redo covers the
 /// whole surface.
 /// </summary>
-[Localizable(false)]
 public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -155,7 +154,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     #region Document state
 
-    public string Title => "Overlay Designer";
+    public string Title => Lang.OverlayDesignerTitle;
 
     /// <summary>False until a template is cloned or a package opened; drives the first-run picker.</summary>
     public bool HasDocument
@@ -284,7 +283,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     public bool HasSelection => SelectedElement != null;
 
-    public string SelectedElementName => SelectedElement?.DisplayName ?? "Nothing selected";
+    public string SelectedElementName => SelectedElement?.DisplayName ?? Lang.OverlayDesignerNothingSelected;
 
     private void SelectElement(OverlayElementViewModel? element)
     {
@@ -484,7 +483,8 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             return;
         }
 
-        var dialog = DialogUtils.NewOpenFileDialog("Select a PNG image", "PNG images (*.png)|*.png");
+        var dialog = DialogUtils.NewOpenFileDialog(
+            Lang.OverlayDesignerSelectPngTitle, Lang.OverlayDesignerPngFilesFilter);
         dialog.InitialDirectory = _document.AssetFolderPath;
 
         if (dialog.ShowDialog() != true)
@@ -497,7 +497,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
         if (!selected.StartsWith(folder + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
         {
-            StatusMessage = "Pick an image inside the overlay folder so the package stays self-contained.";
+            StatusMessage = Lang.OverlayDesignerImageMustBeInFolder;
             return;
         }
 
@@ -865,7 +865,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     private void BrowseTestPoster()
     {
         var dialog = DialogUtils.NewOpenFileDialog(
-            "Select a sample poster", "Images (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg");
+            Lang.OverlayDesignerSelectSamplePoster, Lang.OverlayDesignerSamplePosterFilter);
 
         if (dialog.ShowDialog() == true)
         {
@@ -898,7 +898,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     private void OnPreviewRendered(object? sender, OverlayPreviewRenderedEventArgs e) => PreviewImage = e.Image;
 
     private void OnPreviewFailed(object? sender, OverlayPreviewFailedEventArgs e) =>
-        StatusMessage = $"Preview failed: {e.Exception.Message}";
+        StatusMessage = string.Format(Lang.OverlayDesignerPreviewFailed, e.Exception.Message);
 
     #endregion
 
@@ -990,12 +990,12 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             // Keep the resume list current so the draft is there when they come back.
             LoadDrafts();
 
-            StatusMessage = $"Draft saved to {path}";
+            StatusMessage = string.Format(Lang.OverlayDesignerDraftSavedTo, path);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException)
         {
             Logger.Error(ex, "Failed to save draft for overlay '{Id}'", _document.Id);
-            StatusMessage = $"Could not save the draft: {ex.Message}";
+            StatusMessage = string.Format(Lang.OverlayDesignerDraftSaveFailed, ex.Message);
         }
         finally
         {
@@ -1005,7 +1005,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     private async Task ExportPackageAsync()
     {
-        var folderDialog = DialogUtils.NewFolderBrowserDialog("Choose where to save the overlay package");
+        var folderDialog = DialogUtils.NewFolderBrowserDialog(Lang.OverlayDesignerChooseExportFolder);
         if (folderDialog.ShowDialog() != true)
         {
             return;
@@ -1014,7 +1014,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         try
         {
             IsBusy = true;
-            StatusMessage = "Exporting…";
+            StatusMessage = Lang.OverlayDesignerExporting;
 
             var destination = folderDialog.SelectedPath;
             var existing = Path.Combine(destination, _document.Id);
@@ -1025,7 +1025,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
                 overwrite = ConfirmOverwrite(_document.Id);
                 if (!overwrite)
                 {
-                    StatusMessage = "Export cancelled.";
+                    StatusMessage = Lang.OverlayDesignerExportCancelled;
                     return;
                 }
             }
@@ -1034,20 +1034,20 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
             if (!result.Succeeded)
             {
-                StatusMessage = result.FailureReason ?? "Export failed.";
+                StatusMessage = result.FailureReason ?? Lang.OverlayDesignerExportFailed;
                 return;
             }
 
             LastExportPath = result.PackagePath;
             _history.MarkClean();
-            StatusMessage = $"Exported to {result.PackagePath}";
+            StatusMessage = string.Format(Lang.OverlayDesignerExportedTo, result.PackagePath);
 
             await OpenSubmissionPanelAsync();
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Logger.Error(ex, "Failed to export overlay '{Id}'", _document.Id);
-            StatusMessage = $"Export failed: {ex.Message}";
+            StatusMessage = string.Format(Lang.OverlayDesignerExportFailedWithReason, ex.Message);
         }
         finally
         {
@@ -1071,7 +1071,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             return;
         }
 
-        SubmissionCheckMessage = "Checking the store for a name clash…";
+        SubmissionCheckMessage = Lang.OverlayDesignerCheckingNameClash;
 
         var check = await _submissionGuide.CheckAsync(_document.Id, _document.OverlayVersion);
         SubmissionCheckMessage = check.Message;
@@ -1092,7 +1092,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
             if (!result.Succeeded)
             {
-                StatusMessage = result.FailureReason ?? "Install failed.";
+                StatusMessage = result.FailureReason ?? Lang.OverlayDesignerInstallFailed;
                 return;
             }
 
@@ -1100,12 +1100,12 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             _overlayProvider.Refresh();
             OverlayPreviewCache.InvalidateAll();
 
-            StatusMessage = $"Installed. '{_document.DisplayName}' is now available in your overlay list.";
+            StatusMessage = string.Format(Lang.OverlayDesignerInstalledSuccess, _document.DisplayName);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Logger.Error(ex, "Failed to install overlay '{Id}' locally", _document.Id);
-            StatusMessage = $"Install failed: {ex.Message}";
+            StatusMessage = string.Format(Lang.OverlayDesignerInstallFailedWithReason, ex.Message);
         }
         finally
         {
@@ -1124,8 +1124,8 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     /// <summary>Overridable so tests can exercise the export flow without a modal.</summary>
     protected virtual bool ConfirmOverwrite(string overlayId) =>
         MessageBox.Show(
-            $"A folder named '{overlayId}' already exists there. Replace it?",
-            "Replace existing package",
+            string.Format(Lang.OverlayDesignerReplaceExistingBody, overlayId),
+            Lang.OverlayDesignerReplaceExistingTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning) == MessageBoxResult.Yes;
 
@@ -1146,10 +1146,10 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         // be translated correctly. Naming the noun and appending the count sidesteps it.
         ValidationSummary = result switch
         {
-            { ErrorCount: 0, WarningCount: 0 } => "No issues",
-            { ErrorCount: 0 } => $"Warnings: {result.WarningCount}",
-            { WarningCount: 0 } => $"Errors: {result.ErrorCount}",
-            _ => $"Errors: {result.ErrorCount}, warnings: {result.WarningCount}"
+            { ErrorCount: 0, WarningCount: 0 } => Lang.OverlayDesignerNoIssues,
+            { ErrorCount: 0 } => string.Format(Lang.OverlayDesignerWarningCount, result.WarningCount),
+            { WarningCount: 0 } => string.Format(Lang.OverlayDesignerErrorCount, result.ErrorCount),
+            _ => string.Format(Lang.OverlayDesignerErrorAndWarningCount, result.ErrorCount, result.WarningCount)
         };
 
         RaisePropertyChanged(nameof(CanExport));
@@ -1195,27 +1195,33 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
         try
         {
+            // Not localized: this seeds the overlay ID, and a translated seed would
+            // produce non-ASCII characters the 'id' validator rejects.
             var id = _templateProvider.SuggestId($"My {template.DisplayName}");
             var folder = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "FoliCon", Modules.Overlays.OverlayConstants.draftsFolder, id);
 
             var document = _templateProvider.CreateFromTemplate(
-                template, folder, id, $"My {template.DisplayName}", Environment.UserName);
+                template, folder, id,
+                string.Format(Lang.OverlayDesignerNewOverlayNamePattern, template.DisplayName),
+                Environment.UserName);
 
             AdoptDocument(document);
-            StatusMessage = $"Created '{document.DisplayName}' from {template.DisplayName}.";
+            StatusMessage = string.Format(Lang.OverlayDesignerCreatedFromTemplate,
+                document.DisplayName, template.DisplayName);
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to create overlay from template '{Id}'", template.Id);
-            StatusMessage = $"Could not create from template: {ex.Message}";
+            StatusMessage = string.Format(Lang.OverlayDesignerCreateFromTemplateFailed, ex.Message);
         }
     }
 
     private void OpenPackage()
     {
-        var dialog = DialogUtils.NewOpenFileDialog("Open overlay.json", "Overlay definition (overlay.json)|overlay.json");
+        var dialog = DialogUtils.NewOpenFileDialog(
+            Lang.OverlayDesignerOpenPackageTitle, Lang.OverlayDesignerOverlayJsonFilter);
         if (dialog.ShowDialog() != true)
         {
             return;
@@ -1231,14 +1237,15 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
         if (!result.Succeeded)
         {
-            StatusMessage = result.FailureReason ?? "Could not open that overlay.";
+            StatusMessage = result.FailureReason ?? Lang.OverlayDesignerCouldNotOpenOverlay;
             return;
         }
 
         AdoptDocument(result.Document);
         StatusMessage = result.Validation.IsValid
-            ? $"Opened '{result.Document.DisplayName}'."
-            : $"Opened '{result.Document.DisplayName}'. Problems to fix: {result.Validation.ErrorCount}";
+            ? string.Format(Lang.OverlayDesignerOpened, result.Document.DisplayName)
+            : string.Format(Lang.OverlayDesignerOpenedWithProblems,
+                result.Document.DisplayName, result.Validation.ErrorCount);
     }
 
     private void AdoptDocument(OverlayDesignerDocument document)
@@ -1392,11 +1399,11 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     private static string DescribeElement(OverlayElementKind kind) => kind switch
     {
-        OverlayElementKind.Base => "Base layer",
-        OverlayElementKind.Poster => "Poster",
-        OverlayElementKind.Front => "Front layer",
-        OverlayElementKind.Rating => "Rating badge",
-        OverlayElementKind.Title => "Title text",
+        OverlayElementKind.Base => Lang.OverlayLayerBase,
+        OverlayElementKind.Poster => Lang.Poster,
+        OverlayElementKind.Front => Lang.OverlayLayerFront,
+        OverlayElementKind.Rating => Lang.OverlayLayerRatingBadge,
+        OverlayElementKind.Title => Lang.OverlayLayerTitleText,
         _ => kind.ToString()
     };
 
@@ -1501,7 +1508,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         catch (Exception ex) when (ex is IOException or InvalidOperationException or System.ComponentModel.Win32Exception)
         {
             Logger.Warn(ex, "Could not open {Url}", url);
-            StatusMessage = "Could not open that page in your browser.";
+            StatusMessage = Lang.OverlayCouldNotOpenBrowser;
         }
     }
 
@@ -1546,8 +1553,8 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     /// </summary>
     protected virtual bool ConfirmDiscard() =>
         MessageBox.Show(
-            "You have unsaved changes. Discard them? Use Save Draft or Export Package to keep your work.",
-            "Discard changes",
+            Lang.OverlayDesignerDiscardChangesBody,
+            Lang.OverlayDesignerDiscardChangesTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning) == MessageBoxResult.Yes;
 
@@ -1617,20 +1624,20 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         {
             _draftStore.Delete(draft.DraftId);
             LoadDrafts();
-            StatusMessage = $"Deleted draft '{draft.DisplayName}'.";
+            StatusMessage = string.Format(Lang.OverlayDesignerDraftDeleted, draft.DisplayName);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Logger.Error(ex, "Failed to delete draft '{Id}'", draft.DraftId);
-            StatusMessage = $"Could not delete the draft: {ex.Message}";
+            StatusMessage = string.Format(Lang.OverlayDesignerDraftDeleteFailed, ex.Message);
         }
     }
 
     /// <summary>Overridable so tests can exercise deletion without a modal.</summary>
     protected virtual bool ConfirmDeleteDraft(string displayName) =>
         MessageBox.Show(
-            $"Delete the draft '{displayName}'? This cannot be undone.",
-            "Delete draft",
+            string.Format(Lang.OverlayDesignerDeleteDraftBody, displayName),
+            Lang.OverlayDesignerDeleteDraftTitle,
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning) == MessageBoxResult.Yes;
 

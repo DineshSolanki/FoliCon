@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -22,7 +22,6 @@ public enum OverlaySubmissionConflict
 /// <summary>
 /// Result of checking an overlay against the live catalog before submission.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlaySubmissionCheck(
     OverlaySubmissionConflict conflict,
     string? existingVersion,
@@ -48,7 +47,6 @@ public sealed class OverlaySubmissionCheck(
 /// the guesswork: it checks the overlay against the live catalog before the author invests
 /// effort in a pull request, and builds the exact URLs the submission steps need.
 /// </summary>
-[Localizable(false)]
 public class OverlaySubmissionGuide(IOverlayRepositoryService repositoryService)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -84,7 +82,7 @@ public class OverlaySubmissionGuide(IOverlayRepositoryService repositoryService)
         if (string.IsNullOrWhiteSpace(overlayId))
         {
             return new OverlaySubmissionCheck(
-                OverlaySubmissionConflict.None, null, "The overlay needs an ID before it can be submitted.");
+                OverlaySubmissionConflict.None, null, Lang.OverlaySubmissionIdRequired);
         }
 
         try
@@ -97,28 +95,28 @@ public class OverlaySubmissionGuide(IOverlayRepositoryService repositoryService)
             {
                 return new OverlaySubmissionCheck(
                     OverlaySubmissionConflict.None, null,
-                    $"'{overlayId}' is not in the store yet — this would be a new overlay.");
+                    string.Format(Lang.OverlaySubmissionNewOverlay, overlayId));
             }
 
             if (OverlayConstants.TryCompareVersions(overlayVersion, existing.OverlayVersion, out var isNewer) && isNewer)
             {
                 return new OverlaySubmissionCheck(
                     OverlaySubmissionConflict.UpdateToExisting, existing.OverlayVersion,
-                    $"'{overlayId}' is already in the store at v{existing.OverlayVersion}. " +
-                    $"Submitting v{overlayVersion} would update it.");
+                    string.Format(Lang.OverlaySubmissionWouldUpdate,
+                        overlayId, existing.OverlayVersion, overlayVersion));
             }
 
             return new OverlaySubmissionCheck(
                 OverlaySubmissionConflict.VersionNotIncremented, existing.OverlayVersion,
-                $"'{overlayId}' is already in the store at v{existing.OverlayVersion}. " +
-                $"Raise the version above that before submitting.");
+                string.Format(Lang.OverlaySubmissionVersionNotIncremented,
+                    overlayId, existing.OverlayVersion));
         }
         catch (Exception ex)
         {
             Logger.Warn(ex, "Could not check the catalog for overlay '{Id}'", overlayId);
             return new OverlaySubmissionCheck(
                 OverlaySubmissionConflict.CatalogUnavailable, null,
-                "Could not reach the store to check for a name clash. You can still submit.");
+                Lang.OverlaySubmissionCatalogUnavailable);
         }
     }
 }

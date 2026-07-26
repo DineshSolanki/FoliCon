@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -915,5 +915,860 @@
     </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
       <value>الحد الأقصى لعمق معالجة المجلدات الفرعية. 0 = غير محدود (معالجة جميع المستويات).</value>
+    </data>
+    <data name="OverlayDesignerTitle" xml:space="preserve">
+      <value>مصمِّم التراكبات</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
+      <value>القوالب</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
+      <value>العودة إلى قائمة القوالب لبدء تراكب آخر</value>
+    </data>
+    <data name="OverlayDesignerOpen" xml:space="preserve">
+      <value>فتح…</value>
+    </data>
+    <data name="OverlayDesignerOpenHelp" xml:space="preserve">
+      <value>فتح ملف overlay.json موجود لتحريره</value>
+    </data>
+    <data name="OverlayDesignerUndoHelp" xml:space="preserve">
+      <value>التراجع عن آخر تغيير (Ctrl+Z)</value>
+    </data>
+    <data name="OverlayDesignerRedo" xml:space="preserve">
+      <value>إعادة</value>
+    </data>
+    <data name="OverlayDesignerRedoHelp" xml:space="preserve">
+      <value>إعادة آخر تغيير تم التراجع عنه (Ctrl+Y)</value>
+    </data>
+    <data name="OverlayDesignerZoom" xml:space="preserve">
+      <value>التكبير</value>
+    </data>
+    <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
+      <value>فتح دليل إنشاء التراكبات (F1)</value>
+    </data>
+    <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
+      <value>تغييرات غير محفوظة</value>
+    </data>
+    <data name="OverlayDesignerStartNew" xml:space="preserve">
+      <value>إنشاء تراكب جديد</value>
+    </data>
+    <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
+      <value>اختر قالبًا لنسخه. ستبدأ من تخطيطه وصوره، فعدِّل ما تشاء ثم صدِّر حزمة جاهزة للتثبيت أو المشاركة.</value>
+    </data>
+    <data name="OverlayDesignerRendering" xml:space="preserve">
+      <value>جارٍ الرسم…</value>
+    </data>
+    <data name="OverlayDesignerUseTemplate" xml:space="preserve">
+      <value>استخدام هذا القالب</value>
+    </data>
+    <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
+      <value>استخدام «{0}» كقالب</value>
+    </data>
+    <data name="OverlayDesignerContinueDraft" xml:space="preserve">
+      <value>متابعة مسودة</value>
+    </data>
+    <data name="OverlayDesignerDraftsHint" xml:space="preserve">
+      <value>عمل حفظته سابقًا. عند اختيار مسودة تُفتح تمامًا من حيث توقفت.</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
+      <value>حُفظت في {0:g}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
+      <value>حذف</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
+      <value>حذف المسودة «{0}»</value>
+    </data>
+    <data name="OverlayDesignerResumeDraft" xml:space="preserve">
+      <value>متابعة</value>
+    </data>
+    <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
+      <value>متابعة المسودة «{0}»</value>
+    </data>
+    <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
+      <value>لديك مجلد تراكب بالفعل؟ استخدم «فتح…» في شريط الأدوات.</value>
+    </data>
+    <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
+      <value>إغلاق المصمِّم</value>
+    </data>
+    <data name="OverlayDesignerElements" xml:space="preserve">
+      <value>العناصر</value>
+    </data>
+    <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
+      <value>تُرسم من الأعلى إلى الأسفل: الأول يكون في الخلف.</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
+      <value>إرسال إلى الخلف</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
+      <value>إرسال الطبقة المحددة إلى الخلف</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
+      <value>إحضار إلى الأمام</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
+      <value>إحضار الطبقة المحددة إلى الأمام</value>
+    </data>
+    <data name="OverlayDesignerShow" xml:space="preserve">
+      <value>إظهار</value>
+    </data>
+    <data name="OverlayLayerBase" xml:space="preserve">
+      <value>الطبقة الخلفية</value>
+    </data>
+    <data name="OverlayLayerFront" xml:space="preserve">
+      <value>الطبقة الأمامية</value>
+    </data>
+    <data name="OverlayLayerTitleText" xml:space="preserve">
+      <value>نص العنوان</value>
+    </data>
+    <data name="OverlayLayerRatingBadge" xml:space="preserve">
+      <value>شارة التقييم</value>
+    </data>
+    <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
+      <value>لوحة معاينة التراكب</value>
+    </data>
+    <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
+      <value>معاينة التراكب بعد الرسم</value>
+    </data>
+    <data name="OverlayDesignerGeometryHint" xml:space="preserve">
+      <value>الموضع والحجم بالبكسل. تحرّك مفاتيح الأسهم بمقدار 1 بكسل، ومع Shift بمقدار 10 بكسل.</value>
+    </data>
+    <data name="OverlayDesignerAxisX" xml:space="preserve">
+      <value>X</value>
+    </data>
+    <data name="OverlayDesignerLeftPosition" xml:space="preserve">
+      <value>الموضع من اليسار</value>
+    </data>
+    <data name="OverlayDesignerAxisY" xml:space="preserve">
+      <value>Y</value>
+    </data>
+    <data name="OverlayDesignerTopPosition" xml:space="preserve">
+      <value>الموضع من الأعلى</value>
+    </data>
+    <data name="OverlayDesignerWidthShort" xml:space="preserve">
+      <value>عرض</value>
+    </data>
+    <data name="OverlayDesignerWidth" xml:space="preserve">
+      <value>العرض</value>
+    </data>
+    <data name="OverlayDesignerHeightShort" xml:space="preserve">
+      <value>ارتفاع</value>
+    </data>
+    <data name="OverlayDesignerHeight" xml:space="preserve">
+      <value>الارتفاع</value>
+    </data>
+    <data name="OverlayDesignerMetadata" xml:space="preserve">
+      <value>البيانات الوصفية</value>
+    </data>
+    <data name="OverlayDesignerName" xml:space="preserve">
+      <value>الاسم</value>
+    </data>
+    <data name="OverlayDesignerId" xml:space="preserve">
+      <value>المعرِّف</value>
+    </data>
+    <data name="OverlayDesignerIdHint" xml:space="preserve">
+      <value>أحرف إنجليزية صغيرة وأرقام وشرطات فقط. ويجب أن يكون فريدًا.</value>
+    </data>
+    <data name="OverlayDesignerAuthor" xml:space="preserve">
+      <value>المؤلف</value>
+    </data>
+    <data name="OverlayDesignerVersion" xml:space="preserve">
+      <value>الإصدار</value>
+    </data>
+    <data name="OverlayDesignerDescription" xml:space="preserve">
+      <value>الوصف</value>
+    </data>
+    <data name="OverlayTags" xml:space="preserve">
+      <value>الوسوم</value>
+    </data>
+    <data name="OverlayDesignerTagsHint" xml:space="preserve">
+      <value>مفصولة بفواصل.</value>
+    </data>
+    <data name="OverlayDesignerLayerImages" xml:space="preserve">
+      <value>صور الطبقات</value>
+    </data>
+    <data name="OverlayDesignerBaseImage" xml:space="preserve">
+      <value>صورة الخلفية</value>
+    </data>
+    <data name="OverlayDesignerBrowse" xml:space="preserve">
+      <value>استعراض…</value>
+    </data>
+    <data name="OverlayDesignerClear" xml:space="preserve">
+      <value>إزالة</value>
+    </data>
+    <data name="OverlayDesignerFrontImage" xml:space="preserve">
+      <value>الصورة الأمامية</value>
+    </data>
+    <data name="OverlayDesignerOpacityMask" xml:space="preserve">
+      <value>قناع الشفافية</value>
+    </data>
+    <data name="OverlayDesignerCornerRadius" xml:space="preserve">
+      <value>استدارة الزوايا</value>
+    </data>
+    <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
+      <value>القيمة 0 تعني زوايا قائمة. اضبط كل زاوية على حدة إذا احتجت شكلًا غير متماثل.</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
+      <value>TL</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
+      <value>استدارة الزاوية العليا اليسرى</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
+      <value>TR</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
+      <value>استدارة الزاوية العليا اليمنى</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
+      <value>BL</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
+      <value>استدارة الزاوية السفلى اليسرى</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
+      <value>BR</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
+      <value>استدارة الزاوية السفلى اليمنى</value>
+    </data>
+    <data name="OverlayDesignerFont" xml:space="preserve">
+      <value>الخط</value>
+    </data>
+    <data name="OverlayDesignerFontSize" xml:space="preserve">
+      <value>حجم الخط</value>
+    </data>
+    <data name="OverlayDesignerColour" xml:space="preserve">
+      <value>اللون</value>
+    </data>
+    <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
+      <value>لون العنوان الحالي</value>
+    </data>
+    <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
+      <value>قيمة لون العنوان</value>
+    </data>
+    <data name="OverlayDesignerPick" xml:space="preserve">
+      <value>اختيار…</value>
+    </data>
+    <data name="OverlayDesignerChooseColour" xml:space="preserve">
+      <value>اختيار لون</value>
+    </data>
+    <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
+      <value>اختيار لون العنوان</value>
+    </data>
+    <data name="OverlayDesignerColourHint" xml:space="preserve">
+      <value>اختر لونًا، أو اكتب اسمًا مثل White أو قيمة ست عشرية مثل ‎#FF5500‎.</value>
+    </data>
+    <data name="OverlayDesignerRotation" xml:space="preserve">
+      <value>الدوران</value>
+    </data>
+    <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
+      <value>دوران العنوان بالدرجات</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
+      <value>إعدادات اللوحة المتقدمة</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
+      <value>تحدد سطح التصميم الذي يُبنى عليه التراكب. قيم القالب صحيحة أصلًا، فلا تغيّرها إلا إذا كنت متأكدًا من حاجتك لذلك.</value>
+    </data>
+    <data name="OverlayDesignerDesignWidth" xml:space="preserve">
+      <value>عرض التصميم</value>
+    </data>
+    <data name="OverlayDesignerDesignHeight" xml:space="preserve">
+      <value>ارتفاع التصميم</value>
+    </data>
+    <data name="OverlayDesignerRootMargin" xml:space="preserve">
+      <value>الهامش الجذري</value>
+    </data>
+    <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
+      <value>يسار، أعلى، يمين، أسفل. القيم السالبة توسّع السطح.</value>
+    </data>
+    <data name="OverlayDesignerPreviewWith" xml:space="preserve">
+      <value>المعاينة باستخدام:</value>
+    </data>
+    <data name="OverlayDesignerSamplePoster" xml:space="preserve">
+      <value>ملصق تجريبي…</value>
+    </data>
+    <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
+      <value>قيمة تقييم تجريبية</value>
+    </data>
+    <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
+      <value>نص عنوان تجريبي</value>
+    </data>
+    <data name="OverlayDesignerMockup" xml:space="preserve">
+      <value>نموذج أولي</value>
+    </data>
+    <data name="OverlayDesignerSeverityError" xml:space="preserve">
+      <value>خطأ</value>
+    </data>
+    <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
+      <value>تنبيه</value>
+    </data>
+    <data name="OverlayDesignerShareHeading" xml:space="preserve">
+      <value>شارك هذا التراكب</value>
+    </data>
+    <data name="OverlayDesignerHideSteps" xml:space="preserve">
+      <value>إخفاء هذه الخطوات</value>
+    </data>
+    <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
+      <value>إخفاء خطوات الإرسال</value>
+    </data>
+    <data name="OverlayDesignerInstallLocally" xml:space="preserve">
+      <value>تثبيته لي</value>
+    </data>
+    <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
+      <value>نسخ هذا التراكب إلى FoliCon لتستخدمه الآن</value>
+    </data>
+    <data name="OverlayDesignerOpenFolder" xml:space="preserve">
+      <value>فتح المجلد</value>
+    </data>
+    <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
+      <value>لإرساله إلى متجر المجتمع:</value>
+    </data>
+    <data name="OverlayDesignerStep1Automation" xml:space="preserve">
+      <value>الخطوة 1 مكتملة</value>
+    </data>
+    <data name="OverlayDesignerForkRepository" xml:space="preserve">
+      <value>إنشاء نسخة من المستودع</value>
+    </data>
+    <data name="OverlayDesignerStep2Automation" xml:space="preserve">
+      <value>الخطوة 2 مكتملة</value>
+    </data>
+    <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
+      <value>انسخ المجلد المُصدَّر إلى {0} داخل نسختك من المستودع</value>
+    </data>
+    <data name="OverlayDesignerStep3Automation" xml:space="preserve">
+      <value>الخطوة 3 مكتملة</value>
+    </data>
+    <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
+      <value>فتح طلب سحب</value>
+    </data>
+    <data name="OverlayDesignerExportPackage" xml:space="preserve">
+      <value>تصدير الحزمة…</value>
+    </data>
+    <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
+      <value>إنشاء مجلد جاهز للمتجر يمكنك تثبيته أو إرساله</value>
+    </data>
+    <data name="OverlayDesignerSaveDraft" xml:space="preserve">
+      <value>حفظ المسودة</value>
+    </data>
+    <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
+      <value>احفظ العمل الجاري لتعود إليه لاحقًا</value>
+    </data>
+    <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
+      <value>لون العنوان</value>
+    </data>
+    <data name="OverlayStoreLoadingPreview" xml:space="preserve">
+      <value>جارٍ تحميل المعاينة...</value>
+    </data>
+    <data name="OverlayStoreInstall" xml:space="preserve">
+      <value>تثبيت</value>
+    </data>
+    <data name="OverlayStoreUpdate" xml:space="preserve">
+      <value>تحديث</value>
+    </data>
+    <data name="OverlayStoreRemove" xml:space="preserve">
+      <value>إزالة</value>
+    </data>
+    <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
+      <value>إزالة هذا التراكب (مع طلب تأكيد)</value>
+    </data>
+    <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
+      <value>ابحث في التراكبات...</value>
+    </data>
+    <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
+      <value>تصفية حسب حالة التثبيت</value>
+    </data>
+    <data name="OverlayStoreRefresh" xml:space="preserve">
+      <value>تحديث</value>
+    </data>
+    <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
+      <value>إعادة تحميل فهرس التراكبات</value>
+    </data>
+    <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
+      <value>صمِّم تراكبك الخاص انطلاقًا من قالب</value>
+    </data>
+    <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
+      <value>عرض التراكبات الموسومة بـ «{0}» فقط</value>
+    </data>
+    <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
+      <value>التصفية حسب الوسم «{0}»</value>
+    </data>
+    <data name="OverlayStoreClearTags" xml:space="preserve">
+      <value>مسح الوسوم</value>
+    </data>
+    <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
+      <value>إلغاء تحديد كل الوسوم</value>
+    </data>
+    <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
+      <value>جارٍ تحميل الفهرس...</value>
+    </data>
+    <data name="OverlayStoreDiscoverTab" xml:space="preserve">
+      <value>استكشاف</value>
+    </data>
+    <data name="OverlayStoreUpdateAll" xml:space="preserve">
+      <value>تحديث الكل</value>
+    </data>
+    <data name="OverlayRemoveTooltip" xml:space="preserve">
+      <value>إزالة هذا التراكب</value>
+    </data>
+    <data name="OverlayRemoveAutomation" xml:space="preserve">
+      <value>إزالة «{0}»</value>
+    </data>
+    <data name="OverlayBrowseStore" xml:space="preserve">
+      <value>تصفح المتجر...</value>
+    </data>
+    <data name="OverlayImportLocal" xml:space="preserve">
+      <value>استيراد تراكب محلي...</value>
+    </data>
+    <data name="OverlayComingSoon" xml:space="preserve">
+      <value>سيتوفر في إصدار قادم</value>
+    </data>
+    <data name="OverlayDesignerNothingSelected" xml:space="preserve">
+      <value>لم يُحدَّد شيء</value>
+    </data>
+    <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
+      <value>اختر صورة PNG</value>
+    </data>
+    <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
+      <value>صور PNG (*.png)|*.png</value>
+    </data>
+    <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
+      <value>اختر صورة من داخل مجلد التراكب حتى تبقى الحزمة مكتفية بذاتها.</value>
+    </data>
+    <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
+      <value>اختر ملصقًا تجريبيًا</value>
+    </data>
+    <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
+      <value>الصور (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg</value>
+    </data>
+    <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
+      <value>تعذّر إنشاء المعاينة: {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
+      <value>حُفظت المسودة في {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
+      <value>تعذّر حفظ المسودة: {0}</value>
+    </data>
+    <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
+      <value>اختر مكان حفظ حزمة التراكب</value>
+    </data>
+    <data name="OverlayDesignerExporting" xml:space="preserve">
+      <value>جارٍ التصدير…</value>
+    </data>
+    <data name="OverlayDesignerExportCancelled" xml:space="preserve">
+      <value>أُلغي التصدير.</value>
+    </data>
+    <data name="OverlayDesignerExportFailed" xml:space="preserve">
+      <value>فشل التصدير.</value>
+    </data>
+    <data name="OverlayDesignerExportedTo" xml:space="preserve">
+      <value>صُدِّر إلى {0}</value>
+    </data>
+    <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
+      <value>فشل التصدير: {0}</value>
+    </data>
+    <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
+      <value>جارٍ التحقق من المتجر بحثًا عن تعارض في الاسم…</value>
+    </data>
+    <data name="OverlayDesignerInstallFailed" xml:space="preserve">
+      <value>فشل التثبيت.</value>
+    </data>
+    <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
+      <value>تم التثبيت. أصبح «{0}» متاحًا الآن في قائمة تراكباتك.</value>
+    </data>
+    <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
+      <value>فشل التثبيت: {0}</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
+      <value>يوجد هناك مجلد باسم «{0}» بالفعل. هل تريد استبداله؟</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
+      <value>استبدال الحزمة الموجودة</value>
+    </data>
+    <data name="OverlayDesignerNoIssues" xml:space="preserve">
+      <value>لا توجد ملاحظات</value>
+    </data>
+    <data name="OverlayDesignerWarningCount" xml:space="preserve">
+      <value>التنبيهات: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorCount" xml:space="preserve">
+      <value>الأخطاء: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
+      <value>الأخطاء: {0}، التنبيهات: {1}</value>
+    </data>
+    <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
+      <value>‏{0} الخاص بي</value>
+    </data>
+    <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
+      <value>أُنشئ «{0}» انطلاقًا من «{1}».</value>
+    </data>
+    <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
+      <value>تعذّر الإنشاء من القالب: {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
+      <value>فتح overlay.json</value>
+    </data>
+    <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
+      <value>تعريف التراكب (overlay.json)|overlay.json</value>
+    </data>
+    <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
+      <value>تعذّر فتح هذا التراكب.</value>
+    </data>
+    <data name="OverlayDesignerOpened" xml:space="preserve">
+      <value>فُتح «{0}».</value>
+    </data>
+    <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
+      <value>فُتح «{0}». مشكلات بحاجة إلى إصلاح: {1}</value>
+    </data>
+    <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
+      <value>تعذّر فتح هذه الصفحة في متصفحك.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
+      <value>لديك تغييرات غير محفوظة. هل تريد تجاهلها؟ استخدم «حفظ المسودة» أو «تصدير الحزمة» للاحتفاظ بعملك.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
+      <value>تجاهل التغييرات</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
+      <value>حُذفت المسودة «{0}».</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
+      <value>تعذّر حذف المسودة: {0}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
+      <value>هل تريد حذف المسودة «{0}»؟ لا يمكن التراجع عن هذا الإجراء.</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
+      <value>حذف المسودة</value>
+    </data>
+    <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
+      <value>{0}: {1}، {2}، {3} في {4}</value>
+    </data>
+    <data name="OverlayStoreFilterAll" xml:space="preserve">
+      <value>كل التراكبات</value>
+    </data>
+    <data name="OverlayStoreFilterInstalled" xml:space="preserve">
+      <value>المثبَّتة</value>
+    </data>
+    <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
+      <value>غير المثبَّتة</value>
+    </data>
+    <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
+      <value>يتوفر تحديث</value>
+    </data>
+    <data name="OverlayStoreInstalledTab" xml:space="preserve">
+      <value>المثبَّتة ({0})</value>
+    </data>
+    <data name="OverlayStoreUpdatesTab" xml:space="preserve">
+      <value>التحديثات ({0})</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
+      <value>لا توجد تراكبات مثبَّتة بعد</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
+      <value>كل شيء محدَّث</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
+      <value>لم يُعثر على أي تراكب</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
+      <value>ثبِّت تراكبًا من «استكشاف» وسيظهر هنا.</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
+      <value>ستظهر هنا تراكباتك المثبَّتة عند توفر تحديث لها.</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
+      <value>جرّب بحثًا آخر، أو وسمًا آخر، أو مرشّح تثبيت مختلفًا.</value>
+    </data>
+    <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
+      <value>جارٍ تحديث الفهرس...</value>
+    </data>
+    <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
+      <value>التراكبات المتاحة: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
+      <value>تعذّر تحميل الفهرس: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
+      <value>خطأ أثناء تحميل الفهرس</value>
+    </data>
+    <data name="OverlayStoreVisibleCount" xml:space="preserve">
+      <value>التراكبات المعروضة: {0}</value>
+    </data>
+    <data name="OverlayStoreTotalCount" xml:space="preserve">
+      <value>التراكبات: {0}</value>
+    </data>
+    <data name="OverlayStoreInstalling" xml:space="preserve">
+      <value>جارٍ تثبيت «{0}»...</value>
+    </data>
+    <data name="OverlayStoreProgressFormat" xml:space="preserve">
+      <value>{0} ({1}٪)</value>
+    </data>
+    <data name="OverlayStoreInstallingProgress" xml:space="preserve">
+      <value>جارٍ تثبيت «{0}»: {1} ({2}٪)</value>
+    </data>
+    <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
+      <value>تم تثبيت «{0}» بنجاح</value>
+    </data>
+    <data name="OverlayStoreInstallFailed" xml:space="preserve">
+      <value>فشل التثبيت: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdating" xml:space="preserve">
+      <value>جارٍ تحديث «{0}»...</value>
+    </data>
+    <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
+      <value>جارٍ تحديث «{0}»: {1} ({2}٪)</value>
+    </data>
+    <data name="OverlayStoreCardUpToDate" xml:space="preserve">
+      <value>«{0}» محدَّث</value>
+    </data>
+    <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
+      <value>تم تحديث «{0}» بنجاح</value>
+    </data>
+    <data name="OverlayStoreUpdateFailed" xml:space="preserve">
+      <value>فشل التحديث: {0}</value>
+    </data>
+    <data name="OverlayStoreRemoving" xml:space="preserve">
+      <value>جارٍ إزالة «{0}»...</value>
+    </data>
+    <data name="OverlayStoreRemoved" xml:space="preserve">
+      <value>أُزيل «{0}»</value>
+    </data>
+    <data name="OverlayStoreRemoveFailed" xml:space="preserve">
+      <value>فشلت الإزالة: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
+      <value>جارٍ تحديث {0} من {1}: {2}</value>
+    </data>
+    <data name="OverlayStoreAllUpToDate" xml:space="preserve">
+      <value>كل التراكبات محدَّثة</value>
+    </data>
+    <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
+      <value>هل تريد إزالة «{0}»؟ يمكنك تثبيته مجددًا في أي وقت.</value>
+    </data>
+    <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
+      <value>إزالة التراكب</value>
+    </data>
+    <data name="OverlaySizeBytes" xml:space="preserve">
+      <value>{0} بايت</value>
+    </data>
+    <data name="OverlaySizeKilobytes" xml:space="preserve">
+      <value>{0:F1} ك.ب</value>
+    </data>
+    <data name="OverlaySizeMegabytes" xml:space="preserve">
+      <value>{0:F1} م.ب</value>
+    </data>
+    <data name="OverlayStoreVersionShort" xml:space="preserve">
+      <value>v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusInstalled" xml:space="preserve">
+      <value>مثبَّت</value>
+    </data>
+    <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
+      <value>مثبَّت v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
+      <value>متاح للتثبيت</value>
+    </data>
+    <data name="OverlayRemoveFailedBody" xml:space="preserve">
+      <value>تعذّرت إزالة «{0}».</value>
+    </data>
+    <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
+      <value>هل تريد إزالة «{0}»؟ ستُحذف ملفاته من مجلد التراكبات لديك.</value>
+    </data>
+    <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
+      <value>يتطلب التراكب «{0}» المخطط v{1}، بينما يدعم التطبيق v{2}. سيتم تخطيه.</value>
+    </data>
+    <data name="OverlayValidationIdRequired" xml:space="preserve">
+      <value>حقل 'id' الخاص بالتراكب مطلوب.</value>
+    </data>
+    <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
+      <value>يحتوي 'id' «{0}» على أحرف غير صالحة. استخدم أحرفًا إنجليزية صغيرة وأرقامًا وشرطات فقط.</value>
+    </data>
+    <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
+      <value>حقل 'displayName' الخاص بالتراكب مطلوب.</value>
+    </data>
+    <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
+      <value>حقل 'author' فارغ. يجب أن تذكر الطلبات المرسلة إلى المتجر مؤلفها.</value>
+    </data>
+    <data name="OverlayValidationVersionInvalid" xml:space="preserve">
+      <value>القيمة «{0}» في 'overlayVersion' ليست إصدارًا صالحًا (مثل '1.0.0').</value>
+    </data>
+    <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
+      <value>يجب أن تكون rating.fontSize أكبر من 0 (القيمة الحالية {0}).</value>
+    </data>
+    <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
+      <value>يحتوي layerOrder على طبقة غير معروفة «{0}». القيم الصالحة: {1}.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
+      <value>يكرر layerOrder «{0}» أكثر من مرة.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
+      <value>لا يتضمن layerOrder القيمة 'poster'؛ لن يُرسم ملصق المحتوى.</value>
+    </data>
+    <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
+      <value>‏{0}.imagePath مطلوب عند تعريف الطبقة.</value>
+    </data>
+    <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
+      <value>يجب أن يكون {0} «{1}» مسارًا نسبيًا داخل مجلد التراكب (بدون مسارات مطلقة وبدون '..').</value>
+    </data>
+    <data name="OverlayValidationAssetNotPng" xml:space="preserve">
+      <value>يجب أن يكون {0} «{1}» ملف PNG.</value>
+    </data>
+    <data name="OverlayValidationAssetNotFound" xml:space="preserve">
+      <value>لم يُعثر على الملف {0} «{1}».</value>
+    </data>
+    <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
+      <value>الملفان «{0}» و«{1}» لا يختلفان إلا في حالة الأحرف، وسيتعارضان على أنظمة الملفات التي تميّز بينها.</value>
+    </data>
+    <data name="OverlayValidationImageTooLarge" xml:space="preserve">
+      <value>تتجاوز الصورة {0} «{1}» الحجم الأقصى ({2:F1} م.ب &gt; {3:F0} م.ب).</value>
+    </data>
+    <data name="OverlayValidationMarginInvalid" xml:space="preserve">
+      <value>‏{0} «{1}» ليس قيمة Thickness صالحة. المتوقع من 1 إلى 4 أرقام.</value>
+    </data>
+    <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
+      <value>يحتوي {0} على قيمة غير رقمية «{1}».</value>
+    </data>
+    <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
+      <value>القيمة {1:0.##} في {0} تقع بعيدًا خارج اللوحة وقد لا يظهر أي شيء.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
+      <value>يجب أن يكون title.rotationOrigin «{0}» بالصيغة 'x,y' بقيمتين بالضبط.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
+      <value>يجب أن تكون القيمة «{0}» في title.rotationOrigin بين 0.0 و1.0.</value>
+    </data>
+    <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
+      <value>يتجاوز مجلد التراكب الحجم الإجمالي الأقصى ({0:F1} م.ب &gt; {1:F0} م.ب).</value>
+    </data>
+    <data name="OverlaySubmissionIdRequired" xml:space="preserve">
+      <value>يحتاج التراكب إلى معرِّف قبل أن يمكن إرساله.</value>
+    </data>
+    <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
+      <value>«{0}» غير موجود في المتجر بعد — سيكون تراكبًا جديدًا.</value>
+    </data>
+    <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
+      <value>«{0}» موجود في المتجر بالإصدار v{1}. إرسال v{2} سيحدّثه.</value>
+    </data>
+    <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
+      <value>«{0}» موجود في المتجر بالإصدار v{1}. ارفع رقم الإصدار فوق ذلك قبل الإرسال.</value>
+    </data>
+    <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
+      <value>تعذّر الوصول إلى المتجر للتحقق من تعارض الاسم. ما زال بإمكانك الإرسال.</value>
+    </data>
+    <data name="OverlayExportIdRequired" xml:space="preserve">
+      <value>يحتاج التراكب إلى معرِّف قبل أن يمكن تصديره.</value>
+    </data>
+    <data name="OverlayExportFolderExists" xml:space="preserve">
+      <value>يوجد هنا مجلد باسم «{0}» بالفعل. اختر موقعًا آخر أو اسمح باستبداله.</value>
+    </data>
+    <data name="OverlayExportBlockedByValidation" xml:space="preserve">
+      <value>أصلح المشكلات المذكورة قبل التصدير. مشكلات بحاجة إلى إصلاح: {0}</value>
+    </data>
+    <data name="OverlayExportFailed" xml:space="preserve">
+      <value>فشل التصدير: {0}</value>
+    </data>
+    <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
+      <value>لا يحتوي «{0}» على {1}.</value>
+    </data>
+    <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
+      <value>«{0}» معرِّف تراكب مدمج ولا يمكن التثبيت فوقه.</value>
+    </data>
+    <data name="OverlayExportInstallFailed" xml:space="preserve">
+      <value>فشل التثبيت: {0}</value>
+    </data>
+    <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
+      <value>لم يُحدَّد أي تراكب.</value>
+    </data>
+    <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
+      <value>«{0}» تراكب مدمج ولا يمكن إزالته.</value>
+    </data>
+    <data name="OverlayExportNotInstalled" xml:space="preserve">
+      <value>«{0}» غير مثبَّت.</value>
+    </data>
+    <data name="OverlayExportRemoveFailed" xml:space="preserve">
+      <value>تعذّرت إزالة «{0}»: {1}</value>
+    </data>
+    <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
+      <value>تعذّر إنشاء صورة المعاينة لهذا التراكب.</value>
+    </data>
+    <data name="OverlayLoadFileNotFound" xml:space="preserve">
+      <value>لم يُعثر على ملف التراكب: {0}</value>
+    </data>
+    <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
+      <value>تعذّر تحديد مجلد التراكب الخاص بـ «{0}».</value>
+    </data>
+    <data name="OverlayLoadInvalidJson" xml:space="preserve">
+      <value>«{0}» ليس JSON صالحًا: {1}</value>
+    </data>
+    <data name="OverlayLoadUnreadable" xml:space="preserve">
+      <value>تعذّرت قراءة «{0}»: {1}</value>
+    </data>
+    <data name="OverlayLoadNoDefinition" xml:space="preserve">
+      <value>لا يحتوي «{0}» على تعريف تراكب.</value>
+    </data>
+    <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
+      <value>يتطلب هذا التراكب المخطط v{0}، بينما يدعم هذا الإصدار من FoliCon المخطط v{1}. حدِّث FoliCon لتتمكن من تحريره.</value>
+    </data>
+    <data name="OverlayDraftIdRequired" xml:space="preserve">
+      <value>يحتاج التراكب إلى معرِّف قبل أن يمكن حفظه كمسودة.</value>
+    </data>
+    <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
+      <value>تراكب مدمج</value>
+    </data>
+    <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
+      <value>تراكب مثبَّت</value>
+    </data>
+    <data name="OverlayTemplateIdInUse" xml:space="preserve">
+      <value>معرِّف التراكب «{0}» مستخدم بالفعل من قِبل تراكب مدمج أو مثبَّت.</value>
+    </data>
+    <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
+      <value>جارٍ جلب البيان...</value>
+    </data>
+    <data name="OverlayInstallProgressValidating" xml:space="preserve">
+      <value>جارٍ التحقق...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalling" xml:space="preserve">
+      <value>جارٍ التثبيت...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalled" xml:space="preserve">
+      <value>تم التثبيت.</value>
+    </data>
+    <data name="OverlayInstallProgressDownloading" xml:space="preserve">
+      <value>جارٍ تنزيل {0}...</value>
+    </data>
+    <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
+      <value>جارٍ إنشاء نسخة احتياطية من الإصدار الحالي...</value>
+    </data>
+    <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
+      <value>تعذّرت قراءة بيان «{0}»</value>
+    </data>
+    <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
+      <value>لا يمكن تثبيت «{0}»: إنه تراكب مدمج.</value>
+    </data>
+    <data name="OverlayInstallDownloadFailed" xml:space="preserve">
+      <value>تعذّر تنزيل ملفات التراكب «{0}»: {1}</value>
+    </data>
+    <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
+      <value>يتجاوز الملف «{0}» الحد الأقصى البالغ {1} م.ب.</value>
+    </data>
+    <data name="OverlayInstallHashMismatch" xml:space="preserve">
+      <value>فشل التحقق من سلامة «{0}»: الملف الذي جرى تنزيله لا يطابق المجموع الاختباري المنشور.</value>
+    </data>
+    <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
+      <value>لا يحتوي overlay.json على تعريف تراكب.</value>
+    </data>
+    <data name="OverlayInstallValidationFailed" xml:space="preserve">
+      <value>فشل التحقق: {0}</value>
+    </data>
+    <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
+      <value>التراكب «{0}» غير موجود في الفهرس.</value>
+    </data>
+    <data name="OverlayUpdateFailed" xml:space="preserve">
+      <value>تعذّر تحديث التراكب «{0}» من البيان: {1}</value>
     </data>
 </root>

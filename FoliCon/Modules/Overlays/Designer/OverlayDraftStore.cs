@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using JsonException = Newtonsoft.Json.JsonException;
 
 namespace FoliCon.Modules.Overlays.Designer;
@@ -6,7 +6,6 @@ namespace FoliCon.Modules.Overlays.Designer;
 /// <summary>
 /// A saved work-in-progress overlay.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayDraftInfo(string draftId, string displayName, string folderPath, DateTime savedAt)
 {
     /// <summary>Folder name under the drafts root. Derived from the overlay ID.</summary>
@@ -32,7 +31,6 @@ public sealed class OverlayDraftInfo(string draftId, string displayName, string 
 /// Command history is deliberately not persisted; reopening a draft starts a fresh undo stack
 /// with the saved state as its clean baseline.
 /// </summary>
-[Localizable(false)]
 public class OverlayDraftStore(string? draftsRoot = null)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -54,7 +52,7 @@ public class OverlayDraftStore(string? draftsRoot = null)
 
         if (string.IsNullOrWhiteSpace(document.Id))
         {
-            throw new InvalidOperationException("The overlay needs an ID before it can be saved as a draft.");
+            throw new InvalidOperationException(Lang.OverlayDraftIdRequired);
         }
 
         var finalPath = Path.Combine(_draftsRoot, document.Id);

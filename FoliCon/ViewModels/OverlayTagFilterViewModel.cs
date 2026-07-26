@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.ViewModels;
 
 /// <summary>
@@ -7,7 +7,6 @@ namespace FoliCon.ViewModels;
 /// Selection state lives here rather than in a single "selected tag" string so several tags
 /// can be active at once — a dropdown can only ever express one.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayTagFilterViewModel(string tag, int count) : BindableBase
 {
     public string Tag { get; } = tag;

@@ -1,10 +1,9 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
 /// Outcome of an export attempt.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayExportResult
 {
     private OverlayExportResult(bool succeeded, string? packagePath, OverlayValidationResult validation, string? failureReason)
@@ -45,7 +44,7 @@ public sealed class OverlayExportResult
 /// pixel-identical <c>preview.png</c>, so re-exporting an unchanged overlay does not churn the
 /// manifest hashes and create noise in a pull request.
 /// </summary>
-[Localizable(false)]
+[Localizable(false)] // CanonicalPreviewContext is deliberately English; see its remarks.
 public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = null)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -84,14 +83,14 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
 
         if (string.IsNullOrWhiteSpace(document.Id))
         {
-            return OverlayExportResult.Failure("The overlay needs an ID before it can be exported.");
+            return OverlayExportResult.Failure(Lang.OverlayExportIdRequired);
         }
 
         var finalPath = Path.Combine(destinationRoot, document.Id);
         if (Directory.Exists(finalPath) && !overwrite)
         {
             return OverlayExportResult.Failure(
-                $"A folder named '{document.Id}' already exists here. Choose another location or allow replacing it.");
+                string.Format(Lang.OverlayExportFolderExists, document.Id));
         }
 
         // Staged as a sibling so the final move is a rename on the same volume.
@@ -112,7 +111,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
             {
                 SafeDelete(stagingPath);
                 return OverlayExportResult.Failure(
-                    $"Fix the reported problems before exporting. Problems to fix: {validation.ErrorCount}",
+                    string.Format(Lang.OverlayExportBlockedByValidation, validation.ErrorCount),
                     validation);
             }
 
@@ -128,7 +127,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
         {
             Logger.Error(ex, "Failed to export overlay '{Id}'", document.Id);
             SafeDelete(stagingPath);
-            return OverlayExportResult.Failure($"Export failed: {ex.Message}");
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportFailed, ex.Message));
         }
     }
 
@@ -142,7 +141,8 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
 
         if (!File.Exists(Path.Combine(packagePath, OverlayConstants.overlayJsonFileName)))
         {
-            return OverlayExportResult.Failure($"'{packagePath}' does not contain {OverlayConstants.overlayJsonFileName}.");
+            return OverlayExportResult.Failure(string.Format(
+                Lang.OverlayExportPackageMissingDefinition, packagePath, OverlayConstants.overlayJsonFileName));
         }
 
         var id = new DirectoryInfo(packagePath).Name;
@@ -152,7 +152,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
 
         if (OverlayConstants.BuiltInOverlayIds.Contains(id, StringComparer.OrdinalIgnoreCase))
         {
-            return OverlayExportResult.Failure($"'{id}' is a built-in overlay ID and cannot be installed over.");
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportBuiltInIdReserved, id));
         }
 
         var target = Path.Combine(root, id);
@@ -177,7 +177,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
         {
             Logger.Error(ex, "Failed to install overlay '{Id}' locally", id);
             SafeDelete(staging);
-            return OverlayExportResult.Failure($"Install failed: {ex.Message}");
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportInstallFailed, ex.Message));
         }
     }
 
@@ -191,12 +191,12 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
     {
         if (string.IsNullOrWhiteSpace(overlayId))
         {
-            return OverlayExportResult.Failure("No overlay was specified.");
+            return OverlayExportResult.Failure(Lang.OverlayExportNoOverlaySpecified);
         }
 
         if (OverlayConstants.BuiltInOverlayIds.Contains(overlayId, StringComparer.OrdinalIgnoreCase))
         {
-            return OverlayExportResult.Failure($"'{overlayId}' is a built-in overlay and cannot be removed.");
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportBuiltInCannotRemove, overlayId));
         }
 
         var root = userOverlaysRoot ?? Path.Combine(
@@ -206,7 +206,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
 
         if (!Directory.Exists(target))
         {
-            return OverlayExportResult.Failure($"'{overlayId}' is not installed.");
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportNotInstalled, overlayId));
         }
 
         try
@@ -218,7 +218,8 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             Logger.Error(ex, "Failed to remove overlay '{Id}'", overlayId);
-            return OverlayExportResult.Failure($"Could not remove '{overlayId}': {ex.Message}");
+            return OverlayExportResult.Failure(
+                string.Format(Lang.OverlayExportRemoveFailed, overlayId, ex.Message));
         }
     }
 
@@ -258,7 +259,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
         var definition = BuildExportDefinition(document, stagingPath);
 
         var image = await _previewRenderer.RenderNowAsync(definition, CanonicalPreviewContext)
-            ?? throw new InvalidOperationException("Could not render the preview image for this overlay.");
+            ?? throw new InvalidOperationException(Lang.OverlayExportPreviewRenderFailed);
 
         var encoder = new PngBitmapEncoder();
         encoder.Frames.Add(BitmapFrame.Create(image));

@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System.Windows;
 using FoliCon.Models.Data;
 using FoliCon.Models.Enums;
@@ -14,6 +14,7 @@ namespace FoliconTest;
 /// section, so a missing StaticResource key or broken template binding fails here
 /// instead of at runtime.
 /// </summary>
+[Collection(XamlLoadingCollection.Name)]
 public class OverlayStoreViewSmokeTests
 {
     [Fact]
@@ -34,7 +35,6 @@ public class OverlayStoreViewSmokeTests
 
         host.Invoke(() =>
         {
-            EnsureApplicationResources();
             ViewModelLocationProvider.SetDefaultViewModelFactory(_ => vm);
 
             var view = new OverlayStore { DataContext = vm };
@@ -50,24 +50,6 @@ public class OverlayStoreViewSmokeTests
         });
 
         Assert.False(vm.HasError, vm.ErrorMessage);
-    }
-
-    private static void EnsureApplicationResources()
-    {
-        var dictionaries = Application.Current.Resources.MergedDictionaries;
-        string[] sources =
-        [
-            "pack://application:,,,/HandyControl;component/Themes/Theme.xaml",
-            "pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"
-        ];
-        foreach (var source in sources)
-        {
-            var uri = new Uri(source);
-            if (dictionaries.All(d => d.Source != uri))
-            {
-                dictionaries.Add(new ResourceDictionary { Source = uri });
-            }
-        }
     }
 
     private static OverlayCatalogEntry CreateEntry(string id, string name, string author) => new()

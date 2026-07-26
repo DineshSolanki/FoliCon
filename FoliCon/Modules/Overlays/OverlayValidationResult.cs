@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>
@@ -17,7 +17,6 @@ public enum OverlayValidationSeverity
 /// A single validation finding, carrying enough identity for the designer to
 /// focus the offending field and select the affected element on the canvas.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayValidationIssue(
     OverlayValidationSeverity severity,
     string field,
@@ -44,7 +43,6 @@ public sealed class OverlayValidationIssue(
 /// Structured outcome of validating an overlay definition and its package folder.
 /// Errors block export; warnings are advisory.
 /// </summary>
-[Localizable(false)]
 public sealed class OverlayValidationResult
 {
     private readonly List<OverlayValidationIssue> _issues = [];
