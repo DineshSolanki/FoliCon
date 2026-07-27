@@ -127,7 +127,7 @@ public class OverlayStoreViewModelTests
     public async Task StoreViewModel_StatusFilter_SelectsByValue(OverlayStatusFilter filter, int expected)
     {
         using var host = new WpfTestHost();
-        var vm = await CreateFilterFixture(host);
+        var vm = await CreateFilterFixture();
 
         WpfTestHost.Invoke(() => vm.SelectedStatusFilter = filter);
 
@@ -143,7 +143,7 @@ public class OverlayStoreViewModelTests
     public async Task StoreViewModel_StatusFilter_SurvivesTranslatedLabels()
     {
         using var host = new WpfTestHost();
-        var vm = await CreateFilterFixture(host);
+        var vm = await CreateFilterFixture();
 
         WpfTestHost.Invoke(() =>
         {
@@ -165,7 +165,7 @@ public class OverlayStoreViewModelTests
         Assert.Equal("neon-glow", results[0].Id);
     }
 
-    private static async Task<OverlayStoreViewModel> CreateFilterFixture(WpfTestHost host)
+    private static async Task<OverlayStoreViewModel> CreateFilterFixture()
     {
         var entries = new List<OverlayCatalogEntry>
         {

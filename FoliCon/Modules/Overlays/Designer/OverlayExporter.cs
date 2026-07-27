@@ -45,11 +45,9 @@ public sealed class OverlayExportResult
 /// manifest hashes and create noise in a pull request.
 /// </summary>
 [Localizable(false)] // CanonicalPreviewContext is deliberately English; see its remarks.
-public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = null)
+public class OverlayExporter
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
-    private readonly OverlayDesignerPreviewRenderer _previewRenderer = previewRenderer ?? new OverlayDesignerPreviewRenderer();
 
     /// <summary>
     /// Fixed inputs for the exported preview.
@@ -252,7 +250,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
         }
     }
 
-    private async Task WritePreviewAsync(OverlayDesignerDocument document, string stagingPath)
+    private static async Task WritePreviewAsync(OverlayDesignerDocument document, string stagingPath)
     {
         // Render against the staging folder so the preview uses the copied assets, not the
         // author's working folder, and matches exactly what a store user will install.

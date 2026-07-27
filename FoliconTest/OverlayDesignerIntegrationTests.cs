@@ -371,7 +371,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
     private OverlayTemplate GetTemplate(string id) =>
         _templates.GetTemplates().First(t => t.Id == id);
 
-    private Bitmap RenderToBitmap(FoliCon.Models.Data.PosterOverlayDefinition definition) =>
+    private static Bitmap RenderToBitmap(FoliCon.Models.Data.PosterOverlayDefinition definition) =>
         WpfTestHost.Invoke(() =>
         {
             var posterIcon = new PosterIcon();

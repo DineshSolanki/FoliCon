@@ -38,8 +38,6 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
     [Fact]
     public async Task RenderNowAsync_ProducesAFrozen256Bitmap()
     {
-        var renderer = NewRenderer();
-
         var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(CreateDefinition(), new OverlayPreviewContext());
 
         Assert.NotNull(image);

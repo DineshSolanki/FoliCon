@@ -77,7 +77,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         _packageLoader = packageLoader ?? throw new ArgumentNullException(nameof(packageLoader));
         _previewRenderer = previewRenderer ?? throw new ArgumentNullException(nameof(previewRenderer));
         _draftStore = draftStore ?? new OverlayDraftStore();
-        _exporter = exporter ?? new OverlayExporter(previewRenderer);
+        _exporter = exporter ?? new OverlayExporter();
 
         // Null when no repository service is available (tests, previews): the catalog
         // clash check is skipped, but submission guidance still works.

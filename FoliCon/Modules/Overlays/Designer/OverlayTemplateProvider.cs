@@ -46,9 +46,8 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
                 o))];
 
     private static string GetDescription(PosterOverlayDefinition o) =>
-        string.IsNullOrWhiteSpace(o.Description)
-            ? o.IsBuiltIn ? Lang.OverlayTemplateBuiltInDescription : Lang.OverlayTemplateInstalledDescription
-            : o.Description;
+        !string.IsNullOrWhiteSpace(o.Description) ? o.Description :
+        o.IsBuiltIn ? Lang.OverlayTemplateBuiltInDescription : Lang.OverlayTemplateInstalledDescription;
 
     /// <summary>
     /// Clones a template into <paramref name="workingFolder"/> and returns a document ready
