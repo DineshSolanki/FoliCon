@@ -65,7 +65,6 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
     [Fact]
     public async Task PreviewContextChanges_AlterTheRenderedOutput()
     {
-        var renderer = NewRenderer();
         var definition = CreateDefinition();
 
         var withRating = await OverlayDesignerPreviewRenderer.RenderNowAsync(definition,
@@ -177,7 +176,6 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
     [Fact]
     public async Task RenderNowAsync_InvalidAsset_ReturnsNullRatherThanThrowing()
     {
-        var renderer = NewRenderer();
         var definition = CreateDefinition();
         definition.BaseLayer = new LayerDefinition
         {
