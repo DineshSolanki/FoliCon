@@ -15,7 +15,10 @@ namespace FoliCon.ViewModels;
 /// debounced live preview. Every mutation goes through the history so undo/redo covers the
 /// whole surface.
 /// </summary>
+// ReSharper disable once S3881 — Sealed class uses private Dispose(bool); protected virtual not needed
+#pragma warning disable S3881 // Sealed class uses private Dispose(bool); protected virtual not needed
 public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
+#pragma warning restore S3881
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -1148,9 +1151,11 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         }
 
         HasValidationErrors = !result.IsValid;
+#pragma warning disable S125 // Design comment explaining pluralization strategy, not commented-out code
         // "Noun: count" rather than "{n} error(s)". English pluralises with a trailing "s";
         // ru/ar have several plural forms and ja/zh have none, so no single format string can
         // be translated correctly. Naming the noun and appending the count sidesteps it.
+#pragma warning restore S125
         ValidationSummary = result switch
         {
             { ErrorCount: 0, WarningCount: 0 } => Lang.OverlayDesignerNoIssues,

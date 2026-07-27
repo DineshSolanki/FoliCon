@@ -66,11 +66,15 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
 
     /// <summary>Raised on the STA render completion path when a fresh frame is ready.</summary>
     // ReSharper disable once S3264 — Invoked via Rendered?.Invoke() on the STA thread
+#pragma warning disable S3264 // Invoked via Rendered?.Invoke() on the STA thread
     public event EventHandler<OverlayPreviewRenderedEventArgs>? Rendered;
+#pragma warning restore S3264
 
     /// <summary>Raised when a render attempt fails. The canvas keeps its previous frame.</summary>
     // ReSharper disable once S3264 — Invoked via Failed?.Invoke() on the STA thread
+#pragma warning disable S3264 // Invoked via Failed?.Invoke() on the STA thread
     public event EventHandler<OverlayPreviewFailedEventArgs>? Failed;
+#pragma warning restore S3264
 
     /// <summary>Number of frames actually published. Test/diagnostic hook.</summary>
     public long PublishedFrameCount { get; private set; }

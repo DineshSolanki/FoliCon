@@ -33,10 +33,12 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry, string? installedVe
         ? Lang.OverlayStoreStatusInstalled
         : string.Format(Lang.OverlayStoreStatusInstalledVersion, InstalledVersion);
 
+#pragma warning disable S3358 // Chained ternary is clearer than if/else for this 3-way status select
     public string AvailabilityStatus =>
         IsUpdateAvailable ? Lang.OverlayStoreFilterUpdateAvailable :
         IsInstalled ? InstalledVersionDisplay :
         Lang.OverlayStoreStatusAvailableToInstall;
+#pragma warning restore S3358
 
     public BitmapSource? PreviewImage
     {

@@ -44,7 +44,9 @@ public sealed class OverlayEditHistory(OverlayDesignerDocument document, int cap
 
     /// <summary>Raised after any operation that can change <see cref="CanUndo"/>, <see cref="CanRedo"/>, or <see cref="IsDirty"/>.</summary>
     // ReSharper disable once S3264 — Invoked via OnChanged() helper method
+#pragma warning disable S3264 // Invoked via OnChanged() helper method
     public event EventHandler? Changed;
+#pragma warning restore S3264
 
     /// <summary>
     /// Applies a command and pushes it onto the undo stack, discarding any redo branch.

@@ -45,9 +45,12 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
                 GetDescription(o),
                 o))];
 
+    // ReSharper disable once S3358 — Chained ternary is clearer than if/else for this 3-way string select
+#pragma warning disable S3358 // Chained ternary is clearer than if/else for this 3-way string select
     private static string GetDescription(PosterOverlayDefinition o) =>
         !string.IsNullOrWhiteSpace(o.Description) ? o.Description :
         o.IsBuiltIn ? Lang.OverlayTemplateBuiltInDescription : Lang.OverlayTemplateInstalledDescription;
+#pragma warning restore S3358
 
     /// <summary>
     /// Clones a template into <paramref name="workingFolder"/> and returns a document ready

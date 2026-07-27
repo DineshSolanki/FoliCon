@@ -34,7 +34,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     private OverlayStoreViewModel(
         IOverlayRepositoryService repositoryService,
         Func<OverlayCardViewModel, bool> confirmRemoval,
-        IDialogService dialogService)
+        IDialogService? dialogService)
     {
         RequestClose = default;
         _repositoryService = repositoryService;

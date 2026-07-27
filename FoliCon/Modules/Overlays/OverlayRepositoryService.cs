@@ -274,9 +274,11 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             progress?.Report((100, Lang.OverlayInstallProgressInstalled));
             Logger.Info("Successfully installed overlay '{Id}' v{Version}", entry.Id, entry.OverlayVersion);
         }
+#pragma warning disable S2139 // Exception is logged at Error level and rethrown — cleanup is intentional
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to install overlay '{Id}': {Message}", entry.Id, ex.Message);
+#pragma warning restore S2139
             // Clean up temp directory
             if (Directory.Exists(tmpDir)) 
             {
@@ -392,6 +394,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             Logger.Info("Successfully updated overlay '{Id}'", overlayId);
         }
+#pragma warning disable S2139 // Exception is logged and rethrown — rollback is intentional
         catch (OperationCanceledException ex)
         {
             // Rollback: restore backup
@@ -399,6 +402,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             RollbackUpdate(finalDir, backupDir);
             throw;
         }
+#pragma warning restore S2139
         catch (Exception ex)
         {
             // Rollback: restore backup
