@@ -16,7 +16,7 @@
 <img src="https://img.shields.io/github/commits-since/DineshSolanki/Folicon/latest/master"> <img src="https://img.shields.io/github/repo-size/dinesh-solanki/folicon.svg?logo=FoliconRepoSize"> <img src="https://img.shields.io/github/downloads/dineshsolanki/FoliCon/total?color=blue&style=plastic"> ![SourceForge Downloads](https://img.shields.io/sourceforge/dt/FoliCon)
  <img src="https://img.shields.io/github/last-commit/dinesh-solanki/folicon.svg?logo=FoliconLastCommit"> <img src="https://img.shields.io/github/issues/DineshSolanki/Folicon"> <img alt="GitHub Closed Issues" src="https://img.shields.io/github/issues-closed/DineshSolanki/FoliCon" /> ![Lines of code](https://sloc.xyz/github/DineshSolanki/FoliCon)
 
-Folicon is a Folder icon changer which works for movie,music, games, and shows, it also shows rating on the created icons, and has two mode, POSTER and Professional, inspired From [Raticon](https://github.com/Jamedjo/Raticon)
+FoliCon is a folder icon changer for movies, TV shows, music, and games,anime,books. It fetches poster art and ratings from online databases, then applies them as folder icons. Built on WPF with a modular overlay plugin system so the look of the icon can be completely restyled without touching the codebase.
 
 :star: Star us on GitHub — it helps!
 ## Star History
@@ -29,37 +29,47 @@ Folicon is a Folder icon changer which works for movie,music, games, and shows, 
 
 <details>
   <summary>Screens (Click here to see) </summary>
-    
+
 ![Before](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/before.png)
 ![After](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/after.jpg)
 ![Searching](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/searchingpro.jpg)
 ![PosterSearch](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/posterresult.jpg)
 ![DDownloading](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/downloading.png)
 ![Folicon](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/mainview.png)
-![FoliconCustomIcon](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/customiconsetter.png)
+![FoliConCustomIcon](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/customiconsetter.png)
 </details>
 
 
 ## Getting Started
-*To Use this Application Instantly, Click the Download button Above or Go to "Release", and start using. (No Installation or Additional Libraries needed)*
+*No installation or additional libraries needed — download the latest release and run.*
 
-FoliCon uses **free** API keys from third-party services (TMDB, IGDB/Twitch, DeviantArt). No credit card required — just create a free account on each service you want to use.
+FoliCon uses free API keys from third-party services (TMDB, IGDB/Twitch, DeviantArt). No credit card required — just create a free account on each service you want to use.
 
-On first run, you'll be guided through a setup wizard to configure the services you need. You can also access it anytime from **Settings → Setup Wizard**.
+On first run, a setup wizard walks you through configuring the services you need. You can also access it anytime from **Settings → Setup Wizard**.
 
-**Service overview:**
-- **TMDB** — Free. Movie & TV show metadata. Get your free API key at [themoviedb.org](https://www.themoviedb.org/settings/api)
-- **IGDB/Twitch** — Free. Game metadata. Create a free Twitch app at [dev.twitch.tv](https://dev.twitch.tv/console/apps)
-- **DeviantArt** — Free. Professional mode icon searches. Just log in with your DeviantArt account
+| Service | What it does | Key |
+|---|---|---|
+| **TMDB** | Movie & TV show metadata | [Get free key](https://www.themoviedb.org/settings/api) |
+| **IGDB / Twitch** | Game metadata | [Create Twitch app](https://dev.twitch.tv/console/apps) |
+| **DeviantArt** | Professional-mode icon searches | Just log in with your DeviantArt account |
 
 All services are optional — configure only what you need.
 
+## Overlay Plugin System
+
+FoliCon's icon look is driven by **overlays** — JSON-defined packages of layers, images, and poster styling that can be swapped, created, and shared without recompiling the app.
+
+Built-in overlays ship with the app. Community overlays can be installed from the **Overlay Store** or built from scratch with the **Overlay Designer**, which provides a live preview, layer ordering, colour and rotation controls, corner-radius editing, export and draft saving.
+
+- **Overlay Store** — browse, install, update, and remove overlays from a community catalog
+- **Overlay Designer** — create new overlays from templates, edit properties with a live preview, export installable packages, and submit them to the community store
+- **Creating overlays** — full authoring guide: [CREATING-OVERLAYS.md](https://github.com/DineshSolanki/FoliCon-Overlays/blob/main/CREATING-OVERLAYS.md)
+- **Community overlays repo** — [github.com/DineshSolanki/FoliCon-Overlays](https://github.com/DineshSolanki/FoliCon-Overlays)
+
 ## Localization
-FoliCon supports multiple languages through Crowdin integration. The application is currently available in English, Spanish, Arabic, Russian, Hindi, and Portuguese. 
+FoliCon supports English, Spanish, Arabic, Russian, Hindi, Portuguese, Japanese, and Chinese through [Crowdin](https://crowdin.com/project/folicon).
 
 ### Help with Translations
-We welcome contributions to translate FoliCon into more languages:
-
 1. Visit our [Crowdin project](https://crowdin.com/project/folicon)
 2. Sign up or log in to Crowdin
 3. Select the language you want to help translate
@@ -83,26 +93,18 @@ If you're working on the source code and want to manage translations:
    .\crowdin-sync.ps1 -Action download
    ```
 
-3. GitHub Actions automatically synchronizes translations when changes are pushed to the main branch.
-
-### Prerequisites (these are for compiling the source, to only use the application, you can download latest release)
-A TMDB API [Get it](https://www.themoviedb.org/settings/api)
-
-A IGDB API [Get it](https://api.igdb.com/)
-
-DeviantArt API [Get it](https://www.deviantart.com/developers/register)
-
 ## Built With
 
-* [The Movie Database](https://www.themoviedb.org/) - TV, Movies searching
-* [DeviantArt](https://www.deviantart.com/) - Professional Mode searching
-* [IGDB](https://www.igdb.com/) - Games searching
-* [IconLib](https://www.codeproject.com/Articles/16178/IconLib-Icons-Unfolded-MultiIcon-and-Windows-Vista) - To make Icons from viewModel
-* [Handy Controls](https://github.com/ghost1372/HandyControls) - For Custom Controls
-* [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) - For File Dialogs
-* [NLog](https://nlog-project.org/) - For Logging
-* [Sentry](https://sentry.io) -  For Error Tracking
-* [Crowdin](https://crowdin.com) - For localization management
+* [The Movie Database](https://www.themoviedb.org/) — TV & movie metadata
+* [DeviantArt](https://www.deviantart.com/) — professional-mode icon searches
+* [IGDB](https://www.igdb.com/) — game metadata
+* [Prism](https://github.com/PrismLibrary/Prism) — MVVM and modularity
+* [HandyControls](https://github.com/ghost1372/HandyControls) — custom WPF controls
+* [WinCopies.IconLib](https://github.com/avatars38/WinCopies) — icon creation
+* [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) — file dialogs
+* [Sentry](https://sentry.io) — error tracking
+* [NLog](https://nlog-project.org/) — logging
+* [Crowdin](https://crowdin.com) — localization management
 
 ## Authors
 
@@ -116,11 +118,10 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 ## Acknowledgments
 
 * A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
-* Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming) for His Poster design used as an alternate Poster Icon design starting with v3.1.
-* Thanks to [Faelpessoal](https://www.deviantart.com/faelpessoal) and [Liaher](https://www.deviantart.com/liaher) for their Poster design used as an alternate Poster Icon design starting with v3.7.
+* Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming), [Faelpessoal](https://www.deviantart.com/faelpessoal), and [Liaher](https://www.deviantart.com/liaher) for poster designs used in FoliCon overlays.
 * <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/tmdbblack.png" />
 * This product uses the TMDb API but is not endorsed or certified by TMDb.
-* All Professional Mode icons are fetched from publicly available galleries of DeviantArt, and all rights reserves to their respective owners.
+* All Professional Mode icons are fetched from publicly available galleries of DeviantArt, and all rights reserved to their respective owners.
 
 ---
 Thank you to the following individuals who have provided invaluable inputs through discussions and issues:
