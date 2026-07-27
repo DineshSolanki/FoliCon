@@ -11,7 +11,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayGeometry"/> — the single conversion point between schema
 /// margin strings and the typed bounds the designer canvas manipulates.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayDesignerGeometryTests
 {
     #region Thickness parsing and formatting

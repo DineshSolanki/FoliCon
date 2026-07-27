@@ -17,12 +17,13 @@ namespace FoliconTest;
 /// outright. These tests format every overlay string in every locale instead.
 /// </para>
 /// </summary>
-public class OverlayLocalizationTests
+public partial class OverlayLocalizationTests
 {
     private static readonly string[] Cultures = ["ar", "es", "hi", "ja", "pt", "ru", "zh"];
 
     /// <summary>Matches {0} and {0:F1} alike, capturing the argument index.</summary>
-    private static readonly Regex Placeholder = new(@"\{(\d+)(?::[^}]*)?\}", RegexOptions.Compiled);
+    [GeneratedRegex(@"\{(\d+)(?::[^}]*)?\}")]
+    private static partial Regex Placeholder();
 
     /// <summary>
     /// Every LangKeys constant belonging to the overlay feature. Read by reflection so a key
@@ -151,7 +152,7 @@ public class OverlayLocalizationTests
 
                 // Strip valid placeholders; anything left with a brace is a typo such as
                 // "{0" or "{ 0}" that string.Format would reject or render literally.
-                var stripped = Placeholder.Replace(value, string.Empty);
+                var stripped = Placeholder().Replace(value, string.Empty);
                 if (stripped.Contains('{') || stripped.Contains('}'))
                 {
                     problems.Add($"{key} [{culture}]: {value}");
@@ -163,5 +164,5 @@ public class OverlayLocalizationTests
     }
 
     private static HashSet<int> IndexesIn(string value) =>
-        [.. Placeholder.Matches(value).Select(m => int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture))];
+        [.. Placeholder().Matches(value).Select(m => int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture))];
 }

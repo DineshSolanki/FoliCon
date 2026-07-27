@@ -15,7 +15,7 @@ namespace FoliconTest;
 /// These tests confirm the dynamic renderer handles all overlay configurations
 /// without errors.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class DynamicPosterIconParityTests
 {
     private static readonly string[] OverlayIds =

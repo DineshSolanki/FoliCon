@@ -9,7 +9,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayDesignerPreviewRenderer"/> — debouncing, stale-frame
 /// suppression, and STA-safe frozen output.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayDesignerPreviewRendererTests : IDisposable
 {
     private readonly WpfTestHost _host = new();
@@ -40,7 +40,7 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
     {
         var renderer = NewRenderer();
 
-        var image = await renderer.RenderNowAsync(CreateDefinition(), new OverlayPreviewContext());
+        var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(CreateDefinition(), new OverlayPreviewContext());
 
         Assert.NotNull(image);
         Assert.Equal(256, image.PixelWidth);
@@ -70,9 +70,9 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
         var renderer = NewRenderer();
         var definition = CreateDefinition();
 
-        var withRating = await renderer.RenderNowAsync(definition,
+        var withRating = await OverlayDesignerPreviewRenderer.RenderNowAsync(definition,
             new OverlayPreviewContext { ShowRating = true, Rating = "9.9" });
-        var withoutRating = await renderer.RenderNowAsync(definition,
+        var withoutRating = await OverlayDesignerPreviewRenderer.RenderNowAsync(definition,
             new OverlayPreviewContext { ShowRating = false });
 
         Assert.NotNull(withRating);
@@ -155,7 +155,8 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
         renderer.Dispose();
 
         // Must not throw — the dialog can close while an edit is still in flight.
-        renderer.RequestRender(CreateDefinition(), new OverlayPreviewContext());
+        var ex = Record.Exception(() => renderer.RequestRender(CreateDefinition(), new OverlayPreviewContext()));
+        Assert.Null(ex);
     }
 
     [Fact]
@@ -163,8 +164,12 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
     {
         var renderer = new OverlayDesignerPreviewRenderer();
 
-        renderer.Dispose();
-        renderer.Dispose();
+        var ex = Record.Exception(() =>
+        {
+            renderer.Dispose();
+            renderer.Dispose();
+        });
+        Assert.Null(ex);
     }
 
     #endregion
@@ -183,7 +188,7 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
         };
         definition.OverlayFolderPath = Path.Combine(Path.GetTempPath(), "no-such-folder-xyz");
 
-        var image = await renderer.RenderNowAsync(definition, new OverlayPreviewContext());
+        var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(definition, new OverlayPreviewContext());
 
         // DynamicPosterIcon skips layers it cannot load, so this still renders.
         // The contract that matters is that it never throws into the UI thread.

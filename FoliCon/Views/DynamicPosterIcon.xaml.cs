@@ -251,17 +251,19 @@ public partial class DynamicPosterIcon : PosterIconBase
         // Use explicit ClipRect if provided, otherwise calculate from margins.
         if (!string.IsNullOrWhiteSpace(definition.Poster.ClipRect))
         {
-            var rectParts = definition.Poster.ClipRect!.Split(',');
-            if (rectParts.Length == 4)
+            var rectParts = definition.Poster.ClipRect.Split(',');
+            if (rectParts.Length != 4)
             {
-                var rx = ParseDouble(rectParts[0]);
-                var ry = ParseDouble(rectParts[1]);
-                var rw = ParseDouble(rectParts[2]);
-                var rh = ParseDouble(rectParts[3]);
-                border.Clip = new RectangleGeometry(
-                    new Rect(rx, ry, rw, rh),
-                    cornerRadius.TopLeft, cornerRadius.TopLeft);
+                return;
             }
+
+            var rx = ParseDouble(rectParts[0]);
+            var ry = ParseDouble(rectParts[1]);
+            var rw = ParseDouble(rectParts[2]);
+            var rh = ParseDouble(rectParts[3]);
+            border.Clip = new RectangleGeometry(
+                new Rect(rx, ry, rw, rh),
+                cornerRadius.TopLeft, cornerRadius.TopLeft);
         }
         else
         {

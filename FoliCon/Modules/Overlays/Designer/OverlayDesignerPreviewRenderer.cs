@@ -60,13 +60,16 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
     private long _requestVersion;
     private bool _disposed;
 
+    // ReSharper disable once S2360 — Optional parameter is the clearest API for this single-arg constructor
     public OverlayDesignerPreviewRenderer(TimeSpan? debounce = null) =>
         _debounce = debounce ?? DefaultDebounce;
 
     /// <summary>Raised on the STA render completion path when a fresh frame is ready.</summary>
+    // ReSharper disable once S3264 — Invoked via Rendered?.Invoke() on the STA thread
     public event EventHandler<OverlayPreviewRenderedEventArgs>? Rendered;
 
     /// <summary>Raised when a render attempt fails. The canvas keeps its previous frame.</summary>
+    // ReSharper disable once S3264 — Invoked via Failed?.Invoke() on the STA thread
     public event EventHandler<OverlayPreviewFailedEventArgs>? Failed;
 
     /// <summary>Number of frames actually published. Test/diagnostic hook.</summary>
@@ -111,7 +114,7 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
     /// Renders immediately, bypassing the debounce. Used for the initial frame and for export
     /// preview generation, where there is no burst to coalesce.
     /// </summary>
-    public async Task<BitmapSource?> RenderNowAsync(PosterOverlayDefinition definition, OverlayPreviewContext context)
+    public static async Task<BitmapSource?> RenderNowAsync(PosterOverlayDefinition definition, OverlayPreviewContext context)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(context);
@@ -204,7 +207,7 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
     /// Converts the renderer's <see cref="Bitmap"/> into a frozen <see cref="BitmapSource"/>
     /// so it can cross from the STA render thread to the UI thread safely.
     /// </summary>
-    private static BitmapSource ToFrozenBitmap(Bitmap bitmap)
+    private static BitmapImage ToFrozenBitmap(Bitmap bitmap)
     {
         // Not disposed: BitmapImage reads the stream lazily during EndInit, and freezing
         // makes the result self-contained.

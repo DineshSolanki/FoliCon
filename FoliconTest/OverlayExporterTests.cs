@@ -11,7 +11,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayExporter"/>: package layout, determinism, integrity metadata,
 /// and failure recovery.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayExporterTests : IDisposable
 {
     private readonly WpfTestHost _host = new();

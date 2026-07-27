@@ -227,7 +227,8 @@ public class OverlayDraftStoreTests : IDisposable
     [Fact]
     public void Delete_OfAMissingDraft_DoesNotThrow()
     {
-        _store.Delete("never-existed");
+        var ex = Record.Exception(() => _store.Delete("never-existed"));
+        Assert.Null(ex);
     }
 
     [Fact]

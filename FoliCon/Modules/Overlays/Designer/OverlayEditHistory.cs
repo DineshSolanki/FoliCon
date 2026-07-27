@@ -43,6 +43,7 @@ public sealed class OverlayEditHistory(OverlayDesignerDocument document, int cap
     public string? NextRedoDescription => CanRedo ? _redoStack[^1].Description : null;
 
     /// <summary>Raised after any operation that can change <see cref="CanUndo"/>, <see cref="CanRedo"/>, or <see cref="IsDirty"/>.</summary>
+    // ReSharper disable once S3264 — Invoked via OnChanged() helper method
     public event EventHandler? Changed;
 
     /// <summary>

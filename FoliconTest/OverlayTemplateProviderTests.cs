@@ -134,7 +134,7 @@ public class OverlayTemplateProviderTests : IDisposable
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
         var template = MakeTemplate("liaher", MakeDefinition("liaher", builtIn: true));
 
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(template, _tempDir, "my-clone", "My Clone", "Me"));
 
         Assert.Equal("my-clone", document.Id);
@@ -153,7 +153,7 @@ public class OverlayTemplateProviderTests : IDisposable
         source.Tags = ["rounded", "classic"];
 
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(MakeTemplate("liaher", source), _tempDir, "clone", "Clone", "Me"));
 
         Assert.Empty(document.Description);
@@ -169,7 +169,7 @@ public class OverlayTemplateProviderTests : IDisposable
         source.DesignWidth = 265;
 
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(MakeTemplate("liaher", source), _tempDir, "clone", "Clone", "Me"));
 
         var snapshot = document.CreateSnapshot();
@@ -191,7 +191,7 @@ public class OverlayTemplateProviderTests : IDisposable
         };
 
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(MakeTemplate("liaher", source), _tempDir, "clone", "Clone", "Me"));
 
         Assert.Equal("base.png", document.BaseLayerImagePath);
@@ -208,7 +208,7 @@ public class OverlayTemplateProviderTests : IDisposable
         source.Poster.OpacityMaskPath = "/Resources/poster_mockups/win11/front.png";
 
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(MakeTemplate("windows11", source), _tempDir, "clone", "Clone", "Me"));
 
         Assert.Equal("mask.png", document.PosterOpacityMaskPath);
@@ -228,7 +228,7 @@ public class OverlayTemplateProviderTests : IDisposable
 
         var destination = Path.Combine(_tempDir, "clone");
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(MakeTemplate("community", source), destination, "clone", "Clone", "Me"));
 
         Assert.Equal("base.png", document.BaseLayerImagePath);
@@ -249,7 +249,7 @@ public class OverlayTemplateProviderTests : IDisposable
         };
 
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             provider.CreateFromTemplate(MakeTemplate("liaher", source), _tempDir, "clone", "Clone", "Me"));
 
         Assert.NotEqual(document.BaseLayerImagePath, document.FrontLayerImagePath);
@@ -263,7 +263,7 @@ public class OverlayTemplateProviderTests : IDisposable
         var destination = Path.Combine(_tempDir, "nested", "new-overlay");
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
 
-        _host.Invoke(() => provider.CreateFromTemplate(
+        WpfTestHost.Invoke(() => provider.CreateFromTemplate(
             MakeTemplate("liaher", MakeDefinition("liaher", builtIn: true)),
             destination, "clone", "Clone", "Me"));
 
@@ -300,7 +300,7 @@ public class OverlayTemplateProviderTests : IDisposable
         var template = MakeTemplate("liaher", source);
 
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        _host.Invoke(() => provider.CreateFromTemplate(template, _tempDir, "clone", "Clone", "Me"));
+        WpfTestHost.Invoke(() => provider.CreateFromTemplate(template, _tempDir, "clone", "Clone", "Me"));
 
         Assert.Equal("liaher", source.Id);
         Assert.Equal("Original", source.Description);
@@ -311,7 +311,7 @@ public class OverlayTemplateProviderTests : IDisposable
     public void CreateFromTemplate_CloneIsNotBuiltIn()
     {
         var provider = new OverlayTemplateProvider(new StubOverlayProvider());
-        var document = _host.Invoke(() => provider.CreateFromTemplate(
+        var document = WpfTestHost.Invoke(() => provider.CreateFromTemplate(
             MakeTemplate("liaher", MakeDefinition("liaher", builtIn: true)),
             _tempDir, "clone", "Clone", "Me"));
 
@@ -358,6 +358,6 @@ public class OverlayTemplateProviderTests : IDisposable
 
         public string GetOverlayFolderPath(string id) => Path.Combine(Path.GetTempPath(), id);
 
-        public void Refresh() { }
+        public void Refresh() { /* No-op: stub for interface; templates are static in tests */ }
     }
 }

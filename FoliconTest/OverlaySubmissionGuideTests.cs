@@ -140,7 +140,9 @@ public class OverlaySubmissionGuideTests
     #endregion
 
     /// <summary>Reuses the shared stub from <see cref="OverlayStoreViewModelTests"/>.</summary>
+#pragma warning disable CA1859 // StubRepositoryService is internal to another test class
     private static IOverlayRepositoryService StubWith(string id, string version) =>
+#pragma warning restore CA1859
         new StubRepositoryService(
         [
             new OverlayCatalogEntry { Id = id, DisplayName = id, OverlayVersion = version }
@@ -150,6 +152,6 @@ public class OverlaySubmissionGuideTests
     private sealed class ThrowingRepositoryService : StubRepositoryService
     {
         public override Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct) =>
-            throw new HttpRequestException("offline");
+            throw new HttpRequestException("offline"); // ct is required by the interface
     }
 }

@@ -18,14 +18,14 @@ namespace FoliconTest;
 /// The ViewModel is deliberately not constructed: it reaches for the persistence tracker and the
 /// global overlay provider, and this test is about the markup, not the data.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class PosterIconConfigViewSmokeTests
 {
     [Fact]
     public void PosterIconConfigView_LoadsAndItsOverlayTemplateParses()
     {
         using var host = new WpfTestHost();
-        host.Invoke(() =>
+        WpfTestHost.Invoke(() =>
         {
             ViewModelLocationProvider.SetDefaultViewModelFactory(_ => new object());
 

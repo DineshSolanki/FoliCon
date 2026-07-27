@@ -25,7 +25,7 @@ public class OverlayStoreStyleResolutionTests : IDisposable
     {
         // The chips rely on a real Tag style. A style without a template renders as bare
         // content — exactly the failure ToggleButtonCustom produced.
-        var style = _host.Invoke(() =>
+        var style = WpfTestHost.Invoke(() =>
         {
             EnsureThemeLoaded();
             return Application.Current!.TryFindResource(styleKey) as Style;
@@ -47,7 +47,7 @@ public class OverlayStoreStyleResolutionTests : IDisposable
     {
         // hc:Tag.IsSelected is not BindsTwoWayByDefault, so the chip's Mode=TwoWay binding
         // is load-bearing: without it, clicking a chip would change nothing in the ViewModel.
-        var result = _host.Invoke(() =>
+        var result = WpfTestHost.Invoke(() =>
         {
             EnsureThemeLoaded();
 
@@ -77,7 +77,7 @@ public class OverlayStoreStyleResolutionTests : IDisposable
     [InlineData("ButtonPrimary", typeof(System.Windows.Controls.Button))]
     public void StoreStyleKeys_ResolveFromHandyControlTheme(string styleKey, Type expectedTargetType)
     {
-        var style = _host.Invoke(() =>
+        var style = WpfTestHost.Invoke(() =>
         {
             EnsureThemeLoaded();
             return Application.Current!.TryFindResource(styleKey) as Style;

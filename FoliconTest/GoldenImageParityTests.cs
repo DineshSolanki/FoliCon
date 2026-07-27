@@ -18,7 +18,7 @@ namespace FoliconTest;
 /// DynamicPosterIcon uses explicit pack URIs and works in headless test runners.
 /// The reference PNGs capture the old XAML view output from a real app context.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public sealed class GoldenImageParityTests : IDisposable
 {
     private readonly WpfTestHost _host = new();
@@ -46,11 +46,11 @@ public sealed class GoldenImageParityTests : IDisposable
         var definition = _provider.GetOverlayById(overlayId);
         Assert.NotNull(definition);
 
-        var posterIcon = _host.Invoke(() => new PosterIcon());
+        var posterIcon = WpfTestHost.Invoke(() => new PosterIcon());
         try
         {
             // Render via DynamicPosterIcon on STA thread
-            using var newBitmap = _host.Invoke(() =>
+            using var newBitmap = WpfTestHost.Invoke(() =>
             {
                 var dynamicIcon = new DynamicPosterIcon(definition, posterIcon);
                 return dynamicIcon.RenderToBitmap();
@@ -104,10 +104,10 @@ public sealed class GoldenImageParityTests : IDisposable
             var definition = _provider.GetOverlayById(overlayId);
             Assert.NotNull(definition);
 
-            var posterIcon = _host.Invoke(() => new PosterIcon());
+            var posterIcon = WpfTestHost.Invoke(() => new PosterIcon());
             try
             {
-                using var bitmap = _host.Invoke(() =>
+                using var bitmap = WpfTestHost.Invoke(() =>
                 {
                     var dynamicIcon = new DynamicPosterIcon(definition, posterIcon);
                     return dynamicIcon.RenderToBitmap();

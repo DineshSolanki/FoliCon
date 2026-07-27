@@ -23,8 +23,10 @@ namespace FoliconTest;
 /// renders a poster icon, or exports a package (which renders a preview).
 /// </para>
 /// </summary>
-[CollectionDefinition(Name)]
+[CollectionDefinition(name)]
+#pragma warning disable S1118, S2339 // Required by xUnit: non-static class with const for CollectionDefinition attribute
 public class XamlLoadingCollection
 {
-    public const string Name = "XAML loading";
+    public const string name = "XAML loading";
 }
+#pragma warning restore S1118, S2339

@@ -13,7 +13,7 @@ namespace FoliconTest;
 /// Tests for <see cref="OverlayDesignerViewModel"/>: selection, synchronization between the
 /// canvas and the numeric editors, command enablement, validation gating, and dirty tracking.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayDesignerViewModelTests : IDisposable
 {
     private readonly WpfTestHost _host = new();
@@ -423,7 +423,9 @@ public class OverlayDesignerViewModelTests : IDisposable
     {
         var viewModel = LoadedViewModel();
 
+#pragma warning disable S1656 // Intentional self-assignment to verify property setter idempotency
         viewModel.DisplayName = viewModel.DisplayName;
+#pragma warning restore S1656
 
         Assert.False(viewModel.IsDirty);
         Assert.False(viewModel.UndoCommand.CanExecute());
@@ -1210,7 +1212,7 @@ public class OverlayDesignerViewModelTests : IDisposable
     #region Helpers
 
     private TestableDesignerViewModel CreateViewModel() =>
-        _host.Invoke(() => new TestableDesignerViewModel(
+        WpfTestHost.Invoke(() => new TestableDesignerViewModel(
             new DialogCloseListener(),
             _provider,
             new OverlayTemplateProvider(_provider),
@@ -1328,7 +1330,7 @@ public class OverlayDesignerViewModelTests : IDisposable
 
         public string GetOverlayFolderPath(string id) => Path.Combine(Path.GetTempPath(), id);
 
-        public void Refresh() { }
+        public void Refresh() { /* No-op: stub for interface; overlays are static in tests */ }
     }
 
     #endregion

@@ -392,10 +392,10 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             Logger.Info("Successfully updated overlay '{Id}'", overlayId);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
             // Rollback: restore backup
-            Logger.Info("Update cancelled for '{Id}', rolling back", overlayId);
+            Logger.Info(ex, "Update cancelled for '{Id}', rolling back", overlayId);
             RollbackUpdate(finalDir, backupDir);
             throw;
         }

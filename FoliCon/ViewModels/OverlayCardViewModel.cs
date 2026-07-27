@@ -33,11 +33,10 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry, string? installedVe
         ? Lang.OverlayStoreStatusInstalled
         : string.Format(Lang.OverlayStoreStatusInstalledVersion, InstalledVersion);
 
-    public string AvailabilityStatus => IsUpdateAvailable
-        ? Lang.OverlayStoreFilterUpdateAvailable
-        : IsInstalled
-            ? InstalledVersionDisplay
-            : Lang.OverlayStoreStatusAvailableToInstall;
+    public string AvailabilityStatus =>
+        IsUpdateAvailable ? Lang.OverlayStoreFilterUpdateAvailable :
+        IsInstalled ? InstalledVersionDisplay :
+        Lang.OverlayStoreStatusAvailableToInstall;
 
     public BitmapSource? PreviewImage
     {

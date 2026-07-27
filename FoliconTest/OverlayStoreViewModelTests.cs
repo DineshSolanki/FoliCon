@@ -98,18 +98,18 @@ public class OverlayStoreViewModelTests
         service.MarkUpdateAvailable("neon-glow", "2.0.0");
 
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(service));
         await vm.CatalogLoaded;
 
-        var originalCard = host.Invoke(() => vm.Overlays.Single(o => o.Id == "neon-glow"));
-        host.Invoke(() => vm.SearchQuery = "Alice");
+        var originalCard = WpfTestHost.Invoke(() => vm.Overlays.Single(o => o.Id == "neon-glow"));
+        WpfTestHost.Invoke(() => vm.SearchQuery = "Alice");
 
-        var discoverResults = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        var discoverResults = WpfTestHost.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
         Assert.Equal(2, discoverResults.Count);
         Assert.Contains(originalCard, discoverResults);
 
-        host.Invoke(() => vm.CurrentSection = OverlayStoreSection.Updates);
-        var updateResults = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        WpfTestHost.Invoke(() => vm.CurrentSection = OverlayStoreSection.Updates);
+        var updateResults = WpfTestHost.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
         Assert.Single(updateResults);
         Assert.Same(originalCard, updateResults[0]);
         Assert.Equal("Alice", vm.SearchQuery);
@@ -129,9 +129,9 @@ public class OverlayStoreViewModelTests
         using var host = new WpfTestHost();
         var vm = await CreateFilterFixture(host);
 
-        host.Invoke(() => vm.SelectedStatusFilter = filter);
+        WpfTestHost.Invoke(() => vm.SelectedStatusFilter = filter);
 
-        var results = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        var results = WpfTestHost.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
         Assert.Equal(expected, results.Count);
     }
 
@@ -145,7 +145,7 @@ public class OverlayStoreViewModelTests
         using var host = new WpfTestHost();
         var vm = await CreateFilterFixture(host);
 
-        host.Invoke(() =>
+        WpfTestHost.Invoke(() =>
         {
             // Stand in for a language switch: same values, entirely different display text.
             var translated = vm.AvailableStatusFilters
@@ -160,7 +160,7 @@ public class OverlayStoreViewModelTests
             vm.SelectedStatusFilter = OverlayStatusFilter.Installed;
         });
 
-        var results = host.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
+        var results = WpfTestHost.Invoke(() => vm.VisibleOverlays.Cast<OverlayCardViewModel>().ToList());
         Assert.Single(results);
         Assert.Equal("neon-glow", results[0].Id);
     }
@@ -177,7 +177,7 @@ public class OverlayStoreViewModelTests
         service.MarkInstalled("neon-glow");
         service.MarkUpdateAvailable("neon-glow", "2.0.0");
 
-        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(service));
         await vm.CatalogLoaded;
         return vm;
     }
@@ -195,7 +195,7 @@ public class OverlayStoreViewModelTests
         service.MarkUpdateAvailable("one", "2.0.0");
 
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(service));
         await vm.CatalogLoaded;
 
         Assert.Equal(2, vm.InstalledCount);
@@ -217,10 +217,10 @@ public class OverlayStoreViewModelTests
         service.MarkUpdateAvailable("two", "2.0.0");
 
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(service));
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(service));
         await vm.CatalogLoaded;
 
-        host.Invoke(() => vm.UpdateAllCommand.Execute());
+        WpfTestHost.Invoke(() => vm.UpdateAllCommand.Execute());
         await WaitUntilAsync(() => service.UpdatedIds.Count == 2 && !vm.IsUpdatingAll);
 
         Assert.Equal(2, service.UpdatedIds.Count);
@@ -235,11 +235,11 @@ public class OverlayStoreViewModelTests
         service.MarkInstalled("one");
 
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => OverlayStoreViewModel.Create(service, _ => false));
+        var vm = WpfTestHost.Invoke(() => OverlayStoreViewModel.Create(service, _ => false));
         await vm.CatalogLoaded;
         var card = vm.Overlays.Single();
 
-        host.Invoke(() => vm.UninstallCommand.Execute(card));
+        WpfTestHost.Invoke(() => vm.UninstallCommand.Execute(card));
         await Task.Delay(100);
 
         Assert.True(card.IsInstalled);
@@ -424,7 +424,7 @@ public class OverlayStoreViewModelTests
         entries.AddRange(extra.Select(e => CreateEntry(e.Id, e.Name, "D", "1.0.0", e.Tags, 1000)));
 
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(new StubRepositoryService(entries)));
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(new StubRepositoryService(entries)));
         await vm.CatalogLoaded;
         return vm;
     }
@@ -454,7 +454,7 @@ public class OverlayStoreViewModelTests
         // The bare constructor (tests, design-time previews) has no way to launch the
         // designer, so the button must not appear enabled and then do nothing.
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(new StubRepositoryService()));
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(new StubRepositoryService()));
 
         Assert.False(vm.CreateOverlayCommand.CanExecute());
     }
@@ -463,7 +463,7 @@ public class OverlayStoreViewModelTests
     public void CreateOverlayCommand_IsEnabled_WhenOpenedThroughTheDialogService()
     {
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(
             new DialogCloseListener(), new StubRepositoryService(), new RecordingDialogService()));
 
         Assert.True(vm.CreateOverlayCommand.CanExecute());
@@ -474,10 +474,10 @@ public class OverlayStoreViewModelTests
     {
         using var host = new WpfTestHost();
         var dialogService = new RecordingDialogService();
-        var vm = host.Invoke(() => new OverlayStoreViewModel(
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(
             new DialogCloseListener(), new StubRepositoryService(), dialogService));
 
-        host.Invoke(() => vm.CreateOverlayCommand.Execute());
+        WpfTestHost.Invoke(() => vm.CreateOverlayCommand.Execute());
 
         Assert.Equal("OverlayDesigner", dialogService.LastDialogName);
     }

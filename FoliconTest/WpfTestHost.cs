@@ -15,6 +15,12 @@ internal sealed class WpfTestHost : IDisposable
 {
     private static readonly Lazy<Dispatcher> SharedDispatcher = new(StartDispatcherThread, LazyThreadSafetyMode.ExecutionAndPublication);
 
+    private static readonly string[] ThemeSources =
+    [
+        "pack://application:,,,/HandyControl;component/Themes/Theme.xaml",
+        "pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"
+    ];
+
     private static Dispatcher StartDispatcherThread()
     {
         Dispatcher dispatcher = null!;
@@ -40,11 +46,7 @@ internal sealed class WpfTestHost : IDisposable
                 // Merged here rather than from each view test: test classes run in parallel, and
                 // adding to this collection while another thread's render enumerates it is a race.
                 // Doing it once, before any test body runs, removes the window entirely.
-                foreach (var source in new[]
-                         {
-                             "pack://application:,,,/HandyControl;component/Themes/Theme.xaml",
-                             "pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"
-                         })
+                foreach (var source in ThemeSources)
                 {
                     app.Resources.MergedDictionaries.Add(
                         new ResourceDictionary { Source = new Uri(source) });
@@ -69,12 +71,12 @@ internal sealed class WpfTestHost : IDisposable
     /// <summary>
     /// Execute a function on the STA thread and return the result.
     /// </summary>
-    public T Invoke<T>(Func<T> func) => SharedDispatcher.Value.Invoke(func, DispatcherPriority.Send);
+    public static T Invoke<T>(Func<T> func) => SharedDispatcher.Value.Invoke(func, DispatcherPriority.Send);
 
     /// <summary>
     /// Execute an action on the STA thread.
     /// </summary>
-    public void Invoke(Action action) => SharedDispatcher.Value.Invoke(action, DispatcherPriority.Send);
+    public static void Invoke(Action action) => SharedDispatcher.Value.Invoke(action, DispatcherPriority.Send);
 
     public void Dispose()
     {

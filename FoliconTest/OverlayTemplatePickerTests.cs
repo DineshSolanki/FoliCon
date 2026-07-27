@@ -10,7 +10,7 @@ namespace FoliconTest;
 /// Tests for the first-run template picker: every offered template must be distinguishable
 /// in the list and must produce its own distinct overlay when chosen.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayTemplatePickerTests : IDisposable
 {
     private readonly WpfTestHost _host = new();
@@ -89,7 +89,7 @@ public class OverlayTemplatePickerTests : IDisposable
         foreach (var template in _templates.GetTemplates())
         {
             var folder = Path.Combine(_workDir, $"pick-{template.Id}");
-            var document = _host.Invoke(() => _templates.CreateFromTemplate(
+            var document = WpfTestHost.Invoke(() => _templates.CreateFromTemplate(
                 template, folder, $"copy-{template.Id}", $"Copy of {template.DisplayName}", "Test"));
 
             var snapshot = document.CreateSnapshot();
@@ -114,9 +114,9 @@ public class OverlayTemplatePickerTests : IDisposable
         Assert.NotNull(windows11);
         Assert.NotNull(liaher);
 
-        var fromWindows11 = _host.Invoke(() => _templates.CreateFromTemplate(
+        var fromWindows11 = WpfTestHost.Invoke(() => _templates.CreateFromTemplate(
             windows11, Path.Combine(_workDir, "w11"), "copy-w11", "Copy W11", "Test"));
-        var fromLiaher = _host.Invoke(() => _templates.CreateFromTemplate(
+        var fromLiaher = WpfTestHost.Invoke(() => _templates.CreateFromTemplate(
             liaher, Path.Combine(_workDir, "lia"), "copy-lia", "Copy Liaher", "Test"));
 
         Assert.False(fromWindows11.HasFrontLayer);
@@ -136,7 +136,7 @@ public class OverlayTemplatePickerTests : IDisposable
 
         foreach (var template in _templates.GetTemplates())
         {
-            var image = await renderer.RenderNowAsync(template.Definition, context);
+            var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(template.Definition, context);
 
             Assert.True(image != null, $"Template '{template.Id}' produced no thumbnail.");
             Assert.Equal(256, image.PixelWidth);
@@ -163,7 +163,7 @@ public class OverlayTemplatePickerTests : IDisposable
     {
         var template = _templates.GetTemplates().First(t => t.Id == "legacy");
 
-        var document = _host.Invoke(() => _templates.CreateFromTemplate(
+        var document = WpfTestHost.Invoke(() => _templates.CreateFromTemplate(
             template, Path.Combine(_workDir, "named"), "my-legacy", $"My {template.DisplayName}", "Test"));
 
         Assert.Equal("My Legacy", document.DisplayName);

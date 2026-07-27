@@ -42,10 +42,13 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
             .Select(o => new OverlayTemplate(
                 o.Id,
                 o.DisplayName,
-                string.IsNullOrWhiteSpace(o.Description)
-                    ? (o.IsBuiltIn ? Lang.OverlayTemplateBuiltInDescription : Lang.OverlayTemplateInstalledDescription)
-                    : o.Description,
+                GetDescription(o),
                 o))];
+
+    private static string GetDescription(PosterOverlayDefinition o) =>
+        string.IsNullOrWhiteSpace(o.Description)
+            ? o.IsBuiltIn ? Lang.OverlayTemplateBuiltInDescription : Lang.OverlayTemplateInstalledDescription
+            : o.Description;
 
     /// <summary>
     /// Clones a template into <paramref name="workingFolder"/> and returns a document ready

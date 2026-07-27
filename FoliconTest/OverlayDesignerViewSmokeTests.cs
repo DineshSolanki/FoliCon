@@ -19,7 +19,7 @@ namespace FoliconTest;
 /// resource binding. Those only fail when the BAML is actually loaded and laid out, so this
 /// exercises both the first-run picker and the editor surface with a real document.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayDesignerViewSmokeTests : IDisposable
 {
     private readonly WpfTestHost _host = new();
@@ -45,7 +45,7 @@ public class OverlayDesignerViewSmokeTests : IDisposable
     [Fact]
     public void DesignerView_LoadsAndLaysOutBothTheePickerAndTheEditor()
     {
-        _host.Invoke(() =>
+        WpfTestHost.Invoke(() =>
         {
             var viewModel = new OverlayDesignerViewModel(
                 new DialogCloseListener(),
@@ -154,7 +154,7 @@ public class OverlayDesignerViewSmokeTests : IDisposable
         public PosterOverlayDefinition? GetOverlayById(string id) =>
             _overlays.FirstOrDefault(o => string.Equals(o.Id, id, StringComparison.OrdinalIgnoreCase));
 
-        public PosterOverlayDefinition ResolveActiveOverlayOrDefault(string? activeOverlayId) => _overlays[0];
+        public PosterOverlayDefinition ResolveActiveOverlayOrDefault(string? activeOverlayId) => _overlays[0]; // activeOverlayId intentionally unused: stub always returns first overlay
 
         public bool IsOverlayInstalled(string id) => GetOverlayById(id) != null;
 
@@ -162,6 +162,7 @@ public class OverlayDesignerViewSmokeTests : IDisposable
 
         public void Refresh()
         {
+            // No-op: stub for interface; overlays are static in tests
         }
     }
 }

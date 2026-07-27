@@ -14,7 +14,7 @@ namespace FoliconTest;
 /// section, so a missing StaticResource key or broken template binding fails here
 /// instead of at runtime.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public class OverlayStoreViewSmokeTests
 {
     [Fact]
@@ -30,10 +30,10 @@ public class OverlayStoreViewSmokeTests
         service.MarkUpdateAvailable("one", "2.0.0");
 
         using var host = new WpfTestHost();
-        var vm = host.Invoke(() => OverlayStoreViewModel.Create(service, _ => false));
+        var vm = WpfTestHost.Invoke(() => OverlayStoreViewModel.Create(service, _ => false));
         await vm.CatalogLoaded;
 
-        host.Invoke(() =>
+        WpfTestHost.Invoke(() =>
         {
             ViewModelLocationProvider.SetDefaultViewModelFactory(_ => vm);
 

@@ -12,7 +12,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     private readonly IOverlayRepositoryService _repositoryService;
 
     /// <summary>Null when constructed outside the dialog service (tests, previews).</summary>
-    private readonly IDialogService _dialogService;
+    private readonly IDialogService? _dialogService;
     private readonly Func<OverlayCardViewModel, bool> _confirmRemoval;
 
     private readonly Dictionary<string, (bool IsInstalled, bool IsUpdateAvailable)> _cardState = new(StringComparer.OrdinalIgnoreCase);

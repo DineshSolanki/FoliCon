@@ -59,6 +59,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     /// Explicit-collaborator constructor. Lets callers substitute the filesystem- and
     /// network-backed defaults.
     /// </summary>
+#pragma warning disable S107 // 3 of 8 params are optional for DI flexibility
     public OverlayDesignerViewModel(
         DialogCloseListener requestClose,
         IOverlayProvider overlayProvider,
@@ -68,6 +69,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         OverlayDraftStore? draftStore = null,
         OverlayExporter? exporter = null,
         OverlaySubmissionGuide? submissionGuide = null)
+#pragma warning restore S107
     {
         RequestClose = requestClose;
         _overlayProvider = overlayProvider ?? throw new ArgumentNullException(nameof(overlayProvider));
@@ -154,7 +156,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     #region Document state
 
-    public string Title => Lang.OverlayDesignerTitle;
+    public static string Title => Lang.OverlayDesignerTitle;
 
     /// <summary>False until a template is cloned or a package opened; drives the first-run picker.</summary>
     public bool HasDocument
@@ -413,7 +415,8 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             _ => (0d, 0d)
         };
 
-        if (dx == 0 && dy == 0)
+        // ReSharper disable once CompareOfFloatsByEqualityOperator — values are exact 0d literals from the switch
+        if (dx == 0d && dy == 0d)
         {
             return;
         }
@@ -533,6 +536,10 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
                     (d, v) => d.PosterOpacityMaskPath = v, _document.PosterOpacityMaskPath,
                     string.IsNullOrEmpty(relativePath) ? null : relativePath));
                 RaisePropertyChanged(nameof(PosterOpacityMaskPath));
+                break;
+
+            default:
+                Logger.Warn("Unknown image target '{Target}', ignoring", target);
                 break;
         }
     }
@@ -1655,7 +1662,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
             try
             {
-                var image = await _previewRenderer.RenderNowAsync(card.Template.Definition, context);
+                var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(card.Template.Definition, context);
                 if (image != null && !_disposed)
                 {
                     card.PreviewImage = image;
@@ -1673,16 +1680,24 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     public void Dispose()
     {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private void Dispose(bool disposing)
+    {
         if (_disposed)
         {
             return;
         }
 
         _disposed = true;
-        _previewRenderer.Rendered -= OnPreviewRendered;
-        _previewRenderer.Failed -= OnPreviewFailed;
-        _previewRenderer.Dispose();
-        _history.Changed -= OnHistoryChanged;
-        GC.SuppressFinalize(this);
+        if (disposing)
+        {
+            _previewRenderer.Rendered -= OnPreviewRendered;
+            _previewRenderer.Failed -= OnPreviewFailed;
+            _previewRenderer.Dispose();
+            _history.Changed -= OnHistoryChanged;
+        }
     }
 }

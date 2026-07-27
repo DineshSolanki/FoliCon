@@ -258,7 +258,7 @@ public class OverlayExporter(OverlayDesignerPreviewRenderer? previewRenderer = n
         // author's working folder, and matches exactly what a store user will install.
         var definition = BuildExportDefinition(document, stagingPath);
 
-        var image = await _previewRenderer.RenderNowAsync(definition, CanonicalPreviewContext)
+        var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(definition, CanonicalPreviewContext)
             ?? throw new InvalidOperationException(Lang.OverlayExportPreviewRenderFailed);
 
         var encoder = new PngBitmapEncoder();

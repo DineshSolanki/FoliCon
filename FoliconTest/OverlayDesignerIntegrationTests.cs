@@ -19,7 +19,7 @@ namespace FoliconTest;
 /// actually work together: a cloned template produces a package that validates, renders,
 /// and reloads without drift.
 /// </summary>
-[Collection(XamlLoadingCollection.Name)]
+[Collection(XamlLoadingCollection.name)]
 public sealed class OverlayDesignerIntegrationTests : IDisposable
 {
     private readonly WpfTestHost _host = new();
@@ -62,7 +62,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         var template = GetTemplate(builtInId);
         var folder = Path.Combine(_workDir, $"clone-{builtInId}");
 
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(template, folder, $"my-{builtInId}", $"My {builtInId}", "Integration Test"));
 
         var snapshot = document.CreateSnapshot();
@@ -91,7 +91,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         // Simulates the overlay running on another user's machine: copy the package
         // somewhere isolated and confirm every declared asset resolves from its own files.
         var folder = Path.Combine(_workDir, $"portable-{builtInId}");
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate(builtInId), folder, $"portable-{builtInId}", "Portable", "Test"));
 
         var elsewhere = Path.Combine(_workDir, $"relocated-{builtInId}");
@@ -123,7 +123,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         Assert.NotNull(original);
 
         var folder = Path.Combine(_workDir, $"parity-{builtInId}");
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate(builtInId), folder, $"copy-{builtInId}", "Copy", "Test"));
 
         using var originalBitmap = RenderToBitmap(original);
@@ -140,7 +140,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         // Write a cloned package to disk the way the exporter will, then reopen it.
         // Any drift in margin formatting or parsing shows up as a changed snapshot.
         var folder = Path.Combine(_workDir, "roundtrip");
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate("liaher"), folder, "roundtrip-test", "Round Trip", "Test"));
 
         var beforeSave = document.CreateSnapshot();
@@ -166,7 +166,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
     public void ReloadedPackage_RendersIdenticallyToTheInMemoryDocument()
     {
         var folder = Path.Combine(_workDir, "render-roundtrip");
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate("liaher"), folder, "render-test", "Render Test", "Test"));
 
         var jsonPath = Path.Combine(folder, "overlay.json");
@@ -188,7 +188,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         // Proves the whole loop: an edit command mutates the document, the change is
         // visible in the rendered bitmap, and undo restores it pixel-for-pixel.
         var folder = Path.Combine(_workDir, "edit-cycle");
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate("liaher"), folder, "edit-test", "Edit Test", "Test"));
         var history = new OverlayEditHistory(document);
 
@@ -216,9 +216,9 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         // Acceptance criterion: "Canvas gestures and numeric fields produce the same
         // PosterOverlayDefinition values." A drag at 2x zoom and a typed margin must agree.
         var folder = Path.Combine(_workDir, "gesture-parity");
-        var viaGesture = _host.Invoke(() =>
+        var viaGesture = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate("liaher"), folder, "gesture-test", "Gesture", "Test"));
-        var viaNumeric = _host.Invoke(() =>
+        var viaNumeric = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate("liaher"),
                 Path.Combine(_workDir, "numeric-parity"), "numeric-test", "Numeric", "Test"));
 
@@ -242,7 +242,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
     public void NudgingByOnePixel_ShiftsTheRenderedPoster()
     {
         var folder = Path.Combine(_workDir, "nudge");
-        var document = _host.Invoke(() =>
+        var document = WpfTestHost.Invoke(() =>
             _templates.CreateFromTemplate(GetTemplate("liaher"), folder, "nudge-test", "Nudge", "Test"));
 
         using var beforeBitmap = RenderToBitmap(document.CreateSnapshot());
@@ -331,7 +331,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         // until they explicitly install or export it.
         var before = _provider.GetAllOverlays().Count;
 
-        _host.Invoke(() => _templates.CreateFromTemplate(
+        WpfTestHost.Invoke(() => _templates.CreateFromTemplate(
             GetTemplate("liaher"), Path.Combine(_workDir, "unregistered"), "not-installed", "Not Installed", "Test"));
 
         Assert.Equal(before, _provider.GetAllOverlays().Count);
@@ -346,7 +346,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         var originalMargin = liaher.Poster.Margin;
         var originalImagePath = liaher.BaseLayer?.ImagePath;
 
-        var document = _host.Invoke(() => _templates.CreateFromTemplate(
+        var document = WpfTestHost.Invoke(() => _templates.CreateFromTemplate(
             GetTemplate("liaher"), Path.Combine(_workDir, "immutability"), "immutable-test", "Test", "Test"));
         document.PosterMargin = new Thickness(999);
 
@@ -372,7 +372,7 @@ public sealed class OverlayDesignerIntegrationTests : IDisposable
         _templates.GetTemplates().First(t => t.Id == id);
 
     private Bitmap RenderToBitmap(FoliCon.Models.Data.PosterOverlayDefinition definition) =>
-        _host.Invoke(() =>
+        WpfTestHost.Invoke(() =>
         {
             var posterIcon = new PosterIcon();
             return new DynamicPosterIcon(definition, posterIcon).RenderToBitmap();

@@ -125,7 +125,7 @@ public class OverlayPackageLoader
         try
         {
             var manifest = JsonConvert.DeserializeObject<OverlayManifest>(File.ReadAllText(manifestPath));
-            return manifest?.CreatedAt == default ? null : manifest?.CreatedAt;
+            return manifest?.CreatedAt == default ? null : manifest.CreatedAt;
         }
         catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
         {
