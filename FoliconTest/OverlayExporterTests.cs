@@ -62,6 +62,24 @@ public class OverlayExporterTests : IDisposable
     }
 
     [Fact]
+    public async Task Export_InvalidId_DoesNotDeleteAStagingFolderOutsideTheDestination()
+    {
+        var destination = Path.Combine(_root, "out");
+        var escapedStaging = Path.Combine(_root, "escape.export-tmp");
+        Directory.CreateDirectory(escapedStaging);
+        var sentinel = Path.Combine(escapedStaging, "keep.txt");
+        File.WriteAllText(sentinel, "must survive");
+
+        var document = CreateDocument();
+        document.Id = "../escape";
+
+        var result = await ExportAsync(document, destination);
+
+        Assert.False(result.Succeeded);
+        Assert.True(File.Exists(sentinel));
+    }
+
+    [Fact]
     public async Task Export_CopiesOnlyReferencedAssets()
     {
         // An abandoned file in the working folder must not ship inside the package.

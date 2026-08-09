@@ -218,6 +218,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
     {
         Logger.Info("Installing overlay '{Id}' v{Version}", entry.Id, entry.OverlayVersion);
 
+        EnsureValidOverlayId(entry.Id, nameof(entry));
+
         // Prevent installing over built-in overlays
         if (OverlayConstants.BuiltInOverlayIds.Contains(entry.Id, StringComparer.OrdinalIgnoreCase))
         {
@@ -297,12 +299,16 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             var percent = 10 + (int)((i + 1) / (double)totalAssets * 70);
             progress?.Report((percent, string.Format(Lang.OverlayInstallProgressDownloading, asset)));
 
+            if (!TryGetContainedAssetPath(targetDir, asset, out var assetPath))
+            {
+                throw new InvalidOperationException($"Overlay asset path '{asset}' escapes the installation directory.");
+            }
+
             var assetUrl = $"{BaseUrl}/overlays/{overlayId}/{asset}";
             var bytes = await Services.HttpC.GetByteArrayAsync(assetUrl, ct);
 
             VerifyAsset(asset, bytes, manifest);
 
-            var assetPath = Path.Combine(targetDir, asset);
             Directory.CreateDirectory(Path.GetDirectoryName(assetPath)!);
             await File.WriteAllBytesAsync(assetPath, bytes, ct);
         }
@@ -356,6 +362,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
     public async Task UpdateOverlayAsync(string overlayId, IProgress<(int Percent, string Status)>? progress, CancellationToken ct)
     {
         Logger.Info("Updating overlay '{Id}'", overlayId);
+
+        EnsureValidOverlayId(overlayId, nameof(overlayId));
 
         var catalog = await FetchCatalogAsync(ct);
         var entry = catalog.Overlays.FirstOrDefault(o =>
@@ -431,6 +439,8 @@ public class OverlayRepositoryService : IOverlayRepositoryService
     {
         Logger.Info("Uninstalling overlay '{Id}'", overlayId);
 
+        EnsureValidOverlayId(overlayId, nameof(overlayId));
+
         var overlayDir = Path.Combine(_userOverlaysDir, overlayId);
         if (Directory.Exists(overlayDir))
         {
@@ -453,6 +463,11 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
     public bool IsOverlayInstalled(string overlayId)
     {
+        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        {
+            return false;
+        }
+
         if (OverlayConstants.BuiltInOverlayIds.Contains(overlayId, StringComparer.OrdinalIgnoreCase))
         {
             return false; // built-in is not "installed" (user-installed)
@@ -467,6 +482,11 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
     public string? GetInstalledVersion(string overlayId)
     {
+        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        {
+            return null;
+        }
+
         var overlay = _overlayProvider.GetOverlayById(overlayId);
         if (overlay != null && !overlay.IsBuiltIn)
         {
@@ -504,6 +524,42 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
 
         Logger.Info("Catalog cache invalidated");
+    }
+
+    private static void EnsureValidOverlayId(string overlayId, string parameterName)
+    {
+        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        {
+            throw new ArgumentException("Overlay IDs must contain only lowercase letters, digits, and single hyphens between characters.", parameterName);
+        }
+    }
+
+    private static bool TryGetContainedAssetPath(string targetDir, string asset, [NotNullWhen(true)] out string? assetPath)
+    {
+        assetPath = null;
+        if (string.IsNullOrWhiteSpace(asset) || Path.IsPathRooted(asset))
+        {
+            return false;
+        }
+
+        try
+        {
+            var targetRoot = Path.GetFullPath(targetDir)
+                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                + Path.DirectorySeparatorChar;
+            var candidate = Path.GetFullPath(Path.Combine(targetRoot, asset));
+            if (!candidate.StartsWith(targetRoot, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            assetPath = candidate;
+            return true;
+        }
+        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
+        {
+            return false;
+        }
     }
 
     private void CheckForUpdates(OverlayCatalog catalog)

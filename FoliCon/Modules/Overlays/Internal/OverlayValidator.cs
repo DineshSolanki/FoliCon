@@ -372,5 +372,8 @@ public static partial class OverlayValidator
     [GeneratedRegex(@"^[a-z0-9]([a-z0-9\-]*[a-z0-9])?$")]
     private static partial Regex IdRegex();
 
-    private static bool IsValidId(string id) => IdRegex().IsMatch(id);
+    /// <summary>
+    /// Determines whether an overlay ID is a safe package-folder name.
+    /// </summary>
+    public static bool IsValidId(string id) => !string.IsNullOrWhiteSpace(id) && IdRegex().IsMatch(id);
 }

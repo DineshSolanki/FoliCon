@@ -82,7 +82,10 @@ public static class IconUtils
         }
 
         var iconProperties = new IconProperties(iconMode, pngFilePath, item.Rating, ratingVisibility, mockupVisibility, item.Title);
-        await BuildFolderIco(iconProperties, overlayDefinition);
+        if (!await BuildFolderIco(iconProperties, overlayDefinition))
+        {
+            return false;
+        }
 
         Logger.Info("Icon Created for Folder: {Folder}", item.FolderName);
         Logger.Debug("Deleting PNG File: {PngFilePath}", pngFilePath);
@@ -109,14 +112,14 @@ public static class IconUtils
     /// <param name="ratingVisibility">Show rating or NOT</param>
     /// <param name="mockupVisibility">Is Cover Mockup visible. </param>
     /// <param name="mediaTitle">Title of the media.</param>
-    private static async Task BuildFolderIco(IconProperties iconProperties, PosterOverlayDefinition? overlayDefinition)
+    private static async Task<bool> BuildFolderIco(IconProperties iconProperties, PosterOverlayDefinition? overlayDefinition)
     {
         Logger.Debug("Converting From PNG to ICO, {IconProperties}", iconProperties);
         var filmFolderPath = iconProperties.FilmFolderPath;
         if (!FileUtils.FileExists(filmFolderPath))
         {
             Logger.Warn("PNG File Not Found: {FilmFolderPath}", filmFolderPath);
-            return;
+            return false;
         }
 
         var ratingVisibility = string.IsNullOrEmpty(iconProperties.Rating) ? "Hidden" : iconProperties.RatingVisibility;
@@ -140,7 +143,7 @@ public static class IconUtils
             if (overlayDefinition == null)
             {
                 Logger.Warn("No overlay definition provided for {FilmFolderPath}. Skipping icon creation.", filmFolderPath);
-                return;
+                return false;
             }
 
             icon = await StaRenderer.Default.EnqueueRender(() =>
@@ -151,5 +154,6 @@ public static class IconUtils
         PngToIcoService.Convert(icon, filmFolderPath.Replace("png", "ico"));
         icon.Dispose();
         Logger.Debug("Icon Created for Folder: {Folder}", filmFolderPath);
+        return true;
     }
 }

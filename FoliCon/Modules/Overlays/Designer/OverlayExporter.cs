@@ -79,7 +79,7 @@ public class OverlayExporter
         ArgumentNullException.ThrowIfNull(document);
         ArgumentException.ThrowIfNullOrWhiteSpace(destinationRoot);
 
-        if (string.IsNullOrWhiteSpace(document.Id))
+        if (!Internal.OverlayValidator.IsValidId(document.Id))
         {
             return OverlayExportResult.Failure(Lang.OverlayExportIdRequired);
         }

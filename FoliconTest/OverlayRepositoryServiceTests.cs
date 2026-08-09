@@ -149,6 +149,30 @@ public class OverlayRepositoryServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task UninstallOverlay_InvalidId_DoesNotDeleteOutsideTheOverlayDirectory()
+    {
+        var outsideDirectory = Path.Combine(_tempRoot, "outside");
+        Directory.CreateDirectory(outsideDirectory);
+        var sentinel = Path.Combine(outsideDirectory, "keep.txt");
+        File.WriteAllText(sentinel, "must survive");
+
+        var service = CreateService();
+
+        await Assert.ThrowsAsync<ArgumentException>(() => service.UninstallOverlayAsync("../../../outside"));
+
+        Assert.True(File.Exists(sentinel));
+    }
+
+    [Fact]
+    public void InvalidOverlayIds_AreNeverConsideredInstalledOrVersioned()
+    {
+        var service = CreateService();
+
+        Assert.False(service.IsOverlayInstalled("../outside"));
+        Assert.Null(service.GetInstalledVersion("../outside"));
+    }
+
+    [Fact]
     public void IsUpdateAvailable_NoUpdates_ReturnsFalse()
     {
         var service = CreateService();
