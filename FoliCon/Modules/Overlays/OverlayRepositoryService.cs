@@ -305,13 +305,61 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             }
 
             var assetUrl = $"{BaseUrl}/overlays/{overlayId}/{asset}";
-            var bytes = await Services.HttpC.GetByteArrayAsync(assetUrl, ct);
+
+            // Safe download with response size limits (fixes CodeRabbit finding)
+            var bytes = await DownloadAssetSafelyAsync(assetUrl, asset == OverlayConstants.overlayJsonFileName, ct);
 
             VerifyAsset(asset, bytes, manifest);
 
             Directory.CreateDirectory(Path.GetDirectoryName(assetPath)!);
             await File.WriteAllBytesAsync(assetPath, bytes, ct);
         }
+    }
+
+    private async Task<byte[]> DownloadAssetSafelyAsync(string assetUrl, bool isJson, CancellationToken ct)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, assetUrl);
+        using var response = await Services.HttpC.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+
+        response.EnsureSuccessStatusCode();
+
+        // Enforce size limit
+        const long maxSizeBytes = OverlayConstants.maxImageSizeBytes;
+        long? contentLength = response.Content.Headers.ContentLength;
+
+        if (contentLength.HasValue)
+        {
+            if (contentLength.Value > maxSizeBytes && !isJson)
+            {
+                throw new InvalidOperationException(string.Format(
+                    Lang.OverlayInstallAssetTooLarge, Path.GetFileName(assetUrl), maxSizeBytes / 1024 / 1024));
+            }
+
+            if (contentLength.Value > 1024 * 1024 && isJson) // overlay.json limit
+            {
+                throw new InvalidOperationException("overlay.json is too large");
+            }
+        }
+
+        // Stream the response to avoid full buffering where possible
+        using var stream = await response.Content.ReadAsStreamAsync(ct);
+        using var memoryStream = new MemoryStream();
+
+        var buffer = new byte[8192];
+        int bytesRead;
+        long totalRead = 0;
+
+        while ((bytesRead = await stream.ReadAsync(buffer, ct)) > 0)
+        {
+            totalRead += bytesRead;
+            if (totalRead > maxSizeBytes && !isJson)
+            {
+                throw new InvalidOperationException("Asset size limit exceeded");
+            }
+            await memoryStream.WriteAsync(buffer.AsMemory(0, bytesRead), ct);
+        }
+
+        return memoryStream.ToArray();
     }
 
     private static void VerifyAsset(string asset, byte[] bytes, OverlayManifest manifest)

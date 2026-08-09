@@ -151,14 +151,16 @@ public class OverlayRepositoryServiceTests : IDisposable
     [Fact]
     public async Task UninstallOverlay_InvalidId_DoesNotDeleteOutsideTheOverlayDirectory()
     {
-        var outsideDirectory = Path.Combine(_tempRoot, "outside");
+        var traversalId = Path.Combine("..", "..", "..", "..", "outside");
+        var outsideDirectory = Path.GetFullPath(
+            Path.Combine(_userOverlaysDir, traversalId));
         Directory.CreateDirectory(outsideDirectory);
         var sentinel = Path.Combine(outsideDirectory, "keep.txt");
         File.WriteAllText(sentinel, "must survive");
 
         var service = CreateService();
 
-        await Assert.ThrowsAsync<ArgumentException>(() => service.UninstallOverlayAsync("../../../outside"));
+        await Assert.ThrowsAsync<ArgumentException>(() => service.UninstallOverlayAsync(traversalId));
 
         Assert.True(File.Exists(sentinel));
     }
