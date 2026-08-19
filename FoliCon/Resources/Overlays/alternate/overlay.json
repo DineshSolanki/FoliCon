@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "alternate",
+  "displayName": "Alternate",
+  "author": "FoliCon",
+  "description": "DVD case style overlay with base and front cover layers",
+  "overlayVersion": "1.0.0",
+  "tags": ["dvd", "classic", "physical"],
+  "designWidth": 265,
+  "designHeight": 256,
+  "rootMargin": "0,0,0,-11",
+  "renderWidth": 256,
+  "renderHeight": 256,
+  "layerOrder": ["base", "poster", "front", "rating"],
+  "baseLayer": {
+    "imagePath": "/Resources/poster_mockups/dvd/mockup2base.png",
+    "margin": "30,14,48,15"
+  },
+  "frontLayer": {
+    "imagePath": "/Resources/poster_mockups/dvd/mockup cover cropped.png",
+    "margin": "16,14,35,15"
+  },
+  "poster": {
+    "margin": "31,42,50,19",
+    "clipRadius": "0",
+    "opacityMaskPath": null
+  },
+  "rating": {
+    "shieldMargin": "160,97,6,5",
+    "textMargin": "189,30,21,24",
+    "fontSize": 25,
+    "fontFamily": "Castellar",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "textWidth": 55,
+    "textHeight": 46,
+    "textHorizontalAlignment": "Center",
+    "textVerticalAlignment": "Center"
+  },
+  "title": {
+    "isVisible": false,
+    "margin": "0,0,0,0",
+    "rotationAngle": 0,
+    "rotationOrigin": "0.5,0.5",
+    "fontFamily": "Cormorant",
+    "fontSource": null,
+    "fontFallback": "Segoe UI",
+    "foreground": "White",
+    "trimming": "WordEllipsis",
+    "wrapping": "Wrap",
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Top"
+  }
+}

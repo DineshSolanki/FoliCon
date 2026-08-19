@@ -626,6 +626,12 @@ y actualizar la caché de iconos?</value>
   <data name="Overlay" xml:space="preserve">
       <value>Superposición</value>
     </data>
+  <data name="OverlayStore" xml:space="preserve">
+      <value>Tienda de superposiciones</value>
+    </data>
+  <data name="OverlayDesigner" xml:space="preserve">
+      <value>Crear superposición</value>
+    </data>
   <data name="Previewer" xml:space="preserve">
       <value>Vista previa</value>
     </data>
@@ -910,5 +916,860 @@ y actualizar la caché de iconos?</value>
     </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
       <value>Profundidad máxima del procesamiento de subcarpetas. 0 = sin límite (procesar todos los niveles).</value>
+    </data>
+    <data name="OverlayDesignerTitle" xml:space="preserve">
+      <value>Diseñador de superposiciones</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
+      <value>Plantillas</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
+      <value>Volver a la lista de plantillas para empezar otra superposición</value>
+    </data>
+    <data name="OverlayDesignerOpen" xml:space="preserve">
+      <value>Abrir…</value>
+    </data>
+    <data name="OverlayDesignerOpenHelp" xml:space="preserve">
+      <value>Abrir un overlay.json existente para editarlo</value>
+    </data>
+    <data name="OverlayDesignerUndoHelp" xml:space="preserve">
+      <value>Deshacer el último cambio (Ctrl+Z)</value>
+    </data>
+    <data name="OverlayDesignerRedo" xml:space="preserve">
+      <value>Rehacer</value>
+    </data>
+    <data name="OverlayDesignerRedoHelp" xml:space="preserve">
+      <value>Rehacer el último cambio deshecho (Ctrl+Y)</value>
+    </data>
+    <data name="OverlayDesignerZoom" xml:space="preserve">
+      <value>Zoom</value>
+    </data>
+    <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
+      <value>Abrir la guía de creación de superposiciones (F1)</value>
+    </data>
+    <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
+      <value>Cambios sin guardar</value>
+    </data>
+    <data name="OverlayDesignerStartNew" xml:space="preserve">
+      <value>Crear una superposición</value>
+    </data>
+    <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
+      <value>Elige una plantilla para copiarla. Partirás de su diseño y sus imágenes: cambia lo que quieras y luego exporta un paquete listo para instalar o compartir.</value>
+    </data>
+    <data name="OverlayDesignerRendering" xml:space="preserve">
+      <value>Generando…</value>
+    </data>
+    <data name="OverlayDesignerUseTemplate" xml:space="preserve">
+      <value>Usar esta plantilla</value>
+    </data>
+    <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
+      <value>Usar {0} como plantilla</value>
+    </data>
+    <data name="OverlayDesignerContinueDraft" xml:space="preserve">
+      <value>Continuar un borrador</value>
+    </data>
+    <data name="OverlayDesignerDraftsHint" xml:space="preserve">
+      <value>Trabajo que guardaste antes. Al elegir uno, se abre justo donde lo dejaste.</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
+      <value>Guardado el {0:g}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
+      <value>Eliminar</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
+      <value>Eliminar el borrador {0}</value>
+    </data>
+    <data name="OverlayDesignerResumeDraft" xml:space="preserve">
+      <value>Retomar</value>
+    </data>
+    <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
+      <value>Retomar el borrador {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
+      <value>¿Ya tienes una carpeta de superposición? Usa Abrir… en la barra de herramientas.</value>
+    </data>
+    <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
+      <value>Cerrar el diseñador</value>
+    </data>
+    <data name="OverlayDesignerElements" xml:space="preserve">
+      <value>Elementos</value>
+    </data>
+    <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
+      <value>Se dibujan de arriba abajo: el primero queda más al fondo.</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
+      <value>Mover hacia atrás</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
+      <value>Mover la capa seleccionada hacia atrás</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
+      <value>Mover hacia delante</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
+      <value>Mover la capa seleccionada hacia delante</value>
+    </data>
+    <data name="OverlayDesignerShow" xml:space="preserve">
+      <value>Mostrar</value>
+    </data>
+    <data name="OverlayLayerBase" xml:space="preserve">
+      <value>Capa de fondo</value>
+    </data>
+    <data name="OverlayLayerFront" xml:space="preserve">
+      <value>Capa frontal</value>
+    </data>
+    <data name="OverlayLayerTitleText" xml:space="preserve">
+      <value>Texto del título</value>
+    </data>
+    <data name="OverlayLayerRatingBadge" xml:space="preserve">
+      <value>Insignia de calificación</value>
+    </data>
+    <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
+      <value>Lienzo de vista previa de la superposición</value>
+    </data>
+    <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
+      <value>Vista previa generada de la superposición</value>
+    </data>
+    <data name="OverlayDesignerGeometryHint" xml:space="preserve">
+      <value>Posición y tamaño en píxeles. Las flechas mueven 1 px; Mayús+flecha, 10 px.</value>
+    </data>
+    <data name="OverlayDesignerAxisX" xml:space="preserve">
+      <value>X</value>
+    </data>
+    <data name="OverlayDesignerLeftPosition" xml:space="preserve">
+      <value>Posición izquierda</value>
+    </data>
+    <data name="OverlayDesignerAxisY" xml:space="preserve">
+      <value>Y</value>
+    </data>
+    <data name="OverlayDesignerTopPosition" xml:space="preserve">
+      <value>Posición superior</value>
+    </data>
+    <data name="OverlayDesignerWidthShort" xml:space="preserve">
+      <value>An</value>
+    </data>
+    <data name="OverlayDesignerWidth" xml:space="preserve">
+      <value>Ancho</value>
+    </data>
+    <data name="OverlayDesignerHeightShort" xml:space="preserve">
+      <value>Al</value>
+    </data>
+    <data name="OverlayDesignerHeight" xml:space="preserve">
+      <value>Alto</value>
+    </data>
+    <data name="OverlayDesignerMetadata" xml:space="preserve">
+      <value>Metadatos</value>
+    </data>
+    <data name="OverlayDesignerName" xml:space="preserve">
+      <value>Nombre</value>
+    </data>
+    <data name="OverlayDesignerId" xml:space="preserve">
+      <value>ID</value>
+    </data>
+    <data name="OverlayDesignerIdHint" xml:space="preserve">
+      <value>Solo minúsculas, números y guiones. Debe ser único.</value>
+    </data>
+    <data name="OverlayDesignerAuthor" xml:space="preserve">
+      <value>Autor</value>
+    </data>
+    <data name="OverlayDesignerVersion" xml:space="preserve">
+      <value>Versión</value>
+    </data>
+    <data name="OverlayDesignerDescription" xml:space="preserve">
+      <value>Descripción</value>
+    </data>
+    <data name="OverlayTags" xml:space="preserve">
+      <value>Etiquetas</value>
+    </data>
+    <data name="OverlayDesignerTagsHint" xml:space="preserve">
+      <value>Separadas por comas.</value>
+    </data>
+    <data name="OverlayDesignerLayerImages" xml:space="preserve">
+      <value>Imágenes de las capas</value>
+    </data>
+    <data name="OverlayDesignerBaseImage" xml:space="preserve">
+      <value>Imagen de fondo</value>
+    </data>
+    <data name="OverlayDesignerBrowse" xml:space="preserve">
+      <value>Examinar…</value>
+    </data>
+    <data name="OverlayDesignerClear" xml:space="preserve">
+      <value>Quitar</value>
+    </data>
+    <data name="OverlayDesignerFrontImage" xml:space="preserve">
+      <value>Imagen frontal</value>
+    </data>
+    <data name="OverlayDesignerOpacityMask" xml:space="preserve">
+      <value>Máscara de opacidad</value>
+    </data>
+    <data name="OverlayDesignerCornerRadius" xml:space="preserve">
+      <value>Radio de las esquinas</value>
+    </data>
+    <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
+      <value>0 deja las esquinas rectas. Ajusta cada esquina por separado si necesitas una forma asimétrica.</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
+      <value>SI</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
+      <value>Radio de la esquina superior izquierda</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
+      <value>SD</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
+      <value>Radio de la esquina superior derecha</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
+      <value>II</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
+      <value>Radio de la esquina inferior izquierda</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
+      <value>ID</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
+      <value>Radio de la esquina inferior derecha</value>
+    </data>
+    <data name="OverlayDesignerFont" xml:space="preserve">
+      <value>Fuente</value>
+    </data>
+    <data name="OverlayDesignerFontSize" xml:space="preserve">
+      <value>Tamaño de fuente</value>
+    </data>
+    <data name="OverlayDesignerColour" xml:space="preserve">
+      <value>Color</value>
+    </data>
+    <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
+      <value>Color actual del título</value>
+    </data>
+    <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
+      <value>Valor del color del título</value>
+    </data>
+    <data name="OverlayDesignerPick" xml:space="preserve">
+      <value>Elegir…</value>
+    </data>
+    <data name="OverlayDesignerChooseColour" xml:space="preserve">
+      <value>Elegir un color</value>
+    </data>
+    <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
+      <value>Elegir el color del título</value>
+    </data>
+    <data name="OverlayDesignerColourHint" xml:space="preserve">
+      <value>Elige un color o escribe un nombre como White o un valor hexadecimal como #FF5500.</value>
+    </data>
+    <data name="OverlayDesignerRotation" xml:space="preserve">
+      <value>Rotación</value>
+    </data>
+    <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
+      <value>Rotación del título en grados</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
+      <value>Lienzo avanzado</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
+      <value>Definen la superficie de diseño sobre la que se compone la superposición. Los valores de la plantilla ya son correctos: cámbialos solo si sabes que lo necesitas.</value>
+    </data>
+    <data name="OverlayDesignerDesignWidth" xml:space="preserve">
+      <value>Ancho de diseño</value>
+    </data>
+    <data name="OverlayDesignerDesignHeight" xml:space="preserve">
+      <value>Alto de diseño</value>
+    </data>
+    <data name="OverlayDesignerRootMargin" xml:space="preserve">
+      <value>Margen raíz</value>
+    </data>
+    <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
+      <value>izquierda, arriba, derecha, abajo. Los valores negativos amplían la superficie.</value>
+    </data>
+    <data name="OverlayDesignerPreviewWith" xml:space="preserve">
+      <value>Probar con:</value>
+    </data>
+    <data name="OverlayDesignerSamplePoster" xml:space="preserve">
+      <value>Póster de ejemplo…</value>
+    </data>
+    <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
+      <value>Calificación de ejemplo</value>
+    </data>
+    <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
+      <value>Título de ejemplo</value>
+    </data>
+    <data name="OverlayDesignerMockup" xml:space="preserve">
+      <value>Maqueta</value>
+    </data>
+    <data name="OverlayDesignerSeverityError" xml:space="preserve">
+      <value>Error</value>
+    </data>
+    <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
+      <value>Aviso</value>
+    </data>
+    <data name="OverlayDesignerShareHeading" xml:space="preserve">
+      <value>Comparte esta superposición</value>
+    </data>
+    <data name="OverlayDesignerHideSteps" xml:space="preserve">
+      <value>Ocultar estos pasos</value>
+    </data>
+    <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
+      <value>Ocultar los pasos de envío</value>
+    </data>
+    <data name="OverlayDesignerInstallLocally" xml:space="preserve">
+      <value>Instalar para mí</value>
+    </data>
+    <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
+      <value>Copiar esta superposición en FoliCon para usarla ya</value>
+    </data>
+    <data name="OverlayDesignerOpenFolder" xml:space="preserve">
+      <value>Abrir la carpeta</value>
+    </data>
+    <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
+      <value>Para enviarla a la tienda de la comunidad:</value>
+    </data>
+    <data name="OverlayDesignerStep1Automation" xml:space="preserve">
+      <value>Paso 1 completado</value>
+    </data>
+    <data name="OverlayDesignerForkRepository" xml:space="preserve">
+      <value>Bifurcar el repositorio</value>
+    </data>
+    <data name="OverlayDesignerStep2Automation" xml:space="preserve">
+      <value>Paso 2 completado</value>
+    </data>
+    <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
+      <value>Copia la carpeta exportada en {0} dentro de tu bifurcación</value>
+    </data>
+    <data name="OverlayDesignerStep3Automation" xml:space="preserve">
+      <value>Paso 3 completado</value>
+    </data>
+    <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
+      <value>Abrir un pull request</value>
+    </data>
+    <data name="OverlayDesignerExportPackage" xml:space="preserve">
+      <value>Exportar paquete…</value>
+    </data>
+    <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
+      <value>Generar una carpeta lista para la tienda que puedes instalar o enviar</value>
+    </data>
+    <data name="OverlayDesignerSaveDraft" xml:space="preserve">
+      <value>Guardar borrador</value>
+    </data>
+    <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
+      <value>Conservar este trabajo en curso para retomarlo más tarde</value>
+    </data>
+    <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
+      <value>Color del título</value>
+    </data>
+    <data name="OverlayStoreLoadingPreview" xml:space="preserve">
+      <value>Cargando la vista previa...</value>
+    </data>
+    <data name="OverlayStoreInstall" xml:space="preserve">
+      <value>Instalar</value>
+    </data>
+    <data name="OverlayStoreUpdate" xml:space="preserve">
+      <value>Actualizar</value>
+    </data>
+    <data name="OverlayStoreRemove" xml:space="preserve">
+      <value>Quitar</value>
+    </data>
+    <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
+      <value>Quitar esta superposición (se pedirá confirmación)</value>
+    </data>
+    <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
+      <value>Buscar superposiciones...</value>
+    </data>
+    <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
+      <value>Filtrar por estado de instalación</value>
+    </data>
+    <data name="OverlayStoreRefresh" xml:space="preserve">
+      <value>Actualizar</value>
+    </data>
+    <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
+      <value>Volver a cargar el catálogo de superposiciones</value>
+    </data>
+    <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
+      <value>Diseña tu propia superposición a partir de una plantilla</value>
+    </data>
+    <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
+      <value>Mostrar solo las superposiciones con la etiqueta {0}</value>
+    </data>
+    <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
+      <value>Filtrar por la etiqueta {0}</value>
+    </data>
+    <data name="OverlayStoreClearTags" xml:space="preserve">
+      <value>Quitar etiquetas</value>
+    </data>
+    <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
+      <value>Deseleccionar todas las etiquetas</value>
+    </data>
+    <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
+      <value>Cargando el catálogo...</value>
+    </data>
+    <data name="OverlayStoreDiscoverTab" xml:space="preserve">
+      <value>Descubrir</value>
+    </data>
+    <data name="OverlayStoreUpdateAll" xml:space="preserve">
+      <value>Actualizar todo</value>
+    </data>
+    <data name="OverlayRemoveTooltip" xml:space="preserve">
+      <value>Quitar esta superposición</value>
+    </data>
+    <data name="OverlayRemoveAutomation" xml:space="preserve">
+      <value>Quitar {0}</value>
+    </data>
+    <data name="OverlayBrowseStore" xml:space="preserve">
+      <value>Explorar la tienda...</value>
+    </data>
+    <data name="OverlayImportLocal" xml:space="preserve">
+      <value>Importar superposición local...</value>
+    </data>
+    <data name="OverlayComingSoon" xml:space="preserve">
+      <value>Disponible en una próxima versión</value>
+    </data>
+    <data name="OverlayDesignerNothingSelected" xml:space="preserve">
+      <value>Nada seleccionado</value>
+    </data>
+    <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
+      <value>Selecciona una imagen PNG</value>
+    </data>
+    <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
+      <value>Imágenes PNG (*.png)|*.png</value>
+    </data>
+    <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
+      <value>Elige una imagen que esté dentro de la carpeta de la superposición para que el paquete siga siendo autónomo.</value>
+    </data>
+    <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
+      <value>Selecciona un póster de ejemplo</value>
+    </data>
+    <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
+      <value>Imágenes (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg</value>
+    </data>
+    <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
+      <value>No se pudo generar la vista previa: {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
+      <value>Borrador guardado en {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
+      <value>No se pudo guardar el borrador: {0}</value>
+    </data>
+    <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
+      <value>Elige dónde guardar el paquete de la superposición</value>
+    </data>
+    <data name="OverlayDesignerExporting" xml:space="preserve">
+      <value>Exportando…</value>
+    </data>
+    <data name="OverlayDesignerExportCancelled" xml:space="preserve">
+      <value>Exportación cancelada.</value>
+    </data>
+    <data name="OverlayDesignerExportFailed" xml:space="preserve">
+      <value>Error al exportar.</value>
+    </data>
+    <data name="OverlayDesignerExportedTo" xml:space="preserve">
+      <value>Exportado a {0}</value>
+    </data>
+    <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
+      <value>Error al exportar: {0}</value>
+    </data>
+    <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
+      <value>Comprobando en la tienda si el nombre ya existe…</value>
+    </data>
+    <data name="OverlayDesignerInstallFailed" xml:space="preserve">
+      <value>Error al instalar.</value>
+    </data>
+    <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
+      <value>Instalada. Ya tienes «{0}» en tu lista de superposiciones.</value>
+    </data>
+    <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
+      <value>Error al instalar: {0}</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
+      <value>Ahí ya existe una carpeta llamada «{0}». ¿Quieres reemplazarla?</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
+      <value>Reemplazar el paquete existente</value>
+    </data>
+    <data name="OverlayDesignerNoIssues" xml:space="preserve">
+      <value>Sin incidencias</value>
+    </data>
+    <data name="OverlayDesignerWarningCount" xml:space="preserve">
+      <value>Avisos: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorCount" xml:space="preserve">
+      <value>Errores: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
+      <value>Errores: {0}, avisos: {1}</value>
+    </data>
+    <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
+      <value>Mi {0}</value>
+    </data>
+    <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
+      <value>Se creó «{0}» a partir de {1}.</value>
+    </data>
+    <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
+      <value>No se pudo crear a partir de la plantilla: {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
+      <value>Abrir overlay.json</value>
+    </data>
+    <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
+      <value>Definición de superposición (overlay.json)|overlay.json</value>
+    </data>
+    <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
+      <value>No se pudo abrir esa superposición.</value>
+    </data>
+    <data name="OverlayDesignerOpened" xml:space="preserve">
+      <value>Se abrió «{0}».</value>
+    </data>
+    <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
+      <value>Se abrió «{0}». Problemas por corregir: {1}</value>
+    </data>
+    <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
+      <value>No se pudo abrir esa página en tu navegador.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
+      <value>Tienes cambios sin guardar. ¿Quieres descartarlos? Usa Guardar borrador o Exportar paquete para conservar tu trabajo.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
+      <value>Descartar los cambios</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
+      <value>Se eliminó el borrador «{0}».</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
+      <value>No se pudo eliminar el borrador: {0}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
+      <value>¿Eliminar el borrador «{0}»? Esta acción no se puede deshacer.</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
+      <value>Eliminar el borrador</value>
+    </data>
+    <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
+      <value>{0}: {1}, {2}, {3} por {4}</value>
+    </data>
+    <data name="OverlayStoreFilterAll" xml:space="preserve">
+      <value>Todas las superposiciones</value>
+    </data>
+    <data name="OverlayStoreFilterInstalled" xml:space="preserve">
+      <value>Instaladas</value>
+    </data>
+    <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
+      <value>Sin instalar</value>
+    </data>
+    <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
+      <value>Actualización disponible</value>
+    </data>
+    <data name="OverlayStoreInstalledTab" xml:space="preserve">
+      <value>Instaladas ({0})</value>
+    </data>
+    <data name="OverlayStoreUpdatesTab" xml:space="preserve">
+      <value>Actualizaciones ({0})</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
+      <value>Todavía no hay superposiciones instaladas</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
+      <value>Todo está al día</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
+      <value>No se encontraron superposiciones</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
+      <value>Instala una superposición desde Descubrir y aparecerá aquí.</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
+      <value>Tus superposiciones instaladas aparecerán aquí cuando haya una actualización.</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
+      <value>Prueba con otra búsqueda, otra etiqueta u otro filtro de instalación.</value>
+    </data>
+    <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
+      <value>Actualizando el catálogo...</value>
+    </data>
+    <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
+      <value>Superposiciones disponibles: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
+      <value>No se pudo cargar el catálogo: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
+      <value>Error al cargar el catálogo</value>
+    </data>
+    <data name="OverlayStoreVisibleCount" xml:space="preserve">
+      <value>Superposiciones mostradas: {0}</value>
+    </data>
+    <data name="OverlayStoreTotalCount" xml:space="preserve">
+      <value>Superposiciones: {0}</value>
+    </data>
+    <data name="OverlayStoreInstalling" xml:space="preserve">
+      <value>Instalando {0}...</value>
+    </data>
+    <data name="OverlayStoreProgressFormat" xml:space="preserve">
+      <value>{0} ({1} %)</value>
+    </data>
+    <data name="OverlayStoreInstallingProgress" xml:space="preserve">
+      <value>Instalando {0}: {1} ({2} %)</value>
+    </data>
+    <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
+      <value>{0} se instaló correctamente</value>
+    </data>
+    <data name="OverlayStoreInstallFailed" xml:space="preserve">
+      <value>Error al instalar: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdating" xml:space="preserve">
+      <value>Actualizando {0}...</value>
+    </data>
+    <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
+      <value>Actualizando {0}: {1} ({2} %)</value>
+    </data>
+    <data name="OverlayStoreCardUpToDate" xml:space="preserve">
+      <value>{0} está al día</value>
+    </data>
+    <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
+      <value>{0} se actualizó correctamente</value>
+    </data>
+    <data name="OverlayStoreUpdateFailed" xml:space="preserve">
+      <value>Error al actualizar: {0}</value>
+    </data>
+    <data name="OverlayStoreRemoving" xml:space="preserve">
+      <value>Quitando {0}...</value>
+    </data>
+    <data name="OverlayStoreRemoved" xml:space="preserve">
+      <value>Se quitó {0}</value>
+    </data>
+    <data name="OverlayStoreRemoveFailed" xml:space="preserve">
+      <value>Error al quitar: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
+      <value>Actualizando {0} de {1}: {2}</value>
+    </data>
+    <data name="OverlayStoreAllUpToDate" xml:space="preserve">
+      <value>Todas las superposiciones están al día</value>
+    </data>
+    <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
+      <value>¿Quitar {0}? Puedes volver a instalarla cuando quieras.</value>
+    </data>
+    <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
+      <value>Quitar la superposición</value>
+    </data>
+    <data name="OverlaySizeBytes" xml:space="preserve">
+      <value>{0} B</value>
+    </data>
+    <data name="OverlaySizeKilobytes" xml:space="preserve">
+      <value>{0:F1} KB</value>
+    </data>
+    <data name="OverlaySizeMegabytes" xml:space="preserve">
+      <value>{0:F1} MB</value>
+    </data>
+    <data name="OverlayStoreVersionShort" xml:space="preserve">
+      <value>v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusInstalled" xml:space="preserve">
+      <value>Instalada</value>
+    </data>
+    <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
+      <value>Instalada v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
+      <value>Lista para instalar</value>
+    </data>
+    <data name="OverlayRemoveFailedBody" xml:space="preserve">
+      <value>No se pudo quitar «{0}».</value>
+    </data>
+    <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
+      <value>¿Quitar «{0}»? Se borrarán sus archivos de tu carpeta de superposiciones.</value>
+    </data>
+    <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
+      <value>La superposición «{0}» requiere el esquema v{1}, pero la aplicación admite la v{2}. Se omitirá.</value>
+    </data>
+    <data name="OverlayValidationIdRequired" xml:space="preserve">
+      <value>Falta el campo 'id' de la superposición.</value>
+    </data>
+    <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
+      <value>El 'id' «{0}» contiene caracteres no válidos. Usa solo minúsculas, números y guiones.</value>
+    </data>
+    <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
+      <value>Falta el campo 'displayName' de la superposición.</value>
+    </data>
+    <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
+      <value>El campo 'author' está vacío. Los envíos a la tienda deben indicar su autor.</value>
+    </data>
+    <data name="OverlayValidationVersionInvalid" xml:space="preserve">
+      <value>El valor «{0}» de 'overlayVersion' no es una versión válida (por ejemplo, '1.0.0').</value>
+    </data>
+    <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
+      <value>rating.fontSize debe ser mayor que 0 (valor actual: {0}).</value>
+    </data>
+    <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
+      <value>layerOrder incluye la capa desconocida «{0}». Valores válidos: {1}.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
+      <value>layerOrder repite «{0}» más de una vez.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
+      <value>layerOrder no incluye 'poster'; el póster del contenido no se dibujará.</value>
+    </data>
+    <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
+      <value>{0}.imagePath es obligatorio cuando se define la capa.</value>
+    </data>
+    <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
+      <value>{0} «{1}» debe ser una ruta relativa dentro de la carpeta de la superposición (sin rutas absolutas ni '..').</value>
+    </data>
+    <data name="OverlayValidationAssetNotPng" xml:space="preserve">
+      <value>{0} «{1}» debe ser un archivo PNG.</value>
+    </data>
+    <data name="OverlayValidationAssetNotFound" xml:space="preserve">
+      <value>No se encontró el archivo {0} «{1}».</value>
+    </data>
+    <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
+      <value>Los archivos «{0}» y «{1}» solo se diferencian en mayúsculas y minúsculas, y colisionarán en sistemas de archivos que distinguen entre ambas.</value>
+    </data>
+    <data name="OverlayValidationImageTooLarge" xml:space="preserve">
+      <value>La imagen {0} «{1}» supera el tamaño máximo ({2:F1} MB &gt; {3:F0} MB).</value>
+    </data>
+    <data name="OverlayValidationMarginInvalid" xml:space="preserve">
+      <value>{0} «{1}» no es un valor de Thickness válido. Se esperan entre 1 y 4 números.</value>
+    </data>
+    <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
+      <value>{0} contiene el valor no numérico «{1}».</value>
+    </data>
+    <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
+      <value>El valor {1:0.##} de {0} queda muy fuera del lienzo y puede que no se vea nada.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
+      <value>title.rotationOrigin «{0}» debe tener el formato 'x,y' con exactamente 2 valores.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
+      <value>El valor «{0}» de title.rotationOrigin debe estar entre 0.0 y 1.0.</value>
+    </data>
+    <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
+      <value>La carpeta de la superposición supera el tamaño total máximo ({0:F1} MB &gt; {1:F0} MB).</value>
+    </data>
+    <data name="OverlaySubmissionIdRequired" xml:space="preserve">
+      <value>La superposición necesita un ID antes de poder enviarse.</value>
+    </data>
+    <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
+      <value>«{0}» todavía no está en la tienda: sería una superposición nueva.</value>
+    </data>
+    <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
+      <value>«{0}» ya está en la tienda con la v{1}. Enviar la v{2} la actualizaría.</value>
+    </data>
+    <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
+      <value>«{0}» ya está en la tienda con la v{1}. Sube la versión por encima de esa antes de enviarla.</value>
+    </data>
+    <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
+      <value>No se pudo consultar la tienda para comprobar si el nombre ya existe. Aun así, puedes enviarla.</value>
+    </data>
+    <data name="OverlayExportIdRequired" xml:space="preserve">
+      <value>La superposición necesita un ID antes de poder exportarse.</value>
+    </data>
+    <data name="OverlayExportFolderExists" xml:space="preserve">
+      <value>Aquí ya existe una carpeta llamada «{0}». Elige otra ubicación o permite reemplazarla.</value>
+    </data>
+    <data name="OverlayExportBlockedByValidation" xml:space="preserve">
+      <value>Corrige los problemas indicados antes de exportar. Problemas por corregir: {0}</value>
+    </data>
+    <data name="OverlayExportFailed" xml:space="preserve">
+      <value>Error al exportar: {0}</value>
+    </data>
+    <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
+      <value>«{0}» no contiene {1}.</value>
+    </data>
+    <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
+      <value>«{0}» es un ID de superposición integrada y no se puede sobrescribir.</value>
+    </data>
+    <data name="OverlayExportInstallFailed" xml:space="preserve">
+      <value>Error al instalar: {0}</value>
+    </data>
+    <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
+      <value>No se indicó ninguna superposición.</value>
+    </data>
+    <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
+      <value>«{0}» es una superposición integrada y no se puede quitar.</value>
+    </data>
+    <data name="OverlayExportNotInstalled" xml:space="preserve">
+      <value>«{0}» no está instalada.</value>
+    </data>
+    <data name="OverlayExportRemoveFailed" xml:space="preserve">
+      <value>No se pudo quitar «{0}»: {1}</value>
+    </data>
+    <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
+      <value>No se pudo generar la imagen de vista previa de esta superposición.</value>
+    </data>
+    <data name="OverlayLoadFileNotFound" xml:space="preserve">
+      <value>No se encontró el archivo de la superposición: {0}</value>
+    </data>
+    <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
+      <value>No se pudo determinar la carpeta de la superposición de «{0}».</value>
+    </data>
+    <data name="OverlayLoadInvalidJson" xml:space="preserve">
+      <value>«{0}» no es un JSON válido: {1}</value>
+    </data>
+    <data name="OverlayLoadUnreadable" xml:space="preserve">
+      <value>No se pudo leer «{0}»: {1}</value>
+    </data>
+    <data name="OverlayLoadNoDefinition" xml:space="preserve">
+      <value>«{0}» no contenía ninguna definición de superposición.</value>
+    </data>
+    <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
+      <value>Esta superposición requiere el esquema v{0}, pero esta versión de FoliCon admite la v{1}. Actualiza FoliCon para poder editarla.</value>
+    </data>
+    <data name="OverlayDraftIdRequired" xml:space="preserve">
+      <value>La superposición necesita un ID antes de poder guardarse como borrador.</value>
+    </data>
+    <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
+      <value>Superposición integrada</value>
+    </data>
+    <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
+      <value>Superposición instalada</value>
+    </data>
+    <data name="OverlayTemplateIdInUse" xml:space="preserve">
+      <value>El ID de superposición «{0}» ya lo usa una superposición integrada o instalada.</value>
+    </data>
+    <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
+      <value>Obteniendo el manifiesto...</value>
+    </data>
+    <data name="OverlayInstallProgressValidating" xml:space="preserve">
+      <value>Validando...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalling" xml:space="preserve">
+      <value>Instalando...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalled" xml:space="preserve">
+      <value>Instalada.</value>
+    </data>
+    <data name="OverlayInstallProgressDownloading" xml:space="preserve">
+      <value>Descargando {0}...</value>
+    </data>
+    <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
+      <value>Creando una copia de seguridad de la versión actual...</value>
+    </data>
+    <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
+      <value>No se pudo leer el manifiesto de «{0}»</value>
+    </data>
+    <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
+      <value>No se puede instalar «{0}»: es una superposición integrada.</value>
+    </data>
+    <data name="OverlayInstallDownloadFailed" xml:space="preserve">
+      <value>No se pudieron descargar los recursos de la superposición «{0}»: {1}</value>
+    </data>
+    <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
+      <value>El recurso «{0}» supera el límite de {1} MB.</value>
+    </data>
+    <data name="OverlayInstallHashMismatch" xml:space="preserve">
+      <value>Falló la comprobación de integridad de «{0}»: el archivo descargado no coincide con la suma de verificación publicada.</value>
+    </data>
+    <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
+      <value>overlay.json no contenía ninguna definición de superposición.</value>
+    </data>
+    <data name="OverlayInstallValidationFailed" xml:space="preserve">
+      <value>Error de validación: {0}</value>
+    </data>
+    <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
+      <value>La superposición «{0}» no está en el catálogo.</value>
+    </data>
+    <data name="OverlayUpdateFailed" xml:space="preserve">
+      <value>No se pudo actualizar la superposición «{0}» desde el manifiesto: {1}</value>
     </data>
 </root>

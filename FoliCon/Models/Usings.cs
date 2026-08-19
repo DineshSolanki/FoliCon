@@ -13,6 +13,7 @@ global using FoliCon.Modules.IGDB;
 global using FoliCon.Modules.TMDB;
 global using FoliCon.Modules.UI;
 global using FoliCon.Modules.utils;
+global using FoliCon.Modules.Overlays;
 global using FoliCon.ViewModels;
 global using GongSolutions.Wpf.DragDrop;
 global using NLog;

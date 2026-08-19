@@ -626,6 +626,12 @@ and refresh Icon Cache?</value>
     <data name="Overlay" xml:space="preserve">
       <value>Overlay</value>
     </data>
+    <data name="OverlayStore" xml:space="preserve">
+      <value>Overlay Store</value>
+    </data>
+    <data name="OverlayDesigner" xml:space="preserve">
+      <value>Create Overlay</value>
+    </data>
     <data name="Previewer" xml:space="preserve">
       <value>Previewer</value>
     </data>
@@ -910,5 +916,860 @@ and refresh Icon Cache?</value>
     </data>
     <data name="MaxDepthTooltip" xml:space="preserve">
       <value>Maximum depth of subfolder processing. 0 = unlimited (process all levels).</value>
+    </data>
+    <data name="OverlayDesignerTitle" xml:space="preserve">
+      <value>Overlay Designer</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
+      <value>Templates</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
+      <value>Go back to the template list to start a different overlay</value>
+    </data>
+    <data name="OverlayDesignerOpen" xml:space="preserve">
+      <value>Open…</value>
+    </data>
+    <data name="OverlayDesignerOpenHelp" xml:space="preserve">
+      <value>Open an existing overlay.json for editing</value>
+    </data>
+    <data name="OverlayDesignerUndoHelp" xml:space="preserve">
+      <value>Undo the last change (Ctrl+Z)</value>
+    </data>
+    <data name="OverlayDesignerRedo" xml:space="preserve">
+      <value>Redo</value>
+    </data>
+    <data name="OverlayDesignerRedoHelp" xml:space="preserve">
+      <value>Redo the last undone change (Ctrl+Y)</value>
+    </data>
+    <data name="OverlayDesignerZoom" xml:space="preserve">
+      <value>Zoom</value>
+    </data>
+    <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
+      <value>Open the overlay authoring guide (F1)</value>
+    </data>
+    <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
+      <value>Unsaved changes</value>
+    </data>
+    <data name="OverlayDesignerStartNew" xml:space="preserve">
+      <value>Start a new overlay</value>
+    </data>
+    <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
+      <value>Pick a template to copy. You get its layout and images as a starting point — edit anything, then export a package you can install or share.</value>
+    </data>
+    <data name="OverlayDesignerRendering" xml:space="preserve">
+      <value>Rendering…</value>
+    </data>
+    <data name="OverlayDesignerUseTemplate" xml:space="preserve">
+      <value>Use this template</value>
+    </data>
+    <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
+      <value>Use {0} as a template</value>
+    </data>
+    <data name="OverlayDesignerContinueDraft" xml:space="preserve">
+      <value>Continue a draft</value>
+    </data>
+    <data name="OverlayDesignerDraftsHint" xml:space="preserve">
+      <value>Work you saved earlier. Picking one reopens it exactly where you left off.</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
+      <value>Saved {0:g}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
+      <value>Delete</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
+      <value>Delete draft {0}</value>
+    </data>
+    <data name="OverlayDesignerResumeDraft" xml:space="preserve">
+      <value>Resume</value>
+    </data>
+    <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
+      <value>Resume draft {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
+      <value>Already have an overlay folder? Use Open… in the toolbar.</value>
+    </data>
+    <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
+      <value>Close Designer</value>
+    </data>
+    <data name="OverlayDesignerElements" xml:space="preserve">
+      <value>Elements</value>
+    </data>
+    <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
+      <value>Drawn top to bottom — the first is furthest back.</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
+      <value>Move further back</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
+      <value>Move selected layer further back</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
+      <value>Move further forward</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
+      <value>Move selected layer further forward</value>
+    </data>
+    <data name="OverlayDesignerShow" xml:space="preserve">
+      <value>Show</value>
+    </data>
+    <data name="OverlayLayerBase" xml:space="preserve">
+      <value>Base layer</value>
+    </data>
+    <data name="OverlayLayerFront" xml:space="preserve">
+      <value>Front layer</value>
+    </data>
+    <data name="OverlayLayerTitleText" xml:space="preserve">
+      <value>Title text</value>
+    </data>
+    <data name="OverlayLayerRatingBadge" xml:space="preserve">
+      <value>Rating badge</value>
+    </data>
+    <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
+      <value>Overlay preview canvas</value>
+    </data>
+    <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
+      <value>Rendered overlay preview</value>
+    </data>
+    <data name="OverlayDesignerGeometryHint" xml:space="preserve">
+      <value>Position and size in pixels. Arrow keys nudge by 1, Shift+arrow by 10.</value>
+    </data>
+    <data name="OverlayDesignerAxisX" xml:space="preserve">
+      <value>X</value>
+    </data>
+    <data name="OverlayDesignerLeftPosition" xml:space="preserve">
+      <value>Left position</value>
+    </data>
+    <data name="OverlayDesignerAxisY" xml:space="preserve">
+      <value>Y</value>
+    </data>
+    <data name="OverlayDesignerTopPosition" xml:space="preserve">
+      <value>Top position</value>
+    </data>
+    <data name="OverlayDesignerWidthShort" xml:space="preserve">
+      <value>W</value>
+    </data>
+    <data name="OverlayDesignerWidth" xml:space="preserve">
+      <value>Width</value>
+    </data>
+    <data name="OverlayDesignerHeightShort" xml:space="preserve">
+      <value>H</value>
+    </data>
+    <data name="OverlayDesignerHeight" xml:space="preserve">
+      <value>Height</value>
+    </data>
+    <data name="OverlayDesignerMetadata" xml:space="preserve">
+      <value>Metadata</value>
+    </data>
+    <data name="OverlayDesignerName" xml:space="preserve">
+      <value>Name</value>
+    </data>
+    <data name="OverlayDesignerId" xml:space="preserve">
+      <value>ID</value>
+    </data>
+    <data name="OverlayDesignerIdHint" xml:space="preserve">
+      <value>Lowercase letters, numbers and hyphens. Must be unique.</value>
+    </data>
+    <data name="OverlayDesignerAuthor" xml:space="preserve">
+      <value>Author</value>
+    </data>
+    <data name="OverlayDesignerVersion" xml:space="preserve">
+      <value>Version</value>
+    </data>
+    <data name="OverlayDesignerDescription" xml:space="preserve">
+      <value>Description</value>
+    </data>
+    <data name="OverlayTags" xml:space="preserve">
+      <value>Tags</value>
+    </data>
+    <data name="OverlayDesignerTagsHint" xml:space="preserve">
+      <value>Comma separated.</value>
+    </data>
+    <data name="OverlayDesignerLayerImages" xml:space="preserve">
+      <value>Layer images</value>
+    </data>
+    <data name="OverlayDesignerBaseImage" xml:space="preserve">
+      <value>Base image</value>
+    </data>
+    <data name="OverlayDesignerBrowse" xml:space="preserve">
+      <value>Browse…</value>
+    </data>
+    <data name="OverlayDesignerClear" xml:space="preserve">
+      <value>Clear</value>
+    </data>
+    <data name="OverlayDesignerFrontImage" xml:space="preserve">
+      <value>Front image</value>
+    </data>
+    <data name="OverlayDesignerOpacityMask" xml:space="preserve">
+      <value>Opacity mask</value>
+    </data>
+    <data name="OverlayDesignerCornerRadius" xml:space="preserve">
+      <value>Corner radius</value>
+    </data>
+    <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
+      <value>0 means square corners. Set each corner separately if you need an asymmetric shape.</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
+      <value>TL</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
+      <value>Top-left corner radius</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
+      <value>TR</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
+      <value>Top-right corner radius</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
+      <value>BL</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
+      <value>Bottom-left corner radius</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
+      <value>BR</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
+      <value>Bottom-right corner radius</value>
+    </data>
+    <data name="OverlayDesignerFont" xml:space="preserve">
+      <value>Font</value>
+    </data>
+    <data name="OverlayDesignerFontSize" xml:space="preserve">
+      <value>Font size</value>
+    </data>
+    <data name="OverlayDesignerColour" xml:space="preserve">
+      <value>Colour</value>
+    </data>
+    <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
+      <value>Current title colour</value>
+    </data>
+    <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
+      <value>Title colour value</value>
+    </data>
+    <data name="OverlayDesignerPick" xml:space="preserve">
+      <value>Pick…</value>
+    </data>
+    <data name="OverlayDesignerChooseColour" xml:space="preserve">
+      <value>Choose a colour</value>
+    </data>
+    <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
+      <value>Choose title colour</value>
+    </data>
+    <data name="OverlayDesignerColourHint" xml:space="preserve">
+      <value>Pick a colour, or type a name like White or a hex value like #FF5500.</value>
+    </data>
+    <data name="OverlayDesignerRotation" xml:space="preserve">
+      <value>Rotation</value>
+    </data>
+    <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
+      <value>Title rotation in degrees</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
+      <value>Advanced canvas</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
+      <value>These control the design surface the overlay is laid out on. The template's values are already correct — change them only if you know you need to.</value>
+    </data>
+    <data name="OverlayDesignerDesignWidth" xml:space="preserve">
+      <value>Design width</value>
+    </data>
+    <data name="OverlayDesignerDesignHeight" xml:space="preserve">
+      <value>Design height</value>
+    </data>
+    <data name="OverlayDesignerRootMargin" xml:space="preserve">
+      <value>Root margin</value>
+    </data>
+    <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
+      <value>left, top, right, bottom. Negative values expand the surface.</value>
+    </data>
+    <data name="OverlayDesignerPreviewWith" xml:space="preserve">
+      <value>Preview with:</value>
+    </data>
+    <data name="OverlayDesignerSamplePoster" xml:space="preserve">
+      <value>Sample poster…</value>
+    </data>
+    <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
+      <value>Sample rating value</value>
+    </data>
+    <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
+      <value>Sample title text</value>
+    </data>
+    <data name="OverlayDesignerMockup" xml:space="preserve">
+      <value>Mockup</value>
+    </data>
+    <data name="OverlayDesignerSeverityError" xml:space="preserve">
+      <value>Error</value>
+    </data>
+    <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
+      <value>Warning</value>
+    </data>
+    <data name="OverlayDesignerShareHeading" xml:space="preserve">
+      <value>Share this overlay</value>
+    </data>
+    <data name="OverlayDesignerHideSteps" xml:space="preserve">
+      <value>Hide these steps</value>
+    </data>
+    <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
+      <value>Hide submission steps</value>
+    </data>
+    <data name="OverlayDesignerInstallLocally" xml:space="preserve">
+      <value>Install for myself</value>
+    </data>
+    <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
+      <value>Copy this overlay into FoliCon so you can use it now</value>
+    </data>
+    <data name="OverlayDesignerOpenFolder" xml:space="preserve">
+      <value>Open folder</value>
+    </data>
+    <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
+      <value>To submit it to the community store:</value>
+    </data>
+    <data name="OverlayDesignerStep1Automation" xml:space="preserve">
+      <value>Step 1 done</value>
+    </data>
+    <data name="OverlayDesignerForkRepository" xml:space="preserve">
+      <value>Fork the repository</value>
+    </data>
+    <data name="OverlayDesignerStep2Automation" xml:space="preserve">
+      <value>Step 2 done</value>
+    </data>
+    <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
+      <value>Copy the exported folder into {0} in your fork</value>
+    </data>
+    <data name="OverlayDesignerStep3Automation" xml:space="preserve">
+      <value>Step 3 done</value>
+    </data>
+    <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
+      <value>Open a pull request</value>
+    </data>
+    <data name="OverlayDesignerExportPackage" xml:space="preserve">
+      <value>Export Package…</value>
+    </data>
+    <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
+      <value>Write a store-ready folder you can install or submit</value>
+    </data>
+    <data name="OverlayDesignerSaveDraft" xml:space="preserve">
+      <value>Save Draft</value>
+    </data>
+    <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
+      <value>Keep this work in progress so you can come back to it</value>
+    </data>
+    <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
+      <value>Title colour</value>
+    </data>
+    <data name="OverlayStoreLoadingPreview" xml:space="preserve">
+      <value>Loading preview...</value>
+    </data>
+    <data name="OverlayStoreInstall" xml:space="preserve">
+      <value>Install</value>
+    </data>
+    <data name="OverlayStoreUpdate" xml:space="preserve">
+      <value>Update</value>
+    </data>
+    <data name="OverlayStoreRemove" xml:space="preserve">
+      <value>Remove</value>
+    </data>
+    <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
+      <value>Remove this overlay (asks for confirmation)</value>
+    </data>
+    <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
+      <value>Search overlays...</value>
+    </data>
+    <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
+      <value>Filter by installation status</value>
+    </data>
+    <data name="OverlayStoreRefresh" xml:space="preserve">
+      <value>Refresh</value>
+    </data>
+    <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
+      <value>Reload the overlay catalog</value>
+    </data>
+    <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
+      <value>Design your own overlay from a template</value>
+    </data>
+    <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
+      <value>Show only overlays tagged {0}</value>
+    </data>
+    <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
+      <value>Filter by {0} tag</value>
+    </data>
+    <data name="OverlayStoreClearTags" xml:space="preserve">
+      <value>Clear tags</value>
+    </data>
+    <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
+      <value>Deselect all tags</value>
+    </data>
+    <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
+      <value>Loading catalog...</value>
+    </data>
+    <data name="OverlayStoreDiscoverTab" xml:space="preserve">
+      <value>Discover</value>
+    </data>
+    <data name="OverlayStoreUpdateAll" xml:space="preserve">
+      <value>Update all</value>
+    </data>
+    <data name="OverlayRemoveTooltip" xml:space="preserve">
+      <value>Remove this overlay</value>
+    </data>
+    <data name="OverlayRemoveAutomation" xml:space="preserve">
+      <value>Remove {0}</value>
+    </data>
+    <data name="OverlayBrowseStore" xml:space="preserve">
+      <value>Browse Overlay Store...</value>
+    </data>
+    <data name="OverlayImportLocal" xml:space="preserve">
+      <value>Import Local Overlay...</value>
+    </data>
+    <data name="OverlayComingSoon" xml:space="preserve">
+      <value>Coming in a future release</value>
+    </data>
+    <data name="OverlayDesignerNothingSelected" xml:space="preserve">
+      <value>Nothing selected</value>
+    </data>
+    <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
+      <value>Select a PNG image</value>
+    </data>
+    <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
+      <value>PNG images (*.png)|*.png</value>
+    </data>
+    <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
+      <value>Pick an image inside the overlay folder so the package stays self-contained.</value>
+    </data>
+    <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
+      <value>Select a sample poster</value>
+    </data>
+    <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
+      <value>Images (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg</value>
+    </data>
+    <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
+      <value>Preview failed: {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
+      <value>Draft saved to {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
+      <value>Could not save the draft: {0}</value>
+    </data>
+    <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
+      <value>Choose where to save the overlay package</value>
+    </data>
+    <data name="OverlayDesignerExporting" xml:space="preserve">
+      <value>Exporting…</value>
+    </data>
+    <data name="OverlayDesignerExportCancelled" xml:space="preserve">
+      <value>Export cancelled.</value>
+    </data>
+    <data name="OverlayDesignerExportFailed" xml:space="preserve">
+      <value>Export failed.</value>
+    </data>
+    <data name="OverlayDesignerExportedTo" xml:space="preserve">
+      <value>Exported to {0}</value>
+    </data>
+    <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
+      <value>Export failed: {0}</value>
+    </data>
+    <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
+      <value>Checking the store for a name clash…</value>
+    </data>
+    <data name="OverlayDesignerInstallFailed" xml:space="preserve">
+      <value>Install failed.</value>
+    </data>
+    <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
+      <value>Installed. '{0}' is now available in your overlay list.</value>
+    </data>
+    <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
+      <value>Install failed: {0}</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
+      <value>A folder named '{0}' already exists there. Replace it?</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
+      <value>Replace existing package</value>
+    </data>
+    <data name="OverlayDesignerNoIssues" xml:space="preserve">
+      <value>No issues</value>
+    </data>
+    <data name="OverlayDesignerWarningCount" xml:space="preserve">
+      <value>Warnings: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorCount" xml:space="preserve">
+      <value>Errors: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
+      <value>Errors: {0}, warnings: {1}</value>
+    </data>
+    <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
+      <value>My {0}</value>
+    </data>
+    <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
+      <value>Created '{0}' from {1}.</value>
+    </data>
+    <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
+      <value>Could not create from template: {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
+      <value>Open overlay.json</value>
+    </data>
+    <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
+      <value>Overlay definition (overlay.json)|overlay.json</value>
+    </data>
+    <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
+      <value>Could not open that overlay.</value>
+    </data>
+    <data name="OverlayDesignerOpened" xml:space="preserve">
+      <value>Opened '{0}'.</value>
+    </data>
+    <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
+      <value>Opened '{0}'. Problems to fix: {1}</value>
+    </data>
+    <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
+      <value>Could not open that page in your browser.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
+      <value>You have unsaved changes. Discard them? Use Save Draft or Export Package to keep your work.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
+      <value>Discard changes</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
+      <value>Deleted draft '{0}'.</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
+      <value>Could not delete the draft: {0}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
+      <value>Delete the draft '{0}'? This cannot be undone.</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
+      <value>Delete draft</value>
+    </data>
+    <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
+      <value>{0}: {1}, {2}, {3} by {4}</value>
+    </data>
+    <data name="OverlayStoreFilterAll" xml:space="preserve">
+      <value>All overlays</value>
+    </data>
+    <data name="OverlayStoreFilterInstalled" xml:space="preserve">
+      <value>Installed</value>
+    </data>
+    <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
+      <value>Not installed</value>
+    </data>
+    <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
+      <value>Update available</value>
+    </data>
+    <data name="OverlayStoreInstalledTab" xml:space="preserve">
+      <value>Installed ({0})</value>
+    </data>
+    <data name="OverlayStoreUpdatesTab" xml:space="preserve">
+      <value>Updates ({0})</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
+      <value>No installed overlays</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
+      <value>Everything is up to date</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
+      <value>No overlays found</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
+      <value>Install an overlay from Discover and it will appear here.</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
+      <value>Installed overlays will appear here when an update is available.</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
+      <value>Try another search, tag, or installation filter.</value>
+    </data>
+    <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
+      <value>Refreshing catalog...</value>
+    </data>
+    <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
+      <value>Overlays available: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
+      <value>Failed to load catalog: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
+      <value>Error loading catalog</value>
+    </data>
+    <data name="OverlayStoreVisibleCount" xml:space="preserve">
+      <value>Overlays shown: {0}</value>
+    </data>
+    <data name="OverlayStoreTotalCount" xml:space="preserve">
+      <value>Overlays: {0}</value>
+    </data>
+    <data name="OverlayStoreInstalling" xml:space="preserve">
+      <value>Installing {0}...</value>
+    </data>
+    <data name="OverlayStoreProgressFormat" xml:space="preserve">
+      <value>{0} ({1}%)</value>
+    </data>
+    <data name="OverlayStoreInstallingProgress" xml:space="preserve">
+      <value>Installing {0}: {1} ({2}%)</value>
+    </data>
+    <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
+      <value>{0} installed successfully</value>
+    </data>
+    <data name="OverlayStoreInstallFailed" xml:space="preserve">
+      <value>Install failed: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdating" xml:space="preserve">
+      <value>Updating {0}...</value>
+    </data>
+    <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
+      <value>Updating {0}: {1} ({2}%)</value>
+    </data>
+    <data name="OverlayStoreCardUpToDate" xml:space="preserve">
+      <value>{0} is up to date</value>
+    </data>
+    <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
+      <value>{0} updated successfully</value>
+    </data>
+    <data name="OverlayStoreUpdateFailed" xml:space="preserve">
+      <value>Update failed: {0}</value>
+    </data>
+    <data name="OverlayStoreRemoving" xml:space="preserve">
+      <value>Removing {0}...</value>
+    </data>
+    <data name="OverlayStoreRemoved" xml:space="preserve">
+      <value>{0} removed</value>
+    </data>
+    <data name="OverlayStoreRemoveFailed" xml:space="preserve">
+      <value>Remove failed: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
+      <value>Updating {0} of {1}: {2}</value>
+    </data>
+    <data name="OverlayStoreAllUpToDate" xml:space="preserve">
+      <value>All overlays are up to date</value>
+    </data>
+    <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
+      <value>Remove {0}? You can install it again later.</value>
+    </data>
+    <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
+      <value>Remove overlay</value>
+    </data>
+    <data name="OverlaySizeBytes" xml:space="preserve">
+      <value>{0} B</value>
+    </data>
+    <data name="OverlaySizeKilobytes" xml:space="preserve">
+      <value>{0:F1} KB</value>
+    </data>
+    <data name="OverlaySizeMegabytes" xml:space="preserve">
+      <value>{0:F1} MB</value>
+    </data>
+    <data name="OverlayStoreVersionShort" xml:space="preserve">
+      <value>v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusInstalled" xml:space="preserve">
+      <value>Installed</value>
+    </data>
+    <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
+      <value>Installed v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
+      <value>Available to install</value>
+    </data>
+    <data name="OverlayRemoveFailedBody" xml:space="preserve">
+      <value>Could not remove '{0}'.</value>
+    </data>
+    <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
+      <value>Remove '{0}'? Its files will be deleted from your overlays folder.</value>
+    </data>
+    <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
+      <value>Overlay '{0}' requires schema v{1}, app supports v{2}. Skipping.</value>
+    </data>
+    <data name="OverlayValidationIdRequired" xml:space="preserve">
+      <value>Overlay 'id' is required.</value>
+    </data>
+    <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
+      <value>Overlay 'id' '{0}' contains invalid characters. Use lowercase alphanumeric and hyphens.</value>
+    </data>
+    <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
+      <value>Overlay 'displayName' is required.</value>
+    </data>
+    <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
+      <value>Overlay 'author' is empty. Store submissions should name their author.</value>
+    </data>
+    <data name="OverlayValidationVersionInvalid" xml:space="preserve">
+      <value>Overlay 'overlayVersion' '{0}' is not a valid version (expected e.g. '1.0.0').</value>
+    </data>
+    <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
+      <value>rating.fontSize must be greater than 0 (got {0}).</value>
+    </data>
+    <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
+      <value>layerOrder contains unknown layer '{0}'. Valid values: {1}.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
+      <value>layerOrder lists '{0}' more than once.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
+      <value>layerOrder does not include 'poster'; the media poster will not be drawn.</value>
+    </data>
+    <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
+      <value>{0}.imagePath is required when layer is defined.</value>
+    </data>
+    <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
+      <value>{0} '{1}' must be a relative path inside the overlay folder (no absolute paths, no '..').</value>
+    </data>
+    <data name="OverlayValidationAssetNotPng" xml:space="preserve">
+      <value>{0} '{1}' must be a PNG file.</value>
+    </data>
+    <data name="OverlayValidationAssetNotFound" xml:space="preserve">
+      <value>{0} '{1}' file not found.</value>
+    </data>
+    <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
+      <value>Files '{0}' and '{1}' differ only by case and will collide on case-sensitive filesystems.</value>
+    </data>
+    <data name="OverlayValidationImageTooLarge" xml:space="preserve">
+      <value>{0} image '{1}' exceeds maximum size ({2:F1} MB &gt; {3:F0} MB).</value>
+    </data>
+    <data name="OverlayValidationMarginInvalid" xml:space="preserve">
+      <value>{0} '{1}' is not a valid Thickness string. Expected 1-4 numeric values.</value>
+    </data>
+    <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
+      <value>{0} contains non-numeric value '{1}'.</value>
+    </data>
+    <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
+      <value>{0} value {1:0.##} is far outside the canvas and may render nothing visible.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
+      <value>title.rotationOrigin '{0}' must be 'x,y' with exactly 2 values.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
+      <value>title.rotationOrigin value '{0}' must be between 0.0 and 1.0.</value>
+    </data>
+    <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
+      <value>Overlay folder exceeds maximum total size ({0:F1} MB &gt; {1:F0} MB).</value>
+    </data>
+    <data name="OverlaySubmissionIdRequired" xml:space="preserve">
+      <value>The overlay needs an ID before it can be submitted.</value>
+    </data>
+    <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
+      <value>'{0}' is not in the store yet — this would be a new overlay.</value>
+    </data>
+    <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
+      <value>'{0}' is already in the store at v{1}. Submitting v{2} would update it.</value>
+    </data>
+    <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
+      <value>'{0}' is already in the store at v{1}. Raise the version above that before submitting.</value>
+    </data>
+    <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
+      <value>Could not reach the store to check for a name clash. You can still submit.</value>
+    </data>
+    <data name="OverlayExportIdRequired" xml:space="preserve">
+      <value>The overlay needs an ID before it can be exported.</value>
+    </data>
+    <data name="OverlayExportFolderExists" xml:space="preserve">
+      <value>A folder named '{0}' already exists here. Choose another location or allow replacing it.</value>
+    </data>
+    <data name="OverlayExportBlockedByValidation" xml:space="preserve">
+      <value>Fix the reported problems before exporting. Problems to fix: {0}</value>
+    </data>
+    <data name="OverlayExportFailed" xml:space="preserve">
+      <value>Export failed: {0}</value>
+    </data>
+    <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
+      <value>'{0}' does not contain {1}.</value>
+    </data>
+    <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
+      <value>'{0}' is a built-in overlay ID and cannot be installed over.</value>
+    </data>
+    <data name="OverlayExportInstallFailed" xml:space="preserve">
+      <value>Install failed: {0}</value>
+    </data>
+    <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
+      <value>No overlay was specified.</value>
+    </data>
+    <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
+      <value>'{0}' is a built-in overlay and cannot be removed.</value>
+    </data>
+    <data name="OverlayExportNotInstalled" xml:space="preserve">
+      <value>'{0}' is not installed.</value>
+    </data>
+    <data name="OverlayExportRemoveFailed" xml:space="preserve">
+      <value>Could not remove '{0}': {1}</value>
+    </data>
+    <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
+      <value>Could not render the preview image for this overlay.</value>
+    </data>
+    <data name="OverlayLoadFileNotFound" xml:space="preserve">
+      <value>Overlay file not found: {0}</value>
+    </data>
+    <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
+      <value>Could not determine the overlay folder for '{0}'.</value>
+    </data>
+    <data name="OverlayLoadInvalidJson" xml:space="preserve">
+      <value>'{0}' is not valid JSON: {1}</value>
+    </data>
+    <data name="OverlayLoadUnreadable" xml:space="preserve">
+      <value>Could not read '{0}': {1}</value>
+    </data>
+    <data name="OverlayLoadNoDefinition" xml:space="preserve">
+      <value>'{0}' did not contain an overlay definition.</value>
+    </data>
+    <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
+      <value>This overlay requires schema v{0}, but this version of FoliCon supports v{1}. Update FoliCon to edit it.</value>
+    </data>
+    <data name="OverlayDraftIdRequired" xml:space="preserve">
+      <value>The overlay needs an ID before it can be saved as a draft.</value>
+    </data>
+    <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
+      <value>Built-in overlay</value>
+    </data>
+    <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
+      <value>Installed overlay</value>
+    </data>
+    <data name="OverlayTemplateIdInUse" xml:space="preserve">
+      <value>Overlay ID '{0}' is already in use by a built-in or installed overlay.</value>
+    </data>
+    <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
+      <value>Fetching manifest...</value>
+    </data>
+    <data name="OverlayInstallProgressValidating" xml:space="preserve">
+      <value>Validating...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalling" xml:space="preserve">
+      <value>Installing...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalled" xml:space="preserve">
+      <value>Installed.</value>
+    </data>
+    <data name="OverlayInstallProgressDownloading" xml:space="preserve">
+      <value>Downloading {0}...</value>
+    </data>
+    <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
+      <value>Backing up current version...</value>
+    </data>
+    <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
+      <value>Failed to deserialize manifest for '{0}'</value>
+    </data>
+    <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
+      <value>Cannot install '{0}': it is a built-in overlay.</value>
+    </data>
+    <data name="OverlayInstallDownloadFailed" xml:space="preserve">
+      <value>Failed to download assets for overlay '{0}': {1}</value>
+    </data>
+    <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
+      <value>Asset '{0}' exceeds {1}MB limit.</value>
+    </data>
+    <data name="OverlayInstallHashMismatch" xml:space="preserve">
+      <value>Integrity check failed for '{0}': the downloaded file does not match the published checksum.</value>
+    </data>
+    <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
+      <value>overlay.json did not contain an overlay definition.</value>
+    </data>
+    <data name="OverlayInstallValidationFailed" xml:space="preserve">
+      <value>Validation failed: {0}</value>
+    </data>
+    <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
+      <value>Overlay '{0}' not found in catalog.</value>
+    </data>
+    <data name="OverlayUpdateFailed" xml:space="preserve">
+      <value>Failed to update overlay '{0}' from manifest: {1}</value>
     </data>
 </root>

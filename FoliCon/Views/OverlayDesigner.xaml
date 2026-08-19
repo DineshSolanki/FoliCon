@@ -1,0 +1,908 @@
+﻿<UserControl x:Class="FoliCon.Views.OverlayDesigner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:OverlayDesignerViewModel}"
+             Background="{DynamicResource RegionBrush}"
+             Focusable="True">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <hc:Boolean2VisibilityReConverter x:Key="InvertedBoolToVis" />
+
+        <!-- Compact numeric editor for position/size fields. -->
+        <!--
+            BasedOn is required: a TargetType-only Style replaces HandyControl's implicit
+            default style, which carries the control template. Without it the editors render
+            as empty boxes with no visible value.
+        -->
+        <Style x:Key="GeometryBox" TargetType="hc:NumericUpDown"
+               BasedOn="{StaticResource {x:Type hc:NumericUpDown}}">
+            <Setter Property="Width" Value="76" />
+            <Setter Property="Margin" Value="0,0,6,4" />
+            <Setter Property="Minimum" Value="-2000" />
+            <Setter Property="Maximum" Value="2000" />
+            <Setter Property="Increment" Value="1" />
+            <Setter Property="DecimalPlaces" Value="0" />
+        </Style>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,8,0,4" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        </Style>
+
+        <Style x:Key="HintText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+        </Style>
+    </UserControl.Resources>
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <!-- Bound rather than a literal so the title follows a live language switch. -->
+            <Setter Property="Title" Value="{Binding Title}" />
+            <Setter Property="Height" Value="760" />
+            <Setter Property="Width" Value="1180" />
+            <Setter Property="MinHeight" Value="700" />
+            <Setter Property="MinWidth" Value="1100" />
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Z" Modifiers="Ctrl" Command="{Binding UndoCommand}" />
+        <KeyBinding Key="Y" Modifiers="Ctrl" Command="{Binding RedoCommand}" />
+        <KeyBinding Key="F1" Command="{Binding OpenHelpCommand}" />
+        <KeyBinding Key="Left" Command="{Binding NudgeCommand}" CommandParameter="left" />
+        <KeyBinding Key="Right" Command="{Binding NudgeCommand}" CommandParameter="right" />
+        <KeyBinding Key="Up" Command="{Binding NudgeCommand}" CommandParameter="up" />
+        <KeyBinding Key="Down" Command="{Binding NudgeCommand}" CommandParameter="down" />
+        <KeyBinding Key="Left" Modifiers="Shift" Command="{Binding NudgeCommand}" CommandParameter="left-shift" />
+        <KeyBinding Key="Right" Modifiers="Shift" Command="{Binding NudgeCommand}" CommandParameter="right-shift" />
+        <KeyBinding Key="Up" Modifiers="Shift" Command="{Binding NudgeCommand}" CommandParameter="up-shift" />
+        <KeyBinding Key="Down" Modifiers="Shift" Command="{Binding NudgeCommand}" CommandParameter="down-shift" />
+    </UserControl.InputBindings>
+
+    <Grid Margin="16,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10" LastChildFill="False">
+            <!--
+                Returns to the picker instead of leaving the designer.
+
+                The leading glyph stays in markup and only the word is localized: glyphs are
+                language-neutral, and baking one into a resource value invites a translator to
+                drop or reorder it. StringFormat on a LangProvider binding recomposes the two
+                and still re-evaluates on a live language switch.
+            -->
+            <Button DockPanel.Dock="Left" Padding="10,4" Margin="0,0,6,0"
+                    Content="{Binding Source={StaticResource FoliConLangs},
+                              Path=OverlayDesignerBackToTemplates, StringFormat=← {0}}"
+                    Visibility="{Binding HasDocument, Converter={StaticResource BoolToVis}}"
+                    Click="OnBackToTemplatesClicked"
+                    AutomationProperties.HelpText="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerBackToTemplatesHelp}}" />
+
+            <Button DockPanel.Dock="Left" Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerOpen}}"
+                    Padding="12,4" Margin="0,0,6,0"
+                    Command="{Binding OpenPackageCommand}"
+                    AutomationProperties.HelpText="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerOpenHelp}}" />
+
+            <Separator DockPanel.Dock="Left" Margin="6,4" />
+
+            <Button DockPanel.Dock="Left" Padding="10,4" Margin="0,0,4,0"
+                    Content="{Binding Source={StaticResource FoliConLangs}, Path=Undo, StringFormat=↶ {0}}"
+                    Command="{Binding UndoCommand}"
+                    AutomationProperties.HelpText="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerUndoHelp}}" />
+            <Button DockPanel.Dock="Left" Padding="10,4" Margin="0,0,6,0"
+                    Content="{Binding Source={StaticResource FoliConLangs},
+                              Path=OverlayDesignerRedo, StringFormat=↷ {0}}"
+                    Command="{Binding RedoCommand}"
+                    AutomationProperties.HelpText="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerRedoHelp}}" />
+
+            <Separator DockPanel.Dock="Left" Margin="6,4" />
+
+            <TextBlock DockPanel.Dock="Left" Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerZoom}}"
+                       VerticalAlignment="Center"
+                       Margin="0,0,6,0" FontSize="12"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+            <RadioButton DockPanel.Dock="Left" Content="1×" GroupName="Zoom" Margin="0,0,4,0"
+                         VerticalAlignment="Center"
+                         Command="{Binding SetZoomCommand}" CommandParameter="1" />
+            <RadioButton DockPanel.Dock="Left" Content="2×" GroupName="Zoom" Margin="0,0,4,0"
+                         VerticalAlignment="Center" IsChecked="True"
+                         Command="{Binding SetZoomCommand}" CommandParameter="2" />
+            <RadioButton DockPanel.Dock="Left" Content="4×" GroupName="Zoom" Margin="0,0,6,0"
+                         VerticalAlignment="Center"
+                         Command="{Binding SetZoomCommand}" CommandParameter="4" />
+
+            <Button DockPanel.Dock="Right" Padding="10,4"
+                    Content="{Binding Source={StaticResource FoliConLangs}, Path=Help, StringFormat=? {0}}"
+                    Command="{Binding OpenHelpCommand}"
+                    AutomationProperties.HelpText="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerHelpTooltip}}" />
+
+            <TextBlock DockPanel.Dock="Right"
+                       Text="{Binding Source={StaticResource FoliConLangs},
+                              Path=OverlayDesignerUnsavedChanges, StringFormat=● {0}}"
+                       Visibility="{Binding IsDirty, Converter={StaticResource BoolToVis}}"
+                       VerticalAlignment="Center" Margin="0,0,12,0" FontSize="11"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+        </DockPanel>
+
+        <!-- First-run template picker -->
+        <Border Grid.Row="1"
+                Visibility="{Binding ShowTemplatePicker, Converter={StaticResource BoolToVis}}"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4"
+                Padding="24">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerStartNew}}"
+                               FontSize="20" FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock Style="{StaticResource HintText}" Margin="0,6,0,16" MaxWidth="620"
+                               HorizontalAlignment="Left"
+                               Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerTemplatePickerHint}}" />
+
+                    <ItemsControl ItemsSource="{Binding Templates}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <!--
+                                    A Border, not a Button: HandyControl's Button style constrains
+                                    height and clips multi-line card content. The whole card is made
+                                    clickable via an InputBinding, and keyboard access is preserved
+                                    by the explicit Choose button below.
+                                -->
+                                <Border Width="190" Margin="0,0,12,12" Padding="10" CornerRadius="4"
+                                        Background="{DynamicResource RegionBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                        Cursor="Hand"
+                                        ToolTip="{Binding Description}"
+                                        AutomationProperties.Name="{Binding DisplayName}"
+                                        AutomationProperties.HelpText="{Binding Description}">
+                                    <Border.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick"
+                                                      Command="{Binding DataContext.CreateFromTemplateCommand,
+                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                      CommandParameter="{Binding}" />
+                                    </Border.InputBindings>
+
+                                    <StackPanel>
+                                        <!-- Overlays are chosen by appearance, so lead with the artwork. -->
+                                        <Border Height="130" Margin="0,0,0,8" CornerRadius="3"
+                                                Background="{DynamicResource SecondaryRegionBrush}">
+                                            <Grid>
+                                                <Image Source="{Binding PreviewImage}" Stretch="Uniform"
+                                                       Margin="4"
+                                                       RenderOptions.BitmapScalingMode="HighQuality" />
+                                                <TextBlock FontSize="11"
+                                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerRendering}}"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                           Visibility="{Binding IsPreviewLoading,
+                                                                       Converter={StaticResource BoolToVis}}"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                                            </Grid>
+                                        </Border>
+
+                                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="14"
+                                                   TextTrimming="CharacterEllipsis" Margin="0,0,0,2"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                                        <TextBlock Text="{Binding Description}" FontSize="11" Height="30"
+                                                   TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerUseTemplate}}"
+                                                Margin="0,8,0,0" Padding="8,4"
+                                                HorizontalAlignment="Stretch"
+                                                Style="{StaticResource ButtonPrimary}"
+                                                Command="{Binding DataContext.CreateFromTemplateCommand,
+                                                          RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}">
+                                            <AutomationProperties.Name>
+                                                <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                                    <Binding Source="{StaticResource FoliConLangs}"
+                                                             Path="OverlayDesignerUseTemplateAutomation" />
+                                                    <Binding Path="DisplayName" />
+                                                </MultiBinding>
+                                            </AutomationProperties.Name>
+                                        </Button>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Saved drafts, so resuming never means hunting for a folder. -->
+                    <StackPanel Visibility="{Binding HasDrafts, Converter={StaticResource BoolToVis}}"
+                                Margin="0,16,0,0">
+                        <Separator Margin="0,0,0,12" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerContinueDraft}}"
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                        <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,10"
+                                   Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerDraftsHint}}" />
+
+                        <ItemsControl ItemsSource="{Binding Drafts}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,6" Padding="10,8" CornerRadius="4"
+                                            Background="{DynamicResource RegionBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                        <DockPanel LastChildFill="False">
+                                            <StackPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"
+                                                           FontSize="13"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                                <TextBlock FontSize="11"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                                            <Binding Source="{StaticResource FoliConLangs}"
+                                                                     Path="OverlayDesignerDraftSavedAt" />
+                                                            <Binding Path="SavedAt" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+
+                                            <Button DockPanel.Dock="Right" Padding="10,3"
+                                                    Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerDeleteDraft}}"
+                                                    Margin="6,0,0,0" FontSize="11"
+                                                    Command="{Binding DataContext.DeleteDraftCommand,
+                                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <AutomationProperties.Name>
+                                                    <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                                        <Binding Source="{StaticResource FoliConLangs}"
+                                                                 Path="OverlayDesignerDeleteDraftAutomation" />
+                                                        <Binding Path="DisplayName" />
+                                                    </MultiBinding>
+                                                </AutomationProperties.Name>
+                                            </Button>
+                                            <Button DockPanel.Dock="Right" Padding="12,3"
+                                                    Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerResumeDraft}}"
+                                                    FontSize="11"
+                                                    Style="{StaticResource ButtonPrimary}"
+                                                    Command="{Binding DataContext.ResumeDraftCommand,
+                                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <AutomationProperties.Name>
+                                                    <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                                        <Binding Source="{StaticResource FoliConLangs}"
+                                                                 Path="OverlayDesignerResumeDraftAutomation" />
+                                                        <Binding Path="DisplayName" />
+                                                    </MultiBinding>
+                                                </AutomationProperties.Name>
+                                            </Button>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+
+                    <TextBlock Style="{StaticResource HintText}" Margin="0,12,0,0"
+                               Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerOpenFolderHint}}" />
+
+                    <!-- The action bar is hidden on this screen, so the picker needs its own exit. -->
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCloseDesigner}}"
+                            Padding="14,5" Margin="0,16,0,0"
+                            HorizontalAlignment="Left" Click="OnCloseClicked" />
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Editor -->
+        <Grid Grid.Row="1" Visibility="{Binding HasDocument, Converter={StaticResource BoolToVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="170" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="330" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Element rail -->
+            <Border Grid.Column="0" Margin="0,0,10,0" Padding="8"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4">
+                <StackPanel>
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerElements}}"
+                               Style="{StaticResource FieldLabel}" Margin="0,0,0,2" />
+                    <TextBlock Style="{StaticResource HintText}" Margin="0,0,0,4"
+                               Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerElementOrderHint}}" />
+                    <ItemsControl ItemsSource="{Binding Elements}"
+                                  KeyboardNavigation.TabNavigation="Continue">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton GroupName="Element" Margin="0,2" Padding="6,4"
+                                             IsChecked="{Binding IsSelected, Mode=OneWay}"
+                                             Command="{Binding DataContext.SelectElementCommand,
+                                                       RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                             CommandParameter="{Binding}"
+                                             AutomationProperties.Name="{Binding BoundsDescription}">
+                                    <TextBlock Text="{Binding DisplayName}" FontSize="13">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+                                                <Style.Triggers>
+                                                    <!-- Absent layers stay listed but read as inactive. -->
+                                                    <DataTrigger Binding="{Binding IsPresent}" Value="False">
+                                                        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+                                                        <Setter Property="FontStyle" Value="Italic" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </RadioButton>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Reorders the selected element's z-order; the list above reflects it. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0"
+                                Visibility="{Binding HasSelection, Converter={StaticResource BoolToVis}}">
+                        <Button Content="↑" Padding="10,2" Margin="0,0,4,0" MinWidth="34"
+                                Command="{Binding MoveLayerUpCommand}"
+                                CommandParameter="{Binding SelectedElement}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerMoveLayerBack}}"
+                                AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerMoveLayerBackAutomation}}" />
+                        <Button Content="↓" Padding="10,2" MinWidth="34"
+                                Command="{Binding MoveLayerDownCommand}"
+                                CommandParameter="{Binding SelectedElement}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerMoveLayerForward}}"
+                                AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerMoveLayerForwardAutomation}}" />
+                    </StackPanel>
+
+                    <Separator Margin="0,10" />
+
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerShow}}"
+                               Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayLayerBase}}"
+                              Margin="0,3" IsChecked="{Binding HasBaseLayer}" />
+                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayLayerFront}}"
+                              Margin="0,3" IsChecked="{Binding HasFrontLayer}" />
+                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayLayerTitleText}}"
+                              Margin="0,3" IsChecked="{Binding TitleIsVisible}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Canvas -->
+            <Border Grid.Column="1" Margin="0,0,10,0"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                              Padding="16">
+                    <Grid x:Name="CanvasRoot"
+                          Width="{Binding CanvasWidth}" Height="{Binding CanvasHeight}"
+                          HorizontalAlignment="Center" VerticalAlignment="Center"
+                          Background="Transparent"
+                          AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCanvasAutomation}}">
+
+                        <!-- Checkerboard so transparent regions in the artwork are legible. -->
+                        <Rectangle>
+                            <Rectangle.Fill>
+                                <DrawingBrush TileMode="Tile" Viewport="0,0,16,16" ViewportUnits="Absolute">
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <GeometryDrawing Brush="#FFF0F0F0">
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect="0,0,16,16" />
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing Brush="#FFD8D8D8">
+                                                <GeometryDrawing.Geometry>
+                                                    <GeometryGroup>
+                                                        <RectangleGeometry Rect="0,0,8,8" />
+                                                        <RectangleGeometry Rect="8,8,8,8" />
+                                                    </GeometryGroup>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+
+                        <Image Source="{Binding PreviewImage}"
+                               Stretch="Fill"
+                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerPreviewAutomation}}" />
+
+                        <!-- Selection adorner: code-behind positions this from the ViewModel bounds. -->
+                        <Canvas x:Name="AdornerLayer" Background="Transparent" />
+                    </Grid>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Properties -->
+            <Border Grid.Column="2" Padding="12"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="4">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+
+                        <!-- Selection-driven geometry: only the selected element's fields. -->
+                        <TextBlock Text="{Binding SelectedElementName}" FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+
+                        <StackPanel Visibility="{Binding HasSelection, Converter={StaticResource BoolToVis}}">
+                            <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,6"
+                                       Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerGeometryHint}}" />
+
+                            <UniformGrid Columns="2">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerAxisX}}"
+                                               VerticalAlignment="Center" MinWidth="16" Margin="0,0,4,0" FontSize="12" />
+                                    <hc:NumericUpDown Style="{StaticResource GeometryBox}"
+                                                      Value="{Binding SelectedLeft, UpdateSourceTrigger=PropertyChanged}"
+                                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerLeftPosition}}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerAxisY}}"
+                                               VerticalAlignment="Center" MinWidth="16" Margin="0,0,4,0" FontSize="12" />
+                                    <hc:NumericUpDown Style="{StaticResource GeometryBox}"
+                                                      Value="{Binding SelectedTop, UpdateSourceTrigger=PropertyChanged}"
+                                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerTopPosition}}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerWidthShort}}"
+                                               VerticalAlignment="Center" MinWidth="16" Margin="0,0,4,0" FontSize="12" />
+                                    <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="0"
+                                                      Value="{Binding SelectedWidth, UpdateSourceTrigger=PropertyChanged}"
+                                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerWidth}}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerHeightShort}}"
+                                               VerticalAlignment="Center" MinWidth="16" Margin="0,0,4,0" FontSize="12" />
+                                    <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="0"
+                                                      Value="{Binding SelectedHeight, UpdateSourceTrigger=PropertyChanged}"
+                                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerHeight}}" />
+                                </StackPanel>
+                            </UniformGrid>
+                        </StackPanel>
+
+                        <Separator Margin="0,12" />
+
+                        <Expander Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerMetadata}}"
+                                  IsExpanded="True">
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerName}}"
+                                           Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                <TextBox Text="{Binding DisplayName, UpdateSourceTrigger=LostFocus}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerId}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding OverlayId, UpdateSourceTrigger=LostFocus}" />
+                                <TextBlock Style="{StaticResource HintText}"
+                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerIdHint}}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerAuthor}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding Author, UpdateSourceTrigger=LostFocus}" />
+
+                                <!-- Its own key: the existing "Version" resource carries a trailing colon. -->
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerVersion}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding OverlayVersion, UpdateSourceTrigger=LostFocus}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerDescription}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding Description, UpdateSourceTrigger=LostFocus}"
+                                         TextWrapping="Wrap" AcceptsReturn="True" MinHeight="52" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayTags}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding TagsText, UpdateSourceTrigger=LostFocus}" />
+                                <TextBlock Style="{StaticResource HintText}"
+                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerTagsHint}}" />
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerLayerImages}}"
+                                  Margin="0,6,0,0">
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerBaseImage}}"
+                                           Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                <TextBlock Text="{Binding BaseLayerImagePath}" Style="{StaticResource HintText}" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerBrowse}}"
+                                            Padding="10,3" Margin="0,0,6,0"
+                                            Command="{Binding BrowseImageCommand}" CommandParameter="base" />
+                                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerClear}}"
+                                            Padding="10,3"
+                                            Command="{Binding ClearImageCommand}" CommandParameter="base" />
+                                </StackPanel>
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerFrontImage}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding FrontLayerImagePath}" Style="{StaticResource HintText}" />
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerBrowse}}"
+                                            Padding="10,3" Margin="0,0,6,0"
+                                            Command="{Binding BrowseImageCommand}" CommandParameter="front" />
+                                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerClear}}"
+                                            Padding="10,3"
+                                            Command="{Binding ClearImageCommand}" CommandParameter="front" />
+                                </StackPanel>
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerOpacityMask}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBlock Text="{Binding PosterOpacityMaskPath}" Style="{StaticResource HintText}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerBrowse}}"
+                                            Padding="10,3" Margin="0,0,6,0"
+                                            Command="{Binding BrowseImageCommand}" CommandParameter="mask" />
+                                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerClear}}"
+                                            Padding="10,3"
+                                            Command="{Binding ClearImageCommand}" CommandParameter="mask" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander Header="{extension:Lang Key={x:Static langs:LangKeys.Poster}}" Margin="0,6,0,0">
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerRadius}}"
+                                           Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                <TextBlock Style="{StaticResource HintText}"
+                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerRadiusHint}}" />
+
+                                <!-- Per-corner editors over the same clipRadius field. -->
+                                <UniformGrid Columns="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerTopLeftShort}}"
+                                                   VerticalAlignment="Center" MinWidth="24" Margin="0,0,4,0" FontSize="12" />
+                                        <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="0" Maximum="128"
+                                                          Value="{Binding ClipRadiusTopLeft, UpdateSourceTrigger=PropertyChanged}"
+                                                          AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerTopLeft}}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerTopRightShort}}"
+                                                   VerticalAlignment="Center" MinWidth="24" Margin="0,0,4,0" FontSize="12" />
+                                        <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="0" Maximum="128"
+                                                          Value="{Binding ClipRadiusTopRight, UpdateSourceTrigger=PropertyChanged}"
+                                                          AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerTopRight}}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerBottomLeftShort}}"
+                                                   VerticalAlignment="Center" MinWidth="24" Margin="0,0,4,0" FontSize="12" />
+                                        <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="0" Maximum="128"
+                                                          Value="{Binding ClipRadiusBottomLeft, UpdateSourceTrigger=PropertyChanged}"
+                                                          AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerBottomLeft}}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerBottomRightShort}}"
+                                                   VerticalAlignment="Center" MinWidth="24" Margin="0,0,4,0" FontSize="12" />
+                                        <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="0" Maximum="128"
+                                                          Value="{Binding ClipRadiusBottomRight, UpdateSourceTrigger=PropertyChanged}"
+                                                          AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerBottomRight}}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayLayerRatingBadge}}"
+                                  Margin="0,6,0,0">
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerFont}}"
+                                           Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                <TextBox Text="{Binding RatingFontFamily, UpdateSourceTrigger=LostFocus}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerFontSize}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <hc:NumericUpDown Value="{Binding RatingFontSize}" Minimum="6" Maximum="72"
+                                                  Width="90" HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </Expander>
+
+                        <Expander Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayLayerTitleText}}"
+                                  Margin="0,6,0,0">
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerFont}}"
+                                           Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                <TextBox Text="{Binding TitleFontFamily, UpdateSourceTrigger=LostFocus}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerColour}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Live swatch: reading a hex string is not the same as seeing the colour. -->
+                                    <Border Grid.Column="0" Width="26" Height="26" CornerRadius="3"
+                                            Margin="0,0,6,0" VerticalAlignment="Center"
+                                            Background="{Binding TitleForegroundBrush}"
+                                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                            AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCurrentTitleColour}}" />
+
+                                    <!-- Kept alongside the picker so named colours can still be typed. -->
+                                    <TextBox Grid.Column="1" VerticalAlignment="Center"
+                                             Text="{Binding TitleForeground, UpdateSourceTrigger=LostFocus}"
+                                             AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerTitleColourValue}}" />
+
+                                    <Button Grid.Column="2" Padding="10,4" Margin="6,0,0,0"
+                                            Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerPick}}"
+                                            VerticalAlignment="Center"
+                                            Click="OnPickTitleColourClicked"
+                                            ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerChooseColour}}"
+                                            AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerChooseTitleColour}}" />
+                                </Grid>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,6,0,0"
+                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerColourHint}}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerRotation}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <Slider Value="{Binding TitleRotationAngle}" Minimum="0" Maximum="360"
+                                        TickFrequency="90" IsSnapToTickEnabled="False"
+                                        AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerTitleRotationAutomation}}" />
+                                <TextBlock Text="{Binding TitleRotationAngle, StringFormat={}{0:0}°}"
+                                           Style="{StaticResource HintText}" />
+                            </StackPanel>
+                        </Expander>
+
+                        <!-- Collapsed by default: template values are already correct. -->
+                        <Expander Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerAdvancedCanvas}}"
+                                  Margin="0,6,0,0">
+                            <StackPanel Margin="0,8,0,0">
+                                <TextBlock Style="{StaticResource HintText}"
+                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerAdvancedCanvasHint}}" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerDesignWidth}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <hc:NumericUpDown Value="{Binding DesignWidth}" Minimum="16" Maximum="2000"
+                                                  Width="90" HorizontalAlignment="Left" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerDesignHeight}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <hc:NumericUpDown Value="{Binding DesignHeight}" Minimum="16" Maximum="2000"
+                                                  Width="90" HorizontalAlignment="Left" />
+
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerRootMargin}}"
+                                           Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding RootMargin, UpdateSourceTrigger=LostFocus}" />
+                                <TextBlock Style="{StaticResource HintText}"
+                                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerRootMarginHint}}" />
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Test controls, validation, actions -->
+        <Grid Grid.Row="2" Margin="0,10,0,0"
+              Visibility="{Binding HasDocument, Converter={StaticResource BoolToVis}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Preview-only controls; these never modify the overlay. -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerPreviewWith}}"
+                           VerticalAlignment="Center" FontSize="12" Margin="0,0,8,0"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerSamplePoster}}"
+                        Padding="10,3" Margin="0,0,10,0"
+                        Command="{Binding BrowseTestPosterCommand}" />
+
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Rating}}"
+                           VerticalAlignment="Center" FontSize="12" Margin="0,0,6,0" />
+                <TextBox Text="{Binding TestRating, UpdateSourceTrigger=PropertyChanged}"
+                         Width="52" Margin="0,0,10,0" VerticalAlignment="Center"
+                         AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerSampleRatingAutomation}}" />
+
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Title}}"
+                           VerticalAlignment="Center" FontSize="12" Margin="0,0,6,0" />
+                <TextBox Text="{Binding TestTitle, UpdateSourceTrigger=LostFocus}"
+                         Width="180" Margin="0,0,10,0" VerticalAlignment="Center"
+                         AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerSampleTitleAutomation}}" />
+
+                <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.Rating}}"
+                          IsChecked="{Binding ShowTestRating}"
+                          VerticalAlignment="Center" Margin="0,0,10,0" />
+                <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerMockup}}"
+                          IsChecked="{Binding ShowTestMockup}"
+                          VerticalAlignment="Center" />
+            </StackPanel>
+
+            <!-- Clicking an issue selects the element it belongs to. -->
+            <Border Grid.Row="1" Margin="0,0,0,8" Padding="8" CornerRadius="4"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                    MaxHeight="96">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Left" Text="{Binding ValidationSummary}"
+                               VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold"
+                               Margin="0,0,12,0" MinWidth="120"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding ValidationIssues}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button HorizontalContentAlignment="Left" Padding="2" Margin="0,1"
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                            Command="{Binding DataContext.FocusIssueCommand,
+                                                      RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <!-- Text label, not colour alone, per the status rule. -->
+                                            <TextBlock FontSize="11" FontWeight="SemiBold"
+                                                       Margin="0,0,6,0" MinWidth="52">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <!--
+                                                            Both the default and the warning text come from the
+                                                            Style so the two severities stay side by side; a
+                                                            literal on the element would only be overridable
+                                                            from a trigger, not translatable alongside it.
+
+                                                            A plain Binding, not the Lang extension: Setter.Value
+                                                            accepts only DynamicResource or a BindingBase, and the
+                                                            extension is neither — it throws when the Style seals.
+                                                            Sourcing the binding at FoliConLangs also ignores the
+                                                            row's own OverlayValidationIssue DataContext.
+                                                        -->
+                                                        <Setter Property="Text"
+                                                                Value="{Binding Source={StaticResource FoliConLangs},
+                                                                        Path=OverlayDesignerSeverityError}" />
+                                                        <Setter Property="Foreground" Value="#FFC42B1C" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Severity}" Value="Warning">
+                                                                <Setter Property="Text"
+                                                                        Value="{Binding Source={StaticResource FoliConLangs},
+                                                                                Path=OverlayDesignerSeverityWarning}" />
+                                                                <Setter Property="Foreground" Value="#FF9D5D00" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Message}" FontSize="11" TextWrapping="Wrap"
+                                                       MaxWidth="820"
+                                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+
+            <!--
+                Guided submission. Appears after a successful export; automated pull requests
+                are deferred to a later release, so these are the manual steps with the work
+                that can be automated (paths, URLs, clash check) already done.
+            -->
+            <Border Grid.Row="2" Margin="0,0,0,8" Padding="12" CornerRadius="4"
+                    Visibility="{Binding IsSubmissionPanelOpen, Converter={StaticResource BoolToVis}}"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,6" LastChildFill="False">
+                        <TextBlock DockPanel.Dock="Left"
+                                   Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerShareHeading}}"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                        <Button DockPanel.Dock="Right" Content="✕" Padding="6,2"
+                                Command="{Binding DismissSubmissionCommand}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerHideSteps}}"
+                                AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerHideStepsAutomation}}" />
+                    </DockPanel>
+
+                    <TextBlock Text="{Binding SubmissionCheckMessage}" FontSize="11" Margin="0,0,0,8"
+                               TextWrapping="Wrap"
+                               Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                    <!-- Local install is independent of submitting: the author's own use case. -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerInstallLocally}}"
+                                Padding="12,4" Margin="0,0,8,0"
+                                Command="{Binding InstallLocallyCommand}"
+                                Style="{StaticResource ButtonPrimary}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerInstallLocallyTooltip}}" />
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerOpenFolder}}"
+                                Padding="12,4"
+                                Command="{Binding OpenExportFolderCommand}" />
+                    </StackPanel>
+
+                    <Separator Margin="0,0,0,8" />
+
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerSubmitHeading}}"
+                               FontSize="12" Margin="0,0,0,6"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+
+                    <StackPanel IsEnabled="{Binding CanSubmit}">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <CheckBox VerticalAlignment="Center" Margin="0,0,8,0"
+                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerStep1Automation}}" />
+                            <TextBlock Text="1." FontWeight="SemiBold" Margin="0,0,6,0" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerForkRepository}}"
+                                    Padding="10,3" Margin="0,0,8,0"
+                                    Command="{Binding OpenForkPageCommand}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                            <CheckBox VerticalAlignment="Center" Margin="0,0,8,0"
+                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerStep2Automation}}" />
+                            <TextBlock Text="2." FontWeight="SemiBold" Margin="0,0,6,0" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                            <!--
+                                One sentence with a {0} for the path, not three <Run>s around a binding:
+                                a split sentence forces every translation into English clause order, and
+                                several languages put the path before the verb.
+                            -->
+                            <TextBlock VerticalAlignment="Center" FontSize="12" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource PrimaryTextBrush}">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                        <Binding Source="{StaticResource FoliConLangs}"
+                                                 Path="OverlayDesignerCopyFolderInto" />
+                                        <Binding Path="SubmissionTargetPath" Mode="OneWay" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox VerticalAlignment="Center" Margin="0,0,8,0"
+                                      AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerStep3Automation}}" />
+                            <TextBlock Text="3." FontWeight="SemiBold" Margin="0,0,6,0" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource PrimaryTextBrush}" />
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerOpenPullRequest}}"
+                                    Padding="10,3"
+                                    Command="{Binding OpenPullRequestPageCommand}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <DockPanel Grid.Row="3" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Text="{Binding StatusMessage}"
+                           VerticalAlignment="Center" FontSize="11"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                <!-- Leaves the designer entirely. -->
+                <Button DockPanel.Dock="Right" Padding="14,5" Margin="6,0,0,0"
+                        Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCloseDesigner}}"
+                        Click="OnCloseClicked" />
+                <Button DockPanel.Dock="Right" Padding="14,5" Margin="6,0,0,0"
+                        Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerExportPackage}}"
+                        Command="{Binding ExportPackageCommand}"
+                        Style="{StaticResource ButtonPrimary}"
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerExportPackageTooltip}}" />
+                <Button DockPanel.Dock="Right" Padding="14,5"
+                        Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerSaveDraft}}"
+                        Command="{Binding SaveDraftCommand}"
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerSaveDraftTooltip}}" />
+            </DockPanel>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -234,6 +234,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DelegateCommand AboutCommand { get; private set; }
     public DelegateCommand ShowPreviewer { get; private set; }
+    public DelegateCommand OverlayStoreCommand { get; private set; }
+    public DelegateCommand OverlayDesignerCommand { get; private set; }
     public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
 
     #endregion MenuItem Commands
@@ -867,6 +869,18 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
         });
         ShowPreviewer = new DelegateCommand(() => { _dialogService.ShowPreviewer(_ => { }); });
+
+        // Overlay discovery and authoring are top-level menu actions: burying them inside the
+        // poster-icon settings dialog hides them from anyone not already changing that setting.
+        OverlayStoreCommand = new DelegateCommand(() =>
+        {
+            _dialogService.ShowOverlayStore(_ => OverlayPreviewCache.InvalidateAll());
+        });
+        OverlayDesignerCommand = new DelegateCommand(() =>
+        {
+            _dialogService.ShowOverlayDesigner(_ => OverlayPreviewCache.InvalidateAll());
+        });
+
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
     }
 

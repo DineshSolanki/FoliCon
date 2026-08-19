@@ -1,4 +1,5 @@
-﻿namespace FoliCon.ViewModels
+#nullable enable
+namespace FoliCon.ViewModels
 {
     [Localizable(false)]
     [SuppressMessage("Performance", "CA1822:Mark members as static",
@@ -8,72 +9,104 @@
     public class PreviewerViewModel : BindableBase, IDialogAware
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public PreviewerViewModel()
+
+        public PreviewerViewModel(DialogCloseListener requestClose)
         {
-            Logger.Debug("PosterIconConfigViewModel created");
-            PosterIconInstance = new PosterIcon
-            {
-                Rating = Rating
-            };
+            RequestClose = requestClose;
+            Logger.Debug("PreviewerViewModel created");
 
             SelectImageCommand = new DelegateCommand(SelectImage);
+            OverlayPreviewItems = [];
+
+            // Load overlays and render previews
+            _ = LoadPreviewsAsync();
         }
-        
-        private PosterIcon _posterIconInstance;
+
         private string _rating = "3.5";
-        public string Title => Lang.Previewer;
         private string _mediaTitle = Lang.MadeWithFoliCon;
         private bool _ratingVisibility = true;
         private bool _overlayVisibility = true;
-        
-        public PosterIcon PosterIconInstance
-        {
-            get => _posterIconInstance;
-            private set => SetProperty(ref _posterIconInstance, value);
-        }
+        private string? _selectedPosterPath;
+
+        public string Title => Lang.Previewer;
+
+        public ObservableCollection<OverlayPreviewItem> OverlayPreviewItems { get; }
+
         public string Rating
         {
             get => _rating;
             set
             {
-                SetProperty(ref _rating, value);
-                PosterIconInstance.Rating = value;
+                if (SetProperty(ref _rating, value))
+                {
+                    _ = RebuildPreviewsAsync();
+                }
             }
         }
 
         public string MediaTitle
         {
             get => _mediaTitle;
-            set
-            {
-                SetProperty(ref _mediaTitle, value);
-                PosterIconInstance.MediaTitle = value;
-            }
+            set => SetProperty(ref _mediaTitle, value);
         }
-        
+
         public bool RatingVisibility
         {
             get => _ratingVisibility;
             set
             {
-                SetProperty(ref _ratingVisibility, value);
-                PosterIconInstance.RatingVisibility = UiUtils.BooleanToVisibility(value).ToString();
+                if (SetProperty(ref _ratingVisibility, value))
+                {
+                    _ = RebuildPreviewsAsync();
+                }
             }
         }
-        
+
         public bool OverlayVisibility
         {
             get => _overlayVisibility;
             set
             {
-                SetProperty(ref _overlayVisibility, value);
-                PosterIconInstance.MockupVisibility = UiUtils.BooleanToVisibility(value).ToString();
+                if (SetProperty(ref _overlayVisibility, value))
+                {
+                    _ = RebuildPreviewsAsync();
+                }
             }
         }
-        
+
         public DelegateCommand SelectImageCommand { get; set; }
-        
+
+        private async Task LoadPreviewsAsync()
+        {
+            try
+            {
+                var provider = GlobalVariables.OverlayProvider;
+                var previews = await OverlayPreviewCache.GetPreviewsAsync(
+                    provider,
+                    _selectedPosterPath,
+                    Rating,
+                    UiUtils.BooleanToVisibility(RatingVisibility).ToString(),
+                    UiUtils.BooleanToVisibility(OverlayVisibility).ToString());
+
+                OverlayPreviewItems.Clear();
+                foreach (var item in previews)
+                {
+                    OverlayPreviewItems.Add(item);
+                }
+
+                Logger.Info("Loaded {Count} overlay previews", previews.Count);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to load overlay previews");
+            }
+        }
+
+        private async Task RebuildPreviewsAsync()
+        {
+            OverlayPreviewCache.InvalidateAll();
+            await LoadPreviewsAsync();
+        }
 
         private void SelectImage()
         {
@@ -87,16 +120,11 @@
                 return;
             }
 
-            var thisMemoryStream = new MemoryStream(File.ReadAllBytes(fileDialog.FileName));
-            var rt= new PosterIcon
-            {
-                FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(thisMemoryStream)
-            };
-            PosterIconInstance = rt;
-            Logger.Info("Image selected: {FileName}", fileDialog.FileName);
+            _selectedPosterPath = fileDialog.FileName;
+            Logger.Info("Image selected: {FileName}", _selectedPosterPath);
+            _ = RebuildPreviewsAsync();
         }
-        
-        
+
         #region DialogMethods
         public DialogCloseListener RequestClose { get; }
         protected virtual void CloseDialog(string parameter)
