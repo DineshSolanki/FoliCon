@@ -151,7 +151,7 @@ public class OverlayRepositoryServiceTests : IDisposable
     [Fact]
     public async Task UninstallOverlay_InvalidId_DoesNotDeleteOutsideTheOverlayDirectory()
     {
-        var traversalId = Path.Combine("..", "..", "..", "..", "outside");
+        var traversalId = Path.Combine("..", "..", "..", $"outside_{Guid.NewGuid():N}");
         var outsideDirectory = Path.GetFullPath(
             Path.Combine(_userOverlaysDir, traversalId));
         Directory.CreateDirectory(outsideDirectory);
