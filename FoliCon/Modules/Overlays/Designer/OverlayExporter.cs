@@ -81,7 +81,14 @@ public class OverlayExporter
 
         if (!Internal.OverlayValidator.IsValidId(document.Id))
         {
-            return OverlayExportResult.Failure(Lang.OverlayExportIdRequired);
+            var validation = new OverlayValidationResult();
+            validation.AddError(
+                "id",
+                string.IsNullOrWhiteSpace(document.Id)
+                    ? Lang.OverlayValidationIdRequired
+                    : string.Format(Lang.OverlayValidationIdInvalidChars, document.Id));
+
+            return OverlayExportResult.Failure(Lang.OverlayExportIdRequired, validation);
         }
 
         var finalPath = Path.Combine(destinationRoot, document.Id);
