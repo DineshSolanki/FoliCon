@@ -95,16 +95,16 @@ If you're working on the source code and want to manage translations:
 
 ## Built With
 
-* [The Movie Database](https://www.themoviedb.org/) — TV & movie metadata
-* [DeviantArt](https://www.deviantart.com/) — professional-mode icon searches
-* [IGDB](https://www.igdb.com/) — game metadata
-* [Prism](https://github.com/PrismLibrary/Prism) — MVVM and modularity
-* [HandyControls](https://github.com/ghost1372/HandyControls) — custom WPF controls
-* [WinCopies.IconLib](https://github.com/avatars38/WinCopies) — icon creation
-* [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) — file dialogs
-* [Sentry](https://sentry.io) — error tracking
-* [NLog](https://nlog-project.org/) — logging
-* [Crowdin](https://crowdin.com) — localization management
+- [The Movie Database](https://www.themoviedb.org/) — TV & movie metadata
+- [DeviantArt](https://www.deviantart.com/) — professional-mode icon searches
+- [IGDB](https://www.igdb.com/) — game metadata
+- [Prism](https://github.com/PrismLibrary/Prism) — MVVM and modularity
+- [HandyControls](https://github.com/ghost1372/HandyControls) — custom WPF controls
+- [WinCopies.IconLib](https://github.com/avatars38/WinCopies) — icon creation
+- [Ookii.Dialogs.Wpf](https://github.com/caioproiete/ookii-dialogs-wpf) — file dialogs
+- [Sentry](https://sentry.io) — error tracking
+- [NLog](https://nlog-project.org/) — logging
+- [Crowdin](https://crowdin.com) — localization management
 
 ## Authors
 
@@ -117,11 +117,11 @@ See also the list of [contributors](https://github.com/dineshsolanki/Folicon/gra
 
 ## Acknowledgments
 
-* A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
-* Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming), [Faelpessoal](https://www.deviantart.com/faelpessoal), and [Liaher](https://www.deviantart.com/liaher) for poster designs used in FoliCon overlays.
-* <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/tmdbblack.png" />
-* This product uses the TMDb API but is not endorsed or certified by TMDb.
-* All Professional Mode icons are fetched from publicly available galleries of DeviantArt, and all rights reserved to their respective owners.
+- A very Big thanks to [Jamedjo](https://github.com/Jamedjo) for His Project [Raticon](http://jamedjo.github.io/Raticon) which gave me a head Start.
+- Thanks to [HazZbroGaminG](https://www.deviantart.com/hazzbrogaming), [Faelpessoal](https://www.deviantart.com/faelpessoal), and [Liaher](https://www.deviantart.com/liaher) for poster designs used in FoliCon overlays.
+- <img height=80 alt="Powered By TMDB API" src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/tmdbblack.png" />
+- This product uses the TMDb API but is not endorsed or certified by TMDb.
+- All Professional Mode icons are fetched from publicly available galleries of DeviantArt, and all rights reserved to their respective owners.
 
 ---
 Thank you to the following individuals who have provided invaluable inputs through discussions and issues:
