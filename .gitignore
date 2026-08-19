@@ -344,3 +344,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /LangsGenerator
+
+# Generated files
+**/internal-nlog.txt
