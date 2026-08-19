@@ -282,7 +282,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             Logger.Error(ex, "Failed to install overlay '{Id}': {Message}", entry.Id, ex.Message);
 #pragma warning restore S2139
             // Clean up temp directory
-            if (Directory.Exists(tmpDir)) 
+            if (Directory.Exists(tmpDir))
             {
                 try { Directory.Delete(tmpDir, true); } catch { /* best effort */ }
             }
@@ -316,7 +316,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
-    private async Task<byte[]> DownloadAssetSafelyAsync(string assetUrl, bool isJson, CancellationToken ct)
+    private static async Task<byte[]> DownloadAssetSafelyAsync(string assetUrl, bool isJson, CancellationToken ct)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, assetUrl);
         using var response = await Services.HttpC.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
@@ -325,7 +325,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
         // Enforce size limit
         const long maxSizeBytes = OverlayConstants.maxImageSizeBytes;
-        long? contentLength = response.Content.Headers.ContentLength;
+        var contentLength = response.Content.Headers.ContentLength;
 
         if (contentLength.HasValue)
         {
@@ -342,7 +342,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
 
         // Stream the response to avoid full buffering where possible
-        using var stream = await response.Content.ReadAsStreamAsync(ct);
+        await using var stream = await response.Content.ReadAsStreamAsync(ct);
         using var memoryStream = new MemoryStream();
 
         var buffer = new byte[8192];
@@ -372,19 +372,23 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
 
         // SHA256 verification
-        if (manifest.Sha256.TryGetValue(asset, out var expectedHash))
+        if (!manifest.Sha256.TryGetValue(asset, out var expectedHash))
         {
-            var actualHash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
-            if (!string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
-            {
-                // The hashes go to the log, not the message box: they are 64 hex characters
-                // that tell the user nothing they can act on.
-                Logger.Error("SHA256 mismatch for '{Asset}': expected {Expected}, got {Actual}",
-                    asset, expectedHash, actualHash);
-                throw new InvalidOperationException(
-                    string.Format(Lang.OverlayInstallHashMismatch, asset));
-            }
+            return;
         }
+
+        var actualHash = Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
+        if (string.Equals(actualHash, expectedHash, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        // The hashes go to the log, not the message box: they are 64 hex characters
+        // that tell the user nothing they can act on.
+        Logger.Error("SHA256 mismatch for '{Asset}': expected {Expected}, got {Actual}",
+            asset, expectedHash, actualHash);
+        throw new InvalidOperationException(
+            string.Format(Lang.OverlayInstallHashMismatch, asset));
     }
 
     private static async Task ValidateInstalledOverlayAsync(string tmpDir, CancellationToken ct)
