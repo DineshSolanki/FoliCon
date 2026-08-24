@@ -56,7 +56,16 @@ public static class OverlayPackageIo
 
         foreach (var asset in document.GetReferencedAssets().Distinct(StringComparer.OrdinalIgnoreCase))
         {
-            var source = Path.Combine(document.AssetFolderPath, asset);
+            if (!TryGetContainedPath(document.AssetFolderPath, asset, out var source) ||
+                !TryGetContainedPath(stagingPath, asset, out var target))
+            {
+                if (requireAll)
+                {
+                    Logger.Warn("Referenced asset '{Asset}' is not contained within the overlay folder and was skipped", asset);
+                }
+                continue;
+            }
+
             if (!File.Exists(source))
             {
                 if (requireAll)
@@ -66,7 +75,6 @@ public static class OverlayPackageIo
                 continue;
             }
 
-            var target = Path.Combine(stagingPath, asset);
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             File.Copy(source, target, overwrite: true);
         }

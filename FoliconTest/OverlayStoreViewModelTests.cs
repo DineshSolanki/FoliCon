@@ -192,7 +192,8 @@ public class OverlayStoreViewModelTests
         ]);
         service.MarkInstalled("one");
         service.MarkInstalled("two");
-        service.MarkUpdateAvailable("one", "2.0.0");
+        // "two" is installed at the catalog version, so a sync must not mark it as an update.
+        service.GetInstalledVersion = id => id == "one" ? "1.0.0" : "2.0.0";
 
         using var host = new WpfTestHost();
         var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(service));
@@ -505,9 +506,18 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
     public List<string> UpdatedIds { get; } = [];
     public List<string> RemovedIds { get; } = [];
 
+    /// <summary>Optional override for simulating per-overlay installed versions in sync.</summary>
+    public Func<string, string?> GetInstalledVersion { get; set; } = _ => null;
+
     public Task<OverlayCatalog> FetchCatalogAsync() => FetchCatalogAsync(default);
-    // Virtual so tests can simulate the catalog being unreachable.
-    public virtual Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct) => Task.FromResult(new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries });
+    // Virtual so tests can simulate the catalog being unreachable. Mirrors the real service,
+    // which synchronizes update markers before any catalog is handed to callers.
+    public virtual Task<OverlayCatalog> FetchCatalogAsync(CancellationToken ct)
+    {
+        var catalog = new OverlayCatalog { SchemaVersion = 1, Overlays = _catalogEntries };
+        SyncAvailableUpdates(catalog);
+        return Task.FromResult(catalog);
+    }
 
     public Task<OverlayManifest> FetchManifestAsync(string overlayId) => FetchManifestAsync(overlayId, default);
     public Task<OverlayManifest> FetchManifestAsync(string overlayId, CancellationToken ct) => Task.FromResult(new OverlayManifest { Id = overlayId });
@@ -539,7 +549,7 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
 
     public bool IsOverlayInstalled(string overlayId) => _installed.Contains(overlayId);
     public bool IsUpdateAvailable(string overlayId) => _updates.ContainsKey(overlayId);
-    public string? GetInstalledVersion(string overlayId) => _installed.Contains(overlayId) ? "1.0.0" : null;
+    string? IOverlayRepositoryService.GetInstalledVersion(string overlayId) => _installed.Contains(overlayId) ? "1.0.0" : null;
     public string BaseUrl => "https://example.com/overlays";
     public void InvalidateCache()
     {
@@ -554,10 +564,20 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
         _updates.Clear();
         foreach (var entry in catalog.Overlays)
         {
-            if (_installed.Contains(entry.Id))
+            if (!_installed.Contains(entry.Id))
             {
-                _updates[entry.Id] = entry.OverlayVersion;
+                continue;
             }
+
+            // Mirror the real service: only mark when the catalog version is newer.
+            if (Version.TryParse(GetInstalledVersion(entry.Id), out var installed) &&
+                Version.TryParse(entry.OverlayVersion, out var available) &&
+                available <= installed)
+            {
+                continue;
+            }
+
+            _updates[entry.Id] = entry.OverlayVersion;
         }
     }
 }

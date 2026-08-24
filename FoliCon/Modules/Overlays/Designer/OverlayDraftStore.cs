@@ -50,9 +50,12 @@ public class OverlayDraftStore(string? draftsRoot = null)
     {
         ArgumentNullException.ThrowIfNull(document);
 
-        if (string.IsNullOrWhiteSpace(document.Id))
+        if (!Internal.OverlayValidator.IsValidId(document.Id))
         {
-            throw new InvalidOperationException(Lang.OverlayDraftIdRequired);
+            throw new InvalidOperationException(
+                string.IsNullOrWhiteSpace(document.Id)
+                    ? Lang.OverlayDraftIdRequired
+                    : string.Format(Lang.OverlayValidationIdInvalidChars, document.Id));
         }
 
         var finalPath = Path.Combine(_draftsRoot, document.Id);
@@ -136,12 +139,15 @@ public class OverlayDraftStore(string? draftsRoot = null)
 
     /// <summary>True when a draft folder exists for this overlay ID.</summary>
     public virtual bool Exists(string draftId) =>
-        !string.IsNullOrWhiteSpace(draftId)
+        Internal.OverlayValidator.IsValidId(draftId)
         && File.Exists(Path.Combine(_draftsRoot, draftId, OverlayConstants.overlayJsonFileName));
 
     /// <summary>Path to a draft's <c>overlay.json</c>, for handing to the package loader.</summary>
-    public virtual string GetDraftDefinitionPath(string draftId) =>
-        Path.Combine(_draftsRoot, draftId, OverlayConstants.overlayJsonFileName);
+    public virtual string GetDraftDefinitionPath(string draftId)
+    {
+        EnsureValidDraftId(draftId);
+        return Path.Combine(_draftsRoot, draftId, OverlayConstants.overlayJsonFileName);
+    }
 
     public virtual void Delete(string draftId)
     {
@@ -150,8 +156,20 @@ public class OverlayDraftStore(string? draftsRoot = null)
             return;
         }
 
+        EnsureValidDraftId(draftId);
+
         SafeDelete(Path.Combine(_draftsRoot, draftId));
         Logger.Info("Deleted draft '{Id}'", draftId);
+    }
+
+    private static void EnsureValidDraftId(string draftId)
+    {
+        if (!Internal.OverlayValidator.IsValidId(draftId))
+        {
+            throw new ArgumentException(
+                "Draft IDs must contain only lowercase letters, digits, and single hyphens between characters.",
+                nameof(draftId));
+        }
     }
 
     private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath) =>

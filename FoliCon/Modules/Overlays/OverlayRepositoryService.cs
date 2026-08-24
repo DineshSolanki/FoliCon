@@ -105,6 +105,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         if (_cachedCatalog != null && DateTime.UtcNow - _cacheTimestamp < CacheTtl)
         {
             Logger.Debug("Returning in-memory cached catalog");
+            SyncAvailableUpdates(_cachedCatalog);
             return _cachedCatalog;
         }
 
@@ -129,6 +130,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             {
                 _cacheTimestamp = lastWrite;
                 Logger.Debug("Loaded catalog from disk cache ({Count} overlays)", _cachedCatalog.Overlays.Count);
+                SyncAvailableUpdates(_cachedCatalog);
                 return _cachedCatalog;
             }
         }
@@ -187,6 +189,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
                 if (_cachedCatalog != null)
                 {
                     Logger.Info("Using stale disk cache ({Count} overlays)", _cachedCatalog.Overlays.Count);
+                    SyncAvailableUpdates(_cachedCatalog);
                     return _cachedCatalog;
                 }
             }

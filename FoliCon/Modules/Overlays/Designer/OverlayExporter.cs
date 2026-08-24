@@ -151,6 +151,11 @@ public class OverlayExporter
         }
 
         var id = new DirectoryInfo(packagePath).Name;
+        if (!Internal.OverlayValidator.IsValidId(id))
+        {
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayValidationIdInvalidChars, id));
+        }
+
         var root = userOverlaysRoot ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "FoliCon", OverlayConstants.overlaysFolder);
@@ -168,9 +173,17 @@ public class OverlayExporter
             Directory.CreateDirectory(root);
             PrepareStagingFolder(staging);
 
-            foreach (var file in Directory.GetFiles(packagePath))
+            foreach (var relative in Directory.GetFiles(packagePath, "*", SearchOption.AllDirectories)
+                         .Select(f => Path.GetRelativePath(packagePath, f)))
             {
-                File.Copy(file, Path.Combine(staging, Path.GetFileName(file)), overwrite: true);
+                if (!Internal.OverlayPackageIo.TryGetContainedPath(staging, relative, out var assetTarget))
+                {
+                    throw new InvalidOperationException(
+                        $"Package asset path '{relative}' escapes the installation directory.");
+                }
+
+                Directory.CreateDirectory(Path.GetDirectoryName(assetTarget)!);
+                File.Copy(Path.Combine(packagePath, relative), assetTarget, overwrite: true);
             }
 
             Commit(staging, target);
@@ -197,6 +210,11 @@ public class OverlayExporter
         if (string.IsNullOrWhiteSpace(overlayId))
         {
             return OverlayExportResult.Failure(Lang.OverlayExportNoOverlaySpecified);
+        }
+
+        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        {
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayValidationIdInvalidChars, overlayId));
         }
 
         if (OverlayConstants.BuiltInOverlayIds.Contains(overlayId, StringComparer.OrdinalIgnoreCase))
@@ -262,9 +280,8 @@ public class OverlayExporter
 
     private static void WriteManifest(OverlayDesignerDocument document, string stagingPath)
     {
-        var files = Directory.GetFiles(stagingPath)
-            .Select(Path.GetFileName)
-            .OfType<string>()
+        var files = Directory.GetFiles(stagingPath, "*", SearchOption.AllDirectories)
+            .Select(f => Path.GetRelativePath(stagingPath, f))
             // Stable order so the manifest is byte-identical across exports.
             .OrderBy(f => f, StringComparer.Ordinal)
             .ToArray();
