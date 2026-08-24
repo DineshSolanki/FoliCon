@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿using Microsoft.Extensions.Caching.Memory;
 
 #nullable enable
 namespace FoliCon.Modules.Overlays;
@@ -7,23 +7,27 @@ namespace FoliCon.Modules.Overlays;
 /// STA-safe rendered preview caching for the Previewer dialog.
 /// All WPF control creation and rendering goes through StaRenderer.Default.EnqueueRender().
 /// Cached BitmapSource instances are frozen before storage for cross-thread UI access.
+///
+/// Storage is a size-limited <see cref="MemoryCache"/> so the cache cannot grow without
+/// bound as poster/rating combinations accumulate; least-recently-used entries are
+/// evicted automatically instead of leaking for the lifetime of the app.
 /// </summary>
 public static class OverlayPreviewCache
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private static readonly ConcurrentDictionary<string, BitmapImage> Cache = new();
-
     /// <summary>
-    /// Gets all overlay previews, using cached versions when available.
-    /// Renders missing previews via StaRenderer on the dedicated STA thread.
+    /// Maximum number of rendered previews held. Each entry is a small icon-sized bitmap,
+    /// so a few hundred entries stay well under a few tens of MB.
     /// </summary>
-    /// <param name="provider">Overlay provider to enumerate overlays.</param>
-    /// <param name="posterPath">Path to poster image file, or null for default.</param>
-    /// <param name="rating">Current rating value.</param>
-    /// <param name="ratingVisibility">Rating visibility string.</param>
-    /// <param name="mockupVisibility">Mockup visibility string.</param>
-    /// <returns>List of preview items (overlay ID + frozen BitmapSource).</returns>
+    private const int maxEntries = 256;
+
+    private static readonly MemoryCache Cache = new(new MemoryCacheOptions
+    {
+        SizeLimit = maxEntries,
+        CompactionPercentage = 0.25
+    });
+
     public static async Task<List<OverlayPreviewItem>> GetPreviewsAsync(
         IOverlayProvider provider,
         string? posterPath,
@@ -38,7 +42,7 @@ public static class OverlayPreviewCache
         {
             var cacheKey = BuildCacheKey(overlay.Id, overlay.OverlayVersion, posterPath, rating, ratingVisibility, mockupVisibility);
 
-            if (Cache.TryGetValue(cacheKey, out var cached))
+            if (Cache.TryGetValue(cacheKey, out BitmapImage? cached) && cached != null)
             {
                 result.Add(new OverlayPreviewItem(overlay.Id, overlay.DisplayName, cached));
                 continue;
@@ -47,7 +51,7 @@ public static class OverlayPreviewCache
             try
             {
                 var bitmap = await RenderPreviewAsync(overlay, posterPath, rating, ratingVisibility, mockupVisibility);
-                Cache[cacheKey] = bitmap;
+                Cache.Set(cacheKey, bitmap, new MemoryCacheEntryOptions { Size = 1 });
                 result.Add(new OverlayPreviewItem(overlay.Id, overlay.DisplayName, bitmap));
             }
             catch (Exception ex)
@@ -77,10 +81,13 @@ public static class OverlayPreviewCache
         var removed = 0;
         foreach (var key in Cache.Keys)
         {
-            if (key.StartsWith(overlayId, StringComparison.Ordinal) && Cache.TryRemove(key, out _))
+            if (!((string)key).StartsWith(overlayId, StringComparison.Ordinal))
             {
-                removed++;
+                continue;
             }
+
+            Cache.Remove(key);
+            removed++;
         }
         if (removed > 0)
         {
@@ -154,10 +161,8 @@ public static class OverlayPreviewCache
         string? posterPath,
         string rating,
         string ratingVisibility,
-        string mockupVisibility)
-    {
-        return $"{overlayId}_{overlayVersion}_{posterPath}_{rating}_{ratingVisibility}_{mockupVisibility}";
-    }
+        string mockupVisibility) =>
+        $"{overlayId}_{overlayVersion}_{posterPath}_{rating}_{ratingVisibility}_{mockupVisibility}";
 }
 
 /// <summary>

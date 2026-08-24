@@ -57,9 +57,9 @@ public static class OverlayPackageSerializer
         JsonConvert.SerializeObject(manifest, ManifestSettings);
 
     /// <summary>
-    /// camelCase naming plus removal of runtime-only members.
+    /// Removal of runtime-only members; naming is delegated to the built-in camelCase strategy.
     /// </summary>
-    private sealed class ExportContractResolver(HashSet<string> excludedMembers) : DefaultContractResolver
+    private sealed class ExportContractResolver(HashSet<string> excludedMembers) : CamelCasePropertyNamesContractResolver
     {
         public ExportContractResolver() : this([])
         {
@@ -77,10 +77,5 @@ public static class OverlayPackageSerializer
 
             return property;
         }
-
-        protected override string ResolvePropertyName(string propertyName) =>
-            string.IsNullOrEmpty(propertyName)
-                ? propertyName
-                : char.ToLowerInvariant(propertyName[0]) + propertyName[1..];
     }
 }
