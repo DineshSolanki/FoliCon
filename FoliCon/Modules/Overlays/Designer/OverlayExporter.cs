@@ -228,34 +228,15 @@ public class OverlayExporter
         }
     }
 
-    private static void PrepareStagingFolder(string stagingPath)
-    {
-        // A previous crash may have left one behind.
-        SafeDelete(stagingPath);
-        Directory.CreateDirectory(stagingPath);
-    }
+    private static void PrepareStagingFolder(string stagingPath) =>
+        Internal.OverlayPackageIo.PrepareStagingFolder(stagingPath);
 
     /// <summary>
     /// Copies only the assets the document actually references, so files the author
     /// abandoned mid-design never ship inside the package.
     /// </summary>
-    private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath)
-    {
-        foreach (var asset in document.GetReferencedAssets().Distinct(StringComparer.OrdinalIgnoreCase))
-        {
-            var source = Path.Combine(document.AssetFolderPath, asset);
-            if (!File.Exists(source))
-            {
-                // Left for the validator to report against the offending field.
-                Logger.Warn("Referenced asset '{Asset}' not found in {Folder}", asset, document.AssetFolderPath);
-                continue;
-            }
-
-            var target = Path.Combine(stagingPath, asset);
-            Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-            File.Copy(source, target, overwrite: true);
-        }
-    }
+    private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath) =>
+        Internal.OverlayPackageIo.CopyReferencedAssets(document, stagingPath, requireAll: true);
 
     private static async Task WritePreviewAsync(OverlayDesignerDocument document, string stagingPath)
     {
@@ -336,52 +317,10 @@ public class OverlayExporter
     }
 
     /// <summary>Moves the staged package into place, replacing any existing folder atomically.</summary>
-    private static void Commit(string stagingPath, string finalPath)
-    {
-        Directory.CreateDirectory(Path.GetDirectoryName(finalPath)!);
+    private static void Commit(string stagingPath, string finalPath) =>
+        Internal.OverlayPackageIo.Commit(stagingPath, finalPath);
 
-        if (Directory.Exists(finalPath))
-        {
-            // Keep the old copy until the new one is in place, so a failure mid-swap
-            // does not destroy a working package.
-            var backup = $"{finalPath}.replaced-{Guid.NewGuid():N}";
-            Directory.Move(finalPath, backup);
+    private static string ComputeSha256(string path) => Internal.OverlayPackageIo.ComputeSha256(path);
 
-            try
-            {
-                Directory.Move(stagingPath, finalPath);
-            }
-            catch
-            {
-                Directory.Move(backup, finalPath);
-                throw;
-            }
-
-            SafeDelete(backup);
-            return;
-        }
-
-        Directory.Move(stagingPath, finalPath);
-    }
-
-    private static string ComputeSha256(string path)
-    {
-        using var stream = File.OpenRead(path);
-        return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream)).ToLowerInvariant();
-    }
-
-    private static void SafeDelete(string path)
-    {
-        try
-        {
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, recursive: true);
-            }
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-        {
-            Logger.Warn(ex, "Could not clean up {Path}", path);
-        }
-    }
+    private static void SafeDelete(string path) => Internal.OverlayPackageIo.SafeDelete(path);
 }

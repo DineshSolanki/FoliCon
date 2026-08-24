@@ -154,65 +154,12 @@ public class OverlayDraftStore(string? draftsRoot = null)
         Logger.Info("Deleted draft '{Id}'", draftId);
     }
 
-    private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath)
-    {
-        if (string.IsNullOrWhiteSpace(document.AssetFolderPath))
-        {
-            return;
-        }
-
-        foreach (var asset in document.GetReferencedAssets().Distinct(StringComparer.OrdinalIgnoreCase))
-        {
-            var source = Path.Combine(document.AssetFolderPath, asset);
-            if (!File.Exists(source))
-            {
-                // A draft is allowed to be incomplete; the validator reports it on export.
-                continue;
-            }
-
-            var target = Path.Combine(stagingPath, asset);
-            Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-            File.Copy(source, target, overwrite: true);
-        }
-    }
+    private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath) =>
+        Internal.OverlayPackageIo.CopyReferencedAssets(document, stagingPath, requireAll: false);
 
     /// <summary>Swaps the staged draft into place, keeping the previous copy until it succeeds.</summary>
-    private static void Commit(string stagingPath, string finalPath)
-    {
-        if (Directory.Exists(finalPath))
-        {
-            var backup = $"{finalPath}.replaced-{Guid.NewGuid():N}";
-            Directory.Move(finalPath, backup);
+    private static void Commit(string stagingPath, string finalPath) =>
+        Internal.OverlayPackageIo.Commit(stagingPath, finalPath);
 
-            try
-            {
-                Directory.Move(stagingPath, finalPath);
-            }
-            catch
-            {
-                Directory.Move(backup, finalPath);
-                throw;
-            }
-
-            SafeDelete(backup);
-            return;
-        }
-
-        Directory.Move(stagingPath, finalPath);
-    }
-
-    private static void SafeDelete(string path)
-    {
-        try
-        {
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, recursive: true);
-            }
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
-        {
-            Logger.Warn(ex, "Could not delete {Path}", path);
-        }
-    }
+    private static void SafeDelete(string path) => Internal.OverlayPackageIo.SafeDelete(path);
 }

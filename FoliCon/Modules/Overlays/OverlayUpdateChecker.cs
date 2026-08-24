@@ -3,8 +3,12 @@
 /// <summary>
 /// Checks for overlay updates on app start. Non-blocking — runs in the background
 /// and marks updates available in the repository service for UI display.
+///
+/// The compare-and-mark logic itself lives in
+/// <see cref="IOverlayRepositoryService.SyncAvailableUpdates"/> (also invoked after every
+/// fresh catalog fetch); this class only owns the startup trigger and its failure isolation.
 /// </summary>
-public class OverlayUpdateChecker(IOverlayRepositoryService repositoryService, IOverlayProvider overlayProvider)
+public class OverlayUpdateChecker(IOverlayRepositoryService repositoryService)
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -25,30 +29,8 @@ public class OverlayUpdateChecker(IOverlayRepositoryService repositoryService, I
                 return;
             }
 
-            var installed = overlayProvider.GetUserOverlays();
-            var updateCount = 0;
-
-            foreach (var overlay in installed)
-            {
-                var catalogEntry = catalog.Overlays.FirstOrDefault(o =>
-                    string.Equals(o.Id, overlay.Id, StringComparison.OrdinalIgnoreCase));
-
-                if (catalogEntry == null)
-                {
-                    continue;
-                }
-
-                if (!OverlayConstants.TryCompareVersions(catalogEntry.OverlayVersion, overlay.OverlayVersion,
-                        out var isNewer) || !isNewer)
-                {
-                    continue;
-                }
-                updateCount++;
-                Logger.Info("Update available for '{Id}': {Installed} → {Available}",
-                    overlay.Id, overlay.OverlayVersion, catalogEntry.OverlayVersion);
-                repositoryService.MarkUpdateAvailable(overlay.Id, catalogEntry.OverlayVersion);
-            }
-
+            // FetchCatalogAsync already ran SyncAvailableUpdates; just report.
+            var updateCount = catalog.Overlays.Count(o => repositoryService.IsUpdateAvailable(o.Id));
             Logger.Info("Update check complete. {Count} updates available.", updateCount);
         }
         catch (Exception ex)
@@ -57,5 +39,4 @@ public class OverlayUpdateChecker(IOverlayRepositoryService repositoryService, I
             Logger.Warn(ex, "Overlay update check failed (non-fatal)");
         }
     }
-
 }

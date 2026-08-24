@@ -214,31 +214,10 @@ public static partial class OverlayValidator
 
     /// <summary>
     /// Rejects absolute paths, rooted paths, and any path that escapes the overlay folder
-    /// after canonicalization.
+    /// after canonicalization. Delegates to the shared containment check.
     /// </summary>
-    private static bool IsSafeRelativePath(string overlayFolder, string relativePath)
-    {
-        if (string.IsNullOrWhiteSpace(relativePath) || Path.IsPathRooted(relativePath))
-        {
-            return false;
-        }
-
-        try
-        {
-            var folderFull = Path.GetFullPath(overlayFolder);
-            var assetFull = Path.GetFullPath(Path.Combine(folderFull, relativePath));
-
-            // Compare with a trailing separator so "C:\Overlays\ab" cannot pass as inside "C:\Overlays\a".
-            var folderPrefix = folderFull.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-                               + Path.DirectorySeparatorChar;
-
-            return assetFull.StartsWith(folderPrefix, StringComparison.OrdinalIgnoreCase);
-        }
-        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
-        {
-            return false;
-        }
-    }
+    private static bool IsSafeRelativePath(string overlayFolder, string relativePath) =>
+        OverlayPackageIo.TryGetContainedPath(overlayFolder, relativePath, out _);
 
     /// <summary>
     /// Flags filenames that differ only by case. These work on Windows but collide when the

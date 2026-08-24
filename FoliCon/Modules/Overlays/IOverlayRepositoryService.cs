@@ -68,4 +68,11 @@ public interface IOverlayRepositoryService
     /// Marks an overlay as having an available update.
     /// </summary>
     void MarkUpdateAvailable(string overlayId, string availableVersion);
+
+    /// <summary>
+    /// Recomputes update availability for all installed overlays against the given catalog,
+    /// replacing any previously marked updates. The single source of truth for version
+    /// comparison; also invoked automatically after every fresh catalog fetch.
+    /// </summary>
+    void SyncAvailableUpdates(OverlayCatalog catalog);
 }

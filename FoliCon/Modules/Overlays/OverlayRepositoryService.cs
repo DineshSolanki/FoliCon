@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 
 /// <summary>
-/// Manages the overlay repository: catalog fetching with ETag caching,
+/// Manages the overlay repository: catalog fetching with TTL disk caching,
 /// atomic install/update/uninstall, and SHA256 integrity verification.
 /// </summary>
 public class OverlayRepositoryService : IOverlayRepositoryService
@@ -260,12 +260,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             // Atomic rename: tmp → final
             progress?.Report((95, Lang.OverlayInstallProgressInstalling));
-            if (Directory.Exists(finalDir))
-            {
-                Directory.Delete(finalDir, true);
-            }
-
-            Directory.Move(tmpDir, finalDir);
+            Internal.OverlayPackageIo.Commit(tmpDir, finalDir);
 
             // Refresh overlay provider
             _overlayProvider.Refresh();
@@ -299,7 +294,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             var percent = 10 + (int)((i + 1) / (double)totalAssets * 70);
             progress?.Report((percent, string.Format(Lang.OverlayInstallProgressDownloading, asset)));
 
-            if (!TryGetContainedAssetPath(targetDir, asset, out var assetPath))
+            if (!Internal.OverlayPackageIo.TryGetContainedPath(targetDir, asset, out var assetPath))
             {
                 throw new InvalidOperationException($"Overlay asset path '{asset}' escapes the installation directory.");
             }
@@ -586,35 +581,13 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
-    private static bool TryGetContainedAssetPath(string targetDir, string asset, [NotNullWhen(true)] out string? assetPath)
-    {
-        assetPath = null;
-        if (string.IsNullOrWhiteSpace(asset) || Path.IsPathRooted(asset))
-        {
-            return false;
-        }
-
-        try
-        {
-            var targetRoot = Path.GetFullPath(targetDir)
-                .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-                + Path.DirectorySeparatorChar;
-            var candidate = Path.GetFullPath(Path.Combine(targetRoot, asset));
-            if (!candidate.StartsWith(targetRoot, StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            assetPath = candidate;
-            return true;
-        }
-        catch (Exception ex) when (ex is ArgumentException or NotSupportedException or PathTooLongException)
-        {
-            return false;
-        }
-    }
-
-    private void CheckForUpdates(OverlayCatalog catalog)
+    /// <summary>
+    /// Recomputes update availability for all installed (non-built-in) overlays against the
+    /// given catalog, replacing previously marked updates. Single source of truth for the
+    /// compare-and-mark loop; <see cref="OverlayUpdateChecker"/> and the catalog fetch both
+    /// route through this.
+    /// </summary>
+    public void SyncAvailableUpdates(OverlayCatalog catalog)
     {
         _availableUpdates.Clear();
 
@@ -641,4 +614,9 @@ public class OverlayRepositoryService : IOverlayRepositoryService
         }
     }
 
+    private void CheckForUpdates(OverlayCatalog catalog)
+    {
+        SyncAvailableUpdates(catalog);
+        Logger.Info("Update scan complete. {Count} updates available.", _availableUpdates.Count);
+    }
 }

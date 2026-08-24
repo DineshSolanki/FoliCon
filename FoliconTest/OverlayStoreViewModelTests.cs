@@ -548,4 +548,16 @@ internal class StubRepositoryService(List<OverlayCatalogEntry>? catalogEntries =
 
     public void MarkInstalled(string id) => _installed.Add(id);
     public void MarkUpdateAvailable(string id, string version) => _updates[id] = version;
+
+    public void SyncAvailableUpdates(OverlayCatalog catalog)
+    {
+        _updates.Clear();
+        foreach (var entry in catalog.Overlays)
+        {
+            if (_installed.Contains(entry.Id))
+            {
+                _updates[entry.Id] = entry.OverlayVersion;
+            }
+        }
+    }
 }
