@@ -424,9 +424,14 @@
                             </Rectangle.Fill>
                         </Rectangle>
 
+                        <!--
+                            The preview arrives pre-scaled to the zoom level (one bitmap pixel
+                            per canvas pixel), so this stretch is 1:1 apart from fractional
+                            display-scale rounding — HighQuality keeps that resample clean.
+                        -->
                         <Image Source="{Binding PreviewImage}"
                                Stretch="Fill"
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"
+                               RenderOptions.BitmapScalingMode="HighQuality"
                                AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerPreviewAutomation}}" />
 
                         <!-- Selection adorner: code-behind positions this from the ViewModel bounds. -->

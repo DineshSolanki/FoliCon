@@ -85,8 +85,11 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
     /// <summary>
     /// Requests a preview of <paramref name="definition"/>. Supersedes any pending request.
     /// Returns immediately; results arrive via <see cref="Rendered"/> or <see cref="Failed"/>.
+    /// <paramref name="scale"/> renders at that multiple of the 256×256 design size so the
+    /// designer canvas gets one bitmap pixel per screen pixel (see
+    /// <see cref="PosterIconBase.RenderToBitmap(double)"/>).
     /// </summary>
-    public void RequestRender(PosterOverlayDefinition definition, OverlayPreviewContext context)
+    public void RequestRender(PosterOverlayDefinition definition, OverlayPreviewContext context, double scale = 1.0)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(context);
@@ -111,21 +114,22 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         }
 
         // Snapshot the context so later UI edits can't mutate what this frame renders.
-        _ = RenderAfterDebounceAsync(definition, context.Clone(), version, cts.Token);
+        _ = RenderAfterDebounceAsync(definition, context.Clone(), version, cts.Token, scale);
     }
 
     /// <summary>
-    /// Renders immediately, bypassing the debounce. Used for the initial frame and for export
-    /// preview generation, where there is no burst to coalesce.
+    /// Renders immediately, bypassing the debounce. Used for the initial frame, template
+    /// thumbnails, and export preview generation, where there is no burst to coalesce.
     /// </summary>
-    public static async Task<BitmapSource?> RenderNowAsync(PosterOverlayDefinition definition, OverlayPreviewContext context)
+    public static async Task<BitmapSource?> RenderNowAsync(
+        PosterOverlayDefinition definition, OverlayPreviewContext context, double scale = 1.0)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(context);
 
         try
         {
-            return await RenderOnStaAsync(definition, context.Clone());
+            return await RenderOnStaAsync(definition, context.Clone(), scale);
         }
         catch (Exception ex)
         {
@@ -138,7 +142,8 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         PosterOverlayDefinition definition,
         OverlayPreviewContext context,
         long version,
-        CancellationToken token)
+        CancellationToken token,
+        double scale)
     {
         try
         {
@@ -152,7 +157,7 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         BitmapSource bitmap;
         try
         {
-            bitmap = await RenderOnStaAsync(definition, context);
+            bitmap = await RenderOnStaAsync(definition, context, scale);
         }
         catch (Exception ex)
         {
@@ -176,14 +181,15 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         Rendered?.Invoke(this, new OverlayPreviewRenderedEventArgs(bitmap));
     }
 
-    private static async Task<BitmapSource> RenderOnStaAsync(PosterOverlayDefinition definition, OverlayPreviewContext context)
+    private static async Task<BitmapSource> RenderOnStaAsync(
+        PosterOverlayDefinition definition, OverlayPreviewContext context, double scale)
     {
         return await StaRenderer.Default.EnqueueRender(() =>
         {
             // PosterIcon owns WPF image resources and must be built on the STA thread.
             using var posterIcon = CreatePosterIcon(context);
             var icon = new DynamicPosterIcon(definition, posterIcon);
-            using var bitmap = icon.RenderToBitmap();
+            using var bitmap = icon.RenderToBitmap(scale);
             return ToFrozenBitmap(bitmap);
         });
     }

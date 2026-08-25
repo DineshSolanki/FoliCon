@@ -49,6 +49,30 @@ public class OverlayDesignerPreviewRendererTests : IDisposable
     }
 
     [Fact]
+    public async Task RenderNowAsync_WithScale_RendersAtScaledSize()
+    {
+        // The designer canvas displays at 2x/4x; a pre-scaled frame keeps the canvas crisp
+        // instead of stretching a 256px bitmap with NearestNeighbor artifacts.
+        var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(
+            CreateDefinition(), new OverlayPreviewContext(), scale: 2);
+
+        Assert.NotNull(image);
+        Assert.Equal(512, image.PixelWidth);
+        Assert.Equal(512, image.PixelHeight);
+        Assert.True(image.IsFrozen);
+    }
+
+    [Fact]
+    public async Task RenderNowAsync_DefaultScale_ProducesA256Bitmap()
+    {
+        var image = await OverlayDesignerPreviewRenderer.RenderNowAsync(CreateDefinition(), new OverlayPreviewContext());
+
+        Assert.NotNull(image);
+        Assert.Equal(256, image.PixelWidth);
+        Assert.Equal(256, image.PixelHeight);
+    }
+
+    [Fact]
     public async Task RequestRender_RaisesRenderedWithAFrame()
     {
         var renderer = NewRenderer(TimeSpan.FromMilliseconds(20));

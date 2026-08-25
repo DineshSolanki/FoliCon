@@ -799,6 +799,10 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             {
                 RaisePropertyChanged(nameof(CanvasWidth));
                 RaisePropertyChanged(nameof(CanvasHeight));
+
+                // Re-render at the new scale so the canvas shows one bitmap pixel per screen
+                // pixel instead of stretching a 256px frame across the zoomed surface.
+                RequestPreview();
             }
         }
     } = 2;
@@ -902,7 +906,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         }
 
         RevalidateDocument();
-        _previewRenderer.RequestRender(_document.CreateSnapshot(), PreviewContext);
+        _previewRenderer.RequestRender(_document.CreateSnapshot(), PreviewContext, Zoom);
     }
 
     private void OnPreviewRendered(object? sender, OverlayPreviewRenderedEventArgs e) => PreviewImage = e.Image;
