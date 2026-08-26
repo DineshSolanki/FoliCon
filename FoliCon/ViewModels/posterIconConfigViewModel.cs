@@ -68,7 +68,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
         RemoveOverlayCommand = new DelegateCommand<OverlayItemViewModel>(
             RemoveOverlay,
-            item => item is { IsBuiltIn: false });
+            item => item is { IsBuiltIn: false, FolderPath: not null });
     }
 
     /// <summary>
@@ -84,7 +84,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
         // Deletion lives in OverlayExporter alongside install, so both halves of the
         // local-overlay lifecycle share one implementation and one set of guards.
-        var result = new Modules.Overlays.Designer.OverlayExporter().UninstallLocal(item.OverlayId);
+        var result = new Modules.Overlays.Designer.OverlayExporter().UninstallLocalAtPath(item.FolderPath!);
 
         if (!result.Succeeded)
         {
@@ -154,6 +154,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
                     OverlayId = overlay.Id,
                     DisplayName = overlay.DisplayName,
                     IsBuiltIn = overlay.IsBuiltIn,
+                    FolderPath = overlay.OverlayFolderPath,
                     IsActive = string.Equals(overlay.Id, IconOverlay, StringComparison.OrdinalIgnoreCase),
                     Tags = overlay.Tags
                 };
@@ -202,6 +203,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 public class OverlayItemViewModel : BindableBase
 {
     public string OverlayId { get; init; } = string.Empty;
+    public string? FolderPath { get; init; }
     public string DisplayName { get; set; } = string.Empty;
     public bool IsBuiltIn { get; set; }
     public string[] Tags { get; set; } = [];

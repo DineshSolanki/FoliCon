@@ -43,6 +43,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     private Thickness? _gestureStartMargin;
 
     private bool _disposed;
+    private string? _temporaryWorkingFolder;
 
     public OverlayDesignerViewModel(
         DialogCloseListener requestClose,
@@ -1000,6 +1001,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
             // The draft's copies are now the document's assets, so the export reads them.
             _history.MarkClean();
+            CleanupTemporaryWorkingFolder();
 
             // Keep the resume list current so the draft is there when they come back.
             LoadDrafts();
@@ -1215,8 +1217,8 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             // produce non-ASCII characters the 'id' validator rejects.
             var id = _templateProvider.SuggestId($"My {template.DisplayName}");
             var folder = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                "FoliCon", Modules.Overlays.OverlayConstants.draftsFolder, id);
+                Path.GetTempPath(), "FoliCon", "OverlayDesigner", Guid.NewGuid().ToString("N"));
+            _temporaryWorkingFolder = folder;
 
             var document = _templateProvider.CreateFromTemplate(
                 template, folder, id,
@@ -1229,6 +1231,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         }
         catch (Exception ex)
         {
+            CleanupTemporaryWorkingFolder();
             Logger.Error(ex, "Failed to create overlay from template '{Id}'", template.Id);
             StatusMessage = string.Format(Lang.OverlayDesignerCreateFromTemplateFailed, ex.Message);
         }
@@ -1257,6 +1260,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             return;
         }
 
+        CleanupTemporaryWorkingFolder();
         AdoptDocument(result.Document);
         StatusMessage = result.Validation.IsValid
             ? string.Format(Lang.OverlayDesignerOpened, result.Document.DisplayName)
@@ -1293,6 +1297,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     /// </summary>
     public void ReturnToTemplates()
     {
+        CleanupTemporaryWorkingFolder();
         _history.Changed -= OnHistoryChanged;
 
         _document = new OverlayDesignerDocument();
@@ -1551,7 +1556,16 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     /// confirmation lives here rather than in the View. Returning a bare <c>!IsDirty</c> would
     /// veto the close outright and leave no way out of the dialog at all.
     /// </summary>
-    public virtual bool CanCloseDialog() => ConfirmDiscardIfDirty();
+    public virtual bool CanCloseDialog()
+    {
+        var canClose = ConfirmDiscardIfDirty();
+        if (canClose)
+        {
+            CleanupTemporaryWorkingFolder();
+        }
+
+        return canClose;
+    }
 
     /// <summary>
     /// The single gate for every path that abandons unsaved edits: dialog close, the window's
@@ -1703,10 +1717,38 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         _disposed = true;
         if (disposing)
         {
+            CleanupTemporaryWorkingFolder();
             _previewRenderer.Rendered -= OnPreviewRendered;
             _previewRenderer.Failed -= OnPreviewFailed;
             _previewRenderer.Dispose();
             _history.Changed -= OnHistoryChanged;
+        }
+    }
+
+    /// <summary>
+    /// Removes the asset copy created for a new template before it becomes a user-requested
+    /// draft. Saved drafts repoint the document at their persistent copy first.
+    /// </summary>
+    private void CleanupTemporaryWorkingFolder()
+    {
+        if (string.IsNullOrWhiteSpace(_temporaryWorkingFolder))
+        {
+            return;
+        }
+
+        var folder = _temporaryWorkingFolder;
+        _temporaryWorkingFolder = null;
+
+        try
+        {
+            if (Directory.Exists(folder))
+            {
+                Directory.Delete(folder, recursive: true);
+            }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            Logger.Warn(ex, "Could not remove temporary overlay designer folder {Folder}", folder);
         }
     }
 }

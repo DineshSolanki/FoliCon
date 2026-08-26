@@ -446,6 +446,20 @@ public class OverlayExporterTests : IDisposable
     }
 
     [Fact]
+    public void UninstallLocalAtPath_RemovesPackageWhoseFolderDoesNotMatchItsId()
+    {
+        var overlaysRoot = Path.Combine(_root, "mismatched-id");
+        var packagePath = Path.Combine(overlaysRoot, "old-folder-name");
+        Directory.CreateDirectory(packagePath);
+        File.WriteAllText(Path.Combine(packagePath, "overlay.json"), """{"id":"renamed-overlay"}""");
+
+        var result = new OverlayExporter().UninstallLocalAtPath(packagePath, overlaysRoot);
+
+        Assert.True(result.Succeeded, result.FailureReason);
+        Assert.False(Directory.Exists(packagePath));
+    }
+
+    [Fact]
     public async Task InstallThenUninstall_LeavesTheOverlaysFolderEmpty()
     {
         var exported = await ExportAsync(CreateDocument());

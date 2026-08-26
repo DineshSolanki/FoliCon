@@ -227,22 +227,53 @@ public class OverlayExporter
             "FoliCon", OverlayConstants.overlaysFolder);
         var target = Path.Combine(root, overlayId);
 
-        if (!Directory.Exists(target))
+        return UninstallLocalAtPath(target, root);
+    }
+
+    /// <summary>
+    /// Deletes a locally installed package by its loaded folder path.
+    ///
+    /// This supports legacy packages whose <c>overlay.json</c> ID no longer matches their
+    /// containing folder name. The path must remain an immediate child of the overlays root.
+    /// </summary>
+    public virtual OverlayExportResult UninstallLocalAtPath(string packagePath, string? userOverlaysRoot = null)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(packagePath);
+
+        var root = userOverlaysRoot ?? Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "FoliCon", OverlayConstants.overlaysFolder);
+        var target = Path.GetFullPath(packagePath);
+        var expectedParent = Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+        var actualParent = Path.GetDirectoryName(target);
+
+        if (!string.Equals(actualParent, expectedParent, StringComparison.OrdinalIgnoreCase))
         {
-            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportNotInstalled, overlayId));
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportNotInstalled, Path.GetFileName(target)));
+        }
+
+        var folderName = Path.GetFileName(target);
+        if (OverlayConstants.BuiltInOverlayIds.Contains(folderName, StringComparer.OrdinalIgnoreCase))
+        {
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportBuiltInCannotRemove, folderName));
+        }
+
+        if (!File.Exists(Path.Combine(target, OverlayConstants.overlayJsonFileName)))
+        {
+            return OverlayExportResult.Failure(string.Format(Lang.OverlayExportNotInstalled, folderName));
         }
 
         try
         {
             Directory.Delete(target, recursive: true);
-            Logger.Info("Removed locally installed overlay '{Id}'", overlayId);
+            Logger.Info("Removed locally installed overlay folder {Path}", target);
             return OverlayExportResult.Success(target, new OverlayValidationResult());
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            Logger.Error(ex, "Failed to remove overlay '{Id}'", overlayId);
+            Logger.Error(ex, "Failed to remove overlay folder {Path}", target);
             return OverlayExportResult.Failure(
-                string.Format(Lang.OverlayExportRemoveFailed, overlayId, ex.Message));
+                string.Format(Lang.OverlayExportRemoveFailed, folderName, ex.Message));
         }
     }
 

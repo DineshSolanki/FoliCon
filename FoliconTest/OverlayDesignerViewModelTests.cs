@@ -889,6 +889,18 @@ public class OverlayDesignerViewModelTests : IDisposable
     }
 
     [Fact]
+    public void CreateFromTemplate_DoesNotCreateADraftUntilSaveDraftIsRequested()
+    {
+        var viewModel = CreateViewModel();
+        viewModel.OnDialogOpened(new DialogParameters());
+
+        viewModel.CreateFromTemplateCommand.Execute(viewModel.Templates[0]);
+
+        Assert.True(viewModel.HasDocument);
+        Assert.False(Directory.Exists(Path.Combine(_draftsRoot, viewModel.OverlayId)));
+    }
+
+    [Fact]
     public void SaveDraft_WritesTheDraftAndClearsDirty()
     {
         var viewModel = LoadedViewModel();
