@@ -165,7 +165,7 @@ jobs:
         uses: actions/ai-inference@v3
         with:
           prompt-file: '/tmp/prompt.yml'
-          model: openai/gpt-4o
+          model: "gemini-3.7-flash"
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
