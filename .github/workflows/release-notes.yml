@@ -48,6 +48,7 @@ jobs:
           model: openai/gpt-4o
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
+          ACTIONS_STEP_DEBUG: true
 
       - name: Update release title and body
         uses: actions/github-script@v9
