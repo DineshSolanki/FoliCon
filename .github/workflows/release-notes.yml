@@ -17,6 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
       - name: Get release body
         id: release
         env:
@@ -42,7 +45,9 @@ jobs:
         uses: actions/ai-inference@v3
         with:
           prompt-file: '/tmp/prompt.yml'
-          model: openai/gpt-4o
+          model: "gemini-3.7-flash"
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_GITHUB_TOKEN }}
 
       - name: Update release title and body
         uses: actions/github-script@v9
