@@ -305,11 +305,7 @@ public partial class DynamicPosterIcon : PosterIconBase
             Margin = ParseThickness(rating.ShieldMargin)
         };
         RenderOptions.SetBitmapScalingMode(shield, BitmapScalingMode.HighQuality);
-        Panel.SetZIndex(shield, 2);
-        Grid.SetRow(shield, 1);
-        Grid.SetRowSpan(shield, 2);
         shield.SetBinding(VisibilityProperty, new Binding("RatingVisibility") { Source = dataContext });
-        grid.Children.Add(shield);
 
         var ratingText = new TextBlock
         {
@@ -319,17 +315,68 @@ public partial class DynamicPosterIcon : PosterIconBase
             FontStyle = FontStyles.Italic,
             FontSize = rating.FontSize,
             Foreground = Brushes.Black,
+            TextWrapping = TextWrapping.NoWrap,
+            TextAlignment = TextAlignment.Center,
+            // Give the TextBlock the full bounds so text centers within them;
+            // the Viewbox then scales the entire block down if the rating is long.
             Width = rating.TextWidth,
-            Height = rating.TextHeight,
+            Height = rating.TextHeight
+        };
+        ratingText.SetBinding(TextBlock.TextProperty, new Binding("Rating") { Source = dataContext });
+
+        // Wrap in a Viewbox so the text scales down to fit when the rating string
+        // is wider than the available badge space (e.g. "10.0", "9.15").
+        var ratingViewbox = new Viewbox
+        {
+            Child = ratingText,
+            Stretch = Stretch.Uniform,
+            StretchDirection = StretchDirection.DownOnly,
+            MaxWidth = rating.TextWidth,
+            MaxHeight = rating.TextHeight,
             Margin = ParseThickness(rating.TextMargin)
         };
-        Panel.SetZIndex(ratingText, 3);
-        Grid.SetRow(ratingText, 2);
-        ratingText.HorizontalAlignment = ParseHorizontalAlignment(rating.TextHorizontalAlignment);
-        ratingText.VerticalAlignment = ParseVerticalAlignment(rating.TextVerticalAlignment);
-        ratingText.SetBinding(VisibilityProperty, new Binding("RatingVisibility") { Source = dataContext });
-        ratingText.SetBinding(TextBlock.TextProperty, new Binding("Rating") { Source = dataContext });
-        grid.Children.Add(ratingText);
+        ratingViewbox.SetBinding(VisibilityProperty, new Binding("RatingVisibility") { Source = dataContext });
+
+        if (string.Equals(rating.TextAnchor, "Center", StringComparison.OrdinalIgnoreCase))
+        {
+            // Co-locate shield and text in a nested Grid so the text auto-centers
+            // on the shield regardless of image aspect ratio or size.
+            // TextMargin becomes an offset from the shield center.
+            var badgeGrid = new Grid
+            {
+                Margin = ParseThickness(rating.ShieldMargin)
+            };
+            Panel.SetZIndex(badgeGrid, 2);
+            Grid.SetRow(badgeGrid, 1);
+            Grid.SetRowSpan(badgeGrid, 2);
+
+            // Shield fills the badge grid
+            shield.Margin = new Thickness(0);
+            badgeGrid.Children.Add(shield);
+
+            // Text is centered on the shield with optional offset
+            ratingViewbox.Margin = ParseThickness(rating.TextMargin);
+            ratingViewbox.HorizontalAlignment = ParseHorizontalAlignment(rating.TextHorizontalAlignment);
+            ratingViewbox.VerticalAlignment = ParseVerticalAlignment(rating.TextVerticalAlignment);
+            Panel.SetZIndex(ratingViewbox, 3);
+            badgeGrid.Children.Add(ratingViewbox);
+
+            grid.Children.Add(badgeGrid);
+        }
+        else
+        {
+            // Legacy behavior: shield and text positioned independently via absolute margins.
+            Panel.SetZIndex(shield, 2);
+            Grid.SetRow(shield, 1);
+            Grid.SetRowSpan(shield, 2);
+            grid.Children.Add(shield);
+
+            Panel.SetZIndex(ratingViewbox, 3);
+            Grid.SetRow(ratingViewbox, 2);
+            ratingViewbox.HorizontalAlignment = ParseHorizontalAlignment(rating.TextHorizontalAlignment);
+            ratingViewbox.VerticalAlignment = ParseVerticalAlignment(rating.TextVerticalAlignment);
+            grid.Children.Add(ratingViewbox);
+        }
 
         return grid;
     }

@@ -80,6 +80,7 @@ public sealed class OverlayDesignerDocument
     public double RatingTextHeight { get; set; } = 46;
     public string RatingTextHorizontalAlignment { get; set; } = "Center";
     public string RatingTextVerticalAlignment { get; set; } = "Center";
+    public string? RatingTextAnchor { get; set; }
 
     #endregion
 
@@ -171,7 +172,8 @@ public sealed class OverlayDesignerDocument
                 TextWidth = RatingTextWidth,
                 TextHeight = RatingTextHeight,
                 TextHorizontalAlignment = RatingTextHorizontalAlignment,
-                TextVerticalAlignment = RatingTextVerticalAlignment
+                TextVerticalAlignment = RatingTextVerticalAlignment,
+                TextAnchor = RatingTextAnchor
             },
 
             Title = new TitleConfig
@@ -245,6 +247,7 @@ public sealed class OverlayDesignerDocument
             RatingTextHeight = definition.Rating.TextHeight,
             RatingTextHorizontalAlignment = definition.Rating.TextHorizontalAlignment,
             RatingTextVerticalAlignment = definition.Rating.TextVerticalAlignment,
+            RatingTextAnchor = definition.Rating.TextAnchor,
 
             TitleIsVisible = definition.Title.IsVisible,
             TitleMargin = OverlayGeometry.ParseThickness(definition.Title.Margin),
@@ -288,14 +291,69 @@ public sealed class OverlayDesignerDocument
     /// Reads the bounds of a positionable element in design-surface coordinates.
     /// Rating and title are positioned by margin against the same surface as the layers.
     /// </summary>
-    public Rect GetElementBounds(OverlayElementKind kind) =>
-        OverlayGeometry.MarginToBounds(GetElementMargin(kind), LayoutSurface);
+    public Rect GetElementBounds(OverlayElementKind kind)
+    {
+        if (kind == OverlayElementKind.RatingText)
+        {
+            return GetRatingTextBounds();
+        }
+        return OverlayGeometry.MarginToBounds(GetElementMargin(kind), LayoutSurface);
+    }
 
     /// <summary>
     /// Writes an element's position from canvas bounds, converting back to a margin.
     /// </summary>
-    public void SetElementBounds(OverlayElementKind kind, Rect bounds) =>
+    public void SetElementBounds(OverlayElementKind kind, Rect bounds)
+    {
+        if (kind == OverlayElementKind.RatingText)
+        {
+            SetRatingTextBounds(bounds);
+            return;
+        }
         SetElementMargin(kind, OverlayGeometry.BoundsToMargin(bounds, LayoutSurface));
+    }
+
+    /// <summary>
+    /// Computes the rating text bounds on the design surface. When anchored, the text is
+    /// centered on the shield with <see cref="RatingTextMargin"/> as an offset.
+    /// </summary>
+    private Rect GetRatingTextBounds()
+    {
+        var shieldBounds = OverlayGeometry.MarginToBounds(RatingShieldMargin, LayoutSurface);
+        var centerX = shieldBounds.X + shieldBounds.Width / 2;
+        var centerY = shieldBounds.Y + shieldBounds.Height / 2;
+
+        // TextMargin acts as offset from shield center when anchored.
+        var textCenterX = centerX + (RatingTextMargin.Left - RatingTextMargin.Right) / 2;
+        var textCenterY = centerY + (RatingTextMargin.Top - RatingTextMargin.Bottom) / 2;
+
+        return new Rect(
+            textCenterX - RatingTextWidth / 2,
+            textCenterY - RatingTextHeight / 2,
+            RatingTextWidth,
+            RatingTextHeight);
+    }
+
+    /// <summary>
+    /// Converts canvas drag position back to <see cref="RatingTextMargin"/> offset.
+    /// </summary>
+    private void SetRatingTextBounds(Rect bounds)
+    {
+        var shieldBounds = OverlayGeometry.MarginToBounds(RatingShieldMargin, LayoutSurface);
+        var shieldCenterX = shieldBounds.X + shieldBounds.Width / 2;
+        var shieldCenterY = shieldBounds.Y + shieldBounds.Height / 2;
+
+        var textCenterX = bounds.X + bounds.Width / 2;
+        var textCenterY = bounds.Y + bounds.Height / 2;
+
+        var offsetX = textCenterX - shieldCenterX;
+        var offsetY = textCenterY - shieldCenterY;
+
+        // Convert center offset to margin. The read formula is:
+        //   textCenter = shieldCenter + (left - right) / 2
+        // So to get offset O, set left=O, right=-O (and same for top/bottom).
+        RatingTextMargin = new Thickness(offsetX, offsetY, -offsetX, -offsetY);
+    }
 
     public Thickness GetElementMargin(OverlayElementKind kind) => kind switch
     {
@@ -303,6 +361,7 @@ public sealed class OverlayDesignerDocument
         OverlayElementKind.Poster => PosterMargin,
         OverlayElementKind.Front => FrontLayerMargin,
         OverlayElementKind.Rating => RatingShieldMargin,
+        OverlayElementKind.RatingText => RatingTextMargin,
         OverlayElementKind.Title => TitleMargin,
         _ => throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unknown overlay element kind.")
     };
@@ -315,10 +374,18 @@ public sealed class OverlayDesignerDocument
             case OverlayElementKind.Poster: PosterMargin = margin; break;
             case OverlayElementKind.Front: FrontLayerMargin = margin; break;
             case OverlayElementKind.Rating: MoveRatingBadge(margin); break;
+            case OverlayElementKind.RatingText: RatingTextMargin = margin; break;
             case OverlayElementKind.Title: TitleMargin = margin; break;
             default: throw new ArgumentOutOfRangeException(nameof(kind), kind, "Unknown overlay element kind.");
         }
     }
+
+    /// <summary>
+    /// Whether a <see cref="RatingText"/> sub-element should appear in the element list.
+    /// Only meaningful when the text is anchored to the shield.
+    /// </summary>
+    public bool HasRatingTextElement =>
+        string.Equals(RatingTextAnchor, "Center", StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Moves the rating badge as a unit.
@@ -340,12 +407,17 @@ public sealed class OverlayDesignerDocument
             return;
         }
 
-        // Right/bottom move opposite to left/top so the text keeps its size.
-        RatingTextMargin = new Thickness(
-            RatingTextMargin.Left + deltaX,
-            RatingTextMargin.Top + deltaY,
-            RatingTextMargin.Right - deltaX,
-            RatingTextMargin.Bottom - deltaY);
+        // When text is anchored to the shield, it moves with the shield automatically
+        // via the nested grid — only adjust text margin for independent positioning.
+        if (!string.Equals(RatingTextAnchor, "Center", StringComparison.OrdinalIgnoreCase))
+        {
+            // Right/bottom move opposite to left/top so the text keeps its size.
+            RatingTextMargin = new Thickness(
+                RatingTextMargin.Left + deltaX,
+                RatingTextMargin.Top + deltaY,
+                RatingTextMargin.Right - deltaX,
+                RatingTextMargin.Bottom - deltaY);
+        }
     }
 
     /// <summary>
@@ -357,6 +429,7 @@ public sealed class OverlayDesignerDocument
         OverlayElementKind.Base => HasBaseLayer,
         OverlayElementKind.Front => HasFrontLayer,
         OverlayElementKind.Title => TitleIsVisible,
+        OverlayElementKind.RatingText => HasRatingTextElement,
         OverlayElementKind.Poster or OverlayElementKind.Rating => true,
         _ => false
     };

@@ -349,7 +349,13 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
         var kind = SelectedElement.Kind;
         var oldMargin = _document.GetElementMargin(kind);
-        var newMargin = OverlayGeometry.BoundsToMargin(OverlayGeometry.SnapToPixels(bounds), _document.LayoutSurface);
+
+        // RatingText uses shield-relative coordinates, so route through the document's
+        // SetElementBounds which handles the conversion for each element kind.
+        var snapped = OverlayGeometry.SnapToPixels(bounds);
+        var newMargin = kind == OverlayElementKind.RatingText
+            ? GetMarginFromBounds(kind, snapped)
+            : OverlayGeometry.BoundsToMargin(snapped, _document.LayoutSurface);
 
         if (newMargin == oldMargin)
         {
@@ -357,6 +363,22 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         }
 
         ApplyEdit(new ElementBoundsCommand(kind, oldMargin, newMargin, $"Move {SelectedElement.DisplayName}"));
+    }
+
+    /// <summary>
+    /// Converts bounds to a margin for the given element kind. For most elements this is
+    /// a simple surface conversion; for <see cref="OverlayElementKind.RatingText"/> it
+    /// computes the shield-relative offset.
+    /// </summary>
+    private Thickness GetMarginFromBounds(OverlayElementKind kind, Rect bounds)
+    {
+        // Temporarily set bounds via the document (which handles coordinate conversion)
+        // then read back the resulting margin.
+        var savedMargin = _document.GetElementMargin(kind);
+        _document.SetElementBounds(kind, bounds);
+        var result = _document.GetElementMargin(kind);
+        _document.SetElementMargin(kind, savedMargin); // restore
+        return result;
     }
 
     /// <summary>
@@ -1351,6 +1373,17 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
                 IsPresent = _document.IsElementPresent(kind),
                 DesignBounds = _document.GetElementBounds(kind)
             });
+
+            // Insert RatingText right after Rating when anchored — the text is a
+            // sub-element of the badge that can be dragged independently.
+            if (kind == OverlayElementKind.Rating && _document.HasRatingTextElement)
+            {
+                Elements.Add(new OverlayElementViewModel(OverlayElementKind.RatingText, DescribeElement(OverlayElementKind.RatingText))
+                {
+                    IsPresent = true,
+                    DesignBounds = _document.GetElementBounds(OverlayElementKind.RatingText)
+                });
+            }
         }
 
         SelectElement(Elements.FirstOrDefault(e => e.Kind == previousSelection)
@@ -1424,6 +1457,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         OverlayElementKind.Poster => Lang.Poster,
         OverlayElementKind.Front => Lang.OverlayLayerFront,
         OverlayElementKind.Rating => Lang.OverlayLayerRatingBadge,
+        OverlayElementKind.RatingText => Lang.OverlayLayerRatingBadge + " Text",
         OverlayElementKind.Title => Lang.OverlayLayerTitleText,
         _ => kind.ToString()
     };

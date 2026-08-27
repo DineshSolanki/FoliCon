@@ -29,7 +29,7 @@
   },
   "rating": {
     "shieldMargin": "160,97,6,5",
-    "textMargin": "189,30,21,24",
+    "textMargin": "-4,9.5,4,-9.5",
     "fontSize": 25,
     "fontFamily": "Castellar",
     "fontSource": null,
@@ -37,7 +37,8 @@
     "textWidth": 55,
     "textHeight": 46,
     "textHorizontalAlignment": "Center",
-    "textVerticalAlignment": "Center"
+    "textVerticalAlignment": "Center",
+    "textAnchor": "Center"
   },
   "title": {
     "isVisible": false,

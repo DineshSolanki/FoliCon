@@ -114,7 +114,7 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         }
 
         // Snapshot the context so later UI edits can't mutate what this frame renders.
-        _ = RenderAfterDebounceAsync(definition, context.Clone(), version, cts.Token, scale);
+        _ = RenderAfterDebounceAsync(definition, context.Clone(), version, scale, cts.Token);
     }
 
     /// <summary>
@@ -142,8 +142,8 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         PosterOverlayDefinition definition,
         OverlayPreviewContext context,
         long version,
-        CancellationToken token,
-        double scale)
+        double scale,
+        CancellationToken token)
     {
         try
         {

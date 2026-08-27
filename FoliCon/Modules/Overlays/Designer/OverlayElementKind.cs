@@ -11,6 +11,7 @@ public enum OverlayElementKind
     Poster,
     Front,
     Rating,
+    RatingText,
     Title
 }
 

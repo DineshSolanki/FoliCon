@@ -86,12 +86,12 @@ public class RatingConfig
     public string FontFallback { get; set; } = "Segoe UI";
 
     /// <summary>
-    /// Width of the rating text block.
+    /// Maximum width of the rating text area. Text scales down via Viewbox if wider.
     /// </summary>
     public double TextWidth { get; set; } = 55;
 
     /// <summary>
-    /// Height of the rating text block.
+    /// Maximum height of the rating text area. Text scales down via Viewbox if taller.
     /// </summary>
     public double TextHeight { get; set; } = 46;
 
@@ -104,6 +104,14 @@ public class RatingConfig
     /// Vertical alignment of the rating text.
     /// </summary>
     public string TextVerticalAlignment { get; set; } = "Center";
+
+    /// <summary>
+    /// When set to "Center", the rating text is co-located with the shield image
+    /// and automatically centered on it. <see cref="TextMargin"/> becomes an offset
+    /// from the shield center rather than an absolute grid margin.
+    /// When null, the text is positioned independently using <see cref="TextMargin"/>.
+    /// </summary>
+    public string? TextAnchor { get; set; }
 }
 
 /// <summary>
