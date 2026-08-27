@@ -1756,6 +1756,12 @@ e renovar o cache dos Ícones?</value>
     <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
       <value>O recurso «{0}» excede o limite de {1} MB.</value>
     </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>overlay.json é demasiado grande.</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>Limite de tamanho do recurso excedido.</value>
+    </data>
     <data name="OverlayInstallHashMismatch" xml:space="preserve">
       <value>A verificação de integridade de «{0}» falhou: o ficheiro transferido não corresponde à soma de verificação publicada.</value>
     </data>

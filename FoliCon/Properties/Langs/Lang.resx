@@ -1757,6 +1757,12 @@ and refresh Icon Cache?</value>
     <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
       <value>Asset '{0}' exceeds {1}MB limit.</value>
     </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>overlay.json is too large.</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>Asset size limit exceeded.</value>
+    </data>
     <data name="OverlayInstallHashMismatch" xml:space="preserve">
       <value>Integrity check failed for '{0}': the downloaded file does not match the published checksum.</value>
     </data>

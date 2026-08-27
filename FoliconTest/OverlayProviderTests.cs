@@ -1,3 +1,4 @@
+using System.IO;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
 
@@ -116,6 +117,28 @@ public class OverlayProviderTests
 
         Assert.NotNull(overlay);
         Assert.Equal("windows11", overlay.Id);
+    }
+
+    [Fact]
+    public void GetOverlayFolderPath_BuiltIn_ReturnsAbsolutePath()
+    {
+        var provider = new OverlayProvider();
+
+        var path = provider.GetOverlayFolderPath("liaher");
+
+        Assert.True(Path.IsPathRooted(path));
+        Assert.Equal(Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Resources", "Overlays", "liaher")), path);
+    }
+
+    [Fact]
+    public void GetOverlayFolderPath_UserOverlay_ReturnsAbsolutePath()
+    {
+        var provider = new OverlayProvider();
+
+        var path = provider.GetOverlayFolderPath("custom-overlay");
+
+        Assert.True(Path.IsPathRooted(path));
+        Assert.EndsWith(Path.Combine("FoliCon", "Overlays", "custom-overlay"), path, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]

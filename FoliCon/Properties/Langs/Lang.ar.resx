@@ -1756,6 +1756,12 @@
     <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
       <value>يتجاوز الملف «{0}» الحد الأقصى البالغ {1} م.ب.</value>
     </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>ملف overlay.json كبير جدًا.</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>تم تجاوز الحد الأقصى لحجم الملف.</value>
+    </data>
     <data name="OverlayInstallHashMismatch" xml:space="preserve">
       <value>فشل التحقق من سلامة «{0}»: الملف الذي جرى تنزيله لا يطابق المجموع الاختباري المنشور.</value>
     </data>

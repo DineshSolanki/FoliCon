@@ -580,6 +580,8 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(OverlayInstallBuiltInRejected));
         OnPropertyChanged(nameof(OverlayInstallDownloadFailed));
         OnPropertyChanged(nameof(OverlayInstallAssetTooLarge));
+        OnPropertyChanged(nameof(OverlayJsonTooLarge));
+        OnPropertyChanged(nameof(OverlayAssetSizeLimitExceeded));
         OnPropertyChanged(nameof(OverlayInstallHashMismatch));
         OnPropertyChanged(nameof(OverlayInstallDefinitionUnreadable));
         OnPropertyChanged(nameof(OverlayInstallValidationFailed));
@@ -1119,6 +1121,8 @@ public class LangProvider : INotifyPropertyChanged
     public string OverlayInstallBuiltInRejected => Lang.OverlayInstallBuiltInRejected;
     public string OverlayInstallDownloadFailed => Lang.OverlayInstallDownloadFailed;
     public string OverlayInstallAssetTooLarge => Lang.OverlayInstallAssetTooLarge;
+    public string OverlayJsonTooLarge => Lang.OverlayJsonTooLarge;
+    public string OverlayAssetSizeLimitExceeded => Lang.OverlayAssetSizeLimitExceeded;
     public string OverlayInstallHashMismatch => Lang.OverlayInstallHashMismatch;
     public string OverlayInstallDefinitionUnreadable => Lang.OverlayInstallDefinitionUnreadable;
     public string OverlayInstallValidationFailed => Lang.OverlayInstallValidationFailed;
@@ -1668,6 +1672,8 @@ public static class LangKeys
     public static readonly string OverlayInstallBuiltInRejected = nameof(OverlayInstallBuiltInRejected);
     public static readonly string OverlayInstallDownloadFailed = nameof(OverlayInstallDownloadFailed);
     public static readonly string OverlayInstallAssetTooLarge = nameof(OverlayInstallAssetTooLarge);
+    public static readonly string OverlayJsonTooLarge = nameof(OverlayJsonTooLarge);
+    public static readonly string OverlayAssetSizeLimitExceeded = nameof(OverlayAssetSizeLimitExceeded);
     public static readonly string OverlayInstallHashMismatch = nameof(OverlayInstallHashMismatch);
     public static readonly string OverlayInstallDefinitionUnreadable = nameof(OverlayInstallDefinitionUnreadable);
     public static readonly string OverlayInstallValidationFailed = nameof(OverlayInstallValidationFailed);

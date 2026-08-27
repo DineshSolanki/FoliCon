@@ -1757,6 +1757,12 @@
     <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
       <value>Файл «{0}» превышает ограничение в {1} МБ.</value>
     </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>overlay.json слишком большой.</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>Превышен лимит размера файла.</value>
+    </data>
     <data name="OverlayInstallHashMismatch" xml:space="preserve">
       <value>Проверка целостности «{0}» не пройдена: загруженный файл не совпадает с опубликованной контрольной суммой.</value>
     </data>

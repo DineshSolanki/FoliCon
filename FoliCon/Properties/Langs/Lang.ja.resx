@@ -1756,6 +1756,12 @@ and refresh Icon Cache?</value>
     <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
       <value>ファイル「{0}」が {1} MB の上限を超えています。</value>
     </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>overlay.json が大きすぎます。</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>ファイルのサイズ制限を超えました。</value>
+    </data>
     <data name="OverlayInstallHashMismatch" xml:space="preserve">
       <value>「{0}」の整合性チェックに失敗しました。ダウンロードしたファイルが公開されているチェックサムと一致しません。</value>
     </data>

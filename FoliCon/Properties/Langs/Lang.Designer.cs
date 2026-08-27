@@ -4943,6 +4943,24 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to overlay.json is too large..
+        /// </summary>
+        public static string OverlayJsonTooLarge {
+            get {
+                return ResourceManager.GetString("OverlayJsonTooLarge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Asset size limit exceeded..
+        /// </summary>
+        public static string OverlayAssetSizeLimitExceeded {
+            get {
+                return ResourceManager.GetString("OverlayAssetSizeLimitExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Integrity check failed for '{0}': the downloaded file does not match the published checksum..
         /// </summary>
         public static string OverlayInstallHashMismatch {

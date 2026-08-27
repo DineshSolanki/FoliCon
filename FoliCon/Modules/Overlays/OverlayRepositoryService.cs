@@ -335,7 +335,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             if (contentLength.Value > 1024 * 1024 && isJson) // overlay.json limit
             {
-                throw new InvalidOperationException("overlay.json is too large");
+                throw new InvalidOperationException(Lang.OverlayJsonTooLarge);
             }
         }
 
@@ -352,7 +352,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             totalRead += bytesRead;
             if (totalRead > maxSizeBytes && !isJson)
             {
-                throw new InvalidOperationException("Asset size limit exceeded");
+                throw new InvalidOperationException(Lang.OverlayAssetSizeLimitExceeded);
             }
             await memoryStream.WriteAsync(buffer.AsMemory(0, bytesRead), ct);
         }
