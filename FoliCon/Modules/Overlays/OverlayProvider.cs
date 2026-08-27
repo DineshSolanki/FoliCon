@@ -66,13 +66,14 @@ public class OverlayProvider : IOverlayProvider
 
     public string GetOverlayFolderPath(string id)
     {
-        // Check built-in first
+        // Check built-in first. Built-in overlay assets are resolved from the app output directory,
+        // not the process working directory, so the result must be fully rooted.
         if (OverlayConstants.BuiltInOverlayIds.Contains(id, StringComparer.OrdinalIgnoreCase))
         {
-            return Path.Combine("Resources", "Overlays", id);
+            return Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Resources", "Overlays", id));
         }
 
-        return Path.Combine(_userOverlaysPath, id);
+        return Path.GetFullPath(Path.Combine(_userOverlaysPath, id));
     }
 
     public void Refresh() => LoadUserOverlays();
