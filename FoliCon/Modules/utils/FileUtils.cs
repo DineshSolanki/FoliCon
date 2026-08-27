@@ -506,7 +506,7 @@ public static class FileUtils
 
     public static (string TmdbKey, string IgdbClientId, string IgdbClientSecret) ReadApiConfiguration()
     {
-        var settings = GlobalDataHelper.Load<AppConfig>();
+        var settings = Services.Settings;
         return (settings.TmdbKey, settings.IgdbClientId, settings.IgdbClientSecret);
     }
 
