@@ -30,11 +30,12 @@
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
-                <StackPanel Margin="4" HorizontalAlignment="Stretch">
-                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.DownloadingIcons}}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                <StackPanel Margin="4" HorizontalAlignment="Stretch" Width="350">
+                    <TextBlock Text="{Binding Path=DataContext.BusyIndicatorProperties.Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
                     <StackPanel Margin="4">
                         <TextBlock
-                            Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                            Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                            TextTrimming="CharacterEllipsis" />
                         <ProgressBar Style="{DynamicResource ProgressBarSuccessStripe}"
                                      Value="{Binding Path=DataContext.BusyIndicatorProperties.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                      Maximum="{Binding Path=DataContext.BusyIndicatorProperties.Max, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"

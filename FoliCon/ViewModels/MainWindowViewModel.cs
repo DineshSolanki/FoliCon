@@ -302,6 +302,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async void SearchAndMakeMethod()
     {
         Logger.Debug("SearchAndMakeMethod Called.");
+        if (IsBusy)
+        {
+            Logger.Debug("SearchAndMakeMethod: Already busy, ignoring.");
+            return;
+        }
+
         try
         {
             if (!ValidateFolder())
@@ -323,6 +329,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             PrepareForSearchOperations();
 
+            StopIconDownload = false;
+            IsBusy = true;
+            BusyIndicatorProperties.Title = Lang.Searching;
+            BusyIndicatorProperties.Text = Lang.Searching;
+            BusyIndicatorProperties.Value = 0;
+
             if (IconMode == "Poster")
             {
                 await ProcessPosterModeAsync();
@@ -330,6 +342,14 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             else
             {
                 ProcessProfessionalMode(SelectedFolder);
+            }
+
+            if (StopIconDownload)
+            {
+                Logger.Debug("Search cancelled, skipping download phase.");
+                IsBusy = false;
+                IsMakeEnabled = _imgDownloadList.Count > 0;
+                return;
             }
 
             Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}",
@@ -456,6 +476,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         else
         {
+            IsBusy = false;
             IsMakeEnabled = true;
         }
     }
@@ -490,6 +511,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         while (folderQueue.Count > 0)
         {
+            if (StopIconDownload)
+            {
+                Logger.Debug("Search cancelled by user.");
+                break;
+            }
+
             var (folderPath, depth) = folderQueue.Dequeue();
             var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
 
@@ -546,6 +573,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         foreach (var itemTitle in subfolderNames)
         {
+            if (StopIconDownload)
+            {
+                return true;
+            }
+
             if (await ProcessItemAsync(folderPath, itemTitle))
             {
                 return true;
@@ -558,6 +590,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         var fullFolderPath = Path.Combine(folderPath, itemTitle);
         Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
+
+        BusyIndicatorProperties.Text = $"{StatusBarProperties.ProcessedFolder + 1}/{StatusBarProperties.TotalFolders}: {itemTitle}";
+        BusyIndicatorProperties.Value = StatusBarProperties.ProcessedFolder;
+        BusyIndicatorProperties.Max = StatusBarProperties.TotalFolders;
 
         var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
         var resultCount = CalculateResultCount(response, isPickedById);
@@ -1040,6 +1076,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task StartDownloadingAsync()
     {
         IsMakeEnabled = false;
+        BusyIndicatorProperties.Title = Lang.DownloadingIcons;
         StatusBarProperties.AppStatus = Lang.CreatingIcons;
         await DownloadAndMakeIconsAsync();
         StatusBarProperties.AppStatus = Lang.Idle;
@@ -1049,7 +1086,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task DownloadAndMakeIconsAsync()
     {
         StopIconDownload = false;
-        IsBusy = true;
         var completedCount = 0;
         var totalCount = _imgDownloadList.Count;
         Logger.Debug("Start Downloading Icons. Total Icons: {ImgDownloadCount}", totalCount);
@@ -1128,6 +1164,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task MakeIcons()
     {
         IsBusy = true;
+        BusyIndicatorProperties.Title = Lang.CreatingIcons;
         var iconProcessedCount = await Task.Run(()=>IconUtils.MakeIco(IconMode,
             SelectedFolder,
             _pickedListDataTable,
