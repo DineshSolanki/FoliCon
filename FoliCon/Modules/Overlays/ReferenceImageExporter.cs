@@ -73,7 +73,10 @@ public static class ReferenceImageExporter
         while (dir != null)
         {
             if (dir.GetFiles("*.sln").Length > 0)
+            {
                 return dir.FullName;
+            }
+
             dir = dir.Parent;
         }
         return null;
