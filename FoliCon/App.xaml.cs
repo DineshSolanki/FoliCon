@@ -11,7 +11,31 @@ namespace FoliCon;
 public partial class App
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    protected override Window CreateShell() => Container.Resolve<MainWindow>();
+    protected override Window CreateShell()
+    {
+        // Ensure GlobalVariables uses the DI-registered singleton (not a separate instance)
+        GlobalVariables.SetOverlayProvider(Container.Resolve<IOverlayProvider>());
+
+        var shell = Container.Resolve<MainWindow>();
+
+        // Fire-and-forget overlay update check on app start
+        _ = CheckOverlayUpdatesAsync();
+
+        return shell;
+    }
+
+    private async Task CheckOverlayUpdatesAsync()
+    {
+        try
+        {
+            var checker = Container.Resolve<OverlayUpdateChecker>();
+            await checker.CheckForUpdatesAsync();
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Overlay update check failed during startup");
+        }
+    }
 
     public App()
     {
@@ -37,6 +61,13 @@ public partial class App
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
         containerRegistry.RegisterDialog<OnboardingWizard, OnboardingWizardViewModel>("OnboardingWizard");
         containerRegistry.RegisterDialogWindow<HandyWindow>();
+
+        // Overlay plugin system
+        containerRegistry.RegisterSingleton<IOverlayProvider, OverlayProvider>();
+        containerRegistry.RegisterSingleton<IOverlayRepositoryService, OverlayRepositoryService>();
+        containerRegistry.RegisterSingleton<OverlayUpdateChecker>();
+        containerRegistry.RegisterDialog<OverlayStore, OverlayStoreViewModel>("OverlayStore");
+        containerRegistry.RegisterDialog<OverlayDesigner, OverlayDesignerViewModel>("OverlayDesigner");
     }
 
     private static void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

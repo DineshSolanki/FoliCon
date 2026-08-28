@@ -41,12 +41,9 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="Sentry" Version="6.6.0" />
     <PackageReference Include="Sentry.NLog" Version="6.6.0" />
     <PackageReference Include="SharpCompress" Version="0.50.4" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.11" />
     <PackageReference Include="TMDbLib" Version="3.0.0" />
     <PackageReference Include="Vanara.PInvoke.Shell32" Version="5.0.5" />
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
-    <!-- Security vulnerability fixes for transitive dependencies -->
-    <PackageReference Include="System.Drawing.Common" Version="10.0.11" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\icons\folicon Icon.ico" />
@@ -101,6 +98,14 @@ dineshsolanki.github.io/folicon/</Description>
 	<HotReloadAutoRestart>true</HotReloadAutoRestart>
 	<SupportedOSPlatformVersion>10.0.26100.0</SupportedOSPlatformVersion>
 </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Overlays\legacy\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\alternate\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\liaher\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\faelpessoal\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\faelpessoal-horizontal\overlay.json" />
+    <EmbeddedResource Include="Resources\Overlays\windows11\overlay.json" />
+  </ItemGroup>
 </Project>
 
 

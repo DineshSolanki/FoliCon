@@ -234,6 +234,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DelegateCommand AboutCommand { get; private set; }
     public DelegateCommand ShowPreviewer { get; private set; }
+    public DelegateCommand OverlayStoreCommand { get; private set; }
+    public DelegateCommand OverlayDesignerCommand { get; private set; }
     public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
 
     #endregion MenuItem Commands
@@ -825,12 +827,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("Initializing Delegates for MainWindow.");
         SetupWizardCommand = new DelegateCommand(delegate
         {
-            _dialogService.ShowOnboardingWizard(async result =>
+            _dialogService.ShowOnboardingWizard(async _ =>
             {
-                if (result.Result == ButtonResult.OK)
-                {
-                    await ReinitializeDeviantArtAsync();
-                }
+                // Always reinitialize after wizard closes — keys are already persisted
+                // and the user may have validated them without clicking Finish.
+                ReinitializeTmdbAndIgdb();
+                await ReinitializeDeviantArtAsync();
             });
         });
         PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
@@ -867,6 +869,18 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
         });
         ShowPreviewer = new DelegateCommand(() => { _dialogService.ShowPreviewer(_ => { }); });
+
+        // Overlay discovery and authoring are top-level menu actions: burying them inside the
+        // poster-icon settings dialog hides them from anyone not already changing that setting.
+        OverlayStoreCommand = new DelegateCommand(() =>
+        {
+            _dialogService.ShowOverlayStore(_ => OverlayPreviewCache.InvalidateAll());
+        });
+        OverlayDesignerCommand = new DelegateCommand(() =>
+        {
+            _dialogService.ShowOverlayDesigner(_ => OverlayPreviewCache.InvalidateAll());
+        });
+
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
     }
 
@@ -1227,6 +1241,59 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.Error(ex, "Failed to reinitialize DeviantArt client after setup wizard.");
             _dArtObject = null;
+        }
+    }
+
+    /// <summary>
+    /// Reinitializes TMDB and IGDB clients after the setup wizard modifies API keys.
+    /// Called when the user completes the setup wizard from the menu (not the first-launch wizard).
+    /// </summary>
+    private void ReinitializeTmdbAndIgdb()
+    {
+        var (tmdbApiKey, igdbClientId, igdbClientSecret) = FileUtils.ReadApiConfiguration();
+
+        // Reinitialize TMDB
+        if (!string.IsNullOrEmpty(tmdbApiKey))
+        {
+            try
+            {
+                _tmdbClient = new TMDbClient(tmdbApiKey);
+                _tmdbObject = new Tmdb(ref _tmdbClient, ref _pickedListDataTable, ref _imgDownloadList);
+                Logger.Info("TMDB client reinitialized successfully after setup wizard.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to reinitialize TMDB client after setup wizard.");
+                _tmdbClient = null;
+                _tmdbObject = null;
+            }
+        }
+        else
+        {
+            _tmdbClient = null;
+            _tmdbObject = null;
+            Logger.Info("TMDB not configured after setup wizard.");
+        }
+
+        // Reinitialize IGDB
+        if (!string.IsNullOrEmpty(igdbClientId) && !string.IsNullOrEmpty(igdbClientSecret))
+        {
+            try
+            {
+                var igdbClient = new IGDBClient(igdbClientId, igdbClientSecret, new IgdbJotTrackerStore());
+                _igdbObject = new IgdbClass(ref _pickedListDataTable, ref igdbClient, ref _imgDownloadList);
+                Logger.Info("IGDB client reinitialized successfully after setup wizard.");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to reinitialize IGDB client after setup wizard.");
+                _igdbObject = null;
+            }
+        }
+        else
+        {
+            _igdbObject = null;
+            Logger.Info("IGDB not configured after setup wizard.");
         }
     }
 

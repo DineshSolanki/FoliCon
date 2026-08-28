@@ -626,6 +626,12 @@
   <data name="Overlay" xml:space="preserve">
       <value>ओवरले</value>
     </data>
+  <data name="OverlayStore" xml:space="preserve">
+      <value>ओवरले स्टोर</value>
+    </data>
+  <data name="OverlayDesigner" xml:space="preserve">
+      <value>ओवरले बनाएँ</value>
+    </data>
   <data name="Previewer" xml:space="preserve">
       <value>प्रीव्यूर</value>
     </data>
@@ -910,5 +916,878 @@
     </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
       <value>सबफ़ोल्डर प्रोसेसिंग की अधिकतम गहराई। 0 = असीमित (सभी स्तरों को प्रोसेस करें)।</value>
+    </data>
+    <data name="OverlayDesignerTitle" xml:space="preserve">
+      <value>ओवरले डिज़ाइनर</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
+      <value>टेम्पलेट</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
+      <value>दूसरा ओवरले शुरू करने के लिए टेम्पलेट सूची पर वापस जाएँ</value>
+    </data>
+    <data name="OverlayDesignerOpen" xml:space="preserve">
+      <value>खोलें…</value>
+    </data>
+    <data name="OverlayDesignerOpenHelp" xml:space="preserve">
+      <value>मौजूदा overlay.json को संपादन के लिए खोलें</value>
+    </data>
+    <data name="OverlayDesignerUndoHelp" xml:space="preserve">
+      <value>पिछला बदलाव पूर्ववत करें (Ctrl+Z)</value>
+    </data>
+    <data name="OverlayDesignerRedo" xml:space="preserve">
+      <value>फिर से करें</value>
+    </data>
+    <data name="OverlayDesignerRedoHelp" xml:space="preserve">
+      <value>पूर्ववत किया गया बदलाव फिर से लागू करें (Ctrl+Y)</value>
+    </data>
+    <data name="OverlayDesignerZoom" xml:space="preserve">
+      <value>ज़ूम</value>
+    </data>
+    <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
+      <value>ओवरले बनाने की गाइड खोलें (F1)</value>
+    </data>
+    <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
+      <value>बिना सहेजे बदलाव</value>
+    </data>
+    <data name="OverlayDesignerStartNew" xml:space="preserve">
+      <value>नया ओवरले बनाएँ</value>
+    </data>
+    <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
+      <value>कॉपी करने के लिए एक टेम्पलेट चुनें। उसका लेआउट और इमेज आपको शुरुआती आधार के रूप में मिलेंगे — जो चाहें बदलें, फिर ऐसा पैकेज एक्सपोर्ट करें जिसे इंस्टॉल या साझा किया जा सके।</value>
+    </data>
+    <data name="OverlayDesignerRendering" xml:space="preserve">
+      <value>रेंडर हो रहा है…</value>
+    </data>
+    <data name="OverlayDesignerUseTemplate" xml:space="preserve">
+      <value>यह टेम्पलेट चुनें</value>
+    </data>
+    <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
+      <value>{0} को टेम्पलेट के रूप में उपयोग करें</value>
+    </data>
+    <data name="OverlayDesignerContinueDraft" xml:space="preserve">
+      <value>ड्राफ़्ट जारी रखें</value>
+    </data>
+    <data name="OverlayDesignerDraftsHint" xml:space="preserve">
+      <value>पहले सहेजा गया काम। कोई ड्राफ़्ट चुनने पर वह ठीक वहीं से खुलेगा जहाँ आपने छोड़ा था।</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
+      <value>{0:g} को सहेजा गया</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
+      <value>हटाएँ</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
+      <value>ड्राफ़्ट {0} हटाएँ</value>
+    </data>
+    <data name="OverlayDesignerResumeDraft" xml:space="preserve">
+      <value>जारी रखें</value>
+    </data>
+    <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
+      <value>ड्राफ़्ट {0} जारी रखें</value>
+    </data>
+    <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
+      <value>आपके पास पहले से ओवरले फ़ोल्डर है? टूलबार में «खोलें…» का उपयोग करें।</value>
+    </data>
+    <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
+      <value>डिज़ाइनर बंद करें</value>
+    </data>
+    <data name="OverlayDesignerElements" xml:space="preserve">
+      <value>एलिमेंट</value>
+    </data>
+    <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
+      <value>ऊपर से नीचे की ओर बनते हैं — सबसे पहला सबसे पीछे रहता है।</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
+      <value>पीछे भेजें</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
+      <value>चयनित लेयर को पीछे भेजें</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
+      <value>आगे लाएँ</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
+      <value>चयनित लेयर को आगे लाएँ</value>
+    </data>
+    <data name="OverlayDesignerShow" xml:space="preserve">
+      <value>दिखाएँ</value>
+    </data>
+    <data name="OverlayLayerBase" xml:space="preserve">
+      <value>बेस लेयर</value>
+    </data>
+    <data name="OverlayLayerFront" xml:space="preserve">
+      <value>फ्रंट लेयर</value>
+    </data>
+    <data name="OverlayLayerTitleText" xml:space="preserve">
+      <value>शीर्षक टेक्स्ट</value>
+    </data>
+    <data name="OverlayLayerRatingBadge" xml:space="preserve">
+      <value>रेटिंग बैज</value>
+    </data>
+    <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
+      <value>ओवरले प्रीव्यू कैनवास</value>
+    </data>
+    <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
+      <value>रेंडर किया गया ओवरले प्रीव्यू</value>
+    </data>
+    <data name="OverlayDesignerGeometryHint" xml:space="preserve">
+      <value>स्थिति और आकार पिक्सेल में। तीर कुंजियाँ 1 px और Shift+तीर 10 px खिसकाते हैं।</value>
+    </data>
+    <data name="OverlayDesignerAxisX" xml:space="preserve">
+      <value>X</value>
+    </data>
+    <data name="OverlayDesignerLeftPosition" xml:space="preserve">
+      <value>बाईं ओर से स्थिति</value>
+    </data>
+    <data name="OverlayDesignerAxisY" xml:space="preserve">
+      <value>Y</value>
+    </data>
+    <data name="OverlayDesignerTopPosition" xml:space="preserve">
+      <value>ऊपर से स्थिति</value>
+    </data>
+    <data name="OverlayDesignerWidthShort" xml:space="preserve">
+      <value>चौ</value>
+    </data>
+    <data name="OverlayDesignerWidth" xml:space="preserve">
+      <value>चौड़ाई</value>
+    </data>
+    <data name="OverlayDesignerHeightShort" xml:space="preserve">
+      <value>ऊँ</value>
+    </data>
+    <data name="OverlayDesignerHeight" xml:space="preserve">
+      <value>ऊँचाई</value>
+    </data>
+    <data name="OverlayDesignerMetadata" xml:space="preserve">
+      <value>मेटाडेटा</value>
+    </data>
+    <data name="OverlayDesignerName" xml:space="preserve">
+      <value>नाम</value>
+    </data>
+    <data name="OverlayDesignerId" xml:space="preserve">
+      <value>ID</value>
+    </data>
+    <data name="OverlayDesignerIdHint" xml:space="preserve">
+      <value>केवल छोटे अंग्रेज़ी अक्षर, अंक और हाइफ़न। यह अद्वितीय होना चाहिए।</value>
+    </data>
+    <data name="OverlayDesignerAuthor" xml:space="preserve">
+      <value>लेखक</value>
+    </data>
+    <data name="OverlayDesignerVersion" xml:space="preserve">
+      <value>संस्करण</value>
+    </data>
+    <data name="OverlayDesignerDescription" xml:space="preserve">
+      <value>विवरण</value>
+    </data>
+    <data name="OverlayTags" xml:space="preserve">
+      <value>टैग</value>
+    </data>
+    <data name="OverlayDesignerTagsHint" xml:space="preserve">
+      <value>कॉमा से अलग करें।</value>
+    </data>
+    <data name="OverlayDesignerLayerImages" xml:space="preserve">
+      <value>लेयर इमेज</value>
+    </data>
+    <data name="OverlayDesignerBaseImage" xml:space="preserve">
+      <value>बेस इमेज</value>
+    </data>
+    <data name="OverlayDesignerBrowse" xml:space="preserve">
+      <value>ब्राउज़ करें…</value>
+    </data>
+    <data name="OverlayDesignerClear" xml:space="preserve">
+      <value>हटाएँ</value>
+    </data>
+    <data name="OverlayDesignerFrontImage" xml:space="preserve">
+      <value>फ्रंट इमेज</value>
+    </data>
+    <data name="OverlayDesignerOpacityMask" xml:space="preserve">
+      <value>ओपैसिटी मास्क</value>
+    </data>
+    <data name="OverlayDesignerCornerRadius" xml:space="preserve">
+      <value>कोनों की गोलाई</value>
+    </data>
+    <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
+      <value>0 का मतलब है सीधे कोने। असमान आकार चाहिए तो हर कोना अलग-अलग सेट करें।</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
+      <value>TL</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
+      <value>ऊपरी बाएँ कोने की गोलाई</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
+      <value>TR</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
+      <value>ऊपरी दाएँ कोने की गोलाई</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
+      <value>BL</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
+      <value>निचले बाएँ कोने की गोलाई</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
+      <value>BR</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
+      <value>निचले दाएँ कोने की गोलाई</value>
+    </data>
+    <data name="OverlayDesignerFont" xml:space="preserve">
+      <value>फ़ॉन्ट</value>
+    </data>
+    <data name="OverlayDesignerFontSize" xml:space="preserve">
+      <value>फ़ॉन्ट आकार</value>
+    </data>
+    <data name="OverlayDesignerColour" xml:space="preserve">
+      <value>रंग</value>
+    </data>
+    <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
+      <value>शीर्षक का मौजूदा रंग</value>
+    </data>
+    <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
+      <value>शीर्षक के रंग का मान</value>
+    </data>
+    <data name="OverlayDesignerPick" xml:space="preserve">
+      <value>चुनें…</value>
+    </data>
+    <data name="OverlayDesignerChooseColour" xml:space="preserve">
+      <value>रंग चुनें</value>
+    </data>
+    <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
+      <value>शीर्षक का रंग चुनें</value>
+    </data>
+    <data name="OverlayDesignerColourHint" xml:space="preserve">
+      <value>कोई रंग चुनें, या White जैसा नाम या #FF5500 जैसा हेक्स मान लिखें।</value>
+    </data>
+    <data name="OverlayDesignerRotation" xml:space="preserve">
+      <value>घुमाव</value>
+    </data>
+    <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
+      <value>शीर्षक का घुमाव डिग्री में</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
+      <value>उन्नत कैनवास</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
+      <value>ये उस डिज़ाइन सतह को तय करते हैं जिस पर ओवरले बनता है। टेम्पलेट के मान पहले से सही हैं — इन्हें तभी बदलें जब आपको पक्का पता हो कि ज़रूरत है।</value>
+    </data>
+    <data name="OverlayDesignerDesignWidth" xml:space="preserve">
+      <value>डिज़ाइन चौड़ाई</value>
+    </data>
+    <data name="OverlayDesignerDesignHeight" xml:space="preserve">
+      <value>डिज़ाइन ऊँचाई</value>
+    </data>
+    <data name="OverlayDesignerRootMargin" xml:space="preserve">
+      <value>रूट मार्जिन</value>
+    </data>
+    <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
+      <value>बाएँ, ऊपर, दाएँ, नीचे। ऋणात्मक मान सतह को बढ़ा देते हैं।</value>
+    </data>
+    <data name="OverlayDesignerPreviewWith" xml:space="preserve">
+      <value>इसके साथ देखें:</value>
+    </data>
+    <data name="OverlayDesignerSamplePoster" xml:space="preserve">
+      <value>नमूना पोस्टर…</value>
+    </data>
+    <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
+      <value>नमूना रेटिंग मान</value>
+    </data>
+    <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
+      <value>नमूना शीर्षक टेक्स्ट</value>
+    </data>
+    <data name="OverlayDesignerMockup" xml:space="preserve">
+      <value>मॉकअप</value>
+    </data>
+    <data name="OverlayDesignerSeverityError" xml:space="preserve">
+      <value>त्रुटि</value>
+    </data>
+    <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
+      <value>चेतावनी</value>
+    </data>
+    <data name="OverlayDesignerShareHeading" xml:space="preserve">
+      <value>यह ओवरले साझा करें</value>
+    </data>
+    <data name="OverlayDesignerHideSteps" xml:space="preserve">
+      <value>ये चरण छिपाएँ</value>
+    </data>
+    <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
+      <value>सबमिशन के चरण छिपाएँ</value>
+    </data>
+    <data name="OverlayDesignerInstallLocally" xml:space="preserve">
+      <value>अपने लिए इंस्टॉल करें</value>
+    </data>
+    <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
+      <value>इस ओवरले को FoliCon में कॉपी करें ताकि आप अभी इस्तेमाल कर सकें</value>
+    </data>
+    <data name="OverlayDesignerOpenFolder" xml:space="preserve">
+      <value>फ़ोल्डर खोलें</value>
+    </data>
+    <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
+      <value>इसे कम्युनिटी स्टोर में भेजने के लिए:</value>
+    </data>
+    <data name="OverlayDesignerStep1Automation" xml:space="preserve">
+      <value>चरण 1 पूरा</value>
+    </data>
+    <data name="OverlayDesignerForkRepository" xml:space="preserve">
+      <value>रिपॉज़िटरी फ़ोर्क करें</value>
+    </data>
+    <data name="OverlayDesignerStep2Automation" xml:space="preserve">
+      <value>चरण 2 पूरा</value>
+    </data>
+    <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
+      <value>एक्सपोर्ट किए गए फ़ोल्डर को अपने फ़ोर्क में {0} पर कॉपी करें</value>
+    </data>
+    <data name="OverlayDesignerStep3Automation" xml:space="preserve">
+      <value>चरण 3 पूरा</value>
+    </data>
+    <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
+      <value>पुल रिक्वेस्ट खोलें</value>
+    </data>
+    <data name="OverlayDesignerExportPackage" xml:space="preserve">
+      <value>पैकेज एक्सपोर्ट करें…</value>
+    </data>
+    <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
+      <value>स्टोर के लिए तैयार फ़ोल्डर बनाएँ जिसे आप इंस्टॉल या सबमिट कर सकें</value>
+    </data>
+    <data name="OverlayDesignerSaveDraft" xml:space="preserve">
+      <value>ड्राफ़्ट सहेजें</value>
+    </data>
+    <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
+      <value>यह अधूरा काम सहेजें ताकि बाद में लौट सकें</value>
+    </data>
+    <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
+      <value>शीर्षक का रंग</value>
+    </data>
+    <data name="OverlayStoreLoadingPreview" xml:space="preserve">
+      <value>प्रीव्यू लोड हो रहा है...</value>
+    </data>
+    <data name="OverlayStoreInstall" xml:space="preserve">
+      <value>इंस्टॉल करें</value>
+    </data>
+    <data name="OverlayStoreUpdate" xml:space="preserve">
+      <value>अपडेट करें</value>
+    </data>
+    <data name="OverlayStoreRemove" xml:space="preserve">
+      <value>हटाएँ</value>
+    </data>
+    <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
+      <value>यह ओवरले हटाएँ (पुष्टि पूछी जाएगी)</value>
+    </data>
+    <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
+      <value>ओवरले खोजें...</value>
+    </data>
+    <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
+      <value>इंस्टॉल स्थिति के अनुसार फ़िल्टर करें</value>
+    </data>
+    <data name="OverlayStoreSortTooltip" xml:space="preserve">
+      <value>ओवरले क्रमबद्ध करें</value>
+    </data>
+    <data name="OverlayStoreSortNewest" xml:space="preserve">
+      <value>सबसे नया</value>
+    </data>
+    <data name="OverlayStoreSortNameAsc" xml:space="preserve">
+      <value>नाम (A-Z)</value>
+    </data>
+    <data name="OverlayStoreSortAuthor" xml:space="preserve">
+      <value>लेखक</value>
+    </data>
+    <data name="OverlayStoreRefresh" xml:space="preserve">
+      <value>रीफ़्रेश करें</value>
+    </data>
+    <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
+      <value>ओवरले कैटलॉग फिर से लोड करें</value>
+    </data>
+    <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
+      <value>टेम्पलेट से अपना ओवरले डिज़ाइन करें</value>
+    </data>
+    <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
+      <value>केवल {0} टैग वाले ओवरले दिखाएँ</value>
+    </data>
+    <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
+      <value>{0} टैग के अनुसार फ़िल्टर करें</value>
+    </data>
+    <data name="OverlayStoreClearTags" xml:space="preserve">
+      <value>टैग हटाएँ</value>
+    </data>
+    <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
+      <value>सभी टैग अचयनित करें</value>
+    </data>
+    <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
+      <value>कैटलॉग लोड हो रहा है...</value>
+    </data>
+    <data name="OverlayStoreDiscoverTab" xml:space="preserve">
+      <value>खोजें</value>
+    </data>
+    <data name="OverlayStoreUpdateAll" xml:space="preserve">
+      <value>सभी अपडेट करें</value>
+    </data>
+    <data name="OverlayRemoveTooltip" xml:space="preserve">
+      <value>यह ओवरले हटाएँ</value>
+    </data>
+    <data name="OverlayRemoveAutomation" xml:space="preserve">
+      <value>{0} हटाएँ</value>
+    </data>
+    <data name="OverlayBrowseStore" xml:space="preserve">
+      <value>ओवरले स्टोर देखें...</value>
+    </data>
+    <data name="OverlayImportLocal" xml:space="preserve">
+      <value>लोकल ओवरले इंपोर्ट करें...</value>
+    </data>
+    <data name="OverlayComingSoon" xml:space="preserve">
+      <value>किसी आगामी रिलीज़ में उपलब्ध होगा</value>
+    </data>
+    <data name="OverlayDesignerNothingSelected" xml:space="preserve">
+      <value>कुछ भी चयनित नहीं</value>
+    </data>
+    <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
+      <value>PNG इमेज चुनें</value>
+    </data>
+    <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
+      <value>PNG इमेज (*.png)|*.png</value>
+    </data>
+    <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
+      <value>ओवरले फ़ोल्डर के अंदर की ही इमेज चुनें ताकि पैकेज पूरी तरह स्वतंत्र रहे।</value>
+    </data>
+    <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
+      <value>नमूना पोस्टर चुनें</value>
+    </data>
+    <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
+      <value>इमेज (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg</value>
+    </data>
+    <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
+      <value>प्रीव्यू नहीं बन सका: {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
+      <value>ड्राफ़्ट {0} में सहेजा गया</value>
+    </data>
+    <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
+      <value>ड्राफ़्ट सहेजा नहीं जा सका: {0}</value>
+    </data>
+    <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
+      <value>चुनें कि ओवरले पैकेज कहाँ सहेजना है</value>
+    </data>
+    <data name="OverlayDesignerExporting" xml:space="preserve">
+      <value>एक्सपोर्ट हो रहा है…</value>
+    </data>
+    <data name="OverlayDesignerExportCancelled" xml:space="preserve">
+      <value>एक्सपोर्ट रद्द किया गया।</value>
+    </data>
+    <data name="OverlayDesignerExportFailed" xml:space="preserve">
+      <value>एक्सपोर्ट विफल रहा।</value>
+    </data>
+    <data name="OverlayDesignerExportedTo" xml:space="preserve">
+      <value>{0} में एक्सपोर्ट किया गया</value>
+    </data>
+    <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
+      <value>एक्सपोर्ट विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
+      <value>स्टोर में देखा जा रहा है कि यह नाम पहले से है या नहीं…</value>
+    </data>
+    <data name="OverlayDesignerInstallFailed" xml:space="preserve">
+      <value>इंस्टॉल विफल रहा।</value>
+    </data>
+    <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
+      <value>इंस्टॉल हो गया। «{0}» अब आपकी ओवरले सूची में उपलब्ध है।</value>
+    </data>
+    <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
+      <value>इंस्टॉल विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
+      <value>वहाँ «{0}» नाम का फ़ोल्डर पहले से मौजूद है। क्या इसे बदलना है?</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
+      <value>मौजूदा पैकेज बदलें</value>
+    </data>
+    <data name="OverlayDesignerNoIssues" xml:space="preserve">
+      <value>कोई समस्या नहीं</value>
+    </data>
+    <data name="OverlayDesignerWarningCount" xml:space="preserve">
+      <value>चेतावनियाँ: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorCount" xml:space="preserve">
+      <value>त्रुटियाँ: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
+      <value>त्रुटियाँ: {0}, चेतावनियाँ: {1}</value>
+    </data>
+    <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
+      <value>मेरा {0}</value>
+    </data>
+    <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
+      <value>{1} से «{0}» बनाया गया।</value>
+    </data>
+    <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
+      <value>टेम्पलेट से नहीं बनाया जा सका: {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
+      <value>overlay.json खोलें</value>
+    </data>
+    <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
+      <value>ओवरले परिभाषा (overlay.json)|overlay.json</value>
+    </data>
+    <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
+      <value>वह ओवरले नहीं खोला जा सका।</value>
+    </data>
+    <data name="OverlayDesignerOpened" xml:space="preserve">
+      <value>«{0}» खोला गया।</value>
+    </data>
+    <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
+      <value>«{0}» खोला गया। ठीक करने योग्य समस्याएँ: {1}</value>
+    </data>
+    <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
+      <value>वह पेज आपके ब्राउज़र में नहीं खुल सका।</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
+      <value>आपके बदलाव सहेजे नहीं गए हैं। क्या इन्हें छोड़ देना है? काम बचाने के लिए «ड्राफ़्ट सहेजें» या «पैकेज एक्सपोर्ट करें» का उपयोग करें।</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
+      <value>बदलाव छोड़ें</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
+      <value>ड्राफ़्ट «{0}» हटा दिया गया।</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
+      <value>ड्राफ़्ट हटाया नहीं जा सका: {0}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
+      <value>ड्राफ़्ट «{0}» हटाएँ? इसे वापस नहीं लाया जा सकता।</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
+      <value>ड्राफ़्ट हटाएँ</value>
+    </data>
+    <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
+      <value>{0}: {1}, {2}, {3} गुणा {4}</value>
+    </data>
+    <data name="OverlayStoreFilterAll" xml:space="preserve">
+      <value>सभी ओवरले</value>
+    </data>
+    <data name="OverlayStoreFilterInstalled" xml:space="preserve">
+      <value>इंस्टॉल किए गए</value>
+    </data>
+    <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
+      <value>इंस्टॉल नहीं किए गए</value>
+    </data>
+    <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
+      <value>अपडेट उपलब्ध</value>
+    </data>
+    <data name="OverlayStoreInstalledTab" xml:space="preserve">
+      <value>इंस्टॉल किए गए ({0})</value>
+    </data>
+    <data name="OverlayStoreUpdatesTab" xml:space="preserve">
+      <value>अपडेट ({0})</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
+      <value>अभी कोई ओवरले इंस्टॉल नहीं है</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
+      <value>सब कुछ अप टू डेट है</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
+      <value>कोई ओवरले नहीं मिला</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
+      <value>«खोजें» से कोई ओवरले इंस्टॉल करें, वह यहाँ दिखने लगेगा।</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
+      <value>आपके इंस्टॉल किए गए ओवरले यहाँ तब दिखेंगे जब उनका अपडेट आएगा।</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
+      <value>कोई दूसरी खोज, दूसरा टैग या दूसरा इंस्टॉल फ़िल्टर आज़माएँ।</value>
+    </data>
+    <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
+      <value>कैटलॉग रीफ़्रेश हो रहा है...</value>
+    </data>
+    <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
+      <value>उपलब्ध ओवरले: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
+      <value>कैटलॉग लोड नहीं हो सका: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
+      <value>कैटलॉग लोड करने में त्रुटि</value>
+    </data>
+    <data name="OverlayStoreVisibleCount" xml:space="preserve">
+      <value>दिखाए गए ओवरले: {0}</value>
+    </data>
+    <data name="OverlayStoreTotalCount" xml:space="preserve">
+      <value>ओवरले: {0}</value>
+    </data>
+    <data name="OverlayStoreInstalling" xml:space="preserve">
+      <value>{0} इंस्टॉल हो रहा है...</value>
+    </data>
+    <data name="OverlayStoreProgressFormat" xml:space="preserve">
+      <value>{0} ({1}%)</value>
+    </data>
+    <data name="OverlayStoreInstallingProgress" xml:space="preserve">
+      <value>{0} इंस्टॉल हो रहा है: {1} ({2}%)</value>
+    </data>
+    <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
+      <value>{0} सफलतापूर्वक इंस्टॉल हो गया</value>
+    </data>
+    <data name="OverlayStoreInstallFailed" xml:space="preserve">
+      <value>इंस्टॉल विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdating" xml:space="preserve">
+      <value>{0} अपडेट हो रहा है...</value>
+    </data>
+    <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
+      <value>{0} अपडेट हो रहा है: {1} ({2}%)</value>
+    </data>
+    <data name="OverlayStoreCardUpToDate" xml:space="preserve">
+      <value>{0} अप टू डेट है</value>
+    </data>
+    <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
+      <value>{0} सफलतापूर्वक अपडेट हो गया</value>
+    </data>
+    <data name="OverlayStoreUpdateFailed" xml:space="preserve">
+      <value>अपडेट विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayStoreRemoving" xml:space="preserve">
+      <value>{0} हटाया जा रहा है...</value>
+    </data>
+    <data name="OverlayStoreRemoved" xml:space="preserve">
+      <value>{0} हटा दिया गया</value>
+    </data>
+    <data name="OverlayStoreRemoveFailed" xml:space="preserve">
+      <value>हटाना विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
+      <value>{1} में से {0} अपडेट हो रहा है: {2}</value>
+    </data>
+    <data name="OverlayStoreAllUpToDate" xml:space="preserve">
+      <value>सभी ओवरले अप टू डेट हैं</value>
+    </data>
+    <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
+      <value>{0} हटाएँ? आप इसे बाद में फिर से इंस्टॉल कर सकते हैं।</value>
+    </data>
+    <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
+      <value>ओवरले हटाएँ</value>
+    </data>
+    <data name="OverlaySizeBytes" xml:space="preserve">
+      <value>{0} B</value>
+    </data>
+    <data name="OverlaySizeKilobytes" xml:space="preserve">
+      <value>{0:F1} KB</value>
+    </data>
+    <data name="OverlaySizeMegabytes" xml:space="preserve">
+      <value>{0:F1} MB</value>
+    </data>
+    <data name="OverlayStoreVersionShort" xml:space="preserve">
+      <value>v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusInstalled" xml:space="preserve">
+      <value>इंस्टॉल किया गया</value>
+    </data>
+    <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
+      <value>इंस्टॉल किया गया v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
+      <value>इंस्टॉल के लिए उपलब्ध</value>
+    </data>
+    <data name="OverlayRemoveFailedBody" xml:space="preserve">
+      <value>«{0}» हटाया नहीं जा सका।</value>
+    </data>
+    <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
+      <value>«{0}» हटाएँ? इसकी फ़ाइलें आपके ओवरले फ़ोल्डर से मिट जाएँगी।</value>
+    </data>
+    <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
+      <value>ओवरले «{0}» को स्कीमा v{1} चाहिए, जबकि ऐप v{2} तक समर्थन करता है। इसे छोड़ा जा रहा है।</value>
+    </data>
+    <data name="OverlayValidationIdRequired" xml:space="preserve">
+      <value>ओवरले का 'id' आवश्यक है।</value>
+    </data>
+    <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
+      <value>'id' «{0}» में अमान्य वर्ण हैं। केवल छोटे अंग्रेज़ी अक्षर, अंक और हाइफ़न उपयोग करें।</value>
+    </data>
+    <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
+      <value>ओवरले का 'displayName' आवश्यक है।</value>
+    </data>
+    <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
+      <value>'author' खाली है। स्टोर में भेजे जाने वाले ओवरले में लेखक का नाम होना चाहिए।</value>
+    </data>
+    <data name="OverlayValidationVersionInvalid" xml:space="preserve">
+      <value>'overlayVersion' का मान «{0}» मान्य संस्करण नहीं है (जैसे '1.0.0')।</value>
+    </data>
+    <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
+      <value>rating.fontSize 0 से बड़ा होना चाहिए (अभी {0} है)।</value>
+    </data>
+    <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
+      <value>layerOrder में अज्ञात लेयर «{0}» है। मान्य मान: {1}।</value>
+    </data>
+    <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
+      <value>layerOrder में «{0}» एक से अधिक बार है।</value>
+    </data>
+    <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
+      <value>layerOrder में 'poster' नहीं है; मीडिया पोस्टर नहीं बनेगा।</value>
+    </data>
+    <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
+      <value>लेयर परिभाषित होने पर {0}.imagePath आवश्यक है।</value>
+    </data>
+    <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
+      <value>{0} «{1}» ओवरले फ़ोल्डर के अंदर का सापेक्ष पथ होना चाहिए (न पूर्ण पथ, न '..')।</value>
+    </data>
+    <data name="OverlayValidationAssetNotPng" xml:space="preserve">
+      <value>{0} «{1}» PNG फ़ाइल होनी चाहिए।</value>
+    </data>
+    <data name="OverlayValidationAssetNotFound" xml:space="preserve">
+      <value>{0} «{1}» फ़ाइल नहीं मिली।</value>
+    </data>
+    <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
+      <value>फ़ाइलें «{0}» और «{1}» केवल अक्षरों के छोटे-बड़े होने में भिन्न हैं और केस-सेंसिटिव फ़ाइल सिस्टम पर टकराएँगी।</value>
+    </data>
+    <data name="OverlayValidationImageTooLarge" xml:space="preserve">
+      <value>{0} इमेज «{1}» अधिकतम आकार से बड़ी है ({2:F1} MB &gt; {3:F0} MB)।</value>
+    </data>
+    <data name="OverlayValidationMarginInvalid" xml:space="preserve">
+      <value>{0} «{1}» मान्य Thickness मान नहीं है। 1 से 4 संख्याएँ अपेक्षित हैं।</value>
+    </data>
+    <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
+      <value>{0} में गैर-संख्यात्मक मान «{1}» है।</value>
+    </data>
+    <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
+      <value>{0} का मान {1:0.##} कैनवास से काफ़ी बाहर है और शायद कुछ भी न दिखे।</value>
+    </data>
+    <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
+      <value>title.rotationOrigin «{0}» ठीक 2 मानों के साथ 'x,y' रूप में होना चाहिए।</value>
+    </data>
+    <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
+      <value>title.rotationOrigin का मान «{0}» 0.0 और 1.0 के बीच होना चाहिए।</value>
+    </data>
+    <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
+      <value>ओवरले फ़ोल्डर अधिकतम कुल आकार से बड़ा है ({0:F1} MB &gt; {1:F0} MB)।</value>
+    </data>
+    <data name="OverlaySubmissionIdRequired" xml:space="preserve">
+      <value>सबमिट करने से पहले ओवरले को एक ID चाहिए।</value>
+    </data>
+    <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
+      <value>«{0}» अभी स्टोर में नहीं है — यह एक नया ओवरले होगा।</value>
+    </data>
+    <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
+      <value>«{0}» स्टोर में v{1} पर पहले से है। v{2} भेजने पर वह अपडेट हो जाएगा।</value>
+    </data>
+    <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
+      <value>«{0}» स्टोर में v{1} पर पहले से है। भेजने से पहले संस्करण उससे ऊपर बढ़ाएँ।</value>
+    </data>
+    <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
+      <value>नाम की जाँच के लिए स्टोर से संपर्क नहीं हो सका। फिर भी आप सबमिट कर सकते हैं।</value>
+    </data>
+    <data name="OverlayExportIdRequired" xml:space="preserve">
+      <value>एक्सपोर्ट करने से पहले ओवरले को एक ID चाहिए।</value>
+    </data>
+    <data name="OverlayExportFolderExists" xml:space="preserve">
+      <value>यहाँ «{0}» नाम का फ़ोल्डर पहले से है। दूसरी जगह चुनें या उसे बदलने की अनुमति दें।</value>
+    </data>
+    <data name="OverlayExportBlockedByValidation" xml:space="preserve">
+      <value>एक्सपोर्ट से पहले बताई गई समस्याएँ ठीक करें। ठीक करने योग्य समस्याएँ: {0}</value>
+    </data>
+    <data name="OverlayExportFailed" xml:space="preserve">
+      <value>एक्सपोर्ट विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
+      <value>«{0}» में {1} नहीं है।</value>
+    </data>
+    <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
+      <value>«{0}» एक बिल्ट-इन ओवरले ID है, इस पर इंस्टॉल नहीं किया जा सकता।</value>
+    </data>
+    <data name="OverlayExportInstallFailed" xml:space="preserve">
+      <value>इंस्टॉल विफल रहा: {0}</value>
+    </data>
+    <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
+      <value>कोई ओवरले नहीं बताया गया।</value>
+    </data>
+    <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
+      <value>«{0}» एक बिल्ट-इन ओवरले है और इसे हटाया नहीं जा सकता।</value>
+    </data>
+    <data name="OverlayExportNotInstalled" xml:space="preserve">
+      <value>«{0}» इंस्टॉल नहीं है।</value>
+    </data>
+    <data name="OverlayExportRemoveFailed" xml:space="preserve">
+      <value>«{0}» हटाया नहीं जा सका: {1}</value>
+    </data>
+    <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
+      <value>इस ओवरले की प्रीव्यू इमेज नहीं बन सकी।</value>
+    </data>
+    <data name="OverlayLoadFileNotFound" xml:space="preserve">
+      <value>ओवरले फ़ाइल नहीं मिली: {0}</value>
+    </data>
+    <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
+      <value>«{0}» के लिए ओवरले फ़ोल्डर तय नहीं हो सका।</value>
+    </data>
+    <data name="OverlayLoadInvalidJson" xml:space="preserve">
+      <value>«{0}» मान्य JSON नहीं है: {1}</value>
+    </data>
+    <data name="OverlayLoadUnreadable" xml:space="preserve">
+      <value>«{0}» पढ़ा नहीं जा सका: {1}</value>
+    </data>
+    <data name="OverlayLoadNoDefinition" xml:space="preserve">
+      <value>«{0}» में कोई ओवरले परिभाषा नहीं थी।</value>
+    </data>
+    <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
+      <value>इस ओवरले को स्कीमा v{0} चाहिए, जबकि FoliCon का यह संस्करण v{1} तक समर्थन करता है। इसे संपादित करने के लिए FoliCon अपडेट करें।</value>
+    </data>
+    <data name="OverlayDraftIdRequired" xml:space="preserve">
+      <value>ड्राफ़्ट के रूप में सहेजने से पहले ओवरले को एक ID चाहिए।</value>
+    </data>
+    <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
+      <value>बिल्ट-इन ओवरले</value>
+    </data>
+    <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
+      <value>इंस्टॉल किया गया ओवरले</value>
+    </data>
+    <data name="OverlayTemplateIdInUse" xml:space="preserve">
+      <value>ओवरले ID «{0}» पहले से किसी बिल्ट-इन या इंस्टॉल किए गए ओवरले द्वारा उपयोग में है।</value>
+    </data>
+    <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
+      <value>मैनिफ़ेस्ट लाया जा रहा है...</value>
+    </data>
+    <data name="OverlayInstallProgressValidating" xml:space="preserve">
+      <value>जाँच हो रही है...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalling" xml:space="preserve">
+      <value>इंस्टॉल हो रहा है...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalled" xml:space="preserve">
+      <value>इंस्टॉल हो गया।</value>
+    </data>
+    <data name="OverlayInstallProgressDownloading" xml:space="preserve">
+      <value>{0} डाउनलोड हो रहा है...</value>
+    </data>
+    <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
+      <value>मौजूदा संस्करण का बैकअप लिया जा रहा है...</value>
+    </data>
+    <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
+      <value>«{0}» का मैनिफ़ेस्ट पढ़ा नहीं जा सका</value>
+    </data>
+    <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
+      <value>«{0}» इंस्टॉल नहीं किया जा सकता: यह एक बिल्ट-इन ओवरले है।</value>
+    </data>
+    <data name="OverlayInstallDownloadFailed" xml:space="preserve">
+      <value>ओवरले «{0}» की फ़ाइलें डाउनलोड नहीं हो सकीं: {1}</value>
+    </data>
+    <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
+      <value>फ़ाइल «{0}» {1} MB की सीमा से बड़ी है।</value>
+    </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>overlay.json बहुत बड़ा है।</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>फ़ाइल आकार सीमा पार हो गई।</value>
+    </data>
+    <data name="OverlayInstallHashMismatch" xml:space="preserve">
+      <value>«{0}» की सत्यनिष्ठा जाँच विफल रही: डाउनलोड की गई फ़ाइल प्रकाशित चेकसम से मेल नहीं खाती।</value>
+    </data>
+    <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
+      <value>overlay.json में कोई ओवरले परिभाषा नहीं थी।</value>
+    </data>
+    <data name="OverlayInstallValidationFailed" xml:space="preserve">
+      <value>जाँच विफल रही: {0}</value>
+    </data>
+    <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
+      <value>ओवरले «{0}» कैटलॉग में नहीं मिला।</value>
+    </data>
+    <data name="OverlayUpdateFailed" xml:space="preserve">
+      <value>मैनिफ़ेस्ट से ओवरले «{0}» अपडेट नहीं हो सका: {1}</value>
     </data>
 </root>

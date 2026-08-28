@@ -626,6 +626,12 @@
   <data name="Overlay" xml:space="preserve">
       <value>Оверлей</value>
     </data>
+  <data name="OverlayStore" xml:space="preserve">
+      <value>Магазин наложений</value>
+    </data>
+  <data name="OverlayDesigner" xml:space="preserve">
+      <value>Создать наложение</value>
+    </data>
   <data name="Previewer" xml:space="preserve">
       <value>Предпросмотр</value>
     </data>
@@ -910,5 +916,878 @@
     </data>
   <data name="MaxDepthTooltip" xml:space="preserve">
       <value>Максимальная глубина обработки подпапок. 0 = без ограничений (обрабатывать все уровни).</value>
+    </data>
+    <data name="OverlayDesignerTitle" xml:space="preserve">
+      <value>Редактор наложений</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
+      <value>Шаблоны</value>
+    </data>
+    <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
+      <value>Вернуться к списку шаблонов и начать другое наложение</value>
+    </data>
+    <data name="OverlayDesignerOpen" xml:space="preserve">
+      <value>Открыть…</value>
+    </data>
+    <data name="OverlayDesignerOpenHelp" xml:space="preserve">
+      <value>Открыть существующий overlay.json для редактирования</value>
+    </data>
+    <data name="OverlayDesignerUndoHelp" xml:space="preserve">
+      <value>Отменить последнее изменение (Ctrl+Z)</value>
+    </data>
+    <data name="OverlayDesignerRedo" xml:space="preserve">
+      <value>Вернуть</value>
+    </data>
+    <data name="OverlayDesignerRedoHelp" xml:space="preserve">
+      <value>Вернуть отменённое изменение (Ctrl+Y)</value>
+    </data>
+    <data name="OverlayDesignerZoom" xml:space="preserve">
+      <value>Масштаб</value>
+    </data>
+    <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
+      <value>Открыть руководство по созданию наложений (F1)</value>
+    </data>
+    <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
+      <value>Есть несохранённые правки</value>
+    </data>
+    <data name="OverlayDesignerStartNew" xml:space="preserve">
+      <value>Создать наложение</value>
+    </data>
+    <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
+      <value>Выберите шаблон для копирования. Его расположение элементов и изображения станут отправной точкой: меняйте что угодно, а затем экспортируйте пакет, готовый к установке или публикации.</value>
+    </data>
+    <data name="OverlayDesignerRendering" xml:space="preserve">
+      <value>Отрисовка…</value>
+    </data>
+    <data name="OverlayDesignerUseTemplate" xml:space="preserve">
+      <value>Взять этот шаблон</value>
+    </data>
+    <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
+      <value>Взять «{0}» за основу</value>
+    </data>
+    <data name="OverlayDesignerContinueDraft" xml:space="preserve">
+      <value>Продолжить черновик</value>
+    </data>
+    <data name="OverlayDesignerDraftsHint" xml:space="preserve">
+      <value>Работа, сохранённая ранее. Черновик откроется ровно там, где вы остановились.</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
+      <value>Сохранено {0:g}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
+      <value>Удалить</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
+      <value>Удалить черновик «{0}»</value>
+    </data>
+    <data name="OverlayDesignerResumeDraft" xml:space="preserve">
+      <value>Продолжить</value>
+    </data>
+    <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
+      <value>Продолжить черновик «{0}»</value>
+    </data>
+    <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
+      <value>Уже есть папка с наложением? Нажмите «Открыть…» на панели инструментов.</value>
+    </data>
+    <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
+      <value>Закрыть редактор</value>
+    </data>
+    <data name="OverlayDesignerElements" xml:space="preserve">
+      <value>Элементы</value>
+    </data>
+    <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
+      <value>Рисуются сверху вниз: первый оказывается на заднем плане.</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
+      <value>Переместить назад</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
+      <value>Переместить выбранный слой назад</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
+      <value>Переместить вперёд</value>
+    </data>
+    <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
+      <value>Переместить выбранный слой вперёд</value>
+    </data>
+    <data name="OverlayDesignerShow" xml:space="preserve">
+      <value>Показывать</value>
+    </data>
+    <data name="OverlayLayerBase" xml:space="preserve">
+      <value>Фоновый слой</value>
+    </data>
+    <data name="OverlayLayerFront" xml:space="preserve">
+      <value>Передний слой</value>
+    </data>
+    <data name="OverlayLayerTitleText" xml:space="preserve">
+      <value>Текст заголовка</value>
+    </data>
+    <data name="OverlayLayerRatingBadge" xml:space="preserve">
+      <value>Значок рейтинга</value>
+    </data>
+    <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
+      <value>Холст предпросмотра наложения</value>
+    </data>
+    <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
+      <value>Готовый предпросмотр наложения</value>
+    </data>
+    <data name="OverlayDesignerGeometryHint" xml:space="preserve">
+      <value>Положение и размер в пикселях. Стрелки сдвигают на 1 px, Shift+стрелка — на 10 px.</value>
+    </data>
+    <data name="OverlayDesignerAxisX" xml:space="preserve">
+      <value>X</value>
+    </data>
+    <data name="OverlayDesignerLeftPosition" xml:space="preserve">
+      <value>Отступ слева</value>
+    </data>
+    <data name="OverlayDesignerAxisY" xml:space="preserve">
+      <value>Y</value>
+    </data>
+    <data name="OverlayDesignerTopPosition" xml:space="preserve">
+      <value>Отступ сверху</value>
+    </data>
+    <data name="OverlayDesignerWidthShort" xml:space="preserve">
+      <value>Ш</value>
+    </data>
+    <data name="OverlayDesignerWidth" xml:space="preserve">
+      <value>Ширина</value>
+    </data>
+    <data name="OverlayDesignerHeightShort" xml:space="preserve">
+      <value>В</value>
+    </data>
+    <data name="OverlayDesignerHeight" xml:space="preserve">
+      <value>Высота</value>
+    </data>
+    <data name="OverlayDesignerMetadata" xml:space="preserve">
+      <value>Метаданные</value>
+    </data>
+    <data name="OverlayDesignerName" xml:space="preserve">
+      <value>Название</value>
+    </data>
+    <data name="OverlayDesignerId" xml:space="preserve">
+      <value>ID</value>
+    </data>
+    <data name="OverlayDesignerIdHint" xml:space="preserve">
+      <value>Только строчные буквы, цифры и дефисы. Должен быть уникальным.</value>
+    </data>
+    <data name="OverlayDesignerAuthor" xml:space="preserve">
+      <value>Автор</value>
+    </data>
+    <data name="OverlayDesignerVersion" xml:space="preserve">
+      <value>Версия</value>
+    </data>
+    <data name="OverlayDesignerDescription" xml:space="preserve">
+      <value>Описание</value>
+    </data>
+    <data name="OverlayTags" xml:space="preserve">
+      <value>Теги</value>
+    </data>
+    <data name="OverlayDesignerTagsHint" xml:space="preserve">
+      <value>Через запятую.</value>
+    </data>
+    <data name="OverlayDesignerLayerImages" xml:space="preserve">
+      <value>Изображения слоёв</value>
+    </data>
+    <data name="OverlayDesignerBaseImage" xml:space="preserve">
+      <value>Фоновое изображение</value>
+    </data>
+    <data name="OverlayDesignerBrowse" xml:space="preserve">
+      <value>Обзор…</value>
+    </data>
+    <data name="OverlayDesignerClear" xml:space="preserve">
+      <value>Убрать</value>
+    </data>
+    <data name="OverlayDesignerFrontImage" xml:space="preserve">
+      <value>Переднее изображение</value>
+    </data>
+    <data name="OverlayDesignerOpacityMask" xml:space="preserve">
+      <value>Маска прозрачности</value>
+    </data>
+    <data name="OverlayDesignerCornerRadius" xml:space="preserve">
+      <value>Скругление углов</value>
+    </data>
+    <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
+      <value>0 — прямые углы. Задайте каждый угол отдельно, если нужна несимметричная форма.</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
+      <value>ВЛ</value>
+    </data>
+    <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
+      <value>Скругление верхнего левого угла</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
+      <value>ВП</value>
+    </data>
+    <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
+      <value>Скругление верхнего правого угла</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
+      <value>НЛ</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
+      <value>Скругление нижнего левого угла</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
+      <value>НП</value>
+    </data>
+    <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
+      <value>Скругление нижнего правого угла</value>
+    </data>
+    <data name="OverlayDesignerFont" xml:space="preserve">
+      <value>Шрифт</value>
+    </data>
+    <data name="OverlayDesignerFontSize" xml:space="preserve">
+      <value>Размер шрифта</value>
+    </data>
+    <data name="OverlayDesignerColour" xml:space="preserve">
+      <value>Цвет</value>
+    </data>
+    <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
+      <value>Текущий цвет заголовка</value>
+    </data>
+    <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
+      <value>Значение цвета заголовка</value>
+    </data>
+    <data name="OverlayDesignerPick" xml:space="preserve">
+      <value>Выбрать…</value>
+    </data>
+    <data name="OverlayDesignerChooseColour" xml:space="preserve">
+      <value>Выбрать цвет</value>
+    </data>
+    <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
+      <value>Выбрать цвет заголовка</value>
+    </data>
+    <data name="OverlayDesignerColourHint" xml:space="preserve">
+      <value>Выберите цвет или введите название вроде White либо HEX-значение вроде #FF5500.</value>
+    </data>
+    <data name="OverlayDesignerRotation" xml:space="preserve">
+      <value>Поворот</value>
+    </data>
+    <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
+      <value>Поворот заголовка в градусах</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
+      <value>Расширенные настройки холста</value>
+    </data>
+    <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
+      <value>Задают рабочую поверхность, на которой собирается наложение. Значения из шаблона уже верны — меняйте их, только если точно знаете зачем.</value>
+    </data>
+    <data name="OverlayDesignerDesignWidth" xml:space="preserve">
+      <value>Ширина макета</value>
+    </data>
+    <data name="OverlayDesignerDesignHeight" xml:space="preserve">
+      <value>Высота макета</value>
+    </data>
+    <data name="OverlayDesignerRootMargin" xml:space="preserve">
+      <value>Внешний отступ</value>
+    </data>
+    <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
+      <value>слева, сверху, справа, снизу. Отрицательные значения расширяют поверхность.</value>
+    </data>
+    <data name="OverlayDesignerPreviewWith" xml:space="preserve">
+      <value>Проверить на:</value>
+    </data>
+    <data name="OverlayDesignerSamplePoster" xml:space="preserve">
+      <value>Тестовый плакат…</value>
+    </data>
+    <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
+      <value>Тестовое значение рейтинга</value>
+    </data>
+    <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
+      <value>Тестовый текст заголовка</value>
+    </data>
+    <data name="OverlayDesignerMockup" xml:space="preserve">
+      <value>Макет</value>
+    </data>
+    <data name="OverlayDesignerSeverityError" xml:space="preserve">
+      <value>Ошибка</value>
+    </data>
+    <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
+      <value>Замечание</value>
+    </data>
+    <data name="OverlayDesignerShareHeading" xml:space="preserve">
+      <value>Поделитесь этим наложением</value>
+    </data>
+    <data name="OverlayDesignerHideSteps" xml:space="preserve">
+      <value>Скрыть эти шаги</value>
+    </data>
+    <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
+      <value>Скрыть шаги публикации</value>
+    </data>
+    <data name="OverlayDesignerInstallLocally" xml:space="preserve">
+      <value>Установить себе</value>
+    </data>
+    <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
+      <value>Скопировать наложение в FoliCon, чтобы пользоваться им прямо сейчас</value>
+    </data>
+    <data name="OverlayDesignerOpenFolder" xml:space="preserve">
+      <value>Открыть папку</value>
+    </data>
+    <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
+      <value>Чтобы отправить его в магазин сообщества:</value>
+    </data>
+    <data name="OverlayDesignerStep1Automation" xml:space="preserve">
+      <value>Шаг 1 выполнен</value>
+    </data>
+    <data name="OverlayDesignerForkRepository" xml:space="preserve">
+      <value>Сделать форк репозитория</value>
+    </data>
+    <data name="OverlayDesignerStep2Automation" xml:space="preserve">
+      <value>Шаг 2 выполнен</value>
+    </data>
+    <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
+      <value>Скопируйте экспортированную папку в {0} в своём форке</value>
+    </data>
+    <data name="OverlayDesignerStep3Automation" xml:space="preserve">
+      <value>Шаг 3 выполнен</value>
+    </data>
+    <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
+      <value>Открыть пул-реквест</value>
+    </data>
+    <data name="OverlayDesignerExportPackage" xml:space="preserve">
+      <value>Экспортировать пакет…</value>
+    </data>
+    <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
+      <value>Собрать готовую для магазина папку, которую можно установить или отправить</value>
+    </data>
+    <data name="OverlayDesignerSaveDraft" xml:space="preserve">
+      <value>Сохранить черновик</value>
+    </data>
+    <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
+      <value>Сохранить незавершённую работу, чтобы вернуться к ней позже</value>
+    </data>
+    <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
+      <value>Цвет заголовка</value>
+    </data>
+    <data name="OverlayStoreLoadingPreview" xml:space="preserve">
+      <value>Загрузка предпросмотра...</value>
+    </data>
+    <data name="OverlayStoreInstall" xml:space="preserve">
+      <value>Установить</value>
+    </data>
+    <data name="OverlayStoreUpdate" xml:space="preserve">
+      <value>Обновить</value>
+    </data>
+    <data name="OverlayStoreRemove" xml:space="preserve">
+      <value>Удалить</value>
+    </data>
+    <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
+      <value>Удалить это наложение (с подтверждением)</value>
+    </data>
+    <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
+      <value>Поиск наложений...</value>
+    </data>
+    <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
+      <value>Фильтр по состоянию установки</value>
+    </data>
+    <data name="OverlayStoreSortTooltip" xml:space="preserve">
+      <value>Сортировка наложений</value>
+    </data>
+    <data name="OverlayStoreSortNewest" xml:space="preserve">
+      <value>Сначала новые</value>
+    </data>
+    <data name="OverlayStoreSortNameAsc" xml:space="preserve">
+      <value>Название (А-Я)</value>
+    </data>
+    <data name="OverlayStoreSortAuthor" xml:space="preserve">
+      <value>Автор</value>
+    </data>
+    <data name="OverlayStoreRefresh" xml:space="preserve">
+      <value>Обновить</value>
+    </data>
+    <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
+      <value>Перезагрузить каталог наложений</value>
+    </data>
+    <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
+      <value>Создайте своё наложение на основе шаблона</value>
+    </data>
+    <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
+      <value>Показывать только наложения с тегом «{0}»</value>
+    </data>
+    <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
+      <value>Фильтр по тегу «{0}»</value>
+    </data>
+    <data name="OverlayStoreClearTags" xml:space="preserve">
+      <value>Сбросить теги</value>
+    </data>
+    <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
+      <value>Снять выделение со всех тегов</value>
+    </data>
+    <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
+      <value>Загрузка каталога...</value>
+    </data>
+    <data name="OverlayStoreDiscoverTab" xml:space="preserve">
+      <value>Обзор</value>
+    </data>
+    <data name="OverlayStoreUpdateAll" xml:space="preserve">
+      <value>Обновить все</value>
+    </data>
+    <data name="OverlayRemoveTooltip" xml:space="preserve">
+      <value>Удалить это наложение</value>
+    </data>
+    <data name="OverlayRemoveAutomation" xml:space="preserve">
+      <value>Удалить «{0}»</value>
+    </data>
+    <data name="OverlayBrowseStore" xml:space="preserve">
+      <value>Открыть магазин...</value>
+    </data>
+    <data name="OverlayImportLocal" xml:space="preserve">
+      <value>Импортировать наложение...</value>
+    </data>
+    <data name="OverlayComingSoon" xml:space="preserve">
+      <value>Появится в одном из следующих выпусков</value>
+    </data>
+    <data name="OverlayDesignerNothingSelected" xml:space="preserve">
+      <value>Ничего не выбрано</value>
+    </data>
+    <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
+      <value>Выберите PNG-изображение</value>
+    </data>
+    <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
+      <value>Изображения PNG (*.png)|*.png</value>
+    </data>
+    <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
+      <value>Выберите изображение внутри папки наложения, чтобы пакет остался самодостаточным.</value>
+    </data>
+    <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
+      <value>Выберите тестовый плакат</value>
+    </data>
+    <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
+      <value>Изображения (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg</value>
+    </data>
+    <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
+      <value>Не удалось построить предпросмотр: {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
+      <value>Черновик сохранён в {0}</value>
+    </data>
+    <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
+      <value>Не удалось сохранить черновик: {0}</value>
+    </data>
+    <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
+      <value>Выберите, куда сохранить пакет наложения</value>
+    </data>
+    <data name="OverlayDesignerExporting" xml:space="preserve">
+      <value>Экспорт…</value>
+    </data>
+    <data name="OverlayDesignerExportCancelled" xml:space="preserve">
+      <value>Экспорт отменён.</value>
+    </data>
+    <data name="OverlayDesignerExportFailed" xml:space="preserve">
+      <value>Не удалось выполнить экспорт.</value>
+    </data>
+    <data name="OverlayDesignerExportedTo" xml:space="preserve">
+      <value>Экспортировано в {0}</value>
+    </data>
+    <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
+      <value>Не удалось выполнить экспорт: {0}</value>
+    </data>
+    <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
+      <value>Проверяем в магазине, не занято ли имя…</value>
+    </data>
+    <data name="OverlayDesignerInstallFailed" xml:space="preserve">
+      <value>Не удалось установить.</value>
+    </data>
+    <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
+      <value>Установлено. «{0}» теперь есть в вашем списке наложений.</value>
+    </data>
+    <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
+      <value>Не удалось установить: {0}</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
+      <value>Там уже есть папка «{0}». Заменить её?</value>
+    </data>
+    <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
+      <value>Замена существующего пакета</value>
+    </data>
+    <data name="OverlayDesignerNoIssues" xml:space="preserve">
+      <value>Замечаний нет</value>
+    </data>
+    <data name="OverlayDesignerWarningCount" xml:space="preserve">
+      <value>Замечания: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorCount" xml:space="preserve">
+      <value>Ошибки: {0}</value>
+    </data>
+    <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
+      <value>Ошибки: {0}, замечания: {1}</value>
+    </data>
+    <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
+      <value>Моя копия «{0}»</value>
+    </data>
+    <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
+      <value>Создано «{0}» на основе «{1}».</value>
+    </data>
+    <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
+      <value>Не удалось создать из шаблона: {0}</value>
+    </data>
+    <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
+      <value>Открыть overlay.json</value>
+    </data>
+    <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
+      <value>Описание наложения (overlay.json)|overlay.json</value>
+    </data>
+    <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
+      <value>Не удалось открыть это наложение.</value>
+    </data>
+    <data name="OverlayDesignerOpened" xml:space="preserve">
+      <value>Открыто «{0}».</value>
+    </data>
+    <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
+      <value>Открыто «{0}». Нужно исправить: {1}</value>
+    </data>
+    <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
+      <value>Не удалось открыть эту страницу в браузере.</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
+      <value>Есть несохранённые правки. Отменить их? Чтобы сохранить работу, нажмите «Сохранить черновик» или «Экспортировать пакет».</value>
+    </data>
+    <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
+      <value>Отмена правок</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
+      <value>Черновик «{0}» удалён.</value>
+    </data>
+    <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
+      <value>Не удалось удалить черновик: {0}</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
+      <value>Удалить черновик «{0}»? Это действие необратимо.</value>
+    </data>
+    <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
+      <value>Удаление черновика</value>
+    </data>
+    <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
+      <value>{0}: {1}, {2}, {3} на {4}</value>
+    </data>
+    <data name="OverlayStoreFilterAll" xml:space="preserve">
+      <value>Все наложения</value>
+    </data>
+    <data name="OverlayStoreFilterInstalled" xml:space="preserve">
+      <value>Установленные</value>
+    </data>
+    <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
+      <value>Не установленные</value>
+    </data>
+    <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
+      <value>Есть обновление</value>
+    </data>
+    <data name="OverlayStoreInstalledTab" xml:space="preserve">
+      <value>Установленные ({0})</value>
+    </data>
+    <data name="OverlayStoreUpdatesTab" xml:space="preserve">
+      <value>Обновления ({0})</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
+      <value>Установленных наложений пока нет</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
+      <value>Всё актуально</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
+      <value>Наложения не найдены</value>
+    </data>
+    <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
+      <value>Установите наложение в разделе «Обзор», и оно появится здесь.</value>
+    </data>
+    <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
+      <value>Установленные наложения появятся здесь, когда выйдет обновление.</value>
+    </data>
+    <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
+      <value>Попробуйте другой запрос, другой тег или другой фильтр установки.</value>
+    </data>
+    <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
+      <value>Обновление каталога...</value>
+    </data>
+    <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
+      <value>Доступно наложений: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
+      <value>Не удалось загрузить каталог: {0}</value>
+    </data>
+    <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
+      <value>Ошибка загрузки каталога</value>
+    </data>
+    <data name="OverlayStoreVisibleCount" xml:space="preserve">
+      <value>Показано наложений: {0}</value>
+    </data>
+    <data name="OverlayStoreTotalCount" xml:space="preserve">
+      <value>Наложений: {0}</value>
+    </data>
+    <data name="OverlayStoreInstalling" xml:space="preserve">
+      <value>Установка «{0}»...</value>
+    </data>
+    <data name="OverlayStoreProgressFormat" xml:space="preserve">
+      <value>{0} ({1} %)</value>
+    </data>
+    <data name="OverlayStoreInstallingProgress" xml:space="preserve">
+      <value>Установка «{0}»: {1} ({2} %)</value>
+    </data>
+    <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
+      <value>«{0}» успешно установлено</value>
+    </data>
+    <data name="OverlayStoreInstallFailed" xml:space="preserve">
+      <value>Не удалось установить: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdating" xml:space="preserve">
+      <value>Обновление «{0}»...</value>
+    </data>
+    <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
+      <value>Обновление «{0}»: {1} ({2} %)</value>
+    </data>
+    <data name="OverlayStoreCardUpToDate" xml:space="preserve">
+      <value>«{0}» актуально</value>
+    </data>
+    <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
+      <value>«{0}» успешно обновлено</value>
+    </data>
+    <data name="OverlayStoreUpdateFailed" xml:space="preserve">
+      <value>Не удалось обновить: {0}</value>
+    </data>
+    <data name="OverlayStoreRemoving" xml:space="preserve">
+      <value>Удаление «{0}»...</value>
+    </data>
+    <data name="OverlayStoreRemoved" xml:space="preserve">
+      <value>«{0}» удалено</value>
+    </data>
+    <data name="OverlayStoreRemoveFailed" xml:space="preserve">
+      <value>Не удалось удалить: {0}</value>
+    </data>
+    <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
+      <value>Обновление {0} из {1}: {2}</value>
+    </data>
+    <data name="OverlayStoreAllUpToDate" xml:space="preserve">
+      <value>Все наложения актуальны</value>
+    </data>
+    <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
+      <value>Удалить «{0}»? Вы сможете установить его снова в любой момент.</value>
+    </data>
+    <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
+      <value>Удаление наложения</value>
+    </data>
+    <data name="OverlaySizeBytes" xml:space="preserve">
+      <value>{0} Б</value>
+    </data>
+    <data name="OverlaySizeKilobytes" xml:space="preserve">
+      <value>{0:F1} КБ</value>
+    </data>
+    <data name="OverlaySizeMegabytes" xml:space="preserve">
+      <value>{0:F1} МБ</value>
+    </data>
+    <data name="OverlayStoreVersionShort" xml:space="preserve">
+      <value>v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusInstalled" xml:space="preserve">
+      <value>Установлено</value>
+    </data>
+    <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
+      <value>Установлено v{0}</value>
+    </data>
+    <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
+      <value>Можно установить</value>
+    </data>
+    <data name="OverlayRemoveFailedBody" xml:space="preserve">
+      <value>Не удалось удалить «{0}».</value>
+    </data>
+    <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
+      <value>Удалить «{0}»? Его файлы будут стёрты из вашей папки наложений.</value>
+    </data>
+    <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
+      <value>Наложению «{0}» нужна схема v{1}, а приложение поддерживает v{2}. Оно будет пропущено.</value>
+    </data>
+    <data name="OverlayValidationIdRequired" xml:space="preserve">
+      <value>Не заполнено поле 'id' наложения.</value>
+    </data>
+    <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
+      <value>Значение 'id' «{0}» содержит недопустимые символы. Используйте строчные латинские буквы, цифры и дефисы.</value>
+    </data>
+    <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
+      <value>Не заполнено поле 'displayName' наложения.</value>
+    </data>
+    <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
+      <value>Поле 'author' пустое. В заявках в магазин нужно указывать автора.</value>
+    </data>
+    <data name="OverlayValidationVersionInvalid" xml:space="preserve">
+      <value>Значение «{0}» поля 'overlayVersion' не является корректной версией (например, '1.0.0').</value>
+    </data>
+    <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
+      <value>rating.fontSize должен быть больше 0 (сейчас {0}).</value>
+    </data>
+    <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
+      <value>В layerOrder указан неизвестный слой «{0}». Допустимые значения: {1}.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
+      <value>В layerOrder «{0}» указан более одного раза.</value>
+    </data>
+    <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
+      <value>В layerOrder нет 'poster' — плакат не будет отрисован.</value>
+    </data>
+    <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
+      <value>{0}.imagePath обязателен, если слой задан.</value>
+    </data>
+    <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
+      <value>{0} «{1}» должен быть относительным путём внутри папки наложения (без абсолютных путей и '..').</value>
+    </data>
+    <data name="OverlayValidationAssetNotPng" xml:space="preserve">
+      <value>{0} «{1}» должен быть файлом PNG.</value>
+    </data>
+    <data name="OverlayValidationAssetNotFound" xml:space="preserve">
+      <value>Файл {0} «{1}» не найден.</value>
+    </data>
+    <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
+      <value>Файлы «{0}» и «{1}» различаются только регистром и конфликтуют в файловых системах, чувствительных к регистру.</value>
+    </data>
+    <data name="OverlayValidationImageTooLarge" xml:space="preserve">
+      <value>Изображение {0} «{1}» превышает максимальный размер ({2:F1} МБ &gt; {3:F0} МБ).</value>
+    </data>
+    <data name="OverlayValidationMarginInvalid" xml:space="preserve">
+      <value>{0} «{1}» не является корректной строкой Thickness. Ожидается от 1 до 4 чисел.</value>
+    </data>
+    <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
+      <value>{0} содержит нечисловое значение «{1}».</value>
+    </data>
+    <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
+      <value>Значение {1:0.##} поля {0} выходит далеко за пределы холста — возможно, ничего не будет видно.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
+      <value>title.rotationOrigin «{0}» должен иметь вид 'x,y' ровно с 2 значениями.</value>
+    </data>
+    <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
+      <value>Значение «{0}» поля title.rotationOrigin должно быть в диапазоне от 0.0 до 1.0.</value>
+    </data>
+    <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
+      <value>Папка наложения превышает максимальный общий размер ({0:F1} МБ &gt; {1:F0} МБ).</value>
+    </data>
+    <data name="OverlaySubmissionIdRequired" xml:space="preserve">
+      <value>Чтобы отправить наложение, ему нужен ID.</value>
+    </data>
+    <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
+      <value>«{0}» ещё нет в магазине — это будет новое наложение.</value>
+    </data>
+    <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
+      <value>«{0}» уже есть в магазине в версии v{1}. Отправка v{2} обновит его.</value>
+    </data>
+    <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
+      <value>«{0}» уже есть в магазине в версии v{1}. Перед отправкой поднимите версию выше.</value>
+    </data>
+    <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
+      <value>Не удалось связаться с магазином и проверить, свободно ли имя. Отправить всё равно можно.</value>
+    </data>
+    <data name="OverlayExportIdRequired" xml:space="preserve">
+      <value>Чтобы экспортировать наложение, ему нужен ID.</value>
+    </data>
+    <data name="OverlayExportFolderExists" xml:space="preserve">
+      <value>Здесь уже есть папка «{0}». Выберите другое место или разрешите замену.</value>
+    </data>
+    <data name="OverlayExportBlockedByValidation" xml:space="preserve">
+      <value>Перед экспортом исправьте указанные проблемы. Нужно исправить: {0}</value>
+    </data>
+    <data name="OverlayExportFailed" xml:space="preserve">
+      <value>Не удалось выполнить экспорт: {0}</value>
+    </data>
+    <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
+      <value>В «{0}» нет файла {1}.</value>
+    </data>
+    <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
+      <value>«{0}» — это ID встроенного наложения, поверх него нельзя устанавливать.</value>
+    </data>
+    <data name="OverlayExportInstallFailed" xml:space="preserve">
+      <value>Не удалось установить: {0}</value>
+    </data>
+    <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
+      <value>Наложение не указано.</value>
+    </data>
+    <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
+      <value>«{0}» — встроенное наложение, его нельзя удалить.</value>
+    </data>
+    <data name="OverlayExportNotInstalled" xml:space="preserve">
+      <value>«{0}» не установлено.</value>
+    </data>
+    <data name="OverlayExportRemoveFailed" xml:space="preserve">
+      <value>Не удалось удалить «{0}»: {1}</value>
+    </data>
+    <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
+      <value>Не удалось построить изображение предпросмотра для этого наложения.</value>
+    </data>
+    <data name="OverlayLoadFileNotFound" xml:space="preserve">
+      <value>Файл наложения не найден: {0}</value>
+    </data>
+    <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
+      <value>Не удалось определить папку наложения для «{0}».</value>
+    </data>
+    <data name="OverlayLoadInvalidJson" xml:space="preserve">
+      <value>«{0}» не является корректным JSON: {1}</value>
+    </data>
+    <data name="OverlayLoadUnreadable" xml:space="preserve">
+      <value>Не удалось прочитать «{0}»: {1}</value>
+    </data>
+    <data name="OverlayLoadNoDefinition" xml:space="preserve">
+      <value>В «{0}» нет описания наложения.</value>
+    </data>
+    <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
+      <value>Этому наложению нужна схема v{0}, а данная версия FoliCon поддерживает v{1}. Обновите FoliCon, чтобы его редактировать.</value>
+    </data>
+    <data name="OverlayDraftIdRequired" xml:space="preserve">
+      <value>Чтобы сохранить наложение как черновик, ему нужен ID.</value>
+    </data>
+    <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
+      <value>Встроенное наложение</value>
+    </data>
+    <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
+      <value>Установленное наложение</value>
+    </data>
+    <data name="OverlayTemplateIdInUse" xml:space="preserve">
+      <value>ID наложения «{0}» уже занят встроенным или установленным наложением.</value>
+    </data>
+    <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
+      <value>Получение манифеста...</value>
+    </data>
+    <data name="OverlayInstallProgressValidating" xml:space="preserve">
+      <value>Проверка...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalling" xml:space="preserve">
+      <value>Установка...</value>
+    </data>
+    <data name="OverlayInstallProgressInstalled" xml:space="preserve">
+      <value>Установлено.</value>
+    </data>
+    <data name="OverlayInstallProgressDownloading" xml:space="preserve">
+      <value>Загрузка {0}...</value>
+    </data>
+    <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
+      <value>Создание резервной копии текущей версии...</value>
+    </data>
+    <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
+      <value>Не удалось прочитать манифест для «{0}»</value>
+    </data>
+    <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
+      <value>Нельзя установить «{0}»: это встроенное наложение.</value>
+    </data>
+    <data name="OverlayInstallDownloadFailed" xml:space="preserve">
+      <value>Не удалось загрузить файлы наложения «{0}»: {1}</value>
+    </data>
+    <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
+      <value>Файл «{0}» превышает ограничение в {1} МБ.</value>
+    </data>
+    <data name="OverlayJsonTooLarge" xml:space="preserve">
+      <value>overlay.json слишком большой.</value>
+    </data>
+    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+      <value>Превышен лимит размера файла.</value>
+    </data>
+    <data name="OverlayInstallHashMismatch" xml:space="preserve">
+      <value>Проверка целостности «{0}» не пройдена: загруженный файл не совпадает с опубликованной контрольной суммой.</value>
+    </data>
+    <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
+      <value>В overlay.json нет описания наложения.</value>
+    </data>
+    <data name="OverlayInstallValidationFailed" xml:space="preserve">
+      <value>Проверка не пройдена: {0}</value>
+    </data>
+    <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
+      <value>Наложение «{0}» отсутствует в каталоге.</value>
+    </data>
+    <data name="OverlayUpdateFailed" xml:space="preserve">
+      <value>Не удалось обновить наложение «{0}» по манифесту: {1}</value>
     </data>
 </root>

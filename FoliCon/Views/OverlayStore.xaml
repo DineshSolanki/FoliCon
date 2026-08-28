@@ -1,0 +1,459 @@
+<UserControl x:Class="FoliCon.Views.OverlayStore"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
+             xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:OverlayStoreViewModel}"
+             Background="{DynamicResource RegionBrush}">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <hc:Boolean2VisibilityReConverter x:Key="InvertedBoolToVis" />
+
+        <!-- Status glyph: paired with the status text so state is never conveyed by color alone -->
+        <Style x:Key="StatusIconStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Margin" Value="0,0,4,0" />
+            <Setter Property="Text" Value="" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                    <Setter Property="Text" Value="✓" />
+                    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                    <Setter Property="Text" Value="⟳" />
+                    <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInstalled}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="OperationMessageStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOperationSuccessful}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding HasOperationError}" Value="True">
+                    <Setter Property="Foreground" Value="{DynamicResource DangerBrush}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Empty state shown when the active section has nothing to display -->
+        <DataTemplate x:Key="EmptyStateTemplate" DataType="{x:Type viewModels:OverlayStoreViewModel}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding EmptyStateTitle}" FontSize="15" FontWeight="SemiBold"
+                           HorizontalAlignment="Center"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <TextBlock Text="{Binding EmptyStateMessage}" FontSize="12" Margin="0,6,0,0"
+                           HorizontalAlignment="Center" TextWrapping="Wrap" MaxWidth="360"
+                           TextAlignment="Center"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Discover: visual card for browsing -->
+        <DataTemplate x:Key="OverlayCardTemplate" DataType="{x:Type viewModels:OverlayCardViewModel}">
+            <Border Width="210" Padding="10"
+                    CornerRadius="6"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1">
+                <StackPanel>
+                    <Grid Height="120" Margin="0,0,0,6">
+                        <Image Source="{Binding PreviewImage}"
+                               Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreLoadingPreview}}"
+                                   Visibility="{Binding IsPreviewLoading, Converter={StaticResource BoolToVis}}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}" />
+                    </Grid>
+
+                    <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold"
+                               FontSize="13" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                    <TextBlock FontSize="11" Margin="0,1,0,0" TextTrimming="CharacterEllipsis"
+                               Foreground="{DynamicResource SecondaryTextBrush}">
+                        <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding VersionDisplay, Mode=OneWay}" />
+                    </TextBlock>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,6">
+                        <TextBlock Style="{StaticResource StatusIconStyle}" />
+                        <TextBlock Text="{Binding AvailabilityStatus}" Style="{StaticResource StatusTextStyle}" />
+                    </StackPanel>
+
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                    Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVis}}">
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreInstall}}"
+                                    Command="{Binding DataContext.InstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding IsInstalled, Converter={StaticResource InvertedBoolToVis}}"
+                                    Style="{StaticResource ButtonPrimary}"
+                                    Padding="12,4" FontSize="11" />
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreUpdate}}"
+                                    Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVis}}"
+                                    Style="{StaticResource ButtonPrimary}"
+                                    Padding="12,4" FontSize="11" />
+                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreRemove}}"
+                                    Command="{Binding DataContext.UninstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding IsInstalled, Converter={StaticResource BoolToVis}}"
+                                    Style="{StaticResource ButtonDefault}"
+                                    Padding="12,4" FontSize="11" Margin="6,0,0,0"
+                                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreRemoveTooltip}}" />
+                        </StackPanel>
+                        <ProgressBar Height="6" Maximum="100" VerticalAlignment="Center"
+                                     Value="{Binding ProgressPercentage}"
+                                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}" />
+                    </Grid>
+
+                    <TextBlock Text="{Binding OperationMessage}" Margin="0,4,0,0"
+                               Style="{StaticResource OperationMessageStyle}"
+                               Visibility="{Binding HasOperationMessage, Converter={StaticResource BoolToVis}}" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
+        <!-- Installed / Updates: compact management row -->
+        <DataTemplate x:Key="OverlayRowTemplate" DataType="{x:Type viewModels:OverlayCardViewModel}">
+            <Border Padding="10,8"
+                    CornerRadius="4"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Width="56" Height="40" Margin="0,0,10,0"
+                            CornerRadius="3" ClipToBounds="True"
+                            Background="{DynamicResource RegionBrush}">
+                        <Image Source="{Binding PreviewImage}" Stretch="Uniform"
+                               RenderOptions.BitmapScalingMode="HighQuality" />
+                    </Border>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" FontSize="13"
+                                   TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                        <TextBlock FontSize="11" Margin="0,1,0,0" TextTrimming="CharacterEllipsis"
+                                   Foreground="{DynamicResource SecondaryTextBrush}">
+                            <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding SizeDisplay, Mode=OneWay}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal"
+                                VerticalAlignment="Center" Margin="10,0">
+                        <TextBlock Style="{StaticResource StatusIconStyle}" />
+                        <TextBlock Text="{Binding AvailabilityStatus}" Style="{StaticResource StatusTextStyle}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsLoading, Converter={StaticResource InvertedBoolToVis}}">
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreUpdate}}"
+                                Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"
+                                Visibility="{Binding IsUpdateAvailable, Converter={StaticResource BoolToVis}}"
+                                Style="{StaticResource ButtonPrimary}"
+                                Padding="12,4" FontSize="11" />
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreRemove}}"
+                                Command="{Binding DataContext.UninstallCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource ButtonDefault}"
+                                Padding="12,4" FontSize="11" Margin="6,0,0,0"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreRemoveTooltip}}" />
+                    </StackPanel>
+
+                    <ProgressBar Grid.Row="0" Grid.Column="3" Width="120" Height="6" Maximum="100"
+                                 VerticalAlignment="Center"
+                                 Value="{Binding ProgressPercentage}"
+                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,4,0,0"
+                               Text="{Binding OperationMessage}"
+                               Style="{StaticResource OperationMessageStyle}"
+                               Visibility="{Binding HasOperationMessage, Converter={StaticResource BoolToVis}}" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <Style x:Key="RowContainerStyle" TargetType="ContentPresenter">
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+    </UserControl.Resources>
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <!-- Bound rather than a literal so the title follows a live language switch. -->
+            <Setter Property="Title" Value="{Binding Title}" />
+            <Setter Property="Height" Value="650" />
+            <Setter Property="Width" Value="900" />
+            <Setter Property="MinHeight" Value="400" />
+            <Setter Property="MinWidth" Value="600" />
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Grid Margin="16,8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Search + Filter Bar (persistent across sections) -->
+        <Grid Grid.Row="0" Margin="0,0,0,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <hc:SearchBar Grid.Row="0" Grid.Column="0"
+                          Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreSearchPlaceholder}}"
+                          hc:InfoElement.ShowClearButton="True"
+                          Style="{StaticResource SearchBarPlus}"
+                          IsRealTime="True"
+                          VerticalAlignment="Center" />
+
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
+                      ItemsSource="{Binding AvailableSortOptions}"
+                      DisplayMemberPath="DisplayText"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding SelectedSortOption}"
+                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreSortTooltip}}" />
+
+            <ComboBox Grid.Row="0" Grid.Column="2" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
+                      ItemsSource="{Binding AvailableStatusFilters}"
+                      DisplayMemberPath="DisplayText"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding SelectedStatusFilter}"
+                      Visibility="{Binding IsDiscoverSection, Converter={StaticResource BoolToVis}}"
+                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreStatusFilterTooltip}}" />
+
+            <!--
+                The leading glyph stays in markup and only the word is localized; see the same
+                treatment in OverlayDesigner.xaml's toolbar.
+            -->
+            <Button Grid.Row="0" Grid.Column="3" Margin="8,0,0,0"
+                    Content="{Binding Source={StaticResource FoliConLangs},
+                              Path=OverlayStoreRefresh, StringFormat=↻ {0}}"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource ButtonDefault}"
+                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreRefreshTooltip}}"
+                    VerticalAlignment="Center" />
+
+            <!-- Browsing overlays is when authors are most likely to want to make one. -->
+            <Button Grid.Row="0" Grid.Column="4" Margin="8,0,0,0"
+                    Content="{Binding Source={StaticResource FoliConLangs},
+                              Path=OverlayDesigner, StringFormat=✚ {0}}"
+                    Command="{Binding CreateOverlayCommand}"
+                    Style="{StaticResource ButtonPrimary}"
+                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayCreateOverlayTooltip}}"
+                    VerticalAlignment="Center" />
+
+            <!--
+                Tag chips on their own row: they wrap, several can be active at once, and each
+                shows its overlay count. A single-select dropdown could not express "dvd AND modern".
+            -->
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0" Orientation="Horizontal" Margin="0,8,0,0"
+                        Visibility="{Binding HasTagFilters, Converter={StaticResource BoolToVis}}">
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayTags}}"
+                           VerticalAlignment="Center" Margin="0,0,8,0"
+                           FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource SecondaryTextBrush}" />
+
+                <ItemsControl ItemsSource="{Binding TagFilters}" VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!--
+                                hc:Tag is HandyControl's purpose-built chip: pill shape, its own
+                                selected visual, and Selectable/IsSelected built in. Styling a
+                                ToggleButton to imitate one only ever looked like a button.
+                                TagBaseStyle is the real style key (there is no "TagStyle").
+                            -->
+                            <hc:Tag Content="{Binding DisplayText}"
+                                    Selectable="True"
+                                    IsSelected="{Binding IsSelected, Mode=TwoWay}"
+                                    ShowCloseButton="False"
+                                    Margin="0,0,6,4"
+                                    FontSize="12"
+                                    Cursor="Hand"
+                                    Style="{StaticResource TagBaseStyle}">
+                                <hc:Tag.ToolTip>
+                                    <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                        <Binding Source="{StaticResource FoliConLangs}"
+                                                 Path="OverlayStoreTagChipTooltip" />
+                                        <Binding Path="Tag" />
+                                    </MultiBinding>
+                                </hc:Tag.ToolTip>
+                                <AutomationProperties.Name>
+                                    <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                        <Binding Source="{StaticResource FoliConLangs}"
+                                                 Path="OverlayStoreTagChipAutomation" />
+                                        <Binding Path="Tag" />
+                                    </MultiBinding>
+                                </AutomationProperties.Name>
+                            </hc:Tag>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreClearTags}}"
+                        Padding="10,4" Margin="4,0,0,4"
+                        FontSize="11" VerticalAlignment="Center"
+                        Visibility="{Binding HasSelectedTags, Converter={StaticResource BoolToVis}}"
+                        Command="{Binding ClearTagFiltersCommand}"
+                        Style="{StaticResource ButtonDefault}"
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreClearTagsTooltip}}" />
+            </StackPanel>
+        </Grid>
+
+        <!-- Sections: Discover / Installed / Updates -->
+        <hc:BusyIndicator Grid.Row="1" IsBusy="{Binding IsLoading}"
+                          BusyContent="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreLoadingCatalog}}">
+            <TabControl SelectedIndex="{Binding CurrentSectionIndex}"
+                        Style="{StaticResource TabControlInLine}"
+                        Background="Transparent"
+                        BorderThickness="0">
+
+                <TabItem Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreDiscoverTab}}">
+                    <Grid Margin="0,8,0,0">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding VisibleOverlays}"
+                                          ItemTemplate="{StaticResource OverlayCardTemplate}"
+                                          HorizontalContentAlignment="Stretch">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="Margin" Value="4" />
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <ContentControl Content="{Binding}"
+                                        ContentTemplate="{StaticResource EmptyStateTemplate}"
+                                        IsTabStop="False"
+                                        Visibility="{Binding HasVisibleOverlays, Converter={StaticResource InvertedBoolToVis}}" />
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="{Binding InstalledSectionTitle}">
+                    <Grid Margin="0,8,0,0">
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding VisibleOverlays}"
+                                          ItemTemplate="{StaticResource OverlayRowTemplate}"
+                                          ItemContainerStyle="{StaticResource RowContainerStyle}" />
+                        </ScrollViewer>
+                        <ContentControl Content="{Binding}"
+                                        ContentTemplate="{StaticResource EmptyStateTemplate}"
+                                        IsTabStop="False"
+                                        Visibility="{Binding HasVisibleOverlays, Converter={StaticResource InvertedBoolToVis}}" />
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="{Binding UpdatesSectionTitle}">
+                    <Grid Margin="0,8,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="0"
+                                Content="{Binding Source={StaticResource FoliConLangs},
+                                          Path=OverlayStoreUpdateAll, StringFormat=⟳ {0}}"
+                                Command="{Binding UpdateAllCommand}"
+                                Style="{StaticResource ButtonPrimary}"
+                                HorizontalAlignment="Right" Margin="0,0,0,8"
+                                Visibility="{Binding HasVisibleOverlays, Converter={StaticResource BoolToVis}}" />
+
+                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding VisibleOverlays}"
+                                          ItemTemplate="{StaticResource OverlayRowTemplate}"
+                                          ItemContainerStyle="{StaticResource RowContainerStyle}" />
+                        </ScrollViewer>
+                        <ContentControl Grid.Row="1" Content="{Binding}"
+                                        ContentTemplate="{StaticResource EmptyStateTemplate}"
+                                        IsTabStop="False"
+                                        Visibility="{Binding HasVisibleOverlays, Converter={StaticResource InvertedBoolToVis}}" />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </hc:BusyIndicator>
+
+        <!-- Status Bar -->
+        <Grid Grid.Row="2" Margin="0,8,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding StatusMessage}"
+                       VerticalAlignment="Center" FontSize="11"
+                       Foreground="{DynamicResource SecondaryTextBrush}" />
+
+            <TextBlock Grid.Column="1" Text="{Binding ErrorMessage}"
+                       Visibility="{Binding HasError, Converter={StaticResource BoolToVis}}"
+                       Foreground="{DynamicResource DangerBrush}"
+                       FontSize="11" TextTrimming="CharacterEllipsis"
+                       MaxWidth="400" />
+        </Grid>
+    </Grid>
+</UserControl>
