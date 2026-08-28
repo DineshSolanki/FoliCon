@@ -22,6 +22,13 @@ public static class OverlayPreviewCache
     /// </summary>
     private const int maxEntries = 256;
 
+    /// <summary>
+    /// Renders at 2x the 256x256 display size so the Previewer's Image control (which the OS
+    /// may additionally scale for display DPI) downsamples instead of upscaling a 1:1 bitmap,
+    /// avoiding the blurry/blocky look of stretching a low-res render.
+    /// </summary>
+    private const double previewRenderScale = 2.0;
+
     private static readonly MemoryCache Cache = new(new MemoryCacheOptions
     {
         SizeLimit = maxEntries,
@@ -33,14 +40,15 @@ public static class OverlayPreviewCache
         string? posterPath,
         string rating,
         string ratingVisibility,
-        string mockupVisibility)
+        string mockupVisibility,
+        string? mediaTitle = null)
     {
         var allOverlays = provider.GetAllOverlays();
         var result = new List<OverlayPreviewItem>(allOverlays.Count);
 
         foreach (var overlay in allOverlays)
         {
-            var cacheKey = BuildCacheKey(overlay.Id, overlay.OverlayVersion, posterPath, rating, ratingVisibility, mockupVisibility);
+            var cacheKey = BuildCacheKey(overlay.Id, overlay.OverlayVersion, posterPath, rating, ratingVisibility, mockupVisibility, mediaTitle);
 
             if (Cache.TryGetValue(cacheKey, out BitmapImage? cached) && cached != null)
             {
@@ -50,7 +58,7 @@ public static class OverlayPreviewCache
 
             try
             {
-                var bitmap = await RenderPreviewAsync(overlay, posterPath, rating, ratingVisibility, mockupVisibility);
+                var bitmap = await RenderPreviewAsync(overlay, posterPath, rating, ratingVisibility, mockupVisibility, mediaTitle);
                 Cache.Set(cacheKey, bitmap, new MemoryCacheEntryOptions { Size = 1 });
                 result.Add(new OverlayPreviewItem(overlay.Id, overlay.DisplayName, bitmap));
             }
@@ -105,15 +113,16 @@ public static class OverlayPreviewCache
         string? posterPath,
         string rating,
         string ratingVisibility,
-        string mockupVisibility)
+        string mockupVisibility,
+        string? mediaTitle)
     {
         return await StaRenderer.Default.EnqueueRender(() =>
         {
             // Create PosterIcon on the STA thread (WPF objects require STA)
-            var posterIcon = CreatePosterIcon(posterPath, rating, ratingVisibility, mockupVisibility);
+            var posterIcon = CreatePosterIcon(posterPath, rating, ratingVisibility, mockupVisibility, mediaTitle);
 
             var dynamicIcon = new DynamicPosterIcon(overlay, posterIcon);
-            using var bitmap = dynamicIcon.RenderToBitmap();
+            using var bitmap = dynamicIcon.RenderToBitmap(previewRenderScale);
 
             var bitmapImage = ConvertToBitmapSource(bitmap);
             bitmapImage.Freeze();
@@ -125,13 +134,16 @@ public static class OverlayPreviewCache
         string? posterPath,
         string rating,
         string ratingVisibility,
-        string mockupVisibility)
+        string mockupVisibility,
+        string? mediaTitle)
     {
         var resolvedPath = posterPath ??= FileUtils.GetResourcePath("posterDummy.png");
 
         if (File.Exists(resolvedPath))
         {
-            return new PosterIcon(resolvedPath, rating, ratingVisibility, mockupVisibility);
+            return string.IsNullOrEmpty(mediaTitle)
+                ? new PosterIcon(resolvedPath, rating, ratingVisibility, mockupVisibility)
+                : new PosterIcon(resolvedPath, rating, ratingVisibility, mockupVisibility, mediaTitle);
         }
 
         // Fallback to default constructor (loads posterDummy.png)
@@ -161,8 +173,9 @@ public static class OverlayPreviewCache
         string? posterPath,
         string rating,
         string ratingVisibility,
-        string mockupVisibility) =>
-        $"{overlayId}_{overlayVersion}_{posterPath}_{rating}_{ratingVisibility}_{mockupVisibility}";
+        string mockupVisibility,
+        string? mediaTitle) =>
+        $"{overlayId}_{overlayVersion}_{posterPath}_{rating}_{ratingVisibility}_{mockupVisibility}_{mediaTitle}";
 }
 
 /// <summary>

@@ -47,7 +47,13 @@ namespace FoliCon.ViewModels
         public string MediaTitle
         {
             get => _mediaTitle;
-            set => SetProperty(ref _mediaTitle, value);
+            set
+            {
+                if (SetProperty(ref _mediaTitle, value))
+                {
+                    _ = RebuildPreviewsAsync();
+                }
+            }
         }
 
         public bool RatingVisibility
@@ -86,7 +92,8 @@ namespace FoliCon.ViewModels
                     _selectedPosterPath,
                     Rating,
                     UiUtils.BooleanToVisibility(RatingVisibility).ToString(),
-                    UiUtils.BooleanToVisibility(OverlayVisibility).ToString());
+                    UiUtils.BooleanToVisibility(OverlayVisibility).ToString(),
+                    MediaTitle);
 
                 OverlayPreviewItems.Clear();
                 foreach (var item in previews)
