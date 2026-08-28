@@ -17,6 +17,7 @@ public class OverlayCardViewModel(OverlayCatalogEntry entry, string? installedVe
     public string[] Tags { get; } = entry.Tags;
     private string PreviewUrl { get; } = entry.PreviewUrl;
     public long SizeBytes { get; } = entry.SizeBytes;
+    public DateTime CreatedAt { get; } = entry.CreatedAt;
 
     // The unit stays inside the resource rather than being appended: several languages put it
     // before the number, and a few do not separate it with a space.

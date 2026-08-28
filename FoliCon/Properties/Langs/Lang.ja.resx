@@ -1279,6 +1279,18 @@ and refresh Icon Cache?</value>
     <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
       <value>インストール状況で絞り込みます</value>
     </data>
+    <data name="OverlayStoreSortTooltip" xml:space="preserve">
+      <value>オーバーレイを並べ替えます</value>
+    </data>
+    <data name="OverlayStoreSortNewest" xml:space="preserve">
+      <value>新着順</value>
+    </data>
+    <data name="OverlayStoreSortNameAsc" xml:space="preserve">
+      <value>名前 (A-Z)</value>
+    </data>
+    <data name="OverlayStoreSortAuthor" xml:space="preserve">
+      <value>作者</value>
+    </data>
     <data name="OverlayStoreRefresh" xml:space="preserve">
       <value>更新</value>
     </data>

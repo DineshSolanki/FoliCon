@@ -1280,6 +1280,18 @@
     <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
       <value>Фильтр по состоянию установки</value>
     </data>
+    <data name="OverlayStoreSortTooltip" xml:space="preserve">
+      <value>Сортировка наложений</value>
+    </data>
+    <data name="OverlayStoreSortNewest" xml:space="preserve">
+      <value>Сначала новые</value>
+    </data>
+    <data name="OverlayStoreSortNameAsc" xml:space="preserve">
+      <value>Название (А-Я)</value>
+    </data>
+    <data name="OverlayStoreSortAuthor" xml:space="preserve">
+      <value>Автор</value>
+    </data>
     <data name="OverlayStoreRefresh" xml:space="preserve">
       <value>Обновить</value>
     </data>

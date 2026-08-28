@@ -421,6 +421,10 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(OverlayStoreRemoveTooltip));
         OnPropertyChanged(nameof(OverlayStoreSearchPlaceholder));
         OnPropertyChanged(nameof(OverlayStoreStatusFilterTooltip));
+        OnPropertyChanged(nameof(OverlayStoreSortTooltip));
+        OnPropertyChanged(nameof(OverlayStoreSortNewest));
+        OnPropertyChanged(nameof(OverlayStoreSortNameAsc));
+        OnPropertyChanged(nameof(OverlayStoreSortAuthor));
         OnPropertyChanged(nameof(OverlayStoreRefresh));
         OnPropertyChanged(nameof(OverlayStoreRefreshTooltip));
         OnPropertyChanged(nameof(OverlayCreateOverlayTooltip));
@@ -962,6 +966,10 @@ public class LangProvider : INotifyPropertyChanged
     public string OverlayStoreRemoveTooltip => Lang.OverlayStoreRemoveTooltip;
     public string OverlayStoreSearchPlaceholder => Lang.OverlayStoreSearchPlaceholder;
     public string OverlayStoreStatusFilterTooltip => Lang.OverlayStoreStatusFilterTooltip;
+    public string OverlayStoreSortTooltip => Lang.OverlayStoreSortTooltip;
+    public string OverlayStoreSortNewest => Lang.OverlayStoreSortNewest;
+    public string OverlayStoreSortNameAsc => Lang.OverlayStoreSortNameAsc;
+    public string OverlayStoreSortAuthor => Lang.OverlayStoreSortAuthor;
     public string OverlayStoreRefresh => Lang.OverlayStoreRefresh;
     public string OverlayStoreRefreshTooltip => Lang.OverlayStoreRefreshTooltip;
     public string OverlayCreateOverlayTooltip => Lang.OverlayCreateOverlayTooltip;
@@ -1513,6 +1521,10 @@ public static class LangKeys
     public static readonly string OverlayStoreRemoveTooltip = nameof(OverlayStoreRemoveTooltip);
     public static readonly string OverlayStoreSearchPlaceholder = nameof(OverlayStoreSearchPlaceholder);
     public static readonly string OverlayStoreStatusFilterTooltip = nameof(OverlayStoreStatusFilterTooltip);
+    public static readonly string OverlayStoreSortTooltip = nameof(OverlayStoreSortTooltip);
+    public static readonly string OverlayStoreSortNewest = nameof(OverlayStoreSortNewest);
+    public static readonly string OverlayStoreSortNameAsc = nameof(OverlayStoreSortNameAsc);
+    public static readonly string OverlayStoreSortAuthor = nameof(OverlayStoreSortAuthor);
     public static readonly string OverlayStoreRefresh = nameof(OverlayStoreRefresh);
     public static readonly string OverlayStoreRefreshTooltip = nameof(OverlayStoreRefreshTooltip);
     public static readonly string OverlayCreateOverlayTooltip = nameof(OverlayCreateOverlayTooltip);

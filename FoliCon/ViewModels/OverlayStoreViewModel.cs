@@ -42,6 +42,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         _dialogService = dialogService;
         VisibleOverlays = CollectionViewSource.GetDefaultView(Overlays);
         VisibleOverlays.Filter = FilterOverlay;
+        ApplySort();
 
         RefreshCommand = new DelegateCommand(async () => await LoadCatalogAsync(forceRefresh: true));
         InstallCommand = new DelegateCommand<OverlayCardViewModel>(async o => await InstallOverlayAsync(o), o => o is { IsInstalled: false, IsLoading: false });
@@ -127,6 +128,29 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
             }
         }
     } = OverlayStatusFilter.All;
+
+    /// <summary>
+    /// The sort dropdown's entries. Same reasoning as <see cref="AvailableStatusFilters"/>:
+    /// labels are translatable, the underlying <see cref="OverlaySortOption"/> is not.
+    /// </summary>
+    public ObservableCollection<OverlaySortOptionItem> AvailableSortOptions { get; } =
+    [
+        new(OverlaySortOption.Newest, Lang.OverlayStoreSortNewest),
+        new(OverlaySortOption.NameAscending, Lang.OverlayStoreSortNameAsc),
+        new(OverlaySortOption.Author, Lang.OverlayStoreSortAuthor)
+    ];
+
+    public OverlaySortOption SelectedSortOption
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                ApplySort();
+            }
+        }
+    } = OverlaySortOption.Newest;
 
     public OverlayStoreSection CurrentSection
     {
@@ -330,6 +354,22 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     {
         VisibleOverlays.Refresh();
         UpdateViewState();
+    }
+
+    /// <summary>
+    /// Applies <see cref="SelectedSortOption"/> as the grid's sort order. Newest sorts by
+    /// creation date descending; the other two are plain alphabetical ascending.
+    /// </summary>
+    private void ApplySort()
+    {
+        VisibleOverlays.SortDescriptions.Clear();
+        var (property, direction) = SelectedSortOption switch
+        {
+            OverlaySortOption.NameAscending => (nameof(OverlayCardViewModel.DisplayName), ListSortDirection.Ascending),
+            OverlaySortOption.Author => (nameof(OverlayCardViewModel.Author), ListSortDirection.Ascending),
+            _ => (nameof(OverlayCardViewModel.CreatedAt), ListSortDirection.Descending)
+        };
+        VisibleOverlays.SortDescriptions.Add(new SortDescription(property, direction));
     }
 
     /// <summary>

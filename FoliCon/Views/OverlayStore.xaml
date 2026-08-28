@@ -250,6 +250,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <hc:SearchBar Grid.Row="0" Grid.Column="0"
@@ -261,6 +262,13 @@
                           VerticalAlignment="Center" />
 
             <ComboBox Grid.Row="0" Grid.Column="1" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
+                      ItemsSource="{Binding AvailableSortOptions}"
+                      DisplayMemberPath="DisplayText"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding SelectedSortOption}"
+                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayStoreSortTooltip}}" />
+
+            <ComboBox Grid.Row="0" Grid.Column="2" Margin="8,0,0,0" MinWidth="130" VerticalAlignment="Center"
                       ItemsSource="{Binding AvailableStatusFilters}"
                       DisplayMemberPath="DisplayText"
                       SelectedValuePath="Value"
@@ -272,7 +280,7 @@
                 The leading glyph stays in markup and only the word is localized; see the same
                 treatment in OverlayDesigner.xaml's toolbar.
             -->
-            <Button Grid.Row="0" Grid.Column="2" Margin="8,0,0,0"
+            <Button Grid.Row="0" Grid.Column="3" Margin="8,0,0,0"
                     Content="{Binding Source={StaticResource FoliConLangs},
                               Path=OverlayStoreRefresh, StringFormat=↻ {0}}"
                     Command="{Binding RefreshCommand}"
@@ -281,7 +289,7 @@
                     VerticalAlignment="Center" />
 
             <!-- Browsing overlays is when authors are most likely to want to make one. -->
-            <Button Grid.Row="0" Grid.Column="3" Margin="8,0,0,0"
+            <Button Grid.Row="0" Grid.Column="4" Margin="8,0,0,0"
                     Content="{Binding Source={StaticResource FoliConLangs},
                               Path=OverlayDesigner, StringFormat=✚ {0}}"
                     Command="{Binding CreateOverlayCommand}"
@@ -293,7 +301,7 @@
                 Tag chips on their own row: they wrap, several can be active at once, and each
                 shows its overlay count. A single-select dropdown could not express "dvd AND modern".
             -->
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="4" Orientation="Horizontal" Margin="0,8,0,0"
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="5" Grid.Column="0" Orientation="Horizontal" Margin="0,8,0,0"
                         Visibility="{Binding HasTagFilters, Converter={StaticResource BoolToVis}}">
                 <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayTags}}"
                            VerticalAlignment="Center" Margin="0,0,8,0"

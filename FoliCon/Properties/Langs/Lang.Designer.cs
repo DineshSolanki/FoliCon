@@ -3512,6 +3512,42 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sort overlays.
+        /// </summary>
+        public static string OverlayStoreSortTooltip {
+            get {
+                return ResourceManager.GetString("OverlayStoreSortTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Newest.
+        /// </summary>
+        public static string OverlayStoreSortNewest {
+            get {
+                return ResourceManager.GetString("OverlayStoreSortNewest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name (A-Z).
+        /// </summary>
+        public static string OverlayStoreSortNameAsc {
+            get {
+                return ResourceManager.GetString("OverlayStoreSortNameAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string OverlayStoreSortAuthor {
+            get {
+                return ResourceManager.GetString("OverlayStoreSortAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string OverlayStoreRefresh {

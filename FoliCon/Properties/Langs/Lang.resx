@@ -1280,6 +1280,18 @@ and refresh Icon Cache?</value>
     <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
       <value>Filter by installation status</value>
     </data>
+    <data name="OverlayStoreSortTooltip" xml:space="preserve">
+      <value>Sort overlays</value>
+    </data>
+    <data name="OverlayStoreSortNewest" xml:space="preserve">
+      <value>Newest</value>
+    </data>
+    <data name="OverlayStoreSortNameAsc" xml:space="preserve">
+      <value>Name (A-Z)</value>
+    </data>
+    <data name="OverlayStoreSortAuthor" xml:space="preserve">
+      <value>Author</value>
+    </data>
     <data name="OverlayStoreRefresh" xml:space="preserve">
       <value>Refresh</value>
     </data>
