@@ -4,13 +4,13 @@
     <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <AssemblyName>FoliCon</AssemblyName>
-    <Version>5.2.1</Version>
+    <Version>5.2.2</Version>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	  <!--<PublishTrimmed>true</PublishTrimmed>-->
     <ApplicationIcon>Resources\icons\folicon Icon.ico</ApplicationIcon>
     <LangVersion>preview</LangVersion>
-    <PackageVersion>5.2.1</PackageVersion>
-    <AssemblyVersion>5.2.1</AssemblyVersion>
+    <PackageVersion>5.2.2</PackageVersion>
+    <AssemblyVersion>5.2.2</AssemblyVersion>
     <Company>Dinesh Solanki</Company>
     <Description>Creates Folder icons for Movies, Serials, Music, and Games Folders
 dineshsolanki.github.io/folicon/</Description>
@@ -107,6 +107,7 @@ dineshsolanki.github.io/folicon/</Description>
     <EmbeddedResource Include="Resources\Overlays\windows11\overlay.json" />
   </ItemGroup>
 </Project>
+
 
 
 
