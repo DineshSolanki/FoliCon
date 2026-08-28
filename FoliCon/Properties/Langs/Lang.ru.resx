@@ -332,6 +332,9 @@
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} Значок создан</value>
   </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{0} из {1} изображений не удалось загрузить</value>
+  </data>
   <data name="IconMode" xml:space="preserve">
     <value>Режим значков</value>
   </data>

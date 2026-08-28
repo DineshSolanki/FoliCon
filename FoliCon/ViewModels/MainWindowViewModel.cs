@@ -1085,6 +1085,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                         Lang.UnauthorizedAccess));
                     return;
                 }
+                catch (HttpRequestException e)
+                {
+                    Logger.Warn(e, "Failed to download image from {Url}", img.RemotePath);
+                    return;
+                }
 
                 var current = Interlocked.Increment(ref completedCount);
                 BusyIndicatorProperties.Text = Lang.DownloadingIconWithCount
@@ -1094,19 +1099,27 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             });
 
         IsBusy = false;
-        if (StatusBarProperties.ProgressBarData.Value == StatusBarProperties.ProgressBarData.Max)
+        if (completedCount > 0)
         {
-            Logger.Debug("All Icons Downloaded, Making Icons.");
+            if (completedCount < totalCount)
+            {
+                var failedCount = totalCount - completedCount;
+                Logger.Warn("Only {Completed} of {Total} images downloaded successfully.", completedCount, totalCount);
+                Growl.WarningGlobal(new GrowlInfo
+                {
+                    Message = Lang.DownloadFailedWithCount.Format(failedCount, totalCount),
+                    ShowDateTime = false,
+                    StaysOpen = false,
+                    ConfirmStr = Lang.Confirm
+                });
+            }
+            Logger.Debug("Making Icons from {Count} downloaded images.", completedCount);
             IsBusy = true;
             await MakeIcons();
         }
         else if (StopIconDownload)
         {
-            Logger.Debug("StopIconDownload is true, making icons from partial download.");
-            await MakeIcons();
-            IsMakeEnabled = true;
-            StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
-            return;
+            Logger.Debug("StopIconDownload is true before any downloads completed.");
         }
 
         IsMakeEnabled = true;

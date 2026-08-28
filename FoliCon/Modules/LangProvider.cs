@@ -125,6 +125,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(Hindi));
         OnPropertyChanged(nameof(IconCreated));
         OnPropertyChanged(nameof(IconCreatedWithCount));
+        OnPropertyChanged(nameof(DownloadFailedWithCount));
         OnPropertyChanged(nameof(IconMode));
         OnPropertyChanged(nameof(IconReloadMayTakeTime));
         OnPropertyChanged(nameof(Icons));
@@ -676,6 +677,7 @@ public class LangProvider : INotifyPropertyChanged
     public string Hindi => Lang.Hindi;
     public string IconCreated => Lang.IconCreated;
     public string IconCreatedWithCount => Lang.IconCreatedWithCount;
+    public string DownloadFailedWithCount => Lang.DownloadFailedWithCount;
     public string IconMode => Lang.IconMode;
     public string IconReloadMayTakeTime => Lang.IconReloadMayTakeTime;
     public string Icons => Lang.Icons;
@@ -1223,6 +1225,7 @@ public static class LangKeys
     public static readonly string Hindi = nameof(Hindi);
     public static readonly string IconCreated = nameof(IconCreated);
     public static readonly string IconCreatedWithCount = nameof(IconCreatedWithCount);
+    public static readonly string DownloadFailedWithCount = nameof(DownloadFailedWithCount);
     public static readonly string IconMode = nameof(IconMode);
     public static readonly string IconReloadMayTakeTime = nameof(IconReloadMayTakeTime);
     public static readonly string Icons = nameof(Icons);

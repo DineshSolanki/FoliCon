@@ -332,6 +332,9 @@ and it can fetch 'Games,Movies, and shows' and almost any media folder icons.</v
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} Icon created</value>
   </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{1}件中{0}件の画像のダウンロードに失敗しました</value>
+  </data>
   <data name="IconMode" xml:space="preserve">
     <value>Icon Mode</value>
   </data>

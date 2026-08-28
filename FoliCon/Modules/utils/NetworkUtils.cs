@@ -36,20 +36,15 @@ public static class NetworkUtils
     }
 
     /// <summary>
-    /// Async function That can Download image from any URL and save to local path
+    /// Downloads an image from any URL and saves to local path.
+    /// Throws <see cref="HttpRequestException"/> if the download fails after retries
+    /// or the server returns a non-success status code.
     /// </summary>
     /// <param name="url"> The URL of Image to Download</param>
     /// <param name="saveFileName">The Local Path Of Downloaded Image</param>
     public static async Task DownloadImageFromUrlAsync(Uri url, string saveFileName)
     {
-        try
-        {
-            await ExecuteWithPoliciesAsync(async () => await DownloadAndSaveImageAsync(url, saveFileName));
-        }
-        catch (Exception ex)
-        {
-            Logger.Error(ex, $"Failed to download the image from URL: {url}. All attempts have failed.");
-        }
+        await ExecuteWithPoliciesAsync(async () => await DownloadAndSaveImageAsync(url, saveFileName));
     }
 
     private static async Task ExecuteWithPoliciesAsync(Func<Task> action)
@@ -79,6 +74,7 @@ public static class NetworkUtils
     {
         Logger.Info($"Downloading Image from URL: {url}");
         using var response = await Services.HttpC.GetAsync(url);
+        response.EnsureSuccessStatusCode();
         await using var fs = new FileStream(saveFileName, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true);
         Logger.Info("Saving Image to Path: {Path}", saveFileName);
         await response.Content.CopyToAsync(fs);

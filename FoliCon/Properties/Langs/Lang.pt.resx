@@ -332,6 +332,9 @@ e pode adequar-se a 'Jogos,Filmes, e séries' e a qualquer ícones de media.</va
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} Ícone criado</value>
   </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{0} de {1} imagens falharam ao baixar</value>
+  </data>
   <data name="IconMode" xml:space="preserve">
     <value>Modo Ícone</value>
   </data>

@@ -332,6 +332,9 @@
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} आइकन बनाए गए</value>
   </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{1} में से {0} छवियाँ डाउनलोड करने में विफल</value>
+  </data>
   <data name="IconMode" xml:space="preserve">
     <value>आइकन मोड</value>
   </data>

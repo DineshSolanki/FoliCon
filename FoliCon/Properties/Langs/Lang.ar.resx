@@ -331,6 +331,9 @@
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} تم إنشاء الرمز</value>
   </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{0} من {1} صورة فشل تنزيلها</value>
+  </data>
   <data name="IconMode" xml:space="preserve">
     <value>وضع الأيقونة</value>
   </data>

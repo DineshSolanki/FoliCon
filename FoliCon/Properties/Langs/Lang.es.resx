@@ -332,6 +332,9 @@ y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpe
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} Icono creado</value>
   </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{0} de {1} imágenes no se pudieron descargar</value>
+  </data>
   <data name="IconMode" xml:space="preserve">
     <value>Modo de icono</value>
   </data>

@@ -823,6 +823,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} images failed to download.
+        /// </summary>
+        public static string DownloadFailedWithCount {
+            get {
+                return ResourceManager.GetString("DownloadFailedWithCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Icon Mode.
         /// </summary>
         public static string IconMode {
