@@ -1050,46 +1050,48 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         StopIconDownload = false;
         IsBusy = true;
-        var i = 0;
-        Logger.Debug("Start Downloading Icons. Total Icons: {ImgDownloadCount}", _imgDownloadList.Count);
-        foreach (var img in _imgDownloadList)
-        {
-            if (StopIconDownload)
-            {
-                Logger.Debug("StopIconDownload is true, breaking loop and making icons.");
-                await MakeIcons();
-                IsMakeEnabled = true;
-                StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
-                return;
-            }
+        var completedCount = 0;
+        var totalCount = _imgDownloadList.Count;
+        Logger.Debug("Start Downloading Icons. Total Icons: {ImgDownloadCount}", totalCount);
 
-            try
+        await Parallel.ForEachAsync(_imgDownloadList,
+            new ParallelOptions { MaxDegreeOfParallelism = 4 },
+            async (img, _) =>
             {
-                if (img.RemotePath.IsFile)
+                if (StopIconDownload)
                 {
-                    File.Move(img.RemotePath.LocalPath, img.LocalPath, true);
+                    return;
                 }
-                else
+
+                try
                 {
-                    await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                    if (img.RemotePath.IsFile)
+                    {
+                        File.Move(img.RemotePath.LocalPath, img.LocalPath, true);
+                    }
+                    else
+                    {
+                        await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                    }
                 }
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Logger.ForExceptionEvent(e).Message("UnauthorizedAccessException Occurred while downloading image from url." +
-                                                    " message: {Message}", e.Message)
-                    .Property("Image", img)
-                    .Log();
-                MessageBox.Show(CustomMessageBox.Error(Lang.FailedFileAccessAt.Format(Directory.GetParent(img.LocalPath)),
-                    Lang.UnauthorizedAccess));
-                continue;
-            }
-            i += 1;
-            BusyIndicatorProperties.Text = Lang.DownloadingIconWithCount
-                .Format(i, BusyIndicatorProperties.Max);
-            BusyIndicatorProperties.Value = i;
-            StatusBarProperties.ProgressBarData.Value = i;
-        }
+                catch (UnauthorizedAccessException e)
+                {
+                    Logger.ForExceptionEvent(e)
+                        .Message("UnauthorizedAccessException Occurred while downloading image from url. message: {Message}", e.Message)
+                        .Property("Image", img)
+                        .Log();
+                    MessageBox.Show(CustomMessageBox.Error(
+                        Lang.FailedFileAccessAt.Format(Directory.GetParent(img.LocalPath)),
+                        Lang.UnauthorizedAccess));
+                    return;
+                }
+
+                var current = Interlocked.Increment(ref completedCount);
+                BusyIndicatorProperties.Text = Lang.DownloadingIconWithCount
+                    .Format(current, totalCount);
+                BusyIndicatorProperties.Value = current;
+                StatusBarProperties.ProgressBarData.Value = current;
+            });
 
         IsBusy = false;
         if (StatusBarProperties.ProgressBarData.Value == StatusBarProperties.ProgressBarData.Max)
@@ -1097,6 +1099,14 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             Logger.Debug("All Icons Downloaded, Making Icons.");
             IsBusy = true;
             await MakeIcons();
+        }
+        else if (StopIconDownload)
+        {
+            Logger.Debug("StopIconDownload is true, making icons from partial download.");
+            await MakeIcons();
+            IsMakeEnabled = true;
+            StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
+            return;
         }
 
         IsMakeEnabled = true;
