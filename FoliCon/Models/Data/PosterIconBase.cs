@@ -76,11 +76,50 @@ public abstract class PosterIconBase : UserControl
     public static Bitmap RenderTargetBitmapTo32BppArgb(BitmapSource rtb)
     {
         Logger.Trace("Converting RenderTargetBitmap to 32BppArgb");
-        var stream = new MemoryStream();
-        var encoder = new PngBitmapEncoder();
-        encoder.Frames.Add(BitmapFrame.Create(rtb));
-        encoder.Save(stream);
+
+        var width = rtb.PixelWidth;
+        var height = rtb.PixelHeight;
+        var stride = width * 4;
+        var pixels = new byte[stride * height];
+        rtb.CopyPixels(pixels, stride, 0);
+
+        // WPF renders as premultiplied BGRA (Pbgra32); GDI+ IconLib expects
+        // non-premultiplied ARGB (Format32bppArgb). Un-premultiply in-place.
+        UnPremultiplyBgra(pixels);
+
+        var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        var bitmapData = bitmap.LockBits(
+            new Rectangle(0, 0, width, height),
+            System.Drawing.Imaging.ImageLockMode.WriteOnly,
+            System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        Marshal.Copy(pixels, 0, bitmapData.Scan0, pixels.Length);
+        bitmap.UnlockBits(bitmapData);
+
         Logger.Trace("RenderTargetBitmap converted to 32BppArgb");
-        return new Bitmap(stream);
+        return bitmap;
+    }
+
+    private static void UnPremultiplyBgra(byte[] pixels)
+    {
+        for (var i = 0; i < pixels.Length; i += 4)
+        {
+            var b = pixels[i];
+            var g = pixels[i + 1];
+            var r = pixels[i + 2];
+            var a = pixels[i + 3];
+
+            if (a == 0)
+            {
+                pixels[i] = 0;
+                pixels[i + 1] = 0;
+                pixels[i + 2] = 0;
+            }
+            else
+            {
+                pixels[i] = (byte)(b * 255 / a);
+                pixels[i + 1] = (byte)(g * 255 / a);
+                pixels[i + 2] = (byte)(r * 255 / a);
+            }
+        }
     }
 }
