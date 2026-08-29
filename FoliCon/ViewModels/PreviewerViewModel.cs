@@ -27,6 +27,7 @@ namespace FoliCon.ViewModels
         private bool _ratingVisibility = true;
         private bool _overlayVisibility = true;
         private string? _selectedPosterPath;
+        private CancellationTokenSource? _rebuildCts;
 
         public string Title => Lang.Previewer;
 
@@ -82,7 +83,7 @@ namespace FoliCon.ViewModels
 
         public DelegateCommand SelectImageCommand { get; set; }
 
-        private async Task LoadPreviewsAsync()
+        private async Task LoadPreviewsAsync(CancellationToken token = default)
         {
             try
             {
@@ -95,6 +96,8 @@ namespace FoliCon.ViewModels
                     UiUtils.BooleanToVisibility(OverlayVisibility).ToString(),
                     MediaTitle);
 
+                token.ThrowIfCancellationRequested();
+
                 OverlayPreviewItems.Clear();
                 foreach (var item in previews)
                 {
@@ -102,6 +105,10 @@ namespace FoliCon.ViewModels
                 }
 
                 Logger.Info("Loaded {Count} overlay previews", previews.Count);
+            }
+            catch (OperationCanceledException)
+            {
+                Logger.Debug("Preview load cancelled — newer rebuild superseded this one.");
             }
             catch (Exception ex)
             {
@@ -111,8 +118,23 @@ namespace FoliCon.ViewModels
 
         private async Task RebuildPreviewsAsync()
         {
+            // Cancel any pending rebuild so rapid property changes don't overlap
+            await _rebuildCts?.CancelAsync();
+            _rebuildCts = new CancellationTokenSource();
+            var token = _rebuildCts.Token;
+
+            try
+            {
+                // Debounce: wait for property changes to settle
+                await Task.Delay(200, token);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
             OverlayPreviewCache.InvalidateAll();
-            await LoadPreviewsAsync();
+            await LoadPreviewsAsync(token);
         }
 
         private void SelectImage()
