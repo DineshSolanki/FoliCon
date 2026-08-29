@@ -50,7 +50,7 @@ public static class OverlayPreviewCache
         {
             var cacheKey = BuildCacheKey(overlay.Id, overlay.OverlayVersion, posterPath, rating, ratingVisibility, mockupVisibility, mediaTitle);
 
-            if (Cache.TryGetValue(cacheKey, out BitmapImage? cached) && cached != null)
+            if (Cache.TryGetValue(cacheKey, out BitmapSource? cached) && cached != null)
             {
                 result.Add(new OverlayPreviewItem(overlay.Id, overlay.DisplayName, cached));
                 continue;
@@ -108,7 +108,7 @@ public static class OverlayPreviewCache
     /// </summary>
     public static int Count => Cache.Count;
 
-    private static async Task<BitmapImage> RenderPreviewAsync(
+    private static async Task<BitmapSource> RenderPreviewAsync(
         PosterOverlayDefinition overlay,
         string? posterPath,
         string rating,
@@ -124,9 +124,7 @@ public static class OverlayPreviewCache
             var dynamicIcon = new DynamicPosterIcon(overlay, posterIcon);
             using var bitmap = dynamicIcon.RenderToBitmap(previewRenderScale);
 
-            var bitmapImage = ConvertToBitmapSource(bitmap);
-            bitmapImage.Freeze();
-            return bitmapImage;
+            return ConvertToBitmapSource(bitmap);
         });
     }
 
@@ -150,21 +148,48 @@ public static class OverlayPreviewCache
         return new PosterIcon();
     }
 
-    private static BitmapImage ConvertToBitmapSource(Bitmap bitmap)
+    private static BitmapSource ConvertToBitmapSource(Bitmap bitmap)
     {
-        // Note: stream is intentionally NOT disposed — BitmapImage reads lazily
-        // and the BitmapImage will be frozen, making it self-contained.
-        var stream = new MemoryStream();
-        bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
-        stream.Position = 0;
+        var width = bitmap.Width;
+        var height = bitmap.Height;
+        var stride = width * 4;
+        var pixels = new byte[stride * height];
 
-        var bitmapImage = new BitmapImage();
-        bitmapImage.BeginInit();
-        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-        bitmapImage.StreamSource = stream;
-        bitmapImage.EndInit();
-        bitmapImage.Freeze();
-        return bitmapImage;
+        var bitmapData = bitmap.LockBits(
+            new Rectangle(0, 0, width, height),
+            System.Drawing.Imaging.ImageLockMode.ReadOnly,
+            System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        Marshal.Copy(bitmapData.Scan0, pixels, 0, pixels.Length);
+        bitmap.UnlockBits(bitmapData);
+
+        // GDI+ Format32bppArgb is non-premultiplied ARGB (byte order: B,G,R,A).
+        // WPF's Pbgra32 expects premultiplied BGRA. Premultiply in-place.
+        PremultiplyBgra(pixels);
+
+        var bitmapSource = BitmapSource.Create(
+            width, height, 96, 96, PixelFormats.Pbgra32, null, pixels, stride);
+        bitmapSource.Freeze();
+        return bitmapSource;
+    }
+
+    private static void PremultiplyBgra(byte[] pixels)
+    {
+        for (var i = 0; i < pixels.Length; i += 4)
+        {
+            var a = pixels[i + 3];
+            if (a == 0)
+            {
+                pixels[i] = 0;
+                pixels[i + 1] = 0;
+                pixels[i + 2] = 0;
+            }
+            else if (a < 255)
+            {
+                pixels[i] = (byte)(pixels[i] * a / 255);
+                pixels[i + 1] = (byte)(pixels[i + 1] * a / 255);
+                pixels[i + 2] = (byte)(pixels[i + 2] * a / 255);
+            }
+        }
     }
 
     private static string BuildCacheKey(
@@ -181,9 +206,9 @@ public static class OverlayPreviewCache
 /// <summary>
 /// A single preview item: overlay metadata + rendered frozen BitmapSource.
 /// </summary>
-public sealed class OverlayPreviewItem(string overlayId, string displayName, BitmapImage previewImage)
+public sealed class OverlayPreviewItem(string overlayId, string displayName, BitmapSource previewImage)
 {
     public string OverlayId { get; } = overlayId;
     public string DisplayName { get; } = displayName;
-    public BitmapImage PreviewImage { get; } = previewImage;
+    public BitmapSource PreviewImage { get; } = previewImage;
 }
