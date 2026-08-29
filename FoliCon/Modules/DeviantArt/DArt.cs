@@ -1,4 +1,5 @@
-﻿using Polly;
+﻿using Newtonsoft.Json.Linq;
+using Polly;
 using Polly.Retry;
 
 namespace FoliCon.Modules.DeviantArt;
@@ -418,6 +419,44 @@ public class DArt : BindableBase, IDisposable
         _disposed = true;
     }
 
+    /// <summary>
+    /// Parses the DeviantArt API error body for known error codes and throws a specific
+    /// <see cref="LocalizedException"/> so callers can display a meaningful message instead of
+    /// a generic "connection failed" error. Falls through silently for unknown codes.
+    /// </summary>
+    private static void ThrowIfKnownApiError(string errorBody)
+    {
+        if (string.IsNullOrWhiteSpace(errorBody))
+        {
+            return;
+        }
+
+        try
+        {
+            var error = JObject.Parse(errorBody);
+            var errorCode = error.Value<int?>("error_code");
+            var description = error.Value<string>("error_description") ?? "";
+
+            switch (errorCode)
+            {
+                case 2 when description.Contains("download limit", StringComparison.OrdinalIgnoreCase):
+                    throw new LocalizedException(
+                        $"DeviantArt download limit reached: {description}",
+                        "DeviantArt weekly download limit has been reached. Please try again next week, or reduce the number of downloads.\n\n" +
+                        "Announcement: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123\n\n" +
+                        "Sign the petition to remove this limit:\nhttps://www.change.org/p/remove-the-deviantart-download-limit");
+            }
+        }
+        catch (LocalizedException)
+        {
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Logger.Debug(ex, "Failed to parse DeviantArt API error body");
+        }
+    }
+
     private async Task<string> ExecuteWithRetryAsync(
         Func<HttpRequestMessage> requestFactory,
         string requestType,
@@ -459,6 +498,8 @@ public class DArt : BindableBase, IDisposable
                 var errorBody = await response.Content.ReadAsStringAsync(ct);
                 Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
                     requestType, (int)response.StatusCode, errorBody);
+
+                ThrowIfKnownApiError(errorBody);
                 response.EnsureSuccessStatusCode();
                 throw new InvalidOperationException("Unreachable — EnsureSuccessStatusCode throws on failure");
             }, cancellationToken);
@@ -477,10 +518,12 @@ public class DArt : BindableBase, IDisposable
             var errorBody = await response.Content.ReadAsStringAsync(cancellationToken);
             Logger.Warn("DeviantArt API {RequestType} returned {StatusCode}: {ErrorBody}",
                 requestType, (int)response.StatusCode, errorBody);
+
+            ThrowIfKnownApiError(errorBody);
             response.EnsureSuccessStatusCode();
             throw new InvalidOperationException("Unreachable — EnsureSuccessStatusCode throws on failure");
         }
-        catch (Exception ex) when (ex is not DeviantArtTokenExpiredException)
+        catch (Exception ex) when (ex is not DeviantArtTokenExpiredException and not LocalizedException)
         {
             Logger.Error(ex, $"DeviantArt API {requestType} request failed after all retry attempts");
             throw new LocalizedException(

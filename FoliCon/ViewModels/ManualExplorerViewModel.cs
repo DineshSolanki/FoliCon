@@ -94,7 +94,20 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		{
 			Logger.Error(ex, "Failed to extract deviation {DeviationId}", deviationId);
 			IsBusy = false;
-			MessageBox.Show(CustomMessageBox.Error(Lang.DAConnectionFailedMessage, Lang.DAConnectionFailedTitle));
+			var isDownloadLimit = ex is LocalizedException { Message: var m } && m.Contains("download limit");
+			var message = ex is LocalizedException le ? le.LocalizedMessage : Lang.DAConnectionFailedMessage;
+			MessageBox.Show(CustomMessageBox.Error(message, Lang.DAConnectionFailedTitle));
+
+			if (isDownloadLimit)
+			{
+				var openPetition = MessageBox.Show(CustomMessageBox.Ask(
+					"Would you like to open the petition to remove this limit in your browser?",
+					"Sign the Petition"));
+				if (openPetition == MessageBoxResult.Yes)
+				{
+					Process.Start(new ProcessStartInfo("https://www.change.org/p/remove-the-deviantart-download-limit") { UseShellExecute = true });
+				}
+			}
 			CloseDialog(ButtonResult.Cancel, null);
 			return;
 		}
