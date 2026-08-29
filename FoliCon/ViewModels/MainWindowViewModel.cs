@@ -358,14 +358,15 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             if (StopIconDownload)
             {
-                Logger.Debug("Search cancelled, skipping download phase.");
-                IsBusy = false;
-                IsMakeEnabled = _imgDownloadList.Count > 0;
-                return;
+                Logger.Debug("Search cancelled by user; proceeding to download and make icons. Total Icons: {ImgTotalIcons}",
+                    _imgDownloadList.Count);
+            }
+            else
+            {
+                Logger.Debug("Search completed. Total Icons: {ImgTotalIcons}",
+                    _imgDownloadList.Count);
             }
 
-            Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}",
-                _imgDownloadList.Count);
             await DownloadIconsOrEnableMake();
         }
         catch (Exception e)
@@ -822,6 +823,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         while (foldersQueue.Count > 0)
         {
+            if (StopIconDownload)
+            {
+                Logger.Debug("Professional search cancelled by user.");
+                break;
+            }
+
             var (folderPath, depth) = foldersQueue.Dequeue();
             Logger.Trace($"Processing Folder: {folderPath}");
             var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
