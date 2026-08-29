@@ -25,14 +25,21 @@
             <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="0" HorizontalScrollBarVisibility="Disabled"
                              HorizontalAlignment="Stretch"
                              VerticalAlignment="Stretch" ui:ScrollViewerBehavior.AutoScroll="True">
+                <!--
+                    FindAncestor is required here, not ElementName: BindingPath, DoubleClickCommand,
+                    and ClickCommand are DependencyProperties on ImageGalleryControl (the UserControl),
+                    not on the ItemsControl. ElementName pointing to the ItemsControl resolves to null
+                    because ItemsControl doesn't carry those properties — breaking image loading and
+                    click handling silently.
+                -->
                 <ItemsControl ItemsSource="{Binding ItemsSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Tag="{Binding}" Height="128" Width="128" extension:BindingPathExtensions.BindingPath="{Binding BindingPath, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ImageGalleryControl}}}" Unloaded="FrameworkElement_OnUnloaded"
+                            <Image Tag="{Binding}" Height="128" Width="128" extension:BindingPathExtensions.BindingPath="{Binding BindingPath, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Unloaded="FrameworkElement_OnUnloaded"
                                    RenderOptions.BitmapScalingMode="HighQuality" Margin="5, 5, 5, 5">
                                 <b:Interaction.Behaviors>
-                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" 
-                                                      DoubleClickCommand="{Binding Path=DoubleClickCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" 
+                                    <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
+                                                      DoubleClickCommand="{Binding Path=DoubleClickCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                                       ClickCommand="{Binding Path=ClickCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
                                 </b:Interaction.Behaviors>
                             </Image>

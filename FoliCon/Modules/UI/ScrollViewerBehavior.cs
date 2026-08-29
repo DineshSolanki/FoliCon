@@ -1,13 +1,17 @@
-﻿using ScrollViewer = System.Windows.Controls.ScrollViewer;
+﻿using System.Runtime.CompilerServices;
+using ScrollViewer = System.Windows.Controls.ScrollViewer;
 
 namespace FoliCon.Modules.UI;
 
 public static class ScrollViewerBehavior
 {
     private const double tolerance = 1.01;
-    private static bool _autoScroll = true;
+
+    /// <summary>Per-instance auto-scroll state — avoids cross-view contamination.</summary>
+    private static readonly ConditionalWeakTable<ScrollViewer, StrongBox<bool>> AutoScrollState = new();
+
     public static readonly DependencyProperty AutoScrollProperty =
-        DependencyProperty.RegisterAttached("AutoScroll", typeof(bool), typeof(ScrollViewerBehavior), 
+        DependencyProperty.RegisterAttached("AutoScroll", typeof(bool), typeof(ScrollViewerBehavior),
             new PropertyMetadata(false, AutoScrollChanged));
 
     public static bool GetAutoScroll(DependencyObject obj) => (bool)obj.GetValue(AutoScrollProperty);
@@ -16,27 +20,31 @@ public static class ScrollViewerBehavior
 
     private static void AutoScrollChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ScrollViewer scrollViewer && e.NewValue is true)
+        if (d is not ScrollViewer scrollViewer || e.NewValue is not true)
         {
-            scrollViewer.ScrollChanged += OnScrollChanged;
+            return;
         }
+
+        AutoScrollState.GetOrCreateValue(scrollViewer)?.Value = true;
+        scrollViewer.ScrollChanged += OnScrollChanged;
     }
-    
+
     private static void OnScrollChanged(object sender, ScrollChangedEventArgs ea)
     {
-        var scrollViewer = sender as ScrollViewer;
+        var scrollViewer = (ScrollViewer)sender;
+        var state = AutoScrollState.GetOrCreateValue(scrollViewer);
 
         if (Math.Abs(ea.ExtentHeightChange) <= double.Epsilon)
         {
-            _autoScroll = Math.Abs(scrollViewer!.VerticalOffset - scrollViewer.ScrollableHeight) <= tolerance;
+            state?.Value = Math.Abs(scrollViewer.VerticalOffset - scrollViewer.ScrollableHeight) <= tolerance;
             return;
         }
 
-        if (!_autoScroll)
+        if (state is not { Value: true })
         {
             return;
         }
 
-        scrollViewer!.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
+        scrollViewer.ScrollToVerticalOffset(scrollViewer.ExtentHeight);
     }
 }

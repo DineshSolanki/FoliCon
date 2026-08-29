@@ -394,6 +394,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         FileUtils.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
+        SearchAgainTitle = null;
         if (_i <= Fnames.Count - 1)
         {
             Logger.Info("Some titles are left, processed: {Processed}, total: {Total}", _i, Fnames.Count);
