@@ -431,27 +431,29 @@ public class DArt : BindableBase, IDisposable
             return;
         }
 
+        JObject? error = null;
         try
         {
-            var error = JObject.Parse(errorBody);
-            var errorCode = error.Value<int?>("error_code");
-            var description = error.Value<string>("error_description") ?? "";
-
-            switch (errorCode)
-            {
-                case 2 when description.Contains("download limit", StringComparison.OrdinalIgnoreCase):
-                    throw new LocalizedException(
-                        $"DeviantArt download limit reached: {description}",
-                        string.Format(Lang.DADownloadLimitMessage, DeviantArtAppConfig.downloadLimitPetitionUrl));
-            }
-        }
-        catch (LocalizedException)
-        {
-            throw;
+            error = JObject.Parse(errorBody);
         }
         catch (Exception ex)
         {
             Logger.Debug(ex, "Failed to parse DeviantArt API error body");
+        }
+
+        if (error == null)
+        {
+            return;
+        }
+
+        var errorCode = error.Value<int?>("error_code");
+        var description = error.Value<string>("error_description") ?? "";
+
+        if (errorCode == 2 && description.Contains("download limit", StringComparison.OrdinalIgnoreCase))
+        {
+            throw new LocalizedException(
+                $"DeviantArt download limit reached: {description}",
+                string.Format(Lang.DADownloadLimitMessage, DeviantArtAppConfig.downloadLimitPetitionUrl));
         }
     }
 

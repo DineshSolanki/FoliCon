@@ -140,7 +140,9 @@ internal sealed class DpapiPolymorphicJsonConverter<T> : STJ.JsonConverter<T>
         foreach (var property in value.GetType().GetProperties())
         {
             if (!property.CanRead || property.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>() != null)
+            {
                 continue;
+            }
 
             var propertyValue = property.GetValue(value);
             writer.WritePropertyName(property.Name);

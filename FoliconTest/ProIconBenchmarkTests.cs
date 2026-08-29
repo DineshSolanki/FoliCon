@@ -24,7 +24,11 @@ public sealed class ProIconBenchmarkTests : IDisposable
             FindTestProjectRoot(), "Resources", "ReferenceOverlays", "legacy_reference.png");
     }
 
-    public void Dispose() { }
+    public void Dispose()
+    {
+        // No unmanaged resources to dispose.
+        GC.SuppressFinalize(this);
+    }
 
     [Fact]
     public void Benchmark_ProIcon_GdiInterop_vs_WpfNative()
