@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -227,6 +227,20 @@ Intente usar una red o VPN diferente si el problema persiste.</value>
   <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>Error de conexión a DeviantArt</value>
   </data>
+  <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>Se ha alcanzado el límite de descarga semanal de DeviantArt. Vuelva a intentarlo la próxima semana o reduzca el número de descargas.
+
+Anuncio: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+Firme la petición para eliminar este límite:
+{0}</value>
+  </data>
+  <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>¿Desea abrir la petición para eliminar este límite en su navegador?</value>
+  </data>
+  <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>Firmar la petición</value>
+  </data>
   <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>Las funciones de DeviantArt no están disponibles. No se puede extraer la desviación.</value>
   </data>
@@ -331,6 +345,9 @@ y puede buscar "Juegos, películas y programas" y casi cualquier ícono de carpe
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} Icono creado</value>
+  </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{0} de {1} imágenes no se pudieron descargar</value>
   </data>
   <data name="IconMode" xml:space="preserve">
     <value>Modo de icono</value>

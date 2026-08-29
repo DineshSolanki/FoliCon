@@ -1,4 +1,4 @@
-<UserControl x:Class="FoliCon.Views.ProSearchResult"
+<UserControl x:Class="FoliCon.Views.ProSearchResult" x:Name="Root"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -80,10 +80,9 @@
                                 <Image Source="{Binding ThumbnailUrl}" Tag="{Binding}"
                                        RenderOptions.BitmapScalingMode="HighQuality">
                                     <i:Interaction.Behaviors>
-                                        <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}" DoubleClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                            AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.PickCommand)}"
-                                                               ClickCommand="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                            AncestorType={x:Type Window}}, Path=DataContext.(viewModels:ProSearchResultViewModel.OpenImageCommand)}"/>
+                                        <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
+                                                          DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
+                                                          ClickCommand="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"/>
                                     </i:Interaction.Behaviors>
                                     <Image.ContextMenu>
                                         <ContextMenu>

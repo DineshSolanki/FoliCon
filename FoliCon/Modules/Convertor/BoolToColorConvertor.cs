@@ -1,20 +1,27 @@
-﻿using Brushes = System.Windows.Media.Brushes;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace FoliCon.Modules.Convertor;
 
 public class BoolToColorConverter : IValueConverter
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private static readonly SolidColorBrush GreenBrush = MakeBrush(Colors.Green);
+    private static readonly SolidColorBrush RedBrush = MakeBrush(Colors.Red);
+
+    private static SolidColorBrush MakeBrush(System.Windows.Media.Color color)
+    {
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+        return brush;
+    }
+
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        Logger.Debug("Converting {Value} to color", value);
         if (value is not bool b)
         {
             return Brushes.Transparent;
         }
 
-        Logger.Debug("Value is bool");
-        return b ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
+        return b ? GreenBrush : RedBrush;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

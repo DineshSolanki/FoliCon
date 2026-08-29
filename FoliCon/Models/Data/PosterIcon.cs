@@ -42,9 +42,7 @@ public class PosterIcon : BindableBase, IDisposable
         try
         {
             var filePath = FileUtils.GetResourcePath("posterDummy.png");
-            var bytes = File.ReadAllBytes(filePath);
-            _memoryStream = new MemoryStream(bytes);
-            FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(_memoryStream);
+            LoadImage(filePath);
         }
         catch (Exception ex)
         {
@@ -63,15 +61,22 @@ public class PosterIcon : BindableBase, IDisposable
         RatingVisibility = ratingVisibility;
         Rating = rating;
         MockupVisibility = mockupVisibility;
-        var bytes = File.ReadAllBytes(folderJpgPath);
-        _memoryStream = new MemoryStream(bytes);
-        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(_memoryStream);
+        LoadImage(folderJpgPath);
     }
 
     public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility,
         string mediaTitle) : this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
     {
         MediaTitle = mediaTitle;
+    }
+
+    private void LoadImage(string filePath)
+    {
+        using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        _memoryStream = new MemoryStream();
+        fs.CopyTo(_memoryStream);
+        _memoryStream.Position = 0;
+        FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(_memoryStream);
     }
 
     private static RenderTargetBitmap CreatePlaceholderImage()

@@ -1,4 +1,4 @@
-﻿using FoliCon.Models.Configs;
+using FoliCon.Models.Configs;
 using HandyControl.Themes;
 
 namespace FoliCon.ViewModels;
@@ -236,7 +236,19 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     public DelegateCommand ShowPreviewer { get; private set; }
     public DelegateCommand OverlayStoreCommand { get; private set; }
     public DelegateCommand OverlayDesignerCommand { get; private set; }
-    public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
+    public DelegateCommand UpdateCommand { get; } = new(async void () =>
+    {
+        try
+        {
+            await FileUtils.CheckForUpdate();
+        }
+        catch (Exception e)
+        {
+            Logger.ForErrorEvent().Message("UpdateCommand: Exception Occurred. message: {Message}", e.Message)
+                .Exception(e).Log();
+            MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
+        }
+    });
 
     #endregion MenuItem Commands
 
@@ -302,6 +314,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async void SearchAndMakeMethod()
     {
         Logger.Debug("SearchAndMakeMethod Called.");
+        if (IsBusy)
+        {
+            Logger.Debug("SearchAndMakeMethod: Already busy, ignoring.");
+            return;
+        }
+
         try
         {
             if (!ValidateFolder())
@@ -323,6 +341,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             PrepareForSearchOperations();
 
+            StopIconDownload = false;
+            IsBusy = true;
+            BusyIndicatorProperties.Title = Lang.Searching;
+            BusyIndicatorProperties.Text = Lang.Searching;
+            BusyIndicatorProperties.Value = 0;
+
             if (IconMode == "Poster")
             {
                 await ProcessPosterModeAsync();
@@ -332,8 +356,17 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ProcessProfessionalMode(SelectedFolder);
             }
 
-            Logger.Debug("SearchAndMakeMethod: Start Downloading Icons. Total Icons: {ImgTotalIcons}",
-                _imgDownloadList.Count);
+            if (StopIconDownload)
+            {
+                Logger.Debug("Search cancelled by user; proceeding to download and make icons. Total Icons: {ImgTotalIcons}",
+                    _imgDownloadList.Count);
+            }
+            else
+            {
+                Logger.Debug("Search completed. Total Icons: {ImgTotalIcons}",
+                    _imgDownloadList.Count);
+            }
+
             await DownloadIconsOrEnableMake();
         }
         catch (Exception e)
@@ -456,6 +489,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         else
         {
+            IsBusy = false;
             IsMakeEnabled = true;
         }
     }
@@ -490,6 +524,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         while (folderQueue.Count > 0)
         {
+            if (StopIconDownload)
+            {
+                Logger.Debug("Search cancelled by user.");
+                break;
+            }
+
             var (folderPath, depth) = folderQueue.Dequeue();
             var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
 
@@ -546,6 +586,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         foreach (var itemTitle in subfolderNames)
         {
+            if (StopIconDownload)
+            {
+                return true;
+            }
+
             if (await ProcessItemAsync(folderPath, itemTitle))
             {
                 return true;
@@ -558,6 +603,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         var fullFolderPath = Path.Combine(folderPath, itemTitle);
         Logger.Debug("Processing Folder: {FullFolderPath}", fullFolderPath);
+
+        BusyIndicatorProperties.Text = $"{StatusBarProperties.ProcessedFolder + 1}/{StatusBarProperties.TotalFolders}: {itemTitle}";
+        BusyIndicatorProperties.Value = StatusBarProperties.ProcessedFolder;
+        BusyIndicatorProperties.Max = StatusBarProperties.TotalFolders;
 
         var (response, parsedTitle, isPickedById, mediaType) = await PerformPreprocessing(itemTitle, fullFolderPath);
         var resultCount = CalculateResultCount(response, isPickedById);
@@ -583,8 +632,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             case 0 when !IsSkipAmbiguous:
                 return await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById);
             case 1 when !IsPosterWindowShown:
-                ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
-                return (true, false);
+                var picked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
+                return (picked, false);
             default:
                 return resultCount >= 1
                     ? await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById)
@@ -669,7 +718,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
     }
 
-    private void ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath,
+    private bool ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath,
         bool isPickedById, string mediaType)
     {
         Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
@@ -678,11 +727,21 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             if (isPickedById ? mediaType == MediaTypes.game : SearchMode == MediaTypes.game)
             {
+                if (response.Result.Length == 0)
+                {
+                    Logger.Warn("Result reported 1 match but results array is empty for {ItemTitle}", itemTitle);
+                    return false;
+                }
                 var result = response.Result[0];
                 _igdbObject.ResultPicked(result, fullFolderPath);
             }
             else
             {
+                if (!isPickedById && response.Result.Results.Count == 0)
+                {
+                    Logger.Warn("Result reported 1 match but Results list is empty for {ItemTitle}", itemTitle);
+                    return false;
+                }
                 var result = isPickedById
                     ? response.Result
                     : response.Result.Results[0];
@@ -701,7 +760,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 #if DEBUG
             MessageBox.Show(CustomMessageBox.Warning(ex.Message, Lang.ExceptionOccurred));
 #endif
+            return false;
         }
+        return true;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(
@@ -762,6 +823,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         while (foldersQueue.Count > 0)
         {
+            if (StopIconDownload)
+            {
+                Logger.Debug("Professional search cancelled by user.");
+                break;
+            }
+
             var (folderPath, depth) = foldersQueue.Dequeue();
             Logger.Trace($"Processing Folder: {folderPath}");
             var subfolderNames = FileUtils.GetFolderNames(folderPath, IncludeAlreadyProcessed);
@@ -1040,6 +1107,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task StartDownloadingAsync()
     {
         IsMakeEnabled = false;
+        BusyIndicatorProperties.Title = Lang.DownloadingIcons;
         StatusBarProperties.AppStatus = Lang.CreatingIcons;
         await DownloadAndMakeIconsAsync();
         StatusBarProperties.AppStatus = Lang.Idle;
@@ -1049,54 +1117,86 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task DownloadAndMakeIconsAsync()
     {
         StopIconDownload = false;
-        IsBusy = true;
-        var i = 0;
-        Logger.Debug("Start Downloading Icons. Total Icons: {ImgDownloadCount}", _imgDownloadList.Count);
-        foreach (var img in _imgDownloadList)
-        {
-            if (StopIconDownload)
-            {
-                Logger.Debug("StopIconDownload is true, breaking loop and making icons.");
-                await MakeIcons();
-                IsMakeEnabled = true;
-                StatusBarProperties.ProgressBarData.Value = StatusBarProperties.ProgressBarData.Max;
-                return;
-            }
+        var completedCount = 0;
+        var totalCount = _imgDownloadList.Count;
+        Logger.Debug("Start Downloading Icons. Total Icons: {ImgDownloadCount}", totalCount);
 
-            try
+        await Parallel.ForEachAsync(_imgDownloadList,
+            new ParallelOptions { MaxDegreeOfParallelism = 4 },
+            async (img, _) =>
             {
-                if (img.RemotePath.IsFile)
+                if (StopIconDownload)
                 {
-                    File.Move(img.RemotePath.LocalPath, img.LocalPath, true);
+                    return;
                 }
-                else
+
+                try
                 {
-                    await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                    if (img.RemotePath.IsFile)
+                    {
+                        File.Move(img.RemotePath.LocalPath, img.LocalPath, true);
+                    }
+                    else
+                    {
+                        await NetworkUtils.DownloadImageFromUrlAsync(img.RemotePath, img.LocalPath);
+                    }
                 }
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                Logger.ForExceptionEvent(e).Message("UnauthorizedAccessException Occurred while downloading image from url." +
-                                                    " message: {Message}", e.Message)
-                    .Property("Image", img)
-                    .Log();
-                MessageBox.Show(CustomMessageBox.Error(Lang.FailedFileAccessAt.Format(Directory.GetParent(img.LocalPath)),
-                    Lang.UnauthorizedAccess));
-                continue;
-            }
-            i += 1;
-            BusyIndicatorProperties.Text = Lang.DownloadingIconWithCount
-                .Format(i, BusyIndicatorProperties.Max);
-            BusyIndicatorProperties.Value = i;
-            StatusBarProperties.ProgressBarData.Value = i;
-        }
+                catch (UnauthorizedAccessException e)
+                {
+                    Logger.ForExceptionEvent(e)
+                        .Message("UnauthorizedAccessException Occurred while downloading image from url. message: {Message}", e.Message)
+                        .Property("Image", img)
+                        .Log();
+                    MessageBox.Show(CustomMessageBox.Error(
+                        Lang.FailedFileAccessAt.Format(Directory.GetParent(img.LocalPath)),
+                        Lang.UnauthorizedAccess));
+                    return;
+                }
+                catch (HttpRequestException e)
+                {
+                    Logger.Warn(e, "Failed to download image from {Url}", img.RemotePath);
+                    return;
+                }
+
+                var current = Interlocked.Increment(ref completedCount);
+                BusyIndicatorProperties.Text = Lang.DownloadingIconWithCount
+                    .Format(current, totalCount);
+                BusyIndicatorProperties.Value = current;
+                StatusBarProperties.ProgressBarData.Value = current;
+            });
 
         IsBusy = false;
-        if (StatusBarProperties.ProgressBarData.Value == StatusBarProperties.ProgressBarData.Max)
+        if (completedCount > 0)
         {
-            Logger.Debug("All Icons Downloaded, Making Icons.");
+            if (completedCount < totalCount)
+            {
+                var failedCount = totalCount - completedCount;
+                Logger.Warn("Only {Completed} of {Total} images downloaded successfully.", completedCount, totalCount);
+                Growl.WarningGlobal(new GrowlInfo
+                {
+                    Message = Lang.DownloadFailedWithCount.Format(failedCount, totalCount),
+                    ShowDateTime = false,
+                    StaysOpen = false,
+                    ConfirmStr = Lang.Confirm
+                });
+            }
+            Logger.Debug("Making Icons from {Count} downloaded images.", completedCount);
             IsBusy = true;
             await MakeIcons();
+        }
+        else if (StopIconDownload)
+        {
+            Logger.Debug("StopIconDownload is true before any downloads completed.");
+        }
+        else
+        {
+            Growl.WarningGlobal(new GrowlInfo
+            {
+                Message = Lang.DownloadFailedWithCount.Format(totalCount, totalCount),
+                ShowDateTime = false,
+                StaysOpen = false,
+                ConfirmStr = Lang.Confirm
+            });
         }
 
         IsMakeEnabled = true;
@@ -1105,12 +1205,17 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private async Task MakeIcons()
     {
         IsBusy = true;
+        BusyIndicatorProperties.Title = Lang.CreatingIcons;
         var iconProcessedCount = await Task.Run(()=>IconUtils.MakeIco(IconMode,
             SelectedFolder,
             _pickedListDataTable,
             IsRatingVisible,
             IsPosterMockupUsed,
-            new Progress<ProgressBarData>(value => BusyIndicatorProperties = value),
+            new Progress<ProgressBarData>(value =>
+            {
+                value.Title = Lang.CreatingIcons;
+                BusyIndicatorProperties = value;
+            }),
             IncludeAlreadyProcessed));
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;

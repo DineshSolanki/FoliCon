@@ -37,7 +37,17 @@ public class AppConfig : GlobalDataHelper
     public string ContextEntryName { get; set; } = "Create icons with FoliCon";
     public bool IsExplorerIntegrated { get; set; }
     public override string FileName { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"FoliConConfig.json");
-    public override JsonSerializerOptions JsonSerializerOptions { get; set; }
+    private JsonSerializerOptions? _jsonSerializerOptions;
+    public override JsonSerializerOptions JsonSerializerOptions
+    {
+        get => _jsonSerializerOptions ?? new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true,
+            Converters = { new DpapiEncryptingConverter() }
+        };
+        set => _jsonSerializerOptions = value;
+    }
     public override int FileVersion { get; set; }
 
     public bool SubfolderProcessingEnabled { get; set; }
@@ -46,4 +56,23 @@ public class AppConfig : GlobalDataHelper
     public ObservableCollection<Pattern> Patterns { get; set; } =
         [new Pattern("^[0-9]{1,2}x[0-9]{1,2}", false, true), new Pattern("S[0-9]{1,2}E[0-9]", false, true),
             new Pattern("Season [0-9]{1,2} Episode [0-9]{1,2}", false, true), new Pattern("\\S+", true, true)];
+
+    /// <summary>
+    /// Hides <see cref="GlobalDataHelper.Save()"/> to use <see cref="DpapiPolymorphicJsonConverter{T}"/>
+    /// which tracks property names during serialization, enabling selective encryption.
+    /// The base implementation delegates to <c>JsonFile.Save</c> which adds
+    /// HandyControls' <c>PolymorphicJsonConverter</c> that doesn't track property names.
+    /// </summary>
+    public new void Save()
+    {
+        var directory = Path.GetDirectoryName(FileName);
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+        var options = JsonSerializerOptions;
+        options.Converters.Add(new DpapiPolymorphicJsonConverter<AppConfig>());
+        var json = System.Text.Json.JsonSerializer.Serialize(this, options);
+        File.WriteAllText(FileName, json);
+    }
 }

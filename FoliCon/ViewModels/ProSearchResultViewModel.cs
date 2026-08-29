@@ -259,9 +259,29 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         }
         catch (Exception ex)
         {
-            Logger.Error(ex, "DeviantArt search failed for query: {Query}", query);
-            IsBusy = false;
-            MessageBox.Show(CustomMessageBox.Error(Lang.DAConnectionFailedMessage, Lang.DAConnectionFailedTitle));
+            HandleSearchException(ex, query);
+        }
+    }
+
+    private void HandleSearchException(Exception ex, string query)
+    {
+        Logger.Error(ex, "DeviantArt search failed for query: {Query}", query);
+        IsBusy = false;
+        var isDownloadLimit = ex is LocalizedException { Message: var m } && m.Contains("download limit");
+        var message = ex is LocalizedException le ? le.LocalizedMessage : Lang.DAConnectionFailedMessage;
+        MessageBox.Show(CustomMessageBox.Error(message, Lang.DAConnectionFailedTitle));
+
+        if (!isDownloadLimit)
+        {
+            return;
+        }
+
+        var openPetition = MessageBox.Show(CustomMessageBox.Ask(
+            Lang.DADownloadLimitPetitionPrompt,
+            Lang.DADownloadLimitPetitionTitle));
+        if (openPetition == MessageBoxResult.Yes)
+        {
+            Process.Start(new ProcessStartInfo(DeviantArtAppConfig.downloadLimitPetitionUrl) { UseShellExecute = true });
         }
     }
 
@@ -394,6 +414,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         FileUtils.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
+        SearchAgainTitle = null;
         if (_i <= Fnames.Count - 1)
         {
             Logger.Info("Some titles are left, processed: {Processed}, total: {Total}", _i, Fnames.Count);

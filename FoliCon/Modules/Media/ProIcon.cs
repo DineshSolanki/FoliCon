@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules.Media;
+namespace FoliCon.Modules.Media;
 
 public class ProIcon(string filePath)
 {
@@ -6,15 +6,15 @@ public class ProIcon(string filePath)
 
     public Bitmap RenderToBitmap()
     {
-        Logger.Debug("Rendering icon to bitmap");
-        return PosterIconBase.RenderTargetBitmapTo32BppArgb(AsRenderTargetBitmap());
-    }
-
-    private BitmapSource AsRenderTargetBitmap()
-    {
-        using var img = new Bitmap(filePath);
-        using var icon = new Bitmap(img, 256, 256);
-        Logger.Debug("Icon resized to 256x256, filePath: {FilePath}", filePath);
-        return ImageUtils.LoadBitmap(icon);
+        Logger.Debug("Rendering icon to bitmap, filePath: {FilePath}", filePath);
+        var bi = new BitmapImage();
+        bi.BeginInit();
+        bi.UriSource = new Uri(filePath, UriKind.Absolute);
+        bi.DecodePixelWidth = 256;
+        bi.DecodePixelHeight = 256;
+        bi.CacheOption = BitmapCacheOption.OnLoad;
+        bi.EndInit();
+        bi.Freeze();
+        return PosterIconBase.RenderTargetBitmapTo32BppArgb(bi);
     }
 }

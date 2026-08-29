@@ -333,7 +333,7 @@ public static class FileUtils
 
     public static async Task CheckForUpdate() => await CheckForUpdate(false);
 
-    public static async Task CheckForUpdate(bool onlyShowIfUpdateAvailable)
+    private static async Task CheckForUpdate(bool onlyShowIfUpdateAvailable)
     {
         Logger.Debug("Checking for Update");
 

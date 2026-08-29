@@ -1,4 +1,6 @@
 ﻿using System.Windows.Documents;
+using Polly;
+using Polly.Retry;
 using TMDbLib.Objects.Find;
 
 #nullable enable
@@ -12,10 +14,35 @@ internal class TmdbService
     private readonly TMDbClient _serviceClient;
     private readonly Dictionary<string, Func<int, Task<object?>>> _mediaTypeHandlers;
 
+    private static readonly ResiliencePipeline RetryPipeline = new ResiliencePipelineBuilder()
+        .AddRetry(new RetryStrategyOptions
+        {
+            MaxRetryAttempts = 2,
+            BackoffType = DelayBackoffType.Exponential,
+            Delay = TimeSpan.FromSeconds(1),
+            UseJitter = true,
+            ShouldHandle = new PredicateBuilder()
+                .Handle<HttpRequestException>(ex =>
+                    ex.InnerException is IOException or System.Net.Sockets.SocketException ||
+                    ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
+                .Handle<IOException>()
+                .Handle<System.Net.Sockets.SocketException>(),
+            OnRetry = args =>
+            {
+                Logger.Warn(args.Outcome.Exception,
+                    "GetConfigAsync attempt {Attempt} failed, retrying...", args.AttemptNumber + 1);
+                return ValueTask.CompletedTask;
+            }
+        })
+        .Build();
+
     public TmdbService(TMDbClient serviceClient)
     {
         _serviceClient = serviceClient;
-        _ = _serviceClient.GetConfigAsync().Result;
+        // GetConfigAsync intermittently fails with transient SSL/connection-reset errors; retry before giving up.
+        // GetAwaiter().GetResult() (not .Result) so the original HttpRequestException isn't wrapped in an
+        // AggregateException, which would otherwise bypass the retry filter.
+        RetryPipeline.Execute(_ => _serviceClient.GetConfigAsync().GetAwaiter().GetResult());
         _mediaTypeHandlers = new Dictionary<string, Func<int, Task<object?>>>
         {
             { MediaTypes.movie, async id => await _serviceClient.GetMovieAsync(id) },

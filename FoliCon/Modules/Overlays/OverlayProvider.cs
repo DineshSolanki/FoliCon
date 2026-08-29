@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 using System;
@@ -17,10 +17,12 @@ public class OverlayProvider : IOverlayProvider
     private readonly string _userOverlaysPath;
     private readonly List<PosterOverlayDefinition> _builtInOverlays = [];
     private readonly List<PosterOverlayDefinition> _userOverlays = [];
+    private IReadOnlyList<PosterOverlayDefinition>? _allOverlaysCache;
+    private Dictionary<string, PosterOverlayDefinition>? _overlayByIdCache;
 
-    public OverlayProvider()
+    public OverlayProvider(string? userOverlaysPath = null)
     {
-        _userOverlaysPath = Path.Combine(
+        _userOverlaysPath = userOverlaysPath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "FoliCon", OverlayConstants.overlaysFolder);
 
@@ -28,14 +30,15 @@ public class OverlayProvider : IOverlayProvider
         LoadUserOverlays();
     }
 
-    public IReadOnlyList<PosterOverlayDefinition> GetAllOverlays() => _builtInOverlays.Concat(_userOverlays).ToList().AsReadOnly();
+    public IReadOnlyList<PosterOverlayDefinition> GetAllOverlays() =>
+        _allOverlaysCache ??= _builtInOverlays.Concat(_userOverlays).ToList().AsReadOnly();
 
     public IReadOnlyList<PosterOverlayDefinition> GetUserOverlays() => _userOverlays.AsReadOnly();
 
     public PosterOverlayDefinition? GetOverlayById(string id)
     {
-        return GetAllOverlays().FirstOrDefault(o =>
-            string.Equals(o.Id, id, StringComparison.OrdinalIgnoreCase));
+        _overlayByIdCache ??= BuildOverlayByIdCache();
+        return _overlayByIdCache.GetValueOrDefault(id);
     }
 
     public PosterOverlayDefinition ResolveActiveOverlayOrDefault(string? activeOverlayId)
@@ -110,6 +113,7 @@ public class OverlayProvider : IOverlayProvider
         }
 
         Logger.Info("Loaded {Count} built-in overlays", _builtInOverlays.Count);
+        InvalidateCache();
     }
 
     private void LoadUserOverlays()
@@ -119,6 +123,7 @@ public class OverlayProvider : IOverlayProvider
         if (!Directory.Exists(_userOverlaysPath))
         {
             Logger.Debug("User overlays directory does not exist: {Path}", _userOverlaysPath);
+            InvalidateCache();
             return;
         }
 
@@ -175,6 +180,23 @@ public class OverlayProvider : IOverlayProvider
         }
 
         Logger.Info("Loaded {Count} user overlays", _userOverlays.Count);
+        InvalidateCache();
+    }
+
+    private void InvalidateCache()
+    {
+        _allOverlaysCache = null;
+        _overlayByIdCache = null;
+    }
+
+    private Dictionary<string, PosterOverlayDefinition> BuildOverlayByIdCache()
+    {
+        var dict = new Dictionary<string, PosterOverlayDefinition>(StringComparer.OrdinalIgnoreCase);
+        foreach (var overlay in _builtInOverlays.Concat(_userOverlays))
+        {
+            dict.TryAdd(overlay.Id, overlay);
+        }
+        return dict;
     }
 
     private static string? LoadEmbeddedResource(string resourceName)

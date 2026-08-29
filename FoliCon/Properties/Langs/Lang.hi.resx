@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -227,6 +227,20 @@
   <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>DeviantArt कनेक्शन विफल</value>
   </data>
+  <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>DeviantArt की साप्ताहिक डाउनलोड सीमा समाप्त हो गई है। कृपया अगले सप्ताह पुनः प्रयास करें, या डाउनलोड की संख्या कम करें।
+
+घोषणा: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+इस सीमा को हटाने के लिए याचिका पर हस्ताक्षर करें:
+{0}</value>
+  </data>
+  <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>क्या आप इस सीमा को हटाने की याचिका को अपने ब्राउज़र में खोलना चाहते हैं?</value>
+  </data>
+  <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>याचिका पर हस्ताक्षर करें</value>
+  </data>
   <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>DeviantArt सुविधाएं उपलब्ध नहीं हैं। विचलन निकाला नहीं जा सकता।</value>
   </data>
@@ -331,6 +345,9 @@
   </data>
   <data name="IconCreatedWithCount" xml:space="preserve">
     <value>{0} आइकन बनाए गए</value>
+  </data>
+  <data name="DownloadFailedWithCount" xml:space="preserve">
+    <value>{1} में से {0} छवियाँ डाउनलोड करने में विफल</value>
   </data>
   <data name="IconMode" xml:space="preserve">
     <value>आइकन मोड</value>

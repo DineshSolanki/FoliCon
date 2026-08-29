@@ -30,11 +30,12 @@
     <hc:BusyIndicator IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
-                <StackPanel Margin="4" HorizontalAlignment="Stretch">
-                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.DownloadingIcons}}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
+                <StackPanel Margin="4" HorizontalAlignment="Stretch" Width="350">
+                    <TextBlock Text="{Binding Path=DataContext.BusyIndicatorProperties.Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" FontWeight="Bold" HorizontalAlignment="Stretch"/>
                     <StackPanel Margin="4">
                         <TextBlock
-                            Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" />
+                            Text="{Binding Path=DataContext.BusyIndicatorProperties.Text, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                            TextTrimming="CharacterEllipsis" />
                         <ProgressBar Style="{DynamicResource ProgressBarSuccessStripe}"
                                      Value="{Binding Path=DataContext.BusyIndicatorProperties.Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                                      Maximum="{Binding Path=DataContext.BusyIndicatorProperties.Max, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
@@ -56,7 +57,7 @@
         <Grid>
             <Menu IsMainMenu="True" Grid.Row="0">
                 <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
-                    <CheckBox x:Name="ChkIsRatingVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}" 
+                    <CheckBox x:Name="ChkIsRatingVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
                               ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" IsChecked="{Binding IsRatingVisible}"/>
                     <CheckBox x:Name="ChkPosterShown" Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
                               IsChecked="{Binding IsPosterWindowShown}"
@@ -151,7 +152,7 @@
                     <Grid HorizontalAlignment="Stretch" >
                         <TextBlock Text="{Binding SelectedFolder}" FontStyle="Italic" Foreground="{DynamicResource PrimaryTextBrush}"
                                    HorizontalAlignment="Center" VerticalAlignment="Top" />
-                        
+
                         <Path Data="M8,5C4.699219,5 2,7.699219 2,11 2,13.171875 3.261719,14.949219 5,16L5,24.40625 5.28125,24.71875 7.28125,26.71875 8,27.40625 8.71875,26.71875 10.71875,24.71875 11,24.40625 11,16C12.738281,14.949219 14,13.171875 14,11 14,7.699219 11.300781,5 8,5z M8,7C10.21875,7 12,8.78125 12,11 12,12.648438 11.003906,14.039063 9.59375,14.65625L9,14.9375 9,17 8,17 8,19 9,19 9,20 8,20 8,22 9,22 9,23.5625 8,24.5625 7,23.5625 7,14.9375 6.40625,14.65625C4.996094,14.039063 4,12.648438 4,11 4,8.78125 5.78125,7 8,7z M8,9C6.894531,9,6,9.894531,6,11L10,11C10,9.894531,9.105469,9,8,9z M16,9L16,15 30,15 30,9z M18,11L28,11 28,13 18,13z M16,16L16,22 30,22 30,16z M18,18L28,18 28,20 18,20z"
                               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="15,0"
                               Fill="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToColorConverter}}">
@@ -252,9 +253,12 @@
                             Height="76" hc:IconElement.Geometry="{StaticResource MakeIconsGeometry}" hc:IconElement.Height="25"/>
                 </Grid>
                 <ListView x:Name="FinalList" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0"
-                          ItemsSource="{Binding FinalListViewData.Data}"
-                          SelectedItem="{Binding FinalListViewData.SelectedItem}"
-                          hc:Empty.ShowEmpty="true">
+                        VirtualizingPanel.IsVirtualizing="True"
+                        VirtualizingPanel.VirtualizationMode="Recycling"
+                        ScrollViewer.CanContentScroll="True"
+                        ItemsSource="{Binding FinalListViewData.Data}"
+                        SelectedItem="{Binding FinalListViewData.SelectedItem}"
+                        hc:Empty.ShowEmpty="true">
                     <hc:Interaction.Triggers>
                         <hc:EventTrigger EventName="MouseDoubleClick">
                             <hc:LaunchUriOrFileAction Path="{Binding FinalListViewData.SelectedItem.Folder}" />
