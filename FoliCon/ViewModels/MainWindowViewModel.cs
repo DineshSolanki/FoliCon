@@ -236,7 +236,19 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     public DelegateCommand ShowPreviewer { get; private set; }
     public DelegateCommand OverlayStoreCommand { get; private set; }
     public DelegateCommand OverlayDesignerCommand { get; private set; }
-    public DelegateCommand UpdateCommand { get; } = new(() => FileUtils.CheckForUpdate());
+    public DelegateCommand UpdateCommand { get; } = new(async void () =>
+    {
+        try
+        {
+            await FileUtils.CheckForUpdate();
+        }
+        catch (Exception e)
+        {
+            Logger.ForErrorEvent().Message("UpdateCommand: Exception Occurred. message: {Message}", e.Message)
+                .Exception(e).Log();
+            MessageBox.Show(CustomMessageBox.Error(e.Message, Lang.ExceptionOccurred));
+        }
+    });
 
     #endregion MenuItem Commands
 
