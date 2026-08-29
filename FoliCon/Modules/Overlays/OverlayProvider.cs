@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 using System;
@@ -20,9 +20,9 @@ public class OverlayProvider : IOverlayProvider
     private IReadOnlyList<PosterOverlayDefinition>? _allOverlaysCache;
     private Dictionary<string, PosterOverlayDefinition>? _overlayByIdCache;
 
-    public OverlayProvider()
+    public OverlayProvider(string? userOverlaysPath = null)
     {
-        _userOverlaysPath = Path.Combine(
+        _userOverlaysPath = userOverlaysPath ?? Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "FoliCon", OverlayConstants.overlaysFolder);
 
@@ -123,6 +123,7 @@ public class OverlayProvider : IOverlayProvider
         if (!Directory.Exists(_userOverlaysPath))
         {
             Logger.Debug("User overlays directory does not exist: {Path}", _userOverlaysPath);
+            InvalidateCache();
             return;
         }
 

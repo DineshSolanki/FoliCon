@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- 
       Microsoft ResX Schema 
@@ -227,6 +227,20 @@ Try using a different network or VPN if the problem persists.</value>
   </data>
     <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>DeviantArt Connection Failed</value>
+  </data>
+    <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>DeviantArt weekly download limit has been reached. Please try again next week, or reduce the number of downloads.
+
+Announcement: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+Sign the petition to remove this limit:
+{0}</value>
+  </data>
+    <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>Would you like to open the petition to remove this limit in your browser?</value>
+  </data>
+    <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>Sign the Petition</value>
   </data>
     <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>DeviantArt features are unavailable. Cannot extract deviation.</value>

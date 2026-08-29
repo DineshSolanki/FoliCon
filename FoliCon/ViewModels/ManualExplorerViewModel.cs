@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ManualExplorerViewModel : BindableBase, IDialogAware
@@ -101,11 +101,11 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			if (isDownloadLimit)
 			{
 				var openPetition = MessageBox.Show(CustomMessageBox.Ask(
-					"Would you like to open the petition to remove this limit in your browser?",
-					"Sign the Petition"));
+					Lang.DADownloadLimitPetitionPrompt,
+					Lang.DADownloadLimitPetitionTitle));
 				if (openPetition == MessageBoxResult.Yes)
 				{
-					Process.Start(new ProcessStartInfo("https://www.change.org/p/remove-the-deviantart-download-limit") { UseShellExecute = true });
+					Process.Start(new ProcessStartInfo(DeviantArtAppConfig.DownloadLimitPetitionUrl) { UseShellExecute = true });
 				}
 			}
 			CloseDialog(ButtonResult.Cancel, null);

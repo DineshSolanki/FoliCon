@@ -119,7 +119,10 @@ namespace FoliCon.ViewModels
         private async Task RebuildPreviewsAsync()
         {
             // Cancel any pending rebuild so rapid property changes don't overlap
-            await _rebuildCts?.CancelAsync();
+            if (_rebuildCts != null)
+            {
+                await _rebuildCts.CancelAsync();
+            }
             _rebuildCts = new CancellationTokenSource();
             var token = _rebuildCts.Token;
 

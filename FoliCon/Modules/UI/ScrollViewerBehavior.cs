@@ -20,13 +20,22 @@ public static class ScrollViewerBehavior
 
     private static void AutoScrollChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is not ScrollViewer scrollViewer || e.NewValue is not true)
+        if (d is not ScrollViewer scrollViewer)
         {
             return;
         }
 
-        AutoScrollState.GetOrCreateValue(scrollViewer)?.Value = true;
-        scrollViewer.ScrollChanged += OnScrollChanged;
+        if (e.NewValue is true)
+        {
+            AutoScrollState.GetOrCreateValue(scrollViewer)?.Value = true;
+            scrollViewer.ScrollChanged -= OnScrollChanged;
+            scrollViewer.ScrollChanged += OnScrollChanged;
+        }
+        else
+        {
+            AutoScrollState.Remove(scrollViewer);
+            scrollViewer.ScrollChanged -= OnScrollChanged;
+        }
     }
 
     private static void OnScrollChanged(object sender, ScrollChangedEventArgs ea)

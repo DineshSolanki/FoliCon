@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -227,6 +227,20 @@
   <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>فشل الاتصال بـ DeviantArt</value>
   </data>
+  <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>تم الوصول إلى حد التنزيل الأسبوعي لـ DeviantArt. يرجى المحاولة مرة أخرى الأسبوع القادم، أو تقليل عدد التنزيلات.
+
+الإعلان: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+وقّع على العريضة لإزالة هذا الحد:
+{0}</value>
+  </data>
+  <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>هل ترغب في فتح العريضة لإزالة هذا الحد في متصفحك؟</value>
+  </data>
+  <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>توقيع العريضة</value>
+  </data>
   <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>ميزات DeviantArt غير متاحة. لا يمكن استخراج الانحراف.</value>
   </data>
@@ -332,7 +346,7 @@
     <value>{0} تم إنشاء الرمز</value>
   </data>
   <data name="DownloadFailedWithCount" xml:space="preserve">
-    <value>{0} من {1} صورة فشل تنزيلها</value>
+    <value>فشل تنزيل {0} من أصل {1}</value>
   </data>
   <data name="IconMode" xml:space="preserve">
     <value>وضع الأيقونة</value>

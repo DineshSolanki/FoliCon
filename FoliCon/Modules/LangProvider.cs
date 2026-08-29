@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 
 namespace FoliCon.Properties.Langs;
 
@@ -290,6 +290,9 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(DeviantArtTokenRefreshFailed));
         OnPropertyChanged(nameof(DeviantArtClientCredentialsFailed));
         OnPropertyChanged(nameof(DeviantArtClientAuthFailed));
+        OnPropertyChanged(nameof(DADownloadLimitMessage));
+        OnPropertyChanged(nameof(DADownloadLimitPetitionPrompt));
+        OnPropertyChanged(nameof(DADownloadLimitPetitionTitle));
         OnPropertyChanged(nameof(WatcherWallBadge));
         OnPropertyChanged(nameof(WatcherWallConfirmTitle));
         OnPropertyChanged(nameof(WatcherWallConfirmMessage));
@@ -836,6 +839,9 @@ public class LangProvider : INotifyPropertyChanged
     public string DeviantArtTokenRefreshFailed => Lang.DeviantArtTokenRefreshFailed;
     public string DeviantArtClientCredentialsFailed => Lang.DeviantArtClientCredentialsFailed;
     public string DeviantArtClientAuthFailed => Lang.DeviantArtClientAuthFailed;
+    public string DADownloadLimitMessage => Lang.DADownloadLimitMessage;
+    public string DADownloadLimitPetitionPrompt => Lang.DADownloadLimitPetitionPrompt;
+    public string DADownloadLimitPetitionTitle => Lang.DADownloadLimitPetitionTitle;
     public string WatcherWallBadge => Lang.WatcherWallBadge;
     public string WatcherWallConfirmTitle => Lang.WatcherWallConfirmTitle;
     public string WatcherWallConfirmMessage => Lang.WatcherWallConfirmMessage;
@@ -1386,6 +1392,9 @@ public static class LangKeys
     public static readonly string DeviantArtTokenRefreshFailed = nameof(DeviantArtTokenRefreshFailed);
     public static readonly string DeviantArtClientCredentialsFailed = nameof(DeviantArtClientCredentialsFailed);
     public static readonly string DeviantArtClientAuthFailed = nameof(DeviantArtClientAuthFailed);
+    public static readonly string DADownloadLimitMessage = nameof(DADownloadLimitMessage);
+    public static readonly string DADownloadLimitPetitionPrompt = nameof(DADownloadLimitPetitionPrompt);
+    public static readonly string DADownloadLimitPetitionTitle = nameof(DADownloadLimitPetitionTitle);
     public static readonly string WatcherWallBadge = nameof(WatcherWallBadge);
     public static readonly string WatcherWallConfirmTitle = nameof(WatcherWallConfirmTitle);
     public static readonly string WatcherWallConfirmMessage = nameof(WatcherWallConfirmMessage);

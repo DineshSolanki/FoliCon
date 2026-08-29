@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text.Json;
 using FoliCon.Modules.Configuration;
 
@@ -85,5 +85,24 @@ public class AppConfigTests : IDisposable
             System.Security.Cryptography.DataProtectionScope.CurrentUser);
 
         Assert.Equal(plaintext, System.Text.Encoding.UTF8.GetString(decryptedBytes));
+    }
+
+    [Fact]
+    public void Save_WhenDirectoryDoesNotExist_CreatesParentDirectoryAndSavesFile()
+    {
+        var nestedDir = Path.Combine(_root, "nested", "subfolder");
+        var filePath = Path.Combine(nestedDir, "Config.json");
+
+        var config = new AppConfig
+        {
+            FileName = filePath,
+            ContextEntryName = "Nested Save Test"
+        };
+
+        Assert.False(Directory.Exists(nestedDir));
+        config.Save();
+        Assert.True(Directory.Exists(nestedDir));
+        Assert.True(File.Exists(filePath));
+        Assert.False(Directory.Exists(filePath));
     }
 }

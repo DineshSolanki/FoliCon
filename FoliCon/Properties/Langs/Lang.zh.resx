@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -226,6 +226,20 @@
   </data>
   <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>DeviantArt连接失败</value>
+  </data>
+  <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>已达到 DeviantArt 每周下载上限。请下周重试，或减少下载次数。
+
+公告: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+签署请愿书以解除此限制:
+{0}</value>
+  </data>
+  <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>是否要在浏览器中打开请愿书以解除此限制？</value>
+  </data>
+  <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>签署请愿书</value>
   </data>
   <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>DeviantArt功能不可用。无法提取偏差。</value>

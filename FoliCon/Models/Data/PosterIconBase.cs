@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Media;
 using Size = System.Windows.Size;
 
@@ -77,11 +77,15 @@ public abstract class PosterIconBase : UserControl
     {
         Logger.Trace("Converting RenderTargetBitmap to 32BppArgb");
 
-        var width = rtb.PixelWidth;
-        var height = rtb.PixelHeight;
+        var source = rtb.Format == PixelFormats.Pbgra32
+            ? rtb
+            : new FormatConvertedBitmap(rtb, PixelFormats.Pbgra32, null, 0);
+
+        var width = source.PixelWidth;
+        var height = source.PixelHeight;
         var stride = width * 4;
         var pixels = new byte[stride * height];
-        rtb.CopyPixels(pixels, stride, 0);
+        source.CopyPixels(pixels, stride, 0);
 
         // WPF renders as premultiplied BGRA (Pbgra32); GDI+ IconLib expects
         // non-premultiplied ARGB (Format32bppArgb). Un-premultiply in-place.

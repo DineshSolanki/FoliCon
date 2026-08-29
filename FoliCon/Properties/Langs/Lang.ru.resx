@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -226,6 +226,20 @@
   </data>
   <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>Ошибка подключения к DeviantArt</value>
+  </data>
+  <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>Достигнут недельный лимит загрузок DeviantArt. Пожалуйста, повторите попытку на следующей неделе или уменьшите количество загрузок.
+
+Объявление: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+Подпишите петицию об отмене этого лимита:
+{0}</value>
+  </data>
+  <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>Хотите открыть петицию об отмене этого лимита в браузере?</value>
+  </data>
+  <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>Подписать петицию</value>
   </data>
   <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>Функции DeviantArt недоступны. Невозможно извлечь отклонение.</value>

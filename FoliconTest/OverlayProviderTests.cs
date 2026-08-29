@@ -241,4 +241,46 @@ public class OverlayProviderTests
         Assert.NotNull(legacy);
         Assert.Null(legacy.BaseLayer);
     }
+
+    [Fact]
+    public void Refresh_WhenUserOverlaysDirectoryRemoved_InvalidatesCaches()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), $"FoliconOverlayTest_{Guid.NewGuid():N}");
+        try
+        {
+            var overlayDir = Path.Combine(tempDir, "custom-test-overlay");
+            Directory.CreateDirectory(overlayDir);
+            const string json = """
+                                {
+                                    "schemaVersion": 1,
+                                    "id": "custom-test-overlay",
+                                    "displayName": "Custom Test Overlay",
+                                    "author": "Test Author",
+                                    "version": "1.0.0",
+                                    "poster": { "margin": "0,0,0,0" }
+                                }
+                                """;
+            File.WriteAllText(Path.Combine(overlayDir, "overlay.json"), json);
+
+            var provider = new OverlayProvider(tempDir);
+            Assert.NotNull(provider.GetOverlayById("custom-test-overlay"));
+            Assert.Contains(provider.GetAllOverlays(), o => o.Id == "custom-test-overlay");
+
+            // Delete the user overlays directory
+            Directory.Delete(tempDir, true);
+
+            // Refresh should clear user overlays and invalidate caches
+            provider.Refresh();
+
+            Assert.Null(provider.GetOverlayById("custom-test-overlay"));
+            Assert.DoesNotContain(provider.GetAllOverlays(), o => o.Id == "custom-test-overlay");
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir))
+            {
+                Directory.Delete(tempDir, true);
+            }
+        }
+    }
 }

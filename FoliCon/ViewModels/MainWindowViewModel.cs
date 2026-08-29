@@ -1,4 +1,4 @@
-﻿using FoliCon.Models.Configs;
+using FoliCon.Models.Configs;
 using HandyControl.Themes;
 
 namespace FoliCon.ViewModels;
@@ -1181,6 +1181,16 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.Debug("StopIconDownload is true before any downloads completed.");
         }
+        else
+        {
+            Growl.WarningGlobal(new GrowlInfo
+            {
+                Message = Lang.DownloadFailedWithCount.Format(totalCount, totalCount),
+                ShowDateTime = false,
+                StaysOpen = false,
+                ConfirmStr = Lang.Confirm
+            });
+        }
 
         IsMakeEnabled = true;
     }
@@ -1194,7 +1204,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             _pickedListDataTable,
             IsRatingVisible,
             IsPosterMockupUsed,
-            new Progress<ProgressBarData>(value => BusyIndicatorProperties = value),
+            new Progress<ProgressBarData>(value =>
+            {
+                value.Title = Lang.CreatingIcons;
+                BusyIndicatorProperties = value;
+            }),
             IncludeAlreadyProcessed));
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;

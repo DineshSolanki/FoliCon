@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules.Media;
+namespace FoliCon.Modules.Media;
 
 public class ProIcon(string filePath)
 {
@@ -11,6 +11,7 @@ public class ProIcon(string filePath)
         bi.BeginInit();
         bi.UriSource = new Uri(filePath, UriKind.Absolute);
         bi.DecodePixelWidth = 256;
+        bi.DecodePixelHeight = 256;
         bi.CacheOption = BitmapCacheOption.OnLoad;
         bi.EndInit();
         bi.Freeze();

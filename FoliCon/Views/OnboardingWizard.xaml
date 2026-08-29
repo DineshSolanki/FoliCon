@@ -251,7 +251,7 @@
         </hc:StepBar>
 
         <!-- Content: only the active step's visual tree is realized. -->
-        <ContentControl Grid.Row="1" Content="{Binding CurrentStep}">
+        <ContentControl Grid.Row="1" Content="{Binding}">
             <ContentControl.Style>
                 <Style TargetType="ContentControl">
                     <Setter Property="ContentTemplate" Value="{StaticResource WelcomeTemplate}" />

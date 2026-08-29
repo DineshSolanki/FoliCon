@@ -64,7 +64,11 @@ public class AppConfig : GlobalDataHelper
     /// </summary>
     public new void Save()
     {
-        CreateDirectory(FileName);
+        var directory = Path.GetDirectoryName(FileName);
+        if (!string.IsNullOrEmpty(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
         var options = JsonSerializerOptions;
         options.Converters.Add(new DpapiPolymorphicJsonConverter<AppConfig>());
         var json = System.Text.Json.JsonSerializer.Serialize(this, options);

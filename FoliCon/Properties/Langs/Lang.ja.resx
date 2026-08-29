@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
       Microsoft ResX Schema 
@@ -226,6 +226,20 @@
   </data>
   <data name="DAConnectionFailedTitle" xml:space="preserve">
     <value>DeviantArt接続失敗</value>
+  </data>
+  <data name="DADownloadLimitMessage" xml:space="preserve">
+    <value>DeviantArtの週間ダウンロード制限に達しました。来週もう一度お試しいただくか、ダウンロード数を減らしてください。
+
+お知らせ: https://www.deviantart.com/team/journal/Download-Limit-Update-1230550123
+
+この制限を解除するための署名はこちら:
+{0}</value>
+  </data>
+  <data name="DADownloadLimitPetitionPrompt" xml:space="preserve">
+    <value>この制限を解除するための署名ページをブラウザで開きますか？</value>
+  </data>
+  <data name="DADownloadLimitPetitionTitle" xml:space="preserve">
+    <value>署名する</value>
   </data>
   <data name="DAUnavailableCannotExtractMessage" xml:space="preserve">
     <value>DeviantArt機能は利用できません。デビエーションを抽出できません。</value>
