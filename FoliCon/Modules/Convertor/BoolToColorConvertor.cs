@@ -1,4 +1,4 @@
-﻿using Brushes = System.Windows.Media.Brushes;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace FoliCon.Modules.Convertor;
 
@@ -14,7 +14,15 @@ public class BoolToColorConverter : IValueConverter
         return brush;
     }
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is bool b ? (b ? GreenBrush : RedBrush) : Brushes.Transparent;
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is not bool b)
+        {
+            return Brushes.Transparent;
+        }
+
+        return b ? GreenBrush : RedBrush;
+    }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

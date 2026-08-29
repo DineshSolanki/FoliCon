@@ -19,7 +19,7 @@ namespace FoliCon.ViewModels
             OverlayPreviewItems = [];
 
             // Load overlays and render previews
-            _ = LoadPreviewsAsync();
+            _ = LoadPreviewsAsync(CancellationToken.None);
         }
 
         private string _rating = "3.5";
@@ -106,9 +106,9 @@ namespace FoliCon.ViewModels
 
                 Logger.Info("Loaded {Count} overlay previews", previews.Count);
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException ex)
             {
-                Logger.Debug("Preview load cancelled — newer rebuild superseded this one.");
+                Logger.Debug(ex, "Preview load cancelled — newer rebuild superseded this one.");
             }
             catch (Exception ex)
             {
@@ -122,6 +122,7 @@ namespace FoliCon.ViewModels
             if (_rebuildCts != null)
             {
                 await _rebuildCts.CancelAsync();
+                _rebuildCts.Dispose();
             }
             _rebuildCts = new CancellationTokenSource();
             var token = _rebuildCts.Token;
@@ -176,6 +177,9 @@ namespace FoliCon.ViewModels
 
         public virtual void OnDialogClosed()
         {
+            _rebuildCts?.Cancel();
+            _rebuildCts?.Dispose();
+            _rebuildCts = null;
         }
 
         public virtual void OnDialogOpened(IDialogParameters parameters)

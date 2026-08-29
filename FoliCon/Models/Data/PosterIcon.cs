@@ -64,6 +64,12 @@ public class PosterIcon : BindableBase, IDisposable
         LoadImage(folderJpgPath);
     }
 
+    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility,
+        string mediaTitle) : this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
+    {
+        MediaTitle = mediaTitle;
+    }
+
     private void LoadImage(string filePath)
     {
         using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -71,12 +77,6 @@ public class PosterIcon : BindableBase, IDisposable
         fs.CopyTo(_memoryStream);
         _memoryStream.Position = 0;
         FolderJpg = (ImageSource)new ImageSourceConverter().ConvertFrom(_memoryStream);
-    }
-
-    public PosterIcon(string folderJpgPath, string rating, string ratingVisibility, string mockupVisibility,
-        string mediaTitle) : this(folderJpgPath, rating, ratingVisibility, mockupVisibility)
-    {
-        MediaTitle = mediaTitle;
     }
 
     private static RenderTargetBitmap CreatePlaceholderImage()

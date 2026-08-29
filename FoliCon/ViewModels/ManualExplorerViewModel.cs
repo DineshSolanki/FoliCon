@@ -1,4 +1,4 @@
-namespace FoliCon.ViewModels;
+﻿namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ManualExplorerViewModel : BindableBase, IDialogAware
@@ -105,7 +105,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 					Lang.DADownloadLimitPetitionTitle));
 				if (openPetition == MessageBoxResult.Yes)
 				{
-					Process.Start(new ProcessStartInfo(DeviantArtAppConfig.DownloadLimitPetitionUrl) { UseShellExecute = true });
+					Process.Start(new ProcessStartInfo(DeviantArtAppConfig.downloadLimitPetitionUrl) { UseShellExecute = true });
 				}
 			}
 			CloseDialog(ButtonResult.Cancel, null);

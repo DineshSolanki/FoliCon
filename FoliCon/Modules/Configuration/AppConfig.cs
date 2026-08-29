@@ -37,15 +37,16 @@ public class AppConfig : GlobalDataHelper
     public string ContextEntryName { get; set; } = "Create icons with FoliCon";
     public bool IsExplorerIntegrated { get; set; }
     public override string FileName { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"FoliConConfig.json");
+    private JsonSerializerOptions? _jsonSerializerOptions;
     public override JsonSerializerOptions JsonSerializerOptions
     {
-        get => new()
+        get => _jsonSerializerOptions ?? new JsonSerializerOptions
         {
             WriteIndented = true,
             PropertyNameCaseInsensitive = true,
             Converters = { new DpapiEncryptingConverter() }
         };
-        set { }
+        set => _jsonSerializerOptions = value;
     }
     public override int FileVersion { get; set; }
 

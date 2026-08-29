@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Retry;
 
@@ -442,7 +442,7 @@ public class DArt : BindableBase, IDisposable
                 case 2 when description.Contains("download limit", StringComparison.OrdinalIgnoreCase):
                     throw new LocalizedException(
                         $"DeviantArt download limit reached: {description}",
-                        string.Format(Lang.DADownloadLimitMessage, DeviantArtAppConfig.DownloadLimitPetitionUrl));
+                        string.Format(Lang.DADownloadLimitMessage, DeviantArtAppConfig.downloadLimitPetitionUrl));
             }
         }
         catch (LocalizedException)

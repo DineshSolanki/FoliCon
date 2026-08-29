@@ -21,7 +21,7 @@ internal static class DeviantArtAppConfig
     public const string clientId = "69659";
     public const string authorizeUrl = "https://www.deviantart.com/oauth2/authorize"; // NOSONAR — intentional DeviantArt API endpoint
     public const string tokenUrl = "https://www.deviantart.com/oauth2/token"; // NOSONAR — intentional DeviantArt API endpoint
-    public const string DownloadLimitPetitionUrl = "https://www.change.org/p/remove-the-deviantart-download-limit";
+    public const string downloadLimitPetitionUrl = "https://www.change.org/p/remove-the-deviantart-download-limit"; // NOSONAR — intentional external petition URL
 
     /// <summary>
     /// The OAuth scopes to request. Includes "user.manage" only when the user has opted in.
