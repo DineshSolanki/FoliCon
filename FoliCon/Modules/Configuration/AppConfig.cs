@@ -3,7 +3,7 @@ using STJ = System.Text.Json.Serialization;
 namespace FoliCon.Modules.Configuration;
 
 [Localizable(false)]
-public class AppConfig : GlobalDataHelper
+public class AppConfig : GlobalDataHelper, STJ.IJsonOnDeserialized
 {
     // DeviantArt OAuth tokens (replaces DevClientId/DevClientSecret from client_credentials flow)
     [STJ.JsonConverter(typeof(DpapiEncryptingConverter))]
@@ -36,18 +36,24 @@ public class AppConfig : GlobalDataHelper
 
     public string ContextEntryName { get; set; } = "Create icons with FoliCon";
     public bool IsExplorerIntegrated { get; set; }
+
+    [STJ.JsonIgnore]
     public override string FileName { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"FoliConConfig.json");
+
     private JsonSerializerOptions? _jsonSerializerOptions;
+
+    [STJ.JsonIgnore]
     public override JsonSerializerOptions JsonSerializerOptions
     {
         get => _jsonSerializerOptions ?? new JsonSerializerOptions
         {
             WriteIndented = true,
-            PropertyNameCaseInsensitive = true,
-            Converters = { new DpapiEncryptingConverter() }
+            PropertyNameCaseInsensitive = true
         };
         set => _jsonSerializerOptions = value;
     }
+
+    [STJ.JsonIgnore]
     public override int FileVersion { get; set; }
 
     public bool SubfolderProcessingEnabled { get; set; }
@@ -58,10 +64,24 @@ public class AppConfig : GlobalDataHelper
             new Pattern("Season [0-9]{1,2} Episode [0-9]{1,2}", false, true), new Pattern("\\S+", true, true)];
 
     /// <summary>
-    /// Hides <see cref="GlobalDataHelper.Save()"/> to use <see cref="DpapiPolymorphicJsonConverter{T}"/>
-    /// which tracks property names during serialization, enabling selective encryption.
-    /// The base implementation delegates to <c>JsonFile.Save</c> which adds
-    /// HandyControls' <c>PolymorphicJsonConverter</c> that doesn't track property names.
+    /// Recovers any non-secret properties that may have been erroneously encrypted
+    /// with DPAPI by legacy versions of the application.
+    /// </summary>
+    public void OnDeserialized()
+    {
+        ContextEntryName = DpapiEncryptingConverter.TryDecrypt(ContextEntryName) ?? "Create icons with FoliCon";
+        if (Patterns != null)
+        {
+            foreach (var pattern in Patterns)
+            {
+                pattern.Regex = DpapiEncryptingConverter.TryDecrypt(pattern.Regex) ?? pattern.Regex;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Saves configuration to <see cref="FileName"/>. Only properties explicitly annotated
+    /// with <see cref="DpapiEncryptingConverter"/> are encrypted at rest.
     /// </summary>
     public new void Save()
     {
@@ -70,9 +90,7 @@ public class AppConfig : GlobalDataHelper
         {
             Directory.CreateDirectory(directory);
         }
-        var options = JsonSerializerOptions;
-        options.Converters.Add(new DpapiPolymorphicJsonConverter<AppConfig>());
-        var json = System.Text.Json.JsonSerializer.Serialize(this, options);
+        var json = System.Text.Json.JsonSerializer.Serialize(this, JsonSerializerOptions);
         File.WriteAllText(FileName, json);
     }
 }

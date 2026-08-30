@@ -105,4 +105,85 @@ public class AppConfigTests : IDisposable
         Assert.True(File.Exists(filePath));
         Assert.False(Directory.Exists(filePath));
     }
+
+    [Fact]
+    public void Save_DoesNotEncryptUnannotatedProperties_IncludingPatterns()
+    {
+        var config = new AppConfig
+        {
+            FileName = Path.Combine(_root, "PlaintextTest.json"),
+            DeviantArtAccessToken = "secret-token",
+            ContextEntryName = "Create icons with FoliCon",
+            Patterns = [new FoliCon.Models.Data.Pattern("^[0-9]{1,2}x[0-9]{1,2}", false, true)]
+        };
+
+        config.Save();
+
+        var json = File.ReadAllText(config.FileName);
+        using var document = JsonDocument.Parse(json);
+        var root = document.RootElement;
+
+        // Annotated secret must be encrypted
+        AssertEncrypted(root, nameof(AppConfig.DeviantArtAccessToken), "secret-token");
+
+        // Unannotated string properties must remain plaintext
+        Assert.Equal("Create icons with FoliCon", root.GetProperty(nameof(AppConfig.ContextEntryName)).GetString());
+
+        var patternElement = root.GetProperty(nameof(AppConfig.Patterns))[0];
+        Assert.Equal("^[0-9]{1,2}x[0-9]{1,2}", patternElement.GetProperty("Regex").GetString());
+    }
+
+    [Fact]
+    public void OnDeserialized_RecoversLegacyEncryptedNonSecretProperties()
+    {
+        // Simulate a corrupted legacy config file where ContextEntryName and Pattern Regex were encrypted with DPAPI
+        var plainContextName = "Create icons with FoliCon";
+        var plainRegex = "^[0-9]{1,2}x[0-9]{1,2}";
+
+        var encContextBytes = System.Security.Cryptography.ProtectedData.Protect(
+            System.Text.Encoding.UTF8.GetBytes(plainContextName),
+            null,
+            System.Security.Cryptography.DataProtectionScope.CurrentUser);
+        var encRegexBytes = System.Security.Cryptography.ProtectedData.Protect(
+            System.Text.Encoding.UTF8.GetBytes(plainRegex),
+            null,
+            System.Security.Cryptography.DataProtectionScope.CurrentUser);
+
+        var encContextB64 = Convert.ToBase64String(encContextBytes);
+        var encRegexB64 = Convert.ToBase64String(encRegexBytes);
+
+        var json = $$"""
+        {
+          "DeviantArtAccessToken": null,
+          "ContextEntryName": "{{encContextB64}}",
+          "Patterns": [
+            {
+              "Regex": "{{encRegexB64}}",
+              "IsEnabled": false,
+              "IsReadOnly": true
+            }
+          ]
+        }
+        """;
+
+        var filePath = Path.Combine(_root, "CorruptedConfig.json");
+        File.WriteAllText(filePath, json);
+
+        var loaded = JsonSerializer.Deserialize<AppConfig>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        Assert.NotNull(loaded);
+        loaded.FileName = filePath;
+
+        // Must be healed to plaintext
+        Assert.Equal(plainContextName, loaded.ContextEntryName);
+        Assert.Equal(plainRegex, loaded.Patterns[0].Regex);
+
+        // When saved again, must be saved as plaintext
+        loaded.Save();
+        var reSavedJson = File.ReadAllText(filePath);
+        using var document = JsonDocument.Parse(reSavedJson);
+        var root = document.RootElement;
+
+        Assert.Equal(plainContextName, root.GetProperty(nameof(AppConfig.ContextEntryName)).GetString());
+        Assert.Equal(plainRegex, root.GetProperty(nameof(AppConfig.Patterns))[0].GetProperty("Regex").GetString());
+    }
 }
