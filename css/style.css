@@ -1,3 +1,122 @@
 .github-fork-ribbon.left-top:before {
     background-color: #008F00;
 }
+
+/* Documentation Hero & Action Banner */
+.docs-hero-banner {
+    background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    border-left: 6px solid #0284c7;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0 30px 0;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+
+.docs-hero-banner h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #0369a1;
+    font-size: 1.25rem;
+}
+
+.docs-hero-banner p {
+    color: #334155;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.docs-cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.btn-cta {
+    display: inline-block;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-cta-primary {
+    background-color: #0284c7;
+    color: #ffffff !important;
+    border: 1px solid #0284c7;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+}
+
+.btn-cta-primary:hover {
+    background-color: #0369a1;
+    color: #ffffff !important;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.btn-cta-secondary {
+    background-color: #ffffff;
+    color: #1e293b !important;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-cta-secondary:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+    text-decoration: none;
+}
+
+/* Feature Categories Layout */
+.features-container {
+    margin: 25px 0;
+}
+
+.feature-category {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.feature-category h3 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #1e293b;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.feature-category ul {
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+.feature-category li {
+    margin-bottom: 6px;
+    color: #475569;
+    line-height: 1.5;
+}
+
+.feature-category li strong {
+    color: #0f172a;
+}
+
+/* New badge */
+.badge-new {
+    background-color: #10b981;
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+}
