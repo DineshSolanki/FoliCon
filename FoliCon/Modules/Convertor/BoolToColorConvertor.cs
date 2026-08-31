@@ -4,18 +4,17 @@ namespace FoliCon.Modules.Convertor;
 
 public class BoolToColorConverter : IValueConverter
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        Logger.Debug("Converting {Value} to color", value);
-        if (value is not bool b)
-        {
-            return Brushes.Transparent;
-        }
+    private static readonly SolidColorBrush GreenBrush = MakeBrush(Colors.Green);
+    private static readonly SolidColorBrush RedBrush = MakeBrush(Colors.Red);
 
-        Logger.Debug("Value is bool");
-        return b ? new SolidColorBrush(Colors.Green) : new SolidColorBrush(Colors.Red);
+    private static SolidColorBrush MakeBrush(System.Windows.Media.Color color)
+    {
+        var brush = new SolidColorBrush(color);
+        brush.Freeze();
+        return brush;
     }
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is bool b ? (b ? GreenBrush : RedBrush) : Brushes.Transparent;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }
