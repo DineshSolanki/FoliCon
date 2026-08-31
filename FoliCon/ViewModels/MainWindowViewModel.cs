@@ -619,8 +619,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             case 0 when !IsSkipAmbiguous:
                 return await ProcessNoResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById);
             case 1 when !IsPosterWindowShown:
-                ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
-                return (true, false);
+                var picked = ProcessSingleResultCase(itemTitle, response, fullFolderPath, isPickedById, mediaType);
+                return (picked, false);
             default:
                 return resultCount >= 1
                     ? await ProcessMultipleResultCase(itemTitle, response, fullFolderPath, parsedTitle, isPickedById)
@@ -705,7 +705,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         return await ShowSearchResultDialog(parsedTitle, fullFolderPath, response, isPickedById);
     }
 
-    private void ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath,
+    private bool ProcessSingleResultCase(string itemTitle, ResultResponse response, string fullFolderPath,
         bool isPickedById, string mediaType)
     {
         Logger.Debug("One result found for {ItemTitle}, {Mode}, as always show poster window is not enabled, directly selecting",
@@ -714,11 +714,21 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             if (isPickedById ? mediaType == MediaTypes.game : SearchMode == MediaTypes.game)
             {
+                if (response.Result.Length == 0)
+                {
+                    Logger.Warn("Result reported 1 match but results array is empty for {ItemTitle}", itemTitle);
+                    return false;
+                }
                 var result = response.Result[0];
                 _igdbObject.ResultPicked(result, fullFolderPath);
             }
             else
             {
+                if (!isPickedById && response.Result.Results.Count == 0)
+                {
+                    Logger.Warn("Result reported 1 match but Results list is empty for {ItemTitle}", itemTitle);
+                    return false;
+                }
                 var result = isPickedById
                     ? response.Result
                     : response.Result.Results[0];
@@ -737,7 +747,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 #if DEBUG
             MessageBox.Show(CustomMessageBox.Warning(ex.Message, Lang.ExceptionOccurred));
 #endif
+            return false;
         }
+        return true;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessMultipleResultCase(
