@@ -1,3 +1,3 @@
-﻿namespace FoliCon.Models.Data;
+namespace FoliCon.Models.Data;
 
-public record ParsedTitle(string Title, IdType IdType, string Id, int Year);
+public record ParsedTitle(string Title, IdType IdType, string Id, int Year, int Season = 0);
