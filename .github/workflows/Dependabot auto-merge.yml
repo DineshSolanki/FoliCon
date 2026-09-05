@@ -16,7 +16,7 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Auto-merge all GitHub Actions updates
         if: steps.metadata.outputs.package-ecosystem == 'github-actions'
-        run: gh pr merge --auto --merge "$PR_URL"
+        run: gh pr merge --merge --admin "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -25,7 +25,7 @@ jobs:
           steps.metadata.outputs.package-ecosystem == 'nuget' &&
           (steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
            steps.metadata.outputs.update-type == 'version-update:semver-minor')
-        run: gh pr merge --auto --merge "$PR_URL"
+        run: gh pr merge --merge --admin "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
