@@ -1298,16 +1298,16 @@ y actualizar la caché de iconos?</value>
       <value>Filtrar por estado de instalación</value>
     </data>
   <data name="OverlayStoreSortTooltip" xml:space="preserve">
-      <value>Sort overlays</value>
+      <value>Ordenar superposiciones</value>
     </data>
   <data name="OverlayStoreSortNewest" xml:space="preserve">
-      <value>Newest</value>
+      <value>Más recientes</value>
     </data>
   <data name="OverlayStoreSortNameAsc" xml:space="preserve">
-      <value>Name (A-Z)</value>
+      <value>Nombre (A-Z)</value>
     </data>
   <data name="OverlayStoreSortAuthor" xml:space="preserve">
-      <value>Author</value>
+      <value>Autor</value>
     </data>
   <data name="OverlayStoreRefresh" xml:space="preserve">
       <value>Actualizar</value>
