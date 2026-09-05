@@ -933,877 +933,877 @@ and refresh Icon Cache?</value>
   <data name="MaxDepthTooltip" xml:space="preserve">
       <value>子文件夹处理的最大深度。0 = 无限制（处理所有层级）。</value>
     </data>
-    <data name="OverlayDesignerTitle" xml:space="preserve">
+  <data name="OverlayDesignerTitle" xml:space="preserve">
       <value>叠加层设计器</value>
     </data>
-    <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
+  <data name="OverlayDesignerBackToTemplates" xml:space="preserve">
       <value>模板</value>
     </data>
-    <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
+  <data name="OverlayDesignerBackToTemplatesHelp" xml:space="preserve">
       <value>返回模板列表，重新做一个叠加层</value>
     </data>
-    <data name="OverlayDesignerOpen" xml:space="preserve">
+  <data name="OverlayDesignerOpen" xml:space="preserve">
       <value>打开…</value>
     </data>
-    <data name="OverlayDesignerOpenHelp" xml:space="preserve">
+  <data name="OverlayDesignerOpenHelp" xml:space="preserve">
       <value>打开已有的 overlay.json 进行编辑</value>
     </data>
-    <data name="OverlayDesignerUndoHelp" xml:space="preserve">
+  <data name="OverlayDesignerUndoHelp" xml:space="preserve">
       <value>撤销上一步更改 (Ctrl+Z)</value>
     </data>
-    <data name="OverlayDesignerRedo" xml:space="preserve">
+  <data name="OverlayDesignerRedo" xml:space="preserve">
       <value>重做</value>
     </data>
-    <data name="OverlayDesignerRedoHelp" xml:space="preserve">
+  <data name="OverlayDesignerRedoHelp" xml:space="preserve">
       <value>重做刚撤销的更改 (Ctrl+Y)</value>
     </data>
-    <data name="OverlayDesignerZoom" xml:space="preserve">
+  <data name="OverlayDesignerZoom" xml:space="preserve">
       <value>缩放</value>
     </data>
-    <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
+  <data name="OverlayDesignerHelpTooltip" xml:space="preserve">
       <value>打开叠加层制作指南 (F1)</value>
     </data>
-    <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
+  <data name="OverlayDesignerUnsavedChanges" xml:space="preserve">
       <value>有未保存的更改</value>
     </data>
-    <data name="OverlayDesignerStartNew" xml:space="preserve">
+  <data name="OverlayDesignerStartNew" xml:space="preserve">
       <value>新建叠加层</value>
     </data>
-    <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
+  <data name="OverlayDesignerTemplatePickerHint" xml:space="preserve">
       <value>挑一个模板来复制。它的布局和图片就是你的起点——随便改，改完导出成可以安装或分享的包。</value>
     </data>
-    <data name="OverlayDesignerRendering" xml:space="preserve">
+  <data name="OverlayDesignerRendering" xml:space="preserve">
       <value>正在渲染…</value>
     </data>
-    <data name="OverlayDesignerUseTemplate" xml:space="preserve">
+  <data name="OverlayDesignerUseTemplate" xml:space="preserve">
       <value>使用此模板</value>
     </data>
-    <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
+  <data name="OverlayDesignerUseTemplateAutomation" xml:space="preserve">
       <value>使用 {0} 作为模板</value>
     </data>
-    <data name="OverlayDesignerContinueDraft" xml:space="preserve">
+  <data name="OverlayDesignerContinueDraft" xml:space="preserve">
       <value>继续草稿</value>
     </data>
-    <data name="OverlayDesignerDraftsHint" xml:space="preserve">
+  <data name="OverlayDesignerDraftsHint" xml:space="preserve">
       <value>你之前保存的进度。选中后会从上次停下的地方继续。</value>
     </data>
-    <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
+  <data name="OverlayDesignerDraftSavedAt" xml:space="preserve">
       <value>保存于 {0:g}</value>
     </data>
-    <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
+  <data name="OverlayDesignerDeleteDraft" xml:space="preserve">
       <value>删除</value>
     </data>
-    <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
+  <data name="OverlayDesignerDeleteDraftAutomation" xml:space="preserve">
       <value>删除草稿「{0}」</value>
     </data>
-    <data name="OverlayDesignerResumeDraft" xml:space="preserve">
+  <data name="OverlayDesignerResumeDraft" xml:space="preserve">
       <value>继续</value>
     </data>
-    <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
+  <data name="OverlayDesignerResumeDraftAutomation" xml:space="preserve">
       <value>继续草稿「{0}」</value>
     </data>
-    <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
+  <data name="OverlayDesignerOpenFolderHint" xml:space="preserve">
       <value>已经有叠加层文件夹了？用工具栏上的「打开…」。</value>
     </data>
-    <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
+  <data name="OverlayDesignerCloseDesigner" xml:space="preserve">
       <value>关闭设计器</value>
     </data>
-    <data name="OverlayDesignerElements" xml:space="preserve">
+  <data name="OverlayDesignerElements" xml:space="preserve">
       <value>元素</value>
     </data>
-    <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
+  <data name="OverlayDesignerElementOrderHint" xml:space="preserve">
       <value>自上而下绘制，最上面的在最底层。</value>
     </data>
-    <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
+  <data name="OverlayDesignerMoveLayerBack" xml:space="preserve">
       <value>下移一层</value>
     </data>
-    <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
+  <data name="OverlayDesignerMoveLayerBackAutomation" xml:space="preserve">
       <value>将选中的图层下移一层</value>
     </data>
-    <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
+  <data name="OverlayDesignerMoveLayerForward" xml:space="preserve">
       <value>上移一层</value>
     </data>
-    <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
+  <data name="OverlayDesignerMoveLayerForwardAutomation" xml:space="preserve">
       <value>将选中的图层上移一层</value>
     </data>
-    <data name="OverlayDesignerShow" xml:space="preserve">
+  <data name="OverlayDesignerShow" xml:space="preserve">
       <value>显示</value>
     </data>
-    <data name="OverlayLayerBase" xml:space="preserve">
+  <data name="OverlayLayerBase" xml:space="preserve">
       <value>底层</value>
     </data>
-    <data name="OverlayLayerFront" xml:space="preserve">
+  <data name="OverlayLayerFront" xml:space="preserve">
       <value>前景层</value>
     </data>
-    <data name="OverlayLayerTitleText" xml:space="preserve">
+  <data name="OverlayLayerTitleText" xml:space="preserve">
       <value>标题文字</value>
     </data>
-    <data name="OverlayLayerRatingBadge" xml:space="preserve">
+  <data name="OverlayLayerRatingBadge" xml:space="preserve">
       <value>评分徽章</value>
     </data>
-    <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
+  <data name="OverlayDesignerCanvasAutomation" xml:space="preserve">
       <value>叠加层预览画布</value>
     </data>
-    <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
+  <data name="OverlayDesignerPreviewAutomation" xml:space="preserve">
       <value>已渲染的叠加层预览</value>
     </data>
-    <data name="OverlayDesignerGeometryHint" xml:space="preserve">
+  <data name="OverlayDesignerGeometryHint" xml:space="preserve">
       <value>位置和大小以像素为单位。方向键移动 1 px，Shift+方向键移动 10 px。</value>
     </data>
-    <data name="OverlayDesignerAxisX" xml:space="preserve">
+  <data name="OverlayDesignerAxisX" xml:space="preserve">
       <value>X</value>
     </data>
-    <data name="OverlayDesignerLeftPosition" xml:space="preserve">
+  <data name="OverlayDesignerLeftPosition" xml:space="preserve">
       <value>距左侧位置</value>
     </data>
-    <data name="OverlayDesignerAxisY" xml:space="preserve">
+  <data name="OverlayDesignerAxisY" xml:space="preserve">
       <value>Y</value>
     </data>
-    <data name="OverlayDesignerTopPosition" xml:space="preserve">
+  <data name="OverlayDesignerTopPosition" xml:space="preserve">
       <value>距顶部位置</value>
     </data>
-    <data name="OverlayDesignerWidthShort" xml:space="preserve">
+  <data name="OverlayDesignerWidthShort" xml:space="preserve">
       <value>宽</value>
     </data>
-    <data name="OverlayDesignerWidth" xml:space="preserve">
+  <data name="OverlayDesignerWidth" xml:space="preserve">
       <value>宽度</value>
     </data>
-    <data name="OverlayDesignerHeightShort" xml:space="preserve">
+  <data name="OverlayDesignerHeightShort" xml:space="preserve">
       <value>高</value>
     </data>
-    <data name="OverlayDesignerHeight" xml:space="preserve">
+  <data name="OverlayDesignerHeight" xml:space="preserve">
       <value>高度</value>
     </data>
-    <data name="OverlayDesignerMetadata" xml:space="preserve">
+  <data name="OverlayDesignerMetadata" xml:space="preserve">
       <value>元数据</value>
     </data>
-    <data name="OverlayDesignerName" xml:space="preserve">
+  <data name="OverlayDesignerName" xml:space="preserve">
       <value>名称</value>
     </data>
-    <data name="OverlayDesignerId" xml:space="preserve">
+  <data name="OverlayDesignerId" xml:space="preserve">
       <value>ID</value>
     </data>
-    <data name="OverlayDesignerIdHint" xml:space="preserve">
+  <data name="OverlayDesignerIdHint" xml:space="preserve">
       <value>只能用小写字母、数字和连字符，并且不能重复。</value>
     </data>
-    <data name="OverlayDesignerAuthor" xml:space="preserve">
+  <data name="OverlayDesignerAuthor" xml:space="preserve">
       <value>作者</value>
     </data>
-    <data name="OverlayDesignerVersion" xml:space="preserve">
+  <data name="OverlayDesignerVersion" xml:space="preserve">
       <value>版本</value>
     </data>
-    <data name="OverlayDesignerDescription" xml:space="preserve">
+  <data name="OverlayDesignerDescription" xml:space="preserve">
       <value>说明</value>
     </data>
-    <data name="OverlayTags" xml:space="preserve">
+  <data name="OverlayTags" xml:space="preserve">
       <value>标签</value>
     </data>
-    <data name="OverlayDesignerTagsHint" xml:space="preserve">
+  <data name="OverlayDesignerTagsHint" xml:space="preserve">
       <value>用逗号分隔。</value>
     </data>
-    <data name="OverlayDesignerLayerImages" xml:space="preserve">
+  <data name="OverlayDesignerLayerImages" xml:space="preserve">
       <value>图层图片</value>
     </data>
-    <data name="OverlayDesignerBaseImage" xml:space="preserve">
+  <data name="OverlayDesignerBaseImage" xml:space="preserve">
       <value>底层图片</value>
     </data>
-    <data name="OverlayDesignerBrowse" xml:space="preserve">
+  <data name="OverlayDesignerBrowse" xml:space="preserve">
       <value>浏览…</value>
     </data>
-    <data name="OverlayDesignerClear" xml:space="preserve">
+  <data name="OverlayDesignerClear" xml:space="preserve">
       <value>清除</value>
     </data>
-    <data name="OverlayDesignerFrontImage" xml:space="preserve">
+  <data name="OverlayDesignerFrontImage" xml:space="preserve">
       <value>前景图片</value>
     </data>
-    <data name="OverlayDesignerOpacityMask" xml:space="preserve">
+  <data name="OverlayDesignerOpacityMask" xml:space="preserve">
       <value>不透明度蒙版</value>
     </data>
-    <data name="OverlayDesignerCornerRadius" xml:space="preserve">
+  <data name="OverlayDesignerCornerRadius" xml:space="preserve">
       <value>圆角半径</value>
     </data>
-    <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
+  <data name="OverlayDesignerCornerRadiusHint" xml:space="preserve">
       <value>0 表示直角。需要不对称的形状时，可以分别设置每个角。</value>
     </data>
-    <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
+  <data name="OverlayDesignerCornerTopLeftShort" xml:space="preserve">
       <value>左上</value>
     </data>
-    <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
+  <data name="OverlayDesignerCornerTopLeft" xml:space="preserve">
       <value>左上角圆角半径</value>
     </data>
-    <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
+  <data name="OverlayDesignerCornerTopRightShort" xml:space="preserve">
       <value>右上</value>
     </data>
-    <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
+  <data name="OverlayDesignerCornerTopRight" xml:space="preserve">
       <value>右上角圆角半径</value>
     </data>
-    <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
+  <data name="OverlayDesignerCornerBottomLeftShort" xml:space="preserve">
       <value>左下</value>
     </data>
-    <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
+  <data name="OverlayDesignerCornerBottomLeft" xml:space="preserve">
       <value>左下角圆角半径</value>
     </data>
-    <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
+  <data name="OverlayDesignerCornerBottomRightShort" xml:space="preserve">
       <value>右下</value>
     </data>
-    <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
+  <data name="OverlayDesignerCornerBottomRight" xml:space="preserve">
       <value>右下角圆角半径</value>
     </data>
-    <data name="OverlayDesignerFont" xml:space="preserve">
+  <data name="OverlayDesignerFont" xml:space="preserve">
       <value>字体</value>
     </data>
-    <data name="OverlayDesignerFontSize" xml:space="preserve">
+  <data name="OverlayDesignerFontSize" xml:space="preserve">
       <value>字号</value>
     </data>
-    <data name="OverlayDesignerColour" xml:space="preserve">
+  <data name="OverlayDesignerColour" xml:space="preserve">
       <value>颜色</value>
     </data>
-    <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
+  <data name="OverlayDesignerCurrentTitleColour" xml:space="preserve">
       <value>当前标题颜色</value>
     </data>
-    <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
+  <data name="OverlayDesignerTitleColourValue" xml:space="preserve">
       <value>标题颜色值</value>
     </data>
-    <data name="OverlayDesignerPick" xml:space="preserve">
+  <data name="OverlayDesignerPick" xml:space="preserve">
       <value>选取…</value>
     </data>
-    <data name="OverlayDesignerChooseColour" xml:space="preserve">
+  <data name="OverlayDesignerChooseColour" xml:space="preserve">
       <value>选取颜色</value>
     </data>
-    <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
+  <data name="OverlayDesignerChooseTitleColour" xml:space="preserve">
       <value>选取标题颜色</value>
     </data>
-    <data name="OverlayDesignerColourHint" xml:space="preserve">
+  <data name="OverlayDesignerColourHint" xml:space="preserve">
       <value>选一个颜色，也可以直接输入 White 这样的颜色名或 #FF5500 这样的十六进制值。</value>
     </data>
-    <data name="OverlayDesignerRotation" xml:space="preserve">
+  <data name="OverlayDesignerRotation" xml:space="preserve">
       <value>旋转</value>
     </data>
-    <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
+  <data name="OverlayDesignerTitleRotationAutomation" xml:space="preserve">
       <value>标题旋转角度</value>
     </data>
-    <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
+  <data name="OverlayDesignerAdvancedCanvas" xml:space="preserve">
       <value>画布高级设置</value>
     </data>
-    <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
+  <data name="OverlayDesignerAdvancedCanvasHint" xml:space="preserve">
       <value>这些决定叠加层所依据的设计画布。模板里的值本来就是对的，只有确定需要时再改。</value>
     </data>
-    <data name="OverlayDesignerDesignWidth" xml:space="preserve">
+  <data name="OverlayDesignerDesignWidth" xml:space="preserve">
       <value>设计宽度</value>
     </data>
-    <data name="OverlayDesignerDesignHeight" xml:space="preserve">
+  <data name="OverlayDesignerDesignHeight" xml:space="preserve">
       <value>设计高度</value>
     </data>
-    <data name="OverlayDesignerRootMargin" xml:space="preserve">
+  <data name="OverlayDesignerRootMargin" xml:space="preserve">
       <value>根边距</value>
     </data>
-    <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
+  <data name="OverlayDesignerRootMarginHint" xml:space="preserve">
       <value>依次为左、上、右、下。负值会扩大画布。</value>
     </data>
-    <data name="OverlayDesignerPreviewWith" xml:space="preserve">
+  <data name="OverlayDesignerPreviewWith" xml:space="preserve">
       <value>预览效果：</value>
     </data>
-    <data name="OverlayDesignerSamplePoster" xml:space="preserve">
+  <data name="OverlayDesignerSamplePoster" xml:space="preserve">
       <value>示例海报…</value>
     </data>
-    <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
+  <data name="OverlayDesignerSampleRatingAutomation" xml:space="preserve">
       <value>示例评分值</value>
     </data>
-    <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
+  <data name="OverlayDesignerSampleTitleAutomation" xml:space="preserve">
       <value>示例标题文字</value>
     </data>
-    <data name="OverlayDesignerMockup" xml:space="preserve">
+  <data name="OverlayDesignerMockup" xml:space="preserve">
       <value>样机图</value>
     </data>
-    <data name="OverlayDesignerSeverityError" xml:space="preserve">
+  <data name="OverlayDesignerSeverityError" xml:space="preserve">
       <value>错误</value>
     </data>
-    <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
+  <data name="OverlayDesignerSeverityWarning" xml:space="preserve">
       <value>警告</value>
     </data>
-    <data name="OverlayDesignerShareHeading" xml:space="preserve">
+  <data name="OverlayDesignerShareHeading" xml:space="preserve">
       <value>分享这个叠加层</value>
     </data>
-    <data name="OverlayDesignerHideSteps" xml:space="preserve">
+  <data name="OverlayDesignerHideSteps" xml:space="preserve">
       <value>隐藏这些步骤</value>
     </data>
-    <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
+  <data name="OverlayDesignerHideStepsAutomation" xml:space="preserve">
       <value>隐藏提交步骤</value>
     </data>
-    <data name="OverlayDesignerInstallLocally" xml:space="preserve">
+  <data name="OverlayDesignerInstallLocally" xml:space="preserve">
       <value>安装到本机</value>
     </data>
-    <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
+  <data name="OverlayDesignerInstallLocallyTooltip" xml:space="preserve">
       <value>把这个叠加层复制到 FoliCon，马上就能用</value>
     </data>
-    <data name="OverlayDesignerOpenFolder" xml:space="preserve">
+  <data name="OverlayDesignerOpenFolder" xml:space="preserve">
       <value>打开文件夹</value>
     </data>
-    <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
+  <data name="OverlayDesignerSubmitHeading" xml:space="preserve">
       <value>要提交到社区商店：</value>
     </data>
-    <data name="OverlayDesignerStep1Automation" xml:space="preserve">
+  <data name="OverlayDesignerStep1Automation" xml:space="preserve">
       <value>步骤 1 已完成</value>
     </data>
-    <data name="OverlayDesignerForkRepository" xml:space="preserve">
+  <data name="OverlayDesignerForkRepository" xml:space="preserve">
       <value>Fork 仓库</value>
     </data>
-    <data name="OverlayDesignerStep2Automation" xml:space="preserve">
+  <data name="OverlayDesignerStep2Automation" xml:space="preserve">
       <value>步骤 2 已完成</value>
     </data>
-    <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
+  <data name="OverlayDesignerCopyFolderInto" xml:space="preserve">
       <value>把导出的文件夹复制到你 Fork 里的 {0}</value>
     </data>
-    <data name="OverlayDesignerStep3Automation" xml:space="preserve">
+  <data name="OverlayDesignerStep3Automation" xml:space="preserve">
       <value>步骤 3 已完成</value>
     </data>
-    <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
+  <data name="OverlayDesignerOpenPullRequest" xml:space="preserve">
       <value>发起 Pull Request</value>
     </data>
-    <data name="OverlayDesignerExportPackage" xml:space="preserve">
+  <data name="OverlayDesignerExportPackage" xml:space="preserve">
       <value>导出包…</value>
     </data>
-    <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
+  <data name="OverlayDesignerExportPackageTooltip" xml:space="preserve">
       <value>生成一个可直接安装或提交的商店格式文件夹</value>
     </data>
-    <data name="OverlayDesignerSaveDraft" xml:space="preserve">
+  <data name="OverlayDesignerSaveDraft" xml:space="preserve">
       <value>保存草稿</value>
     </data>
-    <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
+  <data name="OverlayDesignerSaveDraftTooltip" xml:space="preserve">
       <value>保存当前进度，之后可以接着做</value>
     </data>
-    <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
+  <data name="OverlayDesignerColourPickerTitle" xml:space="preserve">
       <value>标题颜色</value>
     </data>
-    <data name="OverlayStoreLoadingPreview" xml:space="preserve">
+  <data name="OverlayStoreLoadingPreview" xml:space="preserve">
       <value>正在加载预览...</value>
     </data>
-    <data name="OverlayStoreInstall" xml:space="preserve">
+  <data name="OverlayStoreInstall" xml:space="preserve">
       <value>安装</value>
     </data>
-    <data name="OverlayStoreUpdate" xml:space="preserve">
+  <data name="OverlayStoreUpdate" xml:space="preserve">
       <value>更新</value>
     </data>
-    <data name="OverlayStoreRemove" xml:space="preserve">
+  <data name="OverlayStoreRemove" xml:space="preserve">
       <value>移除</value>
     </data>
-    <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
+  <data name="OverlayStoreRemoveTooltip" xml:space="preserve">
       <value>移除这个叠加层（会先确认）</value>
     </data>
-    <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
+  <data name="OverlayStoreSearchPlaceholder" xml:space="preserve">
       <value>搜索叠加层...</value>
     </data>
-    <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
+  <data name="OverlayStoreStatusFilterTooltip" xml:space="preserve">
       <value>按安装状态筛选</value>
     </data>
-    <data name="OverlayStoreSortTooltip" xml:space="preserve">
+  <data name="OverlayStoreSortTooltip" xml:space="preserve">
       <value>排序叠加层</value>
     </data>
-    <data name="OverlayStoreSortNewest" xml:space="preserve">
+  <data name="OverlayStoreSortNewest" xml:space="preserve">
       <value>最新</value>
     </data>
-    <data name="OverlayStoreSortNameAsc" xml:space="preserve">
+  <data name="OverlayStoreSortNameAsc" xml:space="preserve">
       <value>名称 (A-Z)</value>
     </data>
-    <data name="OverlayStoreSortAuthor" xml:space="preserve">
+  <data name="OverlayStoreSortAuthor" xml:space="preserve">
       <value>作者</value>
     </data>
-    <data name="OverlayStoreRefresh" xml:space="preserve">
+  <data name="OverlayStoreRefresh" xml:space="preserve">
       <value>刷新</value>
     </data>
-    <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
+  <data name="OverlayStoreRefreshTooltip" xml:space="preserve">
       <value>重新加载叠加层目录</value>
     </data>
-    <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
+  <data name="OverlayCreateOverlayTooltip" xml:space="preserve">
       <value>从模板出发，设计属于你自己的叠加层</value>
     </data>
-    <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
+  <data name="OverlayStoreTagChipTooltip" xml:space="preserve">
       <value>只显示带「{0}」标签的叠加层</value>
     </data>
-    <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
+  <data name="OverlayStoreTagChipAutomation" xml:space="preserve">
       <value>按「{0}」标签筛选</value>
     </data>
-    <data name="OverlayStoreClearTags" xml:space="preserve">
+  <data name="OverlayStoreClearTags" xml:space="preserve">
       <value>清除标签</value>
     </data>
-    <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
+  <data name="OverlayStoreClearTagsTooltip" xml:space="preserve">
       <value>取消选中所有标签</value>
     </data>
-    <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
+  <data name="OverlayStoreLoadingCatalog" xml:space="preserve">
       <value>正在加载目录...</value>
     </data>
-    <data name="OverlayStoreDiscoverTab" xml:space="preserve">
+  <data name="OverlayStoreDiscoverTab" xml:space="preserve">
       <value>发现</value>
     </data>
-    <data name="OverlayStoreUpdateAll" xml:space="preserve">
+  <data name="OverlayStoreUpdateAll" xml:space="preserve">
       <value>全部更新</value>
     </data>
-    <data name="OverlayRemoveTooltip" xml:space="preserve">
+  <data name="OverlayRemoveTooltip" xml:space="preserve">
       <value>移除这个叠加层</value>
     </data>
-    <data name="OverlayRemoveAutomation" xml:space="preserve">
+  <data name="OverlayRemoveAutomation" xml:space="preserve">
       <value>移除 {0}</value>
     </data>
-    <data name="OverlayBrowseStore" xml:space="preserve">
+  <data name="OverlayBrowseStore" xml:space="preserve">
       <value>浏览叠加层商店...</value>
     </data>
-    <data name="OverlayImportLocal" xml:space="preserve">
+  <data name="OverlayImportLocal" xml:space="preserve">
       <value>导入本地叠加层...</value>
     </data>
-    <data name="OverlayComingSoon" xml:space="preserve">
+  <data name="OverlayComingSoon" xml:space="preserve">
       <value>将在后续版本中提供</value>
     </data>
-    <data name="OverlayDesignerNothingSelected" xml:space="preserve">
+  <data name="OverlayDesignerNothingSelected" xml:space="preserve">
       <value>未选中任何元素</value>
     </data>
-    <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
+  <data name="OverlayDesignerSelectPngTitle" xml:space="preserve">
       <value>选择 PNG 图片</value>
     </data>
-    <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
+  <data name="OverlayDesignerPngFilesFilter" xml:space="preserve">
       <value>PNG 图片 (*.png)|*.png</value>
     </data>
-    <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
+  <data name="OverlayDesignerImageMustBeInFolder" xml:space="preserve">
       <value>请选择叠加层文件夹里的图片，这样导出的包才是自包含的。</value>
     </data>
-    <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
+  <data name="OverlayDesignerSelectSamplePoster" xml:space="preserve">
       <value>选择示例海报</value>
     </data>
-    <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
+  <data name="OverlayDesignerSamplePosterFilter" xml:space="preserve">
       <value>图片 (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg</value>
     </data>
-    <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
+  <data name="OverlayDesignerPreviewFailed" xml:space="preserve">
       <value>预览生成失败：{0}</value>
     </data>
-    <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
+  <data name="OverlayDesignerDraftSavedTo" xml:space="preserve">
       <value>草稿已保存到 {0}</value>
     </data>
-    <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
+  <data name="OverlayDesignerDraftSaveFailed" xml:space="preserve">
       <value>草稿保存失败：{0}</value>
     </data>
-    <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
+  <data name="OverlayDesignerChooseExportFolder" xml:space="preserve">
       <value>选择叠加层包的保存位置</value>
     </data>
-    <data name="OverlayDesignerExporting" xml:space="preserve">
+  <data name="OverlayDesignerExporting" xml:space="preserve">
       <value>正在导出…</value>
     </data>
-    <data name="OverlayDesignerExportCancelled" xml:space="preserve">
+  <data name="OverlayDesignerExportCancelled" xml:space="preserve">
       <value>已取消导出。</value>
     </data>
-    <data name="OverlayDesignerExportFailed" xml:space="preserve">
+  <data name="OverlayDesignerExportFailed" xml:space="preserve">
       <value>导出失败。</value>
     </data>
-    <data name="OverlayDesignerExportedTo" xml:space="preserve">
+  <data name="OverlayDesignerExportedTo" xml:space="preserve">
       <value>已导出到 {0}</value>
     </data>
-    <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
+  <data name="OverlayDesignerExportFailedWithReason" xml:space="preserve">
       <value>导出失败：{0}</value>
     </data>
-    <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
+  <data name="OverlayDesignerCheckingNameClash" xml:space="preserve">
       <value>正在商店中检查名称是否已被占用…</value>
     </data>
-    <data name="OverlayDesignerInstallFailed" xml:space="preserve">
+  <data name="OverlayDesignerInstallFailed" xml:space="preserve">
       <value>安装失败。</value>
     </data>
-    <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
+  <data name="OverlayDesignerInstalledSuccess" xml:space="preserve">
       <value>已安装。「{0}」现在出现在你的叠加层列表里了。</value>
     </data>
-    <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
+  <data name="OverlayDesignerInstallFailedWithReason" xml:space="preserve">
       <value>安装失败：{0}</value>
     </data>
-    <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
+  <data name="OverlayDesignerReplaceExistingBody" xml:space="preserve">
       <value>那里已经有一个名为「{0}」的文件夹。要替换它吗？</value>
     </data>
-    <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
+  <data name="OverlayDesignerReplaceExistingTitle" xml:space="preserve">
       <value>替换已有的包</value>
     </data>
-    <data name="OverlayDesignerNoIssues" xml:space="preserve">
+  <data name="OverlayDesignerNoIssues" xml:space="preserve">
       <value>没有问题</value>
     </data>
-    <data name="OverlayDesignerWarningCount" xml:space="preserve">
+  <data name="OverlayDesignerWarningCount" xml:space="preserve">
       <value>警告：{0}</value>
     </data>
-    <data name="OverlayDesignerErrorCount" xml:space="preserve">
+  <data name="OverlayDesignerErrorCount" xml:space="preserve">
       <value>错误：{0}</value>
     </data>
-    <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
+  <data name="OverlayDesignerErrorAndWarningCount" xml:space="preserve">
       <value>错误：{0}，警告：{1}</value>
     </data>
-    <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
+  <data name="OverlayDesignerNewOverlayNamePattern" xml:space="preserve">
       <value>我的{0}</value>
     </data>
-    <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
+  <data name="OverlayDesignerCreatedFromTemplate" xml:space="preserve">
       <value>已基于 {1} 创建「{0}」。</value>
     </data>
-    <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
+  <data name="OverlayDesignerCreateFromTemplateFailed" xml:space="preserve">
       <value>无法从模板创建：{0}</value>
     </data>
-    <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
+  <data name="OverlayDesignerOpenPackageTitle" xml:space="preserve">
       <value>打开 overlay.json</value>
     </data>
-    <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
+  <data name="OverlayDesignerOverlayJsonFilter" xml:space="preserve">
       <value>叠加层定义 (overlay.json)|overlay.json</value>
     </data>
-    <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
+  <data name="OverlayDesignerCouldNotOpenOverlay" xml:space="preserve">
       <value>无法打开该叠加层。</value>
     </data>
-    <data name="OverlayDesignerOpened" xml:space="preserve">
+  <data name="OverlayDesignerOpened" xml:space="preserve">
       <value>已打开「{0}」。</value>
     </data>
-    <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
+  <data name="OverlayDesignerOpenedWithProblems" xml:space="preserve">
       <value>已打开「{0}」。待修复的问题：{1}</value>
     </data>
-    <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
+  <data name="OverlayCouldNotOpenBrowser" xml:space="preserve">
       <value>无法在浏览器中打开该页面。</value>
     </data>
-    <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
+  <data name="OverlayDesignerDiscardChangesBody" xml:space="preserve">
       <value>你有未保存的更改，要放弃吗？可以用「保存草稿」或「导出包」把成果留下来。</value>
     </data>
-    <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
+  <data name="OverlayDesignerDiscardChangesTitle" xml:space="preserve">
       <value>放弃更改</value>
     </data>
-    <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
+  <data name="OverlayDesignerDraftDeleted" xml:space="preserve">
       <value>已删除草稿「{0}」。</value>
     </data>
-    <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
+  <data name="OverlayDesignerDraftDeleteFailed" xml:space="preserve">
       <value>草稿删除失败：{0}</value>
     </data>
-    <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
+  <data name="OverlayDesignerDeleteDraftBody" xml:space="preserve">
       <value>要删除草稿「{0}」吗？此操作无法撤销。</value>
     </data>
-    <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
+  <data name="OverlayDesignerDeleteDraftTitle" xml:space="preserve">
       <value>删除草稿</value>
     </data>
-    <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
+  <data name="OverlayDesignerBoundsDescription" xml:space="preserve">
       <value>{0}：{1}，{2}，宽 {3} 高 {4}</value>
     </data>
-    <data name="OverlayStoreFilterAll" xml:space="preserve">
+  <data name="OverlayStoreFilterAll" xml:space="preserve">
       <value>全部叠加层</value>
     </data>
-    <data name="OverlayStoreFilterInstalled" xml:space="preserve">
+  <data name="OverlayStoreFilterInstalled" xml:space="preserve">
       <value>已安装</value>
     </data>
-    <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
+  <data name="OverlayStoreFilterNotInstalled" xml:space="preserve">
       <value>未安装</value>
     </data>
-    <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
+  <data name="OverlayStoreFilterUpdateAvailable" xml:space="preserve">
       <value>有可用更新</value>
     </data>
-    <data name="OverlayStoreInstalledTab" xml:space="preserve">
+  <data name="OverlayStoreInstalledTab" xml:space="preserve">
       <value>已安装 ({0})</value>
     </data>
-    <data name="OverlayStoreUpdatesTab" xml:space="preserve">
+  <data name="OverlayStoreUpdatesTab" xml:space="preserve">
       <value>更新 ({0})</value>
     </data>
-    <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
+  <data name="OverlayStoreEmptyInstalledTitle" xml:space="preserve">
       <value>还没有安装任何叠加层</value>
     </data>
-    <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
+  <data name="OverlayStoreEmptyUpdatesTitle" xml:space="preserve">
       <value>全部都是最新的</value>
     </data>
-    <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
+  <data name="OverlayStoreEmptyDiscoverTitle" xml:space="preserve">
       <value>没有找到叠加层</value>
     </data>
-    <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
+  <data name="OverlayStoreEmptyInstalledMessage" xml:space="preserve">
       <value>在「发现」里安装一个叠加层，它就会出现在这里。</value>
     </data>
-    <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
+  <data name="OverlayStoreEmptyUpdatesMessage" xml:space="preserve">
       <value>已安装的叠加层有更新时，会显示在这里。</value>
     </data>
-    <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
+  <data name="OverlayStoreEmptyDiscoverMessage" xml:space="preserve">
       <value>换个关键词、换个标签，或者换个安装状态筛选试试。</value>
     </data>
-    <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
+  <data name="OverlayStoreRefreshingCatalog" xml:space="preserve">
       <value>正在刷新目录...</value>
     </data>
-    <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
+  <data name="OverlayStoreOverlaysAvailable" xml:space="preserve">
       <value>可用叠加层：{0}</value>
     </data>
-    <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
+  <data name="OverlayStoreCatalogLoadFailed" xml:space="preserve">
       <value>目录加载失败：{0}</value>
     </data>
-    <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
+  <data name="OverlayStoreCatalogLoadError" xml:space="preserve">
       <value>加载目录时出错</value>
     </data>
-    <data name="OverlayStoreVisibleCount" xml:space="preserve">
+  <data name="OverlayStoreVisibleCount" xml:space="preserve">
       <value>显示的叠加层：{0}</value>
     </data>
-    <data name="OverlayStoreTotalCount" xml:space="preserve">
+  <data name="OverlayStoreTotalCount" xml:space="preserve">
       <value>叠加层：{0}</value>
     </data>
-    <data name="OverlayStoreInstalling" xml:space="preserve">
+  <data name="OverlayStoreInstalling" xml:space="preserve">
       <value>正在安装 {0}...</value>
     </data>
-    <data name="OverlayStoreProgressFormat" xml:space="preserve">
+  <data name="OverlayStoreProgressFormat" xml:space="preserve">
       <value>{0} ({1}%)</value>
     </data>
-    <data name="OverlayStoreInstallingProgress" xml:space="preserve">
+  <data name="OverlayStoreInstallingProgress" xml:space="preserve">
       <value>正在安装 {0}：{1} ({2}%)</value>
     </data>
-    <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
+  <data name="OverlayStoreInstalledSuccess" xml:space="preserve">
       <value>{0} 安装成功</value>
     </data>
-    <data name="OverlayStoreInstallFailed" xml:space="preserve">
+  <data name="OverlayStoreInstallFailed" xml:space="preserve">
       <value>安装失败：{0}</value>
     </data>
-    <data name="OverlayStoreUpdating" xml:space="preserve">
+  <data name="OverlayStoreUpdating" xml:space="preserve">
       <value>正在更新 {0}...</value>
     </data>
-    <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
+  <data name="OverlayStoreUpdatingProgress" xml:space="preserve">
       <value>正在更新 {0}：{1} ({2}%)</value>
     </data>
-    <data name="OverlayStoreCardUpToDate" xml:space="preserve">
+  <data name="OverlayStoreCardUpToDate" xml:space="preserve">
       <value>{0} 已是最新</value>
     </data>
-    <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
+  <data name="OverlayStoreUpdatedSuccess" xml:space="preserve">
       <value>{0} 更新成功</value>
     </data>
-    <data name="OverlayStoreUpdateFailed" xml:space="preserve">
+  <data name="OverlayStoreUpdateFailed" xml:space="preserve">
       <value>更新失败：{0}</value>
     </data>
-    <data name="OverlayStoreRemoving" xml:space="preserve">
+  <data name="OverlayStoreRemoving" xml:space="preserve">
       <value>正在移除 {0}...</value>
     </data>
-    <data name="OverlayStoreRemoved" xml:space="preserve">
+  <data name="OverlayStoreRemoved" xml:space="preserve">
       <value>已移除 {0}</value>
     </data>
-    <data name="OverlayStoreRemoveFailed" xml:space="preserve">
+  <data name="OverlayStoreRemoveFailed" xml:space="preserve">
       <value>移除失败：{0}</value>
     </data>
-    <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
+  <data name="OverlayStoreUpdatingNOfM" xml:space="preserve">
       <value>正在更新第 {0} 个，共 {1} 个：{2}</value>
     </data>
-    <data name="OverlayStoreAllUpToDate" xml:space="preserve">
+  <data name="OverlayStoreAllUpToDate" xml:space="preserve">
       <value>所有叠加层都是最新的</value>
     </data>
-    <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
+  <data name="OverlayStoreConfirmRemoveBody" xml:space="preserve">
       <value>要移除 {0} 吗？之后随时可以重新安装。</value>
     </data>
-    <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
+  <data name="OverlayRemoveOverlayTitle" xml:space="preserve">
       <value>移除叠加层</value>
     </data>
-    <data name="OverlaySizeBytes" xml:space="preserve">
+  <data name="OverlaySizeBytes" xml:space="preserve">
       <value>{0} B</value>
     </data>
-    <data name="OverlaySizeKilobytes" xml:space="preserve">
+  <data name="OverlaySizeKilobytes" xml:space="preserve">
       <value>{0:F1} KB</value>
     </data>
-    <data name="OverlaySizeMegabytes" xml:space="preserve">
+  <data name="OverlaySizeMegabytes" xml:space="preserve">
       <value>{0:F1} MB</value>
     </data>
-    <data name="OverlayStoreVersionShort" xml:space="preserve">
+  <data name="OverlayStoreVersionShort" xml:space="preserve">
       <value>v{0}</value>
     </data>
-    <data name="OverlayStoreStatusInstalled" xml:space="preserve">
+  <data name="OverlayStoreStatusInstalled" xml:space="preserve">
       <value>已安装</value>
     </data>
-    <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
+  <data name="OverlayStoreStatusInstalledVersion" xml:space="preserve">
       <value>已安装 v{0}</value>
     </data>
-    <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
+  <data name="OverlayStoreStatusAvailableToInstall" xml:space="preserve">
       <value>可以安装</value>
     </data>
-    <data name="OverlayRemoveFailedBody" xml:space="preserve">
+  <data name="OverlayRemoveFailedBody" xml:space="preserve">
       <value>无法移除「{0}」。</value>
     </data>
-    <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
+  <data name="OverlayConfirmRemoveLocalBody" xml:space="preserve">
       <value>要移除「{0}」吗？它的文件会从你的叠加层文件夹中删除。</value>
     </data>
-    <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
+  <data name="OverlayValidationSchemaTooNew" xml:space="preserve">
       <value>叠加层「{0}」需要 v{1} 版架构，而本应用支持到 v{2}。已跳过。</value>
     </data>
-    <data name="OverlayValidationIdRequired" xml:space="preserve">
+  <data name="OverlayValidationIdRequired" xml:space="preserve">
       <value>叠加层的 'id' 为必填项。</value>
     </data>
-    <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
+  <data name="OverlayValidationIdInvalidChars" xml:space="preserve">
       <value>'id'「{0}」包含无效字符。请只使用小写字母、数字和连字符。</value>
     </data>
-    <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
+  <data name="OverlayValidationDisplayNameRequired" xml:space="preserve">
       <value>叠加层的 'displayName' 为必填项。</value>
     </data>
-    <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
+  <data name="OverlayValidationAuthorEmpty" xml:space="preserve">
       <value>'author' 为空。提交到商店的叠加层应当署名作者。</value>
     </data>
-    <data name="OverlayValidationVersionInvalid" xml:space="preserve">
+  <data name="OverlayValidationVersionInvalid" xml:space="preserve">
       <value>'overlayVersion' 的值「{0}」不是有效的版本号（例如 '1.0.0'）。</value>
     </data>
-    <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
+  <data name="OverlayValidationRatingFontSizeInvalid" xml:space="preserve">
       <value>rating.fontSize 必须大于 0（当前为 {0}）。</value>
     </data>
-    <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
+  <data name="OverlayValidationLayerOrderUnknown" xml:space="preserve">
       <value>layerOrder 中含有未知图层「{0}」。有效取值：{1}。</value>
     </data>
-    <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
+  <data name="OverlayValidationLayerOrderDuplicate" xml:space="preserve">
       <value>layerOrder 中「{0}」出现了多次。</value>
     </data>
-    <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
+  <data name="OverlayValidationLayerOrderNoPoster" xml:space="preserve">
       <value>layerOrder 中没有 'poster'，媒体海报将不会被绘制。</value>
     </data>
-    <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
+  <data name="OverlayValidationLayerImagePathRequired" xml:space="preserve">
       <value>定义了该图层时，{0}.imagePath 为必填项。</value>
     </data>
-    <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
+  <data name="OverlayValidationAssetPathNotRelative" xml:space="preserve">
       <value>{0}「{1}」必须是叠加层文件夹内的相对路径（不能用绝对路径，也不能用 '..'）。</value>
     </data>
-    <data name="OverlayValidationAssetNotPng" xml:space="preserve">
+  <data name="OverlayValidationAssetNotPng" xml:space="preserve">
       <value>{0}「{1}」必须是 PNG 文件。</value>
     </data>
-    <data name="OverlayValidationAssetNotFound" xml:space="preserve">
+  <data name="OverlayValidationAssetNotFound" xml:space="preserve">
       <value>找不到 {0}「{1}」对应的文件。</value>
     </data>
-    <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
+  <data name="OverlayValidationFilenameCaseCollision" xml:space="preserve">
       <value>文件「{0}」和「{1}」仅大小写不同，在区分大小写的文件系统上会冲突。</value>
     </data>
-    <data name="OverlayValidationImageTooLarge" xml:space="preserve">
+  <data name="OverlayValidationImageTooLarge" xml:space="preserve">
       <value>{0} 图片「{1}」超过大小上限（{2:F1} MB &gt; {3:F0} MB）。</value>
     </data>
-    <data name="OverlayValidationMarginInvalid" xml:space="preserve">
+  <data name="OverlayValidationMarginInvalid" xml:space="preserve">
       <value>{0}「{1}」不是有效的 Thickness 值，应为 1 到 4 个数字。</value>
     </data>
-    <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
+  <data name="OverlayValidationMarginNonNumeric" xml:space="preserve">
       <value>{0} 中包含非数字的值「{1}」。</value>
     </data>
-    <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
+  <data name="OverlayValidationMarginOffCanvas" xml:space="preserve">
       <value>{0} 的值 {1:0.##} 远在画布之外，可能什么都看不到。</value>
     </data>
-    <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
+  <data name="OverlayValidationRotationOriginShape" xml:space="preserve">
       <value>title.rotationOrigin「{0}」必须是 'x,y' 形式，且正好两个值。</value>
     </data>
-    <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
+  <data name="OverlayValidationRotationOriginRange" xml:space="preserve">
       <value>title.rotationOrigin 的值「{0}」必须介于 0.0 和 1.0 之间。</value>
     </data>
-    <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
+  <data name="OverlayValidationPackageTooLarge" xml:space="preserve">
       <value>叠加层文件夹超过总大小上限（{0:F1} MB &gt; {1:F0} MB）。</value>
     </data>
-    <data name="OverlaySubmissionIdRequired" xml:space="preserve">
+  <data name="OverlaySubmissionIdRequired" xml:space="preserve">
       <value>叠加层要先有 ID 才能提交。</value>
     </data>
-    <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
+  <data name="OverlaySubmissionNewOverlay" xml:space="preserve">
       <value>商店里还没有「{0}」——这会是一个全新的叠加层。</value>
     </data>
-    <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
+  <data name="OverlaySubmissionWouldUpdate" xml:space="preserve">
       <value>商店里已有「{0}」的 v{1}。提交 v{2} 会更新它。</value>
     </data>
-    <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
+  <data name="OverlaySubmissionVersionNotIncremented" xml:space="preserve">
       <value>商店里已有「{0}」的 v{1}。提交前请把版本号提到它之上。</value>
     </data>
-    <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
+  <data name="OverlaySubmissionCatalogUnavailable" xml:space="preserve">
       <value>无法连接商店来检查名称是否重复。你仍然可以提交。</value>
     </data>
-    <data name="OverlayExportIdRequired" xml:space="preserve">
+  <data name="OverlayExportIdRequired" xml:space="preserve">
       <value>叠加层要先有 ID 才能导出。</value>
     </data>
-    <data name="OverlayExportFolderExists" xml:space="preserve">
+  <data name="OverlayExportFolderExists" xml:space="preserve">
       <value>这里已经有一个名为「{0}」的文件夹。请换个位置，或者允许覆盖它。</value>
     </data>
-    <data name="OverlayExportBlockedByValidation" xml:space="preserve">
+  <data name="OverlayExportBlockedByValidation" xml:space="preserve">
       <value>导出前请先修复列出的问题。待修复的问题：{0}</value>
     </data>
-    <data name="OverlayExportFailed" xml:space="preserve">
+  <data name="OverlayExportFailed" xml:space="preserve">
       <value>导出失败：{0}</value>
     </data>
-    <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
+  <data name="OverlayExportPackageMissingDefinition" xml:space="preserve">
       <value>「{0}」中没有 {1}。</value>
     </data>
-    <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
+  <data name="OverlayExportBuiltInIdReserved" xml:space="preserve">
       <value>「{0}」是内置叠加层的 ID，不能覆盖安装。</value>
     </data>
-    <data name="OverlayExportInstallFailed" xml:space="preserve">
+  <data name="OverlayExportInstallFailed" xml:space="preserve">
       <value>安装失败：{0}</value>
     </data>
-    <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
+  <data name="OverlayExportNoOverlaySpecified" xml:space="preserve">
       <value>未指定叠加层。</value>
     </data>
-    <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
+  <data name="OverlayExportBuiltInCannotRemove" xml:space="preserve">
       <value>「{0}」是内置叠加层，无法移除。</value>
     </data>
-    <data name="OverlayExportNotInstalled" xml:space="preserve">
+  <data name="OverlayExportNotInstalled" xml:space="preserve">
       <value>「{0}」尚未安装。</value>
     </data>
-    <data name="OverlayExportRemoveFailed" xml:space="preserve">
+  <data name="OverlayExportRemoveFailed" xml:space="preserve">
       <value>无法移除「{0}」：{1}</value>
     </data>
-    <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
+  <data name="OverlayExportPreviewRenderFailed" xml:space="preserve">
       <value>无法为这个叠加层生成预览图。</value>
     </data>
-    <data name="OverlayLoadFileNotFound" xml:space="preserve">
+  <data name="OverlayLoadFileNotFound" xml:space="preserve">
       <value>找不到叠加层文件：{0}</value>
     </data>
-    <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
+  <data name="OverlayLoadFolderUnresolvable" xml:space="preserve">
       <value>无法确定「{0}」所属的叠加层文件夹。</value>
     </data>
-    <data name="OverlayLoadInvalidJson" xml:space="preserve">
+  <data name="OverlayLoadInvalidJson" xml:space="preserve">
       <value>「{0}」不是有效的 JSON：{1}</value>
     </data>
-    <data name="OverlayLoadUnreadable" xml:space="preserve">
+  <data name="OverlayLoadUnreadable" xml:space="preserve">
       <value>无法读取「{0}」：{1}</value>
     </data>
-    <data name="OverlayLoadNoDefinition" xml:space="preserve">
+  <data name="OverlayLoadNoDefinition" xml:space="preserve">
       <value>「{0}」中没有叠加层定义。</value>
     </data>
-    <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
+  <data name="OverlayLoadSchemaTooNew" xml:space="preserve">
       <value>这个叠加层需要 v{0} 版架构，而当前版本的 FoliCon 支持到 v{1}。请更新 FoliCon 后再编辑。</value>
     </data>
-    <data name="OverlayDraftIdRequired" xml:space="preserve">
+  <data name="OverlayDraftIdRequired" xml:space="preserve">
       <value>叠加层要先有 ID 才能保存为草稿。</value>
     </data>
-    <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
+  <data name="OverlayTemplateBuiltInDescription" xml:space="preserve">
       <value>内置叠加层</value>
     </data>
-    <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
+  <data name="OverlayTemplateInstalledDescription" xml:space="preserve">
       <value>已安装的叠加层</value>
     </data>
-    <data name="OverlayTemplateIdInUse" xml:space="preserve">
+  <data name="OverlayTemplateIdInUse" xml:space="preserve">
       <value>叠加层 ID「{0}」已被某个内置或已安装的叠加层占用。</value>
     </data>
-    <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
+  <data name="OverlayInstallProgressFetchingManifest" xml:space="preserve">
       <value>正在获取清单...</value>
     </data>
-    <data name="OverlayInstallProgressValidating" xml:space="preserve">
+  <data name="OverlayInstallProgressValidating" xml:space="preserve">
       <value>正在校验...</value>
     </data>
-    <data name="OverlayInstallProgressInstalling" xml:space="preserve">
+  <data name="OverlayInstallProgressInstalling" xml:space="preserve">
       <value>正在安装...</value>
     </data>
-    <data name="OverlayInstallProgressInstalled" xml:space="preserve">
+  <data name="OverlayInstallProgressInstalled" xml:space="preserve">
       <value>已安装。</value>
     </data>
-    <data name="OverlayInstallProgressDownloading" xml:space="preserve">
+  <data name="OverlayInstallProgressDownloading" xml:space="preserve">
       <value>正在下载 {0}...</value>
     </data>
-    <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
+  <data name="OverlayUpdateProgressBackingUp" xml:space="preserve">
       <value>正在备份当前版本...</value>
     </data>
-    <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
+  <data name="OverlayManifestDeserializeFailed" xml:space="preserve">
       <value>无法读取「{0}」的清单</value>
     </data>
-    <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
+  <data name="OverlayInstallBuiltInRejected" xml:space="preserve">
       <value>无法安装「{0}」：它是内置叠加层。</value>
     </data>
-    <data name="OverlayInstallDownloadFailed" xml:space="preserve">
+  <data name="OverlayInstallDownloadFailed" xml:space="preserve">
       <value>无法下载叠加层「{0}」的文件：{1}</value>
     </data>
-    <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
+  <data name="OverlayInstallAssetTooLarge" xml:space="preserve">
       <value>文件「{0}」超过 {1} MB 的上限。</value>
     </data>
-    <data name="OverlayJsonTooLarge" xml:space="preserve">
+  <data name="OverlayJsonTooLarge" xml:space="preserve">
       <value>overlay.json 文件过大。</value>
     </data>
-    <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
+  <data name="OverlayAssetSizeLimitExceeded" xml:space="preserve">
       <value>文件大小超出限制。</value>
     </data>
-    <data name="OverlayInstallHashMismatch" xml:space="preserve">
+  <data name="OverlayInstallHashMismatch" xml:space="preserve">
       <value>「{0}」的完整性校验失败：下载到的文件与公布的校验和不一致。</value>
     </data>
-    <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
+  <data name="OverlayInstallDefinitionUnreadable" xml:space="preserve">
       <value>overlay.json 中没有叠加层定义。</value>
     </data>
-    <data name="OverlayInstallValidationFailed" xml:space="preserve">
+  <data name="OverlayInstallValidationFailed" xml:space="preserve">
       <value>校验失败：{0}</value>
     </data>
-    <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
+  <data name="OverlayUpdateNotInCatalog" xml:space="preserve">
       <value>目录中找不到叠加层「{0}」。</value>
     </data>
-    <data name="OverlayUpdateFailed" xml:space="preserve">
+  <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>无法根据清单更新叠加层「{0}」：{1}</value>
     </data>
 </root>
