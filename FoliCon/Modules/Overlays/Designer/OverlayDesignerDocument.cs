@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using Size = System.Windows.Size;
 
 namespace FoliCon.Modules.Overlays.Designer;
@@ -62,6 +62,11 @@ public sealed class OverlayDesignerDocument
     public string? PosterClipRect { get; set; }
     public string? PosterInnerMargin { get; set; }
     public string? PosterOpacityMaskPath { get; set; }
+    public double PosterRotationAngle { get; set; }
+    public string PosterRotationOrigin { get; set; } = "0.5,0.5";
+    public double PosterSkewX { get; set; }
+    public double PosterSkewY { get; set; }
+    public string? PosterPerspectiveCorners { get; set; }
 
     /// <summary>Explicit z-order. Elements absent from the document are skipped at snapshot time.</summary>
     public List<OverlayElementKind> LayerOrder { get; } = [.. OverlayElementKinds.DefaultOrder];
@@ -158,7 +163,12 @@ public sealed class OverlayDesignerDocument
                 ClipRadius = PosterClipRadius,
                 ClipRect = PosterClipRect,
                 PosterInnerMargin = PosterInnerMargin,
-                OpacityMaskPath = PosterOpacityMaskPath
+                OpacityMaskPath = PosterOpacityMaskPath,
+                RotationAngle = PosterRotationAngle,
+                RotationOrigin = PosterRotationOrigin,
+                SkewX = PosterSkewX,
+                SkewY = PosterSkewY,
+                PerspectiveCorners = PosterPerspectiveCorners
             },
 
             Rating = new RatingConfig
@@ -236,6 +246,11 @@ public sealed class OverlayDesignerDocument
             PosterClipRect = definition.Poster.ClipRect,
             PosterInnerMargin = definition.Poster.PosterInnerMargin,
             PosterOpacityMaskPath = definition.Poster.OpacityMaskPath,
+            PosterRotationAngle = definition.Poster.RotationAngle,
+            PosterRotationOrigin = definition.Poster.RotationOrigin ?? "0.5,0.5",
+            PosterSkewX = definition.Poster.SkewX,
+            PosterSkewY = definition.Poster.SkewY,
+            PosterPerspectiveCorners = definition.Poster.PerspectiveCorners,
 
             RatingShieldMargin = OverlayGeometry.ParseThickness(definition.Rating.ShieldMargin),
             RatingTextMargin = OverlayGeometry.ParseThickness(definition.Rating.TextMargin),
@@ -290,6 +305,7 @@ public sealed class OverlayDesignerDocument
     /// <summary>
     /// Reads the bounds of a positionable element in design-surface coordinates.
     /// Rating and title are positioned by margin against the same surface as the layers.
+    /// When the poster has 4-corner perspective defined, its bounds reflect the enclosing quad.
     /// </summary>
     public Rect GetElementBounds(OverlayElementKind kind)
     {
@@ -297,11 +313,23 @@ public sealed class OverlayDesignerDocument
         {
             return GetRatingTextBounds();
         }
+
+        if (kind == OverlayElementKind.Poster && !string.IsNullOrWhiteSpace(PosterPerspectiveCorners)
+            && PerspectiveMeshBuilder.TryParseCorners(PosterPerspectiveCorners, out var corners))
+        {
+            var minX = corners.Min(p => p.X);
+            var maxX = corners.Max(p => p.X);
+            var minY = corners.Min(p => p.Y);
+            var maxY = corners.Max(p => p.Y);
+            return new Rect(minX, minY, Math.Max(0, maxX - minX), Math.Max(0, maxY - minY));
+        }
+
         return OverlayGeometry.MarginToBounds(GetElementMargin(kind), LayoutSurface);
     }
 
     /// <summary>
     /// Writes an element's position from canvas bounds, converting back to a margin.
+    /// When the poster has 4-corner perspective defined, bounds changes translate and scale the 4 corners.
     /// </summary>
     public void SetElementBounds(OverlayElementKind kind, Rect bounds)
     {
@@ -310,6 +338,27 @@ public sealed class OverlayDesignerDocument
             SetRatingTextBounds(bounds);
             return;
         }
+
+        if (kind == OverlayElementKind.Poster && !string.IsNullOrWhiteSpace(PosterPerspectiveCorners)
+            && PerspectiveMeshBuilder.TryParseCorners(PosterPerspectiveCorners, out var corners))
+        {
+            var oldBounds = GetElementBounds(OverlayElementKind.Poster);
+            if (oldBounds.Width > 0 && oldBounds.Height > 0 && bounds.Width > 0 && bounds.Height > 0)
+            {
+                var scaleX = bounds.Width / oldBounds.Width;
+                var scaleY = bounds.Height / oldBounds.Height;
+                var updated = new System.Windows.Point[4];
+                for (var i = 0; i < 4; i++)
+                {
+                    var nx = bounds.X + ((corners[i].X - oldBounds.X) * scaleX);
+                    var ny = bounds.Y + ((corners[i].Y - oldBounds.Y) * scaleY);
+                    updated[i] = new System.Windows.Point(Math.Round(nx, 1), Math.Round(ny, 1));
+                }
+                PosterPerspectiveCorners = PerspectiveMeshBuilder.FormatCorners(updated);
+                return;
+            }
+        }
+
         SetElementMargin(kind, OverlayGeometry.BoundsToMargin(bounds, LayoutSurface));
     }
 

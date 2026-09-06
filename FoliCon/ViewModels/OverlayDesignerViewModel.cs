@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using FoliCon.Modules.Overlays.Designer;
 using Thickness = System.Windows.Thickness;
 using Brush = System.Windows.Media.Brush;
@@ -41,6 +41,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     /// <summary>Margin captured at gesture start, so the whole drag becomes one undo step.</summary>
     private Thickness? _gestureStartMargin;
+    private string? _gestureStartCorners;
 
     private bool _disposed;
     private string? _temporaryWorkingFolder;
@@ -348,11 +349,35 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         }
 
         var kind = SelectedElement.Kind;
+        var snapped = OverlayGeometry.SnapToPixels(bounds);
+
+        if (kind == OverlayElementKind.Poster && !string.IsNullOrWhiteSpace(_document.PosterPerspectiveCorners))
+        {
+            var oldCorners = _document.PosterPerspectiveCorners;
+            var oldBounds = _document.GetElementBounds(kind);
+            if (snapped == oldBounds)
+            {
+                return;
+            }
+
+            _document.SetElementBounds(kind, snapped);
+            var newCorners = _document.PosterPerspectiveCorners;
+
+            ApplyEdit(new PropertyEditCommand<string?>(
+                $"Move {SelectedElement.DisplayName}",
+                (d, v) => d.PosterPerspectiveCorners = v,
+                oldCorners,
+                newCorners));
+
+            RaisePropertyChanged(nameof(PosterPerspectiveCorners));
+            RaiseSelectedBoundsChanged();
+            return;
+        }
+
         var oldMargin = _document.GetElementMargin(kind);
 
         // RatingText uses shield-relative coordinates, so route through the document's
         // SetElementBounds which handles the conversion for each element kind.
-        var snapped = OverlayGeometry.SnapToPixels(bounds);
         var newMargin = kind == OverlayElementKind.RatingText
             ? GetMarginFromBounds(kind, snapped)
             : OverlayGeometry.BoundsToMargin(snapped, _document.LayoutSurface);
@@ -394,23 +419,54 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
         var kind = SelectedElement.Kind;
         _gestureStartMargin ??= _document.GetElementMargin(kind);
+        _gestureStartCorners ??= _document.PosterPerspectiveCorners;
 
         _document.SetElementBounds(kind, OverlayGeometry.SnapToPixels(designBounds));
 
         RefreshElementBounds();
         RaiseSelectedBoundsChanged();
+        if (kind == OverlayElementKind.Poster && !string.IsNullOrWhiteSpace(_gestureStartCorners))
+        {
+            RaisePropertyChanged(nameof(PosterPerspectiveCorners));
+        }
         RequestPreview();
     }
 
     /// <summary>Closes a drag/resize, recording one undo entry for the entire gesture.</summary>
     public void EndGesture()
     {
-        if (SelectedElement == null || _gestureStartMargin is not { } startMargin)
+        if (SelectedElement == null)
         {
             return;
         }
 
         var kind = SelectedElement.Kind;
+
+        if (kind == OverlayElementKind.Poster && _gestureStartCorners != null)
+        {
+            var startCorners = _gestureStartCorners;
+            _gestureStartCorners = null;
+            _gestureStartMargin = null;
+
+            var endCorners = _document.PosterPerspectiveCorners;
+            if (endCorners == startCorners)
+            {
+                return;
+            }
+
+            _history.PushExecuted(new PropertyEditCommand<string?>(
+                $"Move {SelectedElement.DisplayName}",
+                (d, v) => d.PosterPerspectiveCorners = v,
+                startCorners,
+                endCorners));
+            return;
+        }
+
+        if (_gestureStartMargin is not { } startMargin)
+        {
+            return;
+        }
+
         _gestureStartMargin = null;
 
         var endMargin = _document.GetElementMargin(kind);
@@ -502,8 +558,8 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
     public string? PosterOpacityMaskPath => _document.PosterOpacityMaskPath;
 
     /// <summary>
-    /// Picks a PNG for a layer. The file must already live in the package folder — the designer
-    /// edits a package in place rather than copying strays in from around the filesystem.
+    /// Picks a PNG for a layer. If the file lives outside the package folder, it is automatically
+    /// copied into the package folder so the overlay remains self-contained and portable.
     /// </summary>
     private void BrowseImage(string? target)
     {
@@ -514,23 +570,52 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
         var dialog = DialogUtils.NewOpenFileDialog(
             Lang.OverlayDesignerSelectPngTitle, Lang.OverlayDesignerPngFilesFilter);
-        dialog.InitialDirectory = _document.AssetFolderPath;
+        dialog.InitialDirectory = Directory.Exists(_document.AssetFolderPath)
+            ? _document.AssetFolderPath
+            : Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
         if (dialog.ShowDialog() != true)
         {
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(_document.AssetFolderPath))
+        {
+            var tempFolder = Path.Combine(Path.GetTempPath(), "FoliCon", "OverlayDesigner", Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(tempFolder);
+            _document.AssetFolderPath = tempFolder;
+        }
+
         var selected = Path.GetFullPath(dialog.FileName);
         var folder = Path.GetFullPath(_document.AssetFolderPath);
 
+        // If the selected image is outside the package folder, copy it in so the package is self-contained.
         if (!selected.StartsWith(folder + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
         {
-            StatusMessage = Lang.OverlayDesignerImageMustBeInFolder;
-            return;
+            try
+            {
+                Directory.CreateDirectory(folder);
+                var rawFileName = Path.GetFileName(selected);
+                var availableFileName = OverlayTemplateProvider.ResolveAvailableFileName(folder, rawFileName);
+                var destPath = Path.Combine(folder, availableFileName);
+
+                File.Copy(selected, destPath, overwrite: false);
+                selected = destPath;
+
+                Logger.Info("Copied external image '{Source}' into overlay folder '{Dest}'", dialog.FileName, destPath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Failed to copy image '{Source}' into overlay folder '{Folder}'", dialog.FileName, folder);
+                StatusMessage = string.Format(Lang.OverlayDesignerDraftSaveFailed, ex.Message);
+                DialogUtils.ShowGrowlError(StatusMessage);
+                return;
+            }
         }
 
-        ApplyImagePath(target, Path.GetRelativePath(folder, selected));
+        var relativePath = Path.GetRelativePath(folder, selected);
+        ApplyImagePath(target, relativePath);
+        DialogUtils.ShowGrowlSuccess($"Loaded {target} image: {relativePath}");
     }
 
     private void ClearImage(string? target)
@@ -546,15 +631,35 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         switch (target.ToLowerInvariant())
         {
             case "base":
+                var prevBase = _document.BaseLayerImagePath;
+                var newHasBase = !string.IsNullOrEmpty(relativePath);
                 ApplyEdit(new PropertyEditCommand<string>("Change base image",
-                    (d, v) => d.BaseLayerImagePath = v, _document.BaseLayerImagePath, relativePath));
+                    (d, v) =>
+                    {
+                        d.BaseLayerImagePath = v;
+                        d.HasBaseLayer = !string.IsNullOrEmpty(v);
+                    },
+                    prevBase, relativePath));
+                _document.HasBaseLayer = newHasBase;
                 RaisePropertyChanged(nameof(BaseLayerImagePath));
+                RaisePropertyChanged(nameof(HasBaseLayer));
+                BuildElementList();
                 break;
 
             case "front":
+                var prevFront = _document.FrontLayerImagePath;
+                var newHasFront = !string.IsNullOrEmpty(relativePath);
                 ApplyEdit(new PropertyEditCommand<string>("Change front image",
-                    (d, v) => d.FrontLayerImagePath = v, _document.FrontLayerImagePath, relativePath));
+                    (d, v) =>
+                    {
+                        d.FrontLayerImagePath = v;
+                        d.HasFrontLayer = !string.IsNullOrEmpty(v);
+                    },
+                    prevFront, relativePath));
+                _document.HasFrontLayer = newHasFront;
                 RaisePropertyChanged(nameof(FrontLayerImagePath));
+                RaisePropertyChanged(nameof(HasFrontLayer));
+                BuildElementList();
                 break;
 
             case "mask":
@@ -583,6 +688,38 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
                 "Change corner radius", nameof(PosterClipRadius));
             RaiseCornerRadiusChanged();
         }
+    }
+
+    public double PosterRotationAngle
+    {
+        get => _document.PosterRotationAngle;
+        set => SetDocumentProperty(value, _document.PosterRotationAngle, (d, v) => d.PosterRotationAngle = v,
+            "Change poster rotation", nameof(PosterRotationAngle));
+    }
+
+    public double PosterSkewX
+    {
+        get => _document.PosterSkewX;
+        set => SetDocumentProperty(value, _document.PosterSkewX, (d, v) => d.PosterSkewX = v,
+            "Change poster skew X", nameof(PosterSkewX));
+    }
+
+    public double PosterSkewY
+    {
+        get => _document.PosterSkewY;
+        set => SetDocumentProperty(value, _document.PosterSkewY, (d, v) => d.PosterSkewY = v,
+            "Change poster skew Y", nameof(PosterSkewY));
+    }
+
+    public string? PosterPerspectiveCorners
+    {
+        get => _document.PosterPerspectiveCorners;
+        set => SetDocumentProperty(value, _document.PosterPerspectiveCorners, (d, v) => d.PosterPerspectiveCorners = v,
+            "Change poster perspective corners", nameof(PosterPerspectiveCorners), afterApply: () =>
+            {
+                RefreshElementBounds();
+                RaiseSelectedBoundsChanged();
+            });
     }
 
     /// <summary>

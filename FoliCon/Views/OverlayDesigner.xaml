@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoliCon.Views.OverlayDesigner"
+<UserControl x:Class="FoliCon.Views.OverlayDesigner"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -603,6 +603,36 @@
                                                           AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerCornerBottomRight}}" />
                                     </StackPanel>
                                 </UniformGrid>
+
+                                <!-- Tilt and Skew (2D Transforms) -->
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerRotation}}"
+                                           Style="{StaticResource FieldLabel}" Margin="0,8,0,4" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Slider Value="{Binding PosterRotationAngle}" Minimum="-180" Maximum="180"
+                                            VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <TextBlock Grid.Column="1" Text="{Binding PosterRotationAngle, StringFormat={}{0:0.0}°}"
+                                               Style="{StaticResource HintText}" VerticalAlignment="Center" Width="42" />
+                                </Grid>
+
+                                <TextBlock Text="Skew (X, Y)" Style="{StaticResource FieldLabel}" Margin="0,6,0,4" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="X" VerticalAlignment="Center" Margin="0,0,4,0" FontSize="12" />
+                                    <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="-85" Maximum="85"
+                                                      Value="{Binding PosterSkewX, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="Y" VerticalAlignment="Center" Margin="12,0,4,0" FontSize="12" />
+                                    <hc:NumericUpDown Style="{StaticResource GeometryBox}" Minimum="-85" Maximum="85"
+                                                      Value="{Binding PosterSkewY, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+
+                                <!-- Perspective 4-Corner Pinning -->
+                                <TextBlock Text="Perspective Corners" Style="{StaticResource FieldLabel}" Margin="0,8,0,2" />
+                                <TextBlock Style="{StaticResource HintText}"
+                                           Text="Optional 4 corners: tlX,tlY trX,trY brX,brY blX,blY" />
+                                <TextBox Text="{Binding PosterPerspectiveCorners, UpdateSourceTrigger=LostFocus}" />
                             </StackPanel>
                         </Expander>
 

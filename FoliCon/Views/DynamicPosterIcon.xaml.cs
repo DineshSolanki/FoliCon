@@ -162,22 +162,86 @@ public partial class DynamicPosterIcon : PosterIconBase
         var hasClip = !string.IsNullOrWhiteSpace(definition.Poster.ClipRadius) && definition.Poster.ClipRadius != "0";
         var hasOpacityMask = !string.IsNullOrEmpty(definition.Poster.OpacityMaskPath);
 
+        // 1. Perspective 4-corner mapping (if specified and valid)
+        if (!string.IsNullOrWhiteSpace(definition.Poster.PerspectiveCorners) &&
+            PerspectiveMeshBuilder.TryParseCorners(definition.Poster.PerspectiveCorners, out var corners))
+        {
+            var posterSource = GetPosterImageSource() ?? CreatePlaceholderImageSource();
+            var viewport = PerspectiveMeshBuilder.CreatePerspectivePosterElement(
+                corners, posterSource, definition.DesignWidth, definition.DesignHeight);
+
+            if (viewport != null)
+            {
+                UIElement resultElement = viewport;
+
+                if (hasOpacityMask)
+                {
+                    var maskGrid = new Grid();
+                    maskGrid.Children.Add(viewport);
+                    maskGrid.OpacityMask = new ImageBrush(ResolveImageSource(definition.Poster.OpacityMaskPath!))
+                    {
+                        Stretch = Stretch.Fill
+                    };
+                    resultElement = maskGrid;
+                }
+
+                return resultElement;
+            }
+        }
+
+        // 2. Standard 2D poster element
+        UIElement? element;
         // No clip and no opacity mask — plain Image with margin (direct child of root Grid)
         if (!hasClip && !hasOpacityMask)
         {
-            return CreatePlainPosterImage(definition);
+            element = CreatePlainPosterImage(definition);
         }
-
-        // Opacity mask only (no clip) — plain Image with margin and OpacityMask, no Border wrapper.
-        // Matches original XAML where Windows11 poster is a direct Image in the Grid.
-        if (!hasClip) // hasOpacityMask must be true here
+        else if (!hasClip) // hasOpacityMask must be true here
         {
-            return CreatePosterImageWithOpacityMask(definition);
+            element = CreatePosterImageWithOpacityMask(definition);
+        }
+        else
+        {
+            // Clip (with optional opacity mask) — wrap in Border.
+            element = CreateClippedPosterElement(definition, hasOpacityMask);
         }
 
-        // Clip (with optional opacity mask) — wrap in Border.
-        return CreateClippedPosterElement(definition, hasOpacityMask);
+        // 3. Apply 2D affine transforms (rotation and skew)
+        if (element != null)
+        {
+            ApplyPosterTransforms(element, definition.Poster);
+        }
+
+        return element;
     }
+
+    private static void ApplyPosterTransforms(UIElement element, PosterConfig poster)
+    {
+        var hasRotation = Math.Abs(poster.RotationAngle) > 0.001;
+        var hasSkew = Math.Abs(poster.SkewX) > 0.001 || Math.Abs(poster.SkewY) > 0.001;
+
+        if (!hasRotation && !hasSkew)
+        {
+            return;
+        }
+
+        var transformGroup = new TransformGroup();
+        if (hasSkew)
+        {
+            transformGroup.Children.Add(new SkewTransform(poster.SkewX, poster.SkewY));
+        }
+
+        if (hasRotation)
+        {
+            transformGroup.Children.Add(new RotateTransform(poster.RotationAngle));
+        }
+
+        element.RenderTransformOrigin = ParsePoint(poster.RotationOrigin);
+        element.RenderTransform = transformGroup;
+    }
+
+    private static ImageSource CreatePlaceholderImageSource() =>
+        BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null, new byte[4], 4);
 
     private Image CreatePlainPosterImage(PosterOverlayDefinition definition)
     {
@@ -482,10 +546,11 @@ public partial class DynamicPosterIcon : PosterIconBase
 
     private static BitmapImage LoadBitmapFromPath(string fullPath)
     {
+        var bytes = File.ReadAllBytes(fullPath);
         var bitmap = new BitmapImage();
         bitmap.BeginInit();
-        bitmap.UriSource = new Uri(fullPath, UriKind.Absolute);
         bitmap.CacheOption = BitmapCacheOption.OnLoad;
+        bitmap.StreamSource = new MemoryStream(bytes);
         bitmap.EndInit();
         bitmap.Freeze();
         return bitmap;

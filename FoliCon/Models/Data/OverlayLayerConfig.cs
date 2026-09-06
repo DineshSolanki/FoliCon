@@ -54,6 +54,33 @@ public class PosterConfig
     /// Optional relative path to an opacity mask image within the overlay folder.
     /// </summary>
     public string? OpacityMaskPath { get; set; }
+
+    /// <summary>
+    /// Rotation angle in degrees (-360 to 360).
+    /// </summary>
+    public double RotationAngle { get; set; }
+
+    /// <summary>
+    /// Rotation origin as normalized point "x,y" (0.0–1.0). Default is center "0.5,0.5".
+    /// </summary>
+    public string RotationOrigin { get; set; } = "0.5,0.5";
+
+    /// <summary>
+    /// Horizontal skew angle in degrees (-89 to 89).
+    /// </summary>
+    public double SkewX { get; set; }
+
+    /// <summary>
+    /// Vertical skew angle in degrees (-89 to 89).
+    /// </summary>
+    public double SkewY { get; set; }
+
+    /// <summary>
+    /// Optional 4-corner perspective mapping coordinates as "x0,y0 x1,y1 x2,y2 x3,y3"
+    /// (TopLeft, TopRight, BottomRight, BottomLeft) within the design canvas coordinates.
+    /// When specified, warps the poster to fit an arbitrary perspective quadrilateral.
+    /// </summary>
+    public string? PerspectiveCorners { get; set; }
 }
 
 /// <summary>

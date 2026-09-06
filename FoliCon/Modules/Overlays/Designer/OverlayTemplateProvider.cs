@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -241,7 +241,7 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
     /// Returns <paramref name="preferredFileName"/>, or a numbered variant when that name is taken,
     /// so two layers pointing at different images never overwrite each other.
     /// </summary>
-    private static string ResolveAvailableFileName(string folder, string preferredFileName)
+    internal static string ResolveAvailableFileName(string folder, string preferredFileName)
     {
         if (!File.Exists(Path.Combine(folder, preferredFileName)))
         {

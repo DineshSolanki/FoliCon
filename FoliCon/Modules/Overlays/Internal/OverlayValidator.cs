@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 namespace FoliCon.Modules.Overlays.Internal;
 
 /// <summary>
@@ -98,6 +98,16 @@ public static partial class OverlayValidator
     {
         ValidateMargin(definition.Poster.Margin, "poster.margin", result);
 
+        if (!string.IsNullOrWhiteSpace(definition.Poster.RotationOrigin))
+        {
+            ValidateRotationOrigin(definition.Poster.RotationOrigin, "poster.rotationOrigin", result);
+        }
+
+        if (!string.IsNullOrWhiteSpace(definition.Poster.PerspectiveCorners))
+        {
+            ValidatePerspectiveCorners(definition.Poster.PerspectiveCorners, result);
+        }
+
         if (definition.Poster.OpacityMaskPath == null)
         {
             return;
@@ -127,7 +137,7 @@ public static partial class OverlayValidator
 
         if (!string.IsNullOrWhiteSpace(definition.Title.RotationOrigin))
         {
-            ValidateRotationOrigin(definition.Title.RotationOrigin, result);
+            ValidateRotationOrigin(definition.Title.RotationOrigin, "title.rotationOrigin", result);
         }
     }
 
@@ -303,12 +313,12 @@ public static partial class OverlayValidator
         }
     }
 
-    private static void ValidateRotationOrigin(string origin, OverlayValidationResult result)
+    private static void ValidateRotationOrigin(string origin, string field, OverlayValidationResult result)
     {
         var parts = origin.Split(',');
         if (parts.Length != 2)
         {
-            result.AddError("title.rotationOrigin",
+            result.AddError(field,
                 string.Format(Lang.OverlayValidationRotationOriginShape, origin));
             return;
         }
@@ -317,9 +327,18 @@ public static partial class OverlayValidator
         {
             if (!double.TryParse(part.Trim(), CultureInfo.InvariantCulture, out var val) || val is < 0.0 or > 1.0)
             {
-                result.AddError("title.rotationOrigin",
+                result.AddError(field,
                     string.Format(Lang.OverlayValidationRotationOriginRange, part.Trim()));
             }
+        }
+    }
+
+    private static void ValidatePerspectiveCorners(string cornersStr, OverlayValidationResult result)
+    {
+        if (!PerspectiveMeshBuilder.TryParseCorners(cornersStr, out _))
+        {
+            result.AddError("poster.perspectiveCorners",
+                "Perspective corners must be 4 distinct 'x,y' points forming a non-degenerate convex quadrilateral.");
         }
     }
 
