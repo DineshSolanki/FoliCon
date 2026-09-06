@@ -273,6 +273,8 @@ jobs:
     name: Publish to Chocolatey
     needs: [ version, publish, release ]
     if: needs.version.outputs.is_prerelease == 'false'
+    permissions:
+      contents: read
     runs-on: windows-latest
     steps:
       - name: Checkout
