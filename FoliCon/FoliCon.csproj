@@ -25,6 +25,9 @@ dineshsolanki.github.io/folicon/</Description>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="FoliconTest" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>

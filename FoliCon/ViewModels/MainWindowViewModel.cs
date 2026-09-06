@@ -664,7 +664,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         StatusBarProperties.AppStatus = Lang.Searching;
         StatusBarProperties.AppStatusAdditional = itemTitle;
-        var parsedTitle = TitleCleaner.CleanAndParse(itemTitle);
+        var parsedTitle = TitleCleaner.CleanAndParse(itemTitle, SearchMode);
         var (id, mediaType) = FileUtils.ReadMediaInfo(fullFolderPath);
         var isPickedById = false;
         ResultResponse response;

@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules.utils;
+namespace FoliCon.Modules.utils;
 
 [Localizable(false)]
 public static class DataUtils
@@ -32,7 +32,8 @@ public static class DataUtils
         return formattedRatingValue;
     }
 
-   public static bool ShouldUseParsedTitle(ParsedTitle parsedTitle) => parsedTitle != null && (parsedTitle.Year != 0 || (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0"));
+   public static bool ShouldUseParsedTitle(ParsedTitle parsedTitle) =>
+       parsedTitle != null && (parsedTitle.Year != 0 || parsedTitle.Season != 0 || (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0"));
 
    public static bool IsValidRegex(string pattern)
    {
