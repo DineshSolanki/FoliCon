@@ -228,32 +228,34 @@ internal class TmdbService
 
     private async Task ApplySeasonPosterAsync(SearchContainer<SearchTv> tvResults, int seasonNumber)
     {
-        foreach (var tv in tvResults.Results)
-        {
-            try
+        await Parallel.ForEachAsync(tvResults.Results,
+            new ParallelOptions { MaxDegreeOfParallelism = 4 },
+            async (tv, _) =>
             {
-                Logger.Debug("Fetching season {Season} poster for show {ShowId} ({ShowName})", seasonNumber, tv.Id, tv.Name);
-                var season = await _serviceClient.GetTvSeasonAsync(tv.Id, seasonNumber);
-                if (season == null)
+                try
                 {
-                    Logger.Debug("Season {Season} not found for show {ShowId}", seasonNumber, tv.Id);
-                    continue;
+                    Logger.Debug("Fetching season {Season} poster for show {ShowId} ({ShowName})", seasonNumber, tv.Id, tv.Name);
+                    var season = await _serviceClient.GetTvSeasonAsync(tv.Id, seasonNumber, cancellationToken: _);
+                    if (season == null)
+                    {
+                        Logger.Debug("Season {Season} not found for show {ShowId}", seasonNumber, tv.Id);
+                        return;
+                    }
+                    if (season.PosterPath != null)
+                    {
+                        Logger.Debug("Applying season {Season} poster {PosterPath} for show {ShowId}", seasonNumber, season.PosterPath, tv.Id);
+                        tv.PosterPath = season.PosterPath;
+                    }
+                    else
+                    {
+                        Logger.Debug("Season {Season} exists for show {ShowId} but has no poster", seasonNumber, tv.Id);
+                    }
                 }
-                if (season.PosterPath != null)
+                catch (Exception ex)
                 {
-                    Logger.Debug("Applying season {Season} poster {PosterPath} for show {ShowId}", seasonNumber, season.PosterPath, tv.Id);
-                    tv.PosterPath = season.PosterPath;
+                    Logger.Warn(ex, "Failed to fetch season {Season} poster for show {ShowId}", seasonNumber, tv.Id);
                 }
-                else
-                {
-                    Logger.Debug("Season {Season} exists for show {ShowId} but has no poster", seasonNumber, tv.Id);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex, "Failed to fetch season {Season} poster for show {ShowId}", seasonNumber, tv.Id);
-            }
-        }
+            });
     }
 
     private async Task<object?> SearchMulti(ParsedTitle parsedTitle)
