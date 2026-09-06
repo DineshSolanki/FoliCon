@@ -1,4 +1,4 @@
-# yaml-language-server: =https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
 
 PackageIdentifier: DineshSolanki.FoliCon
 PackageVersion: 5.3.1
@@ -28,4 +28,4 @@ Tags:
 - tmdb
 ReleaseNotesUrl: https://github.com/DineshSolanki/FoliCon/releases/tag/V5.3.1
 ManifestType: defaultLocale
-ManifestVersion: 1.6.0
+ManifestVersion: 1.12.0
