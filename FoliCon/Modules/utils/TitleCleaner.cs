@@ -47,7 +47,7 @@ public static partial class TitleCleaner
     private static partial Regex ShowIdRegex();
     [GeneratedRegex(@"\((\d{4})\)", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
     private static partial Regex YearRegex();
-    [GeneratedRegex(@"(?i)(?:[\(\[]\s*)?(?:(?:season|staffel|saison|series)[._\s-]+(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten)|\bS(\d{1,2})(?:[._-]?E\d{1,2})?)(?:\s*[\)\]])?", RegexOptions.Compiled, "en-US")]
+    [GeneratedRegex(@"(?i)(?:[\(\[]\s*)?(?:(?:season|staffel|saison|series)[._\s-]+(\d{1,2}|one|two|three|four|five|six|seven|eight|nine|ten)(?=[^a-zA-Z0-9]|$)|\bS(\d{1,2})(?:[._-]?E\d{1,2})?(?=[^a-zA-Z0-9]|$))(?:\s*[\)\]])?", RegexOptions.Compiled, "en-US")]
     private static partial Regex SeasonRegex();
 
     public static string Clean(string title, string? mediaType = null)
