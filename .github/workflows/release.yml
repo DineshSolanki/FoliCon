@@ -246,3 +246,88 @@ jobs:
           # Enable auto-merge (squash) — requires "Allow auto-merge" in repo settings
           gh pr merge "$PR_URL" --auto --squash || \
             echo "::warning::Auto-merge could not be enabled. PR requires manual merge."
+
+  publish-winget:
+    name: Publish to WinGet
+    needs: [ version, release ]
+    if: needs.version.outputs.is_prerelease == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit to WinGet
+        uses: vedantmgoyal2009/winget-releaser@v2
+        if: env.WINGET_TOKEN != ''
+        env:
+          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+        with:
+          identifier: DineshSolanki.FoliCon
+          version: ${{ needs.version.outputs.version }}
+          token: ${{ secrets.WINGET_TOKEN }}
+
+      - name: Report missing WinGet secret
+        if: env.WINGET_TOKEN == ''
+        env:
+          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+        run: echo "::warning::WINGET_TOKEN secret is not configured in repository settings. Set WINGET_TOKEN to enable automatic WinGet updates."
+
+  publish-chocolatey:
+    name: Publish to Chocolatey
+    needs: [ version, publish, release ]
+    if: needs.version.outputs.is_prerelease == 'false'
+    permissions:
+      contents: read
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download release artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: FoliCon-v${{ needs.version.outputs.version }}-x64
+          path: dist
+
+      - name: Pack and Push to Chocolatey
+        if: env.CHOCOLATEY_API_KEY != ''
+        shell: pwsh
+        env:
+          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+        run: |
+          $version = "${{ needs.version.outputs.version }}"
+          $zipPath = (Get-ChildItem "dist/FoliCon-v$version*-x64.zip" | Select-Object -First 1).FullName
+          $hash = (Get-FileHash -Path $zipPath -Algorithm SHA256).Hash
+
+          # Update nuspec
+          [xml]$nuspec = Get-Content "distribution/chocolatey/folicon.nuspec"
+          $nuspec.package.metadata.version = $version
+          $nuspec.Save((Resolve-Path "distribution/chocolatey/folicon.nuspec").Path)
+
+          # Update chocolateyinstall.ps1 with release tag URL and calculated hash
+          $tag = "v$version"
+          $installScript = @"
+          `$ErrorActionPreference = 'Stop'
+          `$toolsDir = "`$(Split-Path -parent `$MyInvocation.MyCommand.Definition)"
+          `$packageArgs = @{
+            packageName   = 'folicon'
+            unzipLocation = `$toolsDir
+            fileType      = 'zip'
+            url64bit      = 'https://github.com/DineshSolanki/FoliCon/releases/download/$tag/FoliCon-v$version-x64.zip'
+            checksum64    = '$hash'
+            checksumType64= 'sha256'
+          }
+          Install-ChocolateyZipPackage @packageArgs
+          "@
+          Set-Content -Path "distribution/chocolatey/tools/chocolateyinstall.ps1" -Value $installScript -Encoding UTF8
+
+          # Pack
+          choco pack distribution/chocolatey/folicon.nuspec --version $version --outputdirectory dist
+
+          # Push to Chocolatey Community Repository
+          choco push (Get-ChildItem "dist/folicon.$version.nupkg").FullName --api-key $env:CHOCOLATEY_API_KEY --source https://push.chocolatey.org/
+
+      - name: Report missing Chocolatey secret
+        if: env.CHOCOLATEY_API_KEY == ''
+        env:
+          CHOCOLATEY_API_KEY: ${{ secrets.CHOCOLATEY_API_KEY }}
+        shell: pwsh
+        run: Write-Host "::warning::CHOCOLATEY_API_KEY secret is not configured in repository settings. Set CHOCOLATEY_API_KEY to enable automatic Chocolatey publishing."
+
