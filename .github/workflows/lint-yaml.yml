@@ -1,0 +1,27 @@
+name: Lint YAML
+
+on:
+  push:
+    paths:
+      - '**/*.yml'
+      - '**/*.yaml'
+      - '.yamllint.yml'
+  pull_request:
+    paths:
+      - '**/*.yml'
+      - '**/*.yaml'
+      - '.yamllint.yml'
+
+jobs:
+  yamllint:
+    name: Run yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: .yamllint.yml
+          strict: true

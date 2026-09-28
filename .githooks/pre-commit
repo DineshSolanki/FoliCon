@@ -1,0 +1,44 @@
+#!/bin/sh
+# Git pre-commit hook to validate staged YAML files using yamllint
+
+# Get list of staged YAML files (Added, Copied, Modified)
+STAGED_YAMLS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ya?ml)$')
+
+if [ -z "$STAGED_YAMLS" ]; then
+    exit 0
+fi
+
+echo "[pre-commit] Validating staged YAML file(s)..."
+
+# Check if yamllint command or module is available
+if command -v yamllint >/dev/null 2>&1; then
+    yamllint -c .yamllint.yml $STAGED_YAMLS
+    EXIT_CODE=$?
+elif python -m yamllint --version >/dev/null 2>&1; then
+    python -m yamllint -c .yamllint.yml $STAGED_YAMLS
+    EXIT_CODE=$?
+elif python3 -m yamllint --version >/dev/null 2>&1; then
+    python3 -m yamllint -c .yamllint.yml $STAGED_YAMLS
+    EXIT_CODE=$?
+else
+    # Fallback to python validate-yaml.py script
+    echo "[pre-commit] yamllint not found in PATH; falling back to scripts/validate-yaml.py"
+    if command -v python >/dev/null 2>&1; then
+        python scripts/validate-yaml.py $STAGED_YAMLS
+        EXIT_CODE=$?
+    elif command -v python3 >/dev/null 2>&1; then
+        python3 scripts/validate-yaml.py $STAGED_YAMLS
+        EXIT_CODE=$?
+    else
+        echo "[pre-commit] WARNING: Neither yamllint nor Python found. Skipping YAML validation."
+        exit 0
+    fi
+fi
+
+if [ $EXIT_CODE -ne 0 ]; then
+    echo "[pre-commit] ERROR: YAML validation failed. Please fix the errors above before committing."
+    exit 1
+fi
+
+echo "[pre-commit] All staged YAML files passed validation."
+exit 0

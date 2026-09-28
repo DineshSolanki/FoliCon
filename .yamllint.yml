@@ -1,0 +1,32 @@
+---
+extends: default
+
+rules:
+  # GitHub Actions workflows frequently have long run commands or URLs
+  line-length:
+    max: 250
+    level: warning
+
+  # Allow flexible truthy values and avoid false positives on 'on:' triggers
+  truthy:
+    level: warning
+    check-keys: false
+
+  # Many YAML files omit the leading '---'
+  document-start: disable
+
+  # Allow single space before inline comments
+  comments:
+    min-spaces-from-content: 1
+
+  # GitHub Actions indentation can be 2 spaces
+  indentation:
+    spaces: 2
+    indent-sequences: whatever
+
+ignore: |
+  .git/
+  bin/
+  obj/
+  packages/
+  dist/
