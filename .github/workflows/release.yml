@@ -302,21 +302,42 @@ jobs:
           $nuspec.Save((Resolve-Path "distribution/chocolatey/folicon.nuspec").Path)
 
           # Update chocolateyinstall.ps1 with release tag URL and calculated hash
-          $tag = "v$version"
-          $installScript = @"
-          `$ErrorActionPreference = 'Stop'
-          `$toolsDir = "`$(Split-Path -parent `$MyInvocation.MyCommand.Definition)"
-          `$packageArgs = @{
-            packageName   = 'folicon'
-            unzipLocation = `$toolsDir
-            fileType      = 'zip'
-            url64bit      = 'https://github.com/DineshSolanki/FoliCon/releases/download/$tag/FoliCon-v$version-x64.zip'
-            checksum64    = '$hash'
-            checksumType64= 'sha256'
-          }
-          Install-ChocolateyZipPackage @packageArgs
-          "@
-          Set-Content -Path "distribution/chocolatey/tools/chocolateyinstall.ps1" -Value $installScript -Encoding UTF8
+          $tag = if ('${{ startsWith(github.ref, 'refs/tags/') }}' -eq 'true') { '${{ github.ref_name }}' } else { "v$version" }
+          $downloadUrl = "https://github.com/DineshSolanki/FoliCon/releases/download/$tag/FoliCon-v$version-x64.zip"
+          $installScript = @'
+  $ErrorActionPreference = 'Stop'
+  $toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+  $packageArgs = @{
+  packageName   = 'folicon'
+  unzipLocation = $toolsDir
+  fileType      = 'zip'
+  url64bit      = '__URL__'
+  checksum64    = '__HASH__'
+  checksumType64= 'sha256'
+}
+  Install-ChocolateyZipPackage @packageArgs
+  $target = Join-Path $toolsDir 'FoliCon.exe'
+  Install-ChocolateyShortcut -ShortcutFilePath "$([System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::Programs))\FoliCon.lnk" -TargetPath $target
+  '@
+          $installScript = $installScript.Replace('__URL__', $downloadUrl).Replace('__HASH__', $hash)
+  Set-Content -Path "distribution/chocolatey/tools/chocolateyinstall.ps1" -Value $installScript -Encoding UTF8
+
+          # Update VERIFICATION.txt
+          $verification = @"
+VERIFICATION
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+
+The binary has been uploaded by the software author to GitHub Releases.
+
+1. Download the 64-bit zip archive from:
+   $downloadUrl
+2. You can verify the SHA256 checksum using PowerShell:
+   Get-FileHash -Algorithm SHA256 FoliCon-v$version-x64.zip
+   Checksum: $hash
+"@
+          Set-Content -Path "distribution/chocolatey/tools/VERIFICATION.txt" -Value $verification -Encoding UTF8
+          Copy-Item "LICENSE" "distribution/chocolatey/tools/LICENSE.txt"
 
           # Pack
           choco pack distribution/chocolatey/folicon.nuspec --version $version --outputdirectory dist
