@@ -11,6 +11,9 @@ NestedInstallerType: portable
 NestedInstallerFiles:
 - RelativeFilePath: FoliCon.exe
   PortableCommandAlias: folicon
+Dependencies:
+  PackageDependencies:
+  - PackageIdentifier: Microsoft.DotNet.DesktopRuntime.10
 Installers:
 - Architecture: x64
   InstallerUrl: https://github.com/DineshSolanki/FoliCon/releases/download/V5.3.1/FoliCon-v5.3.1-x64.zip

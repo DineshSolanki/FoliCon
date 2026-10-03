@@ -9,7 +9,7 @@
     <title>FoliCon</title>
     <authors>Dinesh Solanki</authors>
     <projectUrl>https://dineshsolanki.github.io/FoliCon/</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/dinesh-solanki/Project-Assets/master/Folicon/folicon%20Icon.png</iconUrl>
+    <iconUrl>https://cdn.jsdelivr.net/gh/dinesh-solanki/Project-Assets@3f48804b92d3ebb1a393a9ae041352f99fba0f59/Folicon/folicon%20Icon.png</iconUrl>
     <copyright>Copyright (c) Dinesh Solanki</copyright>
     <licenseUrl>https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
