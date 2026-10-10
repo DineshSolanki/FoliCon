@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ProSearchResultViewModel : BindableBase, IDialogAware
@@ -411,7 +411,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);
-        FileUtils.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
+        FileUtils.AddToPickedListDataTable(_listDataTable, link, SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
         SearchAgainTitle = null;

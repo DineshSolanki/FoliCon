@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules.TMDB;
+namespace FoliCon.Modules.TMDB;
 
 internal class TmdbDataTransformer(
     ref List<PickedListItem> listDataTable,
@@ -200,6 +200,7 @@ internal class TmdbDataTransformer(
             IsPickedById = isPickedById,
             FolderName = folderName,
             LocalPosterPath = localPosterPath,
+            PosterUrl = posterUrl,
         };
         var type = PickResult(resultDetails, out var id);
     
@@ -239,7 +240,7 @@ internal class TmdbDataTransformer(
             {
                 var pickedResult = CastResult(details.IsPickedById ? typeof(TvShow) : typeof(SearchTv), details.Result);
                 var year = pickedResult.FirstAirDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
-                AddToPickedList(pickedResult.Name, year, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
+                AddToPickedList(pickedResult.Name, year, details.Rating, details.FullFolderPath, details.FolderName, details.PosterUrl);
                 id = pickedResult.Id;
                 break;
             }
@@ -247,14 +248,14 @@ internal class TmdbDataTransformer(
             {
                 var pickedResult = CastResult(details.IsPickedById ? typeof(Movie) : typeof(SearchMovie), details.Result);
                 var year = pickedResult.ReleaseDate?.Year.ToString(CultureInfo.InvariantCulture) ?? "";
-                AddToPickedList(pickedResult.Title, year, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
+                AddToPickedList(pickedResult.Title, year, details.Rating, details.FullFolderPath, details.FolderName, details.PosterUrl);
                 id = pickedResult.Id;
                 break;
             }
             case MediaTypes.collection:
             {
                 var pickedResult = CastResult(details.IsPickedById ? typeof(Collection) : typeof(SearchCollection), details.Result);
-                AddToPickedList(pickedResult.Name, null, details.Rating, details.FullFolderPath, details.FolderName, details.LocalPosterPath);
+                AddToPickedList(pickedResult.Name, null, details.Rating, details.FullFolderPath, details.FolderName, details.PosterUrl);
                 id = pickedResult.Id;
                 break;
             }
@@ -282,7 +283,7 @@ internal class TmdbDataTransformer(
     
     private static dynamic CastResult(Type targetType, dynamic result) => Convert.ChangeType(result, targetType);
 
-    private void AddToPickedList(string title, string year, string rating, string fullFolderPath, string folderName, string localPosterPath) => FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, title, rating, fullFolderPath, folderName, year);
+    private void AddToPickedList(string title, string year, string rating, string fullFolderPath, string folderName, string posterUrl) => FileUtils.AddToPickedListDataTable(_listDataTable, posterUrl, title, rating, fullFolderPath, folderName, year);
 
     public static string GetPosterUrl(ImageData image,string posterSize, TMDbClient client) => GetPosterUrl(image.FilePath, posterSize, client);
 

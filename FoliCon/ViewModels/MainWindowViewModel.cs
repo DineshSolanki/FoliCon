@@ -259,6 +259,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     public DelegateCommand ListViewDoubleClickCommand { get; private set; }
     public DelegateCommand SelectedFolderDClickCommand { get; private set; }
     public DelegateCommand DownloadCancelCommand { get; private set; }
+    public DelegateCommand<ListItem> RemoveListItemCommand { get; private set; }
+    public DelegateCommand<string> CopyFolderCommand { get; private set; }
+    public DelegateCommand ClearListCommand { get; private set; }
+    public DelegateCommand<object> OpenFolderInExplorerCommand { get; private set; }
 
     #endregion DelegateCommands
 
@@ -346,6 +350,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             BusyIndicatorProperties.Title = Lang.Searching;
             BusyIndicatorProperties.Text = Lang.Searching;
             BusyIndicatorProperties.Value = 0;
+            StatusBarProperties.AppStatus = Lang.Searching;
+            StatusBarProperties.AppStatusAdditional = "";
 
             if (IconMode == "Poster")
             {
@@ -491,6 +497,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             IsBusy = false;
             IsMakeEnabled = true;
+            StatusBarProperties.AppStatus = Lang.Idle;
+            StatusBarProperties.AppStatusAdditional = "";
+            StatusBarProperties.ProgressBarData.Value = 0;
         }
     }
 
@@ -510,9 +519,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("Entered ProcessPosterModeAsync method");
         IsMakeEnabled = false;
         await ProcessPosterFolderAsync(SelectedFolder);
-
-        StatusBarProperties.AppStatus = Lang.Idle;
-        StatusBarProperties.AppStatusAdditional = "";
     }
 
     private async Task ProcessPosterFolderAsync(string rootFolderPath)
@@ -935,6 +941,56 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
             }
         });
+
+        RemoveListItemCommand = new DelegateCommand<ListItem>(item =>
+        {
+            var target = item ?? FinalListViewData.SelectedItem;
+            if (target != null && FinalListViewData.Data.Contains(target))
+            {
+                FinalListViewData.Data.Remove(target);
+            }
+        });
+
+        CopyFolderCommand = new DelegateCommand<string>(folder =>
+        {
+            var path = !string.IsNullOrEmpty(folder) ? folder : FinalListViewData.SelectedItem?.Folder;
+            if (string.IsNullOrEmpty(path)) return;
+            try
+            {
+                Clipboard.SetText(path);
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to copy folder path to clipboard.");
+            }
+        });
+
+        ClearListCommand = new DelegateCommand(() =>
+        {
+            FinalListViewData.Data.Clear();
+        });
+
+        OpenFolderInExplorerCommand = new DelegateCommand<object>(param =>
+        {
+            var folder = param as string;
+            if (string.IsNullOrEmpty(folder))
+            {
+                if (param is ListItem item)
+                {
+                    folder = item.Folder;
+                }
+                else
+                {
+                    folder = FinalListViewData.SelectedItem?.Folder;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+            {
+                ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
+            }
+        });
+
         ShowPreviewer = new DelegateCommand(() => { _dialogService.ShowPreviewer(_ => { }); });
 
         // Overlay discovery and authoring are top-level menu actions: burying them inside the
@@ -1108,10 +1164,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         IsMakeEnabled = false;
         BusyIndicatorProperties.Title = Lang.DownloadingIcons;
-        StatusBarProperties.AppStatus = Lang.CreatingIcons;
+        StatusBarProperties.AppStatus = Lang.DownloadingIcons;
+        StatusBarProperties.AppStatusAdditional = $"0 / {_imgDownloadList.Count}";
         await DownloadAndMakeIconsAsync();
         StatusBarProperties.AppStatus = Lang.Idle;
         StatusBarProperties.AppStatusAdditional = "";
+        StatusBarProperties.ProgressBarData.Value = 0;
     }
 
     private async Task DownloadAndMakeIconsAsync()
@@ -1163,6 +1221,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     .Format(current, totalCount);
                 BusyIndicatorProperties.Value = current;
                 StatusBarProperties.ProgressBarData.Value = current;
+                StatusBarProperties.ProgressBarData.Max = totalCount;
+                StatusBarProperties.AppStatusAdditional = $"{current} / {totalCount}";
             });
 
         IsBusy = false;
@@ -1187,6 +1247,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         else if (StopIconDownload)
         {
             Logger.Debug("StopIconDownload is true before any downloads completed.");
+            StatusBarProperties.AppStatus = Lang.Idle;
+            StatusBarProperties.AppStatusAdditional = "";
+            StatusBarProperties.ProgressBarData.Value = 0;
         }
         else
         {
@@ -1197,6 +1260,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 StaysOpen = false,
                 ConfirmStr = Lang.Confirm
             });
+            StatusBarProperties.AppStatus = Lang.Idle;
+            StatusBarProperties.AppStatusAdditional = "";
+            StatusBarProperties.ProgressBarData.Value = 0;
         }
 
         IsMakeEnabled = true;
@@ -1206,6 +1272,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         IsBusy = true;
         BusyIndicatorProperties.Title = Lang.CreatingIcons;
+        StatusBarProperties.AppStatus = Lang.CreatingIcons;
+        StatusBarProperties.AppStatusAdditional = "";
         var iconProcessedCount = await Task.Run(()=>IconUtils.MakeIco(IconMode,
             SelectedFolder,
             _pickedListDataTable,
@@ -1215,10 +1283,16 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             {
                 value.Title = Lang.CreatingIcons;
                 BusyIndicatorProperties = value;
+                StatusBarProperties.ProgressBarData.Value = value.Value;
+                StatusBarProperties.ProgressBarData.Max = value.Max;
+                StatusBarProperties.AppStatusAdditional = $"{value.Value} / {value.Max}";
             }),
             IncludeAlreadyProcessed));
         StatusBarProperties.ProcessedIcon = iconProcessedCount;
         IsBusy = false;
+        StatusBarProperties.AppStatus = Lang.Idle;
+        StatusBarProperties.AppStatusAdditional = "";
+        StatusBarProperties.ProgressBarData.Value = 0;
         var info = new GrowlInfo
         {
             Message = Lang.IconCreatedWithCount.Format(iconProcessedCount),

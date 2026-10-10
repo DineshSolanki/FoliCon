@@ -1,15 +1,15 @@
-﻿namespace FoliCon.Modules.Convertor;
+namespace FoliCon.Modules.Convertor;
 
 public class InvertedTextToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string text)
+        return value switch
         {
-            return text is "" or "Video not available!" ? Visibility.Visible : Visibility.Hidden;
-        }
-
-        return Visibility.Hidden;
+            null => Visibility.Visible,
+            string text => text is "" or "Video not available!" ? Visibility.Visible : Visibility.Hidden,
+            _ => Visibility.Hidden
+        };
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
