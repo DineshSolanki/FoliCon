@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class AboutBoxViewModel : BindableBase, IDialogAware
@@ -14,14 +14,39 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
     private string _license = Lang.LicenseInfo;
     private string _version = AssemblyInfo.GetVersion();
 
-    //These properties can also be initialized from Parameters for better re-usability. or From assembly
+    public const string AppName = "FoliCon";
+    public const string GithubUrl = "https://github.com/DineshSolanki/FoliCon";
+    public const string OverlayStoreUrl = "https://github.com/DineshSolanki/FoliCon-Overlays";
+
+    public string VersionTag => $"v{string.Join(".", (_version ?? "5.3.1").Split('.').Take(3))}";
+
     public AboutBoxViewModel()
     {
-        WebsiteClickCommand = new DelegateCommand(delegate
+        WebsiteClickCommand = new DelegateCommand(() => OpenUrl(Website));
+        OpenGithubCommand = new DelegateCommand(() => OpenUrl(GithubUrl));
+        OpenOverlayStoreCommand = new DelegateCommand(() => OpenUrl(OverlayStoreUrl));
+        OpenWebsiteCommand = new DelegateCommand(() => OpenUrl(Website));
+        CloseCommand = new DelegateCommand(() => CloseDialog("true"));
+        CopyVersionCommand = new DelegateCommand(CopyVersionMethod);
+    }
+
+    private void OpenUrl(string url)
+    {
+        Logger.Debug("Opening URL {Url}", url);
+        ProcessUtils.StartProcess(url);
+    }
+
+    private void CopyVersionMethod()
+    {
+        try
         {
-            Logger.Debug("Opening {Website}",Website);
-            ProcessUtils.StartProcess(Website);
-        });
+            Clipboard.SetText(Version);
+            Logger.Info("Copied version {Version} to clipboard", Version);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to copy version to clipboard");
+        }
     }
 
     public string Title { get => _title; set => SetProperty(ref _title, value); }
@@ -31,7 +56,13 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
     public string License { get => _license; set => SetProperty(ref _license, value); }
     public string Website { get => _website; set => SetProperty(ref _website, value); }
     public string Version { get => _version; set => SetProperty(ref _version, value); }
+
     public DelegateCommand WebsiteClickCommand { get; }
+    public DelegateCommand OpenGithubCommand { get; }
+    public DelegateCommand OpenOverlayStoreCommand { get; }
+    public DelegateCommand OpenWebsiteCommand { get; }
+    public DelegateCommand CloseCommand { get; }
+    public DelegateCommand CopyVersionCommand { get; }
 
     #region DialogMethods
 
