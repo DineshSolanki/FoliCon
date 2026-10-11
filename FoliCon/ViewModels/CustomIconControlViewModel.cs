@@ -1,4 +1,4 @@
-﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
 using FoliCon.Modules.Media;
 
@@ -58,36 +58,47 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set => SetProperty(ref _isUndoEnable, value);
     }
 
-    private string SelectedDirectory
+    public string SelectedDirectory
     {
         get => _selectedDirectory;
         set
         {
             SetProperty(ref _selectedDirectory, value);
+            RaisePropertyChanged(nameof(SelectedDirectoryName));
             Directories.Clear();
             KeepExactOnly = false;
-            foreach (var folder in FileUtils.GetFolderNames(value))
+            if (!string.IsNullOrEmpty(value) && Directory.Exists(value))
             {
-                Directories.Add(folder);
+                foreach (var folder in FileUtils.GetFolderNames(value))
+                {
+                    Directories.Add(folder);
+                }
             }
         }
     }
 
-    private string SelectedIconsDirectory
+    public string SelectedIconsDirectory
     {
         get => _selectedIconsDirectory;
         set
         {
             SetProperty(ref _selectedIconsDirectory, value);
+            RaisePropertyChanged(nameof(SelectedIconsDirectoryName));
             Logger.Debug("Selecting PNG and ICO files from {Value}", value);
             KeepExactOnly = false;
             Icons.Clear();
-            foreach (var file in FileUtils.GetFileNamesFromFolder(value).Where(FileUtils.IsPngOrIco))
+            if (!string.IsNullOrEmpty(value) && Directory.Exists(value))
             {
-                Icons.Add(file);
+                foreach (var file in FileUtils.GetFileNamesFromFolder(value).Where(FileUtils.IsPngOrIco))
+                {
+                    Icons.Add(file);
+                }
             }
         }
     }
+
+    public string SelectedDirectoryName => string.IsNullOrEmpty(SelectedDirectory) ? null : Path.GetFileName(SelectedDirectory);
+    public string SelectedIconsDirectoryName => string.IsNullOrEmpty(SelectedIconsDirectory) ? null : Path.GetFileName(SelectedIconsDirectory);
 
     public ObservableCollection<string> Directories
     {
@@ -109,6 +120,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public DelegateCommand LoadIcons { get; set; }
     public DelegateCommand Apply { get; set; }
     public DelegateCommand UndoIcons { get; set; }
+    public DelegateCommand ClearFoldersCommand { get; }
+    public DelegateCommand ClearIconsCommand { get; }
     public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
     public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
@@ -124,10 +137,28 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         LoadDirectory = new DelegateCommand(LoadDirectoryMethod);
         StopSearchCommand = new DelegateCommand(() => StopSearch = true);
         LoadIcons = new DelegateCommand(LoadIconsMethod);
+        ClearFoldersCommand = new DelegateCommand(ClearFoldersMethod);
+        ClearIconsCommand = new DelegateCommand(ClearIconsMethod);
         Apply = new DelegateCommand(StartProcessing);
         UndoIcons = new DelegateCommand(UndoCreatedIcons);
         KeyPressFolderList = new DelegateCommand<dynamic>(FolderListKeyPress);
         KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
+    }
+
+    private void ClearFoldersMethod()
+    {
+        Directories.Clear();
+        _selectedDirectory = null;
+        RaisePropertyChanged(nameof(SelectedDirectory));
+        RaisePropertyChanged(nameof(SelectedDirectoryName));
+    }
+
+    private void ClearIconsMethod()
+    {
+        Icons.Clear();
+        _selectedIconsDirectory = null;
+        RaisePropertyChanged(nameof(SelectedIconsDirectory));
+        RaisePropertyChanged(nameof(SelectedIconsDirectoryName));
     }
 
     private async void UndoCreatedIcons()
@@ -367,15 +398,25 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public void OnFileDrop(string[] filePaths, string senderName)
     {
         Logger.Debug("File dropped on {SenderName}", senderName);
+        if (filePaths == null || filePaths.Length == 0) return;
+        var path = filePaths[0];
+        if (!Directory.Exists(path) && File.Exists(path))
+        {
+            path = Path.GetDirectoryName(path);
+        }
+        if (string.IsNullOrEmpty(path)) return;
+
         switch (senderName)
         {
             case "FolderButton":
             case "FoldersList":
-                SelectedDirectory = filePaths.GetValue(0)?.ToString();
+            case "FolderDropArea":
+                SelectedDirectory = path;
                 break;
             case "IconButton":
             case "IconsList":
-                SelectedIconsDirectory = filePaths.GetValue(0)?.ToString();
+            case "IconDropArea":
+                SelectedIconsDirectory = path;
                 break;
             default:
                 Logger.Warn("Unknown drop target: {SenderName}", senderName);
