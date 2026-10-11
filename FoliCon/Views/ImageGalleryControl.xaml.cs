@@ -1,23 +1,26 @@
-﻿using System.Collections;
+using System.Collections;
 
 namespace FoliCon.Views;
 
 [Localizable(false)]
 public partial class ImageGalleryControl
 {
-    
     public ImageGalleryControl()
     {
         InitializeComponent();
     }
 
     #region Variables
-    
+
     public static readonly DependencyProperty CustomBusyContentTemplateProperty =
         DependencyProperty.Register(nameof(CustomBusyContentTemplate), typeof(DataTemplate), typeof(ImageGalleryControl), new PropertyMetadata(null));
 
     public static readonly DependencyProperty ItemsSourceProperty =
         DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(ImageGalleryControl), new PropertyMetadata(null));
+
+    public static readonly DependencyProperty SelectedItemProperty =
+        DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(ImageGalleryControl),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty DoubleClickCommandProperty =
         DependencyProperty.Register(nameof(DoubleClickCommand), typeof(ICommand), typeof(ImageGalleryControl), new PropertyMetadata(null));
@@ -30,14 +33,29 @@ public partial class ImageGalleryControl
             nameof(BindingPath), 
             typeof(string), 
             typeof(ImageGalleryControl), 
-            new PropertyMetadata("Url")  // Default binding path
+            new PropertyMetadata("Url")
         );
-        
+
     public static readonly DependencyProperty UseCacheConverterProperty =
         DependencyProperty.Register(nameof(UseCacheConverter), typeof(bool), 
             typeof(ImageGalleryControl), 
             new PropertyMetadata(false));
-    
+
+    public static readonly DependencyProperty ImageStretchProperty =
+        DependencyProperty.Register(nameof(ImageStretch), typeof(Stretch),
+            typeof(ImageGalleryControl),
+            new PropertyMetadata(Stretch.UniformToFill));
+
+    public static readonly DependencyProperty ItemWidthProperty =
+        DependencyProperty.Register(nameof(ItemWidth), typeof(double),
+            typeof(ImageGalleryControl),
+            new PropertyMetadata(160.0));
+
+    public static readonly DependencyProperty ItemHeightProperty =
+        DependencyProperty.Register(nameof(ItemHeight), typeof(double),
+            typeof(ImageGalleryControl),
+            new PropertyMetadata(240.0));
+
     #endregion
 
     #region Properties
@@ -47,11 +65,17 @@ public partial class ImageGalleryControl
         get => GetValue(CustomBusyContentTemplateProperty) as DataTemplate;
         set => SetValue(CustomBusyContentTemplateProperty, value);
     }
-    
+
     public IEnumerable ItemsSource
     {
         get => GetValue(ItemsSourceProperty) as IEnumerable;
         set => SetValue(ItemsSourceProperty, value);
+    }
+
+    public object SelectedItem
+    {
+        get => GetValue(SelectedItemProperty);
+        set => SetValue(SelectedItemProperty, value);
     }
 
     public ICommand DoubleClickCommand
@@ -71,16 +95,53 @@ public partial class ImageGalleryControl
         get => GetValue(BindingPathProperty) as string;
         set => SetValue(BindingPathProperty, value);
     }
-    
+
     public bool UseCacheConverter
     {
         get => GetValue(UseCacheConverterProperty) as bool? ?? false;
         set => SetValue(UseCacheConverterProperty, value);
     }
+
+    public Stretch ImageStretch
+    {
+        get => (Stretch)GetValue(ImageStretchProperty);
+        set => SetValue(ImageStretchProperty, value);
+    }
+
+    public double ItemWidth
+    {
+        get => (double)GetValue(ItemWidthProperty);
+        set => SetValue(ItemWidthProperty, value);
+    }
+
+    public double ItemHeight
+    {
+        get => (double)GetValue(ItemHeightProperty);
+        set => SetValue(ItemHeightProperty, value);
+    }
+
     #endregion
 
     #region Methods
-    
+
+    public void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is ListBoxItem item && item.DataContext != null)
+        {
+            SelectedItem = item.DataContext;
+            DoubleClickCommand?.Execute(item.DataContext);
+            e.Handled = true;
+        }
+    }
+
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (SelectedItem != null)
+        {
+            ClickCommand?.Execute(SelectedItem);
+        }
+    }
+
     private void FrameworkElement_OnUnloaded(object sender, RoutedEventArgs e)
     {
         var image = (Image)sender;
@@ -88,5 +149,4 @@ public partial class ImageGalleryControl
     }
 
     #endregion
-    
 }

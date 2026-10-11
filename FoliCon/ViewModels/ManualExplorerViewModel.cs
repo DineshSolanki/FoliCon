@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ManualExplorerViewModel : BindableBase, IDialogAware
@@ -11,6 +11,8 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		PickCommand = new DelegateCommand<object>(PickMethod);
 		OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
 		CancelCommand = new DelegateCommand(CancelMethod);
+		PickSelectedCommand = new DelegateCommand(() => PickMethod(SelectedFile), () => !string.IsNullOrEmpty(SelectedFile));
+		PreviewSelectedCommand = new DelegateCommand(() => UiUtils.ShowImageBrowser(SelectedFile), () => !string.IsNullOrEmpty(SelectedFile));
 	}
 
 	private void PickMethod(object localImagePath)
@@ -22,6 +24,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private string _title = Lang.ManualExplorer;
 	private bool _isBusy;
 	private ObservableCollection<string> _directory;
+	private string _selectedFile;
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
 	private ProgressBarData _progressInfo = new(0,1,LangProvider.Instance.Downloading);
@@ -29,6 +32,18 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
+	public string SelectedFile
+	{
+		get => _selectedFile;
+		set
+		{
+			if (SetProperty(ref _selectedFile, value))
+			{
+				PickSelectedCommand?.RaiseCanExecuteChanged();
+				PreviewSelectedCommand?.RaiseCanExecuteChanged();
+			}
+		}
+	}
 	private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
 	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
 	private DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
@@ -36,6 +51,8 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	public DelegateCommand<object> PickCommand { get; set; }
 	public DelegateCommand<object> OpenImageCommand { get; set; }
+	public DelegateCommand PickSelectedCommand { get; set; }
+	public DelegateCommand PreviewSelectedCommand { get; set; }
 	public DelegateCommand CancelCommand { get; init; }
 
 	private void CancelMethod()
@@ -50,7 +67,11 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	public virtual bool CanCloseDialog() => true;
 
-    public virtual void OnDialogClosed() => Directory.Clear();
+    public virtual void OnDialogClosed()
+    {
+        SelectedFile = null;
+        Directory.Clear();
+    }
 
     protected virtual void CloseDialog(ButtonResult result, string localPath)
 	{
@@ -127,6 +148,10 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 			Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
 			pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
+			if (SelectedFile == null && pngOrAvailableFile.Count > 0)
+			{
+				SelectedFile = pngOrAvailableFile[0].FullName;
+			}
 		}
 
 		IsBusy = false;

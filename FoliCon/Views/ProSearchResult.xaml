@@ -12,109 +12,345 @@
              xmlns:ui="clr-namespace:FoliCon.Modules.UI"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:ProSearchResultViewModel }">
+             d:DataContext="{d:DesignInstance viewModels:ProSearchResultViewModel }"
+             Background="{DynamicResource RegionBrush}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
     </UserControl.Resources>
+    
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="450" />
-            <Setter Property="Width" Value="900" />
+            <Setter Property="Height" Value="700" />
+            <Setter Property="Width" Value="1040" />
+            <Setter Property="MinHeight" Value="580" />
+            <Setter Property="MinWidth" Value="860" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
-    <hc:BusyIndicator IsBusy="{Binding IsBusy}" FocusAfterBusy="{Binding ElementName=SearchBar}">
-        <hc:BusyIndicator.BusyContent>
-            <StackPanel>
-                <TextBlock FontWeight="Bold">
-                    <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0}{1}/{2}">
-                            <Binding Path="BusyContent" />
-                            <Binding Path="Index" />
-                            <Binding Path="TotalPosters"/>
-                        </MultiBinding>
-                    </TextBlock.Text>
-                </TextBlock>
-                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
-                        Command="{Binding StopSearchCommand}" />
-            </StackPanel>
-        </hc:BusyIndicator.BusyContent>
-        <Grid Margin="12,12,12,12">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Margin="0,0,0,2">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Top Header & Toolbar -->
+            <RowDefinition Height="Auto" />
+            <!-- Gallery Area -->
+            <RowDefinition Height="*" />
+            <!-- Footer Action & Hint Bar -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top Header & Toolbar -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="16,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Title & Count Badge -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
+                    <Border Background="{DynamicResource PrimaryBrush}"
+                            CornerRadius="8"
+                            Width="36" Height="36"
+                            Margin="0,0,12,0"
+                            VerticalAlignment="Center">
+                        <Path Data="{StaticResource PaletteGeometry}"
+                              Fill="White"
+                              Width="18" Height="18"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxWidth="320"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                            <Border Background="{DynamicResource DarkDefaultBrush}"
+                                    CornerRadius="4"
+                                    Padding="6,2">
+                                <TextBlock Text="{Binding ImageUrl.Count, StringFormat='{}{0} Icons'}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Center: SearchBar -->
+                <Grid Grid.Column="1" VerticalAlignment="Center" Margin="8,0,16,0">
+                    <hc:SearchBar x:Name="SearchBar"
+                                  extension:FocusExtension.IsFocused="{Binding IsSearchFocused, UpdateSourceTrigger=PropertyChanged}"
+                                  Text="{Binding SearchAgainTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{StaticResource SearchBarPlusBaseStyle}"
+                                  hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
+                                  VerticalAlignment="Center"
+                                  MaxWidth="420"
+                                  HorizontalAlignment="Stretch">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SearchStarted">
+                                <i:InvokeCommandAction Command="{Binding SearchAgainCommand}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </hc:SearchBar>
+                </Grid>
+
+                <!-- Right: Subfolder Switch & Skip Action -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,14,0">
+                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
+                                      IsChecked="{Binding SubfolderProcessingEnabled}"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,8,0"/>
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   FontSize="12"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Button Style="{StaticResource ButtonDanger}"
+                            Command="{Binding SkipCommand}"
+                            IsCancel="True"
+                            Padding="12,6"
+                            VerticalAlignment="Center"
+                            ToolTip="{extension:Lang Key={x:Static langs:LangKeys.Skip}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource FastForwardGeometry}"
+                                  Fill="White"
+                                  Width="12" Height="12"
+                                  Stretch="Uniform"
+                                  Margin="0,0,6,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Skip}}"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Middle: Gallery with BusyIndicator -->
+        <hc:BusyIndicator Grid.Row="1"
+                          IsBusy="{Binding IsBusy}"
+                          FocusAfterBusy="{Binding ElementName=SearchBar}">
+            <hc:BusyIndicator.BusyContent>
+                <Border Background="{DynamicResource RegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="28,24"
+                        MinWidth="360"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="24" ShadowDepth="4" Direction="270" Opacity="0.25" Color="Black"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,14">
+                            <Path Data="{StaticResource AutoSparklesGeometry}"
+                                  Fill="{DynamicResource PrimaryBrush}"
+                                  Width="18" Height="18"
+                                  Stretch="Uniform"
+                                  Margin="0,0,8,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} ({1}/{2})">
+                                        <Binding Path="BusyContent" />
+                                        <Binding Path="Index" />
+                                        <Binding Path="TotalPosters"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+
+                        <ProgressBar Style="{DynamicResource ProgressBarInfo}"
+                                     Value="{Binding Index}"
+                                     Maximum="{Binding TotalPosters}"
+                                     Height="8"
+                                     Margin="0,0,0,16"/>
+
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}"
+                                Style="{StaticResource ButtonWarning}"
+                                HorizontalAlignment="Center"
+                                Command="{Binding StopSearchCommand}"
+                                Padding="16,6"/>
+                    </StackPanel>
+                </Border>
+            </hc:BusyIndicator.BusyContent>
+
+            <Grid>
+                <hc:ScrollViewer x:Name="ScrollViewer"
+                                 HorizontalScrollBarVisibility="Disabled"
+                                 VerticalScrollBarVisibility="Auto"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch"
+                                 ui:ScrollViewerBehavior.AutoScroll="True"
+                                 Padding="16,12">
+                    <ItemsControl ItemsSource="{Binding ImageUrl}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Width="140"
+                                        Height="140"
+                                        Margin="6,8"
+                                        Background="Transparent"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="2"
+                                        CornerRadius="6"
+                                        ClipToBounds="True"
+                                        Cursor="Hand"
+                                        ToolTip="Click to preview • Double-click to select • Right-click to extract">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                    <Setter Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect BlurRadius="14" ShadowDepth="2" Direction="270" Opacity="0.32" Color="Black"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid>
+                                        <!-- Silhouette placeholder -->
+                                        <Path Data="{StaticResource PhotoGalleryGeometry}"
+                                              Fill="{DynamicResource SecondaryTextBrush}"
+                                              Opacity="0.18"
+                                              Width="36" Height="36"
+                                              Stretch="Uniform"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+
+                                        <!-- Rendered DeviantArt Image -->
+                                        <Image Source="{Binding ThumbnailUrl}"
+                                               Tag="{Binding}"
+                                               Stretch="Uniform"
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"
+                                               RenderOptions.BitmapScalingMode="HighQuality">
+                                            <i:Interaction.Behaviors>
+                                                <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
+                                                                  DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
+                                                                  ClickCommand="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"/>
+                                            </i:Interaction.Behaviors>
+                                            <Image.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
+                                                              Command="{Binding Value.ExtractManuallyCommand, Source={StaticResource Proxy}}"
+                                                              CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
+                                                </ContextMenu>
+                                            </Image.ContextMenu>
+                                        </Image>
+
+                                        <!-- Watcher-wall badge overlay -->
+                                        <Border Background="#E61A1A1A"
+                                                CornerRadius="5"
+                                                Padding="6,3"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"
+                                                Margin="6"
+                                                Visibility="{Binding RequiresWatch, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Path Data="{StaticResource LockOutlineGeometry}"
+                                                      Fill="#FFD700"
+                                                      Width="11" Height="11"
+                                                      Margin="0,0,4,0"
+                                                      Stretch="Uniform"
+                                                      VerticalAlignment="Center"/>
+                                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.WatcherWallBadge}}"
+                                                           Foreground="White"
+                                                           FontSize="10"
+                                                           FontWeight="SemiBold"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel HorizontalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </hc:ScrollViewer>
+            </Grid>
+        </hc:BusyIndicator>
+
+        <!-- Bottom Footer Bar -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="16,10">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="107" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                        Command="{Binding SkipCommand}" IsCancel="True" />
-                <Label Content="{extension:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Column="1" VerticalAlignment="Top" />
-                <hc:SearchBar x:Name="SearchBar"
-                    extension:FocusExtension.IsFocused="{Binding IsSearchFocused,UpdateSourceTrigger=PropertyChanged}"
-                    Grid.Column="2" Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource SearchBarPlusBaseStyle}"
-                    hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
-                    VerticalAlignment="Top">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SearchStarted">
-                            <i:InvokeCommandAction Command="{Binding SearchAgainCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </hc:SearchBar>
-                <CheckBox Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
-                          IsChecked="{Binding SubfolderProcessingEnabled}"
-                          Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
+
+                <!-- Left: Usage Tips -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Data="{StaticResource EyeGeometry}"
+                          Fill="{DynamicResource SecondaryTextBrush}"
+                          Width="14" Height="14"
+                          Stretch="Uniform"
+                          Margin="0,0,6,0"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Text="Click icon to preview"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,0"/>
+
+                    <Path Data="{StaticResource CheckCircleGeometry}"
+                          Fill="{DynamicResource SecondaryTextBrush}"
+                          Width="14" Height="14"
+                          Stretch="Uniform"
+                          Margin="0,0,6,0"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Text="Double-click to apply"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center"
+                               Margin="0,0,16,0"/>
+
+                    <Path Data="{StaticResource CleanFolderGeometry}"
+                          Fill="{DynamicResource SecondaryTextBrush}"
+                          Width="14" Height="14"
+                          Stretch="Uniform"
+                          Margin="0,0,6,0"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Text="Right-click to extract gallery pack"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Right: Skip Action Button -->
+                <Button Grid.Column="1"
+                        Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}"
+                        Style="{StaticResource ButtonDefault}"
+                        Command="{Binding SkipCommand}"
+                        Padding="14,6"
+                        MinWidth="84"/>
             </Grid>
-            <hc:ScrollViewer x:Name="ScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch"
-                             VerticalAlignment="Stretch" ui:ScrollViewerBehavior.AutoScroll="True">
-                <ItemsControl ItemsSource="{Binding ImageUrl}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Height="128" Width="128" Margin="5">
-                                <Image Source="{Binding ThumbnailUrl}" Tag="{Binding}"
-                                       RenderOptions.BitmapScalingMode="HighQuality">
-                                    <i:Interaction.Behaviors>
-                                        <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
-                                                          DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
-                                                          ClickCommand="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"/>
-                                    </i:Interaction.Behaviors>
-                                    <Image.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem
-                                                Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
-                                                Command="{Binding Value.ExtractManuallyCommand,
-                                                 Source={StaticResource Proxy}}"
-                                                CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
-                                        </ContextMenu>
-                                    </Image.ContextMenu>
-                                </Image>
-                                <!-- Watcher-wall badge overlay -->
-                                <Border Background="#CC000000" CornerRadius="4" Padding="4,2"
-                                        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4"
-                                        Visibility="{Binding RequiresWatch, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Path Data="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18"
-                                              Fill="White" Width="12" Height="12" Margin="0,0,4,0" Stretch="Uniform"/>
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.WatcherWallBadge}}"
-                                                   Foreground="White" FontSize="10" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </hc:ScrollViewer>
-        </Grid>
-    </hc:BusyIndicator>
+        </Border>
+    </Grid>
 </UserControl>

@@ -1,4 +1,4 @@
-﻿using FoliCon.Models.Data.Wrapper;
+using FoliCon.Models.Data.Wrapper;
 using Artwork = IGDB.Models.Artwork;
 
 namespace FoliCon.ViewModels;
@@ -33,10 +33,27 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
     private ObservableCollection<ListItem> _resultList;
 
+    private DArtImageList _selectedPoster;
+    public DArtImageList SelectedPoster
+    {
+        get => _selectedPoster;
+        set
+        {
+            if (SetProperty(ref _selectedPoster, value))
+            {
+                PickSelectedCommand?.RaiseCanExecuteChanged();
+                PreviewSelectedCommand?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
     public DelegateCommand<DArtImageList> PickCommand { get; set; }
     public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
+    public DelegateCommand PickSelectedCommand { get; set; }
+    public DelegateCommand PreviewSelectedCommand { get; set; }
+    public DelegateCommand CancelCommand { get; set; }
     #endregion
     public PosterPickerViewModel()
     {
@@ -44,6 +61,9 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
         OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
+        PickSelectedCommand = new DelegateCommand(() => PickMethod(SelectedPoster), () => SelectedPoster != null);
+        PreviewSelectedCommand = new DelegateCommand(() => OpenImageMethod(SelectedPoster), () => SelectedPoster != null);
+        CancelCommand = new DelegateCommand(() => CloseDialog("false"));
     }
 
     private void OpenImageMethod(DArtImageList selectedImage)
@@ -203,6 +223,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private void ResetState()
     {
         StopSearch = false;
+        SelectedPoster = null;
         ImageUrl.Clear();
     }
     
@@ -235,7 +256,15 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         AddImageToCollection(qualityPath,thumbnailUrl, image.Id);
     }
     
-    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id) => ImageUrl.Add(new DArtImageList(qualityUrl, thumbnailUrl, id));
+    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id)
+    {
+        var item = new DArtImageList(qualityUrl, thumbnailUrl, id);
+        ImageUrl.Add(item);
+        if (SelectedPoster == null)
+        {
+            SelectedPoster = item;
+        }
+    }
 
     private void HandleNoImagesFound()
     {
