@@ -48,11 +48,33 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!-- Poster Thumbnail -->
+                    <!-- Poster Thumbnail with High-Quality Preview Popover -->
                     <Border Grid.Column="0" Width="42" Height="60" CornerRadius="4"
                             ClipToBounds="True" Background="{DynamicResource RegionBrush}"
                             BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
                             Margin="0,0,12,0" VerticalAlignment="Center">
+                        <Border.ToolTip>
+                            <ToolTip Style="{DynamicResource ToolTipDefault}">
+                                <StackPanel MaxWidth="220" Margin="4">
+                                    <Border CornerRadius="6" ClipToBounds="True" MaxHeight="280" Margin="0,0,0,8"
+                                            Background="{DynamicResource SecondaryRegionBrush}">
+                                        <Image Source="{Binding Converter={StaticResource ImageCacheConverter}}"
+                                               Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
+                                    </Border>
+                                    <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="12"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" TextWrapping="Wrap" />
+                                    <WrapPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <TextBlock Text="{Binding Year, StringFormat='Year: {0}'}" FontSize="11"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,8,0"
+                                                   Visibility="{Binding Year, Converter={StaticResource TextToVisibilityConverter}}" />
+                                        <TextBlock Text="{Binding Rating, StringFormat='★ {0}'}" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource WarningBrush}"
+                                                   Visibility="{Binding Rating, Converter={StaticResource TextToVisibilityConverter}}" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </ToolTip>
+                        </Border.ToolTip>
+
                         <Grid>
                             <Path Data="{StaticResource FilmGeometry}" Width="16" Height="16" Stretch="Uniform"
                                   Fill="{DynamicResource SecondaryTextBrush}" Opacity="0.3"
@@ -194,10 +216,12 @@
 
                     <!-- Right: Enable Subfolder Processing Option -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                        <CheckBox VerticalAlignment="Center"
-                                  IsChecked="{Binding SubfolderProcessingEnabled}"
-                                  Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"
-                                  FontSize="12" />
+                        <ToggleButton VerticalAlignment="Center"
+                                      IsChecked="{Binding SubfolderProcessingEnabled}"
+                                      Style="{StaticResource ToggleButtonSwitch}" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"
+                                   FontSize="12" VerticalAlignment="Center" Margin="8,0,0,0"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
                     </StackPanel>
                 </Grid>
             </Border>
@@ -443,13 +467,18 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Column="0"
-                                            Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}"
                                             Command="{Binding MouseDoubleClickCommand}"
                                             IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}"
                                             ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"
                                             Style="{StaticResource ButtonDefault}"
                                             HorizontalAlignment="Stretch"
-                                            Padding="6,4" FontSize="11" />
+                                            Padding="6,4" FontSize="11">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Path Data="{StaticResource PhotoGalleryGeometry}" Width="12" Height="12" Stretch="Uniform"
+                                                  Fill="{DynamicResource PrimaryBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
 
                                     <Button x:Name="ResetPoster" Grid.Column="1"
                                             Style="{StaticResource ButtonIcon}"
@@ -528,52 +557,53 @@
                                     </WrapPanel>
                                 </StackPanel>
 
-                                <!-- Custom Rating Bar (Dedicated Row with full width) -->
+                                <!-- Custom Rating Capsule (Compact & Smaller) -->
                                 <Border Grid.Row="1" Background="{DynamicResource RegionBrush}"
                                         BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                                        CornerRadius="6" Padding="10,6" Margin="0,0,0,8">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock Grid.Column="0" Text="{extension:Lang Key={x:Static langs:LangKeys.CustomRating}}"
-                                                   FontSize="11" FontWeight="SemiBold"
+                                        CornerRadius="6" Padding="8,4" Margin="0,0,0,8"
+                                        HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.CustomRating}}"
+                                                   FontSize="10.5" FontWeight="SemiBold"
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                    Margin="0,0,8,0" VerticalAlignment="Center" />
 
-                                        <!-- 10 Stars with plenty of width and responsive alignment -->
-                                        <hc:Rate Grid.Column="1" Count="10" AllowHalf="True"
+                                        <!-- Smaller Stars via LayoutTransform -->
+                                        <hc:Rate Count="10" AllowHalf="True"
                                                  Foreground="{DynamicResource WarningBrush}"
                                                  Value="{Binding CustomRating, Mode=TwoWay}"
                                                  AllowClear="True"
                                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"
-                                                 VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                                 VerticalAlignment="Center">
+                                            <hc:Rate.LayoutTransform>
+                                                <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
+                                            </hc:Rate.LayoutTransform>
+                                        </hc:Rate>
 
-                                        <!-- Rating Numeric Badge on the right -->
-                                        <Border Grid.Column="2" Background="{DynamicResource SecondaryRegionBrush}"
+                                        <!-- Rating Numeric Badge -->
+                                        <Border Margin="8,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
                                                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                                                CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
+                                                CornerRadius="4" Padding="5,1" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding CustomRating, StringFormat='{}{0:0.#}'}"
-                                                       FontSize="11" FontWeight="Bold"
+                                                       FontSize="10.5" FontWeight="Bold"
                                                        Foreground="{DynamicResource WarningBrush}" />
                                         </Border>
-                                    </Grid>
+                                    </StackPanel>
                                 </Border>
 
-                                <!-- Synopsis Card -->
-                                <Border Grid.Row="2" Background="{DynamicResource RegionBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                                        CornerRadius="6" Padding="10" MaxHeight="130">
-                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <!-- Blended Synopsis Area (Seamlessly integrated into card) -->
+                                <StackPanel Grid.Row="2" Margin="0,2,0,0">
+                                    <TextBlock Text="SYNOPSIS"
+                                               FontSize="10" FontWeight="Bold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Opacity="0.7" Margin="0,0,0,4" />
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="120">
                                         <TextBlock Text="{Binding Path=SelectedItem.(data:ListItem.Overview), ElementName=ListViewResult}"
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
-                                                   FontSize="12" LineHeight="17"
+                                                   FontSize="11.5" LineHeight="17"
                                                    TextWrapping="Wrap" />
                                     </ScrollViewer>
-                                </Border>
+                                </StackPanel>
                             </Grid>
                         </Grid>
 
@@ -619,8 +649,8 @@
                         </Border>
 
                         <!-- SECTION 3: OFFICIAL TRAILER & MEDIA PLAYER -->
-                        <Border Grid.Row="2" CornerRadius="8" ClipToBounds="True"
-                                Background="{DynamicResource RegionBrush}"
+                        <Border Grid.Row="2" CornerRadius="6,6,0,0"
+                                Background="Black"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1">
                             <Grid>
@@ -630,10 +660,11 @@
                                                HtmlText="{Binding Path=SelectedItem.(data:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}"
                                                ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                                Visibility="{Binding HtmlText, Converter={StaticResource TextToVisibilityConverter}, RelativeSource={RelativeSource Self}}"
-                                               Background="{DynamicResource RegionBrush}" />
+                                               Background="Transparent" />
 
                                 <!-- Sleek Modern Empty State when video is unavailable -->
                                 <Border Background="{DynamicResource RegionBrush}"
+                                        CornerRadius="6,6,0,0"
                                         Visibility="{Binding ElementName=WebBox, Path=HtmlText, Converter={StaticResource InvertedTextToVisibilityConverter}}">
                                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
                                         <Path Data="{StaticResource TvGeometry}" Width="36" Height="36" Stretch="Uniform"
@@ -674,36 +705,41 @@
                                    FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
                     </StackPanel>
 
-                    <!-- Action Buttons on the right -->
+                    <!-- Action Buttons matching reference mockup -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Pick Selected (Primary Action) -->
+                        <Button Command="{Binding PickCommand}"
+                                IsDefault="True"
+                                Style="{StaticResource ButtonPrimary}"
+                                Margin="0,0,8,0"
+                                Padding="18,6" FontSize="12" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path Data="{StaticResource CheckCircleGeometry}" Width="14" Height="14" Stretch="Uniform"
+                                      Fill="White" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Skip Button with Fast-Forward icon -->
+                        <Button Command="{Binding SkipCommand}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}"
+                                IsCancel="True"
+                                Style="{StaticResource ButtonDanger}"
+                                Margin="0,0,8,0"
+                                Padding="16,6" FontSize="12">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path Data="{StaticResource FastForwardGeometry}" Width="13" Height="13" Stretch="Uniform"
+                                      Fill="White" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
                         <!-- Skip All Button -->
                         <Button Content="{extension:Lang Key={x:Static langs:LangKeys.All}}"
                                 Command="{Binding SkipAllCommand}"
                                 ToolTip="{Binding SkipAllText}"
                                 Style="{StaticResource ButtonDefault}"
-                                Margin="0,0,8,0"
-                                Padding="14,6" FontSize="12" />
-
-                        <!-- Skip Button -->
-                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}"
-                                Command="{Binding SkipCommand}"
-                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}"
-                                IsCancel="True"
-                                Style="{StaticResource ButtonDanger}"
-                                Margin="0,0,10,0"
                                 Padding="16,6" FontSize="12" />
-
-                        <!-- Pick Selected (Primary Action) -->
-                        <Button Command="{Binding PickCommand}"
-                                IsDefault="True"
-                                Style="{StaticResource ButtonPrimary}"
-                                Padding="18,6" FontSize="12" FontWeight="SemiBold">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Path Data="{StaticResource CheckCircleGeometry}" Width="13" Height="13" Stretch="Uniform"
-                                      Fill="White" Margin="0,0,6,0" VerticalAlignment="Center" />
-                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </Button>
                     </StackPanel>
                 </Grid>
             </Border>
