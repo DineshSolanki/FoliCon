@@ -21,8 +21,8 @@
     
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="700" />
-            <Setter Property="Width" Value="1040" />
+            <Setter Property="Height" Value="720" />
+            <Setter Property="Width" Value="1060" />
             <Setter Property="MinHeight" Value="580" />
             <Setter Property="MinWidth" Value="860" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
@@ -44,7 +44,7 @@
                 Background="{DynamicResource SecondaryRegionBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="0,0,0,1"
-                Padding="16,10">
+                Padding="18,12">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -56,31 +56,40 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
                     <Border Background="{DynamicResource PrimaryBrush}"
                             CornerRadius="8"
-                            Width="36" Height="36"
+                            Width="38" Height="38"
                             Margin="0,0,12,0"
                             VerticalAlignment="Center">
                         <Path Data="{StaticResource PaletteGeometry}"
                               Fill="White"
-                              Width="18" Height="18"
+                              Width="20" Height="20"
                               Stretch="Uniform"
                               HorizontalAlignment="Center"
                               VerticalAlignment="Center"/>
                     </Border>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="{Binding Title}"
-                                   FontSize="15"
+                                   FontSize="16"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}"
                                    TextTrimming="CharacterEllipsis"
-                                   MaxWidth="320"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                            <Border Background="{DynamicResource DarkDefaultBrush}"
-                                    CornerRadius="4"
-                                    Padding="6,2">
+                                   MaxWidth="340"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0" VerticalAlignment="Center">
+                            <!-- High-contrast count badge -->
+                            <Border Background="{DynamicResource PrimaryBrush}"
+                                    CornerRadius="10"
+                                    Padding="10,2"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
                                 <TextBlock Text="{Binding ImageUrl.Count, StringFormat='{}{0} Icons'}"
                                            FontSize="11"
-                                           Foreground="{DynamicResource SecondaryTextBrush}"/>
+                                           FontWeight="Bold"
+                                           Foreground="White"/>
                             </Border>
+
+                            <TextBlock Text="Click to select • Double-click to choose"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -103,23 +112,314 @@
                     </hc:SearchBar>
                 </Grid>
 
-                <!-- Right: Subfolder Switch & Skip Action -->
+                <!-- Right: Subfolder Processing Switch -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,14,0">
-                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
-                                      IsChecked="{Binding SubfolderProcessingEnabled}"
-                                      VerticalAlignment="Center"
-                                      Margin="0,0,8,0"/>
-                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"
-                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                   FontSize="12"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
+                    <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
+                                  IsChecked="{Binding SubfolderProcessingEnabled}"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0"/>
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
+        <hc:BusyIndicator Grid.Row="1"
+                          Style="{StaticResource ModernBusyIndicatorStyle}"
+                          IsBusy="{Binding IsBusy}"
+                          BusyContent="{Binding}"
+                          FocusAfterBusy="{Binding ElementName=SearchBar}">
+            <hc:BusyIndicator.BusyContentTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" MinWidth="280">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+                            <Path Data="{StaticResource AutoSparklesGeometry}"
+                                  Fill="{DynamicResource PrimaryBrush}"
+                                  Width="16" Height="16"
+                                  Stretch="Uniform"
+                                  Margin="0,0,8,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Value.BusyContent, Source={StaticResource Proxy}}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,12">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}Processed {0} of {1} icons">
+                                    <Binding Path="Value.Index" Source="{StaticResource Proxy}" />
+                                    <Binding Path="Value.TotalPosters" Source="{StaticResource Proxy}" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <ProgressBar Style="{DynamicResource ProgressBarFlat}"
+                                     Value="{Binding Path=Value.Index, Source={StaticResource Proxy}}"
+                                     Maximum="{Binding Path=Value.TotalPosters, Source={StaticResource Proxy}}"
+                                     Height="6"
+                                     Margin="0,0,0,16"/>
+
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Center"
+                                Command="{Binding Path=Value.StopSearchCommand, Source={StaticResource Proxy}}"
+                                Padding="16,6"/>
+                    </StackPanel>
+                </DataTemplate>
+            </hc:BusyIndicator.BusyContentTemplate>
+
+            <Grid>
+                <ListBox ItemsSource="{Binding ImageUrl}"
+                         SelectedItem="{Binding SelectedIcon, Mode=TwoWay}"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         Padding="12,10">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Margin" Value="6,8" />
+                            <Setter Property="Padding" Value="0" />
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListBoxItem_PreviewMouseRightButtonDown" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="CardBorder"
+                                                Tag="{Binding}"
+                                                Width="160"
+                                                Height="120"
+                                                CornerRadius="6"
+                                                ClipToBounds="True"
+                                                BorderBrush="Transparent"
+                                                BorderThickness="2"
+                                                Background="Transparent"
+                                                Cursor="Hand"
+                                                ToolTip="Click to select • Double-click to choose • Right-click for options">
+                                            <Border.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Preview Full Size"
+                                                              Command="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"
+                                                              CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}">
+                                                        <MenuItem.Icon>
+                                                            <Path Data="{StaticResource EyeGeometry}"
+                                                                  Fill="{DynamicResource PrimaryTextBrush}"
+                                                                  Width="14" Height="14"
+                                                                  Stretch="Uniform"/>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}"
+                                                              Command="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
+                                                              CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}">
+                                                        <MenuItem.Icon>
+                                                            <Path Data="{StaticResource CheckCircleGeometry}"
+                                                                  Fill="{DynamicResource PrimaryBrush}"
+                                                                  Width="14" Height="14"
+                                                                  Stretch="Uniform"/>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <Separator/>
+                                                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
+                                                              Command="{Binding Value.ExtractManuallyCommand, Source={StaticResource Proxy}}"
+                                                              CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}">
+                                                        <MenuItem.Icon>
+                                                            <Path Data="{StaticResource CleanFolderGeometry}"
+                                                                  Fill="{DynamicResource SecondaryTextBrush}"
+                                                                  Width="14" Height="14"
+                                                                  Stretch="Uniform"/>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                </ContextMenu>
+                                            </Border.ContextMenu>
+                                            <Grid>
+                                                <!-- Silhouette placeholder while loading -->
+                                                <Path Data="{StaticResource CleanFolderGeometry}"
+                                                      Fill="{DynamicResource SecondaryTextBrush}"
+                                                      Opacity="0.08"
+                                                      Width="32" Height="32"
+                                                      Stretch="Uniform"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+
+                                                <!-- Rendered DeviantArt Image with native aspect ratio -->
+                                                <Image Source="{Binding ThumbnailUrl}"
+                                                       Tag="{Binding}"
+                                                       Stretch="Uniform"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       RenderOptions.BitmapScalingMode="HighQuality">
+                                                    <i:Interaction.Behaviors>
+                                                        <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
+                                                                          DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
+                                                                          ClickCommand="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"/>
+                                                    </i:Interaction.Behaviors>
+                                                </Image>
+
+                                                <!-- Watcher-wall badge overlay -->
+                                                <Border Background="#E61A1A1A"
+                                                        CornerRadius="5"
+                                                        Padding="6,3"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="6"
+                                                        Visibility="{Binding RequiresWatch, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Path Data="{StaticResource LockOutlineGeometry}"
+                                                              Fill="#FFD700"
+                                                              Width="11" Height="11"
+                                                              Margin="0,0,4,0"
+                                                              Stretch="Uniform"
+                                                              VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.WatcherWallBadge}}"
+                                                                   Foreground="White"
+                                                                   FontSize="10"
+                                                                   FontWeight="SemiBold"
+                                                                   VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Active Selection Checkmark Badge -->
+                                                <Border x:Name="SelectedBadge"
+                                                        Background="{DynamicResource PrimaryBrush}"
+                                                        CornerRadius="12"
+                                                        Width="24" Height="24"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="6"
+                                                        Visibility="Collapsed">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect BlurRadius="6" ShadowDepth="1" Direction="270" Opacity="0.5" Color="Black"/>
+                                                    </Border.Effect>
+                                                    <Path Data="{StaticResource CheckCircleGeometry}"
+                                                          Fill="White"
+                                                          Width="14" Height="14"
+                                                          Stretch="Uniform"
+                                                          HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="2"/>
+                                                <Setter TargetName="CardBorder" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect BlurRadius="12" ShadowDepth="2" Direction="270" Opacity="0.3" Color="Black"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="3"/>
+                                                <Setter TargetName="CardBorder" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect BlurRadius="16" ShadowDepth="3" Direction="270" Opacity="0.45" Color="Black"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter TargetName="SelectedBadge" Property="Visibility" Value="Visible"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+        </hc:BusyIndicator>
+
+        <!-- Bottom Footer Bar -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="18,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Usage Tips -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Data="{StaticResource AutoSparklesGeometry}"
+                          Fill="{DynamicResource PrimaryBrush}"
+                          Width="14" Height="14"
+                          Stretch="Uniform"
+                          Margin="0,0,6,0"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Text="Select an icon above, or double-click to apply instantly"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Right: Action Buttons (Preview Full Size, Pick Icon, Skip) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Preview Full Size Button -->
+                    <Button Style="{StaticResource ButtonDefault}"
+                            Command="{Binding PreviewSelectedCommand}"
+                            Margin="0,0,10,0"
+                            Padding="14,7"
+                            VerticalAlignment="Center"
+                            ToolTip="Preview selected icon in lightbox">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource EyeGeometry}"
+                                  Fill="{DynamicResource PrimaryTextBrush}"
+                                  Width="14" Height="14"
+                                  Stretch="Uniform"
+                                  Margin="0,0,6,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="Preview Full Size"
+                                       FontWeight="Medium"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Pick Icon Primary Button -->
+                    <Button Style="{StaticResource ButtonPrimary}"
+                            Command="{Binding PickSelectedCommand}"
+                            Margin="0,0,10,0"
+                            Padding="16,7"
+                            VerticalAlignment="Center"
+                            ToolTip="Apply the selected icon to folder">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource CheckCircleGeometry}"
+                                  Fill="White"
+                                  Width="14" Height="14"
+                                  Stretch="Uniform"
+                                  Margin="0,0,6,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Skip Button -->
                     <Button Style="{StaticResource ButtonDanger}"
                             Command="{Binding SkipCommand}"
                             IsCancel="True"
-                            Padding="12,6"
+                            Padding="14,7"
+                            MinWidth="80"
                             VerticalAlignment="Center"
                             ToolTip="{extension:Lang Key={x:Static langs:LangKeys.Skip}}">
                         <StackPanel Orientation="Horizontal">
@@ -136,220 +436,6 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
-            </Grid>
-        </Border>
-
-        <!-- Middle: Gallery with BusyIndicator -->
-        <hc:BusyIndicator Grid.Row="1"
-                          IsBusy="{Binding IsBusy}"
-                          FocusAfterBusy="{Binding ElementName=SearchBar}">
-            <hc:BusyIndicator.BusyContent>
-                <Border Background="{DynamicResource RegionBrush}"
-                        BorderBrush="{DynamicResource BorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="12"
-                        Padding="28,24"
-                        MinWidth="360"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="24" ShadowDepth="4" Direction="270" Opacity="0.25" Color="Black"/>
-                    </Border.Effect>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,14">
-                            <Path Data="{StaticResource AutoSparklesGeometry}"
-                                  Fill="{DynamicResource PrimaryBrush}"
-                                  Width="18" Height="18"
-                                  Stretch="Uniform"
-                                  Margin="0,0,8,0"
-                                  VerticalAlignment="Center"/>
-                            <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} ({1}/{2})">
-                                        <Binding Path="BusyContent" />
-                                        <Binding Path="Index" />
-                                        <Binding Path="TotalPosters"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </StackPanel>
-
-                        <ProgressBar Style="{DynamicResource ProgressBarInfo}"
-                                     Value="{Binding Index}"
-                                     Maximum="{Binding TotalPosters}"
-                                     Height="8"
-                                     Margin="0,0,0,16"/>
-
-                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}"
-                                Style="{StaticResource ButtonWarning}"
-                                HorizontalAlignment="Center"
-                                Command="{Binding StopSearchCommand}"
-                                Padding="16,6"/>
-                    </StackPanel>
-                </Border>
-            </hc:BusyIndicator.BusyContent>
-
-            <Grid>
-                <hc:ScrollViewer x:Name="ScrollViewer"
-                                 HorizontalScrollBarVisibility="Disabled"
-                                 VerticalScrollBarVisibility="Auto"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch"
-                                 ui:ScrollViewerBehavior.AutoScroll="True"
-                                 Padding="16,12">
-                    <ItemsControl ItemsSource="{Binding ImageUrl}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Width="140"
-                                        Height="140"
-                                        Margin="6,8"
-                                        Background="Transparent"
-                                        BorderBrush="Transparent"
-                                        BorderThickness="2"
-                                        CornerRadius="6"
-                                        ClipToBounds="True"
-                                        Cursor="Hand"
-                                        ToolTip="Click to preview • Double-click to select • Right-click to extract">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
-                                                    <Setter Property="BorderThickness" Value="2"/>
-                                                    <Setter Property="Effect">
-                                                        <Setter.Value>
-                                                            <DropShadowEffect BlurRadius="14" ShadowDepth="2" Direction="270" Opacity="0.32" Color="Black"/>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Grid>
-                                        <!-- Silhouette placeholder -->
-                                        <Path Data="{StaticResource PhotoGalleryGeometry}"
-                                              Fill="{DynamicResource SecondaryTextBrush}"
-                                              Opacity="0.18"
-                                              Width="36" Height="36"
-                                              Stretch="Uniform"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-
-                                        <!-- Rendered DeviantArt Image -->
-                                        <Image Source="{Binding ThumbnailUrl}"
-                                               Tag="{Binding}"
-                                               Stretch="Uniform"
-                                               HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Stretch"
-                                               RenderOptions.BitmapScalingMode="HighQuality">
-                                            <i:Interaction.Behaviors>
-                                                <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
-                                                                  DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
-                                                                  ClickCommand="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"/>
-                                            </i:Interaction.Behaviors>
-                                            <Image.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExtractGallery}}"
-                                                              Command="{Binding Value.ExtractManuallyCommand, Source={StaticResource Proxy}}"
-                                                              CommandParameter="{Binding PlacementTarget.Tag, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}" />
-                                                </ContextMenu>
-                                            </Image.ContextMenu>
-                                        </Image>
-
-                                        <!-- Watcher-wall badge overlay -->
-                                        <Border Background="#E61A1A1A"
-                                                CornerRadius="5"
-                                                Padding="6,3"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Margin="6"
-                                                Visibility="{Binding RequiresWatch, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                                <Path Data="{StaticResource LockOutlineGeometry}"
-                                                      Fill="#FFD700"
-                                                      Width="11" Height="11"
-                                                      Margin="0,0,4,0"
-                                                      Stretch="Uniform"
-                                                      VerticalAlignment="Center"/>
-                                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.WatcherWallBadge}}"
-                                                           Foreground="White"
-                                                           FontSize="10"
-                                                           FontWeight="SemiBold"
-                                                           VerticalAlignment="Center"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel HorizontalAlignment="Center" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </hc:ScrollViewer>
-            </Grid>
-        </hc:BusyIndicator>
-
-        <!-- Bottom Footer Bar -->
-        <Border Grid.Row="2"
-                Background="{DynamicResource SecondaryRegionBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
-                BorderThickness="0,1,0,0"
-                Padding="16,10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <!-- Left: Usage Tips -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Path Data="{StaticResource EyeGeometry}"
-                          Fill="{DynamicResource SecondaryTextBrush}"
-                          Width="14" Height="14"
-                          Stretch="Uniform"
-                          Margin="0,0,6,0"
-                          VerticalAlignment="Center"/>
-                    <TextBlock Text="Click icon to preview"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               FontSize="12"
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,0"/>
-
-                    <Path Data="{StaticResource CheckCircleGeometry}"
-                          Fill="{DynamicResource SecondaryTextBrush}"
-                          Width="14" Height="14"
-                          Stretch="Uniform"
-                          Margin="0,0,6,0"
-                          VerticalAlignment="Center"/>
-                    <TextBlock Text="Double-click to apply"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               FontSize="12"
-                               VerticalAlignment="Center"
-                               Margin="0,0,16,0"/>
-
-                    <Path Data="{StaticResource CleanFolderGeometry}"
-                          Fill="{DynamicResource SecondaryTextBrush}"
-                          Width="14" Height="14"
-                          Stretch="Uniform"
-                          Margin="0,0,6,0"
-                          VerticalAlignment="Center"/>
-                    <TextBlock Text="Right-click to extract gallery pack"
-                               Foreground="{DynamicResource SecondaryTextBrush}"
-                               FontSize="12"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-
-                <!-- Right: Skip Action Button -->
-                <Button Grid.Column="1"
-                        Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}"
-                        Style="{StaticResource ButtonDefault}"
-                        Command="{Binding SkipCommand}"
-                        Padding="14,6"
-                        MinWidth="84"/>
             </Grid>
         </Border>
     </Grid>

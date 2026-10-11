@@ -1,14 +1,14 @@
-﻿namespace FoliCon.Modules.Convertor;
+namespace FoliCon.Modules.Convertor;
 public class TextToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string text)
+        if (value is string text && !string.IsNullOrWhiteSpace(text) && text != "Video not available!")
         {
-            return text is "" or "Video not available!" ? Visibility.Hidden : Visibility.Visible;
+            return Visibility.Visible;
         }
 
-        return Visibility.Hidden;
+        return parameter as string == "Hidden" ? Visibility.Hidden : Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

@@ -203,32 +203,48 @@
         </DataTemplate>
 
         <DataTemplate x:Key="QueueYearColumnTemplate">
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Background="{DynamicResource RegionBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4" Padding="7,2">
-                <TextBlock Text="{Binding Year, TargetNullValue='-', FallbackValue='-'}"
-                           FontSize="11" FontWeight="SemiBold"
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Background="{DynamicResource RegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4" Padding="7,2"
+                        Visibility="{Binding Year, Converter={StaticResource TextToVisibilityConverter}}">
+                    <TextBlock Text="{Binding Year}"
+                               FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center" />
+                </Border>
+                <TextBlock Text="—"
+                           FontSize="12"
                            Foreground="{DynamicResource SecondaryTextBrush}"
-                           HorizontalAlignment="Center" />
-            </Border>
+                           Opacity="0.35"
+                           HorizontalAlignment="Center"
+                           Visibility="{Binding Year, Converter={StaticResource InvertedTextToVisibilityConverter}}" />
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="QueueRatingColumnTemplate">
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Background="#18F59E0B"
-                    BorderBrush="#40F59E0B"
-                    BorderThickness="1"
-                    CornerRadius="4" Padding="7,2">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Path Data="{StaticResource SparkleStarGeometry}" Width="10" Height="10" Stretch="Uniform"
-                          Fill="#F59E0B" Margin="0,0,4,0" VerticalAlignment="Center" />
-                    <TextBlock Text="{Binding Rating, TargetNullValue='-', FallbackValue='-'}"
-                               FontSize="11" FontWeight="Bold"
-                               Foreground="#F59E0B" VerticalAlignment="Center" />
-                </StackPanel>
-            </Border>
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border Background="#18F59E0B"
+                        BorderBrush="#40F59E0B"
+                        BorderThickness="1"
+                        CornerRadius="4" Padding="7,2"
+                        Visibility="{Binding Rating, Converter={StaticResource TextToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Path Data="{StaticResource SparkleStarGeometry}" Width="10" Height="10" Stretch="Uniform"
+                              Fill="#F59E0B" Margin="0,0,4,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Rating}"
+                                   FontSize="11" FontWeight="Bold"
+                                   Foreground="#F59E0B" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+                <TextBlock Text="—"
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           Opacity="0.35"
+                           HorizontalAlignment="Center"
+                           Visibility="{Binding Rating, Converter={StaticResource InvertedTextToVisibilityConverter}}" />
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="QueueFolderColumnTemplate">

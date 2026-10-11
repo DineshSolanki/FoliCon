@@ -27,11 +27,15 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private string _selectedFile;
 	private DArt _dArtObject;
 	private DArtDownloadResponse _dArtDownloadResponse;
-	private ProgressBarData _progressInfo = new(0,1,LangProvider.Instance.Downloading);
-	private readonly CancellationTokenSource _cts = new();
+	private ProgressBarData _progressInfo = new(0, 1, LangProvider.Instance.Downloading);
+	private string _progressStatusText = "Connecting to DeviantArt...";
+	private bool _isIndeterminate = true;
+	private CancellationTokenSource _cts = new();
 
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
+	public string ProgressStatusText { get => _progressStatusText; set => SetProperty(ref _progressStatusText, value); }
+	public bool IsIndeterminate { get => _isIndeterminate; set => SetProperty(ref _isIndeterminate, value); }
 	public string SelectedFile
 	{
 		get => _selectedFile;
@@ -57,8 +61,19 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	private void CancelMethod()
 	{
-		Logger.Trace("Cancelling Manual Extraction");
-		_cts.Cancel();
+		Logger.Trace("Cancelling Manual Extraction / Dialog");
+		if (IsBusy)
+		{
+			try
+			{
+				if (_cts is { IsCancellationRequested: false })
+				{
+					_cts.Cancel();
+				}
+			}
+			catch (ObjectDisposedException) { }
+		}
+		CloseDialog(ButtonResult.Cancel, null);
 	}
 
 	#region DialogMethods
@@ -71,6 +86,15 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
     {
         SelectedFile = null;
         Directory.Clear();
+        try
+        {
+            if (_cts is { IsCancellationRequested: false })
+            {
+                _cts.Cancel();
+            }
+            _cts.Dispose();
+        }
+        catch (ObjectDisposedException) { }
     }
 
     protected virtual void CloseDialog(ButtonResult result, string localPath)
@@ -97,19 +121,46 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
+		if (_cts.IsCancellationRequested)
+		{
+			try { _cts.Dispose(); } catch (ObjectDisposedException) { }
+			_cts = new CancellationTokenSource();
+		}
+
 		IsBusy = true;
+		IsIndeterminate = true;
+		ProgressStatusText = "Connecting to DeviantArt...";
 		try
 		{
-			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
+			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), _cts.Token);
 			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
+			if (!string.IsNullOrEmpty(DArtDownloadResponse?.FileSizeHumanReadable))
+			{
+				ProgressStatusText = $"Downloading archive ({DArtDownloadResponse.FileSizeHumanReadable})...";
+			}
+			else
+			{
+				ProgressStatusText = "Downloading archive...";
+			}
+
 			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				_cts.Token, new Progress<ProgressBarData>(value => ProgressInfo = value)));
+				_cts.Token, new Progress<ProgressBarData>(value =>
+				{
+					ProgressInfo = value;
+					if (value.Max > 1)
+					{
+						IsIndeterminate = false;
+						ProgressStatusText = string.Format(CultureInfo.CurrentCulture, "Extracted {0} of {1} icons", value.Value, value.Max);
+					}
+				})), _cts.Token);
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 		}
 		catch (OperationCanceledException e)
 		{
 			Logger.Debug(e, "User cancelled manual extraction");
-
+			IsBusy = false;
+			CloseDialog(ButtonResult.Cancel, null);
+			return;
 		}
 		catch (Exception ex)
 		{
@@ -133,8 +184,8 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
-		var extractedFiles = DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
-			.GetFiles();
+		var extractedFiles = DArtDownloadResponse?.LocalDownloadPath?.ToDirectoryInfo()
+			?.GetFiles();
 		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
 		if (extractedFiles?.Length > 0)
 		{
@@ -155,7 +206,6 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		}
 
 		IsBusy = false;
-		_cts.Dispose();
 	}
 
 	#endregion DialogMethods

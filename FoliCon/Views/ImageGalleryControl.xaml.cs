@@ -25,6 +25,9 @@ public partial class ImageGalleryControl
     public static readonly DependencyProperty DoubleClickCommandProperty =
         DependencyProperty.Register(nameof(DoubleClickCommand), typeof(ICommand), typeof(ImageGalleryControl), new PropertyMetadata(null));
 
+    public static readonly DependencyProperty PreviewCommandProperty =
+        DependencyProperty.Register(nameof(PreviewCommand), typeof(ICommand), typeof(ImageGalleryControl), new PropertyMetadata(null));
+
     public static readonly DependencyProperty ClickCommandProperty =
         DependencyProperty.Register(nameof(ClickCommand), typeof(ICommand), typeof(ImageGalleryControl), new PropertyMetadata(null));
 
@@ -84,6 +87,12 @@ public partial class ImageGalleryControl
         set => SetValue(DoubleClickCommandProperty, value);
     }
 
+    public ICommand PreviewCommand
+    {
+        get => GetValue(PreviewCommandProperty) as ICommand;
+        set => SetValue(PreviewCommandProperty, value);
+    }
+
     public ICommand ClickCommand
     {
         get => GetValue(ClickCommandProperty) as ICommand;
@@ -131,6 +140,16 @@ public partial class ImageGalleryControl
             SelectedItem = item.DataContext;
             DoubleClickCommand?.Execute(item.DataContext);
             e.Handled = true;
+        }
+    }
+
+    private void ListBoxItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is ListBoxItem item && item.DataContext != null)
+        {
+            SelectedItem = item.DataContext;
+            item.IsSelected = true;
+            item.Focus();
         }
     }
 

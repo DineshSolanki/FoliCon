@@ -108,52 +108,50 @@
                                    ItemWidth="160"
                                    ItemHeight="240"
                                    ImageStretch="UniformToFill"
+                                   PreviewCommand="{Binding OpenImageCommand}"
                                    DoubleClickCommand="{Binding PickCommand}">
             <views:ImageGalleryControl.CustomBusyContentTemplate>
                 <DataTemplate>
-                    <Border Background="{DynamicResource RegionBrush}"
-                            BorderBrush="{DynamicResource BorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="12"
-                            Padding="28,24"
-                            MinWidth="360"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="24" ShadowDepth="4" Direction="270" Opacity="0.25" Color="Black"/>
-                        </Border.Effect>
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,14">
-                                <Path Data="{StaticResource AutoSparklesGeometry}"
-                                      Fill="{DynamicResource PrimaryBrush}"
-                                      Width="18" Height="18"
-                                      Stretch="Uniform"
-                                      Margin="0,0,8,0"
-                                      VerticalAlignment="Center"/>
-                                <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} ({1}/{2})">
-                                            <Binding Path="Value.BusyContent" Source="{StaticResource Proxy}" />
-                                            <Binding Path="Value.Index" Source="{StaticResource Proxy}"/>
-                                            <Binding Path="Value.TotalPosters" Source="{StaticResource Proxy}"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                            </StackPanel>
-                            
-                            <ProgressBar Style="{DynamicResource ProgressBarInfo}"
-                                         Value="{Binding Path=Value.Index, Source={StaticResource Proxy}}" 
-                                         Maximum="{Binding Path=Value.TotalPosters, Source={StaticResource Proxy}}"
-                                         Height="8"
-                                         Margin="0,0,0,16"/>
-
-                            <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}"
-                                    Style="{StaticResource ButtonWarning}"
-                                    HorizontalAlignment="Center"
-                                    Command="{Binding Path=Value.StopSearchCommand, Source={StaticResource Proxy}}"
-                                    Padding="16,6"/>
+                    <StackPanel HorizontalAlignment="Center" MinWidth="280">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+                            <Path Data="{StaticResource AutoSparklesGeometry}"
+                                  Fill="{DynamicResource PrimaryBrush}"
+                                  Width="16" Height="16"
+                                  Stretch="Uniform"
+                                  Margin="0,0,8,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Path=Value.BusyContent, Source={StaticResource Proxy}, FallbackValue='Loading Posters...'}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
                         </StackPanel>
-                    </Border>
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,12">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}Processed {0} of {1} posters">
+                                    <Binding Path="Value.Index" Source="{StaticResource Proxy}" TargetNullValue="0" FallbackValue="0" />
+                                    <Binding Path="Value.TotalPosters" Source="{StaticResource Proxy}" TargetNullValue="0" FallbackValue="0" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <ProgressBar Style="{DynamicResource ProgressBarFlat}"
+                                     Value="{Binding Path=Value.Index, Source={StaticResource Proxy}}" 
+                                     Maximum="{Binding Path=Value.TotalPosters, Source={StaticResource Proxy}}"
+                                     Height="6"
+                                     Margin="0,0,0,16"/>
+
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Center"
+                                Command="{Binding Path=Value.StopSearchCommand, Source={StaticResource Proxy}}"
+                                Padding="16,6"/>
+                    </StackPanel>
                 </DataTemplate>
             </views:ImageGalleryControl.CustomBusyContentTemplate>
         </views:ImageGalleryControl>
