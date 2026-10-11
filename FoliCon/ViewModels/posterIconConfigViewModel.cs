@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 namespace FoliCon.ViewModels;
 
 [SuppressMessage("Performance", "CA1822:Mark members as static",
@@ -13,6 +13,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
     public DelegateCommand<object> IconOverlayChangedCommand { get; }
     public DelegateCommand BrowseOverlayStoreCommand { get; }
     public DelegateCommand CreateOverlayCommand { get; }
+    public DelegateCommand CloseCommand { get; }
 
     /// <summary>
     /// Removes a user-installed overlay. Lives here rather than in the store because the store
@@ -69,6 +70,8 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
         RemoveOverlayCommand = new DelegateCommand<OverlayItemViewModel>(
             RemoveOverlay,
             item => item is { IsBuiltIn: false, FolderPath: not null });
+
+        CloseCommand = new DelegateCommand(delegate { CloseDialog("true"); });
     }
 
     /// <summary>
@@ -137,7 +140,47 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
     public ObservableCollection<OverlayItemViewModel> AvailableOverlays { get; }
 
+    public string SearchFilter
+    {
+        get => field ??= string.Empty;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                ApplyFilter();
+            }
+        }
+    }
+
     public string Title => Lang.SelectPosterIconOverlay;
+
+    private void ApplyFilter()
+    {
+        var view = CollectionViewSource.GetDefaultView(AvailableOverlays);
+        if (view == null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(SearchFilter))
+        {
+            view.Filter = null;
+        }
+        else
+        {
+            var filter = SearchFilter.Trim();
+            view.Filter = obj =>
+            {
+                if (obj is OverlayItemViewModel item)
+                {
+                    return item.DisplayName.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                        || item.OverlayId.Contains(filter, StringComparison.OrdinalIgnoreCase)
+                        || item.Tags.Any(t => t.Contains(filter, StringComparison.OrdinalIgnoreCase));
+                }
+                return false;
+            };
+        }
+    }
 
     private void LoadOverlays()
     {
@@ -160,6 +203,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
                 };
                 AvailableOverlays.Add(item);
             }
+            ApplyFilter();
         }
         catch (Exception ex)
         {
