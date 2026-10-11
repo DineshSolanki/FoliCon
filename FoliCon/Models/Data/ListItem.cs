@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models.Data;
+namespace FoliCon.Models.Data;
 
 public class ListItem : BindableBase
 {
@@ -51,6 +51,9 @@ public class ListItem : BindableBase
             }
         }
     }
+
+    public double NumericRating => double.TryParse(_rating, NumberStyles.Any, CultureInfo.InvariantCulture, out var r) ? r : 0.0;
+    public int NumericYear => int.TryParse(_year, out var y) ? y : 0;
 
     public string Folder
     {

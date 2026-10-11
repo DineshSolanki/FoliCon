@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace FoliCon.ViewModels;
@@ -30,7 +31,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
     private double _customRating;
-    
+
     private PosterPickerDialogParams _dialogParams;
 
     #endregion Variables
@@ -108,7 +109,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         get => _isSearchFocused;
         set => SetProperty(ref _isSearchFocused, value);
     }
-    
+
     public bool SubfolderProcessingEnabled
     {
         get => _subfolderProcessingEnabled;
@@ -120,6 +121,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
+    private bool _sortDescending = true;
+
+    public string CurrentSort
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "Default";
+
     #endregion Properties
 
     #region Commands
@@ -129,6 +138,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     public DelegateCommand SkipAllCommand { get; }
     public DelegateCommand SearchAgainCommand { get; }
     public DelegateCommand ResetPosterCommand { get; }
+    public DelegateCommand<string> SortCommand { get; }
 
     #endregion Commands
 
@@ -140,6 +150,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         ResultListViewData = new ListViewData { Data = new ObservableCollection<ListItem>(), SelectedItem = null };
         PickCommand = new DelegateCommand<MouseButtonEventArgs>(PickMethod);
         ResetPosterCommand = new DelegateCommand(ResetPoster);
+        SortCommand = new DelegateCommand<string>(SortMethod);
         SkipAllCommand = new DelegateCommand(delegate
         {
             CloseDialog("false", true);
@@ -232,7 +243,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             IsSearchFocused = true;
             return;
         }
-        
+
         if (!HasSearchResult())
         {
             return;
@@ -246,7 +257,57 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
 
         ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+        CurrentSort = "Default";
         PerformSelectionChanged();
+    }
+
+    private void SortMethod(string sortKey)
+    {
+        if (ResultListViewData?.Data == null || ResultListViewData.Data.Count == 0)
+        {
+            return;
+        }
+
+        var view = CollectionViewSource.GetDefaultView(ResultListViewData.Data);
+        if (view == null)
+        {
+            return;
+        }
+
+        if (sortKey == "Default")
+        {
+            view.SortDescriptions.Clear();
+            CurrentSort = "Default";
+            view.Refresh();
+            return;
+        }
+
+        if (CurrentSort == sortKey)
+        {
+            _sortDescending = !_sortDescending;
+        }
+        else
+        {
+            _sortDescending = sortKey != "Title";
+        }
+
+        CurrentSort = sortKey;
+        var direction = _sortDescending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+
+        view.SortDescriptions.Clear();
+        var propName = sortKey switch
+        {
+            "Rating" => nameof(ListItem.NumericRating),
+            "Year" => nameof(ListItem.NumericYear),
+            _ => nameof(ListItem.Title)
+        };
+        view.SortDescriptions.Add(new SortDescription(propName, direction));
+        view.Refresh();
+
+        if (ResultListViewData.SelectedItem == null && ResultListViewData.Data.Count > 0)
+        {
+            ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+        }
     }
 
     private async void SearchAgainMethod()
@@ -362,7 +423,21 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private async void PerformSelectionChanged()
     {
-        if (ResultListViewData.SelectedItem == null || !ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
+        if (ResultListViewData.SelectedItem == null)
+        {
+            return;
+        }
+
+        if (double.TryParse(ResultListViewData.SelectedItem.Rating, NumberStyles.Any, CultureInfo.InvariantCulture, out var r))
+        {
+            CustomRating = r;
+        }
+        else
+        {
+            CustomRating = 0;
+        }
+
+        if (!ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
         {
             return;
         }
@@ -419,11 +494,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
         SetVideos(r);
     }
-    
+
 
     private async Task GetMovieTrailer(string itemId)
     {
-        try 
+        try
         {
             var result = await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt());
 
@@ -472,7 +547,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             videos.Where(video => video != trailer)
                 .Select(video => new MediaVideo(video.Name, youtubeEmbedUrl.Format(video.Key)))
         );
-        
+
         ResultListViewData.SelectedItem.Videos = videoList;
     }
 
@@ -500,7 +575,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         ResultListViewData.SelectedItem.Videos = videoList;
     }
-    
+
     private void ResetPoster()
     {
         if (ResultListViewData.SelectedItem == null)
@@ -510,7 +585,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
         ResultListViewData.SelectedItem.ResetInitialPoster();
     }
-    
+
     private bool HasSearchResult()
     {
         if (_isPickedById)
@@ -522,7 +597,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return (SearchResult.Result as Game[])?.Length != 0;
         }
-    
+
         return SearchResult.Result.TotalResults != 0;
     }
 }
