@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ProSearchResultViewModel : BindableBase, IDialogAware
@@ -214,7 +214,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         StopSearch = false;
         ImageUrl.Clear();
         SearchTitle = null;
-        SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.Clean(Fnames[_i]);
+        SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.CleanAndParse(Fnames[_i]).Title;
         BusyContent = Lang.SearchingWithName.Format(SearchTitle);
         IsBusy = true;
         Title = Lang.PickIconWithName.Format(SearchTitle);

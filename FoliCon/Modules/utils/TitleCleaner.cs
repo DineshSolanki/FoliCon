@@ -18,6 +18,9 @@ public static partial class TitleCleaner
     [GeneratedRegex(@"\[.*?\]", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
     private static partial Regex EnclosedInBracketsRegex();
 
+    [GeneratedRegex(@"\{.*?\}", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
+    private static partial Regex EnclosedInBracesRegex();
+
     [GeneratedRegex(@"\s*\([^)]*(?:repack|game\s*pass|edition|steam|rip|fitgirl|dodi|gog)[^)]*\)", RegexOptions.IgnoreCase | RegexOptions.Compiled, "en-US")]
     private static partial Regex NonYearParentheticalRegex();
 
@@ -73,6 +76,7 @@ public static partial class TitleCleaner
         var cleanTitle = title;
 
         cleanTitle = EnclosedInBracketsRegex().Replace(cleanTitle, "");
+        cleanTitle = EnclosedInBracesRegex().Replace(cleanTitle, "");
         cleanTitle = NonYearParentheticalRegex().Replace(cleanTitle, "");
 
         if (mediaType == MediaTypes.game)

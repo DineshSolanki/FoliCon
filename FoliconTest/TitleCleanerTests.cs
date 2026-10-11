@@ -92,6 +92,19 @@ public class TitleCleanerTests(ITestOutputHelper? output = null)
     }
 
     [Theory]
+    [InlineData("Movie Name {tmdb-12345}", "Movie Name")]
+    [InlineData("{tmdb-4349} 2 Broke Girls", "2 Broke Girls")]
+    [InlineData("-2 Broke Girls {tmdb-4349}", "2 Broke Girls")]
+    [InlineData("2 Broke Girls {tmdb-4349}", "2 Broke Girls")]
+    [InlineData("Breaking Bad {tvdb-81189}", "Breaking Bad")]
+    [InlineData("Movie {edition-Extended}", "Movie")]
+    public void Clean_RemovesContentEnclosedInCurlyBraces(string input, string expected)
+    {
+        var result = TitleCleaner.Clean(input);
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
     [InlineData("The    Godfather", "The Godfather")]
     [InlineData("  Pulp   Fiction  ", "Pulp Fiction")]
     [InlineData("   Inception   ", "Inception")]
@@ -564,6 +577,7 @@ public class TitleCleanerTests(ITestOutputHelper? output = null)
     [InlineData("12 Years a Slave (1985)", "12 Years a Slave", IdType.None, "0", 1985)]
     [InlineData("1917 {tmdb-1752}", "1917", IdType.Tmdb, "1752", 0)]
     [InlineData("2 Broke Girls {tmdb-4349}", "2 Broke Girls", IdType.Tmdb, "4349", 0)]
+    [InlineData("-2 Broke Girls {tmdb-4349}", "2 Broke Girls", IdType.Tmdb, "4349", 0)]
     [InlineData("2.5 Dimensional Seduction (1982)", "2 5 Dimensional Seduction", IdType.None, "0", 1982)]
     [InlineData("2046 {tmdb-3900}", "2046", IdType.Tmdb, "3900", 0)]
     [InlineData("Paprika 2006 (2022)", "Paprika", IdType.None, "0", 2022)]
