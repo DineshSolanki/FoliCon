@@ -8,55 +8,564 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
-             prism:ViewModelLocator.AutoWireViewModel="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             Background="{DynamicResource RegionBrush}"
              d:DataContext="{d:DesignInstance viewModels:PreviewerViewModel}">
-    <ScrollViewer>
-        <Grid Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <GroupBox Grid.Row="0" Header="{extension:Lang Key={x:Static langs:LangKeys.Configuration}}" Style="{StaticResource GroupBoxTab}" FontSize="18" FontFamily="Cambria" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                <hc:FlexPanel Grid.Row="1" Margin="32" AlignItems="Center" AlignContent="FlexStart" JustifyContent="SpaceAround" FlexWrap="Wrap" FlexDirection="Row" >
-                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.ChooseAnImage}}" Command="{Binding SelectImageCommand}" Margin="5" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ChoosePoster}}"/>
-                    <hc:Rate HorizontalAlignment="Center" DefaultValue="4" AllowHalf="True" Value="{Binding Path=Rating, Mode=TwoWay}" VerticalAlignment="Top" Margin="5"
-                         ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaRating}}"/>
-                    <hc:TextBox Text="{Binding MediaTitle, UpdateSourceTrigger=PropertyChanged}" hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.MediaTitle}}" Margin="5"
-                            ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaTitle}}"/>
-                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.Rating}}" IsChecked="{Binding RatingVisibility}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5"/>
-                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.Overlay}}" IsChecked="{Binding OverlayVisibility}" Margin="5"/>
-                </hc:FlexPanel>
-            </GroupBox>
-            <hc:FlexPanel Grid.Row="1" Margin="32" AlignItems="FlexStart" AlignContent="FlexStart" JustifyContent="FlexStart" FlexWrap="Wrap" FlexDirection="Row">
-                <!-- Dynamic overlay previews rendered from OverlayPreviewCache -->
-                <ItemsControl ItemsSource="{Binding OverlayPreviewItems}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <hc:Boolean2VisibilityReConverter x:Key="InverseBoolToVis" />
+    </UserControl.Resources>
+
+    <prism:Dialog.WindowStyle>
+        <Style TargetType="Window">
+            <Setter Property="Title" Value="{Binding Title}" />
+            <Setter Property="Height" Value="750" />
+            <Setter Property="Width" Value="1120" />
+            <Setter Property="MinHeight" Value="580" />
+            <Setter Property="MinWidth" Value="880" />
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Top Controls & Filters Toolbar -->
+            <RowDefinition Height="Auto" />
+            <!-- Gallery Preview Grid & Inspection Overlay -->
+            <RowDefinition Height="*" />
+            <!-- Bottom Status & Close Bar -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- 1. Top Controls & Settings Card -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="18,12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <!-- Media Parameters Row -->
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <!-- Filter & Background Canvas Row -->
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Row 0: Poster, Title, Rating, Overlay Toggles -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <!-- Poster Picker -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Divider -->
+                        <ColumnDefinition Width="20" />
+                        <!-- Title Input -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Divider -->
+                        <ColumnDefinition Width="20" />
+                        <!-- Rating Controls -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Divider -->
+                        <ColumnDefinition Width="20" />
+                        <!-- Overlay Switch -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Spacer -->
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Poster Selection -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{StaticResource ButtonDefault}"
+                                Command="{Binding SelectImageCommand}"
+                                Height="34"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ChoosePoster}}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path Data="{StaticResource PhotoGalleryGeometry}"
+                                      Fill="{DynamicResource PrimaryTextBrush}"
+                                      Width="14" Height="14"
+                                      Stretch="Uniform"
+                                      Margin="0,0,6,0" />
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ChooseAnImage}}"
+                                           FontSize="12"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Custom Poster Indicator / Reset Button -->
+                        <Border Background="{DynamicResource RegionBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Margin="8,0,0,0"
+                                Padding="8,4"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding HasCustomPoster, Converter={StaticResource BoolToVis}}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding PosterFileName}"
+                                           FontSize="11"
+                                           MaxWidth="130"
+                                           TextTrimming="CharacterEllipsis"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           VerticalAlignment="Center" />
+                                <Button Style="{StaticResource ButtonIcon}"
+                                        Command="{Binding ResetPosterCommand}"
+                                        Content="✕"
+                                        FontSize="10"
+                                        Width="18" Height="18"
+                                        Padding="0"
+                                        Margin="6,0,0,0"
+                                        ToolTip="Reset to default sample poster"
+                                        VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Media Title Input -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Title:"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0" />
+                        <hc:TextBox Text="{Binding MediaTitle, UpdateSourceTrigger=PropertyChanged}"
+                                    hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.MediaTitle}}"
+                                    hc:InfoElement.ShowClearButton="True"
+                                    Width="200" Height="34"
+                                    VerticalAlignment="Center"
+                                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaTitle}}" />
+                    </StackPanel>
+
+                    <!-- Rating Stars & Visibility Toggle -->
+                    <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Rating:"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0" />
+
+                        <hc:Rate Value="{Binding Rating, Mode=TwoWay}"
+                                 AllowHalf="True"
+                                 DefaultValue="3.5"
+                                 VerticalAlignment="Center"
+                                 ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaRating}}" />
+
+                        <TextBlock Text="{Binding Rating, StringFormat='{}{0}★'}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="8,0,12,0" />
+
+                        <!-- Rating Visibility Toggle Switch -->
+                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
+                                      IsChecked="{Binding RatingVisibility}"
+                                      VerticalAlignment="Center" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Rating}}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="6,0,0,0" />
+                    </StackPanel>
+
+                    <!-- Overlay Visibility Toggle -->
+                    <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center">
+                        <ToggleButton Style="{StaticResource ToggleButtonSwitch}"
+                                      IsChecked="{Binding OverlayVisibility}"
+                                      VerticalAlignment="Center" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Overlay}}"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="6,0,0,0" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Row 2: Search Filter & Background Canvas Presets -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <!-- Filter Search Box -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Count Pill -->
+                        <ColumnDefinition Width="Auto" />
+                        <!-- Spacer -->
+                        <ColumnDefinition Width="*" />
+                        <!-- Canvas Background Presets -->
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Search Filter Box -->
+                    <hc:TextBox Grid.Column="0"
+                                Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"
+                                hc:InfoElement.Placeholder="Filter overlays..."
+                                hc:InfoElement.ShowClearButton="True"
+                                Width="230" Height="30"
+                                VerticalAlignment="Center" />
+
+                    <!-- Count Badge Pill -->
+                    <Border Grid.Column="1"
+                            Background="{DynamicResource RegionBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="8,2"
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center">
+                        <TextBlock FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource SecondaryTextBrush}">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} of {1} overlays">
+                                    <Binding Path="FilteredOverlayCount" />
+                                    <Binding Path="TotalOverlayCount" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </Border>
+
+                    <!-- Canvas Background Presets -->
+                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Canvas:"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0" />
+
+                        <!-- Theme Background Preset -->
+                        <Button Style="{StaticResource ButtonDefault}"
+                                Command="{Binding SelectCanvasThemeCommand}"
+                                CommandParameter="Theme"
+                                Content="Theme"
+                                FontSize="11"
+                                Height="28" Padding="10,0"
+                                Margin="0,0,4,0" />
+
+                        <!-- Dark Background Preset -->
+                        <Button Style="{StaticResource ButtonDefault}"
+                                Command="{Binding SelectCanvasThemeCommand}"
+                                CommandParameter="Dark"
+                                Content="Dark"
+                                FontSize="11"
+                                Height="28" Padding="10,0"
+                                Margin="0,0,4,0" />
+
+                        <!-- Light Background Preset -->
+                        <Button Style="{StaticResource ButtonDefault}"
+                                Command="{Binding SelectCanvasThemeCommand}"
+                                CommandParameter="Light"
+                                Content="Light"
+                                FontSize="11"
+                                Height="28" Padding="10,0"
+                                Margin="0,0,4,0" />
+
+                        <!-- Folder Gray Background Preset -->
+                        <Button Style="{StaticResource ButtonDefault}"
+                                Command="{Binding SelectCanvasThemeCommand}"
+                                CommandParameter="Folder"
+                                Content="Folder"
+                                FontSize="11"
+                                Height="28" Padding="10,0" />
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- 2. Gallery Area -->
+        <Grid Grid.Row="1">
+            <!-- Scrollable Items Grid -->
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto"
+                          Padding="16">
+                <ItemsControl ItemsSource="{Binding FilteredPreviewItems}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <hc:FlexPanel FlexWrap="Wrap" JustifyContent="FlexStart" AlignItems="FlexStart"/>
+                            <WrapPanel HorizontalAlignment="Center" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,8,8">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Image Source="{Binding PreviewImage}" Width="256" Height="256"
-                                       RenderOptions.BitmapScalingMode="HighQuality"
-                                       AutomationProperties.Name="{Binding DisplayName}"/>
-                                <TextBlock Grid.Row="1" Text="{Binding DisplayName}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-                            </Grid>
+                            <Border Width="252"
+                                    Margin="8"
+                                    CornerRadius="10"
+                                    Background="{DynamicResource SecondaryRegionBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <!-- Preview Canvas -->
+                                        <RowDefinition Height="216" />
+                                        <!-- Card Footer Info -->
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Top Preview Canvas with user-selected Background -->
+                                    <Border Grid.Row="0"
+                                            Background="{Binding DataContext.CanvasBrush, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CornerRadius="9,9,0,0"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            BorderThickness="0,0,0,1"
+                                            ClipToBounds="True">
+                                        <Grid>
+                                            <!-- Rendered 2x Icon / Overlay Image -->
+                                            <Image Source="{Binding PreviewImage}"
+                                                   Width="196" Height="196"
+                                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   AutomationProperties.Name="{Binding DisplayName}" />
+
+                                            <!-- Card Quick Actions (Top Right) -->
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Top"
+                                                        Margin="6">
+                                                <!-- Copy Image to Clipboard -->
+                                                <Button Style="{StaticResource ButtonIcon}"
+                                                        Command="{Binding DataContext.CopyPreviewImageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        hc:IconElement.Geometry="{StaticResource CopyGeometry}"
+                                                        hc:IconElement.Width="12"
+                                                        hc:IconElement.Height="12"
+                                                        Width="26" Height="26"
+                                                        Padding="0"
+                                                        Margin="0,0,4,0"
+                                                        ToolTip="Copy image to clipboard" />
+
+                                                <!-- Inspect Large View -->
+                                                <Button Style="{StaticResource ButtonIcon}"
+                                                        Command="{Binding DataContext.InspectItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        hc:IconElement.Geometry="{StaticResource EyeGeometry}"
+                                                        hc:IconElement.Width="12"
+                                                        hc:IconElement.Height="12"
+                                                        Width="26" Height="26"
+                                                        Padding="0"
+                                                        ToolTip="Inspect full size" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- Card Footer Details -->
+                                    <Border Grid.Row="1" Padding="12,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Display Name & ID -->
+                                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding DisplayName}"
+                                                           FontSize="13"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           ToolTip="{Binding DisplayName}" />
+                                                <TextBlock Text="{Binding OverlayId}"
+                                                           FontSize="11"
+                                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                                           TextTrimming="CharacterEllipsis"
+                                                           Margin="0,2,0,0" />
+                                            </StackPanel>
+
+                                            <!-- Click to Inspect Button -->
+                                            <Button Grid.Column="1"
+                                                    Style="{StaticResource ButtonDefault}"
+                                                    Command="{Binding DataContext.InspectItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Height="26"
+                                                    Padding="8,0"
+                                                    VerticalAlignment="Center"
+                                                    ToolTip="Inspect full size">
+                                                <TextBlock Text="View" FontSize="11" />
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </Grid>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <hc:ColorPicker x:Name="ColorPicker" Margin="32" SelectedBrush="{DynamicResource RegionBrush}"/>
-            </hc:FlexPanel>
+            </ScrollViewer>
+
+            <!-- Loading Indicator Overlay -->
+            <Border Background="{DynamicResource RegionBrush}"
+                    Opacity="0.85"
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <hc:LoadingCircle Width="42" Height="42" Margin="0,0,0,12" />
+                    <TextBlock Text="Rendering overlay previews..."
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryTextBrush}" />
+                </StackPanel>
+            </Border>
+
+            <!-- Empty Search Results State -->
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{Binding HasNoResults, Converter={StaticResource BoolToVis}}">
+                <Path Data="{StaticResource AutoSparklesGeometry}"
+                      Fill="{DynamicResource SecondaryTextBrush}"
+                      Width="32" Height="32"
+                      Stretch="Uniform"
+                      HorizontalAlignment="Center"
+                      Margin="0,0,0,12" />
+                <TextBlock Text="No overlays match your search"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}"
+                           HorizontalAlignment="Center" />
+                <TextBlock Text="Try clearing or changing your filter criteria."
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,4,0,0" />
+            </StackPanel>
+
+            <!-- 3. Inspect Full-Size Modal Overlay -->
+            <Grid Visibility="{Binding IsInspecting, Converter={StaticResource BoolToVis}}">
+                <!-- Dimmed Backdrop -->
+                <Border Background="#88000000">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding CloseInspectCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Border>
+
+                <!-- Centered Modal Card -->
+                <Border Width="480"
+                        Background="{DynamicResource RegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!-- Modal Header -->
+                            <RowDefinition Height="Auto" />
+                            <!-- Modal Preview Image -->
+                            <RowDefinition Height="Auto" />
+                            <!-- Modal Info & Actions -->
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Header: Title & Close -->
+                        <Grid Grid.Row="0" Margin="0,0,0,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding InspectedItem.DisplayName}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                <TextBlock Text="{Binding InspectedItem.OverlayId}"
+                                           FontSize="11"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           Margin="0,2,0,0" />
+                            </StackPanel>
+
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource ButtonIcon}"
+                                    Command="{Binding CloseInspectCommand}"
+                                    Content="✕"
+                                    FontSize="13"
+                                    Width="28" Height="28"
+                                    Padding="0" />
+                        </Grid>
+
+                        <!-- High-Resolution Preview Surface -->
+                        <Border Grid.Row="1"
+                                Background="{Binding CanvasBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Padding="16"
+                                HorizontalAlignment="Center">
+                            <Image Source="{Binding InspectedItem.PreviewImage}"
+                                   Width="340" Height="340"
+                                   RenderOptions.BitmapScalingMode="HighQuality" />
+                        </Border>
+
+                        <!-- Modal Action Bar -->
+                        <Grid Grid.Row="2" Margin="0,16,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Text="512 × 512 HD Render"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       VerticalAlignment="Center" />
+
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Button Style="{StaticResource ButtonDefault}"
+                                        Command="{Binding CopyPreviewImageCommand}"
+                                        CommandParameter="{Binding InspectedItem}"
+                                        Height="32" Padding="14,0"
+                                        Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Path Data="{StaticResource CopyGeometry}"
+                                              Fill="{DynamicResource PrimaryTextBrush}"
+                                              Width="12" Height="12"
+                                              Stretch="Uniform"
+                                              Margin="0,0,6,0" />
+                                        <TextBlock Text="Copy Image" FontSize="12" />
+                                    </StackPanel>
+                                </Button>
+
+                                <Button Style="{StaticResource ButtonPrimary}"
+                                        Command="{Binding CloseInspectCommand}"
+                                        Content="{extension:Lang Key={x:Static langs:LangKeys.Close}}"
+                                        Height="32" Padding="16,0" />
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
         </Grid>
-    </ScrollViewer>
-    <UserControl.Background>
-        <Binding ElementName="ColorPicker" Path="SelectedBrush"/>
-    </UserControl.Background>
+
+        <!-- 3. Bottom Status & Close Bar -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="18,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!-- Hints / Status -->
+                    <ColumnDefinition Width="*" />
+                    <!-- Close Button -->
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="Live overlay showroom • Click 'View' to inspect full resolution • Hover to copy image"
+                           FontSize="11.5"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           VerticalAlignment="Center" />
+
+                <Button Grid.Column="1"
+                        Style="{StaticResource ButtonPrimary}"
+                        Command="{Binding CloseCommand}"
+                        Content="{extension:Lang Key={x:Static langs:LangKeys.Close}}"
+                        Width="90" Height="32"
+                        IsDefault="True"
+                        IsCancel="True" />
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>

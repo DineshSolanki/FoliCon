@@ -1,4 +1,12 @@
 #nullable enable
+using System.IO;
+using System.Windows;
+using System.Windows.Media;
+using FoliCon.Modules.Overlays;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+
 namespace FoliCon.ViewModels
 {
     [Localizable(false)]
@@ -10,28 +18,46 @@ namespace FoliCon.ViewModels
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public PreviewerViewModel(DialogCloseListener requestClose)
-        {
-            RequestClose = requestClose;
-            Logger.Debug("PreviewerViewModel created");
-
-            SelectImageCommand = new DelegateCommand(SelectImage);
-            OverlayPreviewItems = [];
-
-            // Load overlays and render previews
-            _ = LoadPreviewsAsync(CancellationToken.None);
-        }
-
         private string _rating = "3.5";
         private string _mediaTitle = Lang.MadeWithFoliCon;
         private bool _ratingVisibility = true;
         private bool _overlayVisibility = true;
         private string? _selectedPosterPath;
         private CancellationTokenSource? _rebuildCts;
+        private string _searchFilter = string.Empty;
+        private bool _isLoading;
+        private string _canvasTheme = "Theme";
+        private Brush _canvasBrush = Brushes.Transparent;
+        private OverlayPreviewItem? _inspectedItem;
+
+        public PreviewerViewModel() : this(new DialogCloseListener())
+        {
+        }
+
+        public PreviewerViewModel(DialogCloseListener requestClose)
+        {
+            RequestClose = requestClose;
+            Logger.Debug("PreviewerViewModel created");
+
+            SelectImageCommand = new DelegateCommand(SelectImage);
+            ResetPosterCommand = new DelegateCommand(ResetPoster);
+            SelectCanvasThemeCommand = new DelegateCommand<string>(SetCanvasTheme);
+            InspectItemCommand = new DelegateCommand<OverlayPreviewItem>(item => InspectedItem = item);
+            CloseInspectCommand = new DelegateCommand(() => InspectedItem = null);
+            CopyPreviewImageCommand = new DelegateCommand<OverlayPreviewItem>(CopyPreviewImage);
+            CloseCommand = new DelegateCommand(() => CloseDialog("true"));
+
+            OverlayPreviewItems = [];
+            FilteredPreviewItems = [];
+
+            // Load overlays and render previews
+            _ = LoadPreviewsAsync(CancellationToken.None);
+        }
 
         public string Title => Lang.Previewer;
 
         public ObservableCollection<OverlayPreviewItem> OverlayPreviewItems { get; }
+        public ObservableCollection<OverlayPreviewItem> FilteredPreviewItems { get; }
 
         public string Rating
         {
@@ -81,12 +107,131 @@ namespace FoliCon.ViewModels
             }
         }
 
-        public DelegateCommand SelectImageCommand { get; set; }
+        public string? SelectedPosterPath
+        {
+            get => _selectedPosterPath;
+            set
+            {
+                if (SetProperty(ref _selectedPosterPath, value))
+                {
+                    RaisePropertyChanged(nameof(PosterFileName));
+                    RaisePropertyChanged(nameof(HasCustomPoster));
+                    _ = RebuildPreviewsAsync();
+                }
+            }
+        }
+
+        public string PosterFileName => !string.IsNullOrEmpty(_selectedPosterPath)
+            ? Path.GetFileName(_selectedPosterPath)
+            : "Sample Poster";
+
+        public bool HasCustomPoster => !string.IsNullOrEmpty(_selectedPosterPath);
+
+        public string SearchFilter
+        {
+            get => _searchFilter;
+            set
+            {
+                if (SetProperty(ref _searchFilter, value))
+                {
+                    ApplyFilter();
+                }
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+
+        public string CanvasTheme
+        {
+            get => _canvasTheme;
+            set
+            {
+                if (SetProperty(ref _canvasTheme, value))
+                {
+                    UpdateCanvasBrush();
+                }
+            }
+        }
+
+        public Brush CanvasBrush
+        {
+            get => _canvasBrush;
+            private set => SetProperty(ref _canvasBrush, value);
+        }
+
+        public OverlayPreviewItem? InspectedItem
+        {
+            get => _inspectedItem;
+            set
+            {
+                if (SetProperty(ref _inspectedItem, value))
+                {
+                    RaisePropertyChanged(nameof(IsInspecting));
+                }
+            }
+        }
+
+        public bool IsInspecting => _inspectedItem != null;
+        public int FilteredOverlayCount => FilteredPreviewItems.Count;
+        public int TotalOverlayCount => OverlayPreviewItems.Count;
+        public bool HasNoResults => FilteredPreviewItems.Count == 0 && !IsLoading;
+
+        #region Commands
+
+        public DelegateCommand SelectImageCommand { get; }
+        public DelegateCommand ResetPosterCommand { get; }
+        public DelegateCommand<string> SelectCanvasThemeCommand { get; }
+        public DelegateCommand<OverlayPreviewItem> InspectItemCommand { get; }
+        public DelegateCommand CloseInspectCommand { get; }
+        public DelegateCommand<OverlayPreviewItem> CopyPreviewImageCommand { get; }
+        public DelegateCommand CloseCommand { get; }
+
+        #endregion
+
+        private void SetCanvasTheme(string? theme)
+        {
+            CanvasTheme = theme ?? "Theme";
+        }
+
+        private void UpdateCanvasBrush()
+        {
+            CanvasBrush = CanvasTheme switch
+            {
+                "Dark" => new SolidColorBrush(Color.FromRgb(0x18, 0x18, 0x1B)),
+                "Light" => new SolidColorBrush(Color.FromRgb(0xF4, 0xF4, 0xF5)),
+                "Folder" => new SolidColorBrush(Color.FromRgb(0xE2, 0xE8, 0xF0)),
+                _ => Brushes.Transparent
+            };
+        }
+
+        private void ApplyFilter()
+        {
+            FilteredPreviewItems.Clear();
+            var query = _searchFilter?.Trim() ?? string.Empty;
+            foreach (var item in OverlayPreviewItems)
+            {
+                if (string.IsNullOrEmpty(query) ||
+                    item.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                    item.OverlayId.Contains(query, StringComparison.OrdinalIgnoreCase))
+                {
+                    FilteredPreviewItems.Add(item);
+                }
+            }
+
+            RaisePropertyChanged(nameof(FilteredOverlayCount));
+            RaisePropertyChanged(nameof(TotalOverlayCount));
+            RaisePropertyChanged(nameof(HasNoResults));
+        }
 
         private async Task LoadPreviewsAsync(CancellationToken token = default)
         {
             try
             {
+                IsLoading = true;
                 var provider = GlobalVariables.OverlayProvider;
                 var previews = await OverlayPreviewCache.GetPreviewsAsync(
                     provider,
@@ -104,6 +249,7 @@ namespace FoliCon.ViewModels
                     OverlayPreviewItems.Add(item);
                 }
 
+                ApplyFilter();
                 Logger.Info("Loaded {Count} overlay previews", previews.Count);
             }
             catch (OperationCanceledException ex)
@@ -114,11 +260,15 @@ namespace FoliCon.ViewModels
             {
                 Logger.Error(ex, "Failed to load overlay previews");
             }
+            finally
+            {
+                IsLoading = false;
+                RaisePropertyChanged(nameof(HasNoResults));
+            }
         }
 
         private async Task RebuildPreviewsAsync()
         {
-            // Cancel any pending rebuild so rapid property changes don't overlap
             if (_rebuildCts != null)
             {
                 await _rebuildCts.CancelAsync();
@@ -129,7 +279,6 @@ namespace FoliCon.ViewModels
 
             try
             {
-                // Debounce: wait for property changes to settle
                 await Task.Delay(200, token);
             }
             catch (OperationCanceledException)
@@ -153,9 +302,32 @@ namespace FoliCon.ViewModels
                 return;
             }
 
-            _selectedPosterPath = fileDialog.FileName;
+            SelectedPosterPath = fileDialog.FileName;
             Logger.Info("Image selected: {FileName}", _selectedPosterPath);
-            _ = RebuildPreviewsAsync();
+        }
+
+        private void ResetPoster()
+        {
+            SelectedPosterPath = null;
+        }
+
+        private void CopyPreviewImage(OverlayPreviewItem? item)
+        {
+            if (item?.PreviewImage == null) return;
+            try
+            {
+                Clipboard.SetImage(item.PreviewImage);
+                Growl.SuccessGlobal(new GrowlInfo
+                {
+                    Message = $"{item.DisplayName} image copied to clipboard",
+                    ShowDateTime = false,
+                    StaysOpen = false
+                });
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to copy preview image to clipboard");
+            }
         }
 
         #region DialogMethods
