@@ -22,7 +22,7 @@
         <!-- STEP 0: WELCOME TEMPLATE                                              -->
         <!-- ===================================================================== -->
         <DataTemplate x:Key="WelcomeTemplate">
-            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,10">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -31,12 +31,12 @@
                 </Grid.RowDefinitions>
 
                 <!-- Hero Icon & Title -->
-                <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,12">
-                    <Border Width="60" Height="60" CornerRadius="14"
+                <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,10">
+                    <Border Width="54" Height="54" CornerRadius="12"
                             Background="{DynamicResource PrimaryBrush}"
-                            HorizontalAlignment="Center" Margin="0,0,0,14">
+                            HorizontalAlignment="Center" Margin="0,4,0,12">
                         <Path Data="{StaticResource ModernWandGeometry}"
-                              Width="28" Height="28" Stretch="Uniform"
+                              Width="26" Height="26" Stretch="Uniform"
                               Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <TextBlock Text="Welcome to FoliCon"
@@ -46,25 +46,25 @@
                     <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingWelcome}}"
                                FontSize="13" TextWrapping="Wrap" TextAlignment="Center"
                                Foreground="{DynamicResource SecondaryTextBrush}"
-                               MaxWidth="520" LineHeight="18" />
+                               MaxWidth="540" LineHeight="18" />
                 </StackPanel>
 
                 <!-- 3 Feature Highlights Cards -->
-                <UniformGrid Grid.Row="1" Columns="3" Margin="0,8,0,24" Width="640">
+                <UniformGrid Grid.Row="1" Columns="3" Margin="0,6,0,18" Width="660">
                     <!-- Film Card -->
                     <Border Background="{DynamicResource RegionBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1" CornerRadius="8"
-                            Padding="14,12" Margin="6,0">
+                            Padding="12,10" Margin="6,0">
                         <StackPanel HorizontalAlignment="Center">
                             <Path Data="{StaticResource FilmGeometry}"
-                                  Width="22" Height="22" Stretch="Uniform"
+                                  Width="20" Height="20" Stretch="Uniform"
                                   Fill="{DynamicResource PrimaryBrush}"
-                                  HorizontalAlignment="Center" Margin="0,0,0,8" />
+                                  HorizontalAlignment="Center" Margin="0,0,0,6" />
                             <TextBlock Text="Movies &amp; Series"
-                                       FontSize="13" FontWeight="SemiBold"
+                                       FontSize="12.5" FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
-                                       HorizontalAlignment="Center" Margin="0,0,0,4" />
+                                       HorizontalAlignment="Center" Margin="0,0,0,3" />
                             <TextBlock Text="Automatic high-res posters via TMDb"
                                        FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
@@ -75,16 +75,16 @@
                     <Border Background="{DynamicResource RegionBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1" CornerRadius="8"
-                            Padding="14,12" Margin="6,0">
+                            Padding="12,10" Margin="6,0">
                         <StackPanel HorizontalAlignment="Center">
                             <Path Data="{StaticResource GamepadGeometry}"
-                                  Width="22" Height="22" Stretch="Uniform"
+                                  Width="20" Height="20" Stretch="Uniform"
                                   Fill="{DynamicResource PrimaryBrush}"
-                                  HorizontalAlignment="Center" Margin="0,0,0,8" />
+                                  HorizontalAlignment="Center" Margin="0,0,0,6" />
                             <TextBlock Text="Video Games"
-                                       FontSize="13" FontWeight="SemiBold"
+                                       FontSize="12.5" FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
-                                       HorizontalAlignment="Center" Margin="0,0,0,4" />
+                                       HorizontalAlignment="Center" Margin="0,0,0,3" />
                             <TextBlock Text="Game cover artwork via IGDB &amp; Twitch"
                                        FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
@@ -95,16 +95,16 @@
                     <Border Background="{DynamicResource RegionBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1" CornerRadius="8"
-                            Padding="14,12" Margin="6,0">
+                            Padding="12,10" Margin="6,0">
                         <StackPanel HorizontalAlignment="Center">
                             <Path Data="{StaticResource PaletteGeometry}"
-                                  Width="22" Height="22" Stretch="Uniform"
+                                  Width="20" Height="20" Stretch="Uniform"
                                   Fill="{DynamicResource PrimaryBrush}"
-                                  HorizontalAlignment="Center" Margin="0,0,0,8" />
+                                  HorizontalAlignment="Center" Margin="0,0,0,6" />
                             <TextBlock Text="Custom Icons"
-                                       FontSize="13" FontWeight="SemiBold"
+                                       FontSize="12.5" FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
-                                       HorizontalAlignment="Center" Margin="0,0,0,4" />
+                                       HorizontalAlignment="Center" Margin="0,0,0,3" />
                             <TextBlock Text="Artist-crafted icon packs from DeviantArt"
                                        FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
@@ -117,14 +117,14 @@
                         Command="{Binding DataContext.NextCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                         Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingGetStarted}}"
                         Style="{StaticResource ButtonPrimary}"
-                        Width="220" Height="42" FontSize="15" FontWeight="SemiBold"
+                        Width="220" Height="38" FontSize="14" FontWeight="SemiBold"
                         HorizontalAlignment="Center" />
 
                 <!-- All API Keys are Free Note -->
                 <TextBlock Grid.Row="3"
                            Text="{extension:Lang Key={x:Static langs:LangKeys.AllApiKeysFree}}"
                            FontSize="11.5" Foreground="{DynamicResource SecondaryTextBrush}"
-                           HorizontalAlignment="Center" Margin="0,12,0,0" />
+                           HorizontalAlignment="Center" Margin="0,10,0,0" />
             </Grid>
         </DataTemplate>
 
@@ -575,10 +575,10 @@
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Title" Value="{Binding Title}" />
-            <Setter Property="Width" Value="760" />
-            <Setter Property="Height" Value="590" />
-            <Setter Property="MinWidth" Value="700" />
-            <Setter Property="MinHeight" Value="540" />
+            <Setter Property="Width" Value="840" />
+            <Setter Property="Height" Value="630" />
+            <Setter Property="MinWidth" Value="780" />
+            <Setter Property="MinHeight" Value="580" />
             <Setter Property="ResizeMode" Value="NoResize" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
@@ -592,16 +592,21 @@
         </Grid.RowDefinitions>
 
         <!-- Step Indicator -->
-        <Border Grid.Row="0" Margin="0,0,0,16" Padding="12,8"
+        <Border Grid.Row="0" Margin="0,0,0,14" Padding="12,8"
                 Background="{DynamicResource SecondaryRegionBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1" CornerRadius="8">
             <hc:StepBar StepIndex="{Binding CurrentStep}">
-                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingGetStarted}}" />
-                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbStep}}" />
-                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbStep}}" />
-                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtStep}}" />
-                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSummary}}" />
+                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingGetStarted}}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OnboardingGetStarted}}" />
+                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbStep}}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbStep}}" />
+                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbStep}}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbStep}}" />
+                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtStep}}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtStep}}" />
+                <hc:StepBarItem Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSummary}}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSummary}}" />
             </hc:StepBar>
         </Border>
 
@@ -610,28 +615,30 @@
                 Background="{DynamicResource SecondaryRegionBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="1" CornerRadius="8"
-                Padding="20,16">
-            <ContentControl Content="{Binding}">
-                <ContentControl.Style>
-                    <Style TargetType="ContentControl">
-                        <Setter Property="ContentTemplate" Value="{StaticResource WelcomeTemplate}" />
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CurrentStep}" Value="1">
-                                <Setter Property="ContentTemplate" Value="{StaticResource TmdbTemplate}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CurrentStep}" Value="2">
-                                <Setter Property="ContentTemplate" Value="{StaticResource IgdbTemplate}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CurrentStep}" Value="3">
-                                <Setter Property="ContentTemplate" Value="{StaticResource DeviantArtTemplate}" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding CurrentStep}" Value="4">
-                                <Setter Property="ContentTemplate" Value="{StaticResource SummaryTemplate}" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
-            </ContentControl>
+                Padding="18,14">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ContentControl Content="{Binding}">
+                    <ContentControl.Style>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="ContentTemplate" Value="{StaticResource WelcomeTemplate}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentStep}" Value="1">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource TmdbTemplate}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentStep}" Value="2">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource IgdbTemplate}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentStep}" Value="3">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource DeviantArtTemplate}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CurrentStep}" Value="4">
+                                    <Setter Property="ContentTemplate" Value="{StaticResource SummaryTemplate}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ContentControl.Style>
+                </ContentControl>
+            </ScrollViewer>
         </Border>
 
         <!-- Navigation Buttons Footer -->
