@@ -482,41 +482,144 @@
                             <MenuItem.Icon>
                                 <Path Data="{StaticResource SettingGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                             </MenuItem.Icon>
-                            <CheckBox x:Name="ChkIsRatingVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" IsChecked="{Binding IsRatingVisible}"/>
-                            <CheckBox x:Name="ChkIsPosterOverlayVisible" Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
-                                      IsChecked="{Binding IsPosterMockupUsed}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}" />
-                            <CheckBox x:Name="ChkPosterShown" Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
-                                      IsChecked="{Binding IsPosterWindowShown}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}" />
-                            <CheckBox x:Name="ChkIgnoreAmbiguous" Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
-                                      IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
-                            <CheckBox x:Name="ChkIncludeAlreadyProcessed" Content="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessed}}"
-                                      IsChecked="{Binding IncludeAlreadyProcessed}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessedTooltip}}" />
-                            <CheckBox x:Name="ChkProcessSelectedFolder" Content="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolder}}"
-                                      IsChecked="{Binding ProcessSelectedFolder}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolderTooltip}}" />
-                            <Separator />
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
-                                          Command="{Binding ExploreIntegrationCommand}" CommandParameter="True" />
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
-                                          Command="{Binding ExploreIntegrationCommand}" CommandParameter="False"/>
+
+                            <!-- ======================================================== -->
+                            <!-- 1. ICON GENERATION & ARTWORK PREFERENCES                 -->
+                            <!-- ======================================================== -->
+                            <MenuItem x:Name="ChkIsRatingVisible"
+                                      Header="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}"
+                                      IsCheckable="True" IsChecked="{Binding IsRatingVisible}" />
+
+                            <MenuItem x:Name="ChkIsPosterOverlayVisible"
+                                      Header="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}"
+                                      IsCheckable="True" IsChecked="{Binding IsPosterMockupUsed}" />
+
+                            <MenuItem x:Name="ChkPosterShown"
+                                      Header="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}"
+                                      IsCheckable="True" IsChecked="{Binding IsPosterWindowShown}" />
+
+                            <MenuItem x:Name="ChkIgnoreAmbiguous"
+                                      Header="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}"
+                                      IsCheckable="True" IsChecked="{Binding IsSkipAmbiguous}"
+                                      IsEnabled="{Binding IsSkipAmbiguousEnabled}" />
+
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
+                                      Command="{Binding PosterIconConfigCommand}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="MenuSetupWizardBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SetupWizard}}"
-                                      Command="{Binding SetupWizardCommand}" />
+
                             <Separator />
-                            <hc:ComboBox x:Name="CmbTheme" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                         IsEditable="False" SelectedItem="{Binding Path=Theme}"
-                                         hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.Theme}}"
-                                         hc:TitleElement.TitlePlacement="Left" Margin="8,4" />
-                            <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True" ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"
-                                         IsEditable="False" hc:Poptip.Content="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}"
-                                         hc:Poptip.Placement="BottomRight" SelectedItem="{Binding Path=AppLanguage}"
-                                         SelectionChanged="CmbLanguage_OnSelectionChanged" Margin="8,4" />
+
+                            <!-- ======================================================== -->
+                            <!-- 2. FOLDER SCANNING & PROCESSING RULES                    -->
+                            <!-- ======================================================== -->
+                            <MenuItem x:Name="ChkProcessSelectedFolder"
+                                      Header="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolder}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolderTooltip}}"
+                                      IsCheckable="True" IsChecked="{Binding ProcessSelectedFolder}" />
+
+                            <MenuItem x:Name="ChkIncludeAlreadyProcessed"
+                                      Header="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessed}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessedTooltip}}"
+                                      IsCheckable="True" IsChecked="{Binding IncludeAlreadyProcessed}" />
+
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
+                                      Command="{Binding SubfolderProcessingConfigCommand}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+                            <Separator />
+
+                            <!-- ======================================================== -->
+                            <!-- 3. WINDOWS EXPLORER INTEGRATION                          -->
+                            <!-- ======================================================== -->
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
+                                          Command="{Binding ExploreIntegrationCommand}" CommandParameter="True">
+                                    <MenuItem.Icon>
+                                        <Path Data="{StaticResource CheckCircleGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
+                                          Command="{Binding ExploreIntegrationCommand}" CommandParameter="False">
+                                    <MenuItem.Icon>
+                                        <Path Data="{StaticResource TrashGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <Separator />
+                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
+                                          ToolTip="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
+                                          Command="{Binding RestartExCommand}">
+                                    <MenuItem.Icon>
+                                        <Path Data="{StaticResource RefreshGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </MenuItem>
+
+                            <!-- ======================================================== -->
+                            <!-- 4. APPEARANCE & LOCALIZATION (THEME & LANGUAGE)          -->
+                            <!-- ======================================================== -->
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Theme}}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                                <Border Background="{DynamicResource RegionBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1" CornerRadius="6"
+                                        Padding="14,12" Margin="4">
+                                    <StackPanel Width="220">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Theme}}"
+                                                   FontWeight="SemiBold" FontSize="12"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                        <hc:ComboBox x:Name="CmbTheme" AutoComplete="True"
+                                                     ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
+                                                     IsEditable="False" SelectedItem="{Binding Path=Theme}"
+                                                     Margin="0,0,0,12" />
+
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}"
+                                                   FontWeight="SemiBold" FontSize="12"
+                                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                        <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True"
+                                                     ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"
+                                                     IsEditable="False" SelectedItem="{Binding Path=AppLanguage}"
+                                                     SelectionChanged="CmbLanguage_OnSelectionChanged" />
+                                    </StackPanel>
+                                </Border>
+                            </MenuItem>
+
+                            <Separator />
+
+                            <!-- ======================================================== -->
+                            <!-- 5. PRIVACY & DIAGNOSTICS                                 -->
+                            <!-- ======================================================== -->
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}"
+                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}"
+                                      IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource BlogsGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+
+                            <!-- ======================================================== -->
+                            <!-- 6. SETUP WIZARD                                          -->
+                            <!-- ======================================================== -->
+                            <MenuItem x:Name="MenuSetupWizardBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SetupWizard}}"
+                                      Command="{Binding SetupWizardCommand}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource ModernWandGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
 
                         <!-- HELP MENU -->
@@ -863,7 +966,7 @@
                                 </StackPanel>
                             </Button>
 
-                            <!-- Quick Options Box (Replaces Redundant Load Button) -->
+                            <!-- Quick Options Box -->
                             <Border Background="{DynamicResource RegionBrush}"
                                     BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
@@ -873,12 +976,20 @@
                                 <StackPanel>
                                     <TextBlock Text="Quick Generation Options" FontSize="11" FontWeight="Bold"
                                                Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,4" />
-                                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
-                                              IsChecked="{Binding IsPosterMockupUsed}" Margin="0,2"
-                                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}" />
-                                    <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
-                                              IsChecked="{Binding IsRatingVisible}" Margin="0,2"
-                                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" />
+                                    <UniformGrid Columns="2" Margin="0,2">
+                                        <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
+                                                  IsChecked="{Binding IsPosterMockupUsed}" Margin="0,2"
+                                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}" />
+                                        <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
+                                                  IsChecked="{Binding IsRatingVisible}" Margin="0,2"
+                                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}" />
+                                        <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
+                                                  IsChecked="{Binding IsPosterWindowShown}" Margin="0,2"
+                                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}" />
+                                        <CheckBox Content="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
+                                                  IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}" Margin="0,2"
+                                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}" />
+                                    </UniformGrid>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
