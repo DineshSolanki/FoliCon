@@ -428,14 +428,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        if (double.TryParse(ResultListViewData.SelectedItem.Rating, NumberStyles.Any, CultureInfo.InvariantCulture, out var r))
-        {
-            CustomRating = r;
-        }
-        else
-        {
-            CustomRating = 0;
-        }
+        CustomRating = ResultListViewData.SelectedItem.NumericRating;
 
         if (!ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
         {

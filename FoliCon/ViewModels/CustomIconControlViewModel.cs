@@ -147,6 +147,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void ClearFoldersMethod()
     {
+        KeepExactOnly = false;
+        _backupDirectories.Clear();
         Directories.Clear();
         _selectedDirectory = null;
         RaisePropertyChanged(nameof(SelectedDirectory));
@@ -155,6 +157,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     private void ClearIconsMethod()
     {
+        KeepExactOnly = false;
+        _backupIcons.Clear();
         Icons.Clear();
         _selectedIconsDirectory = null;
         RaisePropertyChanged(nameof(SelectedIconsDirectory));

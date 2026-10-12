@@ -58,7 +58,7 @@
                                 <StackPanel MaxWidth="220" Margin="4">
                                     <Border CornerRadius="6" ClipToBounds="True" MaxHeight="280" Margin="0,0,0,8"
                                             Background="{DynamicResource SecondaryRegionBrush}">
-                                        <Image Source="{Binding Converter={StaticResource ImageCacheConverter}}"
+                                        <Image Source="{Binding Poster, Converter={StaticResource ImageCacheConverter}}"
                                                Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
                                     </Border>
                                     <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="12"
@@ -79,7 +79,7 @@
                             <Path Data="{StaticResource FilmGeometry}" Width="16" Height="16" Stretch="Uniform"
                                   Fill="{DynamicResource SecondaryTextBrush}" Opacity="0.3"
                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <Image Source="{Binding Converter={StaticResource ImageCacheConverter}}"
+                            <Image Source="{Binding Poster, Converter={StaticResource ImageCacheConverter}}"
                                    Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
                                    RenderOptions.BitmapScalingMode="HighQuality" />
                         </Grid>

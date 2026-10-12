@@ -37,6 +37,7 @@
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Margin" Value="6,8" />
                         <Setter Property="Padding" Value="0" />
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListBoxItem_PreviewMouseLeftButtonDown" />
                         <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                         <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListBoxItem_PreviewMouseRightButtonDown" />
                         <Setter Property="Template">
@@ -89,7 +90,7 @@
 
                                             <!-- Rendered poster image with native aspect ratio, transparent container -->
                                             <Image Tag="{Binding}"
-                                                   Stretch="Uniform"
+                                                   Stretch="{Binding ImageStretch, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ImageGalleryControl}}}"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    extension:BindingPathExtensions.BindingPath="{Binding BindingPath, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ImageGalleryControl}}}"

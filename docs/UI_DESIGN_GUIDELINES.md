@@ -249,7 +249,7 @@ When lists or searches yield zero items, provide friendly empty states:
 
 ## 7. Vector Iconography System
 
-All vector glyphs are declared in [`FoliCon/Resources/Dictionaries/GeometryResources.xaml`](file:///E:/FoliCon-3.3-release/FoliCon/Resources/Dictionaries/GeometryResources.xaml). Standard coordinates are based on 24×24 viewBox path definitions.
+All vector glyphs are declared in [`FoliCon/Resources/Dictionaries/GeometryResources.xaml`](../FoliCon/Resources/Dictionaries/GeometryResources.xaml). Standard coordinates are based on 24×24 viewBox path definitions.
 
 ### Frequently Used Icons
 - **Folders & Files**: `FolderGeometry`, `DocGeometry`, `CleanFolderGeometry`

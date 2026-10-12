@@ -30,7 +30,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private ProgressBarData _progressInfo = new(0, 1, LangProvider.Instance.Downloading);
 	private string _progressStatusText = "Connecting to DeviantArt...";
 	private bool _isIndeterminate = true;
-	private CancellationTokenSource _cts = new();
+	private CancellationTokenSource? _cts;
 
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
@@ -92,7 +92,8 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
             {
                 _cts.Cancel();
             }
-            _cts.Dispose();
+            _cts?.Dispose();
+            _cts = null;
         }
         catch (ObjectDisposedException) { }
     }
@@ -121,18 +122,18 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
-		if (_cts.IsCancellationRequested)
-		{
-			try { _cts.Dispose(); } catch (ObjectDisposedException) { }
-			_cts = new CancellationTokenSource();
-		}
+
+		_cts?.Cancel();
+		_cts?.Dispose();
+		var cts = _cts = new CancellationTokenSource();
+		var token = cts.Token;
 
 		IsBusy = true;
 		IsIndeterminate = true;
 		ProgressStatusText = "Connecting to DeviantArt...";
 		try
 		{
-			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), _cts.Token);
+			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), token);
 			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
 			if (!string.IsNullOrEmpty(DArtDownloadResponse?.FileSizeHumanReadable))
 			{
@@ -144,22 +145,29 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			}
 
 			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				_cts.Token, new Progress<ProgressBarData>(value =>
+				token, new Progress<ProgressBarData>(value =>
 				{
+					if (!ReferenceEquals(_cts, cts) || token.IsCancellationRequested)
+					{
+						return;
+					}
 					ProgressInfo = value;
 					if (value.Max > 1)
 					{
 						IsIndeterminate = false;
 						ProgressStatusText = string.Format(CultureInfo.CurrentCulture, "Extracted {0} of {1} icons", value.Value, value.Max);
 					}
-				})), _cts.Token);
+				})), token);
 			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 		}
 		catch (OperationCanceledException e)
 		{
 			Logger.Debug(e, "User cancelled manual extraction");
-			IsBusy = false;
-			CloseDialog(ButtonResult.Cancel, null);
+			if (ReferenceEquals(_cts, cts))
+			{
+				IsBusy = false;
+				CloseDialog(ButtonResult.Cancel, null);
+			}
 			return;
 		}
 		catch (Exception ex)
@@ -184,6 +192,11 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
+		if (!ReferenceEquals(_cts, cts) || token.IsCancellationRequested)
+		{
+			return;
+		}
+
 		var extractedFiles = DArtDownloadResponse?.LocalDownloadPath?.ToDirectoryInfo()
 			?.GetFiles();
 		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
@@ -205,7 +218,10 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			}
 		}
 
-		IsBusy = false;
+		if (ReferenceEquals(_cts, cts))
+		{
+			IsBusy = false;
+		}
 	}
 
 	#endregion DialogMethods

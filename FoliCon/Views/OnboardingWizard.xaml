@@ -178,8 +178,8 @@
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.TMDBAPIKey}}"
                                    FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
-                        <TextBox Text="{Binding TmdbKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="34" FontSize="13" />
+                        <hc:PasswordBox UnsafePassword="{Binding TmdbKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IsSafeEnabled="False" Height="34" FontSize="13" />
 
                         <!-- Validation Controls -->
                         <StackPanel Orientation="Horizontal" Margin="0,14,0,0" VerticalAlignment="Center">
@@ -278,8 +278,8 @@
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}"
                                    FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,4" />
-                        <TextBox Text="{Binding IgdbClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="34" FontSize="13" />
+                        <hc:PasswordBox UnsafePassword="{Binding IgdbClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IsSafeEnabled="False" Height="34" FontSize="13" />
 
                         <!-- Validation Controls -->
                         <StackPanel Orientation="Horizontal" Margin="0,14,0,0" VerticalAlignment="Center">
@@ -424,8 +424,8 @@
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ClientSecret}}"
                                    FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,4" />
-                        <TextBox Text="{Binding DeviantArtCustomClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 Height="34" FontSize="13" />
+                        <hc:PasswordBox UnsafePassword="{Binding DeviantArtCustomClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        IsSafeEnabled="False" Height="34" FontSize="13" />
 
                         <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
                             <Button Command="{Binding ConnectDeviantArtCommand}"

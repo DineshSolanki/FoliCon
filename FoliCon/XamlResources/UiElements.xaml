@@ -16,6 +16,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="OverlayStyle">
             <Setter.Value>
+                <!-- Black is intentional for the neutral opacity overlay; it is not theme foreground text. -->
                 <Style TargetType="Rectangle">
                     <Setter Property="Fill" Value="Black" />
                     <Setter Property="Opacity" Value="0.45" />
@@ -89,6 +90,7 @@
                                         CornerRadius="12"
                                         Padding="24"
                                         Width="380">
+                                    <!-- Black is intentional for the neutral elevation shadow; it is not a theme brush. -->
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.4" Color="Black" />
                                     </Border.Effect>

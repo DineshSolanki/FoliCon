@@ -266,8 +266,7 @@
                                                        RenderOptions.BitmapScalingMode="HighQuality">
                                                     <i:Interaction.Behaviors>
                                                         <ui:ClickBehavior CommandParameter="{Binding Path=Tag, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Image}}}"
-                                                                          DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"
-                                                                          ClickCommand="{Binding Value.OpenImageCommand, Source={StaticResource Proxy}}"/>
+                                                                          DoubleClickCommand="{Binding Value.PickCommand, Source={StaticResource Proxy}}"/>
                                                     </i:Interaction.Behaviors>
                                                 </Image>
 

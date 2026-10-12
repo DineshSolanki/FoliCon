@@ -447,7 +447,6 @@
                         Command="{Binding CloseCommand}"
                         Content="{extension:Lang Key={x:Static langs:LangKeys.Close}}"
                         Width="90" Height="32"
-                        IsDefault="True"
                         IsCancel="True" />
             </Grid>
         </Border>

@@ -1,7 +1,7 @@
 #nullable enable
 using System.Windows;
+using FoliCon.ViewModels;
 using FoliCon.Views;
-using Prism.Mvvm;
 
 namespace FoliconTest;
 
@@ -18,15 +18,15 @@ public class AboutBoxViewSmokeTests
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
         {
-            ViewModelLocationProvider.SetDefaultViewModelFactory(_ => new object());
-
-            var view = new AboutBox();
+            var viewModel = new AboutBoxViewModel();
+            var view = new AboutBox { DataContext = viewModel };
             var size = new Size(540, 400);
             view.Measure(size);
             view.Arrange(new Rect(size));
             view.UpdateLayout();
 
-            Assert.NotNull(view);
+            Assert.False(string.IsNullOrWhiteSpace(viewModel.VersionTag));
+            Assert.NotNull(view.Content);
         });
     }
 }

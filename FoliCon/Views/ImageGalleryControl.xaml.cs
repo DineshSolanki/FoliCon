@@ -143,6 +143,15 @@ public partial class ImageGalleryControl
         }
     }
 
+    private void ListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is ListBoxItem item && item.DataContext != null)
+        {
+            SelectedItem = item.DataContext;
+            ClickCommand?.Execute(item.DataContext);
+        }
+    }
+
     private void ListBoxItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (sender is ListBoxItem item && item.DataContext != null)
@@ -153,13 +162,7 @@ public partial class ImageGalleryControl
         }
     }
 
-    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (SelectedItem != null)
-        {
-            ClickCommand?.Execute(SelectedItem);
-        }
-    }
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
 
     private void FrameworkElement_OnUnloaded(object sender, RoutedEventArgs e)
     {

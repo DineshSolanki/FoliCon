@@ -1,16 +1,15 @@
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
+using System.Windows.Media.Imaging;
 
 namespace FoliCon.Modules.Convertor;
 
 /// <summary>
-/// Converts a fileName and directory path into an ImageSource via ImageCacheConverter.
+/// Converts a file name and directory path into a small, uncached icon preview.
 /// </summary>
 public class CustomIconPathConverter : IMultiValueConverter
 {
-    private static readonly ImageCacheConverter CacheConverter = new();
-
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
         if (values != null && values.Length >= 2 &&
@@ -18,7 +17,19 @@ public class CustomIconPathConverter : IMultiValueConverter
             values[1] is string directory && !string.IsNullOrWhiteSpace(directory))
         {
             var fullPath = Path.IsPathRooted(fileName) ? fileName : Path.Combine(directory, fileName);
-            return CacheConverter.Convert(fullPath, targetType, parameter, culture);
+            if (!File.Exists(fullPath))
+            {
+                return null;
+            }
+
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.DecodePixelWidth = 22;
+            image.UriSource = new Uri(fullPath, UriKind.Absolute);
+            image.EndInit();
+            image.Freeze();
+            return image;
         }
 
         return null;

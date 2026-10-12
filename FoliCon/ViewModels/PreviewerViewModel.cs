@@ -29,6 +29,7 @@ namespace FoliCon.ViewModels
         private string _canvasTheme = "Theme";
         private Brush _canvasBrush = Brushes.Transparent;
         private OverlayPreviewItem? _inspectedItem;
+        private int _loadGeneration;
 
         public PreviewerViewModel() : this(new DialogCloseListener())
         {
@@ -229,6 +230,7 @@ namespace FoliCon.ViewModels
 
         private async Task LoadPreviewsAsync(CancellationToken token = default)
         {
+            var generation = Interlocked.Increment(ref _loadGeneration);
             try
             {
                 IsLoading = true;
@@ -242,6 +244,10 @@ namespace FoliCon.ViewModels
                     MediaTitle);
 
                 token.ThrowIfCancellationRequested();
+                if (generation != Volatile.Read(ref _loadGeneration))
+                {
+                    return;
+                }
 
                 OverlayPreviewItems.Clear();
                 foreach (var item in previews)
@@ -250,6 +256,10 @@ namespace FoliCon.ViewModels
                 }
 
                 ApplyFilter();
+                if (_inspectedItem != null)
+                {
+                    InspectedItem = OverlayPreviewItems.FirstOrDefault(item => item.OverlayId == _inspectedItem.OverlayId);
+                }
                 Logger.Info("Loaded {Count} overlay previews", previews.Count);
             }
             catch (OperationCanceledException ex)
@@ -262,8 +272,11 @@ namespace FoliCon.ViewModels
             }
             finally
             {
-                IsLoading = false;
-                RaisePropertyChanged(nameof(HasNoResults));
+                if (generation == Volatile.Read(ref _loadGeneration))
+                {
+                    IsLoading = false;
+                    RaisePropertyChanged(nameof(HasNoResults));
+                }
             }
         }
 
