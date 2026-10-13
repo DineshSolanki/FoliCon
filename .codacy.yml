@@ -1,5 +1,0 @@
----
-engines:
-  markdownlint:
-    exclude_paths:
-      - "docs/**"
