@@ -98,7 +98,7 @@
                           Margin="0,0,10,0" />
 
                     <TextBlock Grid.Column="1"
-                               Text="Drag and drop directories or files onto either side. Reorder items in either list so corresponding rows pair together. Press Delete to remove an entry."
+                               Text="{extension:Lang Key={x:Static langs:LangKeys.CustomIconInstructions}}"
                                FontSize="12"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                VerticalAlignment="Center"
@@ -169,7 +169,10 @@
                                            FontSize="11"
                                            FontWeight="SemiBold">
                                     <TextBlock.Text>
-                                        <Binding Path="Directories.Count" StringFormat="{}{0} folders" />
+                                        <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                            <Binding Source="{StaticResource FoliConLangs}" Path="FolderCountFormat" />
+                                            <Binding Path="Directories.Count" />
+                                        </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
                             </Border>
@@ -183,7 +186,7 @@
                                     hc:IconElement.Height="12"
                                     Width="26" Height="26"
                                     Padding="0"
-                                    ToolTip="Clear all folders"
+                                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ClearFoldersTooltip}}"
                                     VerticalAlignment="Center" />
                         </Grid>
 
@@ -239,7 +242,7 @@
                                         Padding="6,2"
                                         Margin="6,0,0,0"
                                         VerticalAlignment="Center">
-                                    <TextBlock Text="Browse"
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Browse}}"
                                                FontSize="10"
                                                Foreground="{DynamicResource SecondaryTextBrush}" />
                                 </Border>
@@ -376,7 +379,10 @@
                                            FontSize="11"
                                            FontWeight="SemiBold">
                                     <TextBlock.Text>
-                                        <Binding Path="Icons.Count" StringFormat="{}{0} icons" />
+                                        <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                            <Binding Source="{StaticResource FoliConLangs}" Path="IconCountFormat" />
+                                            <Binding Path="Icons.Count" />
+                                        </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
                             </Border>
@@ -390,7 +396,7 @@
                                     hc:IconElement.Height="12"
                                     Width="26" Height="26"
                                     Padding="0"
-                                    ToolTip="Clear all icons"
+                                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ClearIconsTooltip}}"
                                     VerticalAlignment="Center" />
                         </Grid>
 
@@ -446,7 +452,7 @@
                                         Padding="6,2"
                                         Margin="6,0,0,0"
                                         VerticalAlignment="Center">
-                                    <TextBlock Text="Browse"
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Browse}}"
                                                FontSize="10"
                                                Foreground="{DynamicResource SecondaryTextBrush}" />
                                 </Border>
@@ -589,7 +595,7 @@
                                 Height="36"
                                 Padding="16,0"
                                 Margin="0,0,10,0"
-                                ToolTip="Undo previous icon application">
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.UndoApplyTooltip}}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Path Data="{StaticResource RefreshGeometry}"
                                       Fill="{DynamicResource PrimaryTextBrush}"
@@ -607,7 +613,7 @@
                                 Command="{Binding Apply}"
                                 Height="36"
                                 Padding="20,0"
-                                ToolTip="Generate and assign custom icons to folders">
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ApplyIconsTooltip}}">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <Path Data="{StaticResource CheckCircleGeometry}"
                                       Fill="White"

@@ -162,7 +162,10 @@ public partial class ImageGalleryControl
         }
     }
 
-    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // Intentionally no-op: ClickCommand is dispatched exclusively on explicit mouse click.
+    }
 
     private void FrameworkElement_OnUnloaded(object sender, RoutedEventArgs e)
     {

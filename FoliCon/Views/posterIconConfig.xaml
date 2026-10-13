@@ -157,16 +157,22 @@
                     CornerRadius="10"
                     Padding="8,2"
                     VerticalAlignment="Center">
-                <TextBlock Text="{Binding AvailableOverlays.Count, StringFormat='{}{0} overlays'}"
-                           Foreground="White"
+                <TextBlock Foreground="White"
                            FontSize="11"
-                           FontWeight="SemiBold" />
+                           FontWeight="SemiBold">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                            <Binding Source="{StaticResource FoliConLangs}" Path="PosterIconOverlayCountFormat" />
+                            <Binding Path="AvailableOverlays.Count" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </Border>
 
             <!-- Search Filter Input -->
             <hc:TextBox Grid.Column="4"
                         Text="{Binding SearchFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        hc:InfoElement.Placeholder="Search overlays..."
+                        hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.SearchOverlaysPlaceholder}}"
                         hc:InfoElement.ShowClearButton="True"
                         Height="32"
                         Width="190"
@@ -265,7 +271,7 @@
                                                       Stretch="Uniform"
                                                       VerticalAlignment="Center"
                                                       Margin="0,0,4,0" />
-                                                <TextBlock Text="Active"
+                                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayActive}}"
                                                            FontSize="10"
                                                            FontWeight="SemiBold"
                                                            Foreground="White"
@@ -301,19 +307,16 @@
                                                     Background="{DynamicResource RegionBrush}"
                                                     BorderBrush="{DynamicResource BorderBrush}"
                                                     BorderThickness="1">
-                                                <TextBlock FontSize="10"
-                                                           Foreground="{DynamicResource SecondaryTextBrush}">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="Community" />
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsBuiltIn}" Value="True">
-                                                                    <Setter Property="Text" Value="Built-in" />
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
+                                                <Grid>
+                                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayBuiltIn}}"
+                                                               FontSize="10"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Visibility="{Binding IsBuiltIn, Converter={StaticResource BoolToVis}}" />
+                                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayCommunity}}"
+                                                               FontSize="10"
+                                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                                               Visibility="{Binding IsBuiltIn, Converter={StaticResource InvertedBoolToVis}}" />
+                                                </Grid>
                                             </Border>
                                         </StackPanel>
                                     </Grid>
@@ -356,7 +359,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Text="Selected overlay is automatically saved and applied to movie and TV folder icons"
+                           Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayConfigFooter}}"
                            FontSize="11.5"
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            VerticalAlignment="Center" />

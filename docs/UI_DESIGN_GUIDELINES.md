@@ -19,6 +19,7 @@ All new views, dialogs, and components—as well as refactors of existing legacy
 ## 2. Color System & Theme Resources
 
 ### The Cardinal Rule
+
 > [!IMPORTANT]
 > **Never hardcode hex colors or named color brushes** (e.g., `#333333`, `Firebrick`, `RoyalBlue`, `Black`) in XAML views. All foregrounds, backgrounds, borders, and fills must bind dynamically to HandyControl theme brushes using `{DynamicResource ...}`.
 
@@ -44,6 +45,7 @@ All new views, dialogs, and components—as well as refactors of existing legacy
 ## 3. Typography & Text Hierarchy
 
 ### Typeface
+
 FoliCon relies on the Windows system font (**Segoe UI**). Never hardcode legacy or decorative fonts like `Cambria`, `Monotype Corsiva`, or `Courier`.
 
 ### Typographic Scale
@@ -58,13 +60,16 @@ FoliCon relies on the Windows system font (**Segoe UI**). Never hardcode legacy 
 | **Pills & Badges** | `10px - 11px` | `SemiBold` | `White` or `SecondaryTextBrush` | Count pills, version tags, overlay IDs |
 
 ### Text Trimming & Tooltips
+
 Whenever binding to dynamic user content, file paths, folder names, or media titles:
+
 ```xml
 <TextBlock Text="{Binding SelectedDirectory}"
            FontSize="12"
            TextTrimming="CharacterEllipsis"
            ToolTip="{Binding SelectedDirectory}" />
 ```
+
 Always use `TextTrimming="CharacterEllipsis"` together with `ToolTip` to ensure long text never overflows or distorts the layout.
 
 ---
@@ -72,6 +77,7 @@ Always use `TextTrimming="CharacterEllipsis"` together with `ToolTip` to ensure 
 ## 4. Window & Dialog Conventions
 
 ### Prism & HandyWindow Integration
+
 All modal dialogs are presented using Prism's dialog service hosting `HandyWindow`.
 
 ```xml
@@ -91,6 +97,7 @@ All modal dialogs are presented using Prism's dialog service hosting `HandyWindo
 ```
 
 ### Dialog Rules
+
 1. **Never set `WindowStyle="ToolWindow"`**: This strips the modern HandyControl window chrome, theming, and title bar behavior.
 2. **Never hardcode relative pack URIs in `<Setter Property="Icon" ...>`**: It breaks cross-assembly test runners. HandyWindow automatically inherits the application icon.
 3. **Always set `MinWidth` and `MinHeight`**: Prevent dialogs from being resized into unusable states.
@@ -104,6 +111,7 @@ All modal dialogs are presented using Prism's dialog service hosting `HandyWindo
 ## 5. Layout Architecture & Patterns
 
 ### 1. The 3-Tier Dialog Layout
+
 Most full-featured dialogs (`CustomIconControl`, `Previewer`, `ProSearchResult`, `PosterPicker`) use a three-tier row layout:
 
 ```mermaid
@@ -114,7 +122,9 @@ graph TD
 ```
 
 ### 2. Card Panel Standard
+
 Wrap individual sections and workspaces in elevated cards:
+
 ```xml
 <Border Background="{DynamicResource SecondaryRegionBrush}"
         BorderBrush="{DynamicResource BorderBrush}"
@@ -126,7 +136,9 @@ Wrap individual sections and workspaces in elevated cards:
 ```
 
 ### 3. Card Header Pattern
+
 Every card workspace should feature a cohesive header:
+
 ```xml
 <Grid Margin="2,0,2,10">
     <Grid.ColumnDefinitions>
@@ -162,12 +174,14 @@ Every card workspace should feature a cohesive header:
 ## 6. Controls & Micro-Interactions
 
 ### Buttons
+
 - **Primary Action**: `Style="{StaticResource ButtonPrimary}"` — Used for main confirmation (Apply, Save, Generate).
 - **Secondary Action**: `Style="{StaticResource ButtonDefault}"` — Used for Browse, Options, Undo, View.
 - **Destructive Action**: `Style="{StaticResource ButtonDanger}"` — Used for Cancel Search, Remove, Reset.
 - **Icon-Only Button**: `Style="{StaticResource ButtonIcon}"` — Used for toolbar icons, clear buttons, copy icons. Set `hc:IconElement.Geometry`, `Width="26"`, `Height="26"`, `Padding="0"`.
 
 ### Toggle Switches vs Checkboxes
+
 > [!TIP]
 > **Prefer Toggle Switches over Checkboxes** for feature flags, view options, and visibility toggles (`Only keep exact matches`, `Show Rating`, `Show Overlay`, `Subfolder Processing`).
 
@@ -185,7 +199,9 @@ Every card workspace should feature a cohesive header:
 ```
 
 ### Search & Text Inputs
+
 Use HandyControl extended inputs with clear button support:
+
 ```xml
 <hc:TextBox Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"
             hc:InfoElement.Placeholder="Search overlays..."
@@ -194,7 +210,9 @@ Use HandyControl extended inputs with clear button support:
 ```
 
 ### Badges & Pill Tags
+
 Use subtle rounded containers for metadata, ratings, versions, and counts:
+
 ```xml
 <!-- Primary Accent Pill -->
 <Border Background="{DynamicResource PrimaryBrush}"
@@ -212,9 +230,12 @@ Use subtle rounded containers for metadata, ratings, versions, and counts:
 ```
 
 ### Busy & Loading Indicators
+
 Never leave the UI frozen without visual feedback:
+
 1. **In-place / Inline**: Use `<hc:LoadingCircle Width="24" Height="24" />`.
 2. **Modal / Overlay**: Wrap in `<hc:BusyIndicator>` or a dimmed overlay with an elevated card:
+
 ```xml
 <Border Background="{DynamicResource RegionBrush}"
         BorderBrush="{DynamicResource BorderBrush}"
@@ -231,7 +252,9 @@ Never leave the UI frozen without visual feedback:
 ```
 
 ### Empty States
+
 When lists or searches yield zero items, provide friendly empty states:
+
 ```xml
 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
     <Path Data="{StaticResource AutoSparklesGeometry}"
@@ -252,6 +275,7 @@ When lists or searches yield zero items, provide friendly empty states:
 All vector glyphs are declared in [`FoliCon/Resources/Dictionaries/GeometryResources.xaml`](../FoliCon/Resources/Dictionaries/GeometryResources.xaml). Standard coordinates are based on 24×24 viewBox path definitions.
 
 ### Frequently Used Icons
+
 - **Folders & Files**: `FolderGeometry`, `DocGeometry`, `CleanFolderGeometry`
 - **Media & Entertainment**: `FilmGeometry`, `TvGeometry`, `GamepadGeometry`
 - **Overlays & Design**: `PaletteGeometry`, `PhotoGalleryGeometry`, `StoreGeometry`, `ModernWandGeometry`
@@ -259,6 +283,7 @@ All vector glyphs are declared in [`FoliCon/Resources/Dictionaries/GeometryResou
 - **Community & Social**: `GithubGeometry`, `HeartGeometry`, `ExternalLinkGeometry`
 
 ### Usage Pattern
+
 ```xml
 <!-- Inline Path Icon -->
 <Path Data="{StaticResource FolderGeometry}"
@@ -283,14 +308,17 @@ All vector glyphs are declared in [`FoliCon/Resources/Dictionaries/GeometryResou
 ## 8. Technical Gotchas & WPF Architecture Rules
 
 ### 1. Never Use Custom Markup Extensions in `Setter.Value`
+
 > [!CAUTION]
 > In WPF, `<Setter Property="..." Value="{extension:Lang ...}" />` inside a `Style.Triggers` or `DataTrigger` throws `XamlParseException` / `ArgumentException` at runtime:
 > *`'LangExtension' is not valid for Setter.Value. The only supported MarkupExtension types are DynamicResourceExtension and BindingBase or derived types.`*
-> 
+>
 > **Solution**: Use `TextToVisibilityConverter` and `InvertedTextToVisibilityConverter` to toggle visibility between distinct `TextBlock`s, or bind to ViewModel properties.
 
 ### 2. Mandatory Smoke Tests for Every View
+
 Whenever modifying or introducing a XAML view, write a smoke test in `FoliconTest`:
+
 ```csharp
 [Collection(XamlLoadingCollection.name)]
 public class MyViewSmokeTests
@@ -314,6 +342,7 @@ public class MyViewSmokeTests
     }
 }
 ```
+
 This guarantees that all merged dictionaries, converters, styles, vector geometries, and data templates parse cleanly without throwing `XamlParseException` on users' machines.
 
 ---

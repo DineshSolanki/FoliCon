@@ -954,7 +954,10 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         CopyFolderCommand = new DelegateCommand<string>(folder =>
         {
             var path = !string.IsNullOrEmpty(folder) ? folder : FinalListViewData.SelectedItem?.Folder;
-            if (string.IsNullOrEmpty(path)) return;
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
             try
             {
                 Clipboard.SetText(path);

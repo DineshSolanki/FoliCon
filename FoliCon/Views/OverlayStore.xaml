@@ -312,10 +312,16 @@
                     CornerRadius="10"
                     Padding="8,2"
                     VerticalAlignment="Center">
-                <TextBlock Text="{Binding Overlays.Count, StringFormat='{}{0} available'}"
-                           Foreground="White"
+                <TextBlock Foreground="White"
                            FontSize="11"
-                           FontWeight="SemiBold" />
+                           FontWeight="SemiBold">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                            <Binding Source="{StaticResource FoliConLangs}" Path="AvailableCountFormat" />
+                            <Binding Path="Overlays.Count" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </Border>
 
             <!-- Refresh Catalog Button -->

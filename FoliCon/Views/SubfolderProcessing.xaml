@@ -147,7 +147,7 @@
                                    VerticalAlignment="Center"
                                    Margin="10,0,0,0" />
                     </StackPanel>
-                    <TextBlock Text="Automatically scan and process season folders, bonus discs, and nested collections"
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessingDescription}}"
                                FontSize="11.5"
                                Foreground="{DynamicResource SecondaryTextBrush}"
                                Margin="48,4,0,0" />
@@ -168,7 +168,7 @@
                                        FontSize="12"
                                        FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}" />
-                            <TextBlock Text="(0 = unlimited)"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.MaxDepthHint}}"
                                        FontSize="10"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
                         </StackPanel>
@@ -219,7 +219,7 @@
                               Width="13" Height="13"
                               Stretch="Uniform"
                               Margin="0,0,6,0" />
-                        <TextBlock Text="Add Pattern"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AddPattern}}"
                                    FontSize="12"
                                    FontWeight="SemiBold"
                                    VerticalAlignment="Center" />
@@ -261,7 +261,7 @@
                           Margin="0,0,8,0" />
 
                     <TextBlock Grid.Column="1"
-                               Text="Matching Patterns"
+                               Text="{extension:Lang Key={x:Static langs:LangKeys.MatchingPatterns}}"
                                FontSize="15"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryTextBrush}"
@@ -272,10 +272,16 @@
                             CornerRadius="10"
                             Padding="8,2"
                             VerticalAlignment="Center">
-                        <TextBlock Text="{Binding PatternsList.Count, StringFormat='{}{0} patterns'}"
-                                   Foreground="White"
+                        <TextBlock Foreground="White"
                                    FontSize="11"
-                                   FontWeight="SemiBold" />
+                                   FontWeight="SemiBold">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                    <Binding Source="{StaticResource FoliConLangs}" Path="PatternCountFormat" />
+                                    <Binding Path="PatternsList.Count" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </Border>
                 </Grid>
 
@@ -355,8 +361,8 @@
                                                 Margin="6,0,0,0"
                                                 VerticalAlignment="Center"
                                                 Visibility="{Binding IsReadOnly, Converter={StaticResource BoolToVis}}"
-                                                ToolTip="Built-in default pattern">
-                                            <TextBlock Text="Default" FontSize="10.5" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PatternDefaultTooltip}}">
+                                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PatternDefault}}" FontSize="10.5" Foreground="{DynamicResource SecondaryTextBrush}" />
                                         </Border>
                                     </Grid>
                                 </DataTemplate>
@@ -382,11 +388,11 @@
                                 <DataTemplate>
                                     <hc:TextBox x:Name="TestInput"
                                                 Style="{StaticResource ValidatingTextBoxExtend}"
-                                                hc:InfoElement.Placeholder="Test sample name..."
+                                                hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.TestSamplePlaceholder}}"
                                                 hc:InfoElement.ShowClearButton="True"
                                                 VerticalAlignment="Center"
                                                 Margin="4,0"
-                                                ToolTip="Type a folder name to test regex match (glows green on match, red on mismatch)" />
+                                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.TestSampleTooltip}}" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -404,7 +410,7 @@
                                               Stretch="Uniform"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
-                                              ToolTip="Built-in default pattern (cannot be deleted)"
+                                              ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PatternDefaultCannotDelete}}"
                                               Visibility="{Binding IsReadOnly, Converter={StaticResource BoolToVis}}" />
 
                                         <!-- Custom pattern: Refined rounded delete button -->
@@ -413,7 +419,7 @@
                                                 VerticalAlignment="Center"
                                                 Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                 CommandParameter="{Binding}"
-                                                ToolTip="Delete custom pattern"
+                                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteCustomPatternTooltip}}"
                                                 Visibility="{Binding IsReadOnly, Converter={StaticResource InverseBoolToVis}}" />
                                     </Grid>
                                 </DataTemplate>
@@ -437,7 +443,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Text="Settings are automatically saved on close • Depth 0 processes all nested directories"
+                           Text="{extension:Lang Key={x:Static langs:LangKeys.SubfolderSettingsFooter}}"
                            FontSize="11.5"
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            VerticalAlignment="Center" />

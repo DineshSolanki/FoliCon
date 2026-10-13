@@ -95,12 +95,18 @@
                                     hc:IconElement.Height="12"
                                     Width="26" Height="26"
                                     Padding="0"
-                                    ToolTip="{Binding Version, StringFormat='Version {0} (Click to copy)'}"
-                                    VerticalAlignment="Center" />
+                                    VerticalAlignment="Center">
+                                <Button.ToolTip>
+                                    <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                        <Binding Source="{StaticResource FoliConLangs}" Path="AboutVersionTooltip" />
+                                        <Binding Path="Version" />
+                                    </MultiBinding>
+                                </Button.ToolTip>
+                            </Button>
                         </StackPanel>
 
                         <!-- Subtitle / Tagline -->
-                        <TextBlock Text="Smart Media Folder Icon Generator &amp; Organizer"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AboutTagline}}"
                                    FontSize="12"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    Margin="0,3,0,0" />
@@ -182,14 +188,14 @@
                         Style="{StaticResource ButtonDefault}"
                         Command="{Binding OpenGithubCommand}"
                         Height="36"
-                        ToolTip="View source code &amp; contribute on GitHub">
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AboutGithubTooltip}}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Path Data="{StaticResource GithubGeometry}"
                               Fill="{DynamicResource PrimaryTextBrush}"
                               Width="14" Height="14"
                               Stretch="Uniform"
                               Margin="0,0,8,0" />
-                        <TextBlock Text="GitHub"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AboutGithub}}"
                                    FontSize="12"
                                    VerticalAlignment="Center" />
                     </StackPanel>
@@ -200,14 +206,14 @@
                         Style="{StaticResource ButtonDefault}"
                         Command="{Binding OpenOverlayStoreCommand}"
                         Height="36"
-                        ToolTip="Browse icon templates &amp; overlays">
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AboutOverlaysTooltip}}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Path Data="{StaticResource StoreGeometry}"
                               Fill="{DynamicResource PrimaryTextBrush}"
                               Width="14" Height="14"
                               Stretch="Uniform"
                               Margin="0,0,8,0" />
-                        <TextBlock Text="Overlays"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AboutOverlays}}"
                                    FontSize="12"
                                    VerticalAlignment="Center" />
                     </StackPanel>
@@ -218,14 +224,14 @@
                         Style="{StaticResource ButtonDefault}"
                         Command="{Binding OpenWebsiteCommand}"
                         Height="36"
-                        ToolTip="Visit official blog &amp; website">
+                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AboutWebsiteTooltip}}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Path Data="{StaticResource ExternalLinkGeometry}"
                               Fill="{DynamicResource PrimaryTextBrush}"
                               Width="13" Height="13"
                               Stretch="Uniform"
                               Margin="0,0,8,0" />
-                        <TextBlock Text="Website"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AboutWebsite}}"
                                    FontSize="12"
                                    VerticalAlignment="Center" />
                     </StackPanel>
@@ -241,7 +247,7 @@
 
                 <!-- Tag / Info note -->
                 <TextBlock Grid.Column="0"
-                           Text="Free and open-source under GPL-3.0"
+                           Text="{extension:Lang Key={x:Static langs:LangKeys.AboutLicenseFooter}}"
                            FontSize="11"
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            VerticalAlignment="Center" />

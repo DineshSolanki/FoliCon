@@ -402,13 +402,19 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public void OnFileDrop(string[] filePaths, string senderName)
     {
         Logger.Debug("File dropped on {SenderName}", senderName);
-        if (filePaths == null || filePaths.Length == 0) return;
+        if (filePaths == null || filePaths.Length == 0)
+        {
+            return;
+        }
         var path = filePaths[0];
         if (!Directory.Exists(path) && File.Exists(path))
         {
             path = Path.GetDirectoryName(path);
         }
-        if (string.IsNullOrEmpty(path)) return;
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
 
         switch (senderName)
         {

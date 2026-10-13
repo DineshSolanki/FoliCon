@@ -326,13 +326,16 @@ namespace FoliCon.ViewModels
 
         private void CopyPreviewImage(OverlayPreviewItem? item)
         {
-            if (item?.PreviewImage == null) return;
+            if (item?.PreviewImage == null)
+            {
+                return;
+            }
             try
             {
                 Clipboard.SetImage(item.PreviewImage);
                 Growl.SuccessGlobal(new GrowlInfo
                 {
-                    Message = $"{item.DisplayName} image copied to clipboard",
+                    Message = string.Format(CultureInfo.CurrentCulture, Lang.PreviewerImageCopied, item.DisplayName),
                     ShowDateTime = false,
                     StaysOpen = false
                 });

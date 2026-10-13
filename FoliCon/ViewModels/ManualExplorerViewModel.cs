@@ -95,7 +95,10 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
             _cts?.Dispose();
             _cts = null;
         }
-        catch (ObjectDisposedException) { }
+        catch (ObjectDisposedException)
+        {
+            // CTS was already disposed; safely ignore during teardown.
+        }
     }
 
     protected virtual void CloseDialog(ButtonResult result, string localPath)

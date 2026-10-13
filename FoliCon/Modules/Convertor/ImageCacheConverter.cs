@@ -126,18 +126,30 @@ public class ImageCacheConverter : IValueConverter
         {
             // Check folicon.png (active processing)
             var foliconPng = Path.Combine(targetFolder, "folicon.png");
-            if (File.Exists(foliconPng)) return foliconPng;
+            if (File.Exists(foliconPng))
+            {
+                return foliconPng;
+            }
 
             // Check folicon.ico (completed icon)
             var foliconIco = Path.Combine(targetFolder, "folicon.ico");
-            if (File.Exists(foliconIco)) return foliconIco;
+            if (File.Exists(foliconIco))
+            {
+                return foliconIco;
+            }
 
             // Fallback to other common poster/folder images
             var posterJpg = Path.Combine(targetFolder, "poster.jpg");
-            if (File.Exists(posterJpg)) return posterJpg;
+            if (File.Exists(posterJpg))
+            {
+                return posterJpg;
+            }
 
             var folderJpg = Path.Combine(targetFolder, "folder.jpg");
-            if (File.Exists(folderJpg)) return folderJpg;
+            if (File.Exists(folderJpg))
+            {
+                return folderJpg;
+            }
         }
 
         return null;

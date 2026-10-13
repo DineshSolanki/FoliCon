@@ -13,6 +13,8 @@ public class PosterIconConfigViewModelTests
 
         public void ShowDialog(string name, IDialogParameters parameters, DialogCallback callback)
         {
+            _ = parameters;
+            _ = callback;
             LastShownDialogName = name;
         }
     }

@@ -117,7 +117,7 @@
                                         Width="18" Height="18"
                                         Padding="0"
                                         Margin="6,0,0,0"
-                                        ToolTip="Reset to default sample poster"
+                                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PreviewerResetPosterTooltip}}"
                                         VerticalAlignment="Center" />
                             </StackPanel>
                         </Border>
@@ -125,7 +125,7 @@
 
                     <!-- Media Title Input -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Title:"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.TitleLabel}}"
                                    FontSize="12"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
@@ -141,7 +141,7 @@
 
                     <!-- Rating Stars & Visibility Toggle -->
                     <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Rating:"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.RatingLabel}}"
                                    FontSize="12"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
@@ -201,7 +201,7 @@
                     <!-- Search Filter Box -->
                     <hc:TextBox Grid.Column="0"
                                 Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"
-                                hc:InfoElement.Placeholder="Filter overlays..."
+                                hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.PreviewerFilterOverlays}}"
                                 hc:InfoElement.ShowClearButton="True"
                                 Width="230" Height="30"
                                 VerticalAlignment="Center" />
@@ -219,7 +219,8 @@
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource SecondaryTextBrush}">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0} of {1} overlays">
+                                <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                    <Binding Source="{StaticResource FoliConLangs}" Path="PreviewerOverlayCountFormat" />
                                     <Binding Path="FilteredOverlayCount" />
                                     <Binding Path="TotalOverlayCount" />
                                 </MultiBinding>
@@ -229,7 +230,7 @@
 
                     <!-- Canvas Background Presets -->
                     <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Canvas:"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.CanvasLabel}}"
                                    FontSize="12"
                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                    VerticalAlignment="Center"
@@ -239,7 +240,7 @@
                         <Button Style="{StaticResource ButtonDefault}"
                                 Command="{Binding SelectCanvasThemeCommand}"
                                 CommandParameter="Theme"
-                                Content="Theme"
+                                Content="{extension:Lang Key={x:Static langs:LangKeys.PreviewerCanvasTheme}}"
                                 FontSize="11"
                                 Height="28" Padding="10,0"
                                 Margin="0,0,4,0" />
@@ -248,7 +249,7 @@
                         <Button Style="{StaticResource ButtonDefault}"
                                 Command="{Binding SelectCanvasThemeCommand}"
                                 CommandParameter="Dark"
-                                Content="Dark"
+                                Content="{extension:Lang Key={x:Static langs:LangKeys.PreviewerCanvasDark}}"
                                 FontSize="11"
                                 Height="28" Padding="10,0"
                                 Margin="0,0,4,0" />
@@ -257,7 +258,7 @@
                         <Button Style="{StaticResource ButtonDefault}"
                                 Command="{Binding SelectCanvasThemeCommand}"
                                 CommandParameter="Light"
-                                Content="Light"
+                                Content="{extension:Lang Key={x:Static langs:LangKeys.PreviewerCanvasLight}}"
                                 FontSize="11"
                                 Height="28" Padding="10,0"
                                 Margin="0,0,4,0" />
@@ -266,7 +267,7 @@
                         <Button Style="{StaticResource ButtonDefault}"
                                 Command="{Binding SelectCanvasThemeCommand}"
                                 CommandParameter="Folder"
-                                Content="Folder"
+                                Content="{extension:Lang Key={x:Static langs:LangKeys.PreviewerCanvasFolder}}"
                                 FontSize="11"
                                 Height="28" Padding="10,0" />
                     </StackPanel>
@@ -334,7 +335,7 @@
                                                         Width="26" Height="26"
                                                         Padding="0"
                                                         Margin="0,0,4,0"
-                                                        ToolTip="Copy image to clipboard" />
+                                                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PreviewerCopyImageTooltip}}" />
 
                                                 <!-- Inspect Large View -->
                                                 <Button Style="{StaticResource ButtonIcon}"
@@ -345,7 +346,7 @@
                                                         hc:IconElement.Height="12"
                                                         Width="26" Height="26"
                                                         Padding="0"
-                                                        ToolTip="Inspect full size" />
+                                                        ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PreviewerInspectTooltip}}" />
                                             </StackPanel>
                                         </Grid>
                                     </Border>
@@ -381,8 +382,8 @@
                                                     Height="26"
                                                     Padding="8,0"
                                                     VerticalAlignment="Center"
-                                                    ToolTip="Inspect full size">
-                                                <TextBlock Text="View" FontSize="11" />
+                                                    ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PreviewerInspectTooltip}}">
+                                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerView}}" FontSize="11" />
                                             </Button>
                                         </Grid>
                                     </Border>
@@ -399,7 +400,7 @@
                     Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <hc:LoadingCircle Width="42" Height="42" Margin="0,0,0,12" />
-                    <TextBlock Text="Rendering overlay previews..."
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerRendering}}"
                                FontSize="14"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryTextBrush}" />
@@ -411,17 +412,17 @@
                         VerticalAlignment="Center"
                         Visibility="{Binding HasNoResults, Converter={StaticResource BoolToVis}}">
                 <Path Data="{StaticResource AutoSparklesGeometry}"
-                      Fill="{DynamicResource SecondaryTextBrush}"
-                      Width="32" Height="32"
-                      Stretch="Uniform"
-                      HorizontalAlignment="Center"
-                      Margin="0,0,0,12" />
-                <TextBlock Text="No overlays match your search"
+                       Fill="{DynamicResource SecondaryTextBrush}"
+                       Width="32" Height="32"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,12" />
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerNoOverlaysMatch}}"
                            FontSize="15"
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource PrimaryTextBrush}"
                            HorizontalAlignment="Center" />
-                <TextBlock Text="Try clearing or changing your filter criteria."
+                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerFilterHint}}"
                            FontSize="12"
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            HorizontalAlignment="Center"
@@ -506,7 +507,7 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Column="0"
-                                       Text="512 × 512 HD Render"
+                                       Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerHdRender}}"
                                        FontSize="11"
                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                        VerticalAlignment="Center" />
@@ -523,7 +524,7 @@
                                               Width="12" Height="12"
                                               Stretch="Uniform"
                                               Margin="0,0,6,0" />
-                                        <TextBlock Text="Copy Image" FontSize="12" />
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerCopyImage}}" FontSize="12" />
                                     </StackPanel>
                                 </Button>
 
@@ -553,7 +554,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Text="Live overlay showroom • Click 'View' to inspect full resolution • Hover to copy image"
+                           Text="{extension:Lang Key={x:Static langs:LangKeys.PreviewerStatusBarHint}}"
                            FontSize="11.5"
                            Foreground="{DynamicResource SecondaryTextBrush}"
                            VerticalAlignment="Center" />

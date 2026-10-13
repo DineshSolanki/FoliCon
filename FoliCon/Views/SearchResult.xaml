@@ -204,9 +204,15 @@
                                         BorderBrush="{DynamicResource BorderBrush}"
                                         BorderThickness="1" Padding="8,2"
                                         VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding ResultListViewData.Data.Count, StringFormat='{}{0} matches'}"
-                                               FontSize="11" FontWeight="SemiBold"
-                                               Foreground="{DynamicResource SecondaryTextBrush}" />
+                                    <TextBlock FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                                <Binding Source="{StaticResource FoliConLangs}" Path="MatchesCountFormat" />
+                                                <Binding Path="ResultListViewData.Data.Count" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                 </Border>
                             </StackPanel>
                             <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}"
@@ -264,10 +270,10 @@
 
                             <!-- Interactive Sort Toolbar -->
                             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                <TextBlock Text="Sort:" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SortLabel}}" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"
                                            VerticalAlignment="Center" Margin="0,0,5,0" />
 
-                                <Button Content="Default" Command="{Binding SortCommand}" CommandParameter="Default"
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.SortDefault}}" Command="{Binding SortCommand}" CommandParameter="Default"
                                         Padding="6,2" FontSize="10" Margin="0,0,3,0" Cursor="Hand" Height="22">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
@@ -282,7 +288,7 @@
                                     </Button.Style>
                                 </Button>
 
-                                <Button Content="★ Rating" Command="{Binding SortCommand}" CommandParameter="Rating"
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.SortRating}}" Command="{Binding SortCommand}" CommandParameter="Rating"
                                         Padding="6,2" FontSize="10" Margin="0,0,3,0" Cursor="Hand" Height="22">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
@@ -297,7 +303,7 @@
                                     </Button.Style>
                                 </Button>
 
-                                <Button Content="Year" Command="{Binding SortCommand}" CommandParameter="Year"
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Year}}" Command="{Binding SortCommand}" CommandParameter="Year"
                                         Padding="6,2" FontSize="10" Margin="0,0,3,0" Cursor="Hand" Height="22">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
@@ -312,7 +318,7 @@
                                     </Button.Style>
                                 </Button>
 
-                                <Button Content="A-Z" Command="{Binding SortCommand}" CommandParameter="Title"
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.SortAZ}}" Command="{Binding SortCommand}" CommandParameter="Title"
                                         Padding="6,2" FontSize="10" Cursor="Hand" Height="22">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
@@ -593,7 +599,7 @@
 
                                 <!-- Blended Synopsis Area (Seamlessly integrated into card) -->
                                 <StackPanel Grid.Row="2" Margin="0,2,0,0">
-                                    <TextBlock Text="SYNOPSIS"
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Synopsis}}"
                                                FontSize="10" FontWeight="Bold"
                                                Foreground="{DynamicResource SecondaryTextBrush}"
                                                Opacity="0.7" Margin="0,0,0,4" />
@@ -620,7 +626,7 @@
                                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
                                     <Path Data="{StaticResource DocumentGeometry}" Width="12" Height="12" Stretch="Uniform"
                                           Fill="{DynamicResource SecondaryTextBrush}" Margin="0,0,4,0" VerticalAlignment="Center" />
-                                    <TextBlock Text="Folder Files:" FontSize="11" FontWeight="SemiBold"
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.FolderFiles}}" FontSize="11" FontWeight="SemiBold"
                                                Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
                                 </StackPanel>
                                 <ListBox x:Name="LstFolderContent" Grid.Column="1"
@@ -670,7 +676,7 @@
                                         <Path Data="{StaticResource TvGeometry}" Width="36" Height="36" Stretch="Uniform"
                                               Fill="{DynamicResource SecondaryTextBrush}" Opacity="0.35"
                                               HorizontalAlignment="Center" Margin="0,0,0,8" />
-                                        <TextBlock Text="No trailer available for this title"
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.NoTrailerAvailable}}"
                                                    FontSize="12" FontWeight="SemiBold"
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                    HorizontalAlignment="Center" />
@@ -701,7 +707,7 @@
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                         <Path Data="{StaticResource EyeGeometry}" Width="14" Height="14" Stretch="Uniform"
                               Fill="{DynamicResource SecondaryTextBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
-                        <TextBlock Text="Double-click a candidate or poster to select / browse alternative posters"
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SearchResultHint}}"
                                    FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
                     </StackPanel>
 

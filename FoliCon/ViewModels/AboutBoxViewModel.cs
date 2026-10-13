@@ -14,9 +14,9 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
     private string _license = Lang.LicenseInfo;
     private string _version = AssemblyInfo.GetVersion();
 
-    public const string AppName = "FoliCon";
-    public const string GithubUrl = "https://github.com/DineshSolanki/FoliCon";
-    public const string OverlayStoreUrl = "https://github.com/DineshSolanki/FoliCon-Overlays";
+    public static string AppName { get; } = "FoliCon";
+    public static string GithubUrl { get; } = "https://github.com/DineshSolanki/FoliCon";
+    public static string OverlayStoreUrl { get; } = "https://github.com/DineshSolanki/FoliCon-Overlays";
 
     public string VersionTag => $"v{string.Join(".", (_version ?? "5.3.1").Split('.').Take(3))}";
 

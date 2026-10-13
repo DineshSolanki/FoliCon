@@ -39,7 +39,7 @@
                               Width="26" Height="26" Stretch="Uniform"
                               Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
-                    <TextBlock Text="Welcome to FoliCon"
+                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingWelcomeTitle}}"
                                FontSize="22" FontWeight="Bold"
                                Foreground="{DynamicResource PrimaryTextBrush}"
                                HorizontalAlignment="Center" Margin="0,0,0,6" />
@@ -61,11 +61,11 @@
                                   Width="20" Height="20" Stretch="Uniform"
                                   Fill="{DynamicResource PrimaryBrush}"
                                   HorizontalAlignment="Center" Margin="0,0,0,6" />
-                            <TextBlock Text="Movies &amp; Series"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingMoviesSeries}}"
                                        FontSize="12.5" FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,3" />
-                            <TextBlock Text="Automatic high-res posters via TMDb"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingMoviesSeriesDesc}}"
                                        FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
                         </StackPanel>
@@ -81,11 +81,11 @@
                                   Width="20" Height="20" Stretch="Uniform"
                                   Fill="{DynamicResource PrimaryBrush}"
                                   HorizontalAlignment="Center" Margin="0,0,0,6" />
-                            <TextBlock Text="Video Games"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingVideoGames}}"
                                        FontSize="12.5" FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,3" />
-                            <TextBlock Text="Game cover artwork via IGDB &amp; Twitch"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingVideoGamesDesc}}"
                                        FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
                         </StackPanel>
@@ -101,11 +101,11 @@
                                   Width="20" Height="20" Stretch="Uniform"
                                   Fill="{DynamicResource PrimaryBrush}"
                                   HorizontalAlignment="Center" Margin="0,0,0,6" />
-                            <TextBlock Text="Custom Icons"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingCustomIcons}}"
                                        FontSize="12.5" FontWeight="SemiBold"
                                        Foreground="{DynamicResource PrimaryTextBrush}"
                                        HorizontalAlignment="Center" Margin="0,0,0,3" />
-                            <TextBlock Text="Artist-crafted icon packs from DeviantArt"
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingCustomIconsDesc}}"
                                        FontSize="11" TextWrapping="Wrap" TextAlignment="Center"
                                        Foreground="{DynamicResource SecondaryTextBrush}" />
                         </StackPanel>
@@ -486,7 +486,7 @@
                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                                 <Path Data="{StaticResource FilmGeometry}" Width="16" Height="16" Stretch="Uniform"
                                       Fill="{DynamicResource PrimaryBrush}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                <TextBlock Text="The Movie Database (TMDb)" FontSize="13.5" FontWeight="SemiBold"
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingTmdbServiceName}}" FontSize="13.5" FontWeight="SemiBold"
                                            Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
                             </StackPanel>
 
@@ -516,7 +516,7 @@
                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                                 <Path Data="{StaticResource GamepadGeometry}" Width="16" Height="16" Stretch="Uniform"
                                       Fill="{DynamicResource PrimaryBrush}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                <TextBlock Text="Internet Game Database (IGDB)" FontSize="13.5" FontWeight="SemiBold"
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingIgdbServiceName}}" FontSize="13.5" FontWeight="SemiBold"
                                            Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
                             </StackPanel>
 
@@ -544,7 +544,7 @@
                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
                                 <Path Data="{StaticResource PaletteGeometry}" Width="16" Height="16" Stretch="Uniform"
                                       Fill="{DynamicResource PrimaryBrush}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                <TextBlock Text="DeviantArt Community" FontSize="13.5" FontWeight="SemiBold"
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.OnboardingDeviantArtServiceName}}" FontSize="13.5" FontWeight="SemiBold"
                                            Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
                             </StackPanel>
 
