@@ -213,14 +213,14 @@ namespace FoliCon.ViewModels
         {
             FilteredPreviewItems.Clear();
             var query = _searchFilter?.Trim() ?? string.Empty;
-            foreach (var item in OverlayPreviewItems)
+            var matchingItems = OverlayPreviewItems.Where(item =>
+                string.IsNullOrEmpty(query) ||
+                item.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                item.OverlayId.Contains(query, StringComparison.OrdinalIgnoreCase));
+
+            foreach (var item in matchingItems)
             {
-                if (string.IsNullOrEmpty(query) ||
-                    item.DisplayName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                    item.OverlayId.Contains(query, StringComparison.OrdinalIgnoreCase))
-                {
-                    FilteredPreviewItems.Add(item);
-                }
+                FilteredPreviewItems.Add(item);
             }
 
             RaisePropertyChanged(nameof(FilteredOverlayCount));

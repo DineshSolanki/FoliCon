@@ -30,7 +30,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 	private ProgressBarData _progressInfo = new(0, 1, LangProvider.Instance.Downloading);
 	private string _progressStatusText = "Connecting to DeviantArt...";
 	private bool _isIndeterminate = true;
-	private CancellationTokenSource? _cts;
+	private CancellationTokenSource _cts;
 
 	public string Title { get => _title; set => SetProperty(ref _title, value); }
 	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
@@ -128,9 +128,11 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
-
-		_cts?.Cancel();
-		_cts?.Dispose();
+		if (_cts != null)
+		{
+			await _cts.CancelAsync();
+			_cts.Dispose();
+		}
 		var cts = _cts = new CancellationTokenSource();
 		var token = cts.Token;
 
@@ -139,32 +141,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		ProgressStatusText = "Connecting to DeviantArt...";
 		try
 		{
-			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), token);
-			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
-			if (!string.IsNullOrEmpty(DArtDownloadResponse?.FileSizeHumanReadable))
-			{
-				ProgressStatusText = $"Downloading archive ({DArtDownloadResponse.FileSizeHumanReadable})...";
-			}
-			else
-			{
-				ProgressStatusText = "Downloading archive...";
-			}
-
-			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				token, new Progress<ProgressBarData>(value =>
-				{
-					if (!ReferenceEquals(_cts, cts) || token.IsCancellationRequested)
-					{
-						return;
-					}
-					ProgressInfo = value;
-					if (value.Max > 1)
-					{
-						IsIndeterminate = false;
-						ProgressStatusText = string.Format(CultureInfo.CurrentCulture, "Extracted {0} of {1} icons", value.Value, value.Max);
-					}
-				})), token);
-			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
+			await DownloadAndExtractAsync(deviationId, token, cts);
 		}
 		catch (OperationCanceledException e)
 		{
@@ -178,22 +155,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		}
 		catch (Exception ex)
 		{
-			Logger.Error(ex, "Failed to extract deviation {DeviationId}", deviationId);
-			IsBusy = false;
-			var isDownloadLimit = ex is LocalizedException { Message: var m } && m.Contains("download limit");
-			var message = ex is LocalizedException le ? le.LocalizedMessage : Lang.DAConnectionFailedMessage;
-			MessageBox.Show(CustomMessageBox.Error(message, Lang.DAConnectionFailedTitle));
-
-			if (isDownloadLimit)
-			{
-				var openPetition = MessageBox.Show(CustomMessageBox.Ask(
-					Lang.DADownloadLimitPetitionPrompt,
-					Lang.DADownloadLimitPetitionTitle));
-				if (openPetition == MessageBoxResult.Yes)
-				{
-					Process.Start(new ProcessStartInfo(DeviantArtAppConfig.downloadLimitPetitionUrl) { UseShellExecute = true });
-				}
-			}
+			HandleExtractionException(ex, deviationId);
 			CloseDialog(ButtonResult.Cancel, null);
 			return;
 		}
@@ -203,30 +165,85 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
-		var extractedFiles = DArtDownloadResponse?.LocalDownloadPath?.ToDirectoryInfo()
-			?.GetFiles();
-		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
-		if (extractedFiles?.Length > 0)
-		{
-			var pngOrAvailableFile = extractedFiles
-				.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Name))
-				.Select(group =>
-				{
-					var pngFile = group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png");
-					return pngFile ?? group.First();
-				}).ToList();
-
-			Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
-			pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
-			if (SelectedFile == null && pngOrAvailableFile.Count > 0)
-			{
-				SelectedFile = pngOrAvailableFile[0].FullName;
-			}
-		}
+		PopulateExtractedFiles(DArtDownloadResponse);
 
 		if (ReferenceEquals(_cts, cts))
 		{
 			IsBusy = false;
+		}
+	}
+
+	private async Task DownloadAndExtractAsync(string deviationId, CancellationToken token, CancellationTokenSource cts)
+	{
+		DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), token);
+		Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
+
+		ProgressStatusText = !string.IsNullOrEmpty(DArtDownloadResponse?.FileSizeHumanReadable)
+			? $"Downloading archive ({DArtDownloadResponse.FileSizeHumanReadable})..."
+			: "Downloading archive...";
+
+		DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(
+			deviationId,
+			DArtDownloadResponse,
+			token,
+			new Progress<ProgressBarData>(value => UpdateExtractionProgress(value, cts, token))), token);
+
+		Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
+	}
+
+	private void UpdateExtractionProgress(ProgressBarData value, CancellationTokenSource cts, CancellationToken token)
+	{
+		if (!ReferenceEquals(_cts, cts) || token.IsCancellationRequested)
+		{
+			return;
+		}
+		ProgressInfo = value;
+		if (value.Max > 1)
+		{
+			IsIndeterminate = false;
+			ProgressStatusText = string.Format(CultureInfo.CurrentCulture, "Extracted {0} of {1} icons", value.Value, value.Max);
+		}
+	}
+
+	private void HandleExtractionException(Exception ex, string deviationId)
+	{
+		Logger.Error(ex, "Failed to extract deviation {DeviationId}", deviationId);
+		IsBusy = false;
+		var isDownloadLimit = ex is LocalizedException { Message: var m } && m.Contains("download limit");
+		var message = ex is LocalizedException le ? le.LocalizedMessage : Lang.DAConnectionFailedMessage;
+		MessageBox.Show(CustomMessageBox.Error(message, Lang.DAConnectionFailedTitle));
+
+		if (isDownloadLimit)
+		{
+			var openPetition = MessageBox.Show(CustomMessageBox.Ask(
+				Lang.DADownloadLimitPetitionPrompt,
+				Lang.DADownloadLimitPetitionTitle));
+			if (openPetition == MessageBoxResult.Yes)
+			{
+				Process.Start(new ProcessStartInfo(DeviantArtAppConfig.downloadLimitPetitionUrl) { UseShellExecute = true });
+			}
+		}
+	}
+
+	private void PopulateExtractedFiles(DArtDownloadResponse downloadResponse)
+	{
+		var extractedFiles = downloadResponse?.LocalDownloadPath?.ToDirectoryInfo()?.GetFiles();
+		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
+		if (extractedFiles is not { Length: > 0 })
+		{
+			return;
+		}
+
+		var pngOrAvailableFile = extractedFiles
+			.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Name))
+			.Select(group => group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png") ?? group.First())
+			.ToList();
+
+		Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
+		pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
+		if (SelectedFile == null && pngOrAvailableFile.Count > 0)
+		{
+			SelectedFile = pngOrAvailableFile[0].FullName;
 		}
 	}
 

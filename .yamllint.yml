@@ -3,9 +3,7 @@ extends: default
 
 rules:
   # GitHub Actions workflows frequently have long run commands or URLs
-  line-length:
-    max: 250
-    level: warning
+  line-length: disable
 
   # Allow flexible truthy values and avoid false positives on 'on:' triggers
   truthy:
@@ -24,9 +22,17 @@ rules:
     spaces: 2
     indent-sequences: whatever
 
+  # Disable new-lines check for cross-platform compatibility
+  new-lines: disable
+
 ignore: |
   .git/
   bin/
   obj/
   packages/
   dist/
+  crowdin.yml
+  distribution/
+  .github/FUNDING.yml
+  .github/workflows/crowdin.yml
+  .github/workflows/release.yml

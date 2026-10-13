@@ -30,7 +30,7 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
         CopyVersionCommand = new DelegateCommand(CopyVersionMethod);
     }
 
-    private void OpenUrl(string url)
+    private static void OpenUrl(string url)
     {
         Logger.Debug("Opening URL {Url}", url);
         ProcessUtils.StartProcess(url);

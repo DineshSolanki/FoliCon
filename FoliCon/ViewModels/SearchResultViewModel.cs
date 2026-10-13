@@ -121,13 +121,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
     }
 
+    private const string DefaultSortKey = "Default";
     private bool _sortDescending = true;
 
     public string CurrentSort
     {
         get;
         set => SetProperty(ref field, value);
-    } = "Default";
+    } = DefaultSortKey;
 
     #endregion Properties
 
@@ -257,7 +258,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
 
         ResultListViewData.SelectedItem = ResultListViewData.Data[0];
-        CurrentSort = "Default";
+        CurrentSort = DefaultSortKey;
         PerformSelectionChanged();
     }
 
@@ -274,10 +275,10 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        if (sortKey == "Default")
+        if (sortKey == DefaultSortKey)
         {
             view.SortDescriptions.Clear();
-            CurrentSort = "Default";
+            CurrentSort = DefaultSortKey;
             view.Refresh();
             return;
         }

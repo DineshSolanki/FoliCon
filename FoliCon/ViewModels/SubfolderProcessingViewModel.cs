@@ -57,7 +57,7 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
         PatternsList = Services.Settings.Patterns;
     }
 
-    private void AddPattern(string? regex)
+    private void AddPattern(string regex)
     {
         var patternToAdd = !string.IsNullOrWhiteSpace(regex) ? regex : NewPatternText;
         var trimmedRegex = patternToAdd?.Trim();
@@ -66,7 +66,7 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
             return;
         }
         Logger.Debug("Adding pattern: {Regex}", trimmedRegex);
-        PatternsList.Add(new Pattern(trimmedRegex!, true));
+        PatternsList.Add(new Pattern(trimmedRegex, true));
         NewPatternText = string.Empty;
     }
 

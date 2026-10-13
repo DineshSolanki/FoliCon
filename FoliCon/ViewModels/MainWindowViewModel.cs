@@ -898,103 +898,26 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     private void InitializeDelegates()
     {
         Logger.Debug("Initializing Delegates for MainWindow.");
-        SetupWizardCommand = new DelegateCommand(delegate
-        {
-            _dialogService.ShowOnboardingWizard(async _ =>
-            {
-                // Always reinitialize after wizard closes — keys are already persisted
-                // and the user may have validated them without clicking Finish.
-                ReinitializeTmdbAndIgdb();
-                await ReinitializeDeviantArtAsync();
-            });
-        });
-        PosterIconConfigCommand = new DelegateCommand(delegate { _dialogService.ShowPosterIconConfig(_ => { }); });
-        SubfolderProcessingConfigCommand = new DelegateCommand(delegate { _dialogService.ShowSubfolderProcessingConfig(_ => { }); });
+        SetupWizardCommand = new DelegateCommand(ShowOnboardingWizard);
+        PosterIconConfigCommand = new DelegateCommand(() => _dialogService.ShowPosterIconConfig(_ => { }));
+        SubfolderProcessingConfigCommand = new DelegateCommand(() => _dialogService.ShowSubfolderProcessingConfig(_ => { }));
         AboutCommand = new DelegateCommand(AboutMethod);
         DeleteIconsCommand = new DelegateCommand(DeleteIconsMethod);
         DeleteMediaInfoCommand = new DelegateCommand(DeleteMediaInfo);
         ExploreIntegrationCommand = new DelegateCommand<string>(ExplorerIntegrationMethod);
-        CustomIconsCommand = new DelegateCommand(delegate
-            {
-                _dialogService.ShowCustomIconWindow(
-                    _ => { }
-                );
-            }
-        );
+        CustomIconsCommand = new DelegateCommand(() => _dialogService.ShowCustomIconWindow(_ => { }));
         LoadCommand = new DelegateCommand(LoadMethod);
         SearchAndMakeCommand = new DelegateCommand(SearchAndMakeMethod);
-        IconModeChangedCommand = new DelegateCommand<object>(delegate (object parameter)
-        {
-            IconMode = (string)parameter;
-        });
-        SearchModeChangedCommand = new DelegateCommand<object>(delegate (object parameter)
-        {
-            SearchMode = (string)parameter;
-        });
+        IconModeChangedCommand = new DelegateCommand<object>(parameter => IconMode = (string)parameter);
+        SearchModeChangedCommand = new DelegateCommand<object>(parameter => SearchMode = (string)parameter);
         ListViewDoubleClickCommand = new DelegateCommand(ListViewDoubleClickMethod);
-        DownloadCancelCommand = new DelegateCommand(delegate { StopIconDownload = true; });
-
-        SelectedFolderDClickCommand = new DelegateCommand(delegate
-        {
-            if (Directory.Exists(SelectedFolder))
-            {
-                ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
-            }
-        });
-
-        RemoveListItemCommand = new DelegateCommand<ListItem>(item =>
-        {
-            var target = item ?? FinalListViewData.SelectedItem;
-            if (target != null && FinalListViewData.Data.Contains(target))
-            {
-                FinalListViewData.Data.Remove(target);
-            }
-        });
-
-        CopyFolderCommand = new DelegateCommand<string>(folder =>
-        {
-            var path = !string.IsNullOrEmpty(folder) ? folder : FinalListViewData.SelectedItem?.Folder;
-            if (string.IsNullOrEmpty(path))
-            {
-                return;
-            }
-            try
-            {
-                Clipboard.SetText(path);
-            }
-            catch (Exception ex)
-            {
-                Logger.Warn(ex, "Failed to copy folder path to clipboard.");
-            }
-        });
-
-        ClearListCommand = new DelegateCommand(() =>
-        {
-            FinalListViewData.Data.Clear();
-        });
-
-        OpenFolderInExplorerCommand = new DelegateCommand<object>(param =>
-        {
-            var folder = param as string;
-            if (string.IsNullOrEmpty(folder))
-            {
-                if (param is ListItem item)
-                {
-                    folder = item.Folder;
-                }
-                else
-                {
-                    folder = FinalListViewData.SelectedItem?.Folder;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
-            {
-                ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
-            }
-        });
-
-        ShowPreviewer = new DelegateCommand(() => { _dialogService.ShowPreviewer(_ => { }); });
+        DownloadCancelCommand = new DelegateCommand(() => StopIconDownload = true);
+        SelectedFolderDClickCommand = new DelegateCommand(OpenSelectedFolder);
+        RemoveListItemCommand = new DelegateCommand<ListItem>(RemoveListItem);
+        CopyFolderCommand = new DelegateCommand<string>(CopyFolderPath);
+        ClearListCommand = new DelegateCommand(() => FinalListViewData.Data.Clear());
+        OpenFolderInExplorerCommand = new DelegateCommand<object>(OpenFolderInExplorer);
+        ShowPreviewer = new DelegateCommand(() => _dialogService.ShowPreviewer(_ => { }));
 
         // Overlay discovery and authoring are top-level menu actions: burying them inside the
         // poster-icon settings dialog hides them from anyone not already changing that setting.
@@ -1008,6 +931,66 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         });
 
         Logger.ForDebugEvent().Message("Delegates Initialized for MainWindow").Log();
+    }
+
+    private void ShowOnboardingWizard()
+    {
+        _dialogService.ShowOnboardingWizard(async _ =>
+        {
+            // Always reinitialize after wizard closes — keys are already persisted
+            // and the user may have validated them without clicking Finish.
+            ReinitializeTmdbAndIgdb();
+            await ReinitializeDeviantArtAsync();
+        });
+    }
+
+    private void OpenSelectedFolder()
+    {
+        if (Directory.Exists(SelectedFolder))
+        {
+            ProcessUtils.StartProcess(SelectedFolder + Path.DirectorySeparatorChar);
+        }
+    }
+
+    private void RemoveListItem(ListItem item)
+    {
+        var target = item ?? FinalListViewData.SelectedItem;
+        if (target != null && FinalListViewData.Data.Contains(target))
+        {
+            FinalListViewData.Data.Remove(target);
+        }
+    }
+
+    private void CopyFolderPath(string folder)
+    {
+        var path = !string.IsNullOrEmpty(folder) ? folder : FinalListViewData.SelectedItem?.Folder;
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+        try
+        {
+            Clipboard.SetText(path);
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to copy folder path to clipboard.");
+        }
+    }
+
+    private void OpenFolderInExplorer(object param)
+    {
+        var folder = param switch
+        {
+            string s when !string.IsNullOrEmpty(s) => s,
+            ListItem item => item.Folder,
+            _ => FinalListViewData.SelectedItem?.Folder
+        };
+
+        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+        {
+            ProcessUtils.StartProcess(folder + Path.DirectorySeparatorChar);
+        }
     }
 
     private static void ExplorerIntegrationMethod(string isIntegrationEnabled)

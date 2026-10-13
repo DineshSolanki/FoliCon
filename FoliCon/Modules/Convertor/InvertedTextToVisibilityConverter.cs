@@ -4,7 +4,7 @@ public class InvertedTextToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is null or not string || string.IsNullOrWhiteSpace((string)value) || (string)value == "Video not available!")
+        if (value is not string s || string.IsNullOrWhiteSpace(s) || s == "Video not available!")
         {
             return Visibility.Visible;
         }

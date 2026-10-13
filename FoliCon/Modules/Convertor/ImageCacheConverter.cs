@@ -10,21 +10,11 @@ namespace FoliCon.Modules.Convertor;
 public class ImageCacheConverter : IValueConverter
 {
     private static readonly ConcurrentDictionary<string, ImageSource> Cache = new();
+    private static readonly string[] FolderCandidateNames = ["folicon.png", "folicon.ico", "poster.jpg", "folder.jpg"];
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        string path = null;
-        string folder = null;
-
-        if (value is ListItem item)
-        {
-            path = item.Poster;
-            folder = item.Folder;
-        }
-        else if (value is string s)
-        {
-            path = s;
-        }
+        var (path, folder) = ExtractPathAndFolder(value);
 
         var cacheKey = !string.IsNullOrWhiteSpace(path) ? path : folder;
         if (string.IsNullOrWhiteSpace(cacheKey))
@@ -39,59 +29,25 @@ public class ImageCacheConverter : IValueConverter
 
         try
         {
-            // Case 1: Remote HTTP/HTTPS URL (do NOT call Freeze() while downloading)
-            if (!string.IsNullOrWhiteSpace(path) &&
-                (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-                 path.StartsWith("https://", StringComparison.OrdinalIgnoreCase)))
+            if (IsWebUrl(path))
             {
-                if (Uri.TryCreate(path, UriKind.Absolute, out var webUri))
+                var webImage = CreateWebImage(path);
+                if (webImage != null)
                 {
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.UriSource = webUri;
-                    image.CacheOption = BitmapCacheOption.OnDemand;
-                    image.EndInit();
-                    Cache.TryAdd(cacheKey, image);
-                    return image;
+                    Cache.TryAdd(cacheKey, webImage);
                 }
+                return webImage;
             }
 
-            // Case 2: Resolve local image or icon file
             var resolvedFile = ResolveLocalImagePath(path, folder);
-
             if (resolvedFile != null && File.Exists(resolvedFile))
             {
-                var uri = new Uri(resolvedFile, UriKind.Absolute);
-
-                // If it is an .ico file, use IconBitmapDecoder to extract the highest-resolution frame (up to 256x256)
-                if (resolvedFile.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+                var localImage = LoadLocalImage(resolvedFile);
+                if (localImage != null)
                 {
-                    var decoder = new IconBitmapDecoder(uri, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                    var bestFrame = decoder.Frames.OrderByDescending(f => f.PixelWidth).FirstOrDefault();
-                    if (bestFrame != null)
-                    {
-                        if (bestFrame.CanFreeze)
-                        {
-                            bestFrame.Freeze();
-                        }
-                        Cache.TryAdd(cacheKey, bestFrame);
-                        return bestFrame;
-                    }
+                    Cache.TryAdd(cacheKey, localImage);
                 }
-                else
-                {
-                    var image = new BitmapImage();
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.UriSource = uri;
-                    image.EndInit();
-                    if (image.CanFreeze)
-                    {
-                        image.Freeze();
-                    }
-                    Cache.TryAdd(cacheKey, image);
-                    return image;
-                }
+                return localImage;
             }
 
             return null;
@@ -102,53 +58,124 @@ public class ImageCacheConverter : IValueConverter
         }
     }
 
+    private static (string path, string folder) ExtractPathAndFolder(object value)
+    {
+        if (value is ListItem item)
+        {
+            return (item.Poster, item.Folder);
+        }
+
+        if (value is string s)
+        {
+            return (s, null);
+        }
+
+        return (null, null);
+    }
+
+    private static bool IsWebUrl(string path) =>
+        !string.IsNullOrWhiteSpace(path) &&
+        (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+         path.StartsWith("https://", StringComparison.OrdinalIgnoreCase));
+
+    private static BitmapImage CreateWebImage(string path)
+    {
+        if (Uri.TryCreate(path, UriKind.Absolute, out var webUri))
+        {
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.UriSource = webUri;
+            image.CacheOption = BitmapCacheOption.OnDemand;
+            image.EndInit();
+            return image;
+        }
+
+        return null;
+    }
+
+    private static ImageSource LoadLocalImage(string resolvedFile)
+    {
+        var uri = new Uri(resolvedFile, UriKind.Absolute);
+
+        if (resolvedFile.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+        {
+            return LoadIcoFrame(uri);
+        }
+
+        var image = new BitmapImage();
+        image.BeginInit();
+        image.CacheOption = BitmapCacheOption.OnLoad;
+        image.UriSource = uri;
+        image.EndInit();
+        if (image.CanFreeze)
+        {
+            image.Freeze();
+        }
+        return image;
+    }
+
+    private static ImageSource LoadIcoFrame(Uri uri)
+    {
+        var decoder = new IconBitmapDecoder(uri, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+        var bestFrame = decoder.Frames.OrderByDescending(f => f.PixelWidth).FirstOrDefault();
+        if (bestFrame != null && bestFrame.CanFreeze)
+        {
+            bestFrame.Freeze();
+        }
+        return bestFrame;
+    }
+
     private static string ResolveLocalImagePath(string path, string folder)
     {
-        // 1. Direct path exists
-        if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
+        if (!string.IsNullOrWhiteSpace(path))
+        {
+            if (File.Exists(path))
+            {
+                return path;
+            }
+
+            if (path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+            {
+                var ico = Path.ChangeExtension(path, ".ico");
+                if (File.Exists(ico))
+                {
+                    return ico;
+                }
+            }
+        }
+
+        var targetFolder = DetermineTargetFolder(path, folder);
+        return FindFolderImage(targetFolder);
+    }
+
+    private static string DetermineTargetFolder(string path, string folder)
+    {
+        if (!string.IsNullOrWhiteSpace(folder))
+        {
+            return folder;
+        }
+
+        if (!string.IsNullOrWhiteSpace(path) && Directory.Exists(path))
         {
             return path;
         }
 
-        // 2. Path was a PNG but replaced with .ico
-        if (!string.IsNullOrWhiteSpace(path) && path.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+        return null;
+    }
+
+    private static string FindFolderImage(string targetFolder)
+    {
+        if (string.IsNullOrWhiteSpace(targetFolder) || !Directory.Exists(targetFolder))
         {
-            var ico = Path.ChangeExtension(path, ".ico");
-            if (File.Exists(ico))
-            {
-                return ico;
-            }
+            return null;
         }
 
-        // 3. Check within folder if provided
-        var targetFolder = !string.IsNullOrWhiteSpace(folder) ? folder : (Directory.Exists(path) ? path : null);
-        if (!string.IsNullOrWhiteSpace(targetFolder) && Directory.Exists(targetFolder))
+        foreach (var fileName in FolderCandidateNames)
         {
-            // Check folicon.png (active processing)
-            var foliconPng = Path.Combine(targetFolder, "folicon.png");
-            if (File.Exists(foliconPng))
+            var candidate = Path.Combine(targetFolder, fileName);
+            if (File.Exists(candidate))
             {
-                return foliconPng;
-            }
-
-            // Check folicon.ico (completed icon)
-            var foliconIco = Path.Combine(targetFolder, "folicon.ico");
-            if (File.Exists(foliconIco))
-            {
-                return foliconIco;
-            }
-
-            // Fallback to other common poster/folder images
-            var posterJpg = Path.Combine(targetFolder, "poster.jpg");
-            if (File.Exists(posterJpg))
-            {
-                return posterJpg;
-            }
-
-            var folderJpg = Path.Combine(targetFolder, "folder.jpg");
-            if (File.Exists(folderJpg))
-            {
-                return folderJpg;
+                return candidate;
             }
         }
 
