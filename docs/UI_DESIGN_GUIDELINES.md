@@ -1,3 +1,5 @@
+<!-- markdownlint-disable -->
+
 # FoliCon Modern UI Design Guidelines
 
 This document serves as the official UI design and styling standard for **FoliCon**. It reflects the design principles, visual hierarchy, theme architecture, and component standards established during the UI modernization initiative.

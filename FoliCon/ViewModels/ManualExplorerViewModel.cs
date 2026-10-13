@@ -71,7 +71,10 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 					_cts.Cancel();
 				}
 			}
-			catch (ObjectDisposedException) { }
+			catch (ObjectDisposedException ex)
+			{
+				Logger.Trace(ex, "CTS was already disposed during cancellation.");
+			}
 		}
 		CloseDialog(ButtonResult.Cancel, null);
 	}
