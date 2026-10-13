@@ -141,7 +141,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		ProgressStatusText = "Connecting to DeviantArt...";
 		try
 		{
-			await DownloadAndExtractAsync(deviationId, token, cts);
+			await DownloadAndExtractAsync(deviationId, cts, token);
 		}
 		catch (OperationCanceledException e)
 		{
@@ -173,7 +173,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		}
 	}
 
-	private async Task DownloadAndExtractAsync(string deviationId, CancellationToken token, CancellationTokenSource cts)
+	private async Task DownloadAndExtractAsync(string deviationId, CancellationTokenSource cts, CancellationToken token)
 	{
 		DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), token);
 		Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);

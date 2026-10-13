@@ -114,7 +114,7 @@ public class ImageCacheConverter : IValueConverter
         return image;
     }
 
-    private static ImageSource LoadIcoFrame(Uri uri)
+    private static BitmapFrame LoadIcoFrame(Uri uri)
     {
         var decoder = new IconBitmapDecoder(uri, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
         var bestFrame = decoder.Frames.OrderByDescending(f => f.PixelWidth).FirstOrDefault();
