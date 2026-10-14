@@ -493,7 +493,7 @@ public partial class DynamicPosterIcon : PosterIconBase
 
     private ImageSource? GetPosterImageSource()
     {
-        if (DataContext is FoliCon.Models.Data.PosterIcon posterIcon)
+        if (DataContext is PosterIcon posterIcon)
         {
             return posterIcon.FolderJpg;
         }

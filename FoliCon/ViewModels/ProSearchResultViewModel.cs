@@ -94,17 +94,18 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         }
     } = Services.Settings.SubfolderProcessingEnabled;
 
-    private DArtImageList _selectedIcon;
     public DArtImageList SelectedIcon
     {
-        get => _selectedIcon;
+        get;
         set
         {
-            if (SetProperty(ref _selectedIcon, value))
+            if (!SetProperty(ref field, value))
             {
-                PickSelectedCommand?.RaiseCanExecuteChanged();
-                PreviewSelectedCommand?.RaiseCanExecuteChanged();
+                return;
             }
+
+            PickSelectedCommand?.RaiseCanExecuteChanged();
+            PreviewSelectedCommand?.RaiseCanExecuteChanged();
         }
     }
 

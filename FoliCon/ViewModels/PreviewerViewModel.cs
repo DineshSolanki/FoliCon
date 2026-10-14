@@ -1,8 +1,4 @@
 #nullable enable
-using System.IO;
-using System.Windows;
-using System.Windows.Media;
-using FoliCon.Modules.Overlays;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
@@ -18,16 +14,9 @@ namespace FoliCon.ViewModels
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private string _rating = "3.5";
-        private string _mediaTitle = Lang.MadeWithFoliCon;
-        private bool _ratingVisibility = true;
-        private bool _overlayVisibility = true;
         private string? _selectedPosterPath;
         private CancellationTokenSource? _rebuildCts;
         private string _searchFilter = string.Empty;
-        private bool _isLoading;
-        private string _canvasTheme = "Theme";
-        private Brush _canvasBrush = Brushes.Transparent;
         private OverlayPreviewItem? _inspectedItem;
         private int _loadGeneration;
 
@@ -62,63 +51,65 @@ namespace FoliCon.ViewModels
 
         public string Rating
         {
-            get => _rating;
+            get;
             set
             {
-                if (SetProperty(ref _rating, value))
+                if (SetProperty(ref field, value))
                 {
                     _ = RebuildPreviewsAsync();
                 }
             }
-        }
+        } = "3.5";
 
         public string MediaTitle
         {
-            get => _mediaTitle;
+            get;
             set
             {
-                if (SetProperty(ref _mediaTitle, value))
+                if (SetProperty(ref field, value))
                 {
                     _ = RebuildPreviewsAsync();
                 }
             }
-        }
+        } = Lang.MadeWithFoliCon;
 
         public bool RatingVisibility
         {
-            get => _ratingVisibility;
+            get;
             set
             {
-                if (SetProperty(ref _ratingVisibility, value))
+                if (SetProperty(ref field, value))
                 {
                     _ = RebuildPreviewsAsync();
                 }
             }
-        }
+        } = true;
 
         public bool OverlayVisibility
         {
-            get => _overlayVisibility;
+            get;
             set
             {
-                if (SetProperty(ref _overlayVisibility, value))
+                if (SetProperty(ref field, value))
                 {
                     _ = RebuildPreviewsAsync();
                 }
             }
-        }
+        } = true;
 
         public string? SelectedPosterPath
         {
             get => _selectedPosterPath;
             set
             {
-                if (SetProperty(ref _selectedPosterPath, value))
+                if (!SetProperty(ref _selectedPosterPath, value))
                 {
-                    RaisePropertyChanged(nameof(PosterFileName));
-                    RaisePropertyChanged(nameof(HasCustomPoster));
-                    _ = RebuildPreviewsAsync();
+                    return;
                 }
+
+                RaisePropertyChanged(nameof(PosterFileName));
+                RaisePropertyChanged(nameof(HasCustomPoster));
+                _ = RebuildPreviewsAsync();
             }
         }
 
@@ -142,27 +133,27 @@ namespace FoliCon.ViewModels
 
         public bool IsLoading
         {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
+            get;
+            set => SetProperty(ref field, value);
         }
 
         public string CanvasTheme
         {
-            get => _canvasTheme;
+            get;
             set
             {
-                if (SetProperty(ref _canvasTheme, value))
+                if (SetProperty(ref field, value))
                 {
                     UpdateCanvasBrush();
                 }
             }
-        }
+        } = "Theme";
 
         public Brush CanvasBrush
         {
-            get => _canvasBrush;
-            private set => SetProperty(ref _canvasBrush, value);
-        }
+            get;
+            private set => SetProperty(ref field, value);
+        } = Brushes.Transparent;
 
         public OverlayPreviewItem? InspectedItem
         {
@@ -319,10 +310,7 @@ namespace FoliCon.ViewModels
             Logger.Info("Image selected: {FileName}", _selectedPosterPath);
         }
 
-        private void ResetPoster()
-        {
-            SelectedPosterPath = null;
-        }
+        private void ResetPoster() => SelectedPosterPath = null;
 
         private void CopyPreviewImage(OverlayPreviewItem? item)
         {

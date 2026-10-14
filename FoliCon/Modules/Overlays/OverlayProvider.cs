@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.ComponentModel;
 
 /// <summary>
 /// Loads and manages overlay definitions from built-in resources and user-installed folders.

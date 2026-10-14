@@ -30,12 +30,11 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
         set => SetProperty(ref field, value);
     }
 
-    private string _newPatternText = string.Empty;
     public string NewPatternText
     {
-        get => _newPatternText;
-        set => SetProperty(ref _newPatternText, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = string.Empty;
 
     #endregion
 

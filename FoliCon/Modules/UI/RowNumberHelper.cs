@@ -1,11 +1,5 @@
 #nullable enable
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Media;
-using System.Windows.Threading;
 using ScrollViewer = System.Windows.Controls.ScrollViewer;
 
 namespace FoliCon.Modules.UI;

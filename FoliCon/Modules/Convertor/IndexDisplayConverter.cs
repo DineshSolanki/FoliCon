@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Windows.Data;
-
 namespace FoliCon.Modules.Convertor;
 
 /// <summary>
@@ -8,15 +5,7 @@ namespace FoliCon.Modules.Convertor;
 /// </summary>
 public class IndexDisplayConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        if (value is int index && index >= 0)
-        {
-            return $"#{index + 1}";
-        }
-
-        return string.Empty;
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is int index and >= 0 ? $"#{index + 1}" : string.Empty;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
         throw new NotImplementedException();

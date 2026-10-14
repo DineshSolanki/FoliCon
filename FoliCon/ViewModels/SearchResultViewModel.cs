@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using DelegateCommand = Prism.Commands.DelegateCommand;
 
 namespace FoliCon.ViewModels;
@@ -11,26 +10,13 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     #region Variables
 
-    private string _title = Lang.SearchResult;
-    private string _searchTitle;
-    private string _busyContent;
-    private bool _isBusy;
-    private string _searchMode;
-    private ListViewData _resultListViewData;
-    private string _searchAgainTitle;
-    private string _skipAllText = Lang.SkipThisPlaceholder;
-    private List<string> _fileList;
-    private ResultResponse _searchResult;
     private string _fullFolderPath;
     private readonly IDialogService _dialogService;
-    private bool _isSearchFocused;
     private bool _isPickedById;
-    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
     public DialogCloseListener RequestClose { get; }
 
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
-    private double _customRating;
 
     private PosterPickerDialogParams _dialogParams;
 
@@ -40,95 +26,95 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     public string Title
     {
-        get => _title;
-        set => SetProperty(ref _title, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.SearchResult;
 
     public string SearchTitle
     {
-        get => _searchTitle;
-        set => SetProperty(ref _searchTitle, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string BusyContent
     {
-        get => _busyContent;
-        set => SetProperty(ref _busyContent, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsBusy
     {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public double CustomRating
     {
-        get => _customRating;
-        set => SetProperty(ref _customRating, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public ListViewData ResultListViewData
     {
-        get => _resultListViewData;
-        set => SetProperty(ref _resultListViewData, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SearchAgainTitle
     {
-        get => _searchAgainTitle;
-        set => SetProperty(ref _searchAgainTitle, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SkipAllText
     {
-        get => _skipAllText;
-        set => SetProperty(ref _skipAllText, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.SkipThisPlaceholder;
 
     public List<string> FileList
     {
-        get => _fileList;
-        set => SetProperty(ref _fileList, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public ResultResponse SearchResult
     {
-        get => _searchResult;
-        set => SetProperty(ref _searchResult, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SearchMode
     {
-        get => _searchMode;
-        set => SetProperty(ref _searchMode, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsSearchFocused
     {
-        get => _isSearchFocused;
-        set => SetProperty(ref _isSearchFocused, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool SubfolderProcessingEnabled
     {
-        get => _subfolderProcessingEnabled;
+        get;
         set
         {
-            SetProperty(ref _subfolderProcessingEnabled, value);
+            SetProperty(ref field, value);
             Services.Settings.SubfolderProcessingEnabled = value;
             Services.Settings.Save();
         }
-    }
+    } = Services.Settings.SubfolderProcessingEnabled;
 
-    private const string DefaultSortKey = "Default";
+    private const string defaultSortKey = "Default";
     private bool _sortDescending = true;
 
     public string CurrentSort
     {
         get;
         set => SetProperty(ref field, value);
-    } = DefaultSortKey;
+    } = defaultSortKey;
 
     #endregion Properties
 
@@ -258,7 +244,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
 
         ResultListViewData.SelectedItem = ResultListViewData.Data[0];
-        CurrentSort = DefaultSortKey;
+        CurrentSort = defaultSortKey;
         PerformSelectionChanged();
     }
 
@@ -275,10 +261,10 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             return;
         }
 
-        if (sortKey == DefaultSortKey)
+        if (sortKey == defaultSortKey)
         {
             view.SortDescriptions.Clear();
-            CurrentSort = DefaultSortKey;
+            CurrentSort = defaultSortKey;
             view.Refresh();
             return;
         }

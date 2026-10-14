@@ -3,26 +3,21 @@
 public class DialogControlViewModel : BindableBase, IDialogAware
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    private DelegateCommand<string> _closeDialogCommand;
 
     public DelegateCommand<string> CloseDialogCommand =>
-        _closeDialogCommand ??= new DelegateCommand<string>(CloseDialog);
-
-    private string _message;
+        field ??= new DelegateCommand<string>(CloseDialog);
 
     public string Message
     {
-        get => _message;
-        private set => SetProperty(ref _message, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
-
-    private string _title = Lang.Notification;
 
     public string Title
     {
-        get => _title;
-        private set => SetProperty(ref _title, value);
-    }
+        get;
+        private set => SetProperty(ref field, value);
+    } = Lang.Notification;
 
     public DialogCloseListener RequestClose { get; }
 

@@ -14,11 +14,14 @@ public class ReOrderDropHandlerTests
         private readonly Dictionary<string, object?> _values = new();
 
         public void SetProperty(string name, object? value) => _values[name] = value;
-        public object? GetProperty(string name) => _values.TryGetValue(name, out var v) ? v : null;
 
         protected override object? Invoke(MethodInfo? targetMethod, object?[]? args)
         {
-            if (targetMethod == null) return null;
+            if (targetMethod == null)
+            {
+                return null;
+            }
+
             if (targetMethod.Name.StartsWith("get_"))
             {
                 var propName = targetMethod.Name[4..];

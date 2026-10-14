@@ -1,7 +1,4 @@
 #nullable enable
-using System.Text.RegularExpressions;
-using System.Windows.Data;
-
 namespace FoliCon.Modules.Convertor;
 
 /// <summary>
@@ -12,7 +9,7 @@ public class RegexValidationConverter : IMultiValueConverter
 {
     public object? Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {
-        if (values == null || values.Length < 2)
+        if (values.Length < 2)
         {
             return null;
         }

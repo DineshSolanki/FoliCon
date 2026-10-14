@@ -95,7 +95,7 @@ public partial class OverlayDesigner
         UpdateAdorner();
     }
 
-    private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         // An empty name means "everything changed" (a load or undo), so refresh unconditionally.
         if (string.IsNullOrEmpty(e.PropertyName)
@@ -190,7 +190,7 @@ public partial class OverlayDesigner
         _ => new Point(bounds.Left, bounds.Top)
     };
 
-    private static System.Windows.Input.Cursor CursorFor(DragMode mode) => mode switch
+    private static Cursor CursorFor(DragMode mode) => mode switch
     {
         DragMode.ResizeLeft or DragMode.ResizeRight => Cursors.SizeWE,
         DragMode.ResizeTop or DragMode.ResizeBottom => Cursors.SizeNS,
@@ -364,7 +364,7 @@ public partial class OverlayDesigner
             return;
         }
 
-        var picker = SingleOpenHelper.CreateControl<HandyControl.Controls.ColorPicker>();
+        var picker = SingleOpenHelper.CreateControl<ColorPicker>();
         var window = new PopupWindow
         {
             PopupElement = picker,

@@ -16,25 +16,18 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public IDropTarget ReOrderDropHandler { get; } = new ReOrderDropHandler();
     private string _selectedDirectory;
     private string _selectedIconsDirectory;
-    private ObservableCollection<string> _directories;
-    private ObservableCollection<string> _icons;
-    private bool _isUndoEnable;
-    private bool _keepExactOnly;
-    private bool _isBusy;
-    private bool _stopSearch;
     public string Title => Lang.CustomIconSetter;
 
     private ObservableCollection<string> _undoDirectories = [];
     private ObservableCollection<string> _backupDirectories = [];
     private ObservableCollection<string> _backupIcons = [];
-    private int _index;
-    private int _totalIcons;
+
     public bool KeepExactOnly
     {
-        get => _keepExactOnly;
+        get;
         set
         {
-            SetProperty(ref _keepExactOnly, value);
+            SetProperty(ref field, value);
             if (value)
             {
                 RemoveNotMatching();
@@ -48,14 +41,14 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     public bool IsBusy
     {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsUndoEnable
     {
-        get => _isUndoEnable;
-        set => SetProperty(ref _isUndoEnable, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SelectedDirectory
@@ -66,7 +59,11 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             SetProperty(ref _selectedDirectory, value);
             Directories.Clear();
             KeepExactOnly = false;
-            if (string.IsNullOrEmpty(value) || !Directory.Exists(value)) return;
+            if (string.IsNullOrEmpty(value) || !Directory.Exists(value))
+            {
+                return;
+            }
+
             foreach (var folder in FileUtils.GetFolderNames(value))
             {
                 Directories.Add(folder);
@@ -98,18 +95,34 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     public ObservableCollection<string> Directories
     {
-        get => _directories;
-        private set => SetProperty(ref _directories, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
 
     public ObservableCollection<string> Icons
     {
-        get => _icons;
-        private set => SetProperty(ref _icons, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
-    public int Index { get => _index; set => SetProperty(ref _index, value); }
-    public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
-    private bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
+
+    public int Index
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int TotalIcons
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    private bool StopSearch
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     #region Declare Delegates
 
     public DelegateCommand LoadDirectory { get; set; }

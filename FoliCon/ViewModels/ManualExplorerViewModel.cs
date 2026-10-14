@@ -21,39 +21,70 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		CloseDialog(ButtonResult.OK, (string)localImagePath);
 	}
 
-	private string _title = Lang.ManualExplorer;
-	private bool _isBusy;
-	private ObservableCollection<string> _directory;
-	private string _selectedFile;
-	private DArt _dArtObject;
-	private DArtDownloadResponse _dArtDownloadResponse;
-	private ProgressBarData _progressInfo = new(0, 1, LangProvider.Instance.Downloading);
-	private string _progressStatusText = "Connecting to DeviantArt...";
-	private bool _isIndeterminate = true;
-	private CancellationTokenSource _cts;
+    private CancellationTokenSource _cts;
 
-	public string Title { get => _title; set => SetProperty(ref _title, value); }
-	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-	public string ProgressStatusText { get => _progressStatusText; set => SetProperty(ref _progressStatusText, value); }
-	public bool IsIndeterminate { get => _isIndeterminate; set => SetProperty(ref _isIndeterminate, value); }
-	public string SelectedFile
-	{
-		get => _selectedFile;
-		set
-		{
-			if (SetProperty(ref _selectedFile, value))
-			{
-				PickSelectedCommand?.RaiseCanExecuteChanged();
-				PreviewSelectedCommand?.RaiseCanExecuteChanged();
-			}
-		}
-	}
-	private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
-	private DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
-	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
+    public string Title
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.ManualExplorer;
 
-	public DelegateCommand<object> PickCommand { get; set; }
+    public bool IsBusy
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string ProgressStatusText
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "Connecting to DeviantArt...";
+
+    public bool IsIndeterminate
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = true;
+
+    public string SelectedFile
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                PickSelectedCommand?.RaiseCanExecuteChanged();
+                PreviewSelectedCommand?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
+    private DArt DArtObject
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public ProgressBarData ProgressInfo
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = new(0, 1, LangProvider.Instance.Downloading);
+
+    private DArtDownloadResponse DArtDownloadResponse
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public ObservableCollection<string> Directory
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public DelegateCommand<object> PickCommand { get; set; }
 	public DelegateCommand<object> OpenImageCommand { get; set; }
 	public DelegateCommand PickSelectedCommand { get; set; }
 	public DelegateCommand PreviewSelectedCommand { get; set; }

@@ -5,18 +5,20 @@ namespace FoliCon.Views;
 /// </summary>
 public partial class ProSearchResult
 {
-    
+
     public ProSearchResult()
     {
         InitializeComponent();
     }
 
-    private void ListBoxItem_PreviewMouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void ListBoxItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is System.Windows.Controls.ListBoxItem item && item.DataContext != null)
+        if (sender is not ListBoxItem { DataContext: not null } item)
         {
-            item.IsSelected = true;
-            item.Focus();
+            return;
         }
+
+        item.IsSelected = true;
+        item.Focus();
     }
 }
