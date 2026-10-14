@@ -64,15 +64,12 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set
         {
             SetProperty(ref _selectedDirectory, value);
-            RaisePropertyChanged(nameof(SelectedDirectoryName));
             Directories.Clear();
             KeepExactOnly = false;
-            if (!string.IsNullOrEmpty(value) && Directory.Exists(value))
+            if (string.IsNullOrEmpty(value) || !Directory.Exists(value)) return;
+            foreach (var folder in FileUtils.GetFolderNames(value))
             {
-                foreach (var folder in FileUtils.GetFolderNames(value))
-                {
-                    Directories.Add(folder);
-                }
+                Directories.Add(folder);
             }
         }
     }
@@ -83,7 +80,6 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set
         {
             SetProperty(ref _selectedIconsDirectory, value);
-            RaisePropertyChanged(nameof(SelectedIconsDirectoryName));
             Logger.Debug("Selecting PNG and ICO files from {Value}", value);
             KeepExactOnly = false;
             Icons.Clear();
