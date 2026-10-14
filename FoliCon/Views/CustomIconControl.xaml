@@ -260,7 +260,7 @@
                                  dd:DragDrop.DropHandler="{Binding ReOrderDropHandler}"
                                  dd:DragDrop.IsDropTarget="True"
                                  SelectionMode="Extended"
-                                 AlternationCount="10000"
+                                 ui:RowNumberHelper.ShowRowNumbers="True"
                                  ItemsSource="{Binding Path=Directories, UpdateSourceTrigger=PropertyChanged}"
                                  ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
                                  ui:FolderDragDropHelper.FileDragDropTarget="{Binding}"
@@ -289,7 +289,7 @@
 
                                         <!-- Row Index -->
                                         <TextBlock Grid.Column="0"
-                                                   Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource IndexDisplayConverter}}"
+                                                   Text="{Binding Path=(ui:RowNumberHelper.RowIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
@@ -470,7 +470,7 @@
                                  dd:DragDrop.DropHandler="{Binding ReOrderDropHandler}"
                                  dd:DragDrop.IsDropTarget="True"
                                  SelectionMode="Extended"
-                                 AlternationCount="10000"
+                                 ui:RowNumberHelper.ShowRowNumbers="True"
                                  ItemsSource="{Binding Path=Icons, UpdateSourceTrigger=PropertyChanged}"
                                  ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
                                  ui:FolderDragDropHelper.FileDragDropTarget="{Binding}"
@@ -499,7 +499,7 @@
 
                                         <!-- Row Index -->
                                         <TextBlock Grid.Column="0"
-                                                   Text="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource IndexDisplayConverter}}"
+                                                   Text="{Binding Path=(ui:RowNumberHelper.RowIndex), RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                                                    Foreground="{DynamicResource SecondaryTextBrush}"
                                                    FontSize="11"
                                                    FontWeight="SemiBold"
