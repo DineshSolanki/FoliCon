@@ -338,8 +338,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     }
 
     private int MakeIcons(
-        IReadOnlyList<string> directories,
-        IReadOnlyList<string> icons,
+        List<string> directories,
+        List<string> icons,
         string selectedDirectory,
         string selectedIconsDirectory,
         IProgress<int> progress,
@@ -364,7 +364,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             {
                 Logger.Info("Converting {Icon} to .ico", iconPath);
                 var icon = new ProIcon(iconPath).RenderToBitmap();
-                iconPath = iconPath.Replace(Path.GetExtension(icons[i])!, ".ico");
+                iconPath = iconPath.Replace(Path.GetExtension(icons[i]), ".ico");
                 PngToIcoService.Convert(icon, iconPath);
                 icon.Dispose();
                 Logger.Info("Converted {Icon} to .ico", iconPath);
