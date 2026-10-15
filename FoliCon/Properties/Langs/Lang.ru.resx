@@ -1807,4 +1807,241 @@
   <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>Не удалось обновить наложение «{0}» по манифесту: {1}</value>
     </data>
+  <data name="AboutGithub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="AboutGithubTooltip" xml:space="preserve">
+    <value>Просмотр исходного кода и участие на GitHub</value>
+  </data>
+  <data name="AboutLicenseFooter" xml:space="preserve">
+    <value>Бесплатное ПО с открытым исходным кодом под лицензией GPL-3.0</value>
+  </data>
+  <data name="AboutOverlays" xml:space="preserve">
+    <value>Наложения</value>
+  </data>
+  <data name="AboutOverlaysTooltip" xml:space="preserve">
+    <value>Шаблоны и наложения значков</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Умный генератор и органайзер значков для медиа-папок</value>
+  </data>
+  <data name="AboutVersionTooltip" xml:space="preserve">
+    <value>Версия {0} (нажмите, чтобы скопировать)</value>
+  </data>
+  <data name="AboutWebsite" xml:space="preserve">
+    <value>Веб-сайт</value>
+  </data>
+  <data name="AboutWebsiteTooltip" xml:space="preserve">
+    <value>Посетить официальный блог и сайт</value>
+  </data>
+  <data name="AddPattern" xml:space="preserve">
+    <value>Добавить шаблон</value>
+  </data>
+  <data name="ApplyIconsTooltip" xml:space="preserve">
+    <value>Создать и применить пользовательские значки к папкам</value>
+  </data>
+  <data name="AvailableCountFormat" xml:space="preserve">
+    <value>{0} доступно</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Обзор</value>
+  </data>
+  <data name="CanvasLabel" xml:space="preserve">
+    <value>Холст:</value>
+  </data>
+  <data name="ClearFoldersTooltip" xml:space="preserve">
+    <value>Очистить список папок</value>
+  </data>
+  <data name="ClearIconsTooltip" xml:space="preserve">
+    <value>Очистить список значков</value>
+  </data>
+  <data name="CustomIconInstructions" xml:space="preserve">
+    <value>Перетащите папки или файлы в любую область. Измените порядок элементов в списках для сопоставления строк. Нажмите Delete для удаления записи.</value>
+  </data>
+  <data name="DeleteCustomPatternTooltip" xml:space="preserve">
+    <value>Удалить пользовательский шаблон</value>
+  </data>
+  <data name="FolderCountFormat" xml:space="preserve">
+    <value>Папок: {0}</value>
+  </data>
+  <data name="FolderFiles" xml:space="preserve">
+    <value>Файлы папки:</value>
+  </data>
+  <data name="IconCountFormat" xml:space="preserve">
+    <value>Значков: {0}</value>
+  </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+    <value>Подключение к DeviantArt...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+    <value>Загрузка архива...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+    <value>Загрузка архива ({0})...</value>
+  </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+    <value>Извлечено значков: {0} из {1}</value>
+  </data>
+  <data name="MatchesCountFormat" xml:space="preserve">
+    <value>Совпадений: {0}</value>
+  </data>
+  <data name="MatchingPatterns" xml:space="preserve">
+    <value>Шаблоны соответствия</value>
+  </data>
+  <data name="MaxDepthHint" xml:space="preserve">
+    <value>(0 = без ограничений)</value>
+  </data>
+  <data name="NoTrailerAvailable" xml:space="preserve">
+    <value>Трейлер для этого произведения недоступен</value>
+  </data>
+  <data name="OnboardingCustomIcons" xml:space="preserve">
+    <value>Пользовательские значки</value>
+  </data>
+  <data name="OnboardingCustomIconsDesc" xml:space="preserve">
+    <value>Наборы значков от художников сообщества DeviantArt</value>
+  </data>
+  <data name="OnboardingDeviantArtServiceName" xml:space="preserve">
+    <value>Сообщество DeviantArt</value>
+  </data>
+  <data name="OnboardingIgdbServiceName" xml:space="preserve">
+    <value>База данных видеоигр (IGDB)</value>
+  </data>
+  <data name="OnboardingMoviesSeries" xml:space="preserve">
+    <value>Фильмы и сериалы</value>
+  </data>
+  <data name="OnboardingMoviesSeriesDesc" xml:space="preserve">
+    <value>Автоматические постеры высокого разрешения через TMDb</value>
+  </data>
+  <data name="OnboardingTmdbServiceName" xml:space="preserve">
+    <value>The Movie Database (TMDb)</value>
+  </data>
+  <data name="OnboardingVideoGames" xml:space="preserve">
+    <value>Видеоигры</value>
+  </data>
+  <data name="OnboardingVideoGamesDesc" xml:space="preserve">
+    <value>Обложки игр через IGDB и Twitch</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>Добро пожаловать в FoliCon</value>
+  </data>
+  <data name="OverlayActive" xml:space="preserve">
+    <value>Активно</value>
+  </data>
+  <data name="OverlayBuiltIn" xml:space="preserve">
+    <value>Встроенные</value>
+  </data>
+  <data name="OverlayCommunity" xml:space="preserve">
+    <value>Сообщество</value>
+  </data>
+  <data name="OverlayConfigFooter" xml:space="preserve">
+    <value>Выбранное наложение автоматически сохраняется и применяется к значкам папок фильмов и сериалов</value>
+  </data>
+  <data name="PatternCountFormat" xml:space="preserve">
+    <value>Шаблонов: {0}</value>
+  </data>
+  <data name="PatternDefault" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="PatternDefaultCannotDelete" xml:space="preserve">
+    <value>Встроенный шаблон по умолчанию (нельзя удалить)</value>
+  </data>
+  <data name="PatternDefaultTooltip" xml:space="preserve">
+    <value>Встроенный шаблон по умолчанию</value>
+  </data>
+  <data name="PosterIconOverlayCountFormat" xml:space="preserve">
+    <value>Наложений: {0}</value>
+  </data>
+  <data name="PreviewerCanvasDark" xml:space="preserve">
+    <value>Тёмный</value>
+  </data>
+  <data name="PreviewerCanvasFolder" xml:space="preserve">
+    <value>Папка</value>
+  </data>
+  <data name="PreviewerCanvasLight" xml:space="preserve">
+    <value>Светлый</value>
+  </data>
+  <data name="PreviewerCanvasTheme" xml:space="preserve">
+    <value>Тема</value>
+  </data>
+  <data name="PreviewerCopyImage" xml:space="preserve">
+    <value>Копировать изображение</value>
+  </data>
+  <data name="PreviewerCopyImageTooltip" xml:space="preserve">
+    <value>Копировать изображение в буфер обмена</value>
+  </data>
+  <data name="PreviewerFilterHint" xml:space="preserve">
+    <value>Попробуйте очистить или изменить параметры фильтра.</value>
+  </data>
+  <data name="PreviewerFilterOverlays" xml:space="preserve">
+    <value>Фильтр наложений...</value>
+  </data>
+  <data name="PreviewerHdRender" xml:space="preserve">
+    <value>HD-рендер 512 × 512</value>
+  </data>
+  <data name="PreviewerImageCopied" xml:space="preserve">
+    <value>Изображение «{0}» скопировано в буфер обмена</value>
+  </data>
+  <data name="PreviewerInspectTooltip" xml:space="preserve">
+    <value>Просмотр в полном размере</value>
+  </data>
+  <data name="PreviewerNoOverlaysMatch" xml:space="preserve">
+    <value>Наложений по вашему запросу не найдено</value>
+  </data>
+  <data name="PreviewerOverlayCountFormat" xml:space="preserve">
+    <value>Наложений: {0} из {1}</value>
+  </data>
+  <data name="PreviewerRendering" xml:space="preserve">
+    <value>Создание предпросмотра наложений...</value>
+  </data>
+  <data name="PreviewerResetPosterTooltip" xml:space="preserve">
+    <value>Сбросить к стандартному постеру</value>
+  </data>
+  <data name="PreviewerStatusBarHint" xml:space="preserve">
+    <value>Интерактивная галерея наложений • Нажмите «Просмотр» для полного разрешения • Наведите курсор для копирования</value>
+  </data>
+  <data name="PreviewerView" xml:space="preserve">
+    <value>Просмотр</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>Рейтинг:</value>
+  </data>
+  <data name="SearchOverlaysPlaceholder" xml:space="preserve">
+    <value>Поиск наложений...</value>
+  </data>
+  <data name="SearchResultHint" xml:space="preserve">
+    <value>Дважды щелкните по элементу или постеру, чтобы выбрать или найти альтернативы</value>
+  </data>
+  <data name="SortAZ" xml:space="preserve">
+    <value>А-Я</value>
+  </data>
+  <data name="SortDefault" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="SortLabel" xml:space="preserve">
+    <value>Сортировка:</value>
+  </data>
+  <data name="SortRating" xml:space="preserve">
+    <value>★ Рейтинг</value>
+  </data>
+  <data name="SubfolderProcessingDescription" xml:space="preserve">
+    <value>Автоматическое сканирование и обработка папок сезонов, бонусных дисков и вложенных коллекций</value>
+  </data>
+  <data name="SubfolderSettingsFooter" xml:space="preserve">
+    <value>Параметры сохраняются автоматически при закрытии • Глубина 0 обрабатывает все вложенные каталоги</value>
+  </data>
+  <data name="Synopsis" xml:space="preserve">
+    <value>СИНОПСИС</value>
+  </data>
+  <data name="TestSamplePlaceholder" xml:space="preserve">
+    <value>Пример имени папки...</value>
+  </data>
+  <data name="TestSampleTooltip" xml:space="preserve">
+    <value>Введите имя папки для проверки регулярного выражения (зеленый — совпадение, красный — несоответствие)</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>Название:</value>
+  </data>
+  <data name="UndoApplyTooltip" xml:space="preserve">
+    <value>Отменить предыдущее применение значков</value>
+  </data>
 </root>

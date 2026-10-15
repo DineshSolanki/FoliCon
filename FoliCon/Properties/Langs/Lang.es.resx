@@ -1807,4 +1807,241 @@ y actualizar la caché de iconos?</value>
   <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>No se pudo actualizar la superposición «{0}» desde el manifiesto: {1}</value>
     </data>
+  <data name="AboutGithub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="AboutGithubTooltip" xml:space="preserve">
+    <value>Ver código fuente y contribuir en GitHub</value>
+  </data>
+  <data name="AboutLicenseFooter" xml:space="preserve">
+    <value>Libre y de código abierto bajo licencia GPL-3.0</value>
+  </data>
+  <data name="AboutOverlays" xml:space="preserve">
+    <value>Superposiciones</value>
+  </data>
+  <data name="AboutOverlaysTooltip" xml:space="preserve">
+    <value>Explorar plantillas de iconos y superposiciones</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Generador y organizador inteligente de iconos para carpetas multimedia</value>
+  </data>
+  <data name="AboutVersionTooltip" xml:space="preserve">
+    <value>Versión {0} (Clic para copiar)</value>
+  </data>
+  <data name="AboutWebsite" xml:space="preserve">
+    <value>Sitio web</value>
+  </data>
+  <data name="AboutWebsiteTooltip" xml:space="preserve">
+    <value>Visitar el blog y sitio web oficial</value>
+  </data>
+  <data name="AddPattern" xml:space="preserve">
+    <value>Añadir patrón</value>
+  </data>
+  <data name="ApplyIconsTooltip" xml:space="preserve">
+    <value>Generar y asignar iconos personalizados a las carpetas</value>
+  </data>
+  <data name="AvailableCountFormat" xml:space="preserve">
+    <value>{0} disponibles</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Examinar</value>
+  </data>
+  <data name="CanvasLabel" xml:space="preserve">
+    <value>Lienzo:</value>
+  </data>
+  <data name="ClearFoldersTooltip" xml:space="preserve">
+    <value>Limpiar todas las carpetas</value>
+  </data>
+  <data name="ClearIconsTooltip" xml:space="preserve">
+    <value>Limpiar todos los iconos</value>
+  </data>
+  <data name="CustomIconInstructions" xml:space="preserve">
+    <value>Arrastre y suelte carpetas o archivos en cualquiera de los lados. Reordene los elementos en cualquier lista para emparejar las filas correspondientes. Presione Supr para eliminar una entrada.</value>
+  </data>
+  <data name="DeleteCustomPatternTooltip" xml:space="preserve">
+    <value>Eliminar patrón personalizado</value>
+  </data>
+  <data name="FolderCountFormat" xml:space="preserve">
+    <value>{0} carpetas</value>
+  </data>
+  <data name="FolderFiles" xml:space="preserve">
+    <value>Archivos de la carpeta:</value>
+  </data>
+  <data name="IconCountFormat" xml:space="preserve">
+    <value>{0} iconos</value>
+  </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+    <value>Conectando con DeviantArt...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+    <value>Descargando archivo comprimido...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+    <value>Descargando archivo comprimido ({0})...</value>
+  </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+    <value>{0} de {1} iconos extraídos</value>
+  </data>
+  <data name="MatchesCountFormat" xml:space="preserve">
+    <value>{0} coincidencias</value>
+  </data>
+  <data name="MatchingPatterns" xml:space="preserve">
+    <value>Patrones coincidentes</value>
+  </data>
+  <data name="MaxDepthHint" xml:space="preserve">
+    <value>(0 = sin límite)</value>
+  </data>
+  <data name="NoTrailerAvailable" xml:space="preserve">
+    <value>No hay tráiler disponible para este título</value>
+  </data>
+  <data name="OnboardingCustomIcons" xml:space="preserve">
+    <value>Iconos personalizados</value>
+  </data>
+  <data name="OnboardingCustomIconsDesc" xml:space="preserve">
+    <value>Paquetes de iconos creados por artistas de DeviantArt</value>
+  </data>
+  <data name="OnboardingDeviantArtServiceName" xml:space="preserve">
+    <value>Comunidad DeviantArt</value>
+  </data>
+  <data name="OnboardingIgdbServiceName" xml:space="preserve">
+    <value>Internet Game Database (IGDB)</value>
+  </data>
+  <data name="OnboardingMoviesSeries" xml:space="preserve">
+    <value>Películas y series</value>
+  </data>
+  <data name="OnboardingMoviesSeriesDesc" xml:space="preserve">
+    <value>Pósteres automáticos en alta resolución mediante TMDb</value>
+  </data>
+  <data name="OnboardingTmdbServiceName" xml:space="preserve">
+    <value>The Movie Database (TMDb)</value>
+  </data>
+  <data name="OnboardingVideoGames" xml:space="preserve">
+    <value>Videojuegos</value>
+  </data>
+  <data name="OnboardingVideoGamesDesc" xml:space="preserve">
+    <value>Carátulas de juegos mediante IGDB y Twitch</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>Bienvenido a FoliCon</value>
+  </data>
+  <data name="OverlayActive" xml:space="preserve">
+    <value>Activo</value>
+  </data>
+  <data name="OverlayBuiltIn" xml:space="preserve">
+    <value>Integrado</value>
+  </data>
+  <data name="OverlayCommunity" xml:space="preserve">
+    <value>Comunidad</value>
+  </data>
+  <data name="OverlayConfigFooter" xml:space="preserve">
+    <value>La superposición seleccionada se guarda automáticamente y se aplica a los iconos de carpetas de películas y series</value>
+  </data>
+  <data name="PatternCountFormat" xml:space="preserve">
+    <value>{0} patrones</value>
+  </data>
+  <data name="PatternDefault" xml:space="preserve">
+    <value>Predeterminado</value>
+  </data>
+  <data name="PatternDefaultCannotDelete" xml:space="preserve">
+    <value>Patrón predeterminado integrado (no se puede eliminar)</value>
+  </data>
+  <data name="PatternDefaultTooltip" xml:space="preserve">
+    <value>Patrón predeterminado integrado</value>
+  </data>
+  <data name="PosterIconOverlayCountFormat" xml:space="preserve">
+    <value>{0} superposiciones</value>
+  </data>
+  <data name="PreviewerCanvasDark" xml:space="preserve">
+    <value>Oscuro</value>
+  </data>
+  <data name="PreviewerCanvasFolder" xml:space="preserve">
+    <value>Carpeta</value>
+  </data>
+  <data name="PreviewerCanvasLight" xml:space="preserve">
+    <value>Claro</value>
+  </data>
+  <data name="PreviewerCanvasTheme" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="PreviewerCopyImage" xml:space="preserve">
+    <value>Copiar imagen</value>
+  </data>
+  <data name="PreviewerCopyImageTooltip" xml:space="preserve">
+    <value>Copiar imagen al portapapeles</value>
+  </data>
+  <data name="PreviewerFilterHint" xml:space="preserve">
+    <value>Intente borrar o modificar los criterios de filtro.</value>
+  </data>
+  <data name="PreviewerFilterOverlays" xml:space="preserve">
+    <value>Filtrar superposiciones...</value>
+  </data>
+  <data name="PreviewerHdRender" xml:space="preserve">
+    <value>Render HD de 512 × 512</value>
+  </data>
+  <data name="PreviewerImageCopied" xml:space="preserve">
+    <value>Imagen de {0} copiada al portapapeles</value>
+  </data>
+  <data name="PreviewerInspectTooltip" xml:space="preserve">
+    <value>Inspeccionar en tamaño completo</value>
+  </data>
+  <data name="PreviewerNoOverlaysMatch" xml:space="preserve">
+    <value>Ninguna superposición coincide con la búsqueda</value>
+  </data>
+  <data name="PreviewerOverlayCountFormat" xml:space="preserve">
+    <value>{0} de {1} superposiciones</value>
+  </data>
+  <data name="PreviewerRendering" xml:space="preserve">
+    <value>Generando vistas previas de superposiciones...</value>
+  </data>
+  <data name="PreviewerResetPosterTooltip" xml:space="preserve">
+    <value>Restablecer póster de muestra predeterminado</value>
+  </data>
+  <data name="PreviewerStatusBarHint" xml:space="preserve">
+    <value>Expositor de superposiciones en vivo • Haga clic en 'Ver' para inspeccionar a resolución completa • Pase el cursor para copiar la imagen</value>
+  </data>
+  <data name="PreviewerView" xml:space="preserve">
+    <value>Ver</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>Calificación:</value>
+  </data>
+  <data name="SearchOverlaysPlaceholder" xml:space="preserve">
+    <value>Buscar superposiciones...</value>
+  </data>
+  <data name="SearchResultHint" xml:space="preserve">
+    <value>Haga doble clic en un resultado o póster para seleccionarlo o buscar alternativas</value>
+  </data>
+  <data name="SortAZ" xml:space="preserve">
+    <value>A-Z</value>
+  </data>
+  <data name="SortDefault" xml:space="preserve">
+    <value>Predeterminado</value>
+  </data>
+  <data name="SortLabel" xml:space="preserve">
+    <value>Ordenar:</value>
+  </data>
+  <data name="SortRating" xml:space="preserve">
+    <value>★ Calificación</value>
+  </data>
+  <data name="SubfolderProcessingDescription" xml:space="preserve">
+    <value>Escanear y procesar automáticamente carpetas de temporadas, discos de extras y colecciones anidadas</value>
+  </data>
+  <data name="SubfolderSettingsFooter" xml:space="preserve">
+    <value>La configuración se guarda automáticamente al cerrar • Profundidad 0 procesa todos los subdirectorios anidados</value>
+  </data>
+  <data name="Synopsis" xml:space="preserve">
+    <value>SINOPSIS</value>
+  </data>
+  <data name="TestSamplePlaceholder" xml:space="preserve">
+    <value>Nombre de carpeta de prueba...</value>
+  </data>
+  <data name="TestSampleTooltip" xml:space="preserve">
+    <value>Escriba un nombre de carpeta para probar la expresión regular (resalta en verde si coincide, en rojo si no)</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>Título:</value>
+  </data>
+  <data name="UndoApplyTooltip" xml:space="preserve">
+    <value>Deshacer la última asignación de iconos</value>
+  </data>
 </root>

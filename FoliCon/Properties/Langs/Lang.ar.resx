@@ -1806,4 +1806,241 @@
   <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>تعذّر تحديث التراكب «{0}» من البيان: {1}</value>
     </data>
+  <data name="AboutGithub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="AboutGithubTooltip" xml:space="preserve">
+    <value>عرض التعليمات البرمجية المصدرية والمساهمة على GitHub</value>
+  </data>
+  <data name="AboutLicenseFooter" xml:space="preserve">
+    <value>مجاني ومفتوح المصدر بموجب ترخيص GPL-3.0</value>
+  </data>
+  <data name="AboutOverlays" xml:space="preserve">
+    <value>التراكبات</value>
+  </data>
+  <data name="AboutOverlaysTooltip" xml:space="preserve">
+    <value>استعراض قوالب الأيقونات والتراكبات</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>منشئ ومنظم ذكي لأيقونات مجلدات الوسائط</value>
+  </data>
+  <data name="AboutVersionTooltip" xml:space="preserve">
+    <value>الإصدار {0} (انقر للنسخ)</value>
+  </data>
+  <data name="AboutWebsite" xml:space="preserve">
+    <value>الموقع الإلكتروني</value>
+  </data>
+  <data name="AboutWebsiteTooltip" xml:space="preserve">
+    <value>زيارة المدونة والموقع الرسمي</value>
+  </data>
+  <data name="AddPattern" xml:space="preserve">
+    <value>إضافة نمط</value>
+  </data>
+  <data name="ApplyIconsTooltip" xml:space="preserve">
+    <value>إنشاء أيقونات مخصصة وتعيينها للمجلدات</value>
+  </data>
+  <data name="AvailableCountFormat" xml:space="preserve">
+    <value>{0} متاح</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>استعراض</value>
+  </data>
+  <data name="CanvasLabel" xml:space="preserve">
+    <value>لوحة الرسم:</value>
+  </data>
+  <data name="ClearFoldersTooltip" xml:space="preserve">
+    <value>مسح جميع المجلدات</value>
+  </data>
+  <data name="ClearIconsTooltip" xml:space="preserve">
+    <value>مسح جميع الأيقونات</value>
+  </data>
+  <data name="CustomIconInstructions" xml:space="preserve">
+    <value>قم بسحب وإفلات المجلدات أو الملفات إلى أي من الجانبين. أعد ترتيب العناصر في القائمتين لربط الصفوف المتطابقة. اضغط على Delete لإزالة عنصر.</value>
+  </data>
+  <data name="DeleteCustomPatternTooltip" xml:space="preserve">
+    <value>حذف النمط المخصص</value>
+  </data>
+  <data name="FolderCountFormat" xml:space="preserve">
+    <value>{0} مجلدات</value>
+  </data>
+  <data name="FolderFiles" xml:space="preserve">
+    <value>ملفات المجلد:</value>
+  </data>
+  <data name="IconCountFormat" xml:space="preserve">
+    <value>{0} أيقونات</value>
+  </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+    <value>جارٍ الاتصال بـ DeviantArt...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+    <value>جارٍ تنزيل الأرشيف...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+    <value>جارٍ تنزيل الأرشيف ({0})...</value>
+  </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+    <value>تم استخراج {0} من {1} أيقونات</value>
+  </data>
+  <data name="MatchesCountFormat" xml:space="preserve">
+    <value>{0} مطابقة</value>
+  </data>
+  <data name="MatchingPatterns" xml:space="preserve">
+    <value>أنماط المطابقة</value>
+  </data>
+  <data name="MaxDepthHint" xml:space="preserve">
+    <value>(0 = غير محدود)</value>
+  </data>
+  <data name="NoTrailerAvailable" xml:space="preserve">
+    <value>لا يتوفر إعلان دعائي لهذا العنوان</value>
+  </data>
+  <data name="OnboardingCustomIcons" xml:space="preserve">
+    <value>أيقونات مخصصة</value>
+  </data>
+  <data name="OnboardingCustomIconsDesc" xml:space="preserve">
+    <value>حزم أيقونات من صنع فناني مجتمع DeviantArt</value>
+  </data>
+  <data name="OnboardingDeviantArtServiceName" xml:space="preserve">
+    <value>مجتمع DeviantArt</value>
+  </data>
+  <data name="OnboardingIgdbServiceName" xml:space="preserve">
+    <value>قاعدة بيانات ألعاب الفيديو (IGDB)</value>
+  </data>
+  <data name="OnboardingMoviesSeries" xml:space="preserve">
+    <value>أفلام ومسلسلات</value>
+  </data>
+  <data name="OnboardingMoviesSeriesDesc" xml:space="preserve">
+    <value>ملصقات تلقائية عالية الدقة عبر TMDb</value>
+  </data>
+  <data name="OnboardingTmdbServiceName" xml:space="preserve">
+    <value>The Movie Database (TMDb)</value>
+  </data>
+  <data name="OnboardingVideoGames" xml:space="preserve">
+    <value>ألعاب الفيديو</value>
+  </data>
+  <data name="OnboardingVideoGamesDesc" xml:space="preserve">
+    <value>أغلفة الألعاب عبر IGDB و Twitch</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>مرحبًا بك في FoliCon</value>
+  </data>
+  <data name="OverlayActive" xml:space="preserve">
+    <value>نشط</value>
+  </data>
+  <data name="OverlayBuiltIn" xml:space="preserve">
+    <value>مدمج</value>
+  </data>
+  <data name="OverlayCommunity" xml:space="preserve">
+    <value>المجتمع</value>
+  </data>
+  <data name="OverlayConfigFooter" xml:space="preserve">
+    <value>يتم حفظ التراكب المحدد تلقائيًا وتطبيقه على أيقونات مجلدات الأفلام والمسلسلات</value>
+  </data>
+  <data name="PatternCountFormat" xml:space="preserve">
+    <value>{0} أنماط</value>
+  </data>
+  <data name="PatternDefault" xml:space="preserve">
+    <value>افتراضي</value>
+  </data>
+  <data name="PatternDefaultCannotDelete" xml:space="preserve">
+    <value>نمط افتراضي مدمج (لا يمكن حذفه)</value>
+  </data>
+  <data name="PatternDefaultTooltip" xml:space="preserve">
+    <value>نمط افتراضي مدمج</value>
+  </data>
+  <data name="PosterIconOverlayCountFormat" xml:space="preserve">
+    <value>{0} تراكبات</value>
+  </data>
+  <data name="PreviewerCanvasDark" xml:space="preserve">
+    <value>داكن</value>
+  </data>
+  <data name="PreviewerCanvasFolder" xml:space="preserve">
+    <value>مجلد</value>
+  </data>
+  <data name="PreviewerCanvasLight" xml:space="preserve">
+    <value>فاتح</value>
+  </data>
+  <data name="PreviewerCanvasTheme" xml:space="preserve">
+    <value>السمة</value>
+  </data>
+  <data name="PreviewerCopyImage" xml:space="preserve">
+    <value>نسخ الصورة</value>
+  </data>
+  <data name="PreviewerCopyImageTooltip" xml:space="preserve">
+    <value>نسخ الصورة إلى الحافظة</value>
+  </data>
+  <data name="PreviewerFilterHint" xml:space="preserve">
+    <value>حاول مسح معايير التصفية أو تغييرها.</value>
+  </data>
+  <data name="PreviewerFilterOverlays" xml:space="preserve">
+    <value>تصفية التراكبات...</value>
+  </data>
+  <data name="PreviewerHdRender" xml:space="preserve">
+    <value>معاينة عالية الدقة 512 × 512</value>
+  </data>
+  <data name="PreviewerImageCopied" xml:space="preserve">
+    <value>تم نسخ صورة {0} إلى الحافظة</value>
+  </data>
+  <data name="PreviewerInspectTooltip" xml:space="preserve">
+    <value>معاينة بالحجم الكامل</value>
+  </data>
+  <data name="PreviewerNoOverlaysMatch" xml:space="preserve">
+    <value>لا توجد تراكبات تطابق بحثك</value>
+  </data>
+  <data name="PreviewerOverlayCountFormat" xml:space="preserve">
+    <value>{0} من {1} تراكبات</value>
+  </data>
+  <data name="PreviewerRendering" xml:space="preserve">
+    <value>جارٍ تصيير معاينات التراكب...</value>
+  </data>
+  <data name="PreviewerResetPosterTooltip" xml:space="preserve">
+    <value>إعادة التعيين إلى ملصق العينة الافتراضي</value>
+  </data>
+  <data name="PreviewerStatusBarHint" xml:space="preserve">
+    <value>معرض التراكبات المباشر • انقر فوق 'عرض' للمعاينة بالدقة الكاملة • مرر المؤشر لنسخ الصورة</value>
+  </data>
+  <data name="PreviewerView" xml:space="preserve">
+    <value>عرض</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>التقييم:</value>
+  </data>
+  <data name="SearchOverlaysPlaceholder" xml:space="preserve">
+    <value>البحث في التراكبات...</value>
+  </data>
+  <data name="SearchResultHint" xml:space="preserve">
+    <value>انقر نقرًا مزدوجًا فوق مرشح أو ملصق للتحديد أو استعراض ملصقات بديلة</value>
+  </data>
+  <data name="SortAZ" xml:space="preserve">
+    <value>أ-ي</value>
+  </data>
+  <data name="SortDefault" xml:space="preserve">
+    <value>افتراضي</value>
+  </data>
+  <data name="SortLabel" xml:space="preserve">
+    <value>ترتيب:</value>
+  </data>
+  <data name="SortRating" xml:space="preserve">
+    <value>★ التقييم</value>
+  </data>
+  <data name="SubfolderProcessingDescription" xml:space="preserve">
+    <value>فحص ومعالجة مجلدات المواسم وأقراص المكافآت والمجموعات المتداخلة تلقائيًا</value>
+  </data>
+  <data name="SubfolderSettingsFooter" xml:space="preserve">
+    <value>يتم حفظ الإعدادات تلقائيًا عند الإغلاق • العمق 0 يعالج جميع المجلدات الفرعية المتداخلة</value>
+  </data>
+  <data name="Synopsis" xml:space="preserve">
+    <value>ملخص القصة</value>
+  </data>
+  <data name="TestSamplePlaceholder" xml:space="preserve">
+    <value>اسم مجلد تجريبي...</value>
+  </data>
+  <data name="TestSampleTooltip" xml:space="preserve">
+    <value>اكتب اسم مجلد لاختبار تطابق التعبير النمطي (يضيء بالأخضر عند التطابق، وبالأحمر عند الاختلاف)</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>العنوان:</value>
+  </data>
+  <data name="UndoApplyTooltip" xml:space="preserve">
+    <value>التراجع عن تطبيق الأيقونة السابق</value>
+  </data>
 </root>

@@ -1806,4 +1806,241 @@ and refresh Icon Cache?</value>
   <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>无法根据清单更新叠加层「{0}」：{1}</value>
     </data>
+  <data name="AboutGithub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="AboutGithubTooltip" xml:space="preserve">
+    <value>在 GitHub 上查看源代码并参与贡献</value>
+  </data>
+  <data name="AboutLicenseFooter" xml:space="preserve">
+    <value>基于 GPL-3.0 协议的自由开源软件</value>
+  </data>
+  <data name="AboutOverlays" xml:space="preserve">
+    <value>叠加层</value>
+  </data>
+  <data name="AboutOverlaysTooltip" xml:space="preserve">
+    <value>浏览图标模板与叠加层</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>智能媒体文件夹图标生成与整理工具</value>
+  </data>
+  <data name="AboutVersionTooltip" xml:space="preserve">
+    <value>版本 {0} (点击复制)</value>
+  </data>
+  <data name="AboutWebsite" xml:space="preserve">
+    <value>官方网站</value>
+  </data>
+  <data name="AboutWebsiteTooltip" xml:space="preserve">
+    <value>访问官方博客与网站</value>
+  </data>
+  <data name="AddPattern" xml:space="preserve">
+    <value>添加模式</value>
+  </data>
+  <data name="ApplyIconsTooltip" xml:space="preserve">
+    <value>生成并为文件夹应用自定义图标</value>
+  </data>
+  <data name="AvailableCountFormat" xml:space="preserve">
+    <value>{0} 个可用</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="CanvasLabel" xml:space="preserve">
+    <value>画布:</value>
+  </data>
+  <data name="ClearFoldersTooltip" xml:space="preserve">
+    <value>清空所有文件夹</value>
+  </data>
+  <data name="ClearIconsTooltip" xml:space="preserve">
+    <value>清空所有图标</value>
+  </data>
+  <data name="CustomIconInstructions" xml:space="preserve">
+    <value>将目录或文件拖放到任一侧。重新排列任一列表中的项目以使对应行配对。按 Delete 键可删除条目。</value>
+  </data>
+  <data name="DeleteCustomPatternTooltip" xml:space="preserve">
+    <value>删除自定义模式</value>
+  </data>
+  <data name="FolderCountFormat" xml:space="preserve">
+    <value>{0} 个文件夹</value>
+  </data>
+  <data name="FolderFiles" xml:space="preserve">
+    <value>文件夹文件:</value>
+  </data>
+  <data name="IconCountFormat" xml:space="preserve">
+    <value>{0} 个图标</value>
+  </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+    <value>正在连接 DeviantArt...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+    <value>正在下载归档压缩包...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+    <value>正在下载归档压缩包 ({0})...</value>
+  </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+    <value>已解压 {0} / {1} 个图标</value>
+  </data>
+  <data name="MatchesCountFormat" xml:space="preserve">
+    <value>{0} 个匹配项</value>
+  </data>
+  <data name="MatchingPatterns" xml:space="preserve">
+    <value>匹配模式</value>
+  </data>
+  <data name="MaxDepthHint" xml:space="preserve">
+    <value>(0 = 无限制)</value>
+  </data>
+  <data name="NoTrailerAvailable" xml:space="preserve">
+    <value>该作品暂无预告片</value>
+  </data>
+  <data name="OnboardingCustomIcons" xml:space="preserve">
+    <value>自定义图标</value>
+  </data>
+  <data name="OnboardingCustomIconsDesc" xml:space="preserve">
+    <value>来自 DeviantArt 艺术家的图标包</value>
+  </data>
+  <data name="OnboardingDeviantArtServiceName" xml:space="preserve">
+    <value>DeviantArt 社区</value>
+  </data>
+  <data name="OnboardingIgdbServiceName" xml:space="preserve">
+    <value>互联网游戏数据库 (IGDB)</value>
+  </data>
+  <data name="OnboardingMoviesSeries" xml:space="preserve">
+    <value>电影与电视剧</value>
+  </data>
+  <data name="OnboardingMoviesSeriesDesc" xml:space="preserve">
+    <value>通过 TMDb 自动获取高清海报</value>
+  </data>
+  <data name="OnboardingTmdbServiceName" xml:space="preserve">
+    <value>The Movie Database (TMDb)</value>
+  </data>
+  <data name="OnboardingVideoGames" xml:space="preserve">
+    <value>电子游戏</value>
+  </data>
+  <data name="OnboardingVideoGamesDesc" xml:space="preserve">
+    <value>通过 IGDB 和 Twitch 获取游戏封面</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>欢迎使用 FoliCon</value>
+  </data>
+  <data name="OverlayActive" xml:space="preserve">
+    <value>已激活</value>
+  </data>
+  <data name="OverlayBuiltIn" xml:space="preserve">
+    <value>内置</value>
+  </data>
+  <data name="OverlayCommunity" xml:space="preserve">
+    <value>社区</value>
+  </data>
+  <data name="OverlayConfigFooter" xml:space="preserve">
+    <value>所选叠加层将自动保存并应用于电影和电视剧文件夹图标</value>
+  </data>
+  <data name="PatternCountFormat" xml:space="preserve">
+    <value>{0} 个模式</value>
+  </data>
+  <data name="PatternDefault" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="PatternDefaultCannotDelete" xml:space="preserve">
+    <value>内置默认模式 (不可删除)</value>
+  </data>
+  <data name="PatternDefaultTooltip" xml:space="preserve">
+    <value>内置默认模式</value>
+  </data>
+  <data name="PosterIconOverlayCountFormat" xml:space="preserve">
+    <value>{0} 个叠加层</value>
+  </data>
+  <data name="PreviewerCanvasDark" xml:space="preserve">
+    <value>深色</value>
+  </data>
+  <data name="PreviewerCanvasFolder" xml:space="preserve">
+    <value>文件夹</value>
+  </data>
+  <data name="PreviewerCanvasLight" xml:space="preserve">
+    <value>浅色</value>
+  </data>
+  <data name="PreviewerCanvasTheme" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="PreviewerCopyImage" xml:space="preserve">
+    <value>复制图像</value>
+  </data>
+  <data name="PreviewerCopyImageTooltip" xml:space="preserve">
+    <value>将图像复制到剪贴板</value>
+  </data>
+  <data name="PreviewerFilterHint" xml:space="preserve">
+    <value>请尝试清除或更改筛选条件。</value>
+  </data>
+  <data name="PreviewerFilterOverlays" xml:space="preserve">
+    <value>筛选叠加层...</value>
+  </data>
+  <data name="PreviewerHdRender" xml:space="preserve">
+    <value>512 × 512 高清渲染</value>
+  </data>
+  <data name="PreviewerImageCopied" xml:space="preserve">
+    <value>{0} 图像已复制到剪贴板</value>
+  </data>
+  <data name="PreviewerInspectTooltip" xml:space="preserve">
+    <value>查看完整尺寸</value>
+  </data>
+  <data name="PreviewerNoOverlaysMatch" xml:space="preserve">
+    <value>未找到匹配的叠加层</value>
+  </data>
+  <data name="PreviewerOverlayCountFormat" xml:space="preserve">
+    <value>{0} / {1} 个叠加层</value>
+  </data>
+  <data name="PreviewerRendering" xml:space="preserve">
+    <value>正在渲染叠加层预览...</value>
+  </data>
+  <data name="PreviewerResetPosterTooltip" xml:space="preserve">
+    <value>重置为默认示例海报</value>
+  </data>
+  <data name="PreviewerStatusBarHint" xml:space="preserve">
+    <value>实时叠加层陈列室 • 点击「查看」查看完整分辨率 • 悬停复制图像</value>
+  </data>
+  <data name="PreviewerView" xml:space="preserve">
+    <value>查看</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>评分:</value>
+  </data>
+  <data name="SearchOverlaysPlaceholder" xml:space="preserve">
+    <value>搜索叠加层...</value>
+  </data>
+  <data name="SearchResultHint" xml:space="preserve">
+    <value>双击候选项或海报以选择，或浏览备选海报</value>
+  </data>
+  <data name="SortAZ" xml:space="preserve">
+    <value>A-Z 字母排序</value>
+  </data>
+  <data name="SortDefault" xml:space="preserve">
+    <value>默认</value>
+  </data>
+  <data name="SortLabel" xml:space="preserve">
+    <value>排序:</value>
+  </data>
+  <data name="SortRating" xml:space="preserve">
+    <value>★ 评分</value>
+  </data>
+  <data name="SubfolderProcessingDescription" xml:space="preserve">
+    <value>自动扫描并处理季文件夹、花絮碟片和嵌套合集</value>
+  </data>
+  <data name="SubfolderSettingsFooter" xml:space="preserve">
+    <value>关闭时自动保存设置 • 深度 0 表示处理所有嵌套子目录</value>
+  </data>
+  <data name="Synopsis" xml:space="preserve">
+    <value>剧情简介</value>
+  </data>
+  <data name="TestSamplePlaceholder" xml:space="preserve">
+    <value>测试文件夹名称...</value>
+  </data>
+  <data name="TestSampleTooltip" xml:space="preserve">
+    <value>输入文件夹名称以测试正则表达式匹配 (匹配显示绿色，不匹配显示红色)</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>标题:</value>
+  </data>
+  <data name="UndoApplyTooltip" xml:space="preserve">
+    <value>撤消上次图标应用</value>
+  </data>
 </root>
