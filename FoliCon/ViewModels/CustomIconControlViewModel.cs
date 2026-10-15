@@ -117,7 +117,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         set => SetProperty(ref field, value);
     }
 
-    private bool StopSearch
+    public bool StopSearch
     {
         get;
         set => SetProperty(ref field, value);
@@ -273,6 +273,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             return;
         }
 
+        ResetState();
         var iconProcessedCount = MakeIcons();
         var info = new GrowlInfo
         {
@@ -294,12 +295,16 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
     }
 
+    private void ResetState()
+    {
+        StopSearch = false;
+    }
+
     private int MakeIcons()
     {
         IsBusy = true;
         Index = 0;
         TotalIcons = Icons.Count;
-        StopSearch = false;
         for (var i = 0; i < Directories.Count; ++i)
         {
             if (i >= Icons.Count)
@@ -333,14 +338,11 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             FileUtils.HideFile(newIconPath);
             FileUtils.SetFolderIcon($"{Directories[i]}.ico", folderPath);
             Index++;
-            if (!StopSearch)
+            if (StopSearch)
             {
-                continue;
+                Logger.Warn("User stopped search");
+                break;
             }
-
-            Logger.Warn("User stopped search");
-            break;
-
         }
 
         FileUtils.ApplyChanges(SelectedDirectory);

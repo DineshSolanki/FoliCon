@@ -25,7 +25,7 @@ public class AboutBoxViewSmokeTests
             view.Arrange(new Rect(size));
             view.UpdateLayout();
 
-            Assert.False(string.IsNullOrWhiteSpace(viewModel.VersionTag));
+            Assert.False(string.IsNullOrWhiteSpace(AboutBoxViewModel.VersionTag));
             Assert.NotNull(view.Content);
         });
     }

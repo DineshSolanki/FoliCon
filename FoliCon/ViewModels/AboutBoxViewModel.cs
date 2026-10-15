@@ -9,7 +9,7 @@ public class AboutBoxViewModel : BindableBase, IDialogAware
     public static string GithubUrl { get; } = "https://github.com/DineshSolanki/FoliCon";
     public static string OverlayStoreUrl { get; } = "https://github.com/DineshSolanki/FoliCon-Overlays";
 
-    public string VersionTag => $"v{AssemblyInfo.GetShortVersion()}";
+    public static string VersionTag { get; } = $"v{AssemblyInfo.GetShortVersion()}";
 
     public AboutBoxViewModel()
     {

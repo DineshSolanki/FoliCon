@@ -26,7 +26,7 @@ public class ReOrderDropHandler : IDropTarget
         _defaultDropHandler.Drop(dropInfo);
     }
 
-    public static bool CanAcceptDrop(IDropInfo? dropInfo)
+    public static bool CanAcceptDrop(IDropInfo dropInfo)
     {
         if (dropInfo?.DragInfo == null)
         {
