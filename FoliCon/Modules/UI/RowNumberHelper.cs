@@ -87,7 +87,7 @@ public static class RowNumberHelper
         var attachment = new ListBoxAttachment();
         listBox.SetValue(AttachmentProperty, attachment);
 
-        attachment.GeneratorStatusChanged = (s, e) =>
+        attachment.GeneratorStatusChanged = (_, _) =>
         {
             if (listBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
@@ -96,7 +96,7 @@ public static class RowNumberHelper
         };
         listBox.ItemContainerGenerator.StatusChanged += attachment.GeneratorStatusChanged;
 
-        attachment.ScrollChanged = (s, e) =>
+        attachment.ScrollChanged = (_, e) =>
         {
             if (e.VerticalChange != 0 || e.ExtentHeightChange != 0)
             {
@@ -108,7 +108,7 @@ public static class RowNumberHelper
         var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(ListBox));
         if (dpd != null)
         {
-            attachment.ItemsSourceChanged = (s, e) =>
+            attachment.ItemsSourceChanged = (_, _) =>
             {
                 HookCollection(listBox, attachment);
                 listBox.Dispatcher.InvokeAsync(() => UpdateRowNumbers(listBox), DispatcherPriority.Loaded);
@@ -130,7 +130,7 @@ public static class RowNumberHelper
 
         if (listBox.ItemsSource is INotifyCollectionChanged notify)
         {
-            attachment.CollectionChanged = (s, e) =>
+            attachment.CollectionChanged = (_, _) =>
             {
                 listBox.Dispatcher.InvokeAsync(() => UpdateRowNumbers(listBox), DispatcherPriority.Loaded);
             };
