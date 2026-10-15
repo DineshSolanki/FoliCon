@@ -305,9 +305,34 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
                 () => MakeIcons(directories, icons, selectedDirectory, selectedIconsDirectory, progress, token),
                 token);
         }
+        catch (OperationCanceledException)
+        {
+            Logger.Warn("Icon generation canceled by user");
+            return;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed to generate custom icons");
+            MessageBox.Show(CustomMessageBox.Error(ex.Message, Lang.CreatingIcons));
+            return;
+        }
         finally
         {
             IsBusy = false;
+        }
+
+        if (StopSearch || token.IsCancellationRequested)
+        {
+            Logger.Warn("Icon generation stopped by user");
+            if (iconProcessedCount > 0)
+            {
+                IsUndoEnable = true;
+                _undoDirectories.Clear();
+                _undoDirectories = directories.Take(iconProcessedCount)
+                    .Select(folder => Path.Combine(selectedDirectory, folder))
+                    .ToObservableCollection();
+            }
+            return;
         }
 
         var info = new GrowlInfo
@@ -318,7 +343,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         };
         IsUndoEnable = true;
         _undoDirectories.Clear();
-        _undoDirectories = Directories.Select(folder => Path.Combine(SelectedDirectory, folder))
+        _undoDirectories = directories.Take(iconProcessedCount)
+            .Select(folder => Path.Combine(selectedDirectory, folder))
             .ToObservableCollection();
         Growl.SuccessGlobal(info);
         if (MessageBox.Show(
@@ -326,7 +352,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
                     $"{Lang.IconReloadMayTakeTime} {Environment.NewLine}{Lang.ToForceReload} {Environment.NewLine}{Lang.ConfirmToOpenFolder}",
                     Lang.IconCreated)) == MessageBoxResult.Yes)
         {
-            ProcessUtils.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
+            ProcessUtils.StartProcess(selectedDirectory + Path.DirectorySeparatorChar);
         }
     }
 

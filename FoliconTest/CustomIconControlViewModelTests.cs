@@ -39,4 +39,17 @@ public class CustomIconControlViewModelTests
 
         Assert.Null(ex);
     }
+
+    [Fact]
+    public void IsBusy_CanBeToggled()
+    {
+        var vm = new CustomIconControlViewModel();
+        Assert.False(vm.IsBusy);
+
+        vm.IsBusy = true;
+        Assert.True(vm.IsBusy);
+
+        vm.IsBusy = false;
+        Assert.False(vm.IsBusy);
+    }
 }
