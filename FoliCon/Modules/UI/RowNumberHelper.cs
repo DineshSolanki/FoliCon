@@ -33,11 +33,11 @@ public static class RowNumberHelper
 
     private sealed class ListBoxAttachment
     {
-        public EventHandler GeneratorStatusChanged { get; set; }
-        public ScrollChangedEventHandler ScrollChanged { get; set; }
-        public EventHandler ItemsSourceChanged { get; set; }
-        public NotifyCollectionChangedEventHandler CollectionChanged { get; set; }
-        public INotifyCollectionChanged SubscribedCollection { get; set; }
+        public EventHandler? GeneratorStatusChanged { get; set; }
+        public ScrollChangedEventHandler? ScrollChanged { get; set; }
+        public EventHandler? ItemsSourceChanged { get; set; }
+        public NotifyCollectionChangedEventHandler? CollectionChanged { get; set; }
+        public INotifyCollectionChanged? SubscribedCollection { get; set; }
     }
 
     private static readonly DependencyProperty AttachmentProperty =
