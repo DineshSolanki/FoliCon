@@ -31,10 +31,19 @@ public static class RowNumberHelper
     public static string GetRowIndex(DependencyObject obj) => (string)obj.GetValue(RowIndexProperty);
     public static void SetRowIndex(DependencyObject obj, string value) => obj.SetValue(RowIndexProperty, value);
 
-    private static readonly DependencyProperty CollectionHandlerProperty =
+    private sealed class ListBoxAttachment
+    {
+        public EventHandler GeneratorStatusChanged { get; set; }
+        public ScrollChangedEventHandler ScrollChanged { get; set; }
+        public EventHandler ItemsSourceChanged { get; set; }
+        public NotifyCollectionChangedEventHandler CollectionChanged { get; set; }
+        public INotifyCollectionChanged SubscribedCollection { get; set; }
+    }
+
+    private static readonly DependencyProperty AttachmentProperty =
         DependencyProperty.RegisterAttached(
-            "CollectionHandler",
-            typeof(NotifyCollectionChangedEventHandler),
+            "Attachment",
+            typeof(ListBoxAttachment),
             typeof(RowNumberHelper),
             new PropertyMetadata(null));
 
@@ -44,6 +53,8 @@ public static class RowNumberHelper
         {
             return;
         }
+
+        listBox.Loaded -= ListBox_Loaded;
 
         if ((bool)e.NewValue)
         {
@@ -56,7 +67,6 @@ public static class RowNumberHelper
         }
         else
         {
-            listBox.Loaded -= ListBox_Loaded;
             Detach(listBox);
         }
     }
@@ -72,74 +82,92 @@ public static class RowNumberHelper
 
     private static void Attach(ListBox listBox)
     {
-        // Update whenever item containers finish generating / recycling
-        listBox.ItemContainerGenerator.StatusChanged -= Generator_StatusChanged;
-        listBox.ItemContainerGenerator.StatusChanged += Generator_StatusChanged;
+        Detach(listBox);
 
-        void Generator_StatusChanged(object? s, EventArgs e)
+        var attachment = new ListBoxAttachment();
+        listBox.SetValue(AttachmentProperty, attachment);
+
+        attachment.GeneratorStatusChanged = (s, e) =>
         {
             if (listBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
                 UpdateRowNumbers(listBox);
             }
-        }
+        };
+        listBox.ItemContainerGenerator.StatusChanged += attachment.GeneratorStatusChanged;
 
-        // Update on scrolling
-        listBox.RemoveHandler(ScrollViewer.ScrollChangedEvent, (ScrollChangedEventHandler)ListBox_ScrollChanged);
-        listBox.AddHandler(ScrollViewer.ScrollChangedEvent, (ScrollChangedEventHandler)ListBox_ScrollChanged);
-
-        void ListBox_ScrollChanged(object s, ScrollChangedEventArgs e)
+        attachment.ScrollChanged = (s, e) =>
         {
             if (e.VerticalChange != 0 || e.ExtentHeightChange != 0)
             {
                 UpdateRowNumbers(listBox);
             }
-        }
+        };
+        listBox.AddHandler(ScrollViewer.ScrollChangedEvent, attachment.ScrollChanged);
 
-        HookCollection(listBox);
-
-        // Hook ItemsSource property changes
         var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(ListBox));
-        dpd?.RemoveValueChanged(listBox, OnItemsSourceChanged);
-        dpd?.AddValueChanged(listBox, OnItemsSourceChanged);
-
-        void OnItemsSourceChanged(object? s, EventArgs e)
+        if (dpd != null)
         {
-            HookCollection(listBox);
-            listBox.Dispatcher.InvokeAsync(() => UpdateRowNumbers(listBox), DispatcherPriority.Loaded);
+            attachment.ItemsSourceChanged = (s, e) =>
+            {
+                HookCollection(listBox, attachment);
+                listBox.Dispatcher.InvokeAsync(() => UpdateRowNumbers(listBox), DispatcherPriority.Loaded);
+            };
+            dpd.AddValueChanged(listBox, attachment.ItemsSourceChanged);
         }
+
+        HookCollection(listBox, attachment);
     }
 
-    private static void HookCollection(ListBox listBox)
+    private static void HookCollection(ListBox listBox, ListBoxAttachment attachment)
     {
-        // Unhook previous collection handler if any
-        if (listBox.GetValue(CollectionHandlerProperty) is NotifyCollectionChangedEventHandler oldHandler &&
-            listBox.ItemsSource is INotifyCollectionChanged oldNotify)
+        if (attachment.SubscribedCollection != null && attachment.CollectionChanged != null)
         {
-            oldNotify.CollectionChanged -= oldHandler;
+            attachment.SubscribedCollection.CollectionChanged -= attachment.CollectionChanged;
+            attachment.SubscribedCollection = null;
+            attachment.CollectionChanged = null;
         }
 
         if (listBox.ItemsSource is INotifyCollectionChanged notify)
         {
-            void CollectionChangedHandler(object? s, NotifyCollectionChangedEventArgs e)
+            attachment.CollectionChanged = (s, e) =>
             {
-                // Dispatch after layout settles to guarantee container positions are updated
                 listBox.Dispatcher.InvokeAsync(() => UpdateRowNumbers(listBox), DispatcherPriority.Loaded);
-            }
-
-            listBox.SetValue(CollectionHandlerProperty, (NotifyCollectionChangedEventHandler)CollectionChangedHandler);
-            notify.CollectionChanged += CollectionChangedHandler;
+            };
+            attachment.SubscribedCollection = notify;
+            notify.CollectionChanged += attachment.CollectionChanged;
         }
     }
 
     private static void Detach(ListBox listBox)
     {
-        if (listBox.GetValue(CollectionHandlerProperty) is NotifyCollectionChangedEventHandler handler &&
-            listBox.ItemsSource is INotifyCollectionChanged notify)
+        if (listBox.GetValue(AttachmentProperty) is not ListBoxAttachment attachment)
         {
-            notify.CollectionChanged -= handler;
-            listBox.ClearValue(CollectionHandlerProperty);
+            return;
         }
+
+        if (attachment.GeneratorStatusChanged != null)
+        {
+            listBox.ItemContainerGenerator.StatusChanged -= attachment.GeneratorStatusChanged;
+        }
+
+        if (attachment.ScrollChanged != null)
+        {
+            listBox.RemoveHandler(ScrollViewer.ScrollChangedEvent, attachment.ScrollChanged);
+        }
+
+        if (attachment.ItemsSourceChanged != null)
+        {
+            var dpd = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(ListBox));
+            dpd?.RemoveValueChanged(listBox, attachment.ItemsSourceChanged);
+        }
+
+        if (attachment.SubscribedCollection != null && attachment.CollectionChanged != null)
+        {
+            attachment.SubscribedCollection.CollectionChanged -= attachment.CollectionChanged;
+        }
+
+        listBox.ClearValue(AttachmentProperty);
     }
 
     public static void UpdateRowNumbers(ListBox listBox)

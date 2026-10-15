@@ -186,8 +186,11 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		}
 		catch (Exception ex)
 		{
-			HandleExtractionException(ex, deviationId);
-			CloseDialog(ButtonResult.Cancel, null);
+			if (ReferenceEquals(_cts, cts) && !token.IsCancellationRequested)
+			{
+				HandleExtractionException(ex, deviationId);
+				CloseDialog(ButtonResult.Cancel, null);
+			}
 			return;
 		}
 
