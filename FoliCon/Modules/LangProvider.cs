@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 
 namespace FoliCon.Properties.Langs;
 
@@ -147,6 +147,10 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(MaxDepth));
         OnPropertyChanged(nameof(MaxDepthTooltip));
         OnPropertyChanged(nameof(ManualExplorer));
+        OnPropertyChanged(nameof(ManualExplorerConnecting));
+        OnPropertyChanged(nameof(ManualExplorerDownloadingArchive));
+        OnPropertyChanged(nameof(ManualExplorerDownloadingArchiveWithSize));
+        OnPropertyChanged(nameof(ManualExplorerExtractedCount));
         OnPropertyChanged(nameof(MediaRating));
         OnPropertyChanged(nameof(MediaTitle));
         OnPropertyChanged(nameof(Movie));
@@ -773,6 +777,10 @@ public class LangProvider : INotifyPropertyChanged
     public string LoadingPosters => Lang.LoadingPosters;
     public string MakeIcons => Lang.MakeIcons;
     public string ManualExplorer => Lang.ManualExplorer;
+    public string ManualExplorerConnecting => Lang.ManualExplorerConnecting;
+    public string ManualExplorerDownloadingArchive => Lang.ManualExplorerDownloadingArchive;
+    public string ManualExplorerDownloadingArchiveWithSize => Lang.ManualExplorerDownloadingArchiveWithSize;
+    public string ManualExplorerExtractedCount => Lang.ManualExplorerExtractedCount;
     public string MediaRating => Lang.MediaRating;
     public string MediaTitle => Lang.MediaTitle;
     public string Movie => Lang.Movie;
@@ -1399,6 +1407,10 @@ public static class LangKeys
     public static readonly string LoadingPosters = nameof(LoadingPosters);
     public static readonly string MakeIcons = nameof(MakeIcons);
     public static readonly string ManualExplorer = nameof(ManualExplorer);
+    public static readonly string ManualExplorerConnecting = nameof(ManualExplorerConnecting);
+    public static readonly string ManualExplorerDownloadingArchive = nameof(ManualExplorerDownloadingArchive);
+    public static readonly string ManualExplorerDownloadingArchiveWithSize = nameof(ManualExplorerDownloadingArchiveWithSize);
+    public static readonly string ManualExplorerExtractedCount = nameof(ManualExplorerExtractedCount);
     public static readonly string MediaRating = nameof(MediaRating);
     public static readonly string MediaTitle = nameof(MediaTitle);
     public static readonly string Movie = nameof(Movie);

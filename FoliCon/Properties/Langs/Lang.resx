@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
     <!-- 
       Microsoft ResX Schema 
@@ -696,6 +696,18 @@ and refresh Icon Cache?</value>
     </data>
     <data name="ManualExplorer" xml:space="preserve">
       <value>Manual Explorer</value>
+    </data>
+    <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>Connecting to DeviantArt...</value>
+    </data>
+    <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>Downloading archive...</value>
+    </data>
+    <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>Downloading archive ({0})...</value>
+    </data>
+    <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>Extracted {0} of {1} icons</value>
     </data>
     <data name="ExtractGallery" xml:space="preserve">
       <value>Extract gallery</value>

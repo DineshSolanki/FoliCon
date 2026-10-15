@@ -169,7 +169,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 		IsBusy = true;
 		IsIndeterminate = true;
-		ProgressStatusText = "Connecting to DeviantArt...";
+		ProgressStatusText = Lang.ManualExplorerConnecting;
 		try
 		{
 			await DownloadAndExtractAsync(deviationId, cts, token);
@@ -213,8 +213,8 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
 
 		ProgressStatusText = !string.IsNullOrEmpty(DArtDownloadResponse?.FileSizeHumanReadable)
-			? $"Downloading archive ({DArtDownloadResponse.FileSizeHumanReadable})..."
-			: "Downloading archive...";
+			? string.Format(CultureInfo.CurrentCulture, Lang.ManualExplorerDownloadingArchiveWithSize, DArtDownloadResponse.FileSizeHumanReadable)
+			: Lang.ManualExplorerDownloadingArchive;
 
 		var progress = new Progress<ProgressBarData>(value => UpdateExtractionProgress(value, cts, token));
 		var response = DArtDownloadResponse;
@@ -237,7 +237,7 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		if (value.Max > 1)
 		{
 			IsIndeterminate = false;
-			ProgressStatusText = string.Format(CultureInfo.CurrentCulture, "Extracted {0} of {1} icons", value.Value, value.Max);
+			ProgressStatusText = string.Format(CultureInfo.CurrentCulture, Lang.ManualExplorerExtractedCount, value.Value, value.Max);
 		}
 	}
 
