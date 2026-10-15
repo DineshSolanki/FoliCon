@@ -216,11 +216,13 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			? $"Downloading archive ({DArtDownloadResponse.FileSizeHumanReadable})..."
 			: "Downloading archive...";
 
+		var progress = new Progress<ProgressBarData>(value => UpdateExtractionProgress(value, cts, token));
+		var response = DArtDownloadResponse;
 		DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(
 			deviationId,
-			DArtDownloadResponse,
+			response,
 			token,
-			new Progress<ProgressBarData>(value => UpdateExtractionProgress(value, cts, token))), token);
+			progress), token);
 
 		Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
 	}

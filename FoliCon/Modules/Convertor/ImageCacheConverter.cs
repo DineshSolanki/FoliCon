@@ -85,6 +85,11 @@ public class ImageCacheConverter : IValueConverter
             image.BeginInit();
             image.UriSource = webUri;
             image.CacheOption = BitmapCacheOption.OnDemand;
+            image.DownloadFailed += (_, _) =>
+            {
+                ((ICollection<KeyValuePair<string, ImageSource>>)Cache)
+                    .Remove(new KeyValuePair<string, ImageSource>(path, image));
+            };
             image.EndInit();
             return image;
         }
