@@ -305,9 +305,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
                 () => MakeIcons(directories, icons, selectedDirectory, selectedIconsDirectory, progress, token),
                 token);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
-            Logger.Warn("Icon generation canceled by user");
+            Logger.Warn(ex, "Icon generation canceled by user");
             return;
         }
         catch (Exception ex)
