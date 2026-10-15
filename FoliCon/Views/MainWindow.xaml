@@ -404,9 +404,9 @@
                     <!-- Main Navigation Menu -->
                     <Menu Grid.Column="1" IsMainMenu="True" Background="Transparent" VerticalAlignment="Center">
                         <!-- OVERLAYS MENU -->
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayStore}}">
+                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AboutOverlays}}">
                             <MenuItem.Icon>
-                                <Path Data="{StaticResource StoreGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                             </MenuItem.Icon>
                             <MenuItem x:Name="MenuOverlayStoreBtn" Command="{Binding OverlayStoreCommand}"
                                       Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayStore}}">
@@ -418,6 +418,11 @@
                                       Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesigner}}">
                                 <MenuItem.Icon>
                                     <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource EyeGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator />
@@ -441,12 +446,6 @@
                                     <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource EyeGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
                             <MenuItem x:Name="MenuSubfolderProcessingConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
                                       Command="{Binding SubfolderProcessingConfigCommand}">
                                 <MenuItem.Icon>
@@ -461,6 +460,7 @@
                                     <Path Data="{StaticResource RefreshGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                                 </MenuItem.Icon>
                             </MenuItem>
+                            <Separator />
                             <MenuItem x:Name="MenuDeleteIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
                                       ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteIconsTooltip}}"
                                       Command="{Binding DeleteIconsCommand}">
@@ -507,13 +507,6 @@
                                       IsCheckable="True" IsChecked="{Binding IsSkipAmbiguous}"
                                       IsEnabled="{Binding IsSkipAmbiguousEnabled}" />
 
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
-                                      Command="{Binding PosterIconConfigCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-
                             <Separator />
 
                             <!-- ======================================================== -->
@@ -528,13 +521,6 @@
                                       Header="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessed}}"
                                       ToolTip="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessedTooltip}}"
                                       IsCheckable="True" IsChecked="{Binding IncludeAlreadyProcessed}" />
-
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
-                                      Command="{Binding SubfolderProcessingConfigCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
 
                             <Separator />
 
@@ -555,14 +541,6 @@
                                           Command="{Binding ExploreIntegrationCommand}" CommandParameter="False">
                                     <MenuItem.Icon>
                                         <Path Data="{StaticResource TrashGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
-                                          ToolTip="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
-                                          Command="{Binding RestartExCommand}">
-                                    <MenuItem.Icon>
-                                        <Path Data="{StaticResource RefreshGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                                     </MenuItem.Icon>
                                 </MenuItem>
                             </MenuItem>
@@ -636,13 +614,6 @@
                             <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}">
                                 <MenuItem.Icon>
                                     <Path Data="{StaticResource UpdateGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}"
-                                      IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource BlogsGeometry}" Style="{StaticResource MenuIconPathStyle}" />
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator />
