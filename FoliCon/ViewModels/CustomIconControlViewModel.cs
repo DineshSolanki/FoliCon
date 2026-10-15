@@ -21,6 +21,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private ObservableCollection<string> _undoDirectories = [];
     private ObservableCollection<string> _backupDirectories = [];
     private ObservableCollection<string> _backupIcons = [];
+    private CancellationTokenSource _cancellationTokenSource;
 
     public bool KeepExactOnly
     {
@@ -144,11 +145,15 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         Directories = [];
         Icons = [];
         LoadDirectory = new DelegateCommand(LoadDirectoryMethod);
-        StopSearchCommand = new DelegateCommand(() => StopSearch = true);
+        StopSearchCommand = new DelegateCommand(() =>
+        {
+            StopSearch = true;
+            _cancellationTokenSource?.Cancel();
+        });
         LoadIcons = new DelegateCommand(LoadIconsMethod);
         ClearFoldersCommand = new DelegateCommand(ClearFoldersMethod);
         ClearIconsCommand = new DelegateCommand(ClearIconsMethod);
-        Apply = new DelegateCommand(StartProcessing);
+        Apply = new DelegateCommand(async () => await StartProcessingAsync());
         UndoIcons = new DelegateCommand(UndoCreatedIcons);
         KeyPressFolderList = new DelegateCommand<dynamic>(FolderListKeyPress);
         KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
@@ -249,6 +254,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     public virtual void OnDialogClosed()
     {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = null;
     }
 
     public virtual void OnDialogOpened(IDialogParameters parameters)
@@ -257,8 +265,13 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     #endregion DialogMethods
 
-    private void StartProcessing()
+    private async Task StartProcessingAsync()
     {
+        if (IsBusy)
+        {
+            return;
+        }
+
         Logger.Debug("Directories count: {Count}, Icons count: {IconCount}", Directories.Count, Icons.Count);
         if (Directories.Count <= 0 || SelectedDirectory is null)
         {
@@ -274,7 +287,29 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
 
         ResetState();
-        var iconProcessedCount = MakeIcons();
+        IsBusy = true;
+        Index = 0;
+        TotalIcons = Icons.Count;
+
+        var directories = Directories.ToList();
+        var icons = Icons.ToList();
+        var selectedDirectory = SelectedDirectory;
+        var selectedIconsDirectory = SelectedIconsDirectory;
+        var progress = new Progress<int>(value => Index = value);
+        var token = _cancellationTokenSource?.Token ?? CancellationToken.None;
+
+        int iconProcessedCount;
+        try
+        {
+            iconProcessedCount = await Task.Run(
+                () => MakeIcons(directories, icons, selectedDirectory, selectedIconsDirectory, progress, token),
+                token);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
         var info = new GrowlInfo
         {
             Message = Lang.IconCreatedWithCount.Format(iconProcessedCount),
@@ -298,32 +333,38 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     private void ResetState()
     {
         StopSearch = false;
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
     }
 
-    private int MakeIcons()
+    private int MakeIcons(
+        IReadOnlyList<string> directories,
+        IReadOnlyList<string> icons,
+        string selectedDirectory,
+        string selectedIconsDirectory,
+        IProgress<int> progress,
+        CancellationToken token)
     {
-        IsBusy = true;
-        Index = 0;
-        TotalIcons = Icons.Count;
-        for (var i = 0; i < Directories.Count; ++i)
+        var processed = 0;
+        for (var i = 0; i < directories.Count; ++i)
         {
-            if (i >= Icons.Count)
+            if (i >= icons.Count)
             {
                 break;
             }
 
-            var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
-            var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
-            var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
+            var iconPath = Path.Combine(selectedIconsDirectory, icons[i]);
+            var folderPath = Path.Combine(selectedDirectory, directories[i]);
+            var newIconPath = Path.Combine(folderPath, $"{directories[i]}.ico");
 
             Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
                 folderPath, iconPath, newIconPath);
 
-            if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
+            if (Path.GetExtension(icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
             {
                 Logger.Info("Converting {Icon} to .ico", iconPath);
                 var icon = new ProIcon(iconPath).RenderToBitmap();
-                iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
+                iconPath = iconPath.Replace(Path.GetExtension(icons[i])!, ".ico");
                 PngToIcoService.Convert(icon, iconPath);
                 icon.Dispose();
                 Logger.Info("Converted {Icon} to .ico", iconPath);
@@ -336,19 +377,19 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             }
 
             FileUtils.HideFile(newIconPath);
-            FileUtils.SetFolderIcon($"{Directories[i]}.ico", folderPath);
-            Index++;
-            if (StopSearch)
+            FileUtils.SetFolderIcon($"{directories[i]}.ico", folderPath);
+            processed++;
+            progress.Report(processed);
+            if (StopSearch || token.IsCancellationRequested)
             {
                 Logger.Warn("User stopped search");
                 break;
             }
         }
 
-        FileUtils.ApplyChanges(SelectedDirectory);
+        FileUtils.ApplyChanges(selectedDirectory);
         SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
-        IsBusy = false;
-        return Index;
+        return processed;
     }
 
     private void RemoveNotMatching()
