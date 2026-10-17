@@ -15,7 +15,9 @@ public partial class SearchResult
     private ResizeMode _previousResizeMode = ResizeMode.CanResize;
     private bool _previousShowTitle = true;
     private bool _previousShowNonClientArea = true;
+    private bool _previousTopmost;
     private bool _isFullScreen;
+    private System.Windows.Window? _parentWindow;
 
     public SearchResult()
     {
@@ -27,7 +29,15 @@ public partial class SearchResult
     {
         _isFullScreen = isFullScreen;
 
-        var window = System.Windows.Window.GetWindow(this);
+        var window = _parentWindow ??= System.Windows.Window.GetWindow(this);
+        if (_parentWindow != null)
+        {
+            _parentWindow.Activated -= OnWindowActivated;
+            _parentWindow.Deactivated -= OnWindowDeactivated;
+            _parentWindow.Activated += OnWindowActivated;
+            _parentWindow.Deactivated += OnWindowDeactivated;
+        }
+
         if (window is HandyControl.Controls.Window hcWindow)
         {
             if (isFullScreen)
@@ -37,19 +47,26 @@ public partial class SearchResult
                 _previousResizeMode = hcWindow.ResizeMode;
                 _previousShowTitle = hcWindow.ShowTitle;
                 _previousShowNonClientArea = hcWindow.ShowNonClientArea;
+                _previousTopmost = hcWindow.Topmost;
 
                 hcWindow.ShowTitle = false;
                 hcWindow.ShowNonClientArea = false;
                 hcWindow.IsFullScreen = true;
+                hcWindow.Topmost = true;
+                hcWindow.Activate();
+                hcWindow.Focus();
             }
             else
             {
+                hcWindow.Topmost = _previousTopmost;
                 hcWindow.IsFullScreen = false;
                 hcWindow.ShowTitle = _previousShowTitle;
                 hcWindow.ShowNonClientArea = _previousShowNonClientArea;
                 hcWindow.WindowState = _previousWindowState;
                 hcWindow.WindowStyle = _previousWindowStyle;
                 hcWindow.ResizeMode = _previousResizeMode;
+                hcWindow.Activate();
+                hcWindow.Focus();
             }
         }
         else if (window != null)
@@ -59,18 +76,38 @@ public partial class SearchResult
                 _previousWindowState = window.WindowState;
                 _previousWindowStyle = window.WindowStyle;
                 _previousResizeMode = window.ResizeMode;
+                _previousTopmost = window.Topmost;
 
                 window.WindowStyle = WindowStyle.None;
                 window.ResizeMode = ResizeMode.NoResize;
                 window.WindowState = WindowState.Normal;
                 window.WindowState = WindowState.Maximized;
+                window.Topmost = true;
+                window.Activate();
+                window.Focus();
             }
             else
             {
+                window.Topmost = _previousTopmost;
                 window.WindowState = _previousWindowState;
                 window.WindowStyle = _previousWindowStyle;
                 window.ResizeMode = _previousResizeMode;
+                window.Activate();
+                window.Focus();
             }
+        }
+
+        if (isFullScreen)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (_isFullScreen && _parentWindow != null)
+                {
+                    _parentWindow.Topmost = true;
+                    _parentWindow.Activate();
+                    _parentWindow.Focus();
+                }
+            }), System.Windows.Threading.DispatcherPriority.Input);
         }
 
         if (isFullScreen)
@@ -127,6 +164,22 @@ public partial class SearchResult
         }
     }
 
+    private void OnWindowActivated(object? sender, EventArgs e)
+    {
+        if (_isFullScreen && _parentWindow != null)
+        {
+            _parentWindow.Topmost = true;
+        }
+    }
+
+    private void OnWindowDeactivated(object? sender, EventArgs e)
+    {
+        if (_isFullScreen && _parentWindow != null)
+        {
+            _parentWindow.Topmost = false;
+        }
+    }
+
     private void OnPreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.Escape && _isFullScreen)
@@ -138,11 +191,18 @@ public partial class SearchResult
 
     private void UserControl_Unloaded(object sender, RoutedEventArgs e)
     {
+        if (_parentWindow != null)
+        {
+            _parentWindow.Activated -= OnWindowActivated;
+            _parentWindow.Deactivated -= OnWindowDeactivated;
+        }
+
         if (_isFullScreen)
         {
-            var window = System.Windows.Window.GetWindow(this);
+            var window = _parentWindow ?? System.Windows.Window.GetWindow(this);
             if (window is HandyControl.Controls.Window hcWindow)
             {
+                hcWindow.Topmost = _previousTopmost;
                 hcWindow.IsFullScreen = false;
                 hcWindow.ShowTitle = _previousShowTitle;
                 hcWindow.ShowNonClientArea = _previousShowNonClientArea;
@@ -152,6 +212,7 @@ public partial class SearchResult
             }
             else if (window != null)
             {
+                window.Topmost = _previousTopmost;
                 window.WindowState = _previousWindowState;
                 window.WindowStyle = _previousWindowStyle;
                 window.ResizeMode = _previousResizeMode;
