@@ -1840,7 +1840,7 @@ e renovar o cache dos Ícones?</value>
     <value>Gerar e atribuir ícones personalizados às pastas</value>
   </data>
   <data name="AvailableCountFormat" xml:space="preserve">
-    <value>{0} disponíveis</value>
+    <value>{0} disponível|{0} disponíveis</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Procurar</value>
@@ -1861,13 +1861,13 @@ e renovar o cache dos Ícones?</value>
     <value>Excluir padrão personalizado</value>
   </data>
   <data name="FolderCountFormat" xml:space="preserve">
-    <value>{0} pastas</value>
+    <value>{0} pasta|{0} pastas</value>
   </data>
   <data name="FolderFiles" xml:space="preserve">
     <value>Arquivos da pasta:</value>
   </data>
   <data name="IconCountFormat" xml:space="preserve">
-    <value>{0} ícones</value>
+    <value>{0} ícone|{0} ícones</value>
   </data>
   <data name="ManualExplorerConnecting" xml:space="preserve">
     <value>Conectando ao DeviantArt...</value>
@@ -1882,7 +1882,7 @@ e renovar o cache dos Ícones?</value>
     <value>{0} de {1} ícones extraídos</value>
   </data>
   <data name="MatchesCountFormat" xml:space="preserve">
-    <value>{0} correspondências</value>
+    <value>{0} correspondência|{0} correspondências</value>
   </data>
   <data name="MatchingPatterns" xml:space="preserve">
     <value>Padrões correspondentes</value>
@@ -1936,7 +1936,7 @@ e renovar o cache dos Ícones?</value>
     <value>A sobreposição selecionada é salva automaticamente e aplicada aos ícones de pastas de filmes e séries</value>
   </data>
   <data name="PatternCountFormat" xml:space="preserve">
-    <value>{0} padrões</value>
+    <value>{0} padrão|{0} padrões</value>
   </data>
   <data name="PatternDefault" xml:space="preserve">
     <value>Padrão</value>
@@ -1948,7 +1948,7 @@ e renovar o cache dos Ícones?</value>
     <value>Padrão integrado do sistema</value>
   </data>
   <data name="PosterIconOverlayCountFormat" xml:space="preserve">
-    <value>{0} sobreposições</value>
+    <value>{0} sobreposição|{0} sobreposições</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
     <value>Escuro</value>
@@ -1987,7 +1987,7 @@ e renovar o cache dos Ícones?</value>
     <value>Nenhuma sobreposição corresponde à sua pesquisa</value>
   </data>
   <data name="PreviewerOverlayCountFormat" xml:space="preserve">
-    <value>{0} de {1} sobreposições</value>
+    <value>{0} de {1} sobreposição|{0} de {1} sobreposições</value>
   </data>
   <data name="PreviewerRendering" xml:space="preserve">
     <value>Renderizando pré-visualizações de sobreposições...</value>

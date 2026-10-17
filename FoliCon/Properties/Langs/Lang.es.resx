@@ -1841,7 +1841,7 @@ y actualizar la caché de iconos?</value>
     <value>Generar y asignar iconos personalizados a las carpetas</value>
   </data>
   <data name="AvailableCountFormat" xml:space="preserve">
-    <value>{0} disponibles</value>
+    <value>{0} disponible|{0} disponibles</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>Examinar</value>
@@ -1862,13 +1862,13 @@ y actualizar la caché de iconos?</value>
     <value>Eliminar patrón personalizado</value>
   </data>
   <data name="FolderCountFormat" xml:space="preserve">
-    <value>{0} carpetas</value>
+    <value>{0} carpeta|{0} carpetas</value>
   </data>
   <data name="FolderFiles" xml:space="preserve">
     <value>Archivos de la carpeta:</value>
   </data>
   <data name="IconCountFormat" xml:space="preserve">
-    <value>{0} iconos</value>
+    <value>{0} icono|{0} iconos</value>
   </data>
   <data name="ManualExplorerConnecting" xml:space="preserve">
     <value>Conectando con DeviantArt...</value>
@@ -1883,7 +1883,7 @@ y actualizar la caché de iconos?</value>
     <value>{0} de {1} iconos extraídos</value>
   </data>
   <data name="MatchesCountFormat" xml:space="preserve">
-    <value>{0} coincidencias</value>
+    <value>{0} coincidencia|{0} coincidencias</value>
   </data>
   <data name="MatchingPatterns" xml:space="preserve">
     <value>Patrones coincidentes</value>
@@ -1937,7 +1937,7 @@ y actualizar la caché de iconos?</value>
     <value>La superposición seleccionada se guarda automáticamente y se aplica a los iconos de carpetas de películas y series</value>
   </data>
   <data name="PatternCountFormat" xml:space="preserve">
-    <value>{0} patrones</value>
+    <value>{0} patrón|{0} patrones</value>
   </data>
   <data name="PatternDefault" xml:space="preserve">
     <value>Predeterminado</value>
@@ -1949,7 +1949,7 @@ y actualizar la caché de iconos?</value>
     <value>Patrón predeterminado integrado</value>
   </data>
   <data name="PosterIconOverlayCountFormat" xml:space="preserve">
-    <value>{0} superposiciones</value>
+    <value>{0} superposición|{0} superposiciones</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
     <value>Oscuro</value>
@@ -1988,7 +1988,7 @@ y actualizar la caché de iconos?</value>
     <value>Ninguna superposición coincide con la búsqueda</value>
   </data>
   <data name="PreviewerOverlayCountFormat" xml:space="preserve">
-    <value>{0} de {1} superposiciones</value>
+    <value>{0} de {1} superposición|{0} de {1} superposiciones</value>
   </data>
   <data name="PreviewerRendering" xml:space="preserve">
     <value>Generando vistas previas de superposiciones...</value>

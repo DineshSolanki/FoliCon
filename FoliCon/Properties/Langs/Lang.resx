@@ -1874,16 +1874,16 @@ and refresh Icon Cache?</value>
     <value>Delete custom pattern</value>
   </data>
   <data name="FolderCountFormat" xml:space="preserve">
-    <value>{0} folders</value>
+    <value>{0} folder|{0} folders</value>
   </data>
   <data name="FolderFiles" xml:space="preserve">
     <value>Folder Files:</value>
   </data>
   <data name="IconCountFormat" xml:space="preserve">
-    <value>{0} icons</value>
+    <value>{0} icon|{0} icons</value>
   </data>
   <data name="MatchesCountFormat" xml:space="preserve">
-    <value>{0} matches</value>
+    <value>{0} match|{0} matches</value>
   </data>
   <data name="MatchingPatterns" xml:space="preserve">
     <value>Matching Patterns</value>
@@ -1937,7 +1937,7 @@ and refresh Icon Cache?</value>
     <value>Selected overlay is automatically saved and applied to movie and TV folder icons</value>
   </data>
   <data name="PatternCountFormat" xml:space="preserve">
-    <value>{0} patterns</value>
+    <value>{0} pattern|{0} patterns</value>
   </data>
   <data name="PatternDefault" xml:space="preserve">
     <value>Default</value>
@@ -1949,7 +1949,7 @@ and refresh Icon Cache?</value>
     <value>Built-in default pattern</value>
   </data>
   <data name="PosterIconOverlayCountFormat" xml:space="preserve">
-    <value>{0} overlays</value>
+    <value>{0} overlay|{0} overlays</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
     <value>Dark</value>
@@ -1988,7 +1988,7 @@ and refresh Icon Cache?</value>
     <value>No overlays match your search</value>
   </data>
   <data name="PreviewerOverlayCountFormat" xml:space="preserve">
-    <value>{0} of {1} overlays</value>
+    <value>{0} of {1} overlay|{0} of {1} overlays</value>
   </data>
   <data name="PreviewerRendering" xml:space="preserve">
     <value>Rendering overlay previews...</value>

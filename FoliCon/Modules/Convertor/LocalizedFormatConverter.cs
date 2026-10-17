@@ -38,15 +38,69 @@ public class LocalizedFormatConverter : IMultiValueConverter
             args[i - 1] = values[i] == DependencyProperty.UnsetValue ? string.Empty : values[i];
         }
 
+        var effectiveFormat = format;
+        if (format.Contains('|'))
+        {
+            var parts = format.Split('|');
+            if (parts.Length == 2)
+            {
+                var isSingular = TryDetermineCount(args, out var count) && count == 1;
+                effectiveFormat = isSingular ? parts[0] : parts[1];
+            }
+        }
+
         try
         {
-            return string.Format(culture, format, args);
+            return string.Format(culture, effectiveFormat, args);
         }
         catch (FormatException)
         {
             // A translation with a malformed placeholder must not take the window down;
             // showing the untranslated pattern is the least destructive fallback.
-            return format;
+            return effectiveFormat;
+        }
+    }
+
+    private static bool TryDetermineCount(object[] args, out long count)
+    {
+        if (args.Length > 0 && TryGetCount(args[^1], out count))
+        {
+            return true;
+        }
+
+        foreach (var t in args)
+        {
+            if (TryGetCount(t, out count))
+            {
+                return true;
+            }
+        }
+
+        count = 0;
+        return false;
+    }
+
+    private static bool TryGetCount(object? value, out long count)
+    {
+        switch (value)
+        {
+            case sbyte sb: count = sb; return true;
+            case byte b: count = b; return true;
+            case short s: count = s; return true;
+            case ushort us: count = us; return true;
+            case int i: count = i; return true;
+            case uint ui: count = ui; return true;
+            case long l: count = l; return true;
+            case ulong ul: count = (long)ul; return true;
+            case float f: count = (long)f; return true;
+            case double d: count = (long)d; return true;
+            case decimal m: count = (long)m; return true;
+            case string str when long.TryParse(str, out var parsed):
+                count = parsed;
+                return true;
+            default:
+                count = 0;
+                return false;
         }
     }
 
