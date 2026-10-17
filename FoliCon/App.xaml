@@ -1,4 +1,4 @@
-﻿<prism:PrismApplication x:Class="FoliCon.App"
+<prism:PrismApplication x:Class="FoliCon.App"
                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                         xmlns:prism="http://prismlibrary.com/" xmlns:hc="https://handyorg.github.io/handycontrol"
@@ -15,7 +15,7 @@
             <convertor:LocalizedFormatConverter x:Key="LocalizedFormat" />
             <ResourceDictionary.MergedDictionaries>
                 <hc:ThemeResources UsingSystemTheme="True" />
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
+                <hc:Theme />
                 <ResourceDictionary Source="pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml" />
                 <ResourceDictionary Source="/Resources/Dictionaries/GeometryResources.xaml" />
             </ResourceDictionary.MergedDictionaries>

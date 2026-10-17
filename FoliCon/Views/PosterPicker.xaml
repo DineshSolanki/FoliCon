@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoliCon.Views.PosterPicker"
+<UserControl x:Class="FoliCon.Views.PosterPicker"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -11,42 +11,230 @@
              xmlns:views="clr-namespace:FoliCon.Views"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:PosterPickerViewModel }">
+             d:DataContext="{d:DesignInstance viewModels:PosterPickerViewModel }"
+             Background="{DynamicResource RegionBrush}">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="450" />
-            <Setter Property="Width" Value="900" />
+            <Setter Property="Height" Value="720" />
+            <Setter Property="Width" Value="1060" />
+            <Setter Property="MinHeight" Value="580" />
+            <Setter Property="MinWidth" Value="860" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
     <UserControl.Resources>
         <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
     </UserControl.Resources>
-    <views:ImageGalleryControl ItemsSource="{Binding ImageUrl}" 
-                               ClickCommand="{Binding OpenImageCommand}"
-                               DoubleClickCommand="{Binding PickCommand}">
-        <views:ImageGalleryControl.CustomBusyContentTemplate>
-            <DataTemplate>
-                <StackPanel Margin="4">
-                    <StackPanel Margin="4">
-                    <TextBlock FontWeight="Bold">
-                        <TextBlock.Text>
-                            <MultiBinding StringFormat="{}{0}{1}/{2}">
-                                <Binding Path="Value.BusyContent" Source="{StaticResource Proxy}" />
-                                <Binding Path="Value.Index" Source="{StaticResource Proxy}"/>
-                                <Binding Path="Value.TotalPosters" Source="{StaticResource Proxy}"/>
-                            </MultiBinding>
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <ProgressBar Style="{StaticResource ProgressBarInfo}" Value="{Binding Path=Value.Index, Source={StaticResource Proxy}}" 
-                                 Maximum="{Binding Path=Value.TotalPosters, Source={StaticResource Proxy}}" Height="15"/>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <!-- Top Header Bar -->
+            <RowDefinition Height="Auto" />
+            <!-- Gallery Content -->
+            <RowDefinition Height="*" />
+            <!-- Footer Action Bar -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Top Header Bar -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="18,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Media Title & High-Contrast Posters Count Badge -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="{DynamicResource PrimaryBrush}"
+                            CornerRadius="8"
+                            Width="38" Height="38"
+                            Margin="0,0,12,0"
+                            VerticalAlignment="Center">
+                        <Path Data="{StaticResource PhotoGalleryGeometry}"
+                              Fill="White"
+                              Width="20" Height="20"
+                              Stretch="Uniform"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxWidth="700"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0" VerticalAlignment="Center">
+                            <!-- High-contrast, easily readable pill badge -->
+                            <Border Background="{DynamicResource PrimaryBrush}"
+                                    CornerRadius="10"
+                                    Padding="10,2"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ImageUrl.Count, StringFormat='{}{0} Posters'}"
+                                           FontSize="11"
+                                           FontWeight="Bold"
+                                           Foreground="White"/>
+                            </Border>
+
+                            <TextBlock Text="Click to select • Double-click to pick instantly"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
-                    <Grid>
-                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}" HorizontalAlignment="Center" VerticalAlignment="Top"
-                                Command="{Binding Path=Value.StopSearchCommand, Source={StaticResource Proxy}}" />
-                    </Grid>
                 </StackPanel>
-            </DataTemplate>
-        </views:ImageGalleryControl.CustomBusyContentTemplate>
-    </views:ImageGalleryControl>
+
+                <!-- Right: Cancel / Close -->
+                <Button Grid.Column="1"
+                        Content="{extension:Lang Key={x:Static langs:LangKeys.Cancel}}"
+                        Style="{StaticResource ButtonDefault}"
+                        Command="{Binding CancelCommand}"
+                        IsCancel="True"
+                        Padding="14,6"
+                        VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Middle: Gallery Content with Busy Template -->
+        <views:ImageGalleryControl Grid.Row="1"
+                                   ItemsSource="{Binding ImageUrl}" 
+                                   SelectedItem="{Binding SelectedPoster, Mode=TwoWay}"
+                                   ItemWidth="160"
+                                   ItemHeight="240"
+                                   ImageStretch="UniformToFill"
+                                   PreviewCommand="{Binding OpenImageCommand}"
+                                   DoubleClickCommand="{Binding PickCommand}">
+            <views:ImageGalleryControl.CustomBusyContentTemplate>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" MinWidth="280">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,6">
+                            <Path Data="{StaticResource AutoSparklesGeometry}"
+                                  Fill="{DynamicResource PrimaryBrush}"
+                                  Width="16" Height="16"
+                                  Stretch="Uniform"
+                                  Margin="0,0,8,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Path=Value.BusyContent, Source={StaticResource Proxy}, FallbackValue='Loading Posters...'}"
+                                       FontSize="14"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       VerticalAlignment="Center"
+                                       TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   Margin="0,0,0,12">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}Processed {0} of {1} posters">
+                                    <Binding Path="Value.Index" Source="{StaticResource Proxy}" TargetNullValue="0" FallbackValue="0" />
+                                    <Binding Path="Value.TotalPosters" Source="{StaticResource Proxy}" TargetNullValue="0" FallbackValue="0" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <ProgressBar Style="{DynamicResource ProgressBarFlat}"
+                                     Value="{Binding Path=Value.Index, Source={StaticResource Proxy}}" 
+                                     Maximum="{Binding Path=Value.TotalPosters, Source={StaticResource Proxy}}"
+                                     Height="6"
+                                     Margin="0,0,0,16"/>
+
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.StopSearching}}"
+                                Style="{StaticResource ButtonDefault}"
+                                HorizontalAlignment="Center"
+                                Command="{Binding Path=Value.StopSearchCommand, Source={StaticResource Proxy}}"
+                                Padding="16,6"/>
+                    </StackPanel>
+                </DataTemplate>
+            </views:ImageGalleryControl.CustomBusyContentTemplate>
+        </views:ImageGalleryControl>
+
+        <!-- Bottom Footer Bar: Actions & Selection -->
+        <Border Grid.Row="2"
+                Background="{DynamicResource SecondaryRegionBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="18,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Hint -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Path Data="{StaticResource AutoSparklesGeometry}"
+                          Fill="{DynamicResource PrimaryBrush}"
+                          Width="14" Height="14"
+                          Stretch="Uniform"
+                          Margin="0,0,6,0"
+                          VerticalAlignment="Center"/>
+                    <TextBlock Text="Select a poster above, or double-click to pick instantly"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               FontSize="12"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Right: Action Buttons (Preview Full Size, Pick Poster, Cancel) -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Preview Full Size Button -->
+                    <Button Style="{StaticResource ButtonDefault}"
+                            Command="{Binding PreviewSelectedCommand}"
+                            Margin="0,0,10,0"
+                            Padding="14,7"
+                            VerticalAlignment="Center"
+                            ToolTip="Preview selected poster in full-resolution lightbox">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource EyeGeometry}"
+                                  Fill="{DynamicResource PrimaryTextBrush}"
+                                  Width="14" Height="14"
+                                  Stretch="Uniform"
+                                  Margin="0,0,6,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="Preview Full Size"
+                                       FontWeight="Medium"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Pick Poster Primary Button -->
+                    <Button Style="{StaticResource ButtonPrimary}"
+                            Command="{Binding PickSelectedCommand}"
+                            Margin="0,0,10,0"
+                            Padding="16,7"
+                            VerticalAlignment="Center"
+                            ToolTip="Apply the selected poster">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="{StaticResource CheckCircleGeometry}"
+                                  Fill="White"
+                                  Width="14" Height="14"
+                                  Stretch="Uniform"
+                                  Margin="0,0,6,0"
+                                  VerticalAlignment="Center"/>
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}"
+                                       Foreground="White"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Cancel Button -->
+                    <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Cancel}}"
+                            Style="{StaticResource ButtonDefault}"
+                            Command="{Binding CancelCommand}"
+                            IsCancel="True"
+                            Padding="14,7"
+                            MinWidth="80"
+                            VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>

@@ -4,18 +4,18 @@
 "preserve_hierarchy": true
 
 "files": [
-   {
-      "source": "/FoliCon/Properties/Langs/Lang.resx",
-      "translation": "/FoliCon/Properties/Langs/Lang.%two_letters_code%.resx",
-      "update_option": "update_as_unapproved",
-      "languages_mapping": {
-         "two_letters_code": {
-            "es-ES": "es",
-            "pt-PT": "pt",
-            "ru": "ru",
-            "ar": "ar",
-            "hi": "hi"
-         }
+  {
+    "source": "/FoliCon/Properties/Langs/Lang.resx",
+    "translation": "/FoliCon/Properties/Langs/Lang.%two_letters_code%.resx",
+    "update_option": "update_as_unapproved",
+    "languages_mapping": {
+      "two_letters_code": {
+        "es-ES": "es",
+        "pt-PT": "pt",
+        "ru": "ru",
+        "ar": "ar",
+        "hi": "hi"
       }
-   }
+    }
+  }
 ]

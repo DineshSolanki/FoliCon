@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules.IGDB;
+namespace FoliCon.Modules.IGDB;
 
 [Localizable(false)]
 public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref List<ImageToDownload> imgDownloadList)
@@ -73,7 +73,8 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             : string.Empty;
         
 
-        FileUtils.AddToPickedListDataTable(_listDataTable, localPosterPath, game.Name, rating, fullFolderPath,
+        var posterUrl = GetPosterUrl(game);
+        FileUtils.AddToPickedListDataTable(_listDataTable, posterUrl, game.Name, rating, fullFolderPath,
             folderName, year);
 
         if (game.Id != null)
@@ -81,7 +82,6 @@ public class IgdbDataTransformer(ref List<PickedListItem> listDataTable, ref Lis
             FileUtils.SaveMediaInfo((int)game.Id, MediaTypes.game, fullFolderPath);
         }
 
-        var posterUrl = GetPosterUrl(game);
         var temporaryImage = new ImageToDownload
         {
             LocalPath = localPosterPath,

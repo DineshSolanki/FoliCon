@@ -1560,7 +1560,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
         {
             Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
         }
-        catch (Exception ex) when (ex is IOException or InvalidOperationException or System.ComponentModel.Win32Exception)
+        catch (Exception ex) when (ex is IOException or InvalidOperationException or Win32Exception)
         {
             Logger.Warn(ex, "Could not open {Url}", url);
             StatusMessage = Lang.OverlayCouldNotOpenBrowser;

@@ -1,16 +1,18 @@
-﻿namespace FoliCon.Modules.Configuration;
+namespace FoliCon.Modules.Configuration;
 
 [Localizable(false)]
 internal static class AssemblyInfo
 {
-    public static string GetVersion() => Assembly.GetEntryAssembly()?.GetName().Version?.ToString();
+    private static readonly Version FallbackVersion = new(1, 0, 0);
 
-    public static string GetVersionWithoutBuild()
-    {
-        var fullVersion = GetVersion();
-        var versionParts = fullVersion.Split('.');
-        var versionWithoutBuild = string.Join(".", versionParts.Take(3));
-        
-        return $"Folicon v{versionWithoutBuild}";
-    }
+    public static Version AppVersion =>
+        Assembly.GetEntryAssembly()?.GetName().Version
+        ?? typeof(AssemblyInfo).Assembly.GetName().Version
+        ?? FallbackVersion;
+
+    public static string GetVersion() => AppVersion.ToString();
+
+    public static string GetShortVersion() => $"{AppVersion.Major}.{AppVersion.Minor}.{AppVersion.Build}";
+
+    public static string GetVersionWithoutBuild() => $"Folicon v{GetShortVersion()}";
 }

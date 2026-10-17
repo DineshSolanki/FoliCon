@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [SuppressMessage("Performance", "CA1822:Mark members as static",
     Justification = "XAML data binding requires instance properties.")]
@@ -30,18 +30,26 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
         set => SetProperty(ref field, value);
     }
 
+    public string NewPatternText
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = string.Empty;
+
     #endregion
 
     #region Commands
 
     public DelegateCommand<string> AddCommand { get; }
     public DelegateCommand<Pattern> RemoveCommand { get; }
+    public DelegateCommand CloseCommand { get; }
 
     #endregion
     public SubfolderProcessingViewModel()
     {
         AddCommand = new DelegateCommand<string>(AddPattern);
         RemoveCommand = new DelegateCommand<Pattern>(RemovePattern);
+        CloseCommand = new DelegateCommand(() => CloseDialog("true"));
 
         SubfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
         SubfolderDepthLimit = Services.Settings.SubfolderDepthLimit;
@@ -50,17 +58,23 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
 
     private void AddPattern(string regex)
     {
-        var trimmedRegex = regex?.Trim();
+        var patternToAdd = !string.IsNullOrWhiteSpace(regex) ? regex : NewPatternText;
+        var trimmedRegex = patternToAdd?.Trim();
         if (!IsValidPattern(trimmedRegex))
         {
             return;
         }
         Logger.Debug("Adding pattern: {Regex}", trimmedRegex);
         PatternsList.Add(new Pattern(trimmedRegex, true));
+        NewPatternText = string.Empty;
     }
 
     private void RemovePattern(Pattern pattern)
     {
+        if (pattern == null || pattern.IsReadOnly)
+        {
+            return;
+        }
         Logger.Debug("Removing pattern: {Regex}", pattern.Regex);
         PatternsList.Remove(pattern);
     }
@@ -83,6 +97,18 @@ public class SubfolderProcessingViewModel : BindableBase, IDialogAware
     #region DialogMethods
 
     public DialogCloseListener RequestClose { get; }
+
+    protected virtual void CloseDialog(string parameter)
+    {
+        var result = parameter?.ToLower(CultureInfo.InvariantCulture) switch
+        {
+            "true" => ButtonResult.OK,
+            "false" => ButtonResult.Cancel,
+            _ => ButtonResult.None
+        };
+
+        RequestClose.Invoke(result);
+    }
 
     public virtual bool CanCloseDialog() => true;
 

@@ -11,23 +11,28 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     #region Step Management
 
-    private int _currentStep;
     public int CurrentStep
     {
-        get => _currentStep;
+        get;
         set
         {
-            if (SetProperty(ref _currentStep, value))
+            if (!SetProperty(ref field, value))
             {
-                RaisePropertyChanged(nameof(IsWelcomeStep));
-                RaisePropertyChanged(nameof(IsTmdbStep));
-                RaisePropertyChanged(nameof(IsIgdbStep));
-                RaisePropertyChanged(nameof(IsDeviantArtStep));
-                RaisePropertyChanged(nameof(IsSummaryStep));
-                RaisePropertyChanged(nameof(CanGoBack));
-                RaisePropertyChanged(nameof(CanGoNext));
-                RaisePropertyChanged(nameof(NextButtonText));
+                return;
             }
+
+            RaisePropertyChanged(nameof(IsWelcomeStep));
+            RaisePropertyChanged(nameof(IsTmdbStep));
+            RaisePropertyChanged(nameof(IsIgdbStep));
+            RaisePropertyChanged(nameof(IsDeviantArtStep));
+            RaisePropertyChanged(nameof(IsSummaryStep));
+            RaisePropertyChanged(nameof(CanGoBack));
+            RaisePropertyChanged(nameof(CanGoNext));
+            RaisePropertyChanged(nameof(CanSkip));
+            RaisePropertyChanged(nameof(NextButtonText));
+            RaisePropertyChanged(nameof(IsTmdbConfigured));
+            RaisePropertyChanged(nameof(IsIgdbConfigured));
+            RaisePropertyChanged(nameof(IsDeviantArtConfigured));
         }
     }
 
@@ -36,35 +41,44 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
     public bool IsIgdbStep => CurrentStep == 2;
     public bool IsDeviantArtStep => CurrentStep == 3;
     public bool IsSummaryStep => CurrentStep == 4;
-    public bool CanGoBack => CurrentStep > 0 && CurrentStep < 4;
-    public bool CanGoNext => CurrentStep is >= 1 and < 4;
-    public string NextButtonText => CurrentStep == 3 ? Lang.OnboardingFinish : Lang.OnboardingNext;
+    public bool CanGoBack => CurrentStep > 0 && CurrentStep <= 4;
+    public bool CanGoNext => CurrentStep is >= 1 and <= 4;
+    public bool CanSkip => CurrentStep is >= 1 and < 4;
+    public string NextButtonText => CurrentStep == 4 ? Lang.OnboardingFinish : Lang.OnboardingNext;
 
     #endregion
 
     #region TMDB Properties
 
-    private string _tmdbKey = "";
     public string TmdbKey
     {
-        get => _tmdbKey;
+        get;
         set
         {
-            if (SetProperty(ref _tmdbKey, value))
+            if (SetProperty(ref field, value))
             {
                 ResetTmdbValidation();
             }
         }
     }
 
-    private bool _isTmdbValidating;
-    public bool IsTmdbValidating { get => _isTmdbValidating; set => SetProperty(ref _isTmdbValidating, value); }
+    public bool IsTmdbValidating
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
-    private bool? _isTmdbValid;
-    public bool? IsTmdbValid { get => _isTmdbValid; set => SetProperty(ref _isTmdbValid, value); }
+    public bool? IsTmdbValid
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
-    private string _tmdbValidationMessage = "";
-    public string TmdbValidationMessage { get => _tmdbValidationMessage; set => SetProperty(ref _tmdbValidationMessage, value); }
+    public string TmdbValidationMessage
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "";
 
     public bool IsTmdbConfigured => !string.IsNullOrWhiteSpace(TmdbKey);
 
@@ -72,40 +86,47 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     #region IGDB Properties
 
-    private string _igdbClientId = "";
     public string IgdbClientId
     {
-        get => _igdbClientId;
+        get;
         set
         {
-            if (SetProperty(ref _igdbClientId, value))
+            if (SetProperty(ref field, value))
             {
                 ResetIgdbValidation();
             }
         }
     }
 
-    private string _igdbClientSecret = "";
     public string IgdbClientSecret
     {
-        get => _igdbClientSecret;
+        get;
         set
         {
-            if (SetProperty(ref _igdbClientSecret, value))
+            if (SetProperty(ref field, value))
             {
                 ResetIgdbValidation();
             }
         }
     }
 
-    private bool _isIgdbValidating;
-    public bool IsIgdbValidating { get => _isIgdbValidating; set => SetProperty(ref _isIgdbValidating, value); }
+    public bool IsIgdbValidating
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
-    private bool? _isIgdbValid;
-    public bool? IsIgdbValid { get => _isIgdbValid; set => SetProperty(ref _isIgdbValid, value); }
+    public bool? IsIgdbValid
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
-    private string _igdbValidationMessage = "";
-    public string IgdbValidationMessage { get => _igdbValidationMessage; set => SetProperty(ref _igdbValidationMessage, value); }
+    public string IgdbValidationMessage
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "";
 
     public bool IsIgdbConfigured => !string.IsNullOrWhiteSpace(IgdbClientId) && !string.IsNullOrWhiteSpace(IgdbClientSecret);
 
@@ -127,21 +148,23 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         }
     }
 
-    private bool _isDeviantArtConnecting;
-    public bool IsDeviantArtConnecting { get => _isDeviantArtConnecting; set => SetProperty(ref _isDeviantArtConnecting, value); }
+    public bool IsDeviantArtConnecting
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
 
-    private string _deviantArtConnectionMessage = "";
     public string DeviantArtConnectionMessage
     {
-        get => _deviantArtConnectionMessage;
+        get;
         set
         {
-            if (SetProperty(ref _deviantArtConnectionMessage, value))
+            if (SetProperty(ref field, value))
             {
                 RaisePropertyChanged(nameof(HasDeviantArtConnectionMessage));
             }
         }
-    }
+    } = "";
 
     public bool HasDeviantArtConnectionMessage => !string.IsNullOrEmpty(DeviantArtConnectionMessage);
 
@@ -187,40 +210,39 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         }
     }
 
-    private bool _isDeviantArtBuiltInMode = true;
     public bool IsDeviantArtBuiltInMode
     {
-        get => _isDeviantArtBuiltInMode;
+        get;
         set
         {
-            if (!SetProperty(ref _isDeviantArtBuiltInMode, value))
+            if (!SetProperty(ref field, value))
             {
                 return;
             }
+
             if (_isSyncingMode)
             {
                 return;
             }
+
             _isSyncingMode = true;
             IsDeviantArtCustomMode = !value;
             _isSyncingMode = false;
         }
-    }
+    } = true;
 
     public bool IsDeviantArtCustomCredentialsVisible => IsDeviantArtCustomMode;
 
-    private string _deviantArtCustomClientId = "";
     public string DeviantArtCustomClientId
     {
-        get => _deviantArtCustomClientId;
-        set => SetProperty(ref _deviantArtCustomClientId, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
-    private string _deviantArtCustomClientSecret = "";
     public string DeviantArtCustomClientSecret
     {
-        get => _deviantArtCustomClientSecret;
-        set => SetProperty(ref _deviantArtCustomClientSecret, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsDeviantArtWatchEnabled
@@ -258,8 +280,11 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     #endregion
 
-    private string _title = Lang.OnboardingTitle;
-    public string Title { get => _title; set => SetProperty(ref _title, value); }
+    public string Title
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.OnboardingTitle;
 
     public DialogCloseListener RequestClose { get; }
 
@@ -293,7 +318,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     private void ExecuteNext()
     {
-        if (CurrentStep == 3)
+        if (CurrentStep >= 4)
         {
             // Finish — save and close
             SaveConfiguration();
@@ -306,13 +331,16 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         CurrentStep++;
     }
 
-    private bool CanExecuteNext() => CurrentStep < 4;
+    private bool CanExecuteNext() => CurrentStep <= 4;
     private void ExecuteBack() => CurrentStep = Math.Max(0, CurrentStep - 1);
 
     private void ExecuteSkip()
     {
         // Skip means "don't configure this service right now" — advance without clearing fields.
-        CurrentStep++;
+        if (CurrentStep < 4)
+        {
+            CurrentStep++;
+        }
     }
 
     private void SaveConfiguration()

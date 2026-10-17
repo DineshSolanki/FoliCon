@@ -13,7 +13,11 @@ License: GPL-3.0
 LicenseUrl: https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/LICENSE
 Copyright: Copyright (c) Dinesh Solanki
 ShortDescription: Automated Movie, TV Show, Game, Anime & Music Folder Icon Customizer with IMDb ratings.
-Description: FoliCon is a Windows folder icon customizer for movies, TV series, anime, games, and music. It automatically searches online metadata providers (TMDB, IGDB, DeviantArt), fetches high-resolution poster art and ratings, and generates stylized Windows folder icons with custom overlays.
+Description: >-
+  FoliCon is a Windows folder icon customizer for movies, TV series, anime,
+  games, and music. It automatically searches online metadata providers
+  (TMDB, IGDB, DeviantArt), fetches high-resolution poster art and ratings,
+  and generates stylized Windows folder icons with custom overlays.
 Moniker: folicon
 Tags:
 - anime

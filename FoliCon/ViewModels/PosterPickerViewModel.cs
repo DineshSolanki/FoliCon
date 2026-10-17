@@ -1,4 +1,4 @@
-﻿using FoliCon.Models.Data.Wrapper;
+using FoliCon.Models.Data.Wrapper;
 using Artwork = IGDB.Models.Artwork;
 
 namespace FoliCon.ViewModels;
@@ -9,34 +9,79 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private const string posterPathMessage = "Poster Path: {PosterPath}";
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     #region Variables
-    private string _title = "";
-    private bool _stopSearch;
-    private int _index;
-    private string _busyContent = Lang.LoadingPosters;
-    private bool _isBusy;
+
     public DialogCloseListener RequestClose { get; }
     private ResultResponse _result;
-    private int _totalPosters;
     private bool _isPickedById;
     #endregion
 
     #region Properties
-    public int Index { get => _index; set => SetProperty(ref _index, value); }
-    public string Title { get => _title; set => SetProperty(ref _title, value); }
-    public bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
-    public string BusyContent { get => _busyContent; set => SetProperty(ref _busyContent, value); }
-    public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
+
+    public int Index
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string Title
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "";
+
+    public bool StopSearch
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string BusyContent
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.LoadingPosters;
+
+    public bool IsBusy
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     public ResultResponse Result { get => _result; set => SetProperty(ref _result, value); }
     public int PickedIndex { get; private set; }
     public Tmdb TmdbObject { get; private set; }
     public IgdbClass IgdbObject { get; private set; }
-    public int TotalPosters { get => _totalPosters; set => SetProperty(ref _totalPosters, value); }
+
+    public int TotalPosters
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     private ObservableCollection<ListItem> _resultList;
+
+    public DArtImageList SelectedPoster
+    {
+        get;
+        set
+        {
+            if (!SetProperty(ref field, value))
+            {
+                return;
+            }
+
+            PickSelectedCommand?.RaiseCanExecuteChanged();
+            PreviewSelectedCommand?.RaiseCanExecuteChanged();
+        }
+    }
 
     public ObservableCollection<DArtImageList> ImageUrl { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
     public DelegateCommand<DArtImageList> PickCommand { get; set; }
     public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
+    public DelegateCommand PickSelectedCommand { get; set; }
+    public DelegateCommand PreviewSelectedCommand { get; set; }
+    public DelegateCommand CancelCommand { get; set; }
     #endregion
     public PosterPickerViewModel()
     {
@@ -44,6 +89,9 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         StopSearchCommand = new DelegateCommand(delegate { StopSearch = true; });
         PickCommand = new DelegateCommand<DArtImageList>(PickMethod);
         OpenImageCommand = new DelegateCommand<DArtImageList>(OpenImageMethod);
+        PickSelectedCommand = new DelegateCommand(() => PickMethod(SelectedPoster), () => SelectedPoster != null);
+        PreviewSelectedCommand = new DelegateCommand(() => OpenImageMethod(SelectedPoster), () => SelectedPoster != null);
+        CancelCommand = new DelegateCommand(() => CloseDialog("false"));
     }
 
     private void OpenImageMethod(DArtImageList selectedImage)
@@ -84,7 +132,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         _resultList = parameters.GetValue<ObservableCollection<ListItem>>("resultList");
         _isPickedById = parameters.GetValue<bool>("isPickedById");
         LoadData();
-            
+
     }
 
     private async Task LoadData()
@@ -135,7 +183,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
             MediaTypes.mtv => await GetMtvData(response),
             _ => throw new ArgumentException($"Unexpected media type: {resultType}")
         };
-        
+
         Title = result.title;
         return result.images;
     }
@@ -180,8 +228,8 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     }
 
     #endregion
-    
-    
+
+
     private void LoadImages(IEnumerable<IImage> images)
     {
         ResetState();
@@ -203,15 +251,16 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     private void ResetState()
     {
         StopSearch = false;
+        SelectedPoster = null;
         ImageUrl.Clear();
     }
-    
+
     private void ProcessImages(IEnumerable<IImage> images)
     {
         var imageList = images.ToList();
         TotalPosters = imageList.Count;
         Logger.Debug("Total Posters: {TotalPosters}", TotalPosters);
-    
+
         foreach (var item in imageList.GetEnumeratorWithIndex())
         {
             Index = item.Index + 1;
@@ -225,7 +274,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
             break;
         }
     }
-    
+
     private void TryLoadImage(IImage image)
     {
         var thumbnailUrl = image.GetThumbnailUrl();
@@ -234,8 +283,16 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
         Logger.Trace("Quality Path: {QualityPath}", qualityPath);
         AddImageToCollection(qualityPath,thumbnailUrl, image.Id);
     }
-    
-    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id) => ImageUrl.Add(new DArtImageList(qualityUrl, thumbnailUrl, id));
+
+    private void AddImageToCollection(string qualityUrl, string thumbnailUrl, string id)
+    {
+        var item = new DArtImageList(qualityUrl, thumbnailUrl, id);
+        ImageUrl.Add(item);
+        if (SelectedPoster == null)
+        {
+            SelectedPoster = item;
+        }
+    }
 
     private void HandleNoImagesFound()
     {
@@ -244,7 +301,7 @@ public class PosterPickerViewModel : BindableBase, IDialogAware
     }
 
     #endregion
-    
+
     private void PickMethod(DArtImageList pickedImage)
     {
         Logger.Info("Pick Method called with parameter: {Parameter}", pickedImage);

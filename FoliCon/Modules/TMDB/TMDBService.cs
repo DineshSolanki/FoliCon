@@ -1,4 +1,4 @@
-﻿using System.Windows.Documents;
+using System.Windows.Documents;
 using Polly;
 using Polly.Retry;
 using TMDbLib.Objects.Find;
@@ -169,62 +169,96 @@ internal class TmdbService
     private async Task<object?> SearchMovie(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
-        return parsedTitle.IdType switch
+        if (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0")
         {
-            IdType.None => parsedTitle.Year != 0
-                ? await _serviceClient.SearchMovieAsync(query:query, year:parsedTitle.Year)
-                : await _serviceClient.SearchMovieAsync(query),
-            IdType.Tvdb => GetMovieSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb,
-                parsedTitle.Id)),
-            IdType.Tmdb => GetMovieSearchContainer(await _serviceClient.GetMovieAsync(Convert.ToInt32(parsedTitle.Id))),
-            IdType.Imdb => await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id),
-            _ => parsedTitle.Year != 0
-                ? await _serviceClient.SearchMovieAsync(query, parsedTitle.Year)
-                : await _serviceClient.SearchMovieAsync(query)
-        };
+            SearchContainer<SearchMovie>? container = parsedTitle.IdType switch
+            {
+                IdType.Tvdb => GetMovieSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+                IdType.Tmdb => int.TryParse(parsedTitle.Id, out var tmdbId)
+                    ? GetMovieSearchContainer(await _serviceClient.GetMovieAsync(tmdbId))
+                    : null,
+                IdType.Imdb => GetMovieSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
+                _ => null
+            };
+
+            if (container is { Results.Count: > 0 })
+            {
+                return container;
+            }
+
+            Logger.Warn("Search by {IdType} ID {Id} yielded no movie results; falling back to title search for '{Title}'",
+                parsedTitle.IdType, parsedTitle.Id, query);
+        }
+
+        return parsedTitle.Year != 0
+            ? await _serviceClient.SearchMovieAsync(query: query, year: parsedTitle.Year)
+            : await _serviceClient.SearchMovieAsync(query);
     }
 
     private async Task<object?> SearchCollection(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
-        return parsedTitle.IdType switch
+        if (parsedTitle.IdType == IdType.None || parsedTitle.Id == "0")
         {
-            IdType.None => await _serviceClient.SearchCollectionAsync(query),
-            IdType.Tvdb => GetMovieSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb,
-                parsedTitle.Id)),
-            IdType.Tmdb => GetCollectionSearchContainer(
-                await _serviceClient.GetCollectionAsync(Convert.ToInt32(parsedTitle.Id))),
-            IdType.Imdb => GetMovieSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb,
-                parsedTitle.Id)),
-            _ => await _serviceClient.SearchCollectionAsync(query)
-        };
+            return await _serviceClient.SearchCollectionAsync(query);
+        }
+
+        var container = parsedTitle.IdType == IdType.Tmdb && int.TryParse(parsedTitle.Id, out var tmdbId)
+            ? GetCollectionSearchContainer(await _serviceClient.GetCollectionAsync(tmdbId))
+            : null;
+
+        if (container is { Results.Count: > 0 })
+        {
+            return container;
+        }
+
+        Logger.Warn("Search by {IdType} ID {Id} yielded no collection results; falling back to title search for '{Title}'",
+            parsedTitle.IdType, parsedTitle.Id, query);
+
+        return await _serviceClient.SearchCollectionAsync(query);
     }
 
     private async Task<object?> SearchTvShow(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
-        var result = parsedTitle.IdType switch
-        {
-            IdType.None => parsedTitle.Year != 0
-                ? await _serviceClient.SearchTvShowAsync(query:query, firstAirDateYear:parsedTitle.Year)
-                : await _serviceClient.SearchTvShowAsync(query),
-            IdType.Tvdb =>
-                GetTvSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
-            IdType.Tmdb => GetTvSearchContainer(await _serviceClient.GetTvShowAsync(Convert.ToInt32(parsedTitle.Id))),
-            IdType.Imdb =>
-                GetTvSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
-            _ => parsedTitle.Year != 0
-                ? await _serviceClient.SearchTvShowAsync(query, parsedTitle.Year)
-                : await _serviceClient.SearchTvShowAsync(query)
-        };
+        SearchContainer<SearchTv>? result = null;
 
-        if (parsedTitle.Season != 0 && result != null && result.Results.Count > 0)
+        if (parsedTitle.IdType != IdType.None && parsedTitle.Id != "0")
+        {
+            result = parsedTitle.IdType switch
+            {
+                IdType.Tvdb =>
+                    GetTvSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+                IdType.Tmdb => int.TryParse(parsedTitle.Id, out var tmdbId)
+                    ? GetTvSearchContainer(await _serviceClient.GetTvShowAsync(tmdbId))
+                    : null,
+                IdType.Imdb =>
+                    GetTvSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
+                _ => null
+            };
+
+            if (result is not { Results.Count: > 0 })
+            {
+                Logger.Warn("Search by {IdType} ID {Id} yielded no TV results; falling back to title search for '{Title}'",
+                    parsedTitle.IdType, parsedTitle.Id, query);
+                result = null;
+            }
+        }
+
+        result ??= await SearchTvByTitleAsync(query, parsedTitle.Year);
+
+        if (parsedTitle.Season != 0 && result is { Results.Count: > 0 })
         {
             await ApplySeasonPosterAsync(result, parsedTitle.Season);
         }
 
         return result;
     }
+
+    private Task<SearchContainer<SearchTv>?> SearchTvByTitleAsync(string query, int year) =>
+        year != 0
+            ? _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: year)
+            : _serviceClient.SearchTvShowAsync(query);
 
     private async Task ApplySeasonPosterAsync(SearchContainer<SearchTv> tvResults, int seasonNumber)
     {
@@ -261,19 +295,31 @@ internal class TmdbService
     private async Task<object?> SearchMulti(ParsedTitle parsedTitle)
     {
         var query = parsedTitle.Title;
-        return parsedTitle.IdType switch
+        if (parsedTitle.IdType == IdType.None || parsedTitle.Id == "0")
         {
-            IdType.None => parsedTitle.Year != 0
-                ? await _serviceClient.SearchMultiAsync(query:query, year: parsedTitle.Year)
-                : await _serviceClient.SearchMultiAsync(query),
-            IdType.Tvdb => GetMultiSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb,
-                parsedTitle.Id)),
-            IdType.Imdb => GetMultiSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb,
-                parsedTitle.Id)),
-            _ => parsedTitle.Year != 0
-                ? await _serviceClient.SearchMultiAsync(query:query, year:parsedTitle.Year)
-                : await _serviceClient.SearchMultiAsync(query)
+            return parsedTitle.Year != 0
+                ? await _serviceClient.SearchMultiAsync(query: query, year: parsedTitle.Year)
+                : await _serviceClient.SearchMultiAsync(query);
+        }
+
+        var container = parsedTitle.IdType switch
+        {
+            IdType.Tvdb => GetMultiSearchContainer(await _serviceClient.FindAsync(FindExternalSource.TvDb, parsedTitle.Id)),
+            IdType.Imdb => GetMultiSearchContainer(await _serviceClient.FindAsync(FindExternalSource.Imdb, parsedTitle.Id)),
+            _ => null
         };
+
+        if (container is { TotalResults: > 0 })
+        {
+            return container;
+        }
+
+        Logger.Warn("Search by {IdType} ID {Id} yielded no multi results; falling back to title search for '{Title}'",
+            parsedTitle.IdType, parsedTitle.Id, query);
+
+        return parsedTitle.Year != 0
+            ? await _serviceClient.SearchMultiAsync(query: query, year: parsedTitle.Year)
+            : await _serviceClient.SearchMultiAsync(query);
     }
 
     private static SearchContainer<SearchMovie> GetMovieSearchContainer(FindContainer? findContainer)
@@ -285,20 +331,20 @@ internal class TmdbService
         };
     }
 
-    private static SearchContainer<SearchMovie> GetMovieSearchContainer(Movie? movie)
+    internal static SearchContainer<SearchMovie> GetMovieSearchContainer(Movie? movie)
     {
         return new SearchContainer<SearchMovie>
         {
-            TotalResults = 1,
+            TotalResults = movie is null ? 0 : 1,
             Results = movie is null ? [] : [ConvertMovieToSearchMovie(movie)]
         };
     }
 
-    private static SearchContainer<SearchCollection> GetCollectionSearchContainer(Collection? collection)
+    internal static SearchContainer<SearchCollection> GetCollectionSearchContainer(Collection? collection)
     {
         return new SearchContainer<SearchCollection>
         {
-            TotalResults = 1,
+            TotalResults = collection is null ? 0 : 1,
             Results = collection is null ? [] : [ConvertCollectionToSearchCollection(collection)]
         };
     }
@@ -312,11 +358,11 @@ internal class TmdbService
         };
     }
 
-    private static SearchContainer<SearchTv> GetTvSearchContainer(TvShow? tvShow)
+    internal static SearchContainer<SearchTv> GetTvSearchContainer(TvShow? tvShow)
     {
         return new SearchContainer<SearchTv>
         {
-            TotalResults = 1,
+            TotalResults = tvShow is null ? 0 : 1,
             Results = tvShow is null ? [] : [ConvertTvShowToSearchTv(tvShow)]
         };
     }

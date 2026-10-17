@@ -1,3 +1,4 @@
+#nullable enable
 namespace FoliCon.Modules.Convertor;
 
 /// <summary>
@@ -7,6 +8,10 @@ namespace FoliCon.Modules.Convertor;
 /// be bound to a resource — the format text would have to be hardcoded in the markup. A
 /// MultiBinding whose first value is the format string (bound to <c>LangProvider</c>) routes
 /// around that, and re-evaluates on a live language switch like every other localized binding.
+///
+/// Supports singular and plural forms separated by '|' (singular|plural).
+/// The governing count is determined by the last numeric argument.
+/// If count == 1, the singular form is chosen; otherwise the plural form is used.
 /// </summary>
 /// <example>
 /// <code>
@@ -38,15 +43,64 @@ public class LocalizedFormatConverter : IMultiValueConverter
             args[i - 1] = values[i] == DependencyProperty.UnsetValue ? string.Empty : values[i];
         }
 
+        var effectiveFormat = format;
+        if (format.Contains('|'))
+        {
+            var parts = format.Split('|');
+            if (parts.Length == 2)
+            {
+                var isSingular = TryDetermineCount(args, out var count) && count == 1;
+                effectiveFormat = isSingular ? parts[0] : parts[1];
+            }
+        }
+
         try
         {
-            return string.Format(culture, format, args);
+            return string.Format(culture, effectiveFormat, args);
         }
         catch (FormatException)
         {
             // A translation with a malformed placeholder must not take the window down;
             // showing the untranslated pattern is the least destructive fallback.
-            return format;
+            return effectiveFormat;
+        }
+    }
+
+    private static bool TryDetermineCount(object[] args, out long count)
+    {
+        for (var i = args.Length - 1; i >= 0; i--)
+        {
+            if (TryGetCount(args[i], out count))
+            {
+                return true;
+            }
+        }
+
+        count = 0;
+        return false;
+    }
+
+    private static bool TryGetCount(object? value, out long count)
+    {
+        switch (value)
+        {
+            case sbyte sb: count = sb; return true;
+            case byte b: count = b; return true;
+            case short s: count = s; return true;
+            case ushort us: count = us; return true;
+            case int i: count = i; return true;
+            case uint ui: count = ui; return true;
+            case long l: count = l; return true;
+            case ulong ul: count = ul > (ulong)long.MaxValue ? long.MaxValue : (long)ul; return true;
+            case float f: count = (long)f; return true;
+            case double d: count = (long)d; return true;
+            case decimal m: count = (long)m; return true;
+            case string str when long.TryParse(str, out var parsed):
+                count = parsed;
+                return true;
+            default:
+                count = 0;
+                return false;
         }
     }
 

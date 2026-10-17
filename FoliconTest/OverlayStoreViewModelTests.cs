@@ -482,6 +482,17 @@ public class OverlayStoreViewModelTests
 
         Assert.Equal("OverlayDesigner", dialogService.LastDialogName);
     }
+
+    [Fact]
+    public void CloseCommand_CanExecute_AndCanCloseDialog()
+    {
+        using var host = new WpfTestHost();
+        var vm = WpfTestHost.Invoke(() => new OverlayStoreViewModel(
+            new DialogCloseListener(), new StubRepositoryService(), new RecordingDialogService()));
+
+        Assert.True(vm.CloseCommand.CanExecute());
+        Assert.True(vm.CanCloseDialog());
+    }
 }
 
 /// <summary>Captures which dialog was requested instead of showing one.</summary>

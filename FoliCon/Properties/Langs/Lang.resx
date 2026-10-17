@@ -697,6 +697,18 @@ and refresh Icon Cache?</value>
     <data name="ManualExplorer" xml:space="preserve">
       <value>Manual Explorer</value>
     </data>
+    <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>Connecting to DeviantArt...</value>
+    </data>
+    <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>Downloading archive...</value>
+    </data>
+    <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>Downloading archive ({0})...</value>
+    </data>
+    <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>Extracted {0} of {1} icons</value>
+    </data>
     <data name="ExtractGallery" xml:space="preserve">
       <value>Extract gallery</value>
     </data>
@@ -1807,4 +1819,229 @@ and refresh Icon Cache?</value>
     <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>Failed to update overlay '{0}' from manifest: {1}</value>
     </data>
+  <data name="AboutGithub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="AboutGithubTooltip" xml:space="preserve">
+    <value>View source code &amp; contribute on GitHub</value>
+  </data>
+  <data name="AboutLicenseFooter" xml:space="preserve">
+    <value>Free and open-source under GPL-3.0</value>
+  </data>
+  <data name="AboutOverlays" xml:space="preserve">
+    <value>Overlays</value>
+  </data>
+  <data name="AboutOverlaysTooltip" xml:space="preserve">
+    <value>Browse icon templates &amp; overlays</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>Smart Media Folder Icon Generator &amp; Organizer</value>
+  </data>
+  <data name="AboutVersionTooltip" xml:space="preserve">
+    <value>Version {0} (Click to copy)</value>
+  </data>
+  <data name="AboutWebsite" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="AboutWebsiteTooltip" xml:space="preserve">
+    <value>Visit official blog &amp; website</value>
+  </data>
+  <data name="AddPattern" xml:space="preserve">
+    <value>Add Pattern</value>
+  </data>
+  <data name="ApplyIconsTooltip" xml:space="preserve">
+    <value>Generate and assign custom icons to folders</value>
+  </data>
+  <data name="AvailableCountFormat" xml:space="preserve">
+    <value>{0} available</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="CanvasLabel" xml:space="preserve">
+    <value>Canvas:</value>
+  </data>
+  <data name="ClearFoldersTooltip" xml:space="preserve">
+    <value>Clear all folders</value>
+  </data>
+  <data name="ClearIconsTooltip" xml:space="preserve">
+    <value>Clear all icons</value>
+  </data>
+  <data name="CustomIconInstructions" xml:space="preserve">
+    <value>Drag and drop directories or files onto either side. Reorder items in either list so corresponding rows pair together. Press Delete to remove an entry.</value>
+  </data>
+  <data name="DeleteCustomPatternTooltip" xml:space="preserve">
+    <value>Delete custom pattern</value>
+  </data>
+  <data name="FolderCountFormat" xml:space="preserve">
+    <value>{0} folder|{0} folders</value>
+  </data>
+  <data name="FolderFiles" xml:space="preserve">
+    <value>Folder Files:</value>
+  </data>
+  <data name="IconCountFormat" xml:space="preserve">
+    <value>{0} icon|{0} icons</value>
+  </data>
+  <data name="MatchesCountFormat" xml:space="preserve">
+    <value>{0} match|{0} matches</value>
+  </data>
+  <data name="MatchingPatterns" xml:space="preserve">
+    <value>Matching Patterns</value>
+  </data>
+  <data name="MaxDepthHint" xml:space="preserve">
+    <value>(0 = unlimited)</value>
+  </data>
+  <data name="NoTrailerAvailable" xml:space="preserve">
+    <value>No trailer available for this title</value>
+  </data>
+  <data name="OnboardingCustomIcons" xml:space="preserve">
+    <value>Custom Icons</value>
+  </data>
+  <data name="OnboardingCustomIconsDesc" xml:space="preserve">
+    <value>Artist-crafted icon packs from DeviantArt</value>
+  </data>
+  <data name="OnboardingDeviantArtServiceName" xml:space="preserve">
+    <value>DeviantArt Community</value>
+  </data>
+  <data name="OnboardingIgdbServiceName" xml:space="preserve">
+    <value>Internet Game Database (IGDB)</value>
+  </data>
+  <data name="OnboardingMoviesSeries" xml:space="preserve">
+    <value>Movies &amp; Series</value>
+  </data>
+  <data name="OnboardingMoviesSeriesDesc" xml:space="preserve">
+    <value>Automatic high-res posters via TMDb</value>
+  </data>
+  <data name="OnboardingTmdbServiceName" xml:space="preserve">
+    <value>The Movie Database (TMDb)</value>
+  </data>
+  <data name="OnboardingVideoGames" xml:space="preserve">
+    <value>Video Games</value>
+  </data>
+  <data name="OnboardingVideoGamesDesc" xml:space="preserve">
+    <value>Game cover artwork via IGDB &amp; Twitch</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>Welcome to FoliCon</value>
+  </data>
+  <data name="OverlayActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="OverlayBuiltIn" xml:space="preserve">
+    <value>Built-in</value>
+  </data>
+  <data name="OverlayCommunity" xml:space="preserve">
+    <value>Community</value>
+  </data>
+  <data name="OverlayConfigFooter" xml:space="preserve">
+    <value>Selected overlay is automatically saved and applied to movie and TV folder icons</value>
+  </data>
+  <data name="PatternCountFormat" xml:space="preserve">
+    <value>{0} pattern|{0} patterns</value>
+  </data>
+  <data name="PatternDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="PatternDefaultCannotDelete" xml:space="preserve">
+    <value>Built-in default pattern (cannot be deleted)</value>
+  </data>
+  <data name="PatternDefaultTooltip" xml:space="preserve">
+    <value>Built-in default pattern</value>
+  </data>
+  <data name="PosterIconOverlayCountFormat" xml:space="preserve">
+    <value>{0} overlay|{0} overlays</value>
+  </data>
+  <data name="PreviewerCanvasDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="PreviewerCanvasFolder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="PreviewerCanvasLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="PreviewerCanvasTheme" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="PreviewerCopyImage" xml:space="preserve">
+    <value>Copy Image</value>
+  </data>
+  <data name="PreviewerCopyImageTooltip" xml:space="preserve">
+    <value>Copy image to clipboard</value>
+  </data>
+  <data name="PreviewerFilterHint" xml:space="preserve">
+    <value>Try clearing or changing your filter criteria.</value>
+  </data>
+  <data name="PreviewerFilterOverlays" xml:space="preserve">
+    <value>Filter overlays...</value>
+  </data>
+  <data name="PreviewerHdRender" xml:space="preserve">
+    <value>512 × 512 HD Render</value>
+  </data>
+  <data name="PreviewerImageCopied" xml:space="preserve">
+    <value>{0} image copied to clipboard</value>
+  </data>
+  <data name="PreviewerInspectTooltip" xml:space="preserve">
+    <value>Inspect full size</value>
+  </data>
+  <data name="PreviewerNoOverlaysMatch" xml:space="preserve">
+    <value>No overlays match your search</value>
+  </data>
+  <data name="PreviewerOverlayCountFormat" xml:space="preserve">
+    <value>{0} of {1} overlay|{0} of {1} overlays</value>
+  </data>
+  <data name="PreviewerRendering" xml:space="preserve">
+    <value>Rendering overlay previews...</value>
+  </data>
+  <data name="PreviewerResetPosterTooltip" xml:space="preserve">
+    <value>Reset to default sample poster</value>
+  </data>
+  <data name="PreviewerStatusBarHint" xml:space="preserve">
+    <value>Live overlay showroom • Click &apos;View&apos; to inspect full resolution • Hover to copy image</value>
+  </data>
+  <data name="PreviewerView" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>Rating:</value>
+  </data>
+  <data name="SearchOverlaysPlaceholder" xml:space="preserve">
+    <value>Search overlays...</value>
+  </data>
+  <data name="SearchResultHint" xml:space="preserve">
+    <value>Double-click a candidate or poster to select / browse alternative posters</value>
+  </data>
+  <data name="SortAZ" xml:space="preserve">
+    <value>A-Z</value>
+  </data>
+  <data name="SortDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="SortLabel" xml:space="preserve">
+    <value>Sort:</value>
+  </data>
+  <data name="SortRating" xml:space="preserve">
+    <value>★ Rating</value>
+  </data>
+  <data name="SubfolderProcessingDescription" xml:space="preserve">
+    <value>Automatically scan and process season folders, bonus discs, and nested collections</value>
+  </data>
+  <data name="SubfolderSettingsFooter" xml:space="preserve">
+    <value>Settings are automatically saved on close • Depth 0 processes all nested directories</value>
+  </data>
+  <data name="Synopsis" xml:space="preserve">
+    <value>SYNOPSIS</value>
+  </data>
+  <data name="TestSamplePlaceholder" xml:space="preserve">
+    <value>Test sample name...</value>
+  </data>
+  <data name="TestSampleTooltip" xml:space="preserve">
+    <value>Type a folder name to test regex match (glows green on match, red on mismatch)</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>Title:</value>
+  </data>
+  <data name="UndoApplyTooltip" xml:space="preserve">
+    <value>Undo previous icon application</value>
+  </data>
 </root>

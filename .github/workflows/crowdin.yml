@@ -2,7 +2,7 @@ name: Crowdin Integration
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
     paths:
       - 'FoliCon/Properties/Langs/Lang.resx'
   workflow_dispatch:

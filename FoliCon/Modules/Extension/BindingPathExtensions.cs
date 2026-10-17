@@ -1,4 +1,4 @@
-﻿using FoliCon.Modules.Convertor;
+using FoliCon.Modules.Convertor;
 
 namespace FoliCon.Modules.Extension;
 
@@ -46,7 +46,7 @@ public static class BindingPathExtensions
             {
                 return typed;
             }
-            current = VisualTreeHelper.GetParent(current);
+            current = current is Visual ? VisualTreeHelper.GetParent(current) : LogicalTreeHelper.GetParent(current);
         }
         while (current != null);
         return null;

@@ -10,27 +10,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     #region Variables
 
-    private string _title = Lang.SearchResult;
-    private string _searchTitle;
-    private string _busyContent;
-    private bool _isBusy;
-    private string _searchMode;
-    private ListViewData _resultListViewData;
-    private string _searchAgainTitle;
-    private string _skipAllText = Lang.SkipThisPlaceholder;
-    private List<string> _fileList;
-    private ResultResponse _searchResult;
     private string _fullFolderPath;
     private readonly IDialogService _dialogService;
-    private bool _isSearchFocused;
     private bool _isPickedById;
-    private bool _subfolderProcessingEnabled = Services.Settings.SubfolderProcessingEnabled;
     public DialogCloseListener RequestClose { get; }
 
     private Tmdb _tmdbObject;
     private IgdbClass _igdbObject;
-    private double _customRating;
-    
+
     private PosterPickerDialogParams _dialogParams;
 
     #endregion Variables
@@ -39,86 +26,96 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     public string Title
     {
-        get => _title;
-        set => SetProperty(ref _title, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.SearchResult;
 
     public string SearchTitle
     {
-        get => _searchTitle;
-        set => SetProperty(ref _searchTitle, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string BusyContent
     {
-        get => _busyContent;
-        set => SetProperty(ref _busyContent, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsBusy
     {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public double CustomRating
     {
-        get => _customRating;
-        set => SetProperty(ref _customRating, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public ListViewData ResultListViewData
     {
-        get => _resultListViewData;
-        set => SetProperty(ref _resultListViewData, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SearchAgainTitle
     {
-        get => _searchAgainTitle;
-        set => SetProperty(ref _searchAgainTitle, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SkipAllText
     {
-        get => _skipAllText;
-        set => SetProperty(ref _skipAllText, value);
-    }
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.SkipThisPlaceholder;
 
     public List<string> FileList
     {
-        get => _fileList;
-        set => SetProperty(ref _fileList, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public ResultResponse SearchResult
     {
-        get => _searchResult;
-        set => SetProperty(ref _searchResult, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public string SearchMode
     {
-        get => _searchMode;
-        set => SetProperty(ref _searchMode, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsSearchFocused
     {
-        get => _isSearchFocused;
-        set => SetProperty(ref _isSearchFocused, value);
+        get;
+        set => SetProperty(ref field, value);
     }
-    
+
     public bool SubfolderProcessingEnabled
     {
-        get => _subfolderProcessingEnabled;
+        get;
         set
         {
-            SetProperty(ref _subfolderProcessingEnabled, value);
+            SetProperty(ref field, value);
             Services.Settings.SubfolderProcessingEnabled = value;
             Services.Settings.Save();
         }
-    }
+    } = Services.Settings.SubfolderProcessingEnabled;
+
+    private const string defaultSortKey = "Default";
+    private bool _sortDescending = true;
+    private bool _hasAttemptedFallback;
+
+    public string CurrentSort
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = defaultSortKey;
 
     #endregion Properties
 
@@ -129,6 +126,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     public DelegateCommand SkipAllCommand { get; }
     public DelegateCommand SearchAgainCommand { get; }
     public DelegateCommand ResetPosterCommand { get; }
+    public DelegateCommand<string> SortCommand { get; }
 
     #endregion Commands
 
@@ -140,6 +138,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         ResultListViewData = new ListViewData { Data = new ObservableCollection<ListItem>(), SelectedItem = null };
         PickCommand = new DelegateCommand<MouseButtonEventArgs>(PickMethod);
         ResetPosterCommand = new DelegateCommand(ResetPoster);
+        SortCommand = new DelegateCommand<string>(SortMethod);
         SkipAllCommand = new DelegateCommand(delegate
         {
             CloseDialog("false", true);
@@ -204,25 +203,30 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             IsBusy = true;
         }
 
-        _isPickedById = false;
-        var titleToSearch = SearchAgainTitle ?? SearchTitle;
-        Logger.Info("Searching for {TitleToSearch}", titleToSearch);
-        BusyContent = Lang.SearchingWithName.Format(titleToSearch);
-        var result = SearchMode == MediaTypes.game
-            ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
-            : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
-        if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0)
+        try
         {
-            return;
-        }
+            _isPickedById = false;
+            var titleToSearch = SearchAgainTitle ?? SearchTitle;
+            Logger.Info("Searching for {TitleToSearch}", titleToSearch);
+            BusyContent = Lang.SearchingWithName.Format(titleToSearch);
+            var result = SearchMode == MediaTypes.game
+                ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
+                : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
+            if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0)
+            {
+                return;
+            }
 
-        SearchResult = result;
-        if (useBusy)
+            SearchResult = result;
+            LoadData(titleToSearch);
+        }
+        finally
         {
-            IsBusy = false;
+            if (useBusy)
+            {
+                IsBusy = false;
+            }
         }
-
-        LoadData(titleToSearch);
     }
 
     private void LoadData(string searchTitle)
@@ -232,9 +236,18 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             IsSearchFocused = true;
             return;
         }
-        
+
         if (!HasSearchResult())
         {
+            if (_hasAttemptedFallback || string.IsNullOrWhiteSpace(searchTitle))
+            {
+                IsSearchFocused = true;
+                return;
+            }
+
+            _hasAttemptedFallback = true;
+            Logger.Warn("SearchResult has no results; attempting fallback title search for '{SearchTitle}'", searchTitle);
+            _ = ExecuteFallbackSearchAsync(searchTitle);
             return;
         }
 
@@ -242,18 +255,109 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
         if (ResultListViewData.Data.Count == 0)
         {
+            if (_hasAttemptedFallback || string.IsNullOrWhiteSpace(searchTitle))
+            {
+                IsSearchFocused = true;
+                return;
+            }
+
+            _hasAttemptedFallback = true;
+            Logger.Warn("ResultListViewData has 0 items despite search result; attempting fallback search for '{SearchTitle}'", searchTitle);
+            _ = ExecuteFallbackSearchAsync(searchTitle);
             return;
         }
 
         ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+        CurrentSort = defaultSortKey;
         PerformSelectionChanged();
+    }
+
+    internal async Task ExecuteFallbackSearchAsync(string searchTitle)
+    {
+        try
+        {
+            await StartSearch(false);
+            if (!HasSearchResult() || ResultListViewData.Data.Count == 0)
+            {
+                IsSearchFocused = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Fallback search failed for '{SearchTitle}'", searchTitle);
+            IsSearchFocused = true;
+        }
+    }
+
+    private void SortMethod(string sortKey)
+    {
+        if (ResultListViewData?.Data == null || ResultListViewData.Data.Count == 0)
+        {
+            return;
+        }
+
+        var view = CollectionViewSource.GetDefaultView(ResultListViewData.Data);
+        if (view == null)
+        {
+            return;
+        }
+
+        if (sortKey == defaultSortKey)
+        {
+            view.SortDescriptions.Clear();
+            CurrentSort = defaultSortKey;
+            view.Refresh();
+            return;
+        }
+
+        if (CurrentSort == sortKey)
+        {
+            _sortDescending = !_sortDescending;
+        }
+        else
+        {
+            _sortDescending = sortKey != "Title";
+        }
+
+        CurrentSort = sortKey;
+        var direction = _sortDescending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+
+        view.SortDescriptions.Clear();
+        var propName = sortKey switch
+        {
+            "Rating" => nameof(ListItem.NumericRating),
+            "Year" => nameof(ListItem.NumericYear),
+            _ => nameof(ListItem.Title)
+        };
+        view.SortDescriptions.Add(new SortDescription(propName, direction));
+        view.Refresh();
+
+        if (ResultListViewData.SelectedItem == null && ResultListViewData.Data.Count > 0)
+        {
+            ResultListViewData.SelectedItem = ResultListViewData.Data[0];
+        }
     }
 
     private async void SearchAgainMethod()
     {
-        if (!string.IsNullOrWhiteSpace(SearchAgainTitle))
+        _hasAttemptedFallback = false;
+        if (string.IsNullOrWhiteSpace(SearchAgainTitle))
+        {
+            return;
+        }
+
+        try
         {
             await StartSearch(false);
+            if (!HasSearchResult() || ResultListViewData.Data.Count == 0)
+            {
+                IsSearchFocused = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Search again failed for '{SearchAgainTitle}'", SearchAgainTitle);
+            IsSearchFocused = true;
         }
     }
 
@@ -362,7 +466,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private async void PerformSelectionChanged()
     {
-        if (ResultListViewData.SelectedItem == null || !ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
+        if (ResultListViewData.SelectedItem == null)
+        {
+            return;
+        }
+
+        CustomRating = ResultListViewData.SelectedItem.NumericRating;
+
+        if (!ResultListViewData.SelectedItem.TrailerKey.IsNullOrEmpty())
         {
             return;
         }
@@ -419,11 +530,11 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
         SetVideos(r);
     }
-    
+
 
     private async Task GetMovieTrailer(string itemId)
     {
-        try 
+        try
         {
             var result = await _tmdbObject.GetClient().GetMovieVideosAsync(itemId.ConvertToInt());
 
@@ -472,7 +583,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             videos.Where(video => video != trailer)
                 .Select(video => new MediaVideo(video.Name, youtubeEmbedUrl.Format(video.Key)))
         );
-        
+
         ResultListViewData.SelectedItem.Videos = videoList;
     }
 
@@ -500,7 +611,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         ResultListViewData.SelectedItem.Videos = videoList;
     }
-    
+
     private void ResetPoster()
     {
         if (ResultListViewData.SelectedItem == null)
@@ -510,7 +621,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         }
         ResultListViewData.SelectedItem.ResetInitialPoster();
     }
-    
+
     private bool HasSearchResult()
     {
         if (_isPickedById)
@@ -522,7 +633,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             return (SearchResult.Result as Game[])?.Length != 0;
         }
-    
+
         return SearchResult.Result.TotalResults != 0;
     }
 }

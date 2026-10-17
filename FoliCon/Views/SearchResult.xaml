@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoliCon.Views.SearchResult"
+<UserControl x:Class="FoliCon.Views.SearchResult"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
@@ -7,165 +7,749 @@
              xmlns:viewModels="clr-namespace:FoliCon.ViewModels"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:views="clr-namespace:FoliCon.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:FoliCon.Views"
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              xmlns:extension="clr-namespace:FoliCon.Modules.Extension"
              xmlns:data="clr-namespace:FoliCon.Models.Data"
              xmlns:ui="clr-namespace:FoliCon.Modules.UI"
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel }" Unloaded="UserControl_Unloaded" Background="{DynamicResource RegionBrush}">
+             d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel}"
+             Unloaded="UserControl_Unloaded"
+             PreviewKeyDown="OnPreviewKeyDown"
+             Background="{DynamicResource RegionBrush}">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
-            <Setter Property="Height" Value="700" />
-            <Setter Property="Width" Value="1023" />
+            <Setter Property="Height" Value="720" />
+            <Setter Property="Width" Value="1060" />
+            <Setter Property="MinHeight" Value="660" />
+            <Setter Property="MinWidth" Value="960" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
         </Style>
     </prism:Dialog.WindowStyle>
+
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <convertor:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
         <convertor:InvertedTextToVisibilityConverter x:Key="InvertedTextToVisibilityConverter" />
+        <convertor:ImageCacheConverter x:Key="ImageCacheConverter" />
+        <hc:Object2BooleanConverter x:Key="Object2BooleanConverter" />
         <BitmapImage x:Key="NoPoster" UriSource="/Resources/icons/NoPosterAvailable.png" />
         <BitmapImage x:Key="LoadingPoster" UriSource="/Resources/icons/LoadingPosterImage.png" />
         <BitmapImage x:Key="VideoUnavailable" UriSource="/Resources/icons/video-unavailable.png" />
+
+        <!-- Candidate Item Template for the Results List -->
+        <DataTemplate x:Key="SearchResultCandidateItemTemplate" DataType="{x:Type data:ListItem}">
+            <Border Background="Transparent" Padding="8,8" CornerRadius="6" Margin="0,0,0,2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Poster Thumbnail with High-Quality Preview Popover -->
+                    <Border Grid.Column="0" Width="42" Height="60" CornerRadius="4"
+                            ClipToBounds="True" Background="{DynamicResource RegionBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            Margin="0,0,12,0" VerticalAlignment="Center">
+                        <Border.ToolTip>
+                            <ToolTip Style="{DynamicResource ToolTipDefault}">
+                                <StackPanel MaxWidth="220" Margin="4">
+                                    <Border CornerRadius="6" ClipToBounds="True" MaxHeight="280" Margin="0,0,0,8"
+                                            Background="{DynamicResource SecondaryRegionBrush}">
+                                        <Image Source="{Binding Poster, Converter={StaticResource ImageCacheConverter}}"
+                                               Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
+                                    </Border>
+                                    <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="12"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" TextWrapping="Wrap" />
+                                    <WrapPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                        <TextBlock Text="{Binding Year, StringFormat='Year: {0}'}" FontSize="11"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,8,0"
+                                                   Visibility="{Binding Year, Converter={StaticResource TextToVisibilityConverter}}" />
+                                        <TextBlock Text="{Binding Rating, StringFormat='★ {0}'}" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource WarningBrush}"
+                                                   Visibility="{Binding Rating, Converter={StaticResource TextToVisibilityConverter}}" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </ToolTip>
+                        </Border.ToolTip>
+
+                        <Grid>
+                            <Path Data="{StaticResource FilmGeometry}" Width="16" Height="16" Stretch="Uniform"
+                                  Fill="{DynamicResource SecondaryTextBrush}" Opacity="0.3"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <Image Source="{Binding Poster, Converter={StaticResource ImageCacheConverter}}"
+                                   Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Meta Information -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Title}"
+                                   FontWeight="SemiBold" FontSize="13"
+                                   Foreground="{DynamicResource PrimaryTextBrush}"
+                                   TextTrimming="CharacterEllipsis" Margin="0,0,0,4" />
+
+                        <!-- Badges Row: Year, Rating, MediaType -->
+                        <WrapPanel Orientation="Horizontal" Margin="0,0,0,3">
+                            <!-- Year Badge -->
+                            <Border Background="{DynamicResource RegionBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                    CornerRadius="4" Padding="6,1" Margin="0,0,6,2"
+                                    Visibility="{Binding Year, Converter={StaticResource TextToVisibilityConverter}}">
+                                <TextBlock Text="{Binding Year}" FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource SecondaryTextBrush}" />
+                            </Border>
+
+                            <!-- Rating Badge -->
+                            <Border Background="{DynamicResource RegionBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                    CornerRadius="4" Padding="6,1" Margin="0,0,6,2"
+                                    Visibility="{Binding Rating, Converter={StaticResource TextToVisibilityConverter}}">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource SparkleStarGeometry}" Width="10" Height="10" Stretch="Uniform"
+                                          Fill="{DynamicResource WarningBrush}" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Rating}" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Media Type Badge -->
+                            <Border Background="{DynamicResource PrimaryBrush}" Opacity="0.85"
+                                    CornerRadius="4" Padding="6,1" Margin="0,0,6,2">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding MediaType}" Value="Movie">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MediaType}" Value="Tv">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding MediaType}" Value="Game">
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <TextBlock Text="{Binding MediaType}" FontSize="10" FontWeight="Bold"
+                                           Foreground="White" />
+                            </Border>
+                        </WrapPanel>
+
+                        <!-- Overview Snippet -->
+                        <TextBlock Text="{Binding Overview}" FontSize="11"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   MaxHeight="32" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
+                                   LineHeight="15" LineStackingStrategy="BlockLineHeight"
+                                   Visibility="{Binding Overview, Converter={StaticResource TextToVisibilityConverter}}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
     </UserControl.Resources>
+
     <hc:BusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy}">
-        <Grid Margin="21,0,21,12">
+        <Grid x:Name="RootLayoutGrid" Margin="16,12,16,12">
             <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
+                <!-- Row 0: Modern Header Toolbar -->
+                <RowDefinition x:Name="HeaderRow" Height="Auto" />
+                <!-- Row 1: Main Content 2-Column Area -->
                 <RowDefinition Height="*" />
+                <!-- Row 2: Bottom Action Bar -->
+                <RowDefinition x:Name="BottomActionBarRow" Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Text="{Binding SearchTitle}" VerticalAlignment="Top" Grid.ColumnSpan="2"
-                       HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}" />
-            <Grid Grid.Column="0" Grid.Row="1" Background="{DynamicResource RegionBrush}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="35" />
-                </Grid.RowDefinitions>
-                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonPrimary}"
-                        Command="{Binding PickCommand}" IsDefault="True"/>
-                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Style="{StaticResource ButtonDanger}"
-                        Command="{Binding SkipCommand}" IsCancel="True" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}" />
-                <ListView x:Name="ListViewResult" ItemsSource="{Binding ResultListViewData.Data}" Background="{DynamicResource PrimaryRegionBrush}"
-                          SelectedItem="{Binding ResultListViewData.SelectedItem}" IsSynchronizedWithCurrentItem="True" Grid.Row="1" hc:Empty.ShowEmpty="true">
-                    <hc:Interaction.Triggers>
-                        <hc:EventTrigger EventName="MouseDoubleClick">
-                            <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
-                        </hc:EventTrigger>
-                        <hc:EventTrigger EventName="SelectionChanged">
-                            <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True" />
-                        </hc:EventTrigger>
-                    </hc:Interaction.Triggers>
-                    <i:Interaction.Behaviors>
-                        <ui:ListViewClickSortBehavior/>
-                    </i:Interaction.Behaviors>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Title}" Width="auto" Header="{extension:Lang Key={x:Static langs:LangKeys.Title}}"/>
-                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Year}}" Width="60" DisplayMemberBinding="{Binding Year}"/>
-                            <GridViewColumn Header="{extension:Lang Key={x:Static langs:LangKeys.Rating}}" Width="60" DisplayMemberBinding="{Binding Rating}"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <Label Content="{extension:Lang Key={x:Static langs:LangKeys.Or}}" Grid.Row="2" />
-                <hc:SearchBar extension:FocusExtension.IsFocused="{Binding IsSearchFocused}" x:Name="SearchBar"
-                              Grid.Row="3"
-                              Text="{Binding SearchAgainTitle, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource SearchBarPlus}"
-                              hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
-                              VerticalAlignment="Bottom" IsRealTime="True">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SearchStarted">
-                            <i:InvokeCommandAction Command="{Binding SearchAgainCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </hc:SearchBar>
-            </Grid>
-            <Grid Grid.Row="1" Grid.Column="1" Margin="4,0,0,0" Background="{DynamicResource RegionBrush}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35" />
-                    <RowDefinition Height="200" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Grid.Row="0" Command="{Binding SkipAllCommand}" Content="{extension:Lang Key={x:Static langs:LangKeys.All}}"
-                        HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" Width="41" ToolTip="{Binding SkipAllText}" />
-                <StackPanel Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" FlowDirection="LeftToRight">
-                    <CheckBox VerticalAlignment="Top" HorizontalAlignment="Right" IsChecked="{Binding SubfolderProcessingEnabled}" Content="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"/>
-                    <hc:PreviewSlider x:Name="SizeSlider" Minimum="12" Maximum="25" Value="15"
-                                      VerticalAlignment="Center" Height="18" />
-                </StackPanel>
-                
-                <Image Grid.Row="1" Grid.Column="0" Source="{StaticResource LoadingPoster}" Stretch="Fill" Height="198"
-                       Width="158" RenderOptions.BitmapScalingMode="HighQuality" />
-                <Image Grid.Row="1" Grid.Column="0"
-                       Source="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}" IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" 
-                       RenderOptions.BitmapScalingMode="HighQuality" Stretch="Fill" Height="198" Width="158"
-                       Margin="0,0,0,2">
-                    <Image.InputBindings>
-                        <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding MouseDoubleClickCommand}"/>
-                    </Image.InputBindings>
-                    <Image.Effect>
-                        <DropShadowEffect />
-                    </Image.Effect>
-                </Image>
-                <Grid Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch">
+
+            <!-- ========================================================================= -->
+            <!-- ROW 0: TOP HEADER TOOLBAR                                                 -->
+            <!-- ========================================================================= -->
+            <Border x:Name="HeaderToolbar" Grid.Row="0" Margin="0,0,0,10"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="14,10">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" Content="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" HorizontalAlignment="Stretch" Margin="0,5,0,5" Command="{Binding MouseDoubleClickCommand}" IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}">
-                        <Button.Style>
-                            <Style TargetType="Button" BasedOn="{StaticResource ButtonInfo}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Visibility, ElementName=ResetPoster}" Value="Visible">
-                                        <Setter Property="Grid.ColumnSpan" Value="1"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Visibility, ElementName=ResetPoster}" Value="Collapsed">
-                                        <Setter Property="Grid.ColumnSpan" Value="2"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                    <Button x:Name="ResetPoster" Grid.Column="1" Style="{StaticResource ButtonIcon}" Visibility="{Binding Path=SelectedItem.(data:ListItem.CanResetPoster), ElementName=ListViewResult, Converter={StaticResource BoolToVis}}" Foreground="{DynamicResource PrimaryTextBrush}" hc:IconElement.Geometry="{StaticResource RotateLeftGeometry}" HorizontalAlignment="Right" VerticalAlignment="Stretch"
-                            Command="{Binding Path= ResetPosterCommand}"  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ResetDefaultPoster}}"/>
+
+                    <!-- Left: Search Query Badge & Folder Title -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Folder Icon -->
+                        <Border Width="32" Height="32" CornerRadius="6"
+                                Background="{DynamicResource RegionBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                Margin="0,0,10,0" VerticalAlignment="Center">
+                            <Path Data="{StaticResource CleanFolderGeometry}" Width="16" Height="16" Stretch="Uniform"
+                                  Fill="{DynamicResource PrimaryBrush}"
+                                  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+
+                        <StackPanel VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SearchTitle}"
+                                           FontWeight="Bold" FontSize="15"
+                                           Foreground="{DynamicResource PrimaryTextBrush}"
+                                           VerticalAlignment="Center" />
+
+                                <!-- Candidate Count Badge -->
+                                <Border Margin="10,0,0,0" CornerRadius="10"
+                                        Background="{DynamicResource RegionBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1" Padding="8,2"
+                                        VerticalAlignment="Center">
+                                    <TextBlock FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource LocalizedFormat}">
+                                                <Binding Source="{StaticResource FoliConLangs}" Path="MatchesCountFormat" />
+                                                <Binding Path="ResultListViewData.Data.Count" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </Border>
+                            </StackPanel>
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}"
+                                       FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,2,0,0" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Right: Enable Subfolder Processing Option -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <ToggleButton VerticalAlignment="Center"
+                                      IsChecked="{Binding SubfolderProcessingEnabled}"
+                                      Style="{StaticResource ToggleButtonSwitch}" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.EnableSubfolderProcessing}}"
+                                   FontSize="12" VerticalAlignment="Center" Margin="8,0,0,0"
+                                   Foreground="{DynamicResource PrimaryTextBrush}" />
+                    </StackPanel>
                 </Grid>
-                <hc:Rate Grid.Row="2" Grid.Column="1" Count="10" AllowHalf="True" Margin="5" Foreground="{DynamicResource WarningBrush}" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{extension:Lang Key={x:Static langs:LangKeys.CustomRating}}" ToolTip="{extension:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}" Value="{Binding Path=CustomRating, Mode=TwoWay}" AllowClear="True"/>
-                <!-- <hc:TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Title="{ex:Lang Key={x:Static langs:LangKeys.CustomRating}}" Margin="5" Text="{Binding Path=CustomRating}" ToolTip="{ex:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"/> -->
-                <TextBox Foreground="{DynamicResource PrimaryTextBrush}" Grid.Row="1" Grid.Column="1"
-                         Text="{Binding Path=SelectedItem.(data:ListItem.Overview), ElementName=ListViewResult}" TextWrapping="Wrap"
-                         FontSize="{Binding Value, ElementName=SizeSlider}" HorizontalAlignment="Stretch"
-                         VerticalAlignment="Stretch" IsReadOnly="True" VerticalContentAlignment="Top" />
-                <ListBox x:Name="LstFolderContent" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" ItemsSource="{Binding FileList}"
-                         ScrollViewer.CanContentScroll="True" hc:ScrollViewer.HorizontalScrollBarVisibility="Auto" Background="{DynamicResource RegionBrush}">
-                    <!--<hc:Interaction.Triggers>
-                        <hc:EventTrigger EventName="MouseDoubleClick">
-                            <hc:LaunchUriOrFileAction Path="{Binding ElementName=LstFolderContent, Path=SelectedItem}"/>
-                        </hc:EventTrigger>
-                    </hc:Interaction.Triggers>-->
-                </ListBox>
-                <views:HtmlBox x:Name="WebBox" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Videos="{Binding Path=SelectedItem.(data:ListItem.Videos), ElementName=ListViewResult}"
-                               HtmlText="{Binding Path=SelectedItem.(data:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}"
-                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                               Visibility="{Binding HtmlText, Converter={StaticResource TextToVisibilityConverter}, RelativeSource={RelativeSource Self}}"
-                               Background="{DynamicResource RegionBrush}" />
-                <Image  x:Name="PlaceholderImage" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Source="{StaticResource VideoUnavailable}"
-                        Visibility="{Binding ElementName=WebBox, Path=HtmlText, Converter={StaticResource InvertedTextToVisibilityConverter}}"/>
+            </Border>
+
+            <!-- ========================================================================= -->
+            <!-- ROW 1: MAIN TWO-COLUMN SPLIT (CANDIDATES & DETAILS)                      -->
+            <!-- ========================================================================= -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="CandidatesColumn" Width="4.2*" />
+                    <ColumnDefinition x:Name="DetailsColumn" Width="5.8*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT COLUMN: CANDIDATES CARD &amp; REFINE SEARCH -->
+                <Border x:Name="CandidatesPanel" Grid.Column="0"
+                        Background="{DynamicResource SecondaryRegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="12"
+                        Margin="0,0,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Section Header &amp; Sort Toolbar -->
+                        <Grid Grid.Row="0" Margin="2,0,2,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{extension:Lang Key={x:Static langs:LangKeys.SearchResult}}"
+                                       FontWeight="SemiBold" FontSize="11"
+                                       Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
+
+                            <!-- Interactive Sort Toolbar -->
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SortLabel}}" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}"
+                                           VerticalAlignment="Center" Margin="0,0,5,0" />
+
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.SortDefault}}" Command="{Binding SortCommand}" CommandParameter="Default"
+                                        Padding="6,2" FontSize="10" Margin="0,0,3,0" Cursor="Hand" Height="22">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentSort}" Value="Default">
+                                                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="BorderThickness" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.SortRating}}" Command="{Binding SortCommand}" CommandParameter="Rating"
+                                        Padding="6,2" FontSize="10" Margin="0,0,3,0" Cursor="Hand" Height="22">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentSort}" Value="Rating">
+                                                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="BorderThickness" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.Year}}" Command="{Binding SortCommand}" CommandParameter="Year"
+                                        Padding="6,2" FontSize="10" Margin="0,0,3,0" Cursor="Hand" Height="22">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentSort}" Value="Year">
+                                                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="BorderThickness" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+
+                                <Button Content="{extension:Lang Key={x:Static langs:LangKeys.SortAZ}}" Command="{Binding SortCommand}" CommandParameter="Title"
+                                        Padding="6,2" FontSize="10" Cursor="Hand" Height="22">
+                                    <Button.Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentSort}" Value="Title">
+                                                    <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="BorderThickness" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Candidate List with Rich Cards -->
+                        <ListView x:Name="ListViewResult" Grid.Row="1"
+                                  ItemsSource="{Binding ResultListViewData.Data}"
+                                  SelectedItem="{Binding ResultListViewData.SelectedItem}"
+                                  ItemTemplate="{StaticResource SearchResultCandidateItemTemplate}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  IsSynchronizedWithCurrentItem="True"
+                                  hc:Empty.ShowEmpty="True">
+                            <hc:Interaction.Triggers>
+                                <hc:EventTrigger EventName="MouseDoubleClick">
+                                    <hc:EventToCommand Command="{Binding PickCommand}" PassEventArgsToCommand="True"/>
+                                </hc:EventTrigger>
+                                <hc:EventTrigger EventName="SelectionChanged">
+                                    <hc:EventToCommand Command="{Binding SelectionChanged}" PassEventArgsToCommand="True" />
+                                </hc:EventTrigger>
+                            </hc:Interaction.Triggers>
+                            <i:Interaction.Behaviors>
+                                <ui:ListViewClickSortBehavior/>
+                            </i:Interaction.Behaviors>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0,0,0,4" />
+                                    <Setter Property="Cursor" Value="Hand" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <Border x:Name="ItemBorder"
+                                                        Background="{DynamicResource RegionBrush}"
+                                                        BorderBrush="{DynamicResource BorderBrush}"
+                                                        BorderThickness="1"
+                                                        CornerRadius="6"
+                                                        Padding="4">
+                                                    <ContentPresenter />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                                        <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="True">
+                                                        <Setter TargetName="ItemBorder" Property="Background" Value="{DynamicResource RegionBrush}" />
+                                                        <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                                        <Setter TargetName="ItemBorder" Property="BorderThickness" Value="1.5" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+
+                        <!-- Subtle Divider -->
+                        <Border Grid.Row="2" Height="1" Background="{DynamicResource BorderBrush}" Margin="0,10,0,10" />
+
+                        <!-- Refine Search Section -->
+                        <StackPanel Grid.Row="3">
+                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
+                                       FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource SecondaryTextBrush}" Margin="2,0,0,6" />
+                            <hc:SearchBar x:Name="SearchBar"
+                                          extension:FocusExtension.IsFocused="{Binding IsSearchFocused}"
+                                          Text="{Binding SearchAgainTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource SearchBarPlus}"
+                                          hc:InfoElement.Placeholder="{extension:Lang Key={x:Static langs:LangKeys.EnterTitlePlaceholder}}"
+                                          IsRealTime="True">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SearchStarted">
+                                        <i:InvokeCommandAction Command="{Binding SearchAgainCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </hc:SearchBar>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- RIGHT COLUMN: SELECTED MEDIA PREVIEW &amp; DETAILS -->
+                <Border x:Name="DetailsPanel" Grid.Column="1"
+                        Background="{DynamicResource SecondaryRegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="14">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!-- Section 1: Poster & Meta (Auto) -->
+                            <RowDefinition x:Name="PosterMetaRow" Height="Auto" />
+                            <!-- Section 2: Files in Folder (Auto) -->
+                            <RowDefinition x:Name="FolderFilesRow" Height="Auto" />
+                            <!-- Section 3: Trailer Video (Flexible *) -->
+                            <RowDefinition x:Name="VideoRow" Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!-- SECTION 1: POSTER + METADATA & SYNOPSIS -->
+                        <Grid x:Name="PosterMetaSection" Grid.Row="0" Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <!-- Poster Column -->
+                                <ColumnDefinition Width="145" />
+                                <!-- Meta Column -->
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Poster Card with Action Buttons -->
+                            <StackPanel Grid.Column="0">
+                                <Border Width="140" Height="210" CornerRadius="8"
+                                        ClipToBounds="True"
+                                        Background="{DynamicResource RegionBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.3" Color="Black" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Image Source="{StaticResource LoadingPoster}" Stretch="Uniform"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               RenderOptions.BitmapScalingMode="HighQuality" />
+                                        <Image Source="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, TargetNullValue={StaticResource NoPoster}}"
+                                               IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}"
+                                               Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               RenderOptions.BitmapScalingMode="HighQuality">
+                                            <Image.InputBindings>
+                                                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding MouseDoubleClickCommand}"/>
+                                            </Image.InputBindings>
+                                        </Image>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Change Poster Action Buttons -->
+                                <Grid Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0"
+                                            Command="{Binding MouseDoubleClickCommand}"
+                                            IsEnabled="{Binding Path=SelectedItem.(data:ListItem.Poster), ElementName=ListViewResult, Converter={StaticResource Object2BooleanConverter}}"
+                                            ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SeeMorePosters}}"
+                                            Style="{StaticResource ButtonDefault}"
+                                            HorizontalAlignment="Stretch"
+                                            Padding="6,4" FontSize="11">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <Path Data="{StaticResource PhotoGalleryGeometry}" Width="12" Height="12" Stretch="Uniform"
+                                                  Fill="{DynamicResource PrimaryBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ShowMore}}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button x:Name="ResetPoster" Grid.Column="1"
+                                            Style="{StaticResource ButtonIcon}"
+                                            Visibility="{Binding Path=SelectedItem.(data:ListItem.CanResetPoster), ElementName=ListViewResult, Converter={StaticResource BoolToVis}}"
+                                            Foreground="{DynamicResource PrimaryTextBrush}"
+                                            hc:IconElement.Geometry="{StaticResource RotateLeftGeometry}"
+                                            Margin="6,0,0,0"
+                                            Command="{Binding ResetPosterCommand}"
+                                            ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ResetDefaultPoster}}" />
+                                </Grid>
+                            </StackPanel>
+
+                            <!-- Metadata & Synopsis -->
+                            <Grid Grid.Column="1" Margin="14,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Title & Badges -->
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock Text="{Binding Path=SelectedItem.(data:ListItem.Title), ElementName=ListViewResult}"
+                                               FontWeight="Bold" FontSize="16"
+                                               Foreground="{DynamicResource PrimaryTextBrush}"
+                                               TextWrapping="Wrap" MaxHeight="44" TextTrimming="CharacterEllipsis" />
+
+                                    <!-- Badges Row: Year, Community Rating, MediaType -->
+                                    <WrapPanel Orientation="Horizontal" Margin="0,4,0,6">
+                                        <!-- Year Badge -->
+                                        <Border Background="{DynamicResource RegionBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,2" Margin="0,0,6,2"
+                                                Visibility="{Binding Path=SelectedItem.(data:ListItem.Year), ElementName=ListViewResult, Converter={StaticResource TextToVisibilityConverter}}">
+                                            <TextBlock Text="{Binding Path=SelectedItem.(data:ListItem.Year), ElementName=ListViewResult}"
+                                                       FontSize="11" FontWeight="SemiBold"
+                                                       Foreground="{DynamicResource SecondaryTextBrush}" />
+                                        </Border>
+
+                                        <!-- Community Rating Badge -->
+                                        <Border Background="{DynamicResource RegionBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                CornerRadius="4" Padding="6,2" Margin="0,0,6,2"
+                                                Visibility="{Binding Path=SelectedItem.(data:ListItem.Rating), ElementName=ListViewResult, Converter={StaticResource TextToVisibilityConverter}}">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Path Data="{StaticResource SparkleStarGeometry}" Width="10" Height="10" Stretch="Uniform"
+                                                      Fill="{DynamicResource WarningBrush}" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                                <TextBlock Text="{Binding Path=SelectedItem.(data:ListItem.Rating), ElementName=ListViewResult, StringFormat='{}{0} / 10'}"
+                                                           FontSize="11" FontWeight="SemiBold"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Media Type Badge -->
+                                        <Border Background="{DynamicResource PrimaryBrush}" Opacity="0.85"
+                                                CornerRadius="4" Padding="6,2" Margin="0,0,6,2">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Path=SelectedItem.(data:ListItem.MediaType), ElementName=ListViewResult}" Value="Movie">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=SelectedItem.(data:ListItem.MediaType), ElementName=ListViewResult}" Value="Tv">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Path=SelectedItem.(data:ListItem.MediaType), ElementName=ListViewResult}" Value="Game">
+                                                            <Setter Property="Visibility" Value="Visible" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding Path=SelectedItem.(data:ListItem.MediaType), ElementName=ListViewResult}"
+                                                       FontSize="10" FontWeight="Bold" Foreground="White" />
+                                        </Border>
+                                    </WrapPanel>
+                                </StackPanel>
+
+                                <!-- Custom Rating Capsule (Compact & Smaller) -->
+                                <Border Grid.Row="1" Background="{DynamicResource RegionBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                        CornerRadius="6" Padding="8,4" Margin="0,0,0,8"
+                                        HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.CustomRating}}"
+                                                   FontSize="10.5" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   Margin="0,0,8,0" VerticalAlignment="Center" />
+
+                                        <!-- Smaller Stars via LayoutTransform -->
+                                        <hc:Rate Count="10" AllowHalf="True"
+                                                 Foreground="{DynamicResource WarningBrush}"
+                                                 Value="{Binding CustomRating, Mode=TwoWay}"
+                                                 AllowClear="True"
+                                                 ToolTip="{extension:Lang Key={x:Static langs:LangKeys.CustomRatingTooltip}}"
+                                                 VerticalAlignment="Center">
+                                            <hc:Rate.LayoutTransform>
+                                                <ScaleTransform ScaleX="0.75" ScaleY="0.75" />
+                                            </hc:Rate.LayoutTransform>
+                                        </hc:Rate>
+
+                                        <!-- Rating Numeric Badge -->
+                                        <Border Margin="8,0,0,0" Background="{DynamicResource SecondaryRegionBrush}"
+                                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                                CornerRadius="4" Padding="5,1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding CustomRating, StringFormat='{}{0:0.#}'}"
+                                                       FontSize="10.5" FontWeight="Bold"
+                                                       Foreground="{DynamicResource WarningBrush}" />
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Blended Synopsis Area (Seamlessly integrated into card) -->
+                                <StackPanel Grid.Row="2" Margin="0,2,0,0">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Synopsis}}"
+                                               FontSize="10" FontWeight="Bold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}"
+                                               Opacity="0.7" Margin="0,0,0,4" />
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="120">
+                                        <TextBlock Text="{Binding Path=SelectedItem.(data:ListItem.Overview), ElementName=ListViewResult}"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   FontSize="11.5" LineHeight="17"
+                                                   TextWrapping="Wrap" />
+                                    </ScrollViewer>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+
+                        <!-- SECTION 2: FOLDER FILES (Compact Badge/Pill List) -->
+                        <Border x:Name="FolderFilesSection" Grid.Row="1" Background="{DynamicResource RegionBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                CornerRadius="6" Padding="10,6" Margin="0,0,0,10"
+                                MaxHeight="52">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <Path Data="{StaticResource DocumentGeometry}" Width="12" Height="12" Stretch="Uniform"
+                                          Fill="{DynamicResource SecondaryTextBrush}" Margin="0,0,4,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.FolderFiles}}" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <ListBox x:Name="LstFolderContent" Grid.Column="1"
+                                         ItemsSource="{Binding FileList}"
+                                         Background="Transparent" BorderThickness="0"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{DynamicResource SecondaryRegionBrush}"
+                                                    BorderBrush="{DynamicResource BorderBrush}"
+                                                    BorderThickness="1" CornerRadius="4"
+                                                    Padding="6,2" Margin="0,0,6,0">
+                                                <TextBlock Text="{Binding}" FontSize="11"
+                                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </Border>
+
+                        <!-- SECTION 3: OFFICIAL TRAILER & MEDIA PLAYER -->
+                        <Border x:Name="VideoContainer" Grid.Row="2" CornerRadius="6,6,0,0"
+                                Background="Black"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1">
+                            <Grid>
+                                <!-- WebView2 Video Player -->
+                                <views:HtmlBox x:Name="WebBox"
+                                               Videos="{Binding Path=SelectedItem.(data:ListItem.Videos), ElementName=ListViewResult}"
+                                               HtmlText="{Binding Path=SelectedItem.(data:ListItem.Trailer), ElementName=ListViewResult, TargetNullValue='Video not available!'}"
+                                               ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                               Visibility="{Binding HtmlText, Converter={StaticResource TextToVisibilityConverter}, RelativeSource={RelativeSource Self}}"
+                                               Background="Transparent" />
+
+                                <!-- Sleek Modern Empty State when video is unavailable -->
+                                <Border Background="{DynamicResource RegionBrush}"
+                                        CornerRadius="6,6,0,0"
+                                        Visibility="{Binding ElementName=WebBox, Path=HtmlText, Converter={StaticResource InvertedTextToVisibilityConverter}}">
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16">
+                                        <Path Data="{StaticResource TvGeometry}" Width="36" Height="36" Stretch="Uniform"
+                                              Fill="{DynamicResource SecondaryTextBrush}" Opacity="0.35"
+                                              HorizontalAlignment="Center" Margin="0,0,0,8" />
+                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.NoTrailerAvailable}}"
+                                                   FontSize="12" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                                   HorizontalAlignment="Center" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
             </Grid>
+
+            <!-- ========================================================================= -->
+            <!-- ROW 2: UNIFIED BOTTOM ACTION BAR                                          -->
+            <!-- ========================================================================= -->
+            <Border x:Name="BottomActionBar" Grid.Row="2" Margin="0,10,0,0"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="14,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Hint / Shortcut info on the left -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Path Data="{StaticResource EyeGeometry}" Width="14" Height="14" Stretch="Uniform"
+                              Fill="{DynamicResource SecondaryTextBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SearchResultHint}}"
+                                   FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <!-- Action Buttons matching reference mockup -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- Pick Selected (Primary Action) -->
+                        <Button Command="{Binding PickCommand}"
+                                IsDefault="True"
+                                Style="{StaticResource ButtonPrimary}"
+                                Margin="0,0,8,0"
+                                Padding="18,6" FontSize="12" FontWeight="SemiBold">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path Data="{StaticResource CheckCircleGeometry}" Width="14" Height="14" Stretch="Uniform"
+                                      Fill="White" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.PickSelected}}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Skip Button with Fast-Forward icon -->
+                        <Button Command="{Binding SkipCommand}"
+                                ToolTip="{extension:Lang Key={x:Static langs:LangKeys.SkipThisTitle}}"
+                                IsCancel="True"
+                                Style="{StaticResource ButtonDanger}"
+                                Margin="0,0,8,0"
+                                Padding="16,6" FontSize="12">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path Data="{StaticResource FastForwardGeometry}" Width="13" Height="13" Stretch="Uniform"
+                                      Fill="White" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Skip}}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Skip All Button -->
+                        <Button Content="{extension:Lang Key={x:Static langs:LangKeys.All}}"
+                                Command="{Binding SkipAllCommand}"
+                                ToolTip="{Binding SkipAllText}"
+                                Style="{StaticResource ButtonDefault}"
+                                Padding="16,6" FontSize="12" />
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
     </hc:BusyIndicator>
 </UserControl>
