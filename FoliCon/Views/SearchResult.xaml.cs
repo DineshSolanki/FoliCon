@@ -23,10 +23,10 @@ public partial class SearchResult
     public SearchResult()
     {
         InitializeComponent();
-        WebBox.FullScreenChanged += OnVideoFullScreenChanged;
+        WebBox.FullScreenChanged += (_, isFullScreen) => OnVideoFullScreenChanged(isFullScreen);
     }
 
-    private void OnVideoFullScreenChanged(object? sender, bool isFullScreen)
+    private void OnVideoFullScreenChanged(bool isFullScreen)
     {
         _isFullScreen = isFullScreen;
 

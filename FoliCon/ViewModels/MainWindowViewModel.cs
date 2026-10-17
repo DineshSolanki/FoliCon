@@ -703,7 +703,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         return (response, parsedTitle, isPickedById, mediaType);
     }
 
-    private int CalculateResultCount(ResultResponse? response, bool isPickedById)
+    private int CalculateResultCount(ResultResponse response, bool isPickedById)
     {
         if (response is null)
         {

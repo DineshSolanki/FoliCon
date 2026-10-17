@@ -211,7 +211,7 @@ public partial class HtmlBox
             Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
             Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
             RegisterVirtualHostHandler();
-            Browser.CoreWebView2.ContainsFullScreenElementChanged += OnContainsFullScreenElementChanged;
+            Browser.CoreWebView2.ContainsFullScreenElementChanged += (_, _) => OnContainsFullScreenElementChanged();
         }
 
         return true;
@@ -261,7 +261,7 @@ public partial class HtmlBox
         _webResourceHandlerRegistered = true;
     }
 
-    private void OnContainsFullScreenElementChanged(object? sender, object e)
+    private void OnContainsFullScreenElementChanged()
     {
         if (Browser.CoreWebView2 == null)
         {
@@ -272,8 +272,13 @@ public partial class HtmlBox
         Dispatcher.Invoke(() =>
         {
             HeaderBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
-            FullScreenChanged?.Invoke(this, isFullScreen);
+            OnFullScreenChanged(isFullScreen);
         });
+    }
+
+    protected virtual void OnFullScreenChanged(bool isFullScreen)
+    {
+        FullScreenChanged?.Invoke(this, isFullScreen);
     }
 
     private void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)
