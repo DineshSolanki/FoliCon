@@ -203,25 +203,30 @@ public class SearchResultViewModel : BindableBase, IDialogAware
             IsBusy = true;
         }
 
-        _isPickedById = false;
-        var titleToSearch = SearchAgainTitle ?? SearchTitle;
-        Logger.Info("Searching for {TitleToSearch}", titleToSearch);
-        BusyContent = Lang.SearchingWithName.Format(titleToSearch);
-        var result = SearchMode == MediaTypes.game
-            ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
-            : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
-        if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0)
+        try
         {
-            return;
-        }
+            _isPickedById = false;
+            var titleToSearch = SearchAgainTitle ?? SearchTitle;
+            Logger.Info("Searching for {TitleToSearch}", titleToSearch);
+            BusyContent = Lang.SearchingWithName.Format(titleToSearch);
+            var result = SearchMode == MediaTypes.game
+                ? await _igdbObject.SearchGameAsync(titleToSearch.Replace(@"\", " "))
+                : await _tmdbObject.SearchAsync(titleToSearch.Replace(@"\", " "), SearchMode);
+            if (DataUtils.GetResultCount(_isPickedById, result.Result, SearchMode) == 0)
+            {
+                return;
+            }
 
-        SearchResult = result;
-        if (useBusy)
+            SearchResult = result;
+            LoadData(titleToSearch);
+        }
+        finally
         {
-            IsBusy = false;
+            if (useBusy)
+            {
+                IsBusy = false;
+            }
         }
-
-        LoadData(titleToSearch);
     }
 
     private void LoadData(string searchTitle)
