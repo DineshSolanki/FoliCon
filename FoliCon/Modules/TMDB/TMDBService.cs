@@ -255,7 +255,7 @@ internal class TmdbService
         return result;
     }
 
-    private Task<SearchContainer<SearchTv>> SearchTvByTitleAsync(string query, int year) =>
+    private Task<SearchContainer<SearchTv>?> SearchTvByTitleAsync(string query, int year) =>
         year != 0
             ? _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: year)
             : _serviceClient.SearchTvShowAsync(query);
