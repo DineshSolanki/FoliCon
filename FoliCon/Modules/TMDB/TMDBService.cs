@@ -203,13 +203,9 @@ internal class TmdbService
             return await _serviceClient.SearchCollectionAsync(query);
         }
 
-        var container = parsedTitle.IdType switch
-        {
-            IdType.Tmdb => int.TryParse(parsedTitle.Id, out var tmdbId)
-                ? GetCollectionSearchContainer(await _serviceClient.GetCollectionAsync(tmdbId))
-                : null,
-            _ => null
-        };
+        var container = parsedTitle.IdType == IdType.Tmdb && int.TryParse(parsedTitle.Id, out var tmdbId)
+            ? GetCollectionSearchContainer(await _serviceClient.GetCollectionAsync(tmdbId))
+            : null;
 
         if (container is { Results.Count: > 0 })
         {
@@ -241,29 +237,28 @@ internal class TmdbService
                 _ => null
             };
 
-            if (result == null || result.Results.Count == 0)
+            if (result is not { Results.Count: > 0 })
             {
                 Logger.Warn("Search by {IdType} ID {Id} yielded no TV results; falling back to title search for '{Title}'",
                     parsedTitle.IdType, parsedTitle.Id, query);
-                result = parsedTitle.Year != 0
-                    ? await _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: parsedTitle.Year)
-                    : await _serviceClient.SearchTvShowAsync(query);
+                result = null;
             }
         }
-        else
-        {
-            result = parsedTitle.Year != 0
-                ? await _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: parsedTitle.Year)
-                : await _serviceClient.SearchTvShowAsync(query);
-        }
 
-        if (parsedTitle.Season != 0 && result != null && result.Results.Count > 0)
+        result ??= await SearchTvByTitleAsync(query, parsedTitle.Year);
+
+        if (parsedTitle.Season != 0 && result is { Results.Count: > 0 })
         {
             await ApplySeasonPosterAsync(result, parsedTitle.Season);
         }
 
         return result;
     }
+
+    private Task<SearchContainer<SearchTv>> SearchTvByTitleAsync(string query, int year) =>
+        year != 0
+            ? _serviceClient.SearchTvShowAsync(query: query, firstAirDateYear: year)
+            : _serviceClient.SearchTvShowAsync(query);
 
     private async Task ApplySeasonPosterAsync(SearchContainer<SearchTv> tvResults, int seasonNumber)
     {

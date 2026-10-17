@@ -1,3 +1,4 @@
+#nullable enable
 namespace FoliCon.Modules.Convertor;
 
 /// <summary>

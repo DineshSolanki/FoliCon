@@ -703,9 +703,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         return (response, parsedTitle, isPickedById, mediaType);
     }
 
-    private int CalculateResultCount(ResultResponse response, bool isPickedById)
+    private int CalculateResultCount(ResultResponse? response, bool isPickedById)
     {
-        if (response?.Result == null)
+        if (response?.Result is null)
         {
             return 0;
         }
@@ -715,7 +715,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             return 1;
         }
 
-        return SearchMode == MediaTypes.game ? response.Result.Length : (int)response.Result.TotalResults;
+        var result = response.Result;
+        return SearchMode == MediaTypes.game ? result.Length : (int)result.TotalResults;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(
