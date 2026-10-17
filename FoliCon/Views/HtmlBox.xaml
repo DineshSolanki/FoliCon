@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <!-- Integrated Blended Video Header Bar with matched top corner radius -->
-        <Border Grid.Row="0"
+        <Border x:Name="HeaderBar" Grid.Row="0"
                 Background="{DynamicResource SecondaryRegionBrush}"
                 BorderBrush="{DynamicResource BorderBrush}"
                 BorderThickness="0,0,0,1"

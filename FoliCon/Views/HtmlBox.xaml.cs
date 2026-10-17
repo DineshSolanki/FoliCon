@@ -58,6 +58,20 @@ public partial class HtmlBox
         });
     }
 
+    public event EventHandler<bool>? FullScreenChanged;
+
+    public void ExitFullScreen()
+    {
+        try
+        {
+            Browser.CoreWebView2?.ExecuteScriptAsync("if (document.fullscreenElement) { document.exitFullscreen(); }");
+        }
+        catch (Exception ex)
+        {
+            Logger.Debug(ex, "Error executing exitFullscreen script.");
+        }
+    }
+
     private bool IsVideoAvailable { get; set; }
     private bool _isDisposed;
 
@@ -171,6 +185,7 @@ public partial class HtmlBox
                     Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
                     Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
                     RegisterVirtualHostHandler();
+                    Browser.CoreWebView2.ContainsFullScreenElementChanged += OnContainsFullScreenElementChanged;
                 }
             }
 
@@ -226,6 +241,21 @@ public partial class HtmlBox
             CoreWebView2WebResourceContext.Document);
         Browser.CoreWebView2.WebResourceRequested += OnWebResourceRequested;
         _webResourceHandlerRegistered = true;
+    }
+
+    private void OnContainsFullScreenElementChanged(object? sender, object e)
+    {
+        if (Browser.CoreWebView2 == null)
+        {
+            return;
+        }
+
+        var isFullScreen = Browser.CoreWebView2.ContainsFullScreenElement;
+        Dispatcher.Invoke(() =>
+        {
+            HeaderBar.Visibility = isFullScreen ? Visibility.Collapsed : Visibility.Visible;
+            FullScreenChanged?.Invoke(this, isFullScreen);
+        });
     }
 
     private void OnWebResourceRequested(object? sender, CoreWebView2WebResourceRequestedEventArgs e)

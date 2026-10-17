@@ -17,6 +17,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel}"
              Unloaded="UserControl_Unloaded"
+             PreviewKeyDown="OnPreviewKeyDown"
              Background="{DynamicResource RegionBrush}">
 
     <prism:Dialog.WindowStyle>
@@ -153,7 +154,7 @@
     </UserControl.Resources>
 
     <hc:BusyIndicator BusyContent="{Binding BusyContent}" IsBusy="{Binding IsBusy}">
-        <Grid Margin="16,12,16,12">
+        <Grid x:Name="RootLayoutGrid" Margin="16,12,16,12">
             <Grid.RowDefinitions>
                 <!-- Row 0: Modern Header Toolbar -->
                 <RowDefinition Height="Auto" />
@@ -166,7 +167,7 @@
             <!-- ========================================================================= -->
             <!-- ROW 0: TOP HEADER TOOLBAR                                                 -->
             <!-- ========================================================================= -->
-            <Border Grid.Row="0" Margin="0,0,0,10"
+            <Border x:Name="HeaderToolbar" Grid.Row="0" Margin="0,0,0,10"
                     Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
@@ -242,7 +243,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- LEFT COLUMN: CANDIDATES CARD &amp; REFINE SEARCH -->
-                <Border Grid.Column="0"
+                <Border x:Name="CandidatesPanel" Grid.Column="0"
                         Background="{DynamicResource SecondaryRegionBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
@@ -416,7 +417,7 @@
                 </Border>
 
                 <!-- RIGHT COLUMN: SELECTED MEDIA PREVIEW &amp; DETAILS -->
-                <Border Grid.Column="1"
+                <Border x:Name="DetailsPanel" Grid.Column="1"
                         Background="{DynamicResource SecondaryRegionBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="1"
@@ -433,7 +434,7 @@
                         </Grid.RowDefinitions>
 
                         <!-- SECTION 1: POSTER + METADATA & SYNOPSIS -->
-                        <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid x:Name="PosterMetaSection" Grid.Row="0" Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <!-- Poster Column -->
                                 <ColumnDefinition Width="145" />
@@ -614,7 +615,7 @@
                         </Grid>
 
                         <!-- SECTION 2: FOLDER FILES (Compact Badge/Pill List) -->
-                        <Border Grid.Row="1" Background="{DynamicResource RegionBrush}"
+                        <Border x:Name="FolderFilesSection" Grid.Row="1" Background="{DynamicResource RegionBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
                                 CornerRadius="6" Padding="10,6" Margin="0,0,0,10"
                                 MaxHeight="52">
@@ -655,7 +656,7 @@
                         </Border>
 
                         <!-- SECTION 3: OFFICIAL TRAILER & MEDIA PLAYER -->
-                        <Border Grid.Row="2" CornerRadius="6,6,0,0"
+                        <Border x:Name="VideoContainer" Grid.Row="2" CornerRadius="6,6,0,0"
                                 Background="Black"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1">
@@ -691,7 +692,7 @@
             <!-- ========================================================================= -->
             <!-- ROW 2: UNIFIED BOTTOM ACTION BAR                                          -->
             <!-- ========================================================================= -->
-            <Border Grid.Row="2" Margin="0,10,0,0"
+            <Border x:Name="BottomActionBar" Grid.Row="2" Margin="0,10,0,0"
                     Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
