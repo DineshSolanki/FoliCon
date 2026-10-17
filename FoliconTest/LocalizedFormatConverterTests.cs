@@ -81,6 +81,20 @@ public class LocalizedFormatConverterTests
     }
 
     [Fact]
+    public void Convert_MultipleNumericArgsBeforeNonNumeric_SelectsLastNumericArg()
+    {
+        var valuesPlural = new object[] { "{0} of {1} file in {2}|{0} of {1} files in {2}", 1, 5, "Folder" };
+        var resultPlural = _converter.Convert(valuesPlural, typeof(string), null!, CultureInfo.InvariantCulture);
+
+        Assert.Equal("1 of 5 files in Folder", resultPlural);
+
+        var valuesSingular = new object[] { "{0} of {1} file in {2}|{0} of {1} files in {2}", 1, 1, "Folder" };
+        var resultSingular = _converter.Convert(valuesSingular, typeof(string), null!, CultureInfo.InvariantCulture);
+
+        Assert.Equal("1 of 1 file in Folder", resultSingular);
+    }
+
+    [Fact]
     public void Convert_DependencyPropertyUnsetValue_TreatedAsEmpty()
     {
         var values = new object[] { "Value: {0}", DependencyProperty.UnsetValue };

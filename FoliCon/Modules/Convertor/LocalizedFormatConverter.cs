@@ -10,7 +10,7 @@ namespace FoliCon.Modules.Convertor;
 /// around that, and re-evaluates on a live language switch like every other localized binding.
 ///
 /// Supports singular and plural forms separated by '|' (singular|plural).
-/// The governing count is determined by the last numeric argument, falling back to the first numeric argument.
+/// The governing count is determined by the last numeric argument.
 /// If count == 1, the singular form is chosen; otherwise the plural form is used.
 /// </summary>
 /// <example>
@@ -68,14 +68,9 @@ public class LocalizedFormatConverter : IMultiValueConverter
 
     private static bool TryDetermineCount(object[] args, out long count)
     {
-        if (args.Length > 0 && TryGetCount(args[^1], out count))
+        for (var i = args.Length - 1; i >= 0; i--)
         {
-            return true;
-        }
-
-        foreach (var t in args)
-        {
-            if (TryGetCount(t, out count))
+            if (TryGetCount(args[i], out count))
             {
                 return true;
             }
