@@ -157,11 +157,11 @@
         <Grid x:Name="RootLayoutGrid" Margin="16,12,16,12">
             <Grid.RowDefinitions>
                 <!-- Row 0: Modern Header Toolbar -->
-                <RowDefinition Height="Auto" />
+                <RowDefinition x:Name="HeaderRow" Height="Auto" />
                 <!-- Row 1: Main Content 2-Column Area -->
                 <RowDefinition Height="*" />
                 <!-- Row 2: Bottom Action Bar -->
-                <RowDefinition Height="Auto" />
+                <RowDefinition x:Name="BottomActionBarRow" Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- ========================================================================= -->
@@ -238,8 +238,8 @@
             <!-- ========================================================================= -->
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="4.2*" />
-                    <ColumnDefinition Width="5.8*" />
+                    <ColumnDefinition x:Name="CandidatesColumn" Width="4.2*" />
+                    <ColumnDefinition x:Name="DetailsColumn" Width="5.8*" />
                 </Grid.ColumnDefinitions>
 
                 <!-- LEFT COLUMN: CANDIDATES CARD &amp; REFINE SEARCH -->
@@ -426,11 +426,11 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <!-- Section 1: Poster & Meta (Auto) -->
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="PosterMetaRow" Height="Auto" />
                             <!-- Section 2: Files in Folder (Auto) -->
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="FolderFilesRow" Height="Auto" />
                             <!-- Section 3: Trailer Video (Flexible *) -->
-                            <RowDefinition Height="*" />
+                            <RowDefinition x:Name="VideoRow" Height="*" />
                         </Grid.RowDefinitions>
 
                         <!-- SECTION 1: POSTER + METADATA & SYNOPSIS -->

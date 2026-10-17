@@ -1,5 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace FoliCon.Views;
 
@@ -11,6 +13,8 @@ public partial class SearchResult
     private WindowState _previousWindowState = WindowState.Normal;
     private WindowStyle _previousWindowStyle = WindowStyle.SingleBorderWindow;
     private ResizeMode _previousResizeMode = ResizeMode.CanResize;
+    private bool _previousShowTitle = true;
+    private bool _previousShowNonClientArea = true;
     private bool _isFullScreen;
 
     public SearchResult()
@@ -24,7 +28,31 @@ public partial class SearchResult
         _isFullScreen = isFullScreen;
 
         var window = System.Windows.Window.GetWindow(this);
-        if (window != null)
+        if (window is HandyControl.Controls.Window hcWindow)
+        {
+            if (isFullScreen)
+            {
+                _previousWindowState = hcWindow.WindowState;
+                _previousWindowStyle = hcWindow.WindowStyle;
+                _previousResizeMode = hcWindow.ResizeMode;
+                _previousShowTitle = hcWindow.ShowTitle;
+                _previousShowNonClientArea = hcWindow.ShowNonClientArea;
+
+                hcWindow.ShowTitle = false;
+                hcWindow.ShowNonClientArea = false;
+                hcWindow.IsFullScreen = true;
+            }
+            else
+            {
+                hcWindow.IsFullScreen = false;
+                hcWindow.ShowTitle = _previousShowTitle;
+                hcWindow.ShowNonClientArea = _previousShowNonClientArea;
+                hcWindow.WindowState = _previousWindowState;
+                hcWindow.WindowStyle = _previousWindowStyle;
+                hcWindow.ResizeMode = _previousResizeMode;
+            }
+        }
+        else if (window != null)
         {
             if (isFullScreen)
             {
@@ -47,9 +75,17 @@ public partial class SearchResult
 
         if (isFullScreen)
         {
+            HeaderRow.Height = new GridLength(0);
+            BottomActionBarRow.Height = new GridLength(0);
             HeaderToolbar.Visibility = Visibility.Collapsed;
             BottomActionBar.Visibility = Visibility.Collapsed;
+
+            CandidatesColumn.Width = new GridLength(0);
+            DetailsColumn.Width = new GridLength(1, GridUnitType.Star);
             CandidatesPanel.Visibility = Visibility.Collapsed;
+
+            PosterMetaRow.Height = new GridLength(0);
+            FolderFilesRow.Height = new GridLength(0);
             PosterMetaSection.Visibility = Visibility.Collapsed;
             FolderFilesSection.Visibility = Visibility.Collapsed;
 
@@ -57,14 +93,25 @@ public partial class SearchResult
             DetailsPanel.Padding = new Thickness(0);
             DetailsPanel.BorderThickness = new Thickness(0);
             DetailsPanel.CornerRadius = new CornerRadius(0);
+            DetailsPanel.Background = Brushes.Black;
             VideoContainer.BorderThickness = new Thickness(0);
             VideoContainer.CornerRadius = new CornerRadius(0);
+            VideoContainer.Background = Brushes.Black;
+            Background = Brushes.Black;
         }
         else
         {
+            HeaderRow.Height = GridLength.Auto;
+            BottomActionBarRow.Height = GridLength.Auto;
             HeaderToolbar.Visibility = Visibility.Visible;
             BottomActionBar.Visibility = Visibility.Visible;
+
+            CandidatesColumn.Width = new GridLength(4.2, GridUnitType.Star);
+            DetailsColumn.Width = new GridLength(5.8, GridUnitType.Star);
             CandidatesPanel.Visibility = Visibility.Visible;
+
+            PosterMetaRow.Height = GridLength.Auto;
+            FolderFilesRow.Height = GridLength.Auto;
             PosterMetaSection.Visibility = Visibility.Visible;
             FolderFilesSection.Visibility = Visibility.Visible;
 
@@ -72,8 +119,11 @@ public partial class SearchResult
             DetailsPanel.Padding = new Thickness(14);
             DetailsPanel.BorderThickness = new Thickness(1);
             DetailsPanel.CornerRadius = new CornerRadius(8);
+            DetailsPanel.Background = (Brush)FindResource("SecondaryRegionBrush");
             VideoContainer.BorderThickness = new Thickness(1);
             VideoContainer.CornerRadius = new CornerRadius(6, 6, 0, 0);
+            VideoContainer.Background = Brushes.Black;
+            Background = (Brush)FindResource("RegionBrush");
         }
     }
 
@@ -91,7 +141,16 @@ public partial class SearchResult
         if (_isFullScreen)
         {
             var window = System.Windows.Window.GetWindow(this);
-            if (window != null)
+            if (window is HandyControl.Controls.Window hcWindow)
+            {
+                hcWindow.IsFullScreen = false;
+                hcWindow.ShowTitle = _previousShowTitle;
+                hcWindow.ShowNonClientArea = _previousShowNonClientArea;
+                hcWindow.WindowState = _previousWindowState;
+                hcWindow.WindowStyle = _previousWindowStyle;
+                hcWindow.ResizeMode = _previousResizeMode;
+            }
+            else if (window != null)
             {
                 window.WindowState = _previousWindowState;
                 window.WindowStyle = _previousWindowStyle;
