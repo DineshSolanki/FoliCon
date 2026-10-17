@@ -236,12 +236,13 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             if (_hasAttemptedFallback || string.IsNullOrWhiteSpace(searchTitle))
             {
+                IsSearchFocused = true;
                 return;
             }
 
             _hasAttemptedFallback = true;
             Logger.Warn("SearchResult has no results; attempting fallback title search for '{SearchTitle}'", searchTitle);
-            _ = StartSearch(false);
+            _ = ExecuteFallbackSearchAsync(searchTitle);
             return;
         }
 
@@ -251,18 +252,36 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         {
             if (_hasAttemptedFallback || string.IsNullOrWhiteSpace(searchTitle))
             {
+                IsSearchFocused = true;
                 return;
             }
 
             _hasAttemptedFallback = true;
             Logger.Warn("ResultListViewData has 0 items despite search result; attempting fallback search for '{SearchTitle}'", searchTitle);
-            _ = StartSearch(false);
+            _ = ExecuteFallbackSearchAsync(searchTitle);
             return;
         }
 
         ResultListViewData.SelectedItem = ResultListViewData.Data[0];
         CurrentSort = defaultSortKey;
         PerformSelectionChanged();
+    }
+
+    internal async Task ExecuteFallbackSearchAsync(string searchTitle)
+    {
+        try
+        {
+            await StartSearch(false);
+            if (!HasSearchResult() || ResultListViewData.Data.Count == 0)
+            {
+                IsSearchFocused = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Fallback search failed for '{SearchTitle}'", searchTitle);
+            IsSearchFocused = true;
+        }
     }
 
     private void SortMethod(string sortKey)
@@ -317,9 +336,23 @@ public class SearchResultViewModel : BindableBase, IDialogAware
     private async void SearchAgainMethod()
     {
         _hasAttemptedFallback = false;
-        if (!string.IsNullOrWhiteSpace(SearchAgainTitle))
+        if (string.IsNullOrWhiteSpace(SearchAgainTitle))
+        {
+            return;
+        }
+
+        try
         {
             await StartSearch(false);
+            if (!HasSearchResult() || ResultListViewData.Data.Count == 0)
+            {
+                IsSearchFocused = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Search again failed for '{SearchAgainTitle}'", SearchAgainTitle);
+            IsSearchFocused = true;
         }
     }
 
