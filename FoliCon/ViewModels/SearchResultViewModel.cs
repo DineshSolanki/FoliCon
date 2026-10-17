@@ -109,6 +109,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private const string defaultSortKey = "Default";
     private bool _sortDescending = true;
+    private bool _hasAttemptedFallback;
 
     public string CurrentSort
     {
@@ -233,6 +234,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
         if (!HasSearchResult())
         {
+            if (_hasAttemptedFallback || string.IsNullOrWhiteSpace(searchTitle))
+            {
+                return;
+            }
+
+            _hasAttemptedFallback = true;
+            Logger.Warn("SearchResult has no results; attempting fallback title search for '{SearchTitle}'", searchTitle);
+            _ = StartSearch(false);
             return;
         }
 
@@ -240,6 +249,14 @@ public class SearchResultViewModel : BindableBase, IDialogAware
         ResultListViewData.Data = FileUtils.FetchAndAddDetailsToListView(SearchResult, searchTitle, _isPickedById);
         if (ResultListViewData.Data.Count == 0)
         {
+            if (_hasAttemptedFallback || string.IsNullOrWhiteSpace(searchTitle))
+            {
+                return;
+            }
+
+            _hasAttemptedFallback = true;
+            Logger.Warn("ResultListViewData has 0 items despite search result; attempting fallback search for '{SearchTitle}'", searchTitle);
+            _ = StartSearch(false);
             return;
         }
 
@@ -299,6 +316,7 @@ public class SearchResultViewModel : BindableBase, IDialogAware
 
     private async void SearchAgainMethod()
     {
+        _hasAttemptedFallback = false;
         if (!string.IsNullOrWhiteSpace(SearchAgainTitle))
         {
             await StartSearch(false);

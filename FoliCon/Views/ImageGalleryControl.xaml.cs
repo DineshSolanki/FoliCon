@@ -31,17 +31,17 @@ public partial class ImageGalleryControl
     public static readonly DependencyProperty ClickCommandProperty =
         DependencyProperty.Register(nameof(ClickCommand), typeof(ICommand), typeof(ImageGalleryControl), new PropertyMetadata(null));
 
-    public static readonly DependencyProperty BindingPathProperty = 
+    public static readonly DependencyProperty BindingPathProperty =
         DependencyProperty.Register(
-            nameof(BindingPath), 
-            typeof(string), 
-            typeof(ImageGalleryControl), 
+            nameof(BindingPath),
+            typeof(string),
+            typeof(ImageGalleryControl),
             new PropertyMetadata("Url")
         );
 
     public static readonly DependencyProperty UseCacheConverterProperty =
-        DependencyProperty.Register(nameof(UseCacheConverter), typeof(bool), 
-            typeof(ImageGalleryControl), 
+        DependencyProperty.Register(nameof(UseCacheConverter), typeof(bool),
+            typeof(ImageGalleryControl),
             new PropertyMetadata(false));
 
     public static readonly DependencyProperty ImageStretchProperty =
@@ -171,6 +171,74 @@ public partial class ImageGalleryControl
     {
         var image = (Image)sender;
         image.Source = null;
+    }
+
+    private static object GetContextMenuItemData(object sender)
+    {
+        if (sender is not MenuItem menuItem)
+        {
+            return null;
+        }
+
+        if (menuItem.DataContext != null)
+        {
+            return menuItem.DataContext;
+        }
+
+        if (menuItem.Parent is ContextMenu contextMenu && contextMenu.PlacementTarget is FrameworkElement fe)
+        {
+            return fe.DataContext ?? fe.Tag;
+        }
+
+        return null;
+    }
+
+    private void PreviewMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var item = GetContextMenuItemData(sender) ?? SelectedItem;
+        if (item == null)
+        {
+            return;
+        }
+
+        SelectedItem = item;
+        if (PreviewCommand == null)
+        {
+            return;
+        }
+
+        if (PreviewCommand.CanExecute(item))
+        {
+            PreviewCommand.Execute(item);
+        }
+        else if (PreviewCommand.CanExecute(null))
+        {
+            PreviewCommand.Execute(null);
+        }
+    }
+
+    private void PickMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var item = GetContextMenuItemData(sender) ?? SelectedItem;
+        if (item == null)
+        {
+            return;
+        }
+
+        SelectedItem = item;
+        if (DoubleClickCommand == null)
+        {
+            return;
+        }
+
+        if (DoubleClickCommand.CanExecute(item))
+        {
+            DoubleClickCommand.Execute(item);
+        }
+        else if (DoubleClickCommand.CanExecute(null))
+        {
+            DoubleClickCommand.Execute(null);
+        }
     }
 
     #endregion

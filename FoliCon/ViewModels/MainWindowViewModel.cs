@@ -705,12 +705,17 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     private int CalculateResultCount(ResultResponse response, bool isPickedById)
     {
-        if (isPickedById)
+        if (response?.Result == null)
         {
-            return response.Result != null ? 1 : 0;
+            return 0;
         }
 
-        return SearchMode == MediaTypes.game ? response.Result.Length : response.Result.TotalResults;
+        if (isPickedById)
+        {
+            return 1;
+        }
+
+        return SearchMode == MediaTypes.game ? response.Result.Length : (int)response.Result.TotalResults;
     }
 
     private async Task<(bool dialogResult, bool skipAll)> ProcessNoResultCase(

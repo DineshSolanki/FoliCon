@@ -588,6 +588,7 @@ public class TitleCleanerTests(ITestOutputHelper? output = null)
     [InlineData("Steins;Gate 0 {tmdb-7142}", "Steins;Gate 0", IdType.Tmdb, "7142", 0)]
     [InlineData("The Night is Short, Walk On Girl", "The Night is Short, Walk On Girl", IdType.None, "0", 0)]
     [InlineData("S1m0ne (2002)", "S1m0ne", IdType.None, "0", 2002)]
+    [InlineData("1408 {tmdb-2458}", "1408", IdType.Tmdb, "2458", 0)]
     public void CleanAndParse_MoviesAndTVSamples_MatchesExpectedResults(
         string folderName, string expectedTitle, IdType expectedIdType, string expectedId, int expectedYear)
     {
