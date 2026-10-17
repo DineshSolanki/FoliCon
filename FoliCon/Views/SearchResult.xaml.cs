@@ -1,3 +1,4 @@
+#nullable enable
 using System.Windows;
 using System.Windows.Input;
 using Brush = System.Windows.Media.Brush;
@@ -29,6 +30,12 @@ public partial class SearchResult
     {
         _isFullScreen = isFullScreen;
 
+        UpdateWindowFullScreenState(isFullScreen);
+        UpdateLayoutFullScreenState(isFullScreen);
+    }
+
+    private void UpdateWindowFullScreenState(bool isFullScreen)
+    {
         var window = _parentWindow ??= System.Windows.Window.GetWindow(this);
         if (_parentWindow != null)
         {
@@ -40,61 +47,11 @@ public partial class SearchResult
 
         if (window is HandyControl.Controls.Window hcWindow)
         {
-            if (isFullScreen)
-            {
-                _previousWindowState = hcWindow.WindowState;
-                _previousWindowStyle = hcWindow.WindowStyle;
-                _previousResizeMode = hcWindow.ResizeMode;
-                _previousShowTitle = hcWindow.ShowTitle;
-                _previousShowNonClientArea = hcWindow.ShowNonClientArea;
-                _previousTopmost = hcWindow.Topmost;
-
-                hcWindow.ShowTitle = false;
-                hcWindow.ShowNonClientArea = false;
-                hcWindow.IsFullScreen = true;
-                hcWindow.Topmost = true;
-                hcWindow.Activate();
-                hcWindow.Focus();
-            }
-            else
-            {
-                hcWindow.Topmost = _previousTopmost;
-                hcWindow.IsFullScreen = false;
-                hcWindow.ShowTitle = _previousShowTitle;
-                hcWindow.ShowNonClientArea = _previousShowNonClientArea;
-                hcWindow.WindowState = _previousWindowState;
-                hcWindow.WindowStyle = _previousWindowStyle;
-                hcWindow.ResizeMode = _previousResizeMode;
-                hcWindow.Activate();
-                hcWindow.Focus();
-            }
+            ApplyHandyWindowFullScreenState(hcWindow, isFullScreen);
         }
         else if (window != null)
         {
-            if (isFullScreen)
-            {
-                _previousWindowState = window.WindowState;
-                _previousWindowStyle = window.WindowStyle;
-                _previousResizeMode = window.ResizeMode;
-                _previousTopmost = window.Topmost;
-
-                window.WindowStyle = WindowStyle.None;
-                window.ResizeMode = ResizeMode.NoResize;
-                window.WindowState = WindowState.Normal;
-                window.WindowState = WindowState.Maximized;
-                window.Topmost = true;
-                window.Activate();
-                window.Focus();
-            }
-            else
-            {
-                window.Topmost = _previousTopmost;
-                window.WindowState = _previousWindowState;
-                window.WindowStyle = _previousWindowStyle;
-                window.ResizeMode = _previousResizeMode;
-                window.Activate();
-                window.Focus();
-            }
+            ApplyStandardWindowFullScreenState(window, isFullScreen);
         }
 
         if (isFullScreen)
@@ -109,7 +66,70 @@ public partial class SearchResult
                 }
             }), System.Windows.Threading.DispatcherPriority.Input);
         }
+    }
 
+    private void ApplyHandyWindowFullScreenState(HandyControl.Controls.Window hcWindow, bool isFullScreen)
+    {
+        if (isFullScreen)
+        {
+            _previousWindowState = hcWindow.WindowState;
+            _previousWindowStyle = hcWindow.WindowStyle;
+            _previousResizeMode = hcWindow.ResizeMode;
+            _previousShowTitle = hcWindow.ShowTitle;
+            _previousShowNonClientArea = hcWindow.ShowNonClientArea;
+            _previousTopmost = hcWindow.Topmost;
+
+            hcWindow.ShowTitle = false;
+            hcWindow.ShowNonClientArea = false;
+            hcWindow.IsFullScreen = true;
+            hcWindow.Topmost = true;
+            hcWindow.Activate();
+            hcWindow.Focus();
+        }
+        else
+        {
+            hcWindow.Topmost = _previousTopmost;
+            hcWindow.IsFullScreen = false;
+            hcWindow.ShowTitle = _previousShowTitle;
+            hcWindow.ShowNonClientArea = _previousShowNonClientArea;
+            hcWindow.WindowState = _previousWindowState;
+            hcWindow.WindowStyle = _previousWindowStyle;
+            hcWindow.ResizeMode = _previousResizeMode;
+            hcWindow.Activate();
+            hcWindow.Focus();
+        }
+    }
+
+    private void ApplyStandardWindowFullScreenState(System.Windows.Window window, bool isFullScreen)
+    {
+        if (isFullScreen)
+        {
+            _previousWindowState = window.WindowState;
+            _previousWindowStyle = window.WindowStyle;
+            _previousResizeMode = window.ResizeMode;
+            _previousTopmost = window.Topmost;
+
+            window.WindowStyle = WindowStyle.None;
+            window.ResizeMode = ResizeMode.NoResize;
+            window.WindowState = WindowState.Normal;
+            window.WindowState = WindowState.Maximized;
+            window.Topmost = true;
+            window.Activate();
+            window.Focus();
+        }
+        else
+        {
+            window.Topmost = _previousTopmost;
+            window.WindowState = _previousWindowState;
+            window.WindowStyle = _previousWindowStyle;
+            window.ResizeMode = _previousResizeMode;
+            window.Activate();
+            window.Focus();
+        }
+    }
+
+    private void UpdateLayoutFullScreenState(bool isFullScreen)
+    {
         if (isFullScreen)
         {
             HeaderRow.Height = new GridLength(0);

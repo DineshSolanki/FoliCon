@@ -163,52 +163,14 @@ public partial class HtmlBox
                 return;
             }
 
-            if (Browser.CoreWebView2 == null)
+            if (Browser.CoreWebView2 == null && !await EnsureCoreWebView2InitializedAsync())
             {
-                Logger.Info("Initializing WebView2 environment and control");
-                var env = await EnsureSharedEnvironmentAsyncWithRetry();
-                if (_isDisposed)
-                {
-                    return;
-                }
-
-                await EnsureWebView2AsyncWithRetry(env);
-                if (_isDisposed)
-                {
-                    return;
-                }
-
-                // Apply settings once after initialization
-                Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
-                if (Browser.CoreWebView2 != null)
-                {
-                    Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
-                    Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
-                    RegisterVirtualHostHandler();
-                    Browser.CoreWebView2.ContainsFullScreenElementChanged += OnContainsFullScreenElementChanged;
-                }
+                return;
             }
 
-            // If already initialized and showing a video page, fast-switch the iframe src via JS
-            // rather than tearing down and reloading the entire virtual-host document.
-            if (Browser.CoreWebView2 != null && IsVideoAvailable)
+            if (await TryFastSwitchVideoSourceAsync(content))
             {
-                var targetUrl = $"{HtmlText}?hl={LangProvider.Culture.TwoLetterISOLanguageName}&origin=https://folicon.local";
-                var serializedUrl = System.Text.Json.JsonSerializer.Serialize(targetUrl);
-                var script = $"(() => {{ const v = document.getElementById('video'); if (v) {{ v.src = {serializedUrl}; return true; }} return false; }})()";
-                try
-                {
-                    var result = await Browser.CoreWebView2.ExecuteScriptAsync(script);
-                    if (result == "true")
-                    {
-                        _currentContent = content;
-                        return;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Debug(ex, "Failed to update video iframe src via script; falling back to navigation.");
-                }
+                return;
             }
 
             // Navigate after initialization (or if already initialized).
@@ -226,6 +188,62 @@ public partial class HtmlBox
             _initLock.Release();
         }
     }
+
+    private async Task<bool> EnsureCoreWebView2InitializedAsync()
+    {
+        Logger.Info("Initializing WebView2 environment and control");
+        var env = await EnsureSharedEnvironmentAsyncWithRetry();
+        if (_isDisposed)
+        {
+            return false;
+        }
+
+        await EnsureWebView2AsyncWithRetry(env);
+        if (_isDisposed)
+        {
+            return false;
+        }
+
+        // Apply settings once after initialization
+        Browser.DefaultBackgroundColor = ColorTranslator.FromHtml(_backgroundColor);
+        if (Browser.CoreWebView2 != null)
+        {
+            Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+            Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+            RegisterVirtualHostHandler();
+            Browser.CoreWebView2.ContainsFullScreenElementChanged += OnContainsFullScreenElementChanged;
+        }
+
+        return true;
+    }
+
+    private async Task<bool> TryFastSwitchVideoSourceAsync(string content)
+    {
+        if (Browser.CoreWebView2 == null || !IsVideoAvailable)
+        {
+            return false;
+        }
+
+        var targetUrl = $"{HtmlText}?hl={LangProvider.Culture.TwoLetterISOLanguageName}&origin=https://folicon.local";
+        var serializedUrl = System.Text.Json.JsonSerializer.Serialize(targetUrl);
+        var script = $"(() => {{ const v = document.getElementById('video'); if (v) {{ v.src = {serializedUrl}; return true; }} return false; }})()";
+        try
+        {
+            var result = await Browser.CoreWebView2.ExecuteScriptAsync(script);
+            if (result == "true")
+            {
+                _currentContent = content;
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Debug(ex, "Failed to update video iframe src via script; falling back to navigation.");
+        }
+
+        return false;
+    }
+
 
     // Intercept requests to the virtual host and serve the current player HTML from memory.
     // This gives the document a real https origin (https://folicon.local) so the YouTube
