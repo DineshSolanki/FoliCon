@@ -1,4 +1,4 @@
-﻿using HandyControl.Themes;
+using HandyControl.Themes;
 using Microsoft.Web.WebView2.Core;
 
 #nullable enable
@@ -171,6 +171,28 @@ public partial class HtmlBox
                     Browser.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
                     Browser.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
                     RegisterVirtualHostHandler();
+                }
+            }
+
+            // If already initialized and showing a video page, fast-switch the iframe src via JS
+            // rather than tearing down and reloading the entire virtual-host document.
+            if (Browser.CoreWebView2 != null && IsVideoAvailable)
+            {
+                var targetUrl = $"{HtmlText}?hl={LangProvider.Culture.TwoLetterISOLanguageName}&origin=https://folicon.local";
+                var serializedUrl = System.Text.Json.JsonSerializer.Serialize(targetUrl);
+                var script = $"(() => {{ const v = document.getElementById('video'); if (v) {{ v.src = {serializedUrl}; return true; }} return false; }})()";
+                try
+                {
+                    var result = await Browser.CoreWebView2.ExecuteScriptAsync(script);
+                    if (result == "true")
+                    {
+                        _currentContent = content;
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Debug(ex, "Failed to update video iframe src via script; falling back to navigation.");
                 }
             }
 
@@ -369,51 +391,40 @@ public partial class HtmlBox
     }
 
     private const string htmlTemplate = """
-
-                                                    <html lang="{0}">
-                                                        <head>
-                                                            <meta name='viewport' content='width=device-width, initial-scale=1'>
-                                                            <style>
-                                                                html, body {{
-                                                                    overflow: hidden;
-                                                                    margin: 0;
-                                                                    padding: 0;
-                                                                    width: 100%;
-                                                                    height: 100%;
-                                                                    box-sizing: border-box;
-                                                                }}
-                                                            </style>
-                                                        </head>
-                                                        <body style="background-color: {1}">
-                                                            <iframe id='video' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen' allowfullscreen
-                                                                referrerpolicy="strict-origin-when-cross-origin"
-                                                                src='{2}?hl={0}&origin=https://folicon.local'
-                                                                style="visibility:hidden;" onload="this.style.visibility='visible';">
-                                                            </iframe>
-                                                            <script src='https://code.jquery.com/jquery-latest.min.js' type='text/javascript'></script>
-                                                            <script>
-                                                                $(function() {{
-                                                                    $('#video').css({{
-                                                                        width: $(window).innerWidth() + 'px',
-                                                                        height: $(window).innerHeight() + 'px',
-                                                                        border: 'none'
-                                                                    }});
-                                                                    $(window).resize(function() {{
-                                                                        $('#video').css({{
-                                                                            width: $(window).innerWidth() + 'px',
-                                                                            height: $(window).innerHeight() + 'px'
-                                                                        }});
-                                                                    }});
-                                                                }});
-                                                            </script>
-                                                        </body>
-                                                    </html>
+                                        <!DOCTYPE html>
+                                        <html lang="{0}">
+                                            <head>
+                                                <meta name='viewport' content='width=device-width, initial-scale=1'>
+                                                <style>
+                                                    html, body {{
+                                                        overflow: hidden;
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        box-sizing: border-box;
+                                                        background-color: {1};
+                                                    }}
+                                                    #video {{
+                                                        width: 100%;
+                                                        height: 100%;
+                                                        border: none;
+                                                        display: block;
+                                                    }}
+                                                </style>
+                                            </head>
+                                            <body style="background-color: {1}">
+                                                <iframe id='video' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen' allowfullscreen
+                                                    referrerpolicy="strict-origin-when-cross-origin"
+                                                    src='{2}?hl={0}&origin=https://folicon.local'>
+                                                </iframe>
+                                            </body>
+                                        </html>
                                         """;
 
-    private async void VideoSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void VideoSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         HtmlText = VideoSelector.SelectedValue?.ToString() ?? string.Empty;
-        await ProcessBrowse();
     }
 
     private void InitializeVideoSelector()

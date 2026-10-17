@@ -179,7 +179,7 @@
                                    FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
                         <hc:PasswordBox UnsafePassword="{Binding TmdbKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        IsSafeEnabled="False" Height="34" FontSize="13" />
+                                        IsSafeEnabled="False" Height="34" FontSize="13" ShowEyeButton="True"/>
 
                         <!-- Validation Controls -->
                         <StackPanel Orientation="Horizontal" Margin="0,14,0,0" VerticalAlignment="Center">
@@ -279,7 +279,7 @@
                                    FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,4" />
                         <hc:PasswordBox UnsafePassword="{Binding IgdbClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        IsSafeEnabled="False" Height="34" FontSize="13" />
+                                        IsSafeEnabled="False" Height="34" FontSize="13" ShowEyeButton="True"/>
 
                         <!-- Validation Controls -->
                         <StackPanel Orientation="Horizontal" Margin="0,14,0,0" VerticalAlignment="Center">
@@ -425,7 +425,7 @@
                                    FontSize="12" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,4" />
                         <hc:PasswordBox UnsafePassword="{Binding DeviantArtCustomClientSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        IsSafeEnabled="False" Height="34" FontSize="13" />
+                                        IsSafeEnabled="False" Height="34" FontSize="13" ShowEyeButton="True"/>
 
                         <StackPanel Orientation="Horizontal" Margin="0,12,0,0" VerticalAlignment="Center">
                             <Button Command="{Binding ConnectDeviantArtCommand}"
@@ -664,7 +664,7 @@
                     Content="{extension:Lang Key={x:Static langs:LangKeys.OnboardingSkip}}"
                     Style="{StaticResource ButtonDefault}"
                     Padding="16,6" Height="36" Margin="8,0,0,0"
-                    Visibility="{Binding CanGoNext, Converter={StaticResource BoolToVis}}" />
+                    Visibility="{Binding CanSkip, Converter={StaticResource BoolToVis}}" />
 
             <!-- Back Action -->
             <Button DockPanel.Dock="Right"

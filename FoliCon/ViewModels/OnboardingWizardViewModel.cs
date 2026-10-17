@@ -28,7 +28,11 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
             RaisePropertyChanged(nameof(IsSummaryStep));
             RaisePropertyChanged(nameof(CanGoBack));
             RaisePropertyChanged(nameof(CanGoNext));
+            RaisePropertyChanged(nameof(CanSkip));
             RaisePropertyChanged(nameof(NextButtonText));
+            RaisePropertyChanged(nameof(IsTmdbConfigured));
+            RaisePropertyChanged(nameof(IsIgdbConfigured));
+            RaisePropertyChanged(nameof(IsDeviantArtConfigured));
         }
     }
 
@@ -37,9 +41,10 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
     public bool IsIgdbStep => CurrentStep == 2;
     public bool IsDeviantArtStep => CurrentStep == 3;
     public bool IsSummaryStep => CurrentStep == 4;
-    public bool CanGoBack => CurrentStep > 0 && CurrentStep < 4;
-    public bool CanGoNext => CurrentStep is >= 1 and < 4;
-    public string NextButtonText => CurrentStep == 3 ? Lang.OnboardingFinish : Lang.OnboardingNext;
+    public bool CanGoBack => CurrentStep > 0 && CurrentStep <= 4;
+    public bool CanGoNext => CurrentStep is >= 1 and <= 4;
+    public bool CanSkip => CurrentStep is >= 1 and < 4;
+    public string NextButtonText => CurrentStep == 4 ? Lang.OnboardingFinish : Lang.OnboardingNext;
 
     #endregion
 
@@ -313,7 +318,7 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
 
     private void ExecuteNext()
     {
-        if (CurrentStep == 3)
+        if (CurrentStep >= 4)
         {
             // Finish — save and close
             SaveConfiguration();
@@ -326,13 +331,16 @@ public class OnboardingWizardViewModel : BindableBase, IDialogAware
         CurrentStep++;
     }
 
-    private bool CanExecuteNext() => CurrentStep < 4;
+    private bool CanExecuteNext() => CurrentStep <= 4;
     private void ExecuteBack() => CurrentStep = Math.Max(0, CurrentStep - 1);
 
     private void ExecuteSkip()
     {
         // Skip means "don't configure this service right now" — advance without clearing fields.
-        CurrentStep++;
+        if (CurrentStep < 4)
+        {
+            CurrentStep++;
+        }
     }
 
     private void SaveConfiguration()
