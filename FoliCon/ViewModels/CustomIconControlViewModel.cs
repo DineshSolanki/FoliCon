@@ -287,6 +287,8 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
 
         ResetState();
+        IsUndoEnable = false;
+        _undoDirectories.Clear();
         IsBusy = true;
         Index = 0;
         TotalIcons = Icons.Count;
@@ -297,22 +299,25 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         var selectedIconsDirectory = SelectedIconsDirectory;
         var progress = new Progress<int>(value => Index = value);
         var token = _cancellationTokenSource?.Token ?? CancellationToken.None;
+        var changedFolders = new List<string>();
 
         int iconProcessedCount;
         try
         {
             iconProcessedCount = await Task.Run(
-                () => MakeIcons(directories, icons, selectedDirectory, selectedIconsDirectory, progress, token),
+                () => MakeIcons(directories, icons, selectedDirectory, selectedIconsDirectory, progress, changedFolders, token),
                 token);
         }
         catch (OperationCanceledException ex)
         {
             Logger.Warn(ex, "Icon generation canceled by user");
+            RecordUndoDirectories(changedFolders);
             return;
         }
         catch (Exception ex)
         {
             Logger.Error(ex, "Failed to generate custom icons");
+            RecordUndoDirectories(changedFolders);
             MessageBox.Show(CustomMessageBox.Error(ex.Message, Lang.CreatingIcons));
             return;
         }
@@ -324,14 +329,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         if (StopSearch || token.IsCancellationRequested)
         {
             Logger.Warn("Icon generation stopped by user");
-            if (iconProcessedCount > 0)
-            {
-                IsUndoEnable = true;
-                _undoDirectories.Clear();
-                _undoDirectories = directories.Take(iconProcessedCount)
-                    .Select(folder => Path.Combine(selectedDirectory, folder))
-                    .ToObservableCollection();
-            }
+            RecordUndoDirectories(changedFolders);
             return;
         }
 
@@ -341,11 +339,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             ShowDateTime = false,
             StaysOpen = false
         };
-        IsUndoEnable = true;
-        _undoDirectories.Clear();
-        _undoDirectories = directories.Take(iconProcessedCount)
-            .Select(folder => Path.Combine(selectedDirectory, folder))
-            .ToObservableCollection();
+        RecordUndoDirectories(changedFolders);
         Growl.SuccessGlobal(info);
         if (MessageBox.Show(
                 CustomMessageBox.Ask(
@@ -369,53 +363,76 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         string selectedDirectory,
         string selectedIconsDirectory,
         IProgress<int> progress,
+        List<string> changedFolders,
         CancellationToken token)
     {
         var processed = 0;
-        for (var i = 0; i < directories.Count; ++i)
+        try
         {
-            if (i >= icons.Count)
+            for (var i = 0; i < directories.Count; ++i)
             {
-                break;
+                if (i >= icons.Count)
+                {
+                    break;
+                }
+
+                var iconPath = Path.Combine(selectedIconsDirectory, icons[i]);
+                var folderPath = Path.Combine(selectedDirectory, directories[i]);
+                var newIconPath = Path.Combine(folderPath, $"{directories[i]}.ico");
+
+                Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
+                    folderPath, iconPath, newIconPath);
+
+                if (Path.GetExtension(icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
+                {
+                    Logger.Info("Converting {Icon} to .ico", iconPath);
+                    var icon = new ProIcon(iconPath).RenderToBitmap();
+                    iconPath = iconPath.Replace(Path.GetExtension(icons[i]), ".ico");
+                    PngToIcoService.Convert(icon, iconPath);
+                    icon.Dispose();
+                    Logger.Info("Converted {Icon} to .ico", iconPath);
+                }
+                Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
+                File.Move(iconPath, newIconPath);
+                if (!FileUtils.FileExists(newIconPath))
+                {
+                    continue;
+                }
+
+                FileUtils.HideFile(newIconPath);
+                FileUtils.SetFolderIcon($"{directories[i]}.ico", folderPath);
+                changedFolders.Add(folderPath);
+                processed++;
+                progress.Report(processed);
+                if (StopSearch || token.IsCancellationRequested)
+                {
+                    Logger.Warn("User stopped search");
+                    break;
+                }
             }
-
-            var iconPath = Path.Combine(selectedIconsDirectory, icons[i]);
-            var folderPath = Path.Combine(selectedDirectory, directories[i]);
-            var newIconPath = Path.Combine(folderPath, $"{directories[i]}.ico");
-
-            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
-                folderPath, iconPath, newIconPath);
-
-            if (Path.GetExtension(icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
+        }
+        finally
+        {
+            if (processed > 0)
             {
-                Logger.Info("Converting {Icon} to .ico", iconPath);
-                var icon = new ProIcon(iconPath).RenderToBitmap();
-                iconPath = iconPath.Replace(Path.GetExtension(icons[i]), ".ico");
-                PngToIcoService.Convert(icon, iconPath);
-                icon.Dispose();
-                Logger.Info("Converted {Icon} to .ico", iconPath);
-            }
-            Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
-            File.Move(iconPath, newIconPath);
-            if (!FileUtils.FileExists(newIconPath))
-            {
-                continue;
-            }
-
-            FileUtils.HideFile(newIconPath);
-            FileUtils.SetFolderIcon($"{directories[i]}.ico", folderPath);
-            processed++;
-            progress.Report(processed);
-            if (StopSearch || token.IsCancellationRequested)
-            {
-                Logger.Warn("User stopped search");
-                break;
+                FileUtils.ApplyChanges(selectedDirectory);
+                SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
             }
         }
 
-        FileUtils.ApplyChanges(selectedDirectory);
-        SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
         return processed;
+    }
+
+    private void RecordUndoDirectories(List<string> changedFolders)
+    {
+        if (changedFolders.Count == 0)
+        {
+            return;
+        }
+
+        _undoDirectories.Clear();
+        _undoDirectories = changedFolders.ToObservableCollection();
+        IsUndoEnable = true;
     }
 
     private void RemoveNotMatching()

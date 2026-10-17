@@ -12,12 +12,29 @@ public class CustomIconControlViewModelTests
 
         Assert.False(vm.IsBusy);
         Assert.False(vm.StopSearch);
+        Assert.False(vm.IsUndoEnable);
         Assert.Equal(0, vm.Index);
         Assert.Equal(0, vm.TotalIcons);
         Assert.Empty(vm.Directories);
         Assert.Empty(vm.Icons);
         Assert.NotNull(vm.Apply);
         Assert.NotNull(vm.StopSearchCommand);
+        Assert.NotNull(vm.UndoIcons);
+        Assert.NotNull(vm.ClearFoldersCommand);
+        Assert.NotNull(vm.ClearIconsCommand);
+    }
+
+    [Fact]
+    public void IsUndoEnable_CanBeToggled()
+    {
+        var vm = new CustomIconControlViewModel();
+        Assert.False(vm.IsUndoEnable);
+
+        vm.IsUndoEnable = true;
+        Assert.True(vm.IsUndoEnable);
+
+        vm.IsUndoEnable = false;
+        Assert.False(vm.IsUndoEnable);
     }
 
     [Fact]
