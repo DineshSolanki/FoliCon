@@ -94,12 +94,29 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         }
     } = Services.Settings.SubfolderProcessingEnabled;
 
+    public DArtImageList SelectedIcon
+    {
+        get;
+        set
+        {
+            if (!SetProperty(ref field, value))
+            {
+                return;
+            }
+
+            PickSelectedCommand?.RaiseCanExecuteChanged();
+            PreviewSelectedCommand?.RaiseCanExecuteChanged();
+        }
+    }
+
     public DelegateCommand SkipCommand { get; set; }
     public DelegateCommand<DArtImageList> PickCommand { get; set; }
     public DelegateCommand<DArtImageList> OpenImageCommand { get; set; }
     public DelegateCommand<DArtImageList> ExtractManuallyCommand { get; set; }
     public DelegateCommand SearchAgainCommand { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
+    public DelegateCommand PickSelectedCommand { get; set; }
+    public DelegateCommand PreviewSelectedCommand { get; set; }
 
     public ProSearchResultViewModel(IDialogService dialogService)
     {
@@ -111,6 +128,8 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         ExtractManuallyCommand = new DelegateCommand<DArtImageList>(ExtractManually);
         SkipCommand = new DelegateCommand(SkipMethod);
         SearchAgainCommand = new DelegateCommand(PrepareForSearch);
+        PickSelectedCommand = new DelegateCommand(() => PickMethod(SelectedIcon), () => SelectedIcon != null);
+        PreviewSelectedCommand = new DelegateCommand(() => OpenImageMethod(SelectedIcon), () => SelectedIcon != null);
         _dialogService = dialogService;
     }
 
@@ -212,6 +231,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
     private async void PrepareForSearch()
     {
         StopSearch = false;
+        SelectedIcon = null;
         ImageUrl.Clear();
         SearchTitle = null;
         SearchTitle = !string.IsNullOrEmpty(SearchAgainTitle) ? SearchAgainTitle : TitleCleaner.CleanAndParse(Fnames[_i]).Title;
@@ -340,7 +360,9 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
 
         if (item.Value.IsDownloadable)
         {
-            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid));
+            var icon = new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src, item.Value.Deviationid);
+            ImageUrl.Add(icon);
+            SelectedIcon ??= icon;
             Index++;
             return;
         }
@@ -348,8 +370,10 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
         // Watcher-gated: show if it's a "watchers" type premium folder
         if (item.Value.PremiumFolderData?.Type == "watchers")
         {
-            ImageUrl.Add(new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src,
-                item.Value.Deviationid, true, item.Value.Author?.Username));
+            var icon = new DArtImageList(item.Value.Content.Src, item.Value.Thumbs[0].Src,
+                item.Value.Deviationid, true, item.Value.Author?.Username);
+            ImageUrl.Add(icon);
+            SelectedIcon ??= icon;
             Index++;
             Logger.Info("Watcher-gated poster {Url} added (author: {Author})",
                 item.Value.Url, item.Value.Author?.Username);
@@ -411,7 +435,7 @@ public class ProSearchResultViewModel : BindableBase, IDialogAware
             RemotePath = new Uri(link)
         };
         Logger.Debug("Adding Image to Download List {@Image}", tempImage);
-        FileUtils.AddToPickedListDataTable(_listDataTable, "", SearchTitle, "", currentPath, Fnames[_i]);
+        FileUtils.AddToPickedListDataTable(_listDataTable, link, SearchTitle, "", currentPath, Fnames[_i]);
         _imgDownloadList.Add(tempImage);
         _i++;
         SearchAgainTitle = null;

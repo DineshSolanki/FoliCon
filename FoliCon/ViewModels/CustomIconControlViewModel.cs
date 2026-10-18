@@ -1,4 +1,4 @@
-﻿// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 
 using FoliCon.Modules.Media;
 
@@ -16,25 +16,19 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public IDropTarget ReOrderDropHandler { get; } = new ReOrderDropHandler();
     private string _selectedDirectory;
     private string _selectedIconsDirectory;
-    private ObservableCollection<string> _directories;
-    private ObservableCollection<string> _icons;
-    private bool _isUndoEnable;
-    private bool _keepExactOnly;
-    private bool _isBusy;
-    private bool _stopSearch;
     public string Title => Lang.CustomIconSetter;
 
     private ObservableCollection<string> _undoDirectories = [];
     private ObservableCollection<string> _backupDirectories = [];
     private ObservableCollection<string> _backupIcons = [];
-    private int _index;
-    private int _totalIcons;
+    private CancellationTokenSource _cancellationTokenSource;
+
     public bool KeepExactOnly
     {
-        get => _keepExactOnly;
+        get;
         set
         {
-            SetProperty(ref _keepExactOnly, value);
+            SetProperty(ref field, value);
             if (value)
             {
                 RemoveNotMatching();
@@ -48,17 +42,17 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     public bool IsBusy
     {
-        get => _isBusy;
-        set => SetProperty(ref _isBusy, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
     public bool IsUndoEnable
     {
-        get => _isUndoEnable;
-        set => SetProperty(ref _isUndoEnable, value);
+        get;
+        set => SetProperty(ref field, value);
     }
 
-    private string SelectedDirectory
+    public string SelectedDirectory
     {
         get => _selectedDirectory;
         set
@@ -66,6 +60,11 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             SetProperty(ref _selectedDirectory, value);
             Directories.Clear();
             KeepExactOnly = false;
+            if (string.IsNullOrEmpty(value) || !Directory.Exists(value))
+            {
+                return;
+            }
+
             foreach (var folder in FileUtils.GetFolderNames(value))
             {
                 Directories.Add(folder);
@@ -73,7 +72,7 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         }
     }
 
-    private string SelectedIconsDirectory
+    public string SelectedIconsDirectory
     {
         get => _selectedIconsDirectory;
         set
@@ -82,33 +81,57 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             Logger.Debug("Selecting PNG and ICO files from {Value}", value);
             KeepExactOnly = false;
             Icons.Clear();
-            foreach (var file in FileUtils.GetFileNamesFromFolder(value).Where(FileUtils.IsPngOrIco))
+            if (!string.IsNullOrEmpty(value) && Directory.Exists(value))
             {
-                Icons.Add(file);
+                foreach (var file in FileUtils.GetFileNamesFromFolder(value).Where(FileUtils.IsPngOrIco))
+                {
+                    Icons.Add(file);
+                }
             }
         }
     }
 
+    public string SelectedDirectoryName => string.IsNullOrEmpty(SelectedDirectory) ? null : Path.GetFileName(SelectedDirectory);
+    public string SelectedIconsDirectoryName => string.IsNullOrEmpty(SelectedIconsDirectory) ? null : Path.GetFileName(SelectedIconsDirectory);
+
     public ObservableCollection<string> Directories
     {
-        get => _directories;
-        private set => SetProperty(ref _directories, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
 
     public ObservableCollection<string> Icons
     {
-        get => _icons;
-        private set => SetProperty(ref _icons, value);
+        get;
+        private set => SetProperty(ref field, value);
     }
-    public int Index { get => _index; set => SetProperty(ref _index, value); }
-    public int TotalIcons { get => _totalIcons; set => SetProperty(ref _totalIcons, value); }
-    private bool StopSearch { get => _stopSearch; set => SetProperty(ref _stopSearch, value); }
+
+    public int Index
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public int TotalIcons
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public bool StopSearch
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     #region Declare Delegates
 
     public DelegateCommand LoadDirectory { get; set; }
     public DelegateCommand LoadIcons { get; set; }
     public DelegateCommand Apply { get; set; }
     public DelegateCommand UndoIcons { get; set; }
+    public DelegateCommand ClearFoldersCommand { get; }
+    public DelegateCommand ClearIconsCommand { get; }
     public DelegateCommand<dynamic> KeyPressFolderList { get; set; }
     public DelegateCommand<dynamic> KeyPressIconsList { get; set; }
     public DelegateCommand StopSearchCommand { get; set; }
@@ -122,12 +145,38 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
         Directories = [];
         Icons = [];
         LoadDirectory = new DelegateCommand(LoadDirectoryMethod);
-        StopSearchCommand = new DelegateCommand(() => StopSearch = true);
+        StopSearchCommand = new DelegateCommand(() =>
+        {
+            StopSearch = true;
+            _cancellationTokenSource?.Cancel();
+        });
         LoadIcons = new DelegateCommand(LoadIconsMethod);
-        Apply = new DelegateCommand(StartProcessing);
+        ClearFoldersCommand = new DelegateCommand(ClearFoldersMethod);
+        ClearIconsCommand = new DelegateCommand(ClearIconsMethod);
+        Apply = new DelegateCommand(async () => await StartProcessingAsync());
         UndoIcons = new DelegateCommand(UndoCreatedIcons);
         KeyPressFolderList = new DelegateCommand<dynamic>(FolderListKeyPress);
         KeyPressIconsList = new DelegateCommand<dynamic>(IconsListKeyPress);
+    }
+
+    private void ClearFoldersMethod()
+    {
+        KeepExactOnly = false;
+        _backupDirectories.Clear();
+        Directories.Clear();
+        _selectedDirectory = null;
+        RaisePropertyChanged(nameof(SelectedDirectory));
+        RaisePropertyChanged(nameof(SelectedDirectoryName));
+    }
+
+    private void ClearIconsMethod()
+    {
+        KeepExactOnly = false;
+        _backupIcons.Clear();
+        Icons.Clear();
+        _selectedIconsDirectory = null;
+        RaisePropertyChanged(nameof(SelectedIconsDirectory));
+        RaisePropertyChanged(nameof(SelectedIconsDirectoryName));
     }
 
     private async void UndoCreatedIcons()
@@ -205,6 +254,9 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     public virtual void OnDialogClosed()
     {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = null;
     }
 
     public virtual void OnDialogOpened(IDialogParameters parameters)
@@ -213,8 +265,13 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
 
     #endregion DialogMethods
 
-    private void StartProcessing()
+    private async Task StartProcessingAsync()
     {
+        if (IsBusy)
+        {
+            return;
+        }
+
         Logger.Debug("Directories count: {Count}, Icons count: {IconCount}", Directories.Count, Icons.Count);
         if (Directories.Count <= 0 || SelectedDirectory is null)
         {
@@ -229,80 +286,153 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
             return;
         }
 
-        var iconProcessedCount = MakeIcons();
+        ResetState();
+        IsUndoEnable = false;
+        _undoDirectories.Clear();
+        IsBusy = true;
+        Index = 0;
+        TotalIcons = Icons.Count;
+
+        var directories = Directories.ToList();
+        var icons = Icons.ToList();
+        var selectedDirectory = SelectedDirectory;
+        var selectedIconsDirectory = SelectedIconsDirectory;
+        var progress = new Progress<int>(value => Index = value);
+        var token = _cancellationTokenSource?.Token ?? CancellationToken.None;
+        var changedFolders = new List<string>();
+
+        int iconProcessedCount;
+        try
+        {
+            iconProcessedCount = await Task.Run(
+                () => MakeIcons(directories, icons, selectedDirectory, selectedIconsDirectory, progress, changedFolders, token),
+                token);
+        }
+        catch (OperationCanceledException ex)
+        {
+            Logger.Warn(ex, "Icon generation canceled by user");
+            RecordUndoDirectories(changedFolders);
+            return;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex, "Failed to generate custom icons");
+            RecordUndoDirectories(changedFolders);
+            MessageBox.Show(CustomMessageBox.Error(ex.Message, Lang.CreatingIcons));
+            return;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+
+        if (StopSearch || token.IsCancellationRequested)
+        {
+            Logger.Warn("Icon generation stopped by user");
+            RecordUndoDirectories(changedFolders);
+            return;
+        }
+
         var info = new GrowlInfo
         {
             Message = Lang.IconCreatedWithCount.Format(iconProcessedCount),
             ShowDateTime = false,
             StaysOpen = false
         };
-        IsUndoEnable = true;
-        _undoDirectories.Clear();
-        _undoDirectories = Directories.Select(folder => Path.Combine(SelectedDirectory, folder))
-            .ToObservableCollection();
+        RecordUndoDirectories(changedFolders);
         Growl.SuccessGlobal(info);
         if (MessageBox.Show(
                 CustomMessageBox.Ask(
                     $"{Lang.IconReloadMayTakeTime} {Environment.NewLine}{Lang.ToForceReload} {Environment.NewLine}{Lang.ConfirmToOpenFolder}",
                     Lang.IconCreated)) == MessageBoxResult.Yes)
         {
-            ProcessUtils.StartProcess(SelectedDirectory + Path.DirectorySeparatorChar);
+            ProcessUtils.StartProcess(selectedDirectory + Path.DirectorySeparatorChar);
         }
     }
 
-    private int MakeIcons()
+    private void ResetState()
     {
-        IsBusy = true;
-        Index = 0;
-        TotalIcons = Icons.Count;
         StopSearch = false;
-        for (var i = 0; i < Directories.Count; ++i)
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
+    }
+
+    private int MakeIcons(
+        List<string> directories,
+        List<string> icons,
+        string selectedDirectory,
+        string selectedIconsDirectory,
+        IProgress<int> progress,
+        List<string> changedFolders,
+        CancellationToken token)
+    {
+        var processed = 0;
+        try
         {
-            if (i >= Icons.Count)
+            for (var i = 0; i < directories.Count; ++i)
             {
-                break;
+                if (i >= icons.Count)
+                {
+                    break;
+                }
+
+                var iconPath = Path.Combine(selectedIconsDirectory, icons[i]);
+                var folderPath = Path.Combine(selectedDirectory, directories[i]);
+                var newIconPath = Path.Combine(folderPath, $"{directories[i]}.ico");
+
+                Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
+                    folderPath, iconPath, newIconPath);
+
+                if (Path.GetExtension(icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
+                {
+                    Logger.Info("Converting {Icon} to .ico", iconPath);
+                    var icon = new ProIcon(iconPath).RenderToBitmap();
+                    iconPath = iconPath.Replace(Path.GetExtension(icons[i]), ".ico");
+                    PngToIcoService.Convert(icon, iconPath);
+                    icon.Dispose();
+                    Logger.Info("Converted {Icon} to .ico", iconPath);
+                }
+                Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
+                File.Move(iconPath, newIconPath);
+                if (!FileUtils.FileExists(newIconPath))
+                {
+                    continue;
+                }
+
+                FileUtils.HideFile(newIconPath);
+                FileUtils.SetFolderIcon($"{directories[i]}.ico", folderPath);
+                changedFolders.Add(folderPath);
+                processed++;
+                progress.Report(processed);
+                if (StopSearch || token.IsCancellationRequested)
+                {
+                    Logger.Warn("User stopped search");
+                    break;
+                }
             }
-
-            var iconPath = Path.Combine(SelectedIconsDirectory, Icons[i]);
-            var folderPath = Path.Combine(SelectedDirectory, Directories[i]);
-            var newIconPath = Path.Combine(folderPath, $"{Directories[i]}.ico");
-
-            Logger.Debug("Creating icon for {Folder} from {Icon}, new Path is: {NewIconPath}",
-                folderPath, iconPath, newIconPath);
-
-            if (Path.GetExtension(Icons[i].ToLower(CultureInfo.InvariantCulture)) != ".ico")
+        }
+        finally
+        {
+            if (processed > 0)
             {
-                Logger.Info("Converting {Icon} to .ico", iconPath);
-                var icon = new ProIcon(iconPath).RenderToBitmap();
-                iconPath = iconPath.Replace(Path.GetExtension(Icons[i])!, ".ico");
-                PngToIcoService.Convert(icon, iconPath);
-                icon.Dispose();
-                Logger.Info("Converted {Icon} to .ico", iconPath);
+                FileUtils.ApplyChanges(selectedDirectory);
+                SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
             }
-            Logger.Info("Moving {Icon} to {NewIconPath}", iconPath, newIconPath);
-            File.Move(iconPath, newIconPath);
-            if (!FileUtils.FileExists(newIconPath))
-            {
-                continue;
-            }
-
-            FileUtils.HideFile(newIconPath);
-            FileUtils.SetFolderIcon($"{Directories[i]}.ico", folderPath);
-            Index++;
-            if (!StopSearch)
-            {
-                continue;
-            }
-
-            Logger.Warn("User stopped search");
-            break;
-
         }
 
-        FileUtils.ApplyChanges(SelectedDirectory);
-        SHChangeNotify(SHCNE.SHCNE_ASSOCCHANGED, SHCNF.SHCNF_IDLIST);
-        IsBusy = false;
-        return Index;
+        return processed;
+    }
+
+    private void RecordUndoDirectories(List<string> changedFolders)
+    {
+        if (changedFolders.Count == 0)
+        {
+            return;
+        }
+
+        _undoDirectories.Clear();
+        _undoDirectories = changedFolders.ToObservableCollection();
+        IsUndoEnable = true;
     }
 
     private void RemoveNotMatching()
@@ -367,15 +497,31 @@ public class CustomIconControlViewModel : BindableBase, IDialogAware, IFileDragD
     public void OnFileDrop(string[] filePaths, string senderName)
     {
         Logger.Debug("File dropped on {SenderName}", senderName);
+        if (filePaths == null || filePaths.Length == 0)
+        {
+            return;
+        }
+        var path = filePaths[0];
+        if (!Directory.Exists(path) && File.Exists(path))
+        {
+            path = Path.GetDirectoryName(path);
+        }
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
         switch (senderName)
         {
             case "FolderButton":
             case "FoldersList":
-                SelectedDirectory = filePaths.GetValue(0)?.ToString();
+            case "FolderDropArea":
+                SelectedDirectory = path;
                 break;
             case "IconButton":
             case "IconsList":
-                SelectedIconsDirectory = filePaths.GetValue(0)?.ToString();
+            case "IconDropArea":
+                SelectedIconsDirectory = path;
                 break;
             default:
                 Logger.Warn("Unknown drop target: {SenderName}", senderName);

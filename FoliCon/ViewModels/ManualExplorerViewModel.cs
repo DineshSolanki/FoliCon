@@ -1,4 +1,4 @@
-﻿namespace FoliCon.ViewModels;
+namespace FoliCon.ViewModels;
 
 [Localizable(false)]
 public class ManualExplorerViewModel : BindableBase, IDialogAware
@@ -11,6 +11,8 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		PickCommand = new DelegateCommand<object>(PickMethod);
 		OpenImageCommand = new DelegateCommand<object>(link=> UiUtils.ShowImageBrowser(link as string));
 		CancelCommand = new DelegateCommand(CancelMethod);
+		PickSelectedCommand = new DelegateCommand(() => PickMethod(SelectedFile), () => !string.IsNullOrEmpty(SelectedFile));
+		PreviewSelectedCommand = new DelegateCommand(() => UiUtils.ShowImageBrowser(SelectedFile), () => !string.IsNullOrEmpty(SelectedFile));
 	}
 
 	private void PickMethod(object localImagePath)
@@ -19,29 +21,93 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 		CloseDialog(ButtonResult.OK, (string)localImagePath);
 	}
 
-	private string _title = Lang.ManualExplorer;
-	private bool _isBusy;
-	private ObservableCollection<string> _directory;
-	private DArt _dArtObject;
-	private DArtDownloadResponse _dArtDownloadResponse;
-	private ProgressBarData _progressInfo = new(0,1,LangProvider.Instance.Downloading);
-	private readonly CancellationTokenSource _cts = new();
+    private CancellationTokenSource _cts;
 
-	public string Title { get => _title; set => SetProperty(ref _title, value); }
-	public bool IsBusy { get => _isBusy; set => SetProperty(ref _isBusy, value); }
-	private DArt DArtObject { get => _dArtObject; set => SetProperty(ref _dArtObject, value); }
-	public ProgressBarData ProgressInfo { get => _progressInfo; set => SetProperty(ref _progressInfo, value); }
-	private DArtDownloadResponse DArtDownloadResponse { get => _dArtDownloadResponse; set => SetProperty(ref _dArtDownloadResponse, value); }
-	public ObservableCollection<string> Directory { get => _directory; set => SetProperty(ref _directory, value); }
+    public string Title
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = Lang.ManualExplorer;
 
-	public DelegateCommand<object> PickCommand { get; set; }
+    public bool IsBusy
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public string ProgressStatusText
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = "Connecting to DeviantArt...";
+
+    public bool IsIndeterminate
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = true;
+
+    public string SelectedFile
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value))
+            {
+                PickSelectedCommand?.RaiseCanExecuteChanged();
+                PreviewSelectedCommand?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
+    private DArt DArtObject
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public ProgressBarData ProgressInfo
+    {
+        get;
+        set => SetProperty(ref field, value);
+    } = new(0, 1, LangProvider.Instance.Downloading);
+
+    private DArtDownloadResponse DArtDownloadResponse
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public ObservableCollection<string> Directory
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public DelegateCommand<object> PickCommand { get; set; }
 	public DelegateCommand<object> OpenImageCommand { get; set; }
+	public DelegateCommand PickSelectedCommand { get; set; }
+	public DelegateCommand PreviewSelectedCommand { get; set; }
 	public DelegateCommand CancelCommand { get; init; }
 
 	private void CancelMethod()
 	{
-		Logger.Trace("Cancelling Manual Extraction");
-		_cts.Cancel();
+		Logger.Trace("Cancelling Manual Extraction / Dialog");
+		if (IsBusy)
+		{
+			try
+			{
+				if (_cts is { IsCancellationRequested: false })
+				{
+					_cts.Cancel();
+				}
+			}
+			catch (ObjectDisposedException ex)
+			{
+				Logger.Trace(ex, "CTS was already disposed during cancellation.");
+			}
+		}
+		CloseDialog(ButtonResult.Cancel, null);
 	}
 
 	#region DialogMethods
@@ -50,7 +116,24 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 
 	public virtual bool CanCloseDialog() => true;
 
-    public virtual void OnDialogClosed() => Directory.Clear();
+    public virtual void OnDialogClosed()
+    {
+        SelectedFile = null;
+        Directory.Clear();
+        try
+        {
+            if (_cts is { IsCancellationRequested: false })
+            {
+                _cts.Cancel();
+            }
+            _cts?.Dispose();
+            _cts = null;
+        }
+        catch (ObjectDisposedException)
+        {
+            // CTS was already disposed; safely ignore during teardown.
+        }
+    }
 
     protected virtual void CloseDialog(ButtonResult result, string localPath)
 	{
@@ -76,61 +159,128 @@ public class ManualExplorerViewModel : BindableBase, IDialogAware
 			return;
 		}
 
+		if (_cts != null)
+		{
+			await _cts.CancelAsync();
+			_cts.Dispose();
+		}
+		var cts = _cts = new CancellationTokenSource();
+		var token = cts.Token;
+
 		IsBusy = true;
+		IsIndeterminate = true;
+		ProgressStatusText = Lang.ManualExplorerConnecting;
 		try
 		{
-			DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId));
-			Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
-			DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(deviationId, DArtDownloadResponse,
-				_cts.Token, new Progress<ProgressBarData>(value => ProgressInfo = value)));
-			Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
+			await DownloadAndExtractAsync(deviationId, cts, token);
 		}
 		catch (OperationCanceledException e)
 		{
 			Logger.Debug(e, "User cancelled manual extraction");
-
+			if (ReferenceEquals(_cts, cts))
+			{
+				IsBusy = false;
+				CloseDialog(ButtonResult.Cancel, null);
+			}
+			return;
 		}
 		catch (Exception ex)
 		{
-			Logger.Error(ex, "Failed to extract deviation {DeviationId}", deviationId);
-			IsBusy = false;
-			var isDownloadLimit = ex is LocalizedException { Message: var m } && m.Contains("download limit");
-			var message = ex is LocalizedException le ? le.LocalizedMessage : Lang.DAConnectionFailedMessage;
-			MessageBox.Show(CustomMessageBox.Error(message, Lang.DAConnectionFailedTitle));
-
-			if (isDownloadLimit)
+			if (ReferenceEquals(_cts, cts) && !token.IsCancellationRequested)
 			{
-				var openPetition = MessageBox.Show(CustomMessageBox.Ask(
-					Lang.DADownloadLimitPetitionPrompt,
-					Lang.DADownloadLimitPetitionTitle));
-				if (openPetition == MessageBoxResult.Yes)
-				{
-					Process.Start(new ProcessStartInfo(DeviantArtAppConfig.downloadLimitPetitionUrl) { UseShellExecute = true });
-				}
+				HandleExtractionException(ex, deviationId);
+				CloseDialog(ButtonResult.Cancel, null);
 			}
-			CloseDialog(ButtonResult.Cancel, null);
 			return;
 		}
 
-		var extractedFiles = DArtDownloadResponse.LocalDownloadPath?.ToDirectoryInfo()
-			.GetFiles();
-		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
-		if (extractedFiles?.Length > 0)
+		if (!ReferenceEquals(_cts, cts) || token.IsCancellationRequested)
 		{
-			var pngOrAvailableFile = extractedFiles
-				.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Name))
-				.Select(group =>
-				{
-					var pngFile = group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png");
-					return pngFile ?? group.First();
-				}).ToList();
-
-			Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
-			pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
+			return;
 		}
 
+		PopulateExtractedFiles(DArtDownloadResponse);
+
+		if (ReferenceEquals(_cts, cts))
+		{
+			IsBusy = false;
+		}
+	}
+
+	private async Task DownloadAndExtractAsync(string deviationId, CancellationTokenSource cts, CancellationToken token)
+	{
+		DArtDownloadResponse = await Task.Run(() => DArtObject.GetDArtDownloadResponseAsync(deviationId), token);
+		Logger.Trace("Deviation ID {DeviationId} Download Response {DArtDownloadResponse}", deviationId, DArtDownloadResponse);
+
+		ProgressStatusText = !string.IsNullOrEmpty(DArtDownloadResponse?.FileSizeHumanReadable)
+			? string.Format(CultureInfo.CurrentCulture, Lang.ManualExplorerDownloadingArchiveWithSize, DArtDownloadResponse.FileSizeHumanReadable)
+			: Lang.ManualExplorerDownloadingArchive;
+
+		var progress = new Progress<ProgressBarData>(value => UpdateExtractionProgress(value, cts, token));
+		var response = DArtDownloadResponse;
+		DArtDownloadResponse = await Task.Run(() => DArtObject.ExtractDeviation(
+			deviationId,
+			response,
+			token,
+			progress), token);
+
+		Logger.Debug("Downloaded Image from Deviation ID {DeviationId}", deviationId);
+	}
+
+	private void UpdateExtractionProgress(ProgressBarData value, CancellationTokenSource cts, CancellationToken token)
+	{
+		if (!ReferenceEquals(_cts, cts) || token.IsCancellationRequested)
+		{
+			return;
+		}
+		ProgressInfo = value;
+		if (value.Max > 1)
+		{
+			IsIndeterminate = false;
+			ProgressStatusText = string.Format(CultureInfo.CurrentCulture, Lang.ManualExplorerExtractedCount, value.Value, value.Max);
+		}
+	}
+
+	private void HandleExtractionException(Exception ex, string deviationId)
+	{
+		Logger.Error(ex, "Failed to extract deviation {DeviationId}", deviationId);
 		IsBusy = false;
-		_cts.Dispose();
+		var isDownloadLimit = ex is LocalizedException { Message: var m } && m.Contains("download limit");
+		var message = ex is LocalizedException le ? le.LocalizedMessage : Lang.DAConnectionFailedMessage;
+		MessageBox.Show(CustomMessageBox.Error(message, Lang.DAConnectionFailedTitle));
+
+		if (isDownloadLimit)
+		{
+			var openPetition = MessageBox.Show(CustomMessageBox.Ask(
+				Lang.DADownloadLimitPetitionPrompt,
+				Lang.DADownloadLimitPetitionTitle));
+			if (openPetition == MessageBoxResult.Yes)
+			{
+				Process.Start(new ProcessStartInfo(DeviantArtAppConfig.downloadLimitPetitionUrl) { UseShellExecute = true });
+			}
+		}
+	}
+
+	private void PopulateExtractedFiles(DArtDownloadResponse downloadResponse)
+	{
+		var extractedFiles = downloadResponse?.LocalDownloadPath?.ToDirectoryInfo()?.GetFiles();
+		Logger.Trace("Total Files Extracted {TotalFiles}", extractedFiles?.Length);
+		if (extractedFiles is not { Length: > 0 })
+		{
+			return;
+		}
+
+		var pngOrAvailableFile = extractedFiles
+			.GroupBy(entry => Path.GetFileNameWithoutExtension(entry.Name))
+			.Select(group => group.FirstOrDefault(entry => Path.GetExtension(entry.Name) == ".png") ?? group.First())
+			.ToList();
+
+		Logger.Trace("Total extracted files after filtering {TotalFiles}", pngOrAvailableFile.Count);
+		pngOrAvailableFile.ForEach(entry => Directory.AddOnUI(entry.FullName));
+		if (SelectedFile == null && pngOrAvailableFile.Count > 0)
+		{
+			SelectedFile = pngOrAvailableFile[0].FullName;
+		}
 	}
 
 	#endregion DialogMethods

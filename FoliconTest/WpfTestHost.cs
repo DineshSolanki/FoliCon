@@ -18,7 +18,8 @@ internal sealed class WpfTestHost : IDisposable
     private static readonly string[] ThemeSources =
     [
         "pack://application:,,,/HandyControl;component/Themes/Theme.xaml",
-        "pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml"
+        "pack://application:,,,/FoliCon;component/XamlResources/UiElements.xaml",
+        "pack://application:,,,/FoliCon;component/Resources/Dictionaries/GeometryResources.xaml"
     ];
 
     private static Dispatcher StartDispatcherThread()

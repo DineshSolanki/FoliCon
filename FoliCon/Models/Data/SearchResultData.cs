@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models.Data;
+namespace FoliCon.Models.Data;
 
 public class SearchResultData
 {
@@ -9,4 +9,5 @@ public class SearchResultData
     public bool IsPickedById { get; set; }
     public string FolderName { get; set; }
     public string LocalPosterPath { get; set; }
+    public string PosterUrl { get; set; } = string.Empty;
 }

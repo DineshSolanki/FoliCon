@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 namespace FoliCon.ViewModels;
 
 /// <summary>
@@ -54,6 +54,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
         // bare test/preview constructor has no way to launch another dialog.
         CreateOverlayCommand = new DelegateCommand(OpenDesigner, () => _dialogService != null);
         ClearTagFiltersCommand = new DelegateCommand(ClearTagFilters, () => HasSelectedTags);
+        CloseCommand = new DelegateCommand(() => RequestClose.Invoke(ButtonResult.OK));
 
         CatalogLoaded = LoadCatalogAsync();
     }
@@ -252,6 +253,8 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     /// <summary>Deselects every tag chip in one action.</summary>
     public DelegateCommand ClearTagFiltersCommand { get; }
+
+    public DelegateCommand CloseCommand { get; }
 
     #endregion
 

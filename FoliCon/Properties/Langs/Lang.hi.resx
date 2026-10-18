@@ -1807,4 +1807,241 @@
   <data name="OverlayUpdateFailed" xml:space="preserve">
       <value>मैनिफ़ेस्ट से ओवरले «{0}» अपडेट नहीं हो सका: {1}</value>
     </data>
+  <data name="AboutGithub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+  <data name="AboutGithubTooltip" xml:space="preserve">
+    <value>स्रोत कोड देखें और GitHub पर योगदान करें</value>
+  </data>
+  <data name="AboutLicenseFooter" xml:space="preserve">
+    <value>GPL-3.0 के तहत मुफ़्त और खुला स्रोत</value>
+  </data>
+  <data name="AboutOverlays" xml:space="preserve">
+    <value>ओवरले</value>
+  </data>
+  <data name="AboutOverlaysTooltip" xml:space="preserve">
+    <value>आइकन टेम्प्लेट और ओवरले ब्राउज़ करें</value>
+  </data>
+  <data name="AboutTagline" xml:space="preserve">
+    <value>स्मार्ट मीडिया फ़ोल्डर आइकन जनरेटर और आयोजक</value>
+  </data>
+  <data name="AboutVersionTooltip" xml:space="preserve">
+    <value>संस्करण {0} (कॉपी करने के लिए क्लिक करें)</value>
+  </data>
+  <data name="AboutWebsite" xml:space="preserve">
+    <value>वेबसाइट</value>
+  </data>
+  <data name="AboutWebsiteTooltip" xml:space="preserve">
+    <value>आधिकारिक ब्लॉग और वेबसाइट पर जाएं</value>
+  </data>
+  <data name="AddPattern" xml:space="preserve">
+    <value>पैटर्न जोड़ें</value>
+  </data>
+  <data name="ApplyIconsTooltip" xml:space="preserve">
+    <value>फ़ोल्डरों के लिए कस्टम आइकन बनाएं और असाइन करें</value>
+  </data>
+  <data name="AvailableCountFormat" xml:space="preserve">
+    <value>{0} उपलब्ध</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>ब्राउज़ करें</value>
+  </data>
+  <data name="CanvasLabel" xml:space="preserve">
+    <value>कैनवास:</value>
+  </data>
+  <data name="ClearFoldersTooltip" xml:space="preserve">
+    <value>सभी फ़ोल्डर साफ़ करें</value>
+  </data>
+  <data name="ClearIconsTooltip" xml:space="preserve">
+    <value>सभी आइकन साफ़ करें</value>
+  </data>
+  <data name="CustomIconInstructions" xml:space="preserve">
+    <value>किसी भी तरफ डायरेक्टरी या फ़ाइलें खींचें और छोड़ें। दोनों सूचियों के आइटम पुनर्व्यवस्थित करें ताकि पंक्तियां मेल खाएं। प्रविष्टि हटाने के लिए Delete दबाएं।</value>
+  </data>
+  <data name="DeleteCustomPatternTooltip" xml:space="preserve">
+    <value>कस्टम पैटर्न हटाएं</value>
+  </data>
+  <data name="FolderCountFormat" xml:space="preserve">
+    <value>{0} फ़ोल्डर</value>
+  </data>
+  <data name="FolderFiles" xml:space="preserve">
+    <value>फ़ोल्डर फ़ाइलें:</value>
+  </data>
+  <data name="IconCountFormat" xml:space="preserve">
+    <value>{0} आइकन</value>
+  </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+    <value>DeviantArt से कनेक्ट हो रहा है...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+    <value>संग्रह डाउनलोड हो रहा है...</value>
+  </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+    <value>संग्रह डाउनलोड हो रहा है ({0})...</value>
+  </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+    <value>{1} में से {0} आइकन निकाले गए</value>
+  </data>
+  <data name="MatchesCountFormat" xml:space="preserve">
+    <value>{0} मिलान</value>
+  </data>
+  <data name="MatchingPatterns" xml:space="preserve">
+    <value>मिलान पैटर्न</value>
+  </data>
+  <data name="MaxDepthHint" xml:space="preserve">
+    <value>(0 = असीमित)</value>
+  </data>
+  <data name="NoTrailerAvailable" xml:space="preserve">
+    <value>इस शीर्षक के लिए कोई ट्रेलर उपलब्ध नहीं है</value>
+  </data>
+  <data name="OnboardingCustomIcons" xml:space="preserve">
+    <value>कस्टम आइकन</value>
+  </data>
+  <data name="OnboardingCustomIconsDesc" xml:space="preserve">
+    <value>DeviantArt कलाकारों द्वारा निर्मित आइकन पैक</value>
+  </data>
+  <data name="OnboardingDeviantArtServiceName" xml:space="preserve">
+    <value>DeviantArt समुदाय</value>
+  </data>
+  <data name="OnboardingIgdbServiceName" xml:space="preserve">
+    <value>इंटरनेट गेम डेटाबेस (IGDB)</value>
+  </data>
+  <data name="OnboardingMoviesSeries" xml:space="preserve">
+    <value>फ़िल्में और सीरीज़</value>
+  </data>
+  <data name="OnboardingMoviesSeriesDesc" xml:space="preserve">
+    <value>TMDb के माध्यम से स्वचालित हाई-रेज़ पोस्टर</value>
+  </data>
+  <data name="OnboardingTmdbServiceName" xml:space="preserve">
+    <value>द मूवी डेटाबेस (TMDb)</value>
+  </data>
+  <data name="OnboardingVideoGames" xml:space="preserve">
+    <value>वीडियो गेम</value>
+  </data>
+  <data name="OnboardingVideoGamesDesc" xml:space="preserve">
+    <value>IGDB और Twitch के माध्यम से गेम कवर आर्ट</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>FoliCon में आपका स्वागत है</value>
+  </data>
+  <data name="OverlayActive" xml:space="preserve">
+    <value>सक्रिय</value>
+  </data>
+  <data name="OverlayBuiltIn" xml:space="preserve">
+    <value>अंतर्निहित</value>
+  </data>
+  <data name="OverlayCommunity" xml:space="preserve">
+    <value>समुदाय</value>
+  </data>
+  <data name="OverlayConfigFooter" xml:space="preserve">
+    <value>चुना गया ओवरले स्वचालित रूप से सहेजा जाता है और मूवी और टीवी फ़ोल्डर आइकन पर लागू होता है</value>
+  </data>
+  <data name="PatternCountFormat" xml:space="preserve">
+    <value>{0} पैटर्न</value>
+  </data>
+  <data name="PatternDefault" xml:space="preserve">
+    <value>डिफ़ॉल्ट</value>
+  </data>
+  <data name="PatternDefaultCannotDelete" xml:space="preserve">
+    <value>अंतर्निहित डिफ़ॉल्ट पैटर्न (हटाया नहीं जा सकता)</value>
+  </data>
+  <data name="PatternDefaultTooltip" xml:space="preserve">
+    <value>अंतर्निहित डिफ़ॉल्ट पैटर्न</value>
+  </data>
+  <data name="PosterIconOverlayCountFormat" xml:space="preserve">
+    <value>{0} ओवरले</value>
+  </data>
+  <data name="PreviewerCanvasDark" xml:space="preserve">
+    <value>डार्क</value>
+  </data>
+  <data name="PreviewerCanvasFolder" xml:space="preserve">
+    <value>फ़ोल्डर</value>
+  </data>
+  <data name="PreviewerCanvasLight" xml:space="preserve">
+    <value>लाइट</value>
+  </data>
+  <data name="PreviewerCanvasTheme" xml:space="preserve">
+    <value>थीम</value>
+  </data>
+  <data name="PreviewerCopyImage" xml:space="preserve">
+    <value>छवि कॉपी करें</value>
+  </data>
+  <data name="PreviewerCopyImageTooltip" xml:space="preserve">
+    <value>छवि को क्लिपबोर्ड पर कॉपी करें</value>
+  </data>
+  <data name="PreviewerFilterHint" xml:space="preserve">
+    <value>अपने फ़िल्टर मानदंड को साफ़ करने या बदलने का प्रयास करें।</value>
+  </data>
+  <data name="PreviewerFilterOverlays" xml:space="preserve">
+    <value>ओवरले फ़िल्टर करें...</value>
+  </data>
+  <data name="PreviewerHdRender" xml:space="preserve">
+    <value>512 × 512 एचडी रेंडर</value>
+  </data>
+  <data name="PreviewerImageCopied" xml:space="preserve">
+    <value>{0} छवि क्लिपबोर्ड पर कॉपी की गई</value>
+  </data>
+  <data name="PreviewerInspectTooltip" xml:space="preserve">
+    <value>पूर्ण आकार में निरीक्षण करें</value>
+  </data>
+  <data name="PreviewerNoOverlaysMatch" xml:space="preserve">
+    <value>आपकी खोज से कोई ओवरले मेल नहीं खाता</value>
+  </data>
+  <data name="PreviewerOverlayCountFormat" xml:space="preserve">
+    <value>{1} में से {0} ओवरले</value>
+  </data>
+  <data name="PreviewerRendering" xml:space="preserve">
+    <value>ओवरले पूर्वावलोकन रेंडर हो रहा है...</value>
+  </data>
+  <data name="PreviewerResetPosterTooltip" xml:space="preserve">
+    <value>डिफ़ॉल्ट नमूना पोस्टर पर रीसेट करें</value>
+  </data>
+  <data name="PreviewerStatusBarHint" xml:space="preserve">
+    <value>लाइव ओवरले शोरूम • पूर्ण रिज़ॉल्यूशन देखने के लिए 'देखें' पर क्लिक करें • छवि कॉपी करने के लिए कर्सर ऊपर लाएं</value>
+  </data>
+  <data name="PreviewerView" xml:space="preserve">
+    <value>देखें</value>
+  </data>
+  <data name="RatingLabel" xml:space="preserve">
+    <value>रेटिंग:</value>
+  </data>
+  <data name="SearchOverlaysPlaceholder" xml:space="preserve">
+    <value>ओवरले खोजें...</value>
+  </data>
+  <data name="SearchResultHint" xml:space="preserve">
+    <value>चयन करने या वैकल्पिक पोस्टर ब्राउज़ करने के लिए उम्मीदवार या पोस्टर पर डबल-क्लिक करें</value>
+  </data>
+  <data name="SortAZ" xml:space="preserve">
+    <value>A-Z</value>
+  </data>
+  <data name="SortDefault" xml:space="preserve">
+    <value>डिफ़ॉल्ट</value>
+  </data>
+  <data name="SortLabel" xml:space="preserve">
+    <value>क्रमबद्ध करें:</value>
+  </data>
+  <data name="SortRating" xml:space="preserve">
+    <value>★ रेटिंग</value>
+  </data>
+  <data name="SubfolderProcessingDescription" xml:space="preserve">
+    <value>सीज़न फ़ोल्डरों, बोनस डिस्क और नेस्टेड संग्रहों को स्वचालित रूप से स्कैन और संसाधित करें</value>
+  </data>
+  <data name="SubfolderSettingsFooter" xml:space="preserve">
+    <value>सेटिंग्स बंद करने पर स्वचालित रूप से सहेजी जाती हैं • गहराई 0 सभी नेस्टेड डायरेक्टरी को संसाधित करती है</value>
+  </data>
+  <data name="Synopsis" xml:space="preserve">
+    <value>सारांश</value>
+  </data>
+  <data name="TestSamplePlaceholder" xml:space="preserve">
+    <value>परीक्षण नमूना नाम...</value>
+  </data>
+  <data name="TestSampleTooltip" xml:space="preserve">
+    <value>रेगेक्स मिलान का परीक्षण करने के लिए फ़ोल्डर नाम लिखें (मेल खाने पर हरा, न मिलने पर लाल चमकता है)</value>
+  </data>
+  <data name="TitleLabel" xml:space="preserve">
+    <value>शीर्षक:</value>
+  </data>
+  <data name="UndoApplyTooltip" xml:space="preserve">
+    <value>पिछला आइकन अनुप्रयोग पूर्ववत करें</value>
+  </data>
 </root>

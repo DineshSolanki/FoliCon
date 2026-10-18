@@ -1,5 +1,3 @@
-using System.Windows;
-using System.Windows.Media;
 using Size = System.Windows.Size;
 
 namespace FoliCon.Models.Data;

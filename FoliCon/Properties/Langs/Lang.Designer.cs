@@ -1012,6 +1012,42 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connecting to DeviantArt....
+        /// </summary>
+        public static string ManualExplorerConnecting {
+            get {
+                return ResourceManager.GetString("ManualExplorerConnecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading archive....
+        /// </summary>
+        public static string ManualExplorerDownloadingArchive {
+            get {
+                return ResourceManager.GetString("ManualExplorerDownloadingArchive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading archive ({0})....
+        /// </summary>
+        public static string ManualExplorerDownloadingArchiveWithSize {
+            get {
+                return ResourceManager.GetString("ManualExplorerDownloadingArchiveWithSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extracted {0} of {1} icons.
+        /// </summary>
+        public static string ManualExplorerExtractedCount {
+            get {
+                return ResourceManager.GetString("ManualExplorerExtractedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Media Rating.
         /// </summary>
         public static string MediaRating {
@@ -5076,5 +5112,680 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("OverlayUpdateFailed", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to GitHub.
+        /// </summary>
+        public static string AboutGithub {
+            get {
+                return ResourceManager.GetString("AboutGithub", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View source code &amp; contribute on GitHub.
+        /// </summary>
+        public static string AboutGithubTooltip {
+            get {
+                return ResourceManager.GetString("AboutGithubTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free and open-source under GPL-3.0.
+        /// </summary>
+        public static string AboutLicenseFooter {
+            get {
+                return ResourceManager.GetString("AboutLicenseFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overlays.
+        /// </summary>
+        public static string AboutOverlays {
+            get {
+                return ResourceManager.GetString("AboutOverlays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse icon templates &amp; overlays.
+        /// </summary>
+        public static string AboutOverlaysTooltip {
+            get {
+                return ResourceManager.GetString("AboutOverlaysTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Smart Media Folder Icon Generator &amp; Organizer.
+        /// </summary>
+        public static string AboutTagline {
+            get {
+                return ResourceManager.GetString("AboutTagline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0} (Click to copy).
+        /// </summary>
+        public static string AboutVersionTooltip {
+            get {
+                return ResourceManager.GetString("AboutVersionTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website.
+        /// </summary>
+        public static string AboutWebsite {
+            get {
+                return ResourceManager.GetString("AboutWebsite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Visit official blog &amp; website.
+        /// </summary>
+        public static string AboutWebsiteTooltip {
+            get {
+                return ResourceManager.GetString("AboutWebsiteTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Pattern.
+        /// </summary>
+        public static string AddPattern {
+            get {
+                return ResourceManager.GetString("AddPattern", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate and assign custom icons to folders.
+        /// </summary>
+        public static string ApplyIconsTooltip {
+            get {
+                return ResourceManager.GetString("ApplyIconsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} available.
+        /// </summary>
+        public static string AvailableCountFormat {
+            get {
+                return ResourceManager.GetString("AvailableCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse.
+        /// </summary>
+        public static string Browse {
+            get {
+                return ResourceManager.GetString("Browse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Canvas:.
+        /// </summary>
+        public static string CanvasLabel {
+            get {
+                return ResourceManager.GetString("CanvasLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear all folders.
+        /// </summary>
+        public static string ClearFoldersTooltip {
+            get {
+                return ResourceManager.GetString("ClearFoldersTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear all icons.
+        /// </summary>
+        public static string ClearIconsTooltip {
+            get {
+                return ResourceManager.GetString("ClearIconsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag and drop directories or files onto either side. Reorder items in either list so corresponding rows pair together. Press Delete to remove an entry..
+        /// </summary>
+        public static string CustomIconInstructions {
+            get {
+                return ResourceManager.GetString("CustomIconInstructions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete custom pattern.
+        /// </summary>
+        public static string DeleteCustomPatternTooltip {
+            get {
+                return ResourceManager.GetString("DeleteCustomPatternTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} folders.
+        /// </summary>
+        public static string FolderCountFormat {
+            get {
+                return ResourceManager.GetString("FolderCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder Files:.
+        /// </summary>
+        public static string FolderFiles {
+            get {
+                return ResourceManager.GetString("FolderFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} icons.
+        /// </summary>
+        public static string IconCountFormat {
+            get {
+                return ResourceManager.GetString("IconCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} matches.
+        /// </summary>
+        public static string MatchesCountFormat {
+            get {
+                return ResourceManager.GetString("MatchesCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matching Patterns.
+        /// </summary>
+        public static string MatchingPatterns {
+            get {
+                return ResourceManager.GetString("MatchingPatterns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (0 = unlimited).
+        /// </summary>
+        public static string MaxDepthHint {
+            get {
+                return ResourceManager.GetString("MaxDepthHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No trailer available for this title.
+        /// </summary>
+        public static string NoTrailerAvailable {
+            get {
+                return ResourceManager.GetString("NoTrailerAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Custom Icons.
+        /// </summary>
+        public static string OnboardingCustomIcons {
+            get {
+                return ResourceManager.GetString("OnboardingCustomIcons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Artist-crafted icon packs from DeviantArt.
+        /// </summary>
+        public static string OnboardingCustomIconsDesc {
+            get {
+                return ResourceManager.GetString("OnboardingCustomIconsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviantArt Community.
+        /// </summary>
+        public static string OnboardingDeviantArtServiceName {
+            get {
+                return ResourceManager.GetString("OnboardingDeviantArtServiceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internet Game Database (IGDB).
+        /// </summary>
+        public static string OnboardingIgdbServiceName {
+            get {
+                return ResourceManager.GetString("OnboardingIgdbServiceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movies &amp; Series.
+        /// </summary>
+        public static string OnboardingMoviesSeries {
+            get {
+                return ResourceManager.GetString("OnboardingMoviesSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic high-res posters via TMDb.
+        /// </summary>
+        public static string OnboardingMoviesSeriesDesc {
+            get {
+                return ResourceManager.GetString("OnboardingMoviesSeriesDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Movie Database (TMDb).
+        /// </summary>
+        public static string OnboardingTmdbServiceName {
+            get {
+                return ResourceManager.GetString("OnboardingTmdbServiceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Games.
+        /// </summary>
+        public static string OnboardingVideoGames {
+            get {
+                return ResourceManager.GetString("OnboardingVideoGames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game cover artwork via IGDB &amp; Twitch.
+        /// </summary>
+        public static string OnboardingVideoGamesDesc {
+            get {
+                return ResourceManager.GetString("OnboardingVideoGamesDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome to FoliCon.
+        /// </summary>
+        public static string OnboardingWelcomeTitle {
+            get {
+                return ResourceManager.GetString("OnboardingWelcomeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        public static string OverlayActive {
+            get {
+                return ResourceManager.GetString("OverlayActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built-in.
+        /// </summary>
+        public static string OverlayBuiltIn {
+            get {
+                return ResourceManager.GetString("OverlayBuiltIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Community.
+        /// </summary>
+        public static string OverlayCommunity {
+            get {
+                return ResourceManager.GetString("OverlayCommunity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected overlay is automatically saved and applied to movie and TV folder icons.
+        /// </summary>
+        public static string OverlayConfigFooter {
+            get {
+                return ResourceManager.GetString("OverlayConfigFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} patterns.
+        /// </summary>
+        public static string PatternCountFormat {
+            get {
+                return ResourceManager.GetString("PatternCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string PatternDefault {
+            get {
+                return ResourceManager.GetString("PatternDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built-in default pattern (cannot be deleted).
+        /// </summary>
+        public static string PatternDefaultCannotDelete {
+            get {
+                return ResourceManager.GetString("PatternDefaultCannotDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Built-in default pattern.
+        /// </summary>
+        public static string PatternDefaultTooltip {
+            get {
+                return ResourceManager.GetString("PatternDefaultTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} overlays.
+        /// </summary>
+        public static string PosterIconOverlayCountFormat {
+            get {
+                return ResourceManager.GetString("PosterIconOverlayCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        public static string PreviewerCanvasDark {
+            get {
+                return ResourceManager.GetString("PreviewerCanvasDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folder.
+        /// </summary>
+        public static string PreviewerCanvasFolder {
+            get {
+                return ResourceManager.GetString("PreviewerCanvasFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        public static string PreviewerCanvasLight {
+            get {
+                return ResourceManager.GetString("PreviewerCanvasLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string PreviewerCanvasTheme {
+            get {
+                return ResourceManager.GetString("PreviewerCanvasTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy Image.
+        /// </summary>
+        public static string PreviewerCopyImage {
+            get {
+                return ResourceManager.GetString("PreviewerCopyImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy image to clipboard.
+        /// </summary>
+        public static string PreviewerCopyImageTooltip {
+            get {
+                return ResourceManager.GetString("PreviewerCopyImageTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try clearing or changing your filter criteria..
+        /// </summary>
+        public static string PreviewerFilterHint {
+            get {
+                return ResourceManager.GetString("PreviewerFilterHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter overlays....
+        /// </summary>
+        public static string PreviewerFilterOverlays {
+            get {
+                return ResourceManager.GetString("PreviewerFilterOverlays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 512 × 512 HD Render.
+        /// </summary>
+        public static string PreviewerHdRender {
+            get {
+                return ResourceManager.GetString("PreviewerHdRender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} image copied to clipboard.
+        /// </summary>
+        public static string PreviewerImageCopied {
+            get {
+                return ResourceManager.GetString("PreviewerImageCopied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inspect full size.
+        /// </summary>
+        public static string PreviewerInspectTooltip {
+            get {
+                return ResourceManager.GetString("PreviewerInspectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No overlays match your search.
+        /// </summary>
+        public static string PreviewerNoOverlaysMatch {
+            get {
+                return ResourceManager.GetString("PreviewerNoOverlaysMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} of {1} overlays.
+        /// </summary>
+        public static string PreviewerOverlayCountFormat {
+            get {
+                return ResourceManager.GetString("PreviewerOverlayCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rendering overlay previews....
+        /// </summary>
+        public static string PreviewerRendering {
+            get {
+                return ResourceManager.GetString("PreviewerRendering", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset to default sample poster.
+        /// </summary>
+        public static string PreviewerResetPosterTooltip {
+            get {
+                return ResourceManager.GetString("PreviewerResetPosterTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Live overlay showroom • Click 'View' to inspect full resolution • Hover to copy image.
+        /// </summary>
+        public static string PreviewerStatusBarHint {
+            get {
+                return ResourceManager.GetString("PreviewerStatusBarHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string PreviewerView {
+            get {
+                return ResourceManager.GetString("PreviewerView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rating:.
+        /// </summary>
+        public static string RatingLabel {
+            get {
+                return ResourceManager.GetString("RatingLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search overlays....
+        /// </summary>
+        public static string SearchOverlaysPlaceholder {
+            get {
+                return ResourceManager.GetString("SearchOverlaysPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Double-click a candidate or poster to select / browse alternative posters.
+        /// </summary>
+        public static string SearchResultHint {
+            get {
+                return ResourceManager.GetString("SearchResultHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A-Z.
+        /// </summary>
+        public static string SortAZ {
+            get {
+                return ResourceManager.GetString("SortAZ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        public static string SortDefault {
+            get {
+                return ResourceManager.GetString("SortDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort:.
+        /// </summary>
+        public static string SortLabel {
+            get {
+                return ResourceManager.GetString("SortLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ★ Rating.
+        /// </summary>
+        public static string SortRating {
+            get {
+                return ResourceManager.GetString("SortRating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatically scan and process season folders, bonus discs, and nested collections.
+        /// </summary>
+        public static string SubfolderProcessingDescription {
+            get {
+                return ResourceManager.GetString("SubfolderProcessingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings are automatically saved on close • Depth 0 processes all nested directories.
+        /// </summary>
+        public static string SubfolderSettingsFooter {
+            get {
+                return ResourceManager.GetString("SubfolderSettingsFooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SYNOPSIS.
+        /// </summary>
+        public static string Synopsis {
+            get {
+                return ResourceManager.GetString("Synopsis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test sample name....
+        /// </summary>
+        public static string TestSamplePlaceholder {
+            get {
+                return ResourceManager.GetString("TestSamplePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type a folder name to test regex match (glows green on match, red on mismatch).
+        /// </summary>
+        public static string TestSampleTooltip {
+            get {
+                return ResourceManager.GetString("TestSampleTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title:.
+        /// </summary>
+        public static string TitleLabel {
+            get {
+                return ResourceManager.GetString("TitleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Undo previous icon application.
+        /// </summary>
+        public static string UndoApplyTooltip {
+            get {
+                return ResourceManager.GetString("UndoApplyTooltip", resourceCulture);
+            }
+        }
+        
     }
 }

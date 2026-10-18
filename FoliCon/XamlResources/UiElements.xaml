@@ -1,5 +1,119 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:hc="https://handyorg.github.io/handycontrol">
+
+    <!-- ========================================================================= -->
+    <!-- MODERN BUSY INDICATOR STYLE                                               -->
+    <!-- Replaces HandyControl's hardcoded TitleBrush colored outer borders with a -->
+    <!-- refined modern dialog card, and ensures it stays collapsed when idle.     -->
+    <!-- ========================================================================= -->
+    <Style x:Key="ModernBusyIndicatorStyle" TargetType="hc:BusyIndicator">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="OverlayStyle">
+            <Setter.Value>
+                <!-- Black is intentional for the neutral opacity overlay; it is not theme foreground text. -->
+                <Style TargetType="Rectangle">
+                    <Setter Property="Fill" Value="Black" />
+                    <Setter Property="Opacity" Value="0.45" />
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="hc:BusyIndicator">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="VisibilityStates">
+                                <VisualState x:Name="Hidden">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="busycontent" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="overlay" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Visible">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="busycontent" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="overlay" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="BusyStatusStates">
+                                <VisualState x:Name="Idle">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="busycontent" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="overlay" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Busy">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="busycontent" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="overlay" Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <ContentControl x:Name="content"
+                                        Content="{TemplateBinding Content}"
+                                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        IsTabStop="False" Focusable="False" />
+                        <Rectangle x:Name="overlay" Style="{TemplateBinding OverlayStyle}" Visibility="Collapsed" />
+                        <ContentPresenter x:Name="busycontent" Visibility="Collapsed">
+                            <ContentPresenter.Content>
+                                <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Background="{DynamicResource RegionBrush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="12"
+                                        Padding="24"
+                                        Width="380">
+                                    <!-- Black is intentional for the neutral elevation shadow; it is not a theme brush. -->
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.4" Color="Black" />
+                                    </Border.Effect>
+                                    <ContentPresenter Content="{TemplateBinding BusyContent}"
+                                                      ContentTemplate="{TemplateBinding BusyContentTemplate}" />
+                                </Border>
+                            </ContentPresenter.Content>
+                        </ContentPresenter>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsBusy" Value="False">
+                            <Setter TargetName="busycontent" Property="Visibility" Value="Collapsed" />
+                            <Setter TargetName="overlay" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsBusy" Value="True">
+                            <Setter TargetName="busycontent" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="overlay" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <DataTemplate x:Key="HeaderTemplateArrowUp">
         <DockPanel>
             <TextBlock HorizontalAlignment="Center" Text="{Binding}"/>
@@ -18,4 +132,14 @@
                   Data            = "M 5,5 L 10,10 L 15,5 L 5,5"/>
         </DockPanel>
     </DataTemplate>
+
+    <!-- Menu Item Icon Container Style -->
+    <Style x:Key="MenuIconPathStyle" TargetType="Path">
+        <Setter Property="Width" Value="14" />
+        <Setter Property="Height" Value="14" />
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Fill" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
 </ResourceDictionary>
