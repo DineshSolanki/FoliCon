@@ -78,11 +78,11 @@ Download the latest pre-compiled archive from [**GitHub Releases**](https://gith
 
   | Searching & Matching | Poster Selection & IMDb Badges |
   |:---:|:---:|
-  | ![Searching](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/searchingpro.jpg) | ![PosterSearch](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/posterresult.jpg) |
+  | ![Searching](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/professional-mode/searching.png) | ![PosterSearch](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/poster-mode/search-result_dark.png) |
 
   | Main Batch Workflow | Custom Manual Icon Setter |
   |:---:|:---:|
-  | ![Folicon Main View](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/mainview.png) | ![FoliCon Custom Icon](https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/customiconsetter.png) |
+  | ![Folicon Main View](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/main/main-loaded_dark.png) | ![FoliCon Custom Icon](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/custom-icon-setter/custom-icon-setter-example_dark.png) |
 
 </details>
 
