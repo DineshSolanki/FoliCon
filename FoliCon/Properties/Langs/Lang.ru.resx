@@ -697,6 +697,18 @@
   <data name="ManualExplorer" xml:space="preserve">
       <value>Ручной проводник</value>
     </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>Подключение к DeviantArt...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>Загрузка архива...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>Загрузка архива ({0})...</value>
+    </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>Извлечено значков: {0} из {1}</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
       <value>Извлечь галерею</value>
     </data>
@@ -1870,18 +1882,6 @@
   <data name="IconCountFormat" xml:space="preserve">
     <value>Значков: {0}</value>
   </data>
-  <data name="ManualExplorerConnecting" xml:space="preserve">
-    <value>Подключение к DeviantArt...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
-    <value>Загрузка архива...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
-    <value>Загрузка архива ({0})...</value>
-  </data>
-  <data name="ManualExplorerExtractedCount" xml:space="preserve">
-    <value>Извлечено значков: {0} из {1}</value>
-  </data>
   <data name="MatchesCountFormat" xml:space="preserve">
     <value>Совпадений: {0}</value>
   </data>
@@ -1952,16 +1952,16 @@
     <value>Наложений: {0}</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
-    <value>Тёмный</value>
+    <value>Темная тема</value>
   </data>
   <data name="PreviewerCanvasFolder" xml:space="preserve">
     <value>Папка</value>
   </data>
   <data name="PreviewerCanvasLight" xml:space="preserve">
-    <value>Светлый</value>
+    <value>Светлая тема</value>
   </data>
   <data name="PreviewerCanvasTheme" xml:space="preserve">
-    <value>Тема</value>
+    <value>тема</value>
   </data>
   <data name="PreviewerCopyImage" xml:space="preserve">
     <value>Копировать изображение</value>

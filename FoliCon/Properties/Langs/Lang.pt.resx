@@ -696,6 +696,18 @@ e renovar o cache dos Ícones?</value>
   <data name="ManualExplorer" xml:space="preserve">
       <value>Explorador manual</value>
     </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>Conectando ao DeviantArt...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>Baixando arquivo compactado...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>Baixando arquivo compactado ({0})...</value>
+    </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>{0} de {1} ícones extraídos</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
       <value>Extrair galeria</value>
     </data>
@@ -1868,18 +1880,6 @@ e renovar o cache dos Ícones?</value>
   </data>
   <data name="IconCountFormat" xml:space="preserve">
     <value>{0} ícone|{0} ícones</value>
-  </data>
-  <data name="ManualExplorerConnecting" xml:space="preserve">
-    <value>Conectando ao DeviantArt...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
-    <value>Baixando arquivo compactado...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
-    <value>Baixando arquivo compactado ({0})...</value>
-  </data>
-  <data name="ManualExplorerExtractedCount" xml:space="preserve">
-    <value>{0} de {1} ícones extraídos</value>
   </data>
   <data name="MatchesCountFormat" xml:space="preserve">
     <value>{0} correspondência|{0} correspondências</value>

@@ -696,6 +696,18 @@ and refresh Icon Cache?</value>
   <data name="ManualExplorer" xml:space="preserve">
       <value>Manual Explorer</value>
     </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>正在连接 DeviantArt...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>正在下载归档压缩包...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>正在下载归档压缩包 ({0})...</value>
+    </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>已解压 {0} / {1} 个图标</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
       <value>Extract gallery</value>
     </data>
@@ -1869,18 +1881,6 @@ and refresh Icon Cache?</value>
   <data name="IconCountFormat" xml:space="preserve">
     <value>{0} 个图标</value>
   </data>
-  <data name="ManualExplorerConnecting" xml:space="preserve">
-    <value>正在连接 DeviantArt...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
-    <value>正在下载归档压缩包...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
-    <value>正在下载归档压缩包 ({0})...</value>
-  </data>
-  <data name="ManualExplorerExtractedCount" xml:space="preserve">
-    <value>已解压 {0} / {1} 个图标</value>
-  </data>
   <data name="MatchesCountFormat" xml:space="preserve">
     <value>{0} 个匹配项</value>
   </data>
@@ -1951,16 +1951,16 @@ and refresh Icon Cache?</value>
     <value>{0} 个叠加层</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
-    <value>深色</value>
+    <value>Dark</value>
   </data>
   <data name="PreviewerCanvasFolder" xml:space="preserve">
-    <value>文件夹</value>
+    <value>Folder</value>
   </data>
   <data name="PreviewerCanvasLight" xml:space="preserve">
-    <value>浅色</value>
+    <value>Light</value>
   </data>
   <data name="PreviewerCanvasTheme" xml:space="preserve">
-    <value>主题</value>
+    <value>Theme</value>
   </data>
   <data name="PreviewerCopyImage" xml:space="preserve">
     <value>复制图像</value>

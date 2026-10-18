@@ -696,6 +696,18 @@
   <data name="ManualExplorer" xml:space="preserve">
       <value>المستكشف اليدوي</value>
     </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>جارٍ الاتصال بـ DeviantArt...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>جارٍ تنزيل الأرشيف...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>جارٍ تنزيل الأرشيف ({0})...</value>
+    </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>تم استخراج {0} من {1} أيقونات</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
       <value>استخراج المعرض</value>
     </data>
@@ -1869,18 +1881,6 @@
   <data name="IconCountFormat" xml:space="preserve">
     <value>{0} أيقونات</value>
   </data>
-  <data name="ManualExplorerConnecting" xml:space="preserve">
-    <value>جارٍ الاتصال بـ DeviantArt...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
-    <value>جارٍ تنزيل الأرشيف...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
-    <value>جارٍ تنزيل الأرشيف ({0})...</value>
-  </data>
-  <data name="ManualExplorerExtractedCount" xml:space="preserve">
-    <value>تم استخراج {0} من {1} أيقونات</value>
-  </data>
   <data name="MatchesCountFormat" xml:space="preserve">
     <value>{0} مطابقة</value>
   </data>
@@ -1951,16 +1951,16 @@
     <value>{0} تراكبات</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
-    <value>داكن</value>
+    <value>موضوع مظلم</value>
   </data>
   <data name="PreviewerCanvasFolder" xml:space="preserve">
     <value>مجلد</value>
   </data>
   <data name="PreviewerCanvasLight" xml:space="preserve">
-    <value>فاتح</value>
+    <value>موضوع خفيف</value>
   </data>
   <data name="PreviewerCanvasTheme" xml:space="preserve">
-    <value>السمة</value>
+    <value>سمة</value>
   </data>
   <data name="PreviewerCopyImage" xml:space="preserve">
     <value>نسخ الصورة</value>

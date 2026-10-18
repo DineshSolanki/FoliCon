@@ -697,6 +697,18 @@ y actualizar la caché de iconos?</value>
   <data name="ManualExplorer" xml:space="preserve">
       <value>Explorador manual</value>
     </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>Conectando con DeviantArt...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>Descargando archivo comprimido...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>Descargando archivo comprimido ({0})...</value>
+    </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>{0} de {1} iconos extraídos</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
       <value>Extraer galería</value>
     </data>
@@ -1870,18 +1882,6 @@ y actualizar la caché de iconos?</value>
   <data name="IconCountFormat" xml:space="preserve">
     <value>{0} icono|{0} iconos</value>
   </data>
-  <data name="ManualExplorerConnecting" xml:space="preserve">
-    <value>Conectando con DeviantArt...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
-    <value>Descargando archivo comprimido...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
-    <value>Descargando archivo comprimido ({0})...</value>
-  </data>
-  <data name="ManualExplorerExtractedCount" xml:space="preserve">
-    <value>{0} de {1} iconos extraídos</value>
-  </data>
   <data name="MatchesCountFormat" xml:space="preserve">
     <value>{0} coincidencia|{0} coincidencias</value>
   </data>
@@ -1952,16 +1952,16 @@ y actualizar la caché de iconos?</value>
     <value>{0} superposición|{0} superposiciones</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
-    <value>Oscuro</value>
+    <value>tema oscuro</value>
   </data>
   <data name="PreviewerCanvasFolder" xml:space="preserve">
     <value>Carpeta</value>
   </data>
   <data name="PreviewerCanvasLight" xml:space="preserve">
-    <value>Claro</value>
+    <value>Tema ligero</value>
   </data>
   <data name="PreviewerCanvasTheme" xml:space="preserve">
-    <value>Tema</value>
+    <value>tema</value>
   </data>
   <data name="PreviewerCopyImage" xml:space="preserve">
     <value>Copiar imagen</value>
