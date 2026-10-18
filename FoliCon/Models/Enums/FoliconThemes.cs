@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Models.Enums;
+namespace FoliCon.Models.Enums;
 
 //[TypeConverter(typeof(EnumDescriptionTypeConverter))]
 public enum FoliconThemes
@@ -10,5 +10,7 @@ public enum FoliconThemes
     Dark,
 
     //[LocalizedDescription("ThemeSystem", typeof(Lang))]
-    System
+    System,
+
+    TheButterfly
 }

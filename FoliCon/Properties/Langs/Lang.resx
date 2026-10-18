@@ -622,6 +622,9 @@ and refresh Icon Cache?</value>
     <data name="ThemeSystem" xml:space="preserve">
     <value>System</value>
   </data>
+    <data name="ThemeTheButterfly" xml:space="preserve">
+    <value>The Butterfly</value>
+  </data>
     <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
@@ -1835,7 +1838,7 @@ and refresh Icon Cache?</value>
     <value>Browse icon templates &amp; overlays</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>Smart Media Folder Icon Generator &amp; Organizer</value>
+    <value>YOUR MEDIA. YOUR LIBRARY. REIMAGINED.</value>
   </data>
   <data name="AboutVersionTooltip" xml:space="preserve">
     <value>Version {0} (Click to copy)</value>

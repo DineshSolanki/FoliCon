@@ -222,6 +222,7 @@ public class LangProvider : INotifyPropertyChanged
         OnPropertyChanged(nameof(ThemeDark));
         OnPropertyChanged(nameof(ThemeLight));
         OnPropertyChanged(nameof(ThemeSystem));
+        OnPropertyChanged(nameof(ThemeTheButterfly));
         OnPropertyChanged(nameof(ThisIsLatestVersion));
         OnPropertyChanged(nameof(Title));
         OnPropertyChanged(nameof(ToForceReload));
@@ -850,6 +851,7 @@ public class LangProvider : INotifyPropertyChanged
     public string ThemeDark => Lang.ThemeDark;
     public string ThemeLight => Lang.ThemeLight;
     public string ThemeSystem => Lang.ThemeSystem;
+    public string ThemeTheButterfly => Lang.ThemeTheButterfly;
     public string ThisIsLatestVersion => Lang.ThisIsLatestVersion;
     public string Title => Lang.Title;
     public string ToForceReload => Lang.ToForceReload;
@@ -1480,6 +1482,7 @@ public static class LangKeys
     public static readonly string ThemeDark = nameof(ThemeDark);
     public static readonly string ThemeLight = nameof(ThemeLight);
     public static readonly string ThemeSystem = nameof(ThemeSystem);
+    public static readonly string ThemeTheButterfly = nameof(ThemeTheButterfly);
     public static readonly string ThisIsLatestVersion = nameof(ThisIsLatestVersion);
     public static readonly string Title = nameof(Title);
     public static readonly string ToForceReload = nameof(ToForceReload);

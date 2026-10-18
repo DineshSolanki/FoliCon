@@ -621,6 +621,9 @@
   <data name="ThemeSystem" xml:space="preserve">
     <value>نظام</value>
   </data>
+  <data name="ThemeTheButterfly" xml:space="preserve">
+    <value>الفراشة</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
@@ -1822,7 +1825,7 @@
     <value>استعراض قوالب الأيقونات والتراكبات</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>منشئ ومنظم ذكي لأيقونات مجلدات الوسائط</value>
+    <value>وسائطك. مكتبتك. برؤية جديدة.</value>
   </data>
   <data name="AboutVersionTooltip" xml:space="preserve">
     <value>الإصدار {0} (انقر للنسخ)</value>

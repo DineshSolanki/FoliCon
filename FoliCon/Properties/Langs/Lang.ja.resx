@@ -621,6 +621,9 @@ and refresh Icon Cache?</value>
   <data name="ThemeSystem" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="ThemeTheButterfly" xml:space="preserve">
+    <value>バタフライ</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
@@ -1822,7 +1825,7 @@ and refresh Icon Cache?</value>
     <value>アイコンテンプレートとオーバーレイを参照</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>スマートなメディアフォルダーアイコン生成＆整理ツール</value>
+    <value>あなたのメディア。あなたのライブラリ。新しく生まれ変わる。</value>
   </data>
   <data name="AboutVersionTooltip" xml:space="preserve">
     <value>バージョン {0} (クリックしてコピー)</value>

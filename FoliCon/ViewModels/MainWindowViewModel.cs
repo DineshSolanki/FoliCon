@@ -162,23 +162,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set
         {
             SetProperty(ref field, value);
-            switch (value)
-            {
-                case FoliconThemes.Light:
-                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-                    ThemeManager.Current.UsingSystemTheme = false;
-                    break;
-                case FoliconThemes.Dark:
-                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                    ThemeManager.Current.UsingSystemTheme = false;
-                    break;
-                case FoliconThemes.System:
-                    ThemeManager.Current.UsingSystemTheme = true;
-                    break;
-                default:
-                    ThemeManager.Current.UsingSystemTheme = true;
-                    break;
-            }
+            ApplyAppTheme(value);
         }
     }
 
@@ -274,6 +258,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             ProcessUtils.CheckWebView2();
             TrackProperties();
+            ApplyAppTheme(Theme);
             SetCultureInfo();
             InitializeDelegates();
             InitializeProperties();
@@ -1538,6 +1523,72 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         StatusBarProperties.ResetData();
         IsMakeEnabled = true;
         Logger.Debug("Folder Dropped on MainWindow: {SelectedFolder}", SelectedFolder);
+    }
+
+    public static void ApplyAppTheme(FoliconThemes theme)
+    {
+        switch (theme)
+        {
+            case FoliconThemes.Light:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyButterflyThemeOverride(false);
+                break;
+            case FoliconThemes.Dark:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyButterflyThemeOverride(false);
+                break;
+            case FoliconThemes.System:
+                ThemeManager.Current.UsingSystemTheme = true;
+                ApplyButterflyThemeOverride(false);
+                break;
+            case FoliconThemes.TheButterfly:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyButterflyThemeOverride(true);
+                break;
+            default:
+                ThemeManager.Current.UsingSystemTheme = true;
+                ApplyButterflyThemeOverride(false);
+                break;
+        }
+    }
+
+    private static ResourceDictionary? _butterflyThemeDictionary;
+
+    private static void ApplyButterflyThemeOverride(bool enable)
+    {
+        try
+        {
+            if (Application.Current == null)
+            {
+                return;
+            }
+
+            var merged = Application.Current.Resources.MergedDictionaries;
+            for (var i = merged.Count - 1; i >= 0; i--)
+            {
+                var dict = merged[i];
+                if (dict.Source != null && dict.Source.OriginalString.Contains("ThemeTheButterfly", StringComparison.OrdinalIgnoreCase))
+                {
+                    merged.RemoveAt(i);
+                }
+            }
+
+            if (enable)
+            {
+                _butterflyThemeDictionary ??= new ResourceDictionary
+                {
+                    Source = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeTheButterfly.xaml", UriKind.Absolute)
+                };
+                merged.Add(_butterflyThemeDictionary);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to apply The Butterfly theme override");
+        }
     }
 
     public void Dispose()

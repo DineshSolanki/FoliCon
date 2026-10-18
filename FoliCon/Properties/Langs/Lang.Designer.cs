@@ -1981,6 +1981,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Butterfly.
+        /// </summary>
+        public static string ThemeTheButterfly {
+            get {
+                return ResourceManager.GetString("ThemeTheButterfly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Great! you are using the latest version..
         /// </summary>
         public static string ThisIsLatestVersion {
@@ -5158,7 +5167,7 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smart Media Folder Icon Generator &amp; Organizer.
+        ///   Looks up a localized string similar to YOUR MEDIA. YOUR LIBRARY. REIMAGINED..
         /// </summary>
         public static string AboutTagline {
             get {

@@ -621,6 +621,9 @@ and refresh Icon Cache?</value>
   <data name="ThemeSystem" xml:space="preserve">
     <value>System</value>
   </data>
+  <data name="ThemeTheButterfly" xml:space="preserve">
+    <value>蝴蝶</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
@@ -1822,7 +1825,7 @@ and refresh Icon Cache?</value>
     <value>浏览图标模板与叠加层</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>智能媒体文件夹图标生成与整理工具</value>
+    <value>你的媒体。你的媒体库。全新构想。</value>
   </data>
   <data name="AboutVersionTooltip" xml:space="preserve">
     <value>版本 {0} (点击复制)</value>

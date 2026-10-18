@@ -622,6 +622,9 @@
   <data name="ThemeSystem" xml:space="preserve">
     <value>Система</value>
   </data>
+  <data name="ThemeTheButterfly" xml:space="preserve">
+    <value>Бабочка</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
@@ -1823,7 +1826,7 @@
     <value>Шаблоны и наложения значков</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>Умный генератор и органайзер значков для медиа-папок</value>
+    <value>ВАШИ МЕДИА. ВАША БИБЛИОТЕКА. ПО-НОВОМУ.</value>
   </data>
   <data name="AboutVersionTooltip" xml:space="preserve">
     <value>Версия {0} (нажмите, чтобы скопировать)</value>
