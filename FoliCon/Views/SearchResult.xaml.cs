@@ -140,6 +140,8 @@ public partial class SearchResult
             CandidatesColumn.Width = new GridLength(0);
             DetailsColumn.Width = new GridLength(1, GridUnitType.Star);
             CandidatesPanel.Visibility = Visibility.Collapsed;
+            Grid.SetColumn(DetailsPanel, 0);
+            Grid.SetColumnSpan(DetailsPanel, 2);
 
             PosterMetaRow.Height = new GridLength(0);
             FolderFilesRow.Height = new GridLength(0);
@@ -166,6 +168,8 @@ public partial class SearchResult
             CandidatesColumn.Width = new GridLength(4.2, GridUnitType.Star);
             DetailsColumn.Width = new GridLength(5.8, GridUnitType.Star);
             CandidatesPanel.Visibility = Visibility.Visible;
+            Grid.SetColumn(DetailsPanel, 1);
+            Grid.SetColumnSpan(DetailsPanel, 1);
 
             PosterMetaRow.Height = GridLength.Auto;
             FolderFilesRow.Height = GridLength.Auto;
