@@ -8,15 +8,15 @@ public static class PngToIcoService
     public static void Convert(Bitmap bitmap, string icoPath)
     {
         Logger.Debug("Converting png to ico, path: {IcoPath}", icoPath);
-        Bitmap sourceBitmap = bitmap;
-        bool disposeSource = false;
+        var sourceBitmap = bitmap;
+        var disposeSource = false;
         if (bitmap.Width > 256 || bitmap.Height > 256)
         {
             var maxDim = Math.Max(bitmap.Width, bitmap.Height);
             var newWidth = Math.Max(1, (bitmap.Width * 256) / maxDim);
             var newHeight = Math.Max(1, (bitmap.Height * 256) / maxDim);
             var resized = new Bitmap(newWidth, newHeight);
-            using (var g = System.Drawing.Graphics.FromImage(resized))
+            using (var g = Graphics.FromImage(resized))
             {
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
