@@ -12,5 +12,7 @@ public enum FoliconThemes
     //[LocalizedDescription("ThemeSystem", typeof(Lang))]
     System,
 
-    TheButterfly
+    TheButterfly,
+
+    TokyoNeon
 }

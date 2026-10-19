@@ -29,12 +29,43 @@ public class TheButterflyThemeTests
     [InlineData(FoliconThemes.Dark, "Dark")]
     [InlineData(FoliconThemes.System, "System")]
     [InlineData(FoliconThemes.TheButterfly, "The Butterfly")]
+    [InlineData(FoliconThemes.TokyoNeon, "Tokyo Neon")]
     public void ThemeToDisplayConverter_ConvertsAllThemesAccurately(FoliconThemes theme, string expected)
     {
         var converter = new ThemeToDisplayConverter();
         var result = converter.Convert(theme, typeof(string), null, CultureInfo.InvariantCulture);
 
         Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void ThemeTokyoNeon_DictionaryLoadsAndContainsRequiredBrushes()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeTokyoNeon.xaml", UriKind.Absolute);
+            var dict = new ResourceDictionary { Source = uri };
+
+            Assert.NotNull(dict);
+
+            // Verify Tokyo Neon Cyberpunk Palette
+            var regionBrush = dict["RegionBrush"] as SolidColorBrush;
+            Assert.NotNull(regionBrush);
+            Assert.Equal(Color.FromRgb(0x0B, 0x0E, 0x17), regionBrush.Color);
+
+            var primaryBrush = dict["PrimaryBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryBrush);
+            Assert.Equal(Color.FromRgb(0x08, 0x83, 0x95), primaryBrush.Color);
+
+            var accentBrush = dict["AccentBrush"] as SolidColorBrush;
+            Assert.NotNull(accentBrush);
+            Assert.Equal(Color.FromRgb(0xFF, 0x2A, 0x85), accentBrush.Color);
+
+            var primaryTextBrush = dict["PrimaryTextBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryTextBrush);
+            Assert.Equal(Color.FromRgb(0xF8, 0xFA, 0xFC), primaryTextBrush.Color);
+        });
     }
 
     [Fact]
@@ -78,6 +109,11 @@ public class TheButterflyThemeTests
             Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
             Assert.False(ThemeManager.Current.UsingSystemTheme);
 
+            // Apply Tokyo Neon theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.TokyoNeon);
+            Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
+            Assert.False(ThemeManager.Current.UsingSystemTheme);
+
             // Revert to System theme
             MainWindowViewModel.ApplyAppTheme(FoliconThemes.System);
             Assert.True(ThemeManager.Current.UsingSystemTheme);
@@ -116,6 +152,22 @@ public class TheButterflyThemeTests
 
         Assert.Equal(expectedTheme, themeString);
         Assert.Equal(expectedTagline, taglineString);
+    }
+
+    [Theory]
+    [InlineData("ar", "طوكيو نيون")]
+    [InlineData("es", "Tokio Neón")]
+    [InlineData("hi", "टोक्यो नियॉन")]
+    [InlineData("ja", "東京ネオン")]
+    [InlineData("pt", "Tóquio Neon")]
+    [InlineData("ru", "Токио Неон")]
+    [InlineData("zh", "东京霓虹")]
+    public void AllLocales_HaveIdiomaticTokyoNeonTheme(string cultureCode, string expectedTheme)
+    {
+        var culture = new CultureInfo(cultureCode);
+        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeTokyoNeon), culture);
+
+        Assert.Equal(expectedTheme, themeString);
     }
 
     [Fact]

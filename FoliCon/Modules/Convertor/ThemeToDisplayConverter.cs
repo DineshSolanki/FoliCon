@@ -12,6 +12,7 @@ public sealed class ThemeToDisplayConverter : IValueConverter
                 FoliconThemes.Dark => Lang.ThemeDark,
                 FoliconThemes.System => Lang.ThemeSystem,
                 FoliconThemes.TheButterfly => Lang.ThemeTheButterfly,
+                FoliconThemes.TokyoNeon => Lang.ThemeTokyoNeon,
                 _ => value.ToString() ?? string.Empty
             };
         }
@@ -26,6 +27,7 @@ public sealed class ThemeToDisplayConverter : IValueConverter
                     FoliconThemes.Dark => Lang.ThemeDark,
                     FoliconThemes.System => Lang.ThemeSystem,
                     FoliconThemes.TheButterfly => Lang.ThemeTheButterfly,
+                    FoliconThemes.TokyoNeon => Lang.ThemeTokyoNeon,
                     _ => str
                 };
             }

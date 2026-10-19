@@ -1532,32 +1532,37 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             case FoliconThemes.Light:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyButterflyThemeOverride(false);
+                ApplyCustomThemeOverride(null);
                 break;
             case FoliconThemes.Dark:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyButterflyThemeOverride(false);
+                ApplyCustomThemeOverride(null);
                 break;
             case FoliconThemes.System:
                 ThemeManager.Current.UsingSystemTheme = true;
-                ApplyButterflyThemeOverride(false);
+                ApplyCustomThemeOverride(null);
                 break;
             case FoliconThemes.TheButterfly:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyButterflyThemeOverride(true);
+                ApplyCustomThemeOverride("ThemeTheButterfly.xaml");
+                break;
+            case FoliconThemes.TokyoNeon:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyCustomThemeOverride("ThemeTokyoNeon.xaml");
                 break;
             default:
                 ThemeManager.Current.UsingSystemTheme = true;
-                ApplyButterflyThemeOverride(false);
+                ApplyCustomThemeOverride(null);
                 break;
         }
     }
 
-    private static ResourceDictionary? _butterflyThemeDictionary;
+    private static readonly Dictionary<string, ResourceDictionary> CustomThemeDictionaries = new(StringComparer.OrdinalIgnoreCase);
 
-    private static void ApplyButterflyThemeOverride(bool enable)
+    private static void ApplyCustomThemeOverride(string? themeXamlName)
     {
         try
         {
@@ -1570,24 +1575,32 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             for (var i = merged.Count - 1; i >= 0; i--)
             {
                 var dict = merged[i];
-                if (dict.Source != null && dict.Source.OriginalString.Contains("ThemeTheButterfly", StringComparison.OrdinalIgnoreCase))
+                if (dict.Source != null && (
+                    dict.Source.OriginalString.Contains("ThemeTheButterfly", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeTokyoNeon", StringComparison.OrdinalIgnoreCase)))
                 {
                     merged.RemoveAt(i);
                 }
             }
 
-            if (enable)
+            if (string.IsNullOrEmpty(themeXamlName))
             {
-                _butterflyThemeDictionary ??= new ResourceDictionary
-                {
-                    Source = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeTheButterfly.xaml", UriKind.Absolute)
-                };
-                merged.Add(_butterflyThemeDictionary);
+                return;
             }
+
+            if (!CustomThemeDictionaries.TryGetValue(themeXamlName, out var themeDict))
+            {
+                themeDict = new ResourceDictionary
+                {
+                    Source = new Uri($"pack://application:,,,/FoliCon;component/XamlResources/{themeXamlName}", UriKind.Absolute)
+                };
+                CustomThemeDictionaries[themeXamlName] = themeDict;
+            }
+            merged.Add(themeDict);
         }
         catch (Exception ex)
         {
-            Logger.Warn(ex, "Failed to apply The Butterfly theme override");
+            Logger.Warn(ex, "Failed to apply custom theme override for {ThemeXaml}", themeXamlName);
         }
     }
 

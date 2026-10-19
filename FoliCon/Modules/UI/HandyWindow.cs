@@ -1,4 +1,4 @@
-﻿using Brush = System.Windows.Media.Brush;
+using Brush = System.Windows.Media.Brush;
 using Window = HandyControl.Controls.Window;
 
 namespace FoliCon.Modules.UI;
@@ -17,7 +17,12 @@ public class HandyWindow : Window, IDialogWindow
         ShowTitle = true;
         HandleDataContextChanged();
         DataContextChanged += HandyWindow_DataContextChanged;
-        Background = (Brush)FindResource("RegionBrush");
+        SetResourceReference(BackgroundProperty, "RegionBrush");
+        SetResourceReference(NonClientAreaBackgroundProperty, "SecondaryRegionBrush");
+        SetResourceReference(NonClientAreaForegroundProperty, "PrimaryTextBrush");
+        SetResourceReference(OtherButtonHoverBackgroundProperty, "SecondaryRegionBrush");
+        CloseButtonHoverBackground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xE8, 0x11, 0x23));
+        SystemBackdropType = HandyControl.Tools.BackdropType.Mica;
     }
 
     public IDialogResult Result { get; set; }

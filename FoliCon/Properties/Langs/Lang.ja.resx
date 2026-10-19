@@ -624,6 +624,9 @@ and refresh Icon Cache?</value>
   <data name="ThemeTheButterfly" xml:space="preserve">
     <value>バタフライ</value>
   </data>
+  <data name="ThemeTokyoNeon" xml:space="preserve">
+    <value>東京ネオン</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>

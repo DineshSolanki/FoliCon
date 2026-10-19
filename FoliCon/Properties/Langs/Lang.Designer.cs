@@ -1990,6 +1990,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tokyo Neon.
+        /// </summary>
+        public static string ThemeTokyoNeon {
+            get {
+                return ResourceManager.GetString("ThemeTokyoNeon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Great! you are using the latest version..
         /// </summary>
         public static string ThisIsLatestVersion {

@@ -197,6 +197,7 @@ namespace FoliCon.ViewModels
                 "Light" => new SolidColorBrush(Color.FromRgb(0xF4, 0xF4, 0xF5)),
                 "Folder" => new SolidColorBrush(Color.FromRgb(0xE2, 0xE8, 0xF0)),
                 "Butterfly" => new SolidColorBrush(Color.FromRgb(0x17, 0x15, 0x2B)),
+                "TokyoNeon" => new SolidColorBrush(Color.FromRgb(0x0B, 0x0E, 0x17)),
                 _ => Brushes.Transparent
             };
         }
