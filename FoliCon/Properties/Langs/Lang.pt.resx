@@ -630,6 +630,9 @@ e renovar o cache dos Ícones?</value>
   <data name="ThemeMicaDarkObsidian" xml:space="preserve">
     <value>Mica Obsidiana Escura</value>
   </data>
+  <data name="ThemeNordicPine" xml:space="preserve">
+    <value>Pinho Nórdico</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>

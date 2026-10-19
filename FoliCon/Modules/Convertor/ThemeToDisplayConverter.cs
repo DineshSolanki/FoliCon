@@ -14,6 +14,7 @@ public sealed class ThemeToDisplayConverter : IValueConverter
                 FoliconThemes.TheButterfly => Lang.ThemeTheButterfly,
                 FoliconThemes.TokyoNeon => Lang.ThemeTokyoNeon,
                 FoliconThemes.MicaDarkObsidian => Lang.ThemeMicaDarkObsidian,
+                FoliconThemes.NordicPine => Lang.ThemeNordicPine,
                 _ => value.ToString() ?? string.Empty
             };
         }
@@ -30,6 +31,7 @@ public sealed class ThemeToDisplayConverter : IValueConverter
                     FoliconThemes.TheButterfly => Lang.ThemeTheButterfly,
                     FoliconThemes.TokyoNeon => Lang.ThemeTokyoNeon,
                     FoliconThemes.MicaDarkObsidian => Lang.ThemeMicaDarkObsidian,
+                    FoliconThemes.NordicPine => Lang.ThemeNordicPine,
                     _ => str
                 };
             }

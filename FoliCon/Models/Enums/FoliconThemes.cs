@@ -16,5 +16,7 @@ public enum FoliconThemes
 
     TokyoNeon,
 
-    MicaDarkObsidian
+    MicaDarkObsidian,
+
+    NordicPine
 }

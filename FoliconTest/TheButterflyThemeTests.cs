@@ -30,6 +30,8 @@ public class TheButterflyThemeTests
     [InlineData(FoliconThemes.System, "System")]
     [InlineData(FoliconThemes.TheButterfly, "The Butterfly")]
     [InlineData(FoliconThemes.TokyoNeon, "Tokyo Neon")]
+    [InlineData(FoliconThemes.MicaDarkObsidian, "Mica Dark Obsidian")]
+    [InlineData(FoliconThemes.NordicPine, "Nordic Pine")]
     public void ThemeToDisplayConverter_ConvertsAllThemesAccurately(FoliconThemes theme, string expected)
     {
         var converter = new ThemeToDisplayConverter();
@@ -65,6 +67,36 @@ public class TheButterflyThemeTests
             var primaryTextBrush = dict["PrimaryTextBrush"] as SolidColorBrush;
             Assert.NotNull(primaryTextBrush);
             Assert.Equal(Color.FromRgb(0xF8, 0xFA, 0xFC), primaryTextBrush.Color);
+        });
+    }
+
+    [Fact]
+    public void ThemeNordicPine_DictionaryLoadsAndContainsRequiredBrushes()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeNordicPine.xaml", UriKind.Absolute);
+            var dict = new ResourceDictionary { Source = uri };
+
+            Assert.NotNull(dict);
+
+            // Verify Nordic Pine Emerald Abyssal Palette
+            var regionBrush = dict["RegionBrush"] as SolidColorBrush;
+            Assert.NotNull(regionBrush);
+            Assert.Equal(Color.FromRgb(0x0C, 0x16, 0x13), regionBrush.Color);
+
+            var primaryBrush = dict["PrimaryBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryBrush);
+            Assert.Equal(Color.FromRgb(0x10, 0xB9, 0x81), primaryBrush.Color);
+
+            var accentBrush = dict["AccentBrush"] as SolidColorBrush;
+            Assert.NotNull(accentBrush);
+            Assert.Equal(Color.FromRgb(0x6E, 0xE7, 0xB7), accentBrush.Color);
+
+            var primaryTextBrush = dict["PrimaryTextBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryTextBrush);
+            Assert.Equal(Color.FromRgb(0xEC, 0xFD, 0xF5), primaryTextBrush.Color);
         });
     }
 
@@ -111,6 +143,11 @@ public class TheButterflyThemeTests
 
             // Apply Tokyo Neon theme
             MainWindowViewModel.ApplyAppTheme(FoliconThemes.TokyoNeon);
+            Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
+            Assert.False(ThemeManager.Current.UsingSystemTheme);
+
+            // Apply Nordic Pine theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.NordicPine);
             Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
             Assert.False(ThemeManager.Current.UsingSystemTheme);
 
@@ -166,6 +203,22 @@ public class TheButterflyThemeTests
     {
         var culture = new CultureInfo(cultureCode);
         var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeTokyoNeon), culture);
+
+        Assert.Equal(expectedTheme, themeString);
+    }
+
+    [Theory]
+    [InlineData("ar", "الصنوبر الشمالي")]
+    [InlineData("es", "Pino Nórdico")]
+    [InlineData("hi", "नॉर्डिक पाइन")]
+    [InlineData("ja", "ノルディックパイン")]
+    [InlineData("pt", "Pinho Nórdico")]
+    [InlineData("ru", "Северная сосна")]
+    [InlineData("zh", "北欧松林")]
+    public void AllLocales_HaveIdiomaticNordicPineTheme(string cultureCode, string expectedTheme)
+    {
+        var culture = new CultureInfo(cultureCode);
+        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeNordicPine), culture);
 
         Assert.Equal(expectedTheme, themeString);
     }

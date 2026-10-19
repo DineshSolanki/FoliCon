@@ -630,6 +630,9 @@
   <data name="ThemeMicaDarkObsidian" xml:space="preserve">
     <value>ميكا حجر السج الداكن</value>
   </data>
+  <data name="ThemeNordicPine" xml:space="preserve">
+    <value>الصنوبر الشمالي</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>

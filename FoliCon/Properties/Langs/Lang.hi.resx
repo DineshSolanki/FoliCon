@@ -631,6 +631,9 @@
   <data name="ThemeMicaDarkObsidian" xml:space="preserve">
     <value>माइका डार्क ओब्सीडियन</value>
   </data>
+  <data name="ThemeNordicPine" xml:space="preserve">
+    <value>नॉर्डिक पाइन</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
