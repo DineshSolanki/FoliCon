@@ -633,6 +633,9 @@ and refresh Icon Cache?</value>
   <data name="ThemeNordicPine" xml:space="preserve">
     <value>北欧松林</value>
   </data>
+  <data name="ThemeCinema35mm" xml:space="preserve">
+    <value>35毫米胶片</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>

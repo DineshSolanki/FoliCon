@@ -633,6 +633,9 @@
   <data name="ThemeNordicPine" xml:space="preserve">
     <value>الصنوبر الشمالي</value>
   </data>
+  <data name="ThemeCinema35mm" xml:space="preserve">
+    <value>سينما 35 مم</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>

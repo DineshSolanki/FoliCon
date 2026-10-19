@@ -18,5 +18,7 @@ public enum FoliconThemes
 
     MicaDarkObsidian,
 
-    NordicPine
+    NordicPine,
+
+    Cinema35mm
 }

@@ -634,6 +634,9 @@ and refresh Icon Cache?</value>
   <data name="ThemeNordicPine" xml:space="preserve">
     <value>Nordic Pine</value>
   </data>
+  <data name="ThemeCinema35mm" xml:space="preserve">
+    <value>Cinema 35mm</value>
+  </data>
     <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>

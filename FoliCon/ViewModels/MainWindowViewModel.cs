@@ -1563,6 +1563,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ThemeManager.Current.UsingSystemTheme = false;
                 ApplyCustomThemeOverride("ThemeNordicPine.xaml");
                 break;
+            case FoliconThemes.Cinema35mm:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyCustomThemeOverride("ThemeCinema35mm.xaml");
+                break;
             default:
                 ThemeManager.Current.UsingSystemTheme = true;
                 ApplyCustomThemeOverride(null);
@@ -1589,7 +1594,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     dict.Source.OriginalString.Contains("ThemeTheButterfly", StringComparison.OrdinalIgnoreCase) ||
                     dict.Source.OriginalString.Contains("ThemeTokyoNeon", StringComparison.OrdinalIgnoreCase) ||
                     dict.Source.OriginalString.Contains("ThemeMicaDarkObsidian", StringComparison.OrdinalIgnoreCase) ||
-                    dict.Source.OriginalString.Contains("ThemeNordicPine", StringComparison.OrdinalIgnoreCase)))
+                    dict.Source.OriginalString.Contains("ThemeNordicPine", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeCinema35mm", StringComparison.OrdinalIgnoreCase)))
                 {
                     merged.RemoveAt(i);
                 }

@@ -2012,6 +2012,12 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("ThemeNordicPine", resourceCulture);
             }
         }
+
+        public static string ThemeCinema35mm {
+            get {
+                return ResourceManager.GetString("ThemeCinema35mm", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Great! you are using the latest version..

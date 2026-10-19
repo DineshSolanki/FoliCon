@@ -14,7 +14,7 @@
            xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
            mc:Ignorable="d"
            prism:ViewModelLocator.AutoWireViewModel="True"
-           Title="{Binding Title}" Height="780" Width="980" MinWidth="880" MinHeight="660"
+           Title="{Binding Title}" Height="780" Width="1200" MinWidth="880" MinHeight="660"
            WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"           SystemBackdropType="Mica"
            ShowTitle="False"
            NonClientAreaHeight="42"
@@ -808,7 +808,7 @@
                         <!-- Section: Icon Mode -->
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.IconMode}}"
                                    Style="{StaticResource SectionHeaderStyle}" />
-                        
+
                         <!-- Segmented Pill Selector for Icon Mode -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
                             <RadioButton x:Name="RPoster" Style="{StaticResource SegmentedRadioTabStyle}"
@@ -837,11 +837,11 @@
                         <!-- Section: Media Type / Search Mode -->
                         <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,2,0,10"
                                 Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        
+
                         <StackPanel Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SearchMode}}"
                                        Style="{StaticResource SectionHeaderStyle}" />
-                            
+
                             <!-- 2x2 Interactive Source Cards -->
                             <UniformGrid Columns="2" Rows="2">
                                 <RadioButton x:Name="RMovie" Style="{StaticResource MediaSourceRadioCardStyle}"
