@@ -6,8 +6,7 @@
 
 # FoliCon
 
-<p><b>YOUR MEDIA. YOUR LIBRARY. REIMAGINED.</b><br />
-<i>The Ultimate Movie, TV Series, Anime, Music &amp; Game Folder Icon Customizer for Windows</i></p>
+### The Ultimate Movie, TV Series, Anime, Music & Game Folder Icon Customizer for Windows
 
 [![GitHub Release](https://img.shields.io/github/v/release/DineshSolanki/FoliCon?color=blue&logo=github)](https://github.com/DineshSolanki/FoliCon/releases/latest)
 [![WinGet Package](https://img.shields.io/badge/winget-DineshSolanki.FoliCon-0078D7?logo=windows&logoColor=white)](https://github.com/microsoft/winget-pkgs/tree/master/manifests/d/DineshSolanki/FoliCon)
