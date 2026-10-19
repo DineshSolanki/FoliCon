@@ -13,6 +13,7 @@
                 XAML's own StringFormat cannot be bound to a resource. See LocalizedFormatConverter.
             -->
             <convertor:LocalizedFormatConverter x:Key="LocalizedFormat" />
+            <convertor:ThemeToDisplayConverter x:Key="ThemeToDisplayConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <hc:ThemeResources UsingSystemTheme="True" />
                 <hc:Theme />

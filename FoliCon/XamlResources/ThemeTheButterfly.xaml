@@ -54,4 +54,46 @@
 
     <SolidColorBrush x:Key="DefaultBrush" Color="{StaticResource CardSurfaceColor}" />
     <SolidColorBrush x:Key="DarkDefaultBrush" Color="{StaticResource BackgroundColor}" />
+
+    <!-- ========================================================================= -->
+    <!-- BUTTERFLY GRADIENT & MATERIAL EFFECTS                                     -->
+    <!-- ========================================================================= -->
+    <!-- Translucent Backdrop for Windows 11 Mica wallpaper blur -->
+    <SolidColorBrush x:Key="WindowBackdropBrush" Color="#D917152B" />
+
+    <!-- Radiant Hero Card Gradient -->
+    <LinearGradientBrush x:Key="HeroCardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#28224E" Offset="0.0" />
+        <GradientStop Color="#1C1835" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Top-Down Light-Incidence Border for Hero -->
+    <LinearGradientBrush x:Key="HeroCardBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#635298" Offset="0.0" />
+        <GradientStop Color="#312954" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Glowing Electric Violet-to-Fuchsia CTA Action Gradient -->
+    <LinearGradientBrush x:Key="PrimaryActionGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#7651E8" Offset="0.0" />
+        <GradientStop Color="#9333EA" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Atmospheric Sheen Header Bar -->
+    <LinearGradientBrush x:Key="HeaderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#231C40" Offset="0.0" />
+        <GradientStop Color="#1A1730" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Fluid Bevel Card Borders -->
+    <LinearGradientBrush x:Key="CardBorderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#4D3F75" Offset="0.0" />
+        <GradientStop Color="#292344" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Luminous Folder Badge Gradient -->
+    <LinearGradientBrush x:Key="FolderBadgeGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#8B5CF6" Offset="0.0" />
+        <GradientStop Color="#6D28D9" Offset="1.0" />
+    </LinearGradientBrush>
 </ResourceDictionary>

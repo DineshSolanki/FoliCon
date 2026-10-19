@@ -55,4 +55,46 @@
 
     <SolidColorBrush x:Key="DefaultBrush" Color="{StaticResource CardSurfaceColor}" />
     <SolidColorBrush x:Key="DarkDefaultBrush" Color="{StaticResource BackgroundColor}" />
+
+    <!-- ========================================================================= -->
+    <!-- TOKYO NEON GRADIENT & MATERIAL EFFECTS                                    -->
+    <!-- ========================================================================= -->
+    <!-- Translucent Backdrop for Windows 11 Mica wallpaper blur -->
+    <SolidColorBrush x:Key="WindowBackdropBrush" Color="#D90B0E17" />
+
+    <!-- Cyberpunk Obsidian-to-Navy Hero Card Gradient -->
+    <LinearGradientBrush x:Key="HeroCardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#141E33" Offset="0.0" />
+        <GradientStop Color="#0D1524" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Electric Neon Cyan Top-Down Light-Incidence Border -->
+    <LinearGradientBrush x:Key="HeroCardBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#088395" Offset="0.0" />
+        <GradientStop Color="#1D2A40" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- High-Contrast Cyan-to-Teal CTA Action Gradient -->
+    <LinearGradientBrush x:Key="PrimaryActionGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#088395" Offset="0.0" />
+        <GradientStop Color="#045A67" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Atmospheric Sheen Header Bar -->
+    <LinearGradientBrush x:Key="HeaderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#141C2B" Offset="0.0" />
+        <GradientStop Color="#0D131F" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Subtle Hairline Bevel Card Borders -->
+    <LinearGradientBrush x:Key="CardBorderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#304364" Offset="0.0" />
+        <GradientStop Color="#1A2436" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Electric Cyan Glowing Folder Badge Gradient -->
+    <LinearGradientBrush x:Key="FolderBadgeGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#00F0FF" Offset="0.0" />
+        <GradientStop Color="#088395" Offset="1.0" />
+    </LinearGradientBrush>
 </ResourceDictionary>

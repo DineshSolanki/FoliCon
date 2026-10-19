@@ -14,5 +14,7 @@ public enum FoliconThemes
 
     TheButterfly,
 
-    TokyoNeon
+    TokyoNeon,
+
+    MicaDarkObsidian
 }

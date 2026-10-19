@@ -15,16 +15,18 @@
            mc:Ignorable="d"
            prism:ViewModelLocator.AutoWireViewModel="True"
            Title="{Binding Title}" Height="780" Width="980" MinWidth="880" MinHeight="660"
-           WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"
-           SystemBackdropType="Mica"
-           NonClientAreaBackground="{DynamicResource SecondaryRegionBrush}"
+           WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"           SystemBackdropType="Mica"
+           ShowTitle="False"
+           NonClientAreaHeight="42"
+           NonClientAreaBackground="Transparent"
            NonClientAreaForeground="{DynamicResource PrimaryTextBrush}"
            CloseButtonHoverBackground="#E81123"
            OtherButtonHoverBackground="{DynamicResource SecondaryRegionBrush}"
+           OtherButtonForeground="{DynamicResource PrimaryTextBrush}"
            Icon="/Resources/icons/folicon Icon.ico"
            ui:FolderDragDropHelper.IsFileDragDropEnabled="True"
            ui:FolderDragDropHelper.FileDragDropTarget="{Binding}" AllowDrop="True"
-           Background="{DynamicResource RegionBrush}"
+           Background="{DynamicResource WindowBackdropBrush}"
            Foreground="{DynamicResource PrimaryTextBrush}"
            FontFamily="Segoe UI, Segoe UI Variable, Microsoft YaHei, Arial"
            TextOptions.TextFormattingMode="Display"
@@ -75,9 +77,14 @@
                                 <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                <Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource PrimaryActionGradientBrush}" />
                                 <Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter Property="Foreground" Value="White" />
+                                <Setter TargetName="TabBorder" Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#8B5CF6" BlurRadius="12" Opacity="0.5" ShadowDepth="1" />
+                                    </Setter.Value>
+                                </Setter>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -123,9 +130,10 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5" />
                                 <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
-                                <Setter TargetName="SelectionIndicator" Property="Background" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter TargetName="SelectionIndicator" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                <Setter TargetName="InnerDot" Property="Fill" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter TargetName="InnerDot" Property="Visibility" Value="Visible" />
                                 <Setter Property="FontWeight" Value="SemiBold" />
                             </Trigger>
@@ -348,6 +356,284 @@
 
     </Window.Resources>
 
+
+        <hc:Window.NonClientAreaContent>
+        <Grid VerticalAlignment="Center" Margin="8,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!-- FoliCon Branding -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,16,0">
+                <Image Source="/Resources/icons/folicon Icon.png"
+                       RenderOptions.BitmapScalingMode="HighQuality"
+                       Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center" />
+                <TextBlock Text="FoliCon" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"
+                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="4" Padding="5,1" Margin="8,0,12,0" VerticalAlignment="Center">
+                    <TextBlock Text="v5.3" FontSize="10" FontWeight="SemiBold" Foreground="White" />
+                </Border>
+
+                <!-- Main Navigation Menu -->
+                <Menu IsMainMenu="True" Background="Transparent" VerticalAlignment="Center">
+                    <!-- OVERLAYS MENU -->
+                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AboutOverlays}}">
+                        <MenuItem.Icon>
+                            <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="MenuOverlayStoreBtn" Command="{Binding OverlayStoreCommand}"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayStore}}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource StoreGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="MenuOverlayDesignerBtn" Command="{Binding OverlayDesignerCommand}"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesigner}}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource EyeGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
+                                  Command="{Binding PosterIconConfigCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource SettingGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <!-- TOOLS MENU -->
+                    <MenuItem Header="Tools">
+                        <MenuItem.Icon>
+                            <Path Data="{StaticResource WrenchGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="MenuCustomIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
+                                  Command="{Binding CustomIconsCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="MenuSubfolderProcessingConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
+                                  Command="{Binding SubfolderProcessingConfigCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem x:Name="MenuRExbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
+                                  Command="{Binding RestartExCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource RefreshGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem x:Name="MenuDeleteIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteIconsTooltip}}"
+                                  Command="{Binding DeleteIconsCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource RemoveGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem x:Name="MenuDeleteMediaInfoBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfo}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfoTooltip}}"
+                                  Command="{Binding DeleteMediaInfoCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource RemoveGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <!-- SETTINGS MENU -->
+                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
+                        <MenuItem.Icon>
+                            <Path Data="{StaticResource SettingGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                        </MenuItem.Icon>
+
+                        <MenuItem x:Name="ChkIsRatingVisible"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}"
+                                  IsCheckable="True" IsChecked="{Binding IsRatingVisible}" />
+
+                        <MenuItem x:Name="ChkIsPosterOverlayVisible"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}"
+                                  IsCheckable="True" IsChecked="{Binding IsPosterMockupUsed}" />
+
+                        <MenuItem x:Name="ChkPosterShown"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}"
+                                  IsCheckable="True" IsChecked="{Binding IsPosterWindowShown}" />
+
+                        <MenuItem x:Name="ChkIgnoreAmbiguous"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}"
+                                  IsCheckable="True" IsChecked="{Binding IsSkipAmbiguous}"
+                                  IsEnabled="{Binding IsSkipAmbiguousEnabled}" />
+
+                        <Separator />
+
+                        <MenuItem x:Name="ChkProcessSelectedFolder"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolder}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolderTooltip}}"
+                                  IsCheckable="True" IsChecked="{Binding ProcessSelectedFolder}" />
+
+                        <MenuItem x:Name="ChkIncludeAlreadyProcessed"
+                                  Header="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessed}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessedTooltip}}"
+                                  IsCheckable="True" IsChecked="{Binding IncludeAlreadyProcessed}" />
+
+                        <Separator />
+
+                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
+                                      Command="{Binding ExploreIntegrationCommand}" CommandParameter="True">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource CheckCircleGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
+                                      Command="{Binding ExploreIntegrationCommand}" CommandParameter="False">
+                                <MenuItem.Icon>
+                                    <Path Data="{StaticResource TrashGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+
+                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Theme}}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                            <Border Background="{DynamicResource RegionBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1" CornerRadius="6"
+                                    Padding="14,12" Margin="4">
+                                <StackPanel Width="220">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Theme}}"
+                                               FontWeight="SemiBold" FontSize="12"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                    <hc:ComboBox x:Name="CmbTheme" AutoComplete="True"
+                                                 ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
+                                                 IsEditable="False" SelectedItem="{Binding Path=Theme}"
+                                                 Margin="0,0,0,12">
+                                        <hc:ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
+                                            </DataTemplate>
+                                        </hc:ComboBox.ItemTemplate>
+                                    </hc:ComboBox>
+
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}"
+                                               FontWeight="SemiBold" FontSize="12"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
+                                    <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True"
+                                                 ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"
+                                                 IsEditable="False" SelectedItem="{Binding Path=AppLanguage}"
+                                                 SelectionChanged="CmbLanguage_OnSelectionChanged" />
+                                </StackPanel>
+                            </Border>
+                        </MenuItem>
+
+                        <Separator />
+
+                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}"
+                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}"
+                                  IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource BlogsGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem x:Name="MenuSetupWizardBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SetupWizard}}"
+                                  Command="{Binding SetupWizardCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource ModernWandGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <!-- HELP MENU -->
+                    <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Help}}">
+                        <MenuItem.Icon>
+                            <Path Data="{StaticResource InfoGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                        </MenuItem.Icon>
+                        <MenuItem x:Name="MenubtnHelp" Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}"
+                                  Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource DocGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}">
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource UpdateGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" >
+                            <MenuItem.Icon>
+                                <Path Data="{StaticResource InfoGeometry}" Style="{StaticResource MenuIconPathStyle}" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+            </StackPanel>
+
+            <!-- Quick Action Shortcuts & Theme Switcher (Right Side) -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                <Border Background="{DynamicResource SecondaryRegionBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1" CornerRadius="14"
+                        Height="28" Padding="6,1" Margin="0,0,8,0"
+                        VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Path Data="{StaticResource PaletteGeometry}" Width="12" Height="12" Stretch="Uniform"
+                              Fill="{DynamicResource PrimaryBrush}" Margin="4,0,6,0" VerticalAlignment="Center" />
+                        <TextBlock Text="Theme:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                        <ComboBox ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
+                                  SelectedItem="{Binding Theme}"
+                                  BorderThickness="0" Background="Transparent"
+                                  FontSize="11" FontWeight="SemiBold"
+                                  VerticalAlignment="Center">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+                </Border>
+
+                <Button Style="{DynamicResource ButtonDefault}" Height="28" Padding="10,0" Margin="0,0,6,0"
+                        Command="{Binding OverlayStoreCommand}" ToolTip="Browse community and official icon overlays">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{StaticResource StoreGeometry}" Width="12" Height="12" Stretch="Uniform"
+                              Fill="{DynamicResource PrimaryTextBrush}" Margin="0,0,6,0" />
+                        <TextBlock Text="Overlay Store" FontSize="11" />
+                    </StackPanel>
+                </Button>
+                <Button Style="{DynamicResource ButtonDefault}" Height="28" Padding="10,0"
+                        Command="{Binding ShowPreviewer}" ToolTip="Preview folder icons on your system">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Data="{StaticResource EyeGeometry}" Width="12" Height="12" Stretch="Uniform"
+                              Fill="{DynamicResource PrimaryTextBrush}" Margin="0,0,6,0" />
+                        <TextBlock Text="Previewer" FontSize="11" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </hc:Window.NonClientAreaContent>
+
     <hc:BusyIndicator Style="{StaticResource ModernBusyIndicatorStyle}" IsBusy="{Binding IsBusy}">
         <hc:BusyIndicator.BusyContentTemplate>
             <DataTemplate>
@@ -373,305 +659,23 @@
             </DataTemplate>
         </hc:BusyIndicator.BusyContentTemplate>
 
-        <Grid Background="{DynamicResource RegionBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />  <!-- Row 0: Modern Header Toolbar / Menu -->
-                <RowDefinition Height="Auto" />  <!-- Row 1: Folder Hero / Drop Card -->
-                <RowDefinition Height="Auto" />  <!-- Row 2: Mode & Action Control Center -->
-                <RowDefinition Height="*" />     <!-- Row 3: Results & Queue Data Grid -->
-                <RowDefinition Height="Auto" />  <!-- Row 4: Modern Status Bar Footer -->
+        <Grid Background="Transparent">            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />  <!-- Row 0: Folder Hero / Drop Card -->
+                <RowDefinition Height="Auto" />  <!-- Row 1: Mode & Action Control Center -->
+                <RowDefinition Height="*" />     <!-- Row 2: Results & Queue Data Grid -->
+                <RowDefinition Height="Auto" />  <!-- Row 3: Modern Status Bar Footer -->
             </Grid.RowDefinitions>
-
             <!-- ========================================================================= -->
-            <!-- ROW 0: MODERN HEADER / APP TOOLBAR                                        -->
+            <!-- ROW 0: FOLDER HERO & DROP TARGET CARD                                     -->
             <!-- ========================================================================= -->
-            <Border Grid.Row="0"
-                    Background="{DynamicResource SecondaryRegionBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
-                    BorderThickness="0,0,0,1"
-                    Padding="14,5">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <!-- FoliCon Branding -->
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,16,0">
-                        <Image Source="/Resources/icons/folicon Icon.png"
-                               RenderOptions.BitmapScalingMode="HighQuality"
-                               Width="22" Height="22" Margin="0,0,8,0" />
-                        <TextBlock Text="FoliCon" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource PrimaryTextBrush}" />
-                        <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="4" Padding="5,1" Margin="8,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="v5.3" FontSize="10" FontWeight="SemiBold" Foreground="White" />
-                        </Border>
-                    </StackPanel>
-
-                    <!-- Main Navigation Menu -->
-                    <Menu Grid.Column="1" IsMainMenu="True" Background="Transparent" VerticalAlignment="Center">
-                        <!-- OVERLAYS MENU -->
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AboutOverlays}}">
-                            <MenuItem.Icon>
-                                <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                            </MenuItem.Icon>
-                            <MenuItem x:Name="MenuOverlayStoreBtn" Command="{Binding OverlayStoreCommand}"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayStore}}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource StoreGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuOverlayDesignerBtn" Command="{Binding OverlayDesignerCommand}"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesigner}}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem x:Name="Previewer" Command="{Binding ShowPreviewer}" Header="{extension:Lang Key={x:Static langs:LangKeys.Previewer}}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource EyeGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <MenuItem x:Name="MenuPosterIconConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.ChangePosterOverlay}}"
-                                      Command="{Binding PosterIconConfigCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource SettingGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-
-                        <!-- TOOLS MENU -->
-                        <MenuItem Header="Tools">
-                            <MenuItem.Icon>
-                                <Path Data="{StaticResource WrenchGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                            </MenuItem.Icon>
-                            <MenuItem x:Name="MenuCustomIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.HaveIcons}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.HaveIconsTooltip}}"
-                                      Command="{Binding CustomIconsCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuSubfolderProcessingConfigBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SubfolderProcessing}}"
-                                      Command="{Binding SubfolderProcessingConfigCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <MenuItem x:Name="MenuRExbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorer}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.RestartExplorerTooltip}}"
-                                      Command="{Binding RestartExCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource RefreshGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <MenuItem x:Name="MenuDeleteIconsbtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteIcons}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteIconsTooltip}}"
-                                      Command="{Binding DeleteIconsCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource RemoveGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem x:Name="MenuDeleteMediaInfoBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfo}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.DeleteMediaInfoTooltip}}"
-                                      Command="{Binding DeleteMediaInfoCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource RemoveGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-
-                        <!-- SETTINGS MENU -->
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Settings}}">
-                            <MenuItem.Icon>
-                                <Path Data="{StaticResource SettingGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                            </MenuItem.Icon>
-
-                            <!-- ======================================================== -->
-                            <!-- 1. ICON GENERATION & ARTWORK PREFERENCES                 -->
-                            <!-- ======================================================== -->
-                            <MenuItem x:Name="ChkIsRatingVisible"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadge}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowRatingBadgeTooltip}}"
-                                      IsCheckable="True" IsChecked="{Binding IsRatingVisible}" />
-
-                            <MenuItem x:Name="ChkIsPosterOverlayVisible"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.UsePosterOverlay}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.PosterOverlayTooltip}}"
-                                      IsCheckable="True" IsChecked="{Binding IsPosterMockupUsed}" />
-
-                            <MenuItem x:Name="ChkPosterShown"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.AlwaysShowPosterWindow}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ShowPosterWindowTooltip}}"
-                                      IsCheckable="True" IsChecked="{Binding IsPosterWindowShown}" />
-
-                            <MenuItem x:Name="ChkIgnoreAmbiguous"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.IgnoreAmbiguousTitle}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.AmbiguousTitleTooltip}}"
-                                      IsCheckable="True" IsChecked="{Binding IsSkipAmbiguous}"
-                                      IsEnabled="{Binding IsSkipAmbiguousEnabled}" />
-
-                            <Separator />
-
-                            <!-- ======================================================== -->
-                            <!-- 2. FOLDER SCANNING & PROCESSING RULES                    -->
-                            <!-- ======================================================== -->
-                            <MenuItem x:Name="ChkProcessSelectedFolder"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolder}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.ProcessSelectedFolderTooltip}}"
-                                      IsCheckable="True" IsChecked="{Binding ProcessSelectedFolder}" />
-
-                            <MenuItem x:Name="ChkIncludeAlreadyProcessed"
-                                      Header="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessed}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.IncludeAlreadyProcessedTooltip}}"
-                                      IsCheckable="True" IsChecked="{Binding IncludeAlreadyProcessed}" />
-
-                            <Separator />
-
-                            <!-- ======================================================== -->
-                            <!-- 3. WINDOWS EXPLORER INTEGRATION                          -->
-                            <!-- ======================================================== -->
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.ExplorerIntegration}}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource CleanFolderGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.AddToContextMenu}}"
-                                          Command="{Binding ExploreIntegrationCommand}" CommandParameter="True">
-                                    <MenuItem.Icon>
-                                        <Path Data="{StaticResource CheckCircleGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.RemoveFromContextMenu}}"
-                                          Command="{Binding ExploreIntegrationCommand}" CommandParameter="False">
-                                    <MenuItem.Icon>
-                                        <Path Data="{StaticResource TrashGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </MenuItem>
-
-                            <!-- ======================================================== -->
-                            <!-- 4. APPEARANCE & LOCALIZATION (THEME & LANGUAGE)          -->
-                            <!-- ======================================================== -->
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Theme}}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource PaletteGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                                <Border Background="{DynamicResource RegionBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}"
-                                        BorderThickness="1" CornerRadius="6"
-                                        Padding="14,12" Margin="4">
-                                    <StackPanel Width="220">
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Theme}}"
-                                                   FontWeight="SemiBold" FontSize="12"
-                                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
-                                        <hc:ComboBox x:Name="CmbTheme" AutoComplete="True"
-                                                     ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                                     IsEditable="False" SelectedItem="{Binding Path=Theme}"
-                                                     Margin="0,0,0,12">
-                                            <hc:ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
-                                                </DataTemplate>
-                                            </hc:ComboBox.ItemTemplate>
-                                        </hc:ComboBox>
-
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.ChangeLanguage}}"
-                                                   FontWeight="SemiBold" FontSize="12"
-                                                   Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
-                                        <hc:ComboBox x:Name="CmbLanguage" AutoComplete="True"
-                                                     ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:Languages}}}"
-                                                     IsEditable="False" SelectedItem="{Binding Path=AppLanguage}"
-                                                     SelectionChanged="CmbLanguage_OnSelectionChanged" />
-                                    </StackPanel>
-                                </Border>
-                            </MenuItem>
-
-                            <Separator />
-
-                            <!-- ======================================================== -->
-                            <!-- 5. PRIVACY & DIAGNOSTICS                                 -->
-                            <!-- ======================================================== -->
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReporting}}"
-                                      ToolTip="{extension:Lang Key={x:Static langs:LangKeys.EnableErrorReportingTip}}"
-                                      IsCheckable="True" IsChecked="{Binding EnableErrorReporting}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource BlogsGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-
-                            <!-- ======================================================== -->
-                            <!-- 6. SETUP WIZARD                                          -->
-                            <!-- ======================================================== -->
-                            <MenuItem x:Name="MenuSetupWizardBtn" Header="{extension:Lang Key={x:Static langs:LangKeys.SetupWizard}}"
-                                      Command="{Binding SetupWizardCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource ModernWandGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-
-                        <!-- HELP MENU -->
-                        <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.Help}}">
-                            <MenuItem.Icon>
-                                <Path Data="{StaticResource InfoGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                            </MenuItem.Icon>
-                            <MenuItem x:Name="MenubtnHelp" Header="{extension:Lang Key={x:Static langs:LangKeys.HelpDocument}}"
-                                      Command="hc:ControlCommands.OpenLink" CommandParameter="https://dineshsolanki.github.io/FoliCon-docs/">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource DocGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.CheckForUpdate}}" Command="{Binding UpdateCommand}">
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource UpdateGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <MenuItem Header="{extension:Lang Key={x:Static langs:LangKeys.About}}" Command="{Binding AboutCommand}" >
-                                <MenuItem.Icon>
-                                    <Path Data="{StaticResource InfoGeometry}" Style="{StaticResource MenuIconPathStyle}" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </MenuItem>
-                    </Menu>
-
-                    <!-- Quick Action Shortcuts (Right Side) -->
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Style="{DynamicResource ButtonDefault}" Height="28" Padding="10,0" Margin="0,0,6,0"
-                                Command="{Binding OverlayStoreCommand}" ToolTip="Browse community and official icon overlays">
-                            <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource StoreGeometry}" Width="12" Height="12" Stretch="Uniform"
-                                      Fill="{DynamicResource PrimaryTextBrush}" Margin="0,0,6,0" />
-                                <TextBlock Text="Overlay Store" FontSize="11" />
-                            </StackPanel>
-                        </Button>
-                        <Button Style="{DynamicResource ButtonDefault}" Height="28" Padding="10,0"
-                                Command="{Binding ShowPreviewer}" ToolTip="Preview folder icons on your system">
-                            <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource EyeGeometry}" Width="12" Height="12" Stretch="Uniform"
-                                      Fill="{DynamicResource PrimaryTextBrush}" Margin="0,0,6,0" />
-                                <TextBlock Text="Previewer" FontSize="11" />
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <!-- ========================================================================= -->
-            <!-- ROW 1: FOLDER HERO & DROP TARGET CARD                                     -->
-            <!-- ========================================================================= -->
-            <ContentControl Grid.Row="1" Focusable="False" HorizontalContentAlignment="Stretch">
+            <ContentControl Grid.Row="0" Focusable="False" HorizontalContentAlignment="Stretch">
                 <hc:Interaction.Triggers>
                     <hc:EventTrigger EventName="MouseDoubleClick">
                         <hc:LaunchUriOrFileAction Path="{Binding SelectedFolder}" />
                     </hc:EventTrigger>
                 </hc:Interaction.Triggers>
-                <Border Background="{DynamicResource SecondaryRegionBrush}"
-                        BorderBrush="{DynamicResource BorderBrush}"
+                <Border Background="{DynamicResource HeroCardBackgroundBrush}"
+                        BorderBrush="{DynamicResource HeroCardBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
                         Padding="16,12"
@@ -692,7 +696,7 @@
 
                         <!-- Prominent Vibrant Folder Badge -->
                         <Border Grid.Column="0" Width="44" Height="44" CornerRadius="10"
-                                Background="{DynamicResource PrimaryBrush}"
+                                Background="{DynamicResource FolderBadgeGradientBrush}"
                                 Margin="0,0,14,0">
                             <Path Data="{StaticResource CleanFolderGeometry}" Width="22" Height="22" Stretch="Uniform"
                                   Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -708,6 +712,7 @@
 
                         <Button Grid.Column="2"
                                 Style="{DynamicResource ButtonPrimary}"
+                                Background="{DynamicResource PrimaryActionGradientBrush}"
                                 Height="36" Padding="18,0"
                                 Command="{Binding LoadCommand}">
                             <StackPanel Orientation="Horizontal">
@@ -728,7 +733,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Column="0" Width="44" Height="44" CornerRadius="10"
-                                Background="{DynamicResource PrimaryBrush}"
+                                Background="{DynamicResource FolderBadgeGradientBrush}"
                                 Margin="0,0,14,0">
                             <Path Data="{StaticResource CleanFolderGeometry}" Width="22" Height="22" Stretch="Uniform"
                                   Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -758,7 +763,7 @@
                                          Fill="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToColorConverter}}" />
                                 <TextBlock Text="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToPermissionTextConverter}}"
                                            FontSize="11" FontWeight="SemiBold"
-                                           Foreground="{DynamicResource PrimaryTextBrush}" />
+                                           Foreground="{Binding DirectoryPermissionsResult.CanWrite, Converter={StaticResource BoolToColorConverter}}" />
                             </StackPanel>
                         </Border>
 
@@ -770,6 +775,7 @@
                                 <TextBlock Text="Open" />
                             </Button>
                             <Button Style="{DynamicResource ButtonPrimary}"
+                                    Background="{DynamicResource PrimaryActionGradientBrush}"
                                     Height="34" Padding="14,0"
                                     Command="{Binding LoadCommand}"
                                     ToolTip="Select a different directory">
@@ -782,9 +788,9 @@
             </ContentControl>
 
             <!-- ========================================================================= -->
-            <!-- ROW 2: CONTROL CENTER (MODES & ACTIONS)                                   -->
+            <!-- ROW 1: CONTROL CENTER (MODES & ACTIONS)                                   -->
             <!-- ========================================================================= -->
-            <Grid Grid.Row="2" Margin="16,0,16,10">
+            <Grid Grid.Row="1" Margin="16,0,16,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.35*" />  <!-- Left: Modes & Options Card -->
                     <ColumnDefinition Width="1*" />     <!-- Right: Action Center Card -->
@@ -793,7 +799,7 @@
                 <!-- CARD 1: Generation Mode & Source -->
                 <Border Grid.Column="0"
                         Background="{DynamicResource SecondaryRegionBrush}"
-                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderBrush="{DynamicResource CardBorderGradientBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
                         Padding="16,14"
@@ -922,7 +928,7 @@
                 <!-- CARD 2: Actions & Execution -->
                 <Border Grid.Column="1"
                         Background="{DynamicResource SecondaryRegionBrush}"
-                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderBrush="{DynamicResource CardBorderGradientBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
                         Padding="16,14"
@@ -934,15 +940,29 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="ACTIONS &amp; OPTIONS" Style="{StaticResource SectionHeaderStyle}" />
+                        <Grid Grid.Row="0" Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="ACTIONS &amp; OPTIONS" Style="{StaticResource SectionHeaderStyle}" Margin="0" VerticalAlignment="Center" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse Width="6" Height="6" Fill="#38BDF8" Margin="0,0,5,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Ready to process" FontSize="11" FontWeight="SemiBold" Foreground="#38BDF8" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
 
                         <StackPanel Grid.Row="1" VerticalAlignment="Center">
                             <!-- Primary CTA: Make Icons -->
                             <Button Style="{DynamicResource ButtonPrimary}"
+                                    Background="{DynamicResource PrimaryActionGradientBrush}"
                                     Height="48"
                                     HorizontalAlignment="Stretch"
                                     Command="{Binding SearchAndMakeCommand}"
                                     IsEnabled="{Binding IsMakeEnabled}">
+                                <Button.Effect>
+                                    <DropShadowEffect Color="#8B5CF6" BlurRadius="18" Opacity="0.55" ShadowDepth="2" />
+                                </Button.Effect>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Path Data="{StaticResource ModernWandGeometry}" Width="20" Height="20" Stretch="Uniform"
                                           Fill="White" Margin="0,0,10,0" />
@@ -988,9 +1008,9 @@
             </Grid>
 
             <!-- ========================================================================= -->
-            <!-- ROW 3: RESULTS & QUEUE DATA GRID                                          -->
+            <!-- ROW 2: RESULTS & QUEUE DATA GRID                                          -->
             <!-- ========================================================================= -->
-            <Border Grid.Row="3"
+            <Border Grid.Row="2"
                     Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1"
@@ -1043,11 +1063,10 @@
                                         <TextBlock Text="Clear" FontSize="11" />
                                     </StackPanel>
                                 </Button>
-                                <Border Background="{DynamicResource SecondaryRegionBrush}"
-                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                <Border Background="{DynamicResource PrimaryBrush}"
                                         CornerRadius="10" Padding="8,2">
                                     <TextBlock Text="{Binding FinalListViewData.Data.Count, StringFormat='{}{0} items'}"
-                                               FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" />
+                                               FontSize="11" FontWeight="SemiBold" Foreground="White" />
                                 </Border>
                             </StackPanel>
                         </Grid>
@@ -1126,10 +1145,10 @@
             </Border>
 
             <!-- ========================================================================= -->
-            <!-- ROW 4: MODERN STATUS BAR / FOOTER                                         -->
+            <!-- ROW 3: MODERN STATUS BAR / FOOTER                                         -->
             <!-- ========================================================================= -->
-            <Grid Grid.Row="4" DataContext="{Binding StatusBarProperties}">
-                <Border Background="{DynamicResource SecondaryRegionBrush}"
+            <Grid Grid.Row="3" DataContext="{Binding StatusBarProperties}">
+                <Border Background="{DynamicResource HeaderGradientBrush}"
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="0,1,0,0"
                         Padding="16,8">

@@ -1999,6 +1999,15 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mica Dark Obsidian.
+        /// </summary>
+        public static string ThemeMicaDarkObsidian {
+            get {
+                return ResourceManager.GetString("ThemeMicaDarkObsidian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Great! you are using the latest version..
         /// </summary>
         public static string ThisIsLatestVersion {

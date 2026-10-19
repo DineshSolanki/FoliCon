@@ -1553,6 +1553,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ThemeManager.Current.UsingSystemTheme = false;
                 ApplyCustomThemeOverride("ThemeTokyoNeon.xaml");
                 break;
+            case FoliconThemes.MicaDarkObsidian:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyCustomThemeOverride("ThemeMicaDarkObsidian.xaml");
+                break;
             default:
                 ThemeManager.Current.UsingSystemTheme = true;
                 ApplyCustomThemeOverride(null);
@@ -1577,7 +1582,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 var dict = merged[i];
                 if (dict.Source != null && (
                     dict.Source.OriginalString.Contains("ThemeTheButterfly", StringComparison.OrdinalIgnoreCase) ||
-                    dict.Source.OriginalString.Contains("ThemeTokyoNeon", StringComparison.OrdinalIgnoreCase)))
+                    dict.Source.OriginalString.Contains("ThemeTokyoNeon", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeMicaDarkObsidian", StringComparison.OrdinalIgnoreCase)))
                 {
                     merged.RemoveAt(i);
                 }

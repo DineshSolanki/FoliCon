@@ -142,4 +142,16 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
+
+    <!-- ========================================================================= -->
+    <!-- DEFAULT / FALLBACK MATERIAL & GRADIENT BRUSHES                            -->
+    <!-- Overridden dynamically by rich custom theme resource dictionaries         -->
+    <!-- ========================================================================= -->
+    <SolidColorBrush x:Key="WindowBackdropBrush" Color="{DynamicResource RegionColor}" />
+    <SolidColorBrush x:Key="HeroCardBackgroundBrush" Color="{DynamicResource SecondaryRegionColor}" />
+    <SolidColorBrush x:Key="HeroCardBorderBrush" Color="{DynamicResource BorderColor}" />
+    <SolidColorBrush x:Key="PrimaryActionGradientBrush" Color="{DynamicResource PrimaryColor}" />
+    <SolidColorBrush x:Key="HeaderGradientBrush" Color="{DynamicResource SecondaryRegionColor}" />
+    <SolidColorBrush x:Key="CardBorderGradientBrush" Color="{DynamicResource BorderColor}" />
+    <SolidColorBrush x:Key="FolderBadgeGradientBrush" Color="{DynamicResource PrimaryColor}" />
 </ResourceDictionary>

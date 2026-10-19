@@ -627,6 +627,9 @@ e renovar o cache dos Ícones?</value>
   <data name="ThemeTokyoNeon" xml:space="preserve">
     <value>Tóquio Neon</value>
   </data>
+  <data name="ThemeMicaDarkObsidian" xml:space="preserve">
+    <value>Mica Obsidiana Escura</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
