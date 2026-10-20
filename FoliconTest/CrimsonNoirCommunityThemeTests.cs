@@ -84,11 +84,19 @@ public class CrimsonNoirCommunityThemeTests
 
         WpfTestHost.Invoke(() =>
         {
-            MainWindowViewModel.ApplyThemeManifest(manifest, parser);
+            var originalSnapshot = MainWindowViewModel.CaptureThemeSnapshot();
+            try
+            {
+                MainWindowViewModel.ApplyThemeManifest(manifest, parser);
 
-            Assert.Equal("crimson-noir", MainWindowViewModel.ActiveThemeId);
-            Assert.NotNull(MainWindowViewModel.ActiveThemeManifest);
-            Assert.Equal("Crimson Noir", MainWindowViewModel.ActiveThemeManifest.Name);
+                Assert.Equal("crimson-noir", MainWindowViewModel.ActiveThemeId);
+                Assert.NotNull(MainWindowViewModel.ActiveThemeManifest);
+                Assert.Equal("Crimson Noir", MainWindowViewModel.ActiveThemeManifest.Name);
+            }
+            finally
+            {
+                MainWindowViewModel.RestoreThemeSnapshot(originalSnapshot, parser);
+            }
         });
     }
 }
