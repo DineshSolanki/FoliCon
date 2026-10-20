@@ -12,15 +12,37 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         try
         {
-            ThemeManager.Current.SystemThemeChanged += (_, _) =>
+            LightBackdropBrush.Freeze();
+            DarkBackdropBrush.Freeze();
+            LightHeroCardBg.Freeze();
+            DarkHeroCardBg.Freeze();
+            LightHeroCardBorder.Freeze();
+            DarkHeroCardBorder.Freeze();
+            LightHeaderGradient.Freeze();
+            DarkHeaderGradient.Freeze();
+            PrimaryActionBrush.Freeze();
+
+            void AttachThemeListener()
             {
-                if (ThemeManager.Current.UsingSystemTheme)
+                ThemeManager.Current.SystemThemeChanged += (_, _) =>
                 {
-                    bool isDark = IsSystemThemeDark();
-                    UpdateThemeBrushes(isDark, null);
-                    WindowBackdropHelper.UpdateAllOpenWindows(isDark);
-                }
-            };
+                    if (ThemeManager.Current.UsingSystemTheme)
+                    {
+                        bool isDark = IsSystemThemeDark();
+                        UpdateThemeBrushes(isDark, null);
+                        WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+                    }
+                };
+            }
+
+            if (Application.Current != null && !Application.Current.Dispatcher.CheckAccess())
+            {
+                Application.Current.Dispatcher.Invoke(AttachThemeListener);
+            }
+            else
+            {
+                AttachThemeListener();
+            }
         }
         catch
         {

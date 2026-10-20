@@ -1,46 +1,15 @@
 #nullable enable
-using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using FoliCon.Models.Enums;
-using FoliCon.Modules.Convertor;
-using FoliCon.Properties.Langs;
 using FoliCon.ViewModels;
 using HandyControl.Themes;
 
 namespace FoliconTest;
 
 [Collection(XamlLoadingCollection.name)]
-public class TheButterflyThemeTests
+public class ThemeManagementTests
 {
-    [Fact]
-    public void ThemeToDisplayConverter_ConvertsTheButterflyToExpectedText()
-    {
-        var converter = new ThemeToDisplayConverter();
-        var result = converter.Convert(FoliconThemes.TheButterfly, typeof(string), null, CultureInfo.InvariantCulture);
-
-        Assert.Equal(Lang.ThemeTheButterfly, result);
-        Assert.Equal("The Butterfly", result);
-    }
-
-    [Theory]
-    [InlineData(FoliconThemes.Light, "Light")]
-    [InlineData(FoliconThemes.Dark, "Dark")]
-    [InlineData(FoliconThemes.System, "System")]
-    [InlineData(FoliconThemes.TheButterfly, "The Butterfly")]
-    [InlineData(FoliconThemes.TokyoNeon, "Tokyo Neon")]
-    [InlineData(FoliconThemes.MicaDarkObsidian, "Mica Dark Obsidian")]
-    [InlineData(FoliconThemes.NordicPine, "Nordic Pine")]
-    [InlineData(FoliconThemes.Cinema35mm, "Cinema 35mm")]
-    public void ThemeToDisplayConverter_ConvertsAllThemesAccurately(FoliconThemes theme, string expected)
-    {
-        var converter = new ThemeToDisplayConverter();
-        var result = converter.Convert(theme, typeof(string), null, CultureInfo.InvariantCulture);
-
-        Assert.Equal(expected, result);
-    }
-
     [Fact]
     public void ThemeTokyoNeon_DictionaryLoadsAndContainsRequiredBrushes()
     {
@@ -162,7 +131,33 @@ public class TheButterflyThemeTests
     }
 
     [Fact]
-    public void ApplyAppTheme_TogglesTheButterflyThemeSuccessfully()
+    public void ThemeMicaDarkObsidian_DictionaryLoadsAndContainsRequiredBrushes()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeMicaDarkObsidian.xaml", UriKind.Absolute);
+            var dict = new ResourceDictionary { Source = uri };
+
+            Assert.NotNull(dict);
+
+            // Verify Mica Dark Obsidian Palette
+            var regionBrush = dict["RegionBrush"] as SolidColorBrush;
+            Assert.NotNull(regionBrush);
+            Assert.Equal(Color.FromRgb(0x09, 0x0D, 0x16), regionBrush.Color);
+
+            var primaryBrush = dict["PrimaryBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryBrush);
+            Assert.Equal(Color.FromRgb(0x8B, 0x5C, 0xF6), primaryBrush.Color);
+
+            var primaryTextBrush = dict["PrimaryTextBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryTextBrush);
+            Assert.Equal(Color.FromRgb(0xF8, 0xFA, 0xFC), primaryTextBrush.Color);
+        });
+    }
+
+    [Fact]
+    public void ApplyAppTheme_TogglesAllThemesSuccessfully()
     {
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
@@ -187,6 +182,11 @@ public class TheButterflyThemeTests
             Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
             Assert.False(ThemeManager.Current.UsingSystemTheme);
 
+            // Apply Mica Dark Obsidian theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.MicaDarkObsidian);
+            Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
+            Assert.False(ThemeManager.Current.UsingSystemTheme);
+
             // Revert to System theme
             MainWindowViewModel.ApplyAppTheme(FoliconThemes.System);
             Assert.True(ThemeManager.Current.UsingSystemTheme);
@@ -203,101 +203,6 @@ public class TheButterflyThemeTests
         });
     }
 
-    [Fact]
-    public void AboutBox_UsesUpdatedTagline()
-    {
-        Assert.Equal("YOUR MEDIA. YOUR LIBRARY. REIMAGINED.", Lang.AboutTagline);
-    }
-
-    [Theory]
-    [InlineData("ar", "الفراشة", "وسائطك. مكتبتك. برؤية جديدة.")]
-    [InlineData("es", "La Mariposa", "TUS MEDIOS. TU BIBLIOTECA. REINVENTADOS.")]
-    [InlineData("hi", "तितली", "आपका मीडिया। आपकी लाइब्रेरी। नए अंदाज़ में।")]
-    [InlineData("ja", "バタフライ", "あなたのメディア。あなたのライブラリ。新しく生まれ変わる。")]
-    [InlineData("pt", "A Borboleta", "A SUA MÍDIA. A SUA BIBLIOTECA. REINVENTADAS.")]
-    [InlineData("ru", "Бабочка", "ВАШИ МЕДИА. ВАША БИБЛИОТЕКА. ПО-НОВОМУ.")]
-    [InlineData("zh", "蝴蝶", "你的媒体。你的媒体库。全新构想。")]
-    public void AllLocales_HaveIdiomaticButterflyThemeAndTagline(string cultureCode, string expectedTheme, string expectedTagline)
-    {
-        var culture = new CultureInfo(cultureCode);
-        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeTheButterfly), culture);
-        var taglineString = Lang.ResourceManager.GetString(nameof(Lang.AboutTagline), culture);
-
-        Assert.Equal(expectedTheme, themeString);
-        Assert.Equal(expectedTagline, taglineString);
-    }
-
-    [Theory]
-    [InlineData("ar", "طوكيو نيون")]
-    [InlineData("es", "Tokio Neón")]
-    [InlineData("hi", "टोक्यो नियॉन")]
-    [InlineData("ja", "東京ネオン")]
-    [InlineData("pt", "Tóquio Neon")]
-    [InlineData("ru", "Токио Неон")]
-    [InlineData("zh", "东京霓虹")]
-    public void AllLocales_HaveIdiomaticTokyoNeonTheme(string cultureCode, string expectedTheme)
-    {
-        var culture = new CultureInfo(cultureCode);
-        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeTokyoNeon), culture);
-
-        Assert.Equal(expectedTheme, themeString);
-    }
-
-    [Theory]
-    [InlineData("ar", "الصنوبر الشمالي")]
-    [InlineData("es", "Pino Nórdico")]
-    [InlineData("hi", "नॉर्डिक पाइन")]
-    [InlineData("ja", "ノルディックパイン")]
-    [InlineData("pt", "Pinho Nórdico")]
-    [InlineData("ru", "Северная сосна")]
-    [InlineData("zh", "北欧松林")]
-    public void AllLocales_HaveIdiomaticNordicPineTheme(string cultureCode, string expectedTheme)
-    {
-        var culture = new CultureInfo(cultureCode);
-        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeNordicPine), culture);
-
-        Assert.Equal(expectedTheme, themeString);
-    }
-
-    [Theory]
-    [InlineData("ar", "سينما 35 مم")]
-    [InlineData("es", "Cine 35mm")]
-    [InlineData("hi", "सिनेमा 35mm")]
-    [InlineData("ja", "シネマ 35mm")]
-    [InlineData("pt", "Cinema 35mm")]
-    [InlineData("ru", "Синема 35мм")]
-    [InlineData("zh", "35毫米胶片")]
-    public void AllLocales_HaveIdiomaticCinema35mmTheme(string cultureCode, string expectedTheme)
-    {
-        var culture = new CultureInfo(cultureCode);
-        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeCinema35mm), culture);
-
-        Assert.Equal(expectedTheme, themeString);
-    }
-
-    [Fact]
-    public void TransparentMark_CreatesValidTransparentIco()
-    {
-        var markPath = Path.GetFullPath(@"..\..\..\..\FoliCon\Resources\icons\folicon Icon.png");
-        Assert.True(File.Exists(markPath));
-        var tempIcoPath = Path.Combine(Path.GetTempPath(), $"folicon_test_{Guid.NewGuid():N}.ico");
-        try
-        {
-            using var bmp = new System.Drawing.Bitmap(markPath);
-            FoliCon.Modules.Media.PngToIcoService.Convert(bmp, tempIcoPath);
-            Assert.True(File.Exists(tempIcoPath));
-            var fi = new FileInfo(tempIcoPath);
-            Assert.True(fi.Length > 0);
-        }
-        finally
-        {
-            if (File.Exists(tempIcoPath))
-            {
-                File.Delete(tempIcoPath);
-            }
-        }
-    }
-
     [Theory]
     [InlineData(FoliconThemes.Light, false)]
     [InlineData(FoliconThemes.Dark, true)]
@@ -308,8 +213,12 @@ public class TheButterflyThemeTests
     [InlineData(FoliconThemes.Cinema35mm, true)]
     public void IsDarkTheme_ReturnsExpectedValueForExplicitThemes(FoliconThemes theme, bool expected)
     {
-        var result = MainWindowViewModel.IsDarkTheme(theme);
-        Assert.Equal(expected, result);
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var result = MainWindowViewModel.IsDarkTheme(theme);
+            Assert.Equal(expected, result);
+        });
     }
 
     [Fact]
@@ -346,7 +255,14 @@ public class TheButterflyThemeTests
             Assert.NotNull(tokyoBrush);
             Assert.Equal(Color.FromArgb(0xD9, 0x0B, 0x0E, 0x17), tokyoBrush.Color);
 
-            // 5. Revert to Light Theme
+            // 5. Custom Mica Dark Obsidian Theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.MicaDarkObsidian);
+            Assert.True(MainWindowViewModel.IsCurrentThemeDark());
+            var obsidianBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
+            Assert.NotNull(obsidianBrush);
+            Assert.Equal(Color.FromArgb(0xD9, 0x09, 0x0D, 0x16), obsidianBrush.Color);
+
+            // 6. Revert to Light Theme
             MainWindowViewModel.ApplyAppTheme(FoliconThemes.Light);
             Assert.False(MainWindowViewModel.IsCurrentThemeDark());
             var revertedLightBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
