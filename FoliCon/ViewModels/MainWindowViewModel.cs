@@ -1730,6 +1730,37 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         ApplyCommunityTheme(manifest, customDict);
     }
 
+    /// <summary>
+    /// Creates a memento snapshot of the current active theme state for transient live preview rollback.
+    /// </summary>
+    public static ThemeStateSnapshot CaptureThemeSnapshot()
+    {
+        return new ThemeStateSnapshot
+        {
+            ActiveThemeManifest = ActiveThemeManifest,
+            ActiveThemeId = ActiveThemeId,
+            CurrentTheme = CurrentTheme,
+            UsingSystemTheme = ThemeManager.Current.UsingSystemTheme
+        };
+    }
+
+    /// <summary>
+    /// Restores theme state from a previously captured memento snapshot.
+    /// </summary>
+    public static void RestoreThemeSnapshot(ThemeStateSnapshot snapshot, IThemeParser parser)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+
+        if (snapshot.ActiveThemeManifest != null && parser != null)
+        {
+            ApplyThemeManifest(snapshot.ActiveThemeManifest, parser);
+        }
+        else
+        {
+            ApplyAppTheme(snapshot.CurrentTheme);
+        }
+    }
+
     public static bool IsDarkTheme(FoliconThemes theme)
     {
         return theme switch

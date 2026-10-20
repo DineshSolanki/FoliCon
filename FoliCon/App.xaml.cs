@@ -175,10 +175,11 @@ public partial class App
         containerRegistry.RegisterSingleton<IDeepLinkDispatcher, DeepLinkDispatcher>();
         containerRegistry.RegisterDialog<DeepLinkInstallDialog, DeepLinkInstallDialogViewModel>("DeepLinkInstallDialog");
 
-        // Overlay plugin system
+        // Overlay & Unified Community Store plugin system
         containerRegistry.RegisterSingleton<IOverlayProvider, OverlayProvider>();
         containerRegistry.RegisterSingleton<IOverlayRepositoryService, OverlayRepositoryService>();
         containerRegistry.RegisterSingleton<OverlayUpdateChecker>();
+        containerRegistry.RegisterDialog<FoliConStore, FoliConStoreViewModel>("FoliConStore");
         containerRegistry.RegisterDialog<OverlayStore, OverlayStoreViewModel>("OverlayStore");
         containerRegistry.RegisterDialog<OverlayDesigner, OverlayDesignerViewModel>("OverlayDesigner");
     }

@@ -193,8 +193,8 @@ public class DeepLinkDispatcher : IDeepLinkDispatcher
                     storeParams.Add("search", request.SearchQuery);
                 }
 
-                // Opens Unified Store (or OverlayStore alias during Phase 2-3)
-                dialogService.ShowDialog("OverlayStore", storeParams, _ => { });
+                // Opens Unified FoliConStore (supports tab=themes or tab=overlays)
+                dialogService.ShowDialog("FoliConStore", storeParams, _ => { });
                 return true;
 
             default:
