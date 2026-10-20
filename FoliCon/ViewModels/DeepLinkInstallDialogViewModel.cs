@@ -21,13 +21,16 @@ public class DeepLinkInstallDialogViewModel : BindableBase, IDialogAware
 
     private readonly IThemeStorageService _themeStorageService;
     private readonly IThemeParser _themeParser;
+    private readonly IThemeRepositoryService _themeRepositoryService;
 
     public DeepLinkInstallDialogViewModel(
         IThemeStorageService themeStorageService,
-        IThemeParser themeParser)
+        IThemeParser themeParser,
+        IThemeRepositoryService themeRepositoryService)
     {
         _themeStorageService = themeStorageService;
         _themeParser = themeParser;
+        _themeRepositoryService = themeRepositoryService;
 
         InstallCommand = new DelegateCommand(async () => await ExecuteInstallAsync(), () => !IsBusy)
             .ObservesProperty(() => IsBusy);
@@ -132,9 +135,36 @@ public class DeepLinkInstallDialogViewModel : BindableBase, IDialogAware
                 TargetName = existingTheme.Name;
                 UpdateSwatches(existingTheme);
             }
+            else
+            {
+                // Fetch catalog or manifest in background to populate swatches and real name
+                _ = LoadRemoteThemeInfoAsync(TargetId);
+            }
         }
 
         Logger.Info("Opened DeepLinkInstallDialog for {Type} '{Id}' from {Repo}", TargetType, TargetId, Repository);
+    }
+
+    private async Task LoadRemoteThemeInfoAsync(string themeId)
+    {
+        try
+        {
+            var catalog = await _themeRepositoryService.FetchCatalogAsync();
+            var entry = catalog.Themes.Find(t => string.Equals(t.Id, themeId, StringComparison.OrdinalIgnoreCase));
+            if (entry != null)
+            {
+                TargetName = entry.Name;
+                if (entry.Palette != null)
+                {
+                    var dummyManifest = new ThemeManifest { Colors = entry.Palette, BaseTheme = entry.BaseTheme };
+                    UpdateSwatches(dummyManifest);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to load remote theme info for {Id}", themeId);
+        }
     }
 
     private void UpdateSwatches(ThemeManifest manifest)
@@ -163,6 +193,16 @@ public class DeepLinkInstallDialogViewModel : BindableBase, IDialogAware
             if (IsTheme)
             {
                 var manifest = _themeStorageService.GetThemeById(TargetId);
+                if (manifest == null)
+                {
+                    StatusMessage = "Downloading from community catalog...";
+                    var catalog = await _themeRepositoryService.FetchCatalogAsync();
+                    var entry = catalog.Themes.Find(t => string.Equals(t.Id, TargetId, StringComparison.OrdinalIgnoreCase))
+                        ?? throw new InvalidOperationException($"Theme '{TargetId}' not found in community catalog.");
+
+                    manifest = await _themeRepositoryService.InstallThemeAsync(entry);
+                }
+
                 if (manifest != null)
                 {
                     MainWindowViewModel.ApplyThemeManifest(manifest, _themeParser);

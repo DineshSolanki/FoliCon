@@ -167,6 +167,7 @@ public partial class App
         // Custom Community Theme system
         containerRegistry.RegisterSingleton<IThemeParser, HybridThemeParser>();
         containerRegistry.RegisterSingleton<IThemeStorageService, ThemeStorageService>();
+        containerRegistry.RegisterSingleton<IThemeRepositoryService, ThemeRepositoryService>();
 
         // Universal Deeplink & Single-Instance IPC system
         containerRegistry.RegisterSingleton<ISingleInstanceIpcService, SingleInstanceIpcService>();
