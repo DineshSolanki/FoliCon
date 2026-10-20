@@ -1,4 +1,20 @@
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using FoliCon.Models.Configs;
+using FoliCon.Models.Constants;
+using FoliCon.Modules.IPC;
+using FoliCon.Modules.Overlays;
+using FoliCon.Modules.Protocol;
 using FoliCon.Modules.Themes;
+using FoliCon.Modules.UI;
+using FoliCon.Modules.utils;
+using FoliCon.ViewModels;
+using FoliCon.Views;
+using NLog;
+using Prism.Dialogs;
 using Prism.Ioc;
 using Sentry;
 using Window = System.Windows.Window;
@@ -12,6 +28,8 @@ namespace FoliCon;
 public partial class App
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    private ISingleInstanceIpcService? _ipcService;
+
     protected override Window CreateShell()
     {
         // Ensure GlobalVariables uses the DI-registered singleton (not a separate instance)
@@ -40,12 +58,95 @@ public partial class App
 
     public App()
     {
-
         LogManager.Configuration = LogUtils.GetNLogConfig();
         DispatcherUnhandledException += App_DispatcherUnhandledException;
         GlobalDataHelper.Load<AppConfig>();
         Logger.Info("FoliCon Initialized");
         AppDomain.CurrentDomain.SetData("REGEX_DEFAULT_MATCH_TIMEOUT", TimeSpan.FromMilliseconds(1000));
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        _ipcService = new SingleInstanceIpcService();
+        if (!_ipcService.CheckIsFirstInstance())
+        {
+            Logger.Info("Secondary FoliCon instance detected. Forwarding arguments to running instance...");
+            var args = Environment.GetCommandLineArgs().Skip(1).ToArray();
+            _ = _ipcService.SendArgsToFirstInstanceAsync(args).GetAwaiter().GetResult();
+            _ipcService.Dispose();
+            Environment.Exit(0);
+            return;
+        }
+
+        base.OnStartup(e);
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // 1. Start Named Pipe IPC server in running instance
+        _ipcService?.StartServer(jsonArgs =>
+        {
+            try
+            {
+                var args = System.Text.Json.JsonSerializer.Deserialize<string[]>(jsonArgs);
+                if (args != null)
+                {
+                    foreach (var arg in args)
+                    {
+                        if (arg.StartsWith("folicon://", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var dispatcher = Container.Resolve<IDeepLinkDispatcher>();
+                            var dialogService = Container.Resolve<IDialogService>();
+                            var request = dispatcher.Parse(arg);
+                            _ = dispatcher.DispatchAsync(request, dialogService);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to process IPC message in primary instance");
+            }
+        });
+
+        // 2. Ensure folicon:// protocol scheme is registered in HKCU
+        try
+        {
+            var protocolService = Container.Resolve<IProtocolRegistrationService>();
+            if (!protocolService.IsRegistered())
+            {
+                protocolService.RegisterProtocol();
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to verify or register folicon:// protocol handler");
+        }
+
+        // 3. Process initial deeplink if passed when launching first instance
+        try
+        {
+            var cmdArgs = ProcessUtils.GetCmdArgs();
+            if (cmdArgs.TryGetValue("deeplink", out var deeplink))
+            {
+                var dispatcher = Container.Resolve<IDeepLinkDispatcher>();
+                var dialogService = Container.Resolve<IDialogService>();
+                var request = dispatcher.Parse(deeplink);
+                _ = dispatcher.DispatchAsync(request, dialogService);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to process initial deeplink argument");
+        }
+    }
+
+    protected override void OnExit(ExitEventArgs e)
+    {
+        _ipcService?.Dispose();
+        base.OnExit(e);
     }
 
     protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -66,6 +167,12 @@ public partial class App
         // Custom Community Theme system
         containerRegistry.RegisterSingleton<IThemeParser, HybridThemeParser>();
         containerRegistry.RegisterSingleton<IThemeStorageService, ThemeStorageService>();
+
+        // Universal Deeplink & Single-Instance IPC system
+        containerRegistry.RegisterSingleton<ISingleInstanceIpcService, SingleInstanceIpcService>();
+        containerRegistry.RegisterSingleton<IProtocolRegistrationService, ProtocolRegistrationService>();
+        containerRegistry.RegisterSingleton<IDeepLinkDispatcher, DeepLinkDispatcher>();
+        containerRegistry.RegisterDialog<DeepLinkInstallDialog, DeepLinkInstallDialogViewModel>("DeepLinkInstallDialog");
 
         // Overlay plugin system
         containerRegistry.RegisterSingleton<IOverlayProvider, OverlayProvider>();
