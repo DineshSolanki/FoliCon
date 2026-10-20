@@ -11,7 +11,7 @@
              xmlns:langs="clr-namespace:FoliCon.Properties.Langs"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:SubfolderProcessingViewModel}">
     <UserControl.Resources>

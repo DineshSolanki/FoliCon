@@ -1,4 +1,5 @@
 using FoliCon.Models.Configs;
+using FoliCon.Modules.UI;
 using HandyControl.Themes;
 
 namespace FoliCon.ViewModels;
@@ -6,6 +7,26 @@ namespace FoliCon.ViewModels;
 public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+    static MainWindowViewModel()
+    {
+        try
+        {
+            ThemeManager.Current.SystemThemeChanged += (_, _) =>
+            {
+                if (ThemeManager.Current.UsingSystemTheme)
+                {
+                    bool isDark = IsSystemThemeDark();
+                    UpdateThemeBrushes(isDark, null);
+                    WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+                }
+            };
+        }
+        catch
+        {
+            // Fail safely in headless/test environments
+        }
+    }
 
     private const string professionalMode = "Professional";
 
@@ -1525,8 +1546,27 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("Folder Dropped on MainWindow: {SelectedFolder}", SelectedFolder);
     }
 
+    public static FoliconThemes CurrentTheme { get; private set; } = FoliconThemes.Dark;
+
+    private static readonly SolidColorBrush LightBackdropBrush = new(System.Windows.Media.Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF));
+    private static readonly SolidColorBrush DarkBackdropBrush = new(System.Windows.Media.Color.FromArgb(0xD9, 0x1C, 0x1C, 0x1C));
+
+    private static readonly SolidColorBrush LightHeroCardBg = new(System.Windows.Media.Color.FromRgb(0xFF, 0xFF, 0xFF));
+    private static readonly SolidColorBrush DarkHeroCardBg = new(System.Windows.Media.Color.FromRgb(0x2D, 0x2D, 0x2D));
+
+    private static readonly SolidColorBrush LightHeroCardBorder = new(System.Windows.Media.Color.FromRgb(0xE2, 0xE8, 0xF0));
+    private static readonly SolidColorBrush DarkHeroCardBorder = new(System.Windows.Media.Color.FromRgb(0x3D, 0x3D, 0x3D));
+
+    private static readonly SolidColorBrush LightHeaderGradient = new(System.Windows.Media.Color.FromRgb(0xF8, 0xFA, 0xFC));
+    private static readonly SolidColorBrush DarkHeaderGradient = new(System.Windows.Media.Color.FromRgb(0x24, 0x24, 0x24));
+
+    private static readonly SolidColorBrush PrimaryActionBrush = new(System.Windows.Media.Color.FromRgb(0x3B, 0x82, 0xF6));
+
     public static void ApplyAppTheme(FoliconThemes theme)
     {
+        CurrentTheme = theme;
+        ResourceDictionary? customThemeDict = null;
+
         switch (theme)
         {
             case FoliconThemes.Light:
@@ -1546,44 +1586,117 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             case FoliconThemes.TheButterfly:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyCustomThemeOverride("ThemeTheButterfly.xaml");
+                customThemeDict = ApplyCustomThemeOverride("ThemeTheButterfly.xaml");
                 break;
             case FoliconThemes.TokyoNeon:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyCustomThemeOverride("ThemeTokyoNeon.xaml");
+                customThemeDict = ApplyCustomThemeOverride("ThemeTokyoNeon.xaml");
                 break;
             case FoliconThemes.MicaDarkObsidian:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyCustomThemeOverride("ThemeMicaDarkObsidian.xaml");
+                customThemeDict = ApplyCustomThemeOverride("ThemeMicaDarkObsidian.xaml");
                 break;
             case FoliconThemes.NordicPine:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyCustomThemeOverride("ThemeNordicPine.xaml");
+                customThemeDict = ApplyCustomThemeOverride("ThemeNordicPine.xaml");
                 break;
             case FoliconThemes.Cinema35mm:
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                ApplyCustomThemeOverride("ThemeCinema35mm.xaml");
+                customThemeDict = ApplyCustomThemeOverride("ThemeCinema35mm.xaml");
                 break;
             default:
                 ThemeManager.Current.UsingSystemTheme = true;
                 ApplyCustomThemeOverride(null);
                 break;
         }
+
+        bool isDark = IsDarkTheme(theme);
+        UpdateThemeBrushes(isDark, customThemeDict);
+        WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+    }
+
+    public static bool IsDarkTheme(FoliconThemes theme)
+    {
+        return theme switch
+        {
+            FoliconThemes.Light => false,
+            FoliconThemes.Dark => true,
+            FoliconThemes.TheButterfly => true,
+            FoliconThemes.TokyoNeon => true,
+            FoliconThemes.MicaDarkObsidian => true,
+            FoliconThemes.NordicPine => true,
+            FoliconThemes.Cinema35mm => true,
+            FoliconThemes.System => IsSystemThemeDark(),
+            _ => IsSystemThemeDark()
+        };
+    }
+
+    public static bool IsSystemThemeDark()
+    {
+        try
+        {
+            return ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Dark;
+        }
+        catch
+        {
+            return true;
+        }
+    }
+
+    public static bool IsCurrentThemeDark() => IsDarkTheme(CurrentTheme);
+
+    private static void UpdateThemeBrushes(bool isDark, ResourceDictionary? customDict)
+    {
+        if (Application.Current == null) return;
+
+        var res = Application.Current.Resources;
+        if (customDict != null)
+        {
+            SyncResource(res, customDict, "WindowBackdropBrush");
+            SyncResource(res, customDict, "HeroCardBackgroundBrush");
+            SyncResource(res, customDict, "HeroCardBorderBrush");
+            SyncResource(res, customDict, "PrimaryActionGradientBrush");
+            SyncResource(res, customDict, "HeaderGradientBrush");
+            SyncResource(res, customDict, "CardBorderGradientBrush");
+            SyncResource(res, customDict, "FolderBadgeGradientBrush");
+        }
+        else
+        {
+            res["WindowBackdropBrush"] = isDark ? DarkBackdropBrush : LightBackdropBrush;
+            res["HeroCardBackgroundBrush"] = isDark ? DarkHeroCardBg : LightHeroCardBg;
+            res["HeroCardBorderBrush"] = isDark ? DarkHeroCardBorder : LightHeroCardBorder;
+            res["PrimaryActionGradientBrush"] = PrimaryActionBrush;
+            res["HeaderGradientBrush"] = isDark ? DarkHeaderGradient : LightHeaderGradient;
+            res["CardBorderGradientBrush"] = isDark ? DarkHeroCardBorder : LightHeroCardBorder;
+            res["FolderBadgeGradientBrush"] = PrimaryActionBrush;
+        }
+    }
+
+    private static void SyncResource(ResourceDictionary target, ResourceDictionary source, string key)
+    {
+        if (source.Contains(key))
+        {
+            target[key] = source[key];
+        }
+        else
+        {
+            target.Remove(key);
+        }
     }
 
     private static readonly Dictionary<string, ResourceDictionary> CustomThemeDictionaries = new(StringComparer.OrdinalIgnoreCase);
 
-    private static void ApplyCustomThemeOverride(string? themeXamlName)
+    private static ResourceDictionary? ApplyCustomThemeOverride(string? themeXamlName)
     {
         try
         {
             if (Application.Current == null)
             {
-                return;
+                return null;
             }
 
             var merged = Application.Current.Resources.MergedDictionaries;
@@ -1603,7 +1716,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             if (string.IsNullOrEmpty(themeXamlName))
             {
-                return;
+                return null;
             }
 
             if (!CustomThemeDictionaries.TryGetValue(themeXamlName, out var themeDict))
@@ -1615,10 +1728,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 CustomThemeDictionaries[themeXamlName] = themeDict;
             }
             merged.Add(themeDict);
+            return themeDict;
         }
         catch (Exception ex)
         {
             Logger.Warn(ex, "Failed to apply custom theme override for {ThemeXaml}", themeXamlName);
+            return null;
         }
     }
 

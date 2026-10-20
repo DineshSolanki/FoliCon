@@ -11,7 +11,7 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              d:DataContext="{d:DesignInstance viewModels:OnboardingWizardViewModel}">
 
     <UserControl.Resources>
@@ -208,7 +208,7 @@
                             <StackPanel Orientation="Horizontal"
                                         Visibility="{Binding IsTmdbValid, Converter={StaticResource InverseBoolToVis}}"
                                         VerticalAlignment="Center">
-                                <TextBlock Text="✕" FontSize="14" FontWeight="Bold"
+                                <TextBlock Text="âœ•" FontSize="14" FontWeight="Bold"
                                            Foreground="{DynamicResource DangerBrush}"
                                            VerticalAlignment="Center" Margin="0,0,6,0" />
                                 <TextBlock Text="{Binding TmdbValidationMessage}"
@@ -308,7 +308,7 @@
                             <StackPanel Orientation="Horizontal"
                                         Visibility="{Binding IsIgdbValid, Converter={StaticResource InverseBoolToVis}}"
                                         VerticalAlignment="Center">
-                                <TextBlock Text="✕" FontSize="14" FontWeight="Bold"
+                                <TextBlock Text="âœ•" FontSize="14" FontWeight="Bold"
                                            Foreground="{DynamicResource DangerBrush}"
                                            VerticalAlignment="Center" Margin="0,0,6,0" />
                                 <TextBlock Text="{Binding IgdbValidationMessage}"

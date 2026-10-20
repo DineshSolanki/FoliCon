@@ -12,7 +12,7 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              d:DataContext="{d:DesignInstance viewModels:PreviewerViewModel}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -112,7 +112,7 @@
                                            VerticalAlignment="Center" />
                                 <Button Style="{StaticResource ButtonIcon}"
                                         Command="{Binding ResetPosterCommand}"
-                                        Content="✕"
+                                        Content="âœ•"
                                         FontSize="10"
                                         Width="18" Height="18"
                                         Padding="0"
@@ -154,7 +154,7 @@
                                  VerticalAlignment="Center"
                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaRating}}" />
 
-                        <TextBlock Text="{Binding Rating, StringFormat='{}{0}★'}"
+                        <TextBlock Text="{Binding Rating, StringFormat='{}{0}â˜…'}"
                                    FontSize="12"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryBrush}"
@@ -480,7 +480,7 @@
                             <Button Grid.Column="1"
                                     Style="{StaticResource ButtonIcon}"
                                     Command="{Binding CloseInspectCommand}"
-                                    Content="✕"
+                                    Content="âœ•"
                                     FontSize="13"
                                     Width="28" Height="28"
                                     Padding="0" />

@@ -12,7 +12,7 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:PosterPickerViewModel }"
-             Background="{DynamicResource RegionBrush}">
+             Background="Transparent">
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
             <Setter Property="Height" Value="720" />

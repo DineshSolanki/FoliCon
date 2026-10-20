@@ -92,13 +92,12 @@
             </Setter>
         </Style>
 
-        <!-- Media Source Selection Card Style -->
+        <!-- Media Source Selection Card Style (Modern Dashboard Card with Badge) -->
         <Style x:Key="MediaSourceRadioCardStyle" TargetType="RadioButton">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Padding" Value="12,10" />
-            <Setter Property="Margin" Value="3" />
-            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+            <Setter Property="Margin" Value="4,0" />
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -106,36 +105,69 @@
                                 Background="{DynamicResource RegionBrush}"
                                 BorderBrush="{DynamicResource BorderBrush}"
                                 BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="{TemplateBinding Padding}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <ContentPresenter Grid.Column="0" VerticalAlignment="Center" Margin="2,0" />
-                                <Border x:Name="SelectionIndicator" Grid.Column="1" Width="16" Height="16"
-                                        CornerRadius="8" BorderThickness="1.5"
-                                        BorderBrush="{DynamicResource BorderBrush}"
-                                        Background="Transparent" VerticalAlignment="Center" Margin="8,0,0,0">
-                                    <Ellipse x:Name="InnerDot" Width="8" Height="8"
-                                             Fill="White" Visibility="Collapsed" />
+                                CornerRadius="12"
+                                Padding="8,14"
+                                SnapsToDevicePixels="True">
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="18" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Circular Icon Badge -->
+                                <Border x:Name="IconBadge" Grid.Row="0"
+                                        Width="42" Height="42"
+                                        CornerRadius="21"
+                                        Background="{DynamicResource SecondaryRegionBrush}"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,10">
+                                    <Path x:Name="IconPath"
+                                          Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Width="18" Height="18" Stretch="Uniform"
+                                          Fill="{DynamicResource SecondaryTextBrush}"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
+
+                                <!-- Title -->
+                                <ContentPresenter Grid.Row="1"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+
+                                <!-- Active Status Indicator (● Active) -->
+                                <StackPanel x:Name="ActiveIndicator" Grid.Row="2"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="0,4,0,0"
+                                            Visibility="Hidden">
+                                    <Ellipse Width="6" Height="6"
+                                             Fill="{DynamicResource AccentBrush}"
+                                             Margin="0,0,5,0"
+                                             VerticalAlignment="Center" />
+                                    <TextBlock Text="Active"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource AccentBrush}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
+                                <Setter TargetName="IconPath" Property="Fill" Value="{DynamicResource PrimaryBrush}" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5" />
                                 <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
-                                <Setter TargetName="SelectionIndicator" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-                                <Setter TargetName="InnerDot" Property="Fill" Value="{DynamicResource PrimaryBrush}" />
-                                <Setter TargetName="InnerDot" Property="Visibility" Value="Visible" />
-                                <Setter Property="FontWeight" Value="SemiBold" />
+                                <Setter TargetName="IconBadge" Property="Background" Value="{DynamicResource PrimaryBrush}" />
+                                <Setter TargetName="IconPath" Property="Fill" Value="{DynamicResource RegionBrush}" />
+                                <Setter TargetName="ActiveIndicator" Property="Visibility" Value="Visible" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -839,50 +871,56 @@
                                 Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                         <StackPanel Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SearchMode}}"
-                                       Style="{StaticResource SectionHeaderStyle}" />
+                            <!-- Section Header with Search/Filter Icon and Matched Providers Info -->
+                            <Grid Margin="0,4,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                            <!-- 2x2 Interactive Source Cards -->
-                            <UniformGrid Columns="2" Rows="2">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource SearchFilterGeometry}" Width="14" Height="14" Stretch="Uniform"
+                                          Fill="{DynamicResource PrimaryBrush}" Margin="0,0,8,0" />
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.SearchMode}}"
+                                               Style="{StaticResource SectionHeaderStyle}"
+                                               Margin="0" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="1" Text="Matched Providers: TMDb, IGDB"
+                                           FontSize="11" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource SecondaryTextBrush}"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+
+                            <!-- Modern 4-Card Horizontal Row -->
+                            <UniformGrid Columns="4" Rows="1">
                                 <RadioButton x:Name="RMovie" Style="{StaticResource MediaSourceRadioCardStyle}"
                                              Command="{Binding SearchModeChangedCommand}" CommandParameter="Movie"
-                                             GroupName="SearchMode" IsChecked="True">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Path Data="{StaticResource FilmGeometry}" Width="16" Height="16" Stretch="Uniform"
-                                              Fill="{DynamicResource PrimaryBrush}" Margin="0,0,8,0" />
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Movie}}" FontSize="13" />
-                                    </StackPanel>
+                                             GroupName="SearchMode" IsChecked="True"
+                                             Tag="{StaticResource FilmGeometry}">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Movie}}" FontSize="13" />
                                 </RadioButton>
 
                                 <RadioButton x:Name="RTv" Style="{StaticResource MediaSourceRadioCardStyle}"
                                              Command="{Binding SearchModeChangedCommand}" CommandParameter="TV"
-                                             GroupName="SearchMode">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Path Data="{StaticResource TvGeometry}" Width="16" Height="16" Stretch="Uniform"
-                                              Fill="{DynamicResource PrimaryBrush}" Margin="0,0,8,0" />
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.TV}}" FontSize="13" />
-                                    </StackPanel>
+                                             GroupName="SearchMode"
+                                             Tag="{StaticResource TvGeometry}">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.TV}}" FontSize="13" />
                                 </RadioButton>
 
                                 <RadioButton x:Name="RGame" Style="{StaticResource MediaSourceRadioCardStyle}"
                                              Command="{Binding SearchModeChangedCommand}" CommandParameter="Game"
-                                             GroupName="SearchMode">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Path Data="{StaticResource GamepadGeometry}" Width="16" Height="16" Stretch="Uniform"
-                                              Fill="{DynamicResource PrimaryBrush}" Margin="0,0,8,0" />
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Game}}" FontSize="13" />
-                                    </StackPanel>
+                                             GroupName="SearchMode"
+                                             Tag="{StaticResource GamepadGeometry}">
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Game}}" FontSize="13" />
                                 </RadioButton>
 
                                 <RadioButton x:Name="RAuto" Style="{StaticResource MediaSourceRadioCardStyle}"
                                              Command="{Binding SearchModeChangedCommand}"
                                              CommandParameter="Auto (Movies &amp; TV Shows)"
-                                             GroupName="SearchMode">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Path Data="{StaticResource AutoSparklesGeometry}" Width="16" Height="16" Stretch="Uniform"
-                                              Fill="{DynamicResource PrimaryBrush}" Margin="0,0,8,0" />
-                                        <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.Auto}}" FontSize="13" />
-                                    </StackPanel>
+                                             GroupName="SearchMode"
+                                             Tag="{StaticResource AutoSparklesGeometry}">
+                                    <TextBlock Text="Auto (Movies &amp; TV)" FontSize="12" TextAlignment="Center" TextWrapping="Wrap" />
                                 </RadioButton>
                             </UniformGrid>
                         </StackPanel>

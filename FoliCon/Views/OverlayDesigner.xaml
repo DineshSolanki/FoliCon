@@ -11,7 +11,7 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:OverlayDesignerViewModel}"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              Focusable="True">
 
     <UserControl.Resources>
@@ -159,13 +159,13 @@
                             CornerRadius="6"
                             Padding="4,2">
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton Content="1×" GroupName="Zoom" Margin="2,0"
+                            <RadioButton Content="1Ã—" GroupName="Zoom" Margin="2,0"
                                          VerticalAlignment="Center" FontSize="11.5"
                                          Command="{Binding SetZoomCommand}" CommandParameter="1" />
-                            <RadioButton Content="2×" GroupName="Zoom" Margin="4,0"
+                            <RadioButton Content="2Ã—" GroupName="Zoom" Margin="4,0"
                                          VerticalAlignment="Center" FontSize="11.5" IsChecked="True"
                                          Command="{Binding SetZoomCommand}" CommandParameter="2" />
-                            <RadioButton Content="4×" GroupName="Zoom" Margin="2,0"
+                            <RadioButton Content="4Ã—" GroupName="Zoom" Margin="2,0"
                                          VerticalAlignment="Center" FontSize="11.5"
                                          Command="{Binding SetZoomCommand}" CommandParameter="4" />
                         </StackPanel>
@@ -807,7 +807,7 @@
                                 <Slider Value="{Binding TitleRotationAngle}" Minimum="0" Maximum="360"
                                         TickFrequency="90" IsSnapToTickEnabled="False"
                                         AutomationProperties.Name="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerTitleRotationAutomation}}" />
-                                <TextBlock Text="{Binding TitleRotationAngle, StringFormat={}{0:0}°}"
+                                <TextBlock Text="{Binding TitleRotationAngle, StringFormat={}{0:0}Â°}"
                                            Style="{StaticResource HintText}" />
                             </StackPanel>
                         </Expander>
@@ -949,7 +949,7 @@
                                    Text="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerShareHeading}}"
                                    FontSize="14" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryTextBrush}" />
-                        <Button DockPanel.Dock="Right" Content="✕" Padding="8,2"
+                        <Button DockPanel.Dock="Right" Content="âœ•" Padding="8,2"
                                 Style="{StaticResource ButtonDefault}"
                                 Command="{Binding DismissSubmissionCommand}"
                                 ToolTip="{extension:Lang Key={x:Static langs:LangKeys.OverlayDesignerHideSteps}}"

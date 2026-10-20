@@ -32,6 +32,7 @@ public class TheButterflyThemeTests
     [InlineData(FoliconThemes.TokyoNeon, "Tokyo Neon")]
     [InlineData(FoliconThemes.MicaDarkObsidian, "Mica Dark Obsidian")]
     [InlineData(FoliconThemes.NordicPine, "Nordic Pine")]
+    [InlineData(FoliconThemes.Cinema35mm, "Cinema 35mm")]
     public void ThemeToDisplayConverter_ConvertsAllThemesAccurately(FoliconThemes theme, string expected)
     {
         var converter = new ThemeToDisplayConverter();
@@ -101,6 +102,36 @@ public class TheButterflyThemeTests
     }
 
     [Fact]
+    public void ThemeCinema35mm_DictionaryLoadsAndContainsRequiredBrushes()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeCinema35mm.xaml", UriKind.Absolute);
+            var dict = new ResourceDictionary { Source = uri };
+
+            Assert.NotNull(dict);
+
+            // Verify Cinema 35mm Golden Hour Palette
+            var regionBrush = dict["RegionBrush"] as SolidColorBrush;
+            Assert.NotNull(regionBrush);
+            Assert.Equal(Color.FromRgb(0x14, 0x12, 0x10), regionBrush.Color);
+
+            var primaryBrush = dict["PrimaryBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryBrush);
+            Assert.Equal(Color.FromRgb(0xF5, 0x9E, 0x0B), primaryBrush.Color);
+
+            var accentBrush = dict["AccentBrush"] as SolidColorBrush;
+            Assert.NotNull(accentBrush);
+            Assert.Equal(Color.FromRgb(0xFC, 0xD3, 0x4D), accentBrush.Color);
+
+            var primaryTextBrush = dict["PrimaryTextBrush"] as SolidColorBrush;
+            Assert.NotNull(primaryTextBrush);
+            Assert.Equal(Color.FromRgb(0xFF, 0xFB, 0xEB), primaryTextBrush.Color);
+        });
+    }
+
+    [Fact]
     public void ThemeTheButterfly_DictionaryLoadsAndContainsRequiredBrushes()
     {
         using var host = new WpfTestHost();
@@ -148,6 +179,11 @@ public class TheButterflyThemeTests
 
             // Apply Nordic Pine theme
             MainWindowViewModel.ApplyAppTheme(FoliconThemes.NordicPine);
+            Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
+            Assert.False(ThemeManager.Current.UsingSystemTheme);
+
+            // Apply Cinema 35mm theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.Cinema35mm);
             Assert.Equal(ApplicationTheme.Dark, ThemeManager.Current.ApplicationTheme);
             Assert.False(ThemeManager.Current.UsingSystemTheme);
 
@@ -223,6 +259,22 @@ public class TheButterflyThemeTests
         Assert.Equal(expectedTheme, themeString);
     }
 
+    [Theory]
+    [InlineData("ar", "سينما 35 مم")]
+    [InlineData("es", "Cine 35mm")]
+    [InlineData("hi", "सिनेमा 35mm")]
+    [InlineData("ja", "シネマ 35mm")]
+    [InlineData("pt", "Cinema 35mm")]
+    [InlineData("ru", "Синема 35мм")]
+    [InlineData("zh", "35毫米胶片")]
+    public void AllLocales_HaveIdiomaticCinema35mmTheme(string cultureCode, string expectedTheme)
+    {
+        var culture = new CultureInfo(cultureCode);
+        var themeString = Lang.ResourceManager.GetString(nameof(Lang.ThemeCinema35mm), culture);
+
+        Assert.Equal(expectedTheme, themeString);
+    }
+
     [Fact]
     public void TransparentMark_CreatesValidTransparentIco()
     {
@@ -244,5 +296,62 @@ public class TheButterflyThemeTests
                 File.Delete(tempIcoPath);
             }
         }
+    }
+
+    [Theory]
+    [InlineData(FoliconThemes.Light, false)]
+    [InlineData(FoliconThemes.Dark, true)]
+    [InlineData(FoliconThemes.TheButterfly, true)]
+    [InlineData(FoliconThemes.TokyoNeon, true)]
+    [InlineData(FoliconThemes.MicaDarkObsidian, true)]
+    [InlineData(FoliconThemes.NordicPine, true)]
+    [InlineData(FoliconThemes.Cinema35mm, true)]
+    public void IsDarkTheme_ReturnsExpectedValueForExplicitThemes(FoliconThemes theme, bool expected)
+    {
+        var result = MainWindowViewModel.IsDarkTheme(theme);
+        Assert.Equal(expected, result);
+    }
+
+    [Fact]
+    public void ApplyAppTheme_SynchronizesWindowBackdropBrush_AcrossThemes()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            // 1. Light Theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.Light);
+            Assert.False(MainWindowViewModel.IsCurrentThemeDark());
+            var lightBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
+            Assert.NotNull(lightBrush);
+            Assert.Equal(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF), lightBrush.Color);
+
+            // 2. Dark Theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.Dark);
+            Assert.True(MainWindowViewModel.IsCurrentThemeDark());
+            var darkBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
+            Assert.NotNull(darkBrush);
+            Assert.Equal(Color.FromArgb(0xD9, 0x1C, 0x1C, 0x1C), darkBrush.Color);
+
+            // 3. Custom Cinema 35mm Theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.Cinema35mm);
+            Assert.True(MainWindowViewModel.IsCurrentThemeDark());
+            var cinemaBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
+            Assert.NotNull(cinemaBrush);
+            Assert.Equal(Color.FromArgb(0xD9, 0x14, 0x12, 0x10), cinemaBrush.Color);
+
+            // 4. Custom Tokyo Neon Theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.TokyoNeon);
+            Assert.True(MainWindowViewModel.IsCurrentThemeDark());
+            var tokyoBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
+            Assert.NotNull(tokyoBrush);
+            Assert.Equal(Color.FromArgb(0xD9, 0x0B, 0x0E, 0x17), tokyoBrush.Color);
+
+            // 5. Revert to Light Theme
+            MainWindowViewModel.ApplyAppTheme(FoliconThemes.Light);
+            Assert.False(MainWindowViewModel.IsCurrentThemeDark());
+            var revertedLightBrush = Application.Current.Resources["WindowBackdropBrush"] as SolidColorBrush;
+            Assert.NotNull(revertedLightBrush);
+            Assert.Equal(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF), revertedLightBrush.Color);
+        });
     }
 }

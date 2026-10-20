@@ -18,7 +18,7 @@
              d:DataContext="{d:DesignInstance viewModels:SearchResultViewModel}"
              Unloaded="UserControl_Unloaded"
              PreviewKeyDown="OnPreviewKeyDown"
-             Background="{DynamicResource RegionBrush}">
+             Background="Transparent">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">

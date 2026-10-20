@@ -58,7 +58,7 @@ public partial class HtmlBox
         });
     }
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "csharpsquid:S3264:Events should be invoked", Justification = "Invoked via OnFullScreenChanged")]
+    [SuppressMessage("Minor Code Smell", "csharpsquid:S3264:Events should be invoked", Justification = "Invoked via OnFullScreenChanged")]
     public event EventHandler<bool>? FullScreenChanged;
 
     public void ExitFullScreen()

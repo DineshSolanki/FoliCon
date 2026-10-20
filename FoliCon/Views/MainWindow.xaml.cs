@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Views;
+namespace FoliCon.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
@@ -8,6 +8,15 @@ public partial class MainWindow
     public MainWindow()
     {
         InitializeComponent();
+        WindowBackdropHelper.SuppressNativeCaptionButtons(this);
+        WindowBackdropHelper.UpdateImmersiveDarkMode(this, MainWindowViewModel.IsCurrentThemeDark());
+    }
+
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
+        WindowBackdropHelper.SuppressNativeCaptionButtons(this);
+        WindowBackdropHelper.UpdateImmersiveDarkMode(this, MainWindowViewModel.IsCurrentThemeDark());
     }
     
 

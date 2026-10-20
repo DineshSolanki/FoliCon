@@ -64,7 +64,7 @@ public partial class SearchResult
                     _parentWindow.Activate();
                     _parentWindow.Focus();
                 }
-            }), System.Windows.Threading.DispatcherPriority.Input);
+            }), DispatcherPriority.Input);
         }
     }
 

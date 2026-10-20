@@ -147,11 +147,11 @@
     <!-- DEFAULT / FALLBACK MATERIAL & GRADIENT BRUSHES                            -->
     <!-- Overridden dynamically by rich custom theme resource dictionaries         -->
     <!-- ========================================================================= -->
-    <SolidColorBrush x:Key="WindowBackdropBrush" Color="{DynamicResource RegionColor}" />
-    <SolidColorBrush x:Key="HeroCardBackgroundBrush" Color="{DynamicResource SecondaryRegionColor}" />
-    <SolidColorBrush x:Key="HeroCardBorderBrush" Color="{DynamicResource BorderColor}" />
-    <SolidColorBrush x:Key="PrimaryActionGradientBrush" Color="{DynamicResource PrimaryColor}" />
-    <SolidColorBrush x:Key="HeaderGradientBrush" Color="{DynamicResource SecondaryRegionColor}" />
-    <SolidColorBrush x:Key="CardBorderGradientBrush" Color="{DynamicResource BorderColor}" />
-    <SolidColorBrush x:Key="FolderBadgeGradientBrush" Color="{DynamicResource PrimaryColor}" />
+    <SolidColorBrush x:Key="WindowBackdropBrush" Color="#D91C1C1C" />
+    <SolidColorBrush x:Key="HeroCardBackgroundBrush" Color="#2D2D2D" />
+    <SolidColorBrush x:Key="HeroCardBorderBrush" Color="#3D3D3D" />
+    <SolidColorBrush x:Key="PrimaryActionGradientBrush" Color="#3B82F6" />
+    <SolidColorBrush x:Key="HeaderGradientBrush" Color="#242424" />
+    <SolidColorBrush x:Key="CardBorderGradientBrush" Color="#3D3D3D" />
+    <SolidColorBrush x:Key="FolderBadgeGradientBrush" Color="#3B82F6" />
 </ResourceDictionary>
