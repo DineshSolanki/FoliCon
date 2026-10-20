@@ -1,5 +1,6 @@
 using FoliCon.Models.Configs;
-using FoliCon.Modules.UI;
+using FoliCon.Models.Themes;
+using FoliCon.Modules.Themes;
 using HandyControl.Themes;
 
 namespace FoliCon.ViewModels;
@@ -1569,6 +1570,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     public static FoliconThemes CurrentTheme { get; private set; } = FoliconThemes.Dark;
+    public static ThemeManifest? ActiveThemeManifest { get; private set; }
+    public static string? ActiveThemeId { get; private set; }
+    private static ResourceDictionary? _currentCommunityThemeDictionary;
 
     private static readonly SolidColorBrush LightBackdropBrush = new(System.Windows.Media.Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF));
     private static readonly SolidColorBrush DarkBackdropBrush = new(System.Windows.Media.Color.FromArgb(0xD9, 0x1C, 0x1C, 0x1C));
@@ -1587,6 +1591,26 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     public static void ApplyAppTheme(FoliconThemes theme)
     {
         CurrentTheme = theme;
+        ActiveThemeId = theme switch
+        {
+            FoliconThemes.Light => "light",
+            FoliconThemes.Dark => "dark",
+            FoliconThemes.System => "system",
+            FoliconThemes.TheButterfly => "the-butterfly",
+            FoliconThemes.TokyoNeon => "tokyo-neon",
+            FoliconThemes.MicaDarkObsidian => "mica-dark-obsidian",
+            FoliconThemes.NordicPine => "nordic-pine",
+            FoliconThemes.Cinema35mm => "cinema-35mm",
+            _ => "system"
+        };
+        ActiveThemeManifest = BuiltInThemes.GetAll().FirstOrDefault(t => string.Equals(t.Id, ActiveThemeId, StringComparison.OrdinalIgnoreCase));
+
+        if (Application.Current != null && _currentCommunityThemeDictionary != null)
+        {
+            Application.Current.Resources.MergedDictionaries.Remove(_currentCommunityThemeDictionary);
+            _currentCommunityThemeDictionary = null;
+        }
+
         ResourceDictionary? customThemeDict = null;
 
         switch (theme)
@@ -1639,6 +1663,71 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         bool isDark = IsDarkTheme(theme);
         UpdateThemeBrushes(isDark, customThemeDict);
         WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+    }
+
+    public static void ApplyCommunityTheme(ThemeManifest manifest, ResourceDictionary customThemeDict)
+    {
+        ArgumentNullException.ThrowIfNull(manifest);
+        ArgumentNullException.ThrowIfNull(customThemeDict);
+
+        ActiveThemeManifest = manifest;
+        ActiveThemeId = manifest.Id;
+        CurrentTheme = manifest.IsDark ? FoliconThemes.Dark : FoliconThemes.Light;
+
+        ApplyCustomThemeOverride(null);
+
+        ThemeManager.Current.ApplicationTheme = manifest.IsDark ? ApplicationTheme.Dark : ApplicationTheme.Light;
+        ThemeManager.Current.UsingSystemTheme = false;
+
+        if (Application.Current != null)
+        {
+            var merged = Application.Current.Resources.MergedDictionaries;
+            if (_currentCommunityThemeDictionary != null)
+            {
+                merged.Remove(_currentCommunityThemeDictionary);
+            }
+            _currentCommunityThemeDictionary = customThemeDict;
+            merged.Add(customThemeDict);
+        }
+
+        UpdateThemeBrushes(manifest.IsDark, customThemeDict);
+        WindowBackdropHelper.UpdateAllOpenWindows(manifest.IsDark);
+    }
+
+    public static void ApplyThemeManifest(ThemeManifest manifest, IThemeParser parser)
+    {
+        ArgumentNullException.ThrowIfNull(manifest);
+        ArgumentNullException.ThrowIfNull(parser);
+
+        if (manifest.IsBuiltIn)
+        {
+            var builtInEnum = manifest.Id.ToLowerInvariant() switch
+            {
+                "light" => FoliconThemes.Light,
+                "dark" => FoliconThemes.Dark,
+                "the-butterfly" => FoliconThemes.TheButterfly,
+                "tokyo-neon" => FoliconThemes.TokyoNeon,
+                "mica-dark-obsidian" => FoliconThemes.MicaDarkObsidian,
+                "nordic-pine" => FoliconThemes.NordicPine,
+                "cinema-35mm" => FoliconThemes.Cinema35mm,
+                _ => FoliconThemes.System
+            };
+            ApplyAppTheme(builtInEnum);
+            return;
+        }
+
+        ResourceDictionary customDict;
+        if (!string.IsNullOrEmpty(manifest.XamlPackageFile) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            var xamlPath = Path.Combine(manifest.PackageDirectory, manifest.XamlPackageFile);
+            customDict = File.Exists(xamlPath) ? parser.LoadPackageResourceDictionary(xamlPath) : parser.SynthesizeResourceDictionary(manifest);
+        }
+        else
+        {
+            customDict = parser.SynthesizeResourceDictionary(manifest);
+        }
+
+        ApplyCommunityTheme(manifest, customDict);
     }
 
     public static bool IsDarkTheme(FoliconThemes theme)
@@ -1722,6 +1811,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             }
 
             var merged = Application.Current.Resources.MergedDictionaries;
+            if (_currentCommunityThemeDictionary != null)
+            {
+                merged.Remove(_currentCommunityThemeDictionary);
+                _currentCommunityThemeDictionary = null;
+            }
+
             for (var i = merged.Count - 1; i >= 0; i--)
             {
                 var dict = merged[i];

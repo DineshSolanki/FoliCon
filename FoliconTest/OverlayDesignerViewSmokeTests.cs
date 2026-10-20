@@ -6,8 +6,6 @@ using FoliCon.Modules.Overlays;
 using FoliCon.Modules.Overlays.Designer;
 using FoliCon.ViewModels;
 using FoliCon.Views;
-using Prism.Dialogs;
-using Prism.Mvvm;
 
 namespace FoliconTest;
 

@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.IO;
-using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
 using FoliCon.Views;
 using PosterIcon = FoliCon.Models.Data.PosterIcon;

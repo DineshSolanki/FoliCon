@@ -1,3 +1,4 @@
+using FoliCon.Modules.Themes;
 using Prism.Ioc;
 using Sentry;
 using Window = System.Windows.Window;
@@ -61,6 +62,10 @@ public partial class App
         containerRegistry.RegisterDialog<Previewer, PreviewerViewModel>("Previewer");
         containerRegistry.RegisterDialog<OnboardingWizard, OnboardingWizardViewModel>("OnboardingWizard");
         containerRegistry.RegisterDialogWindow<HandyWindow>();
+
+        // Custom Community Theme system
+        containerRegistry.RegisterSingleton<IThemeParser, HybridThemeParser>();
+        containerRegistry.RegisterSingleton<IThemeStorageService, ThemeStorageService>();
 
         // Overlay plugin system
         containerRegistry.RegisterSingleton<IOverlayProvider, OverlayProvider>();

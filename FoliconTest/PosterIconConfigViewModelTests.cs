@@ -1,6 +1,5 @@
 #nullable enable
 using FoliCon.ViewModels;
-using Prism.Dialogs;
 using System.Windows.Data;
 
 namespace FoliconTest;

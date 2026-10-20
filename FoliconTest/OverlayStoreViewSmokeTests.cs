@@ -4,7 +4,6 @@ using FoliCon.Models.Data;
 using FoliCon.Models.Enums;
 using FoliCon.ViewModels;
 using FoliCon.Views;
-using Prism.Mvvm;
 
 namespace FoliconTest;
 

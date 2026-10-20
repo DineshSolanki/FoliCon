@@ -1,8 +1,6 @@
-using System;
 using System.Windows.Interop;
 using FoliCon.Modules.UI;
 using HandyControl.Tools.Interop;
-using Xunit;
 
 namespace FoliconTest;
 

@@ -4,7 +4,6 @@ using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
 using FoliCon.Modules.Overlays.Designer;
 using FoliCon.ViewModels;
-using Prism.Dialogs;
 using Rect = System.Windows.Rect;
 
 namespace FoliconTest;
