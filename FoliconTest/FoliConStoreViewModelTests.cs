@@ -147,6 +147,41 @@ public class FoliConStoreViewModelTests : IDisposable
         });
     }
 
+    [Fact]
+    public void SelectedTheme_TriggersLivePreview_OnNavigation()
+    {
+        var vm = WpfTestHost.Invoke(() => new FoliConStoreViewModel(
+            default,
+            _fakeOverlayRepo,
+            _fakeThemeRepo,
+            _fakeStorage,
+            _themeParser,
+            null!));
+
+        var card = WpfTestHost.Invoke(() => new ThemeCardViewModel(new ThemeManifest
+        {
+            Id = "nav-theme",
+            Name = "Nav Theme",
+            Colors = new ThemeColorPalette { Background = "#123456", CardSurface = "#654321", Primary = "#AABBCC" }
+        }));
+
+        WpfTestHost.Invoke(() =>
+        {
+            // Navigating via arrow keys or clicking sets SelectedTheme
+            vm.SelectedTheme = card;
+            Assert.True(vm.IsPreviewing);
+            Assert.Equal("Nav Theme", vm.PreviewingThemeName);
+
+            // Applying locks it in
+            vm.ApplyThemeCommand.Execute(card);
+            Assert.False(vm.IsPreviewing);
+
+            // Dialog closed after applying does not rollback
+            vm.OnDialogClosed();
+            Assert.False(vm.IsPreviewing);
+        });
+    }
+
     private sealed class FakeThemeStorage(string dir) : IThemeStorageService
     {
         public string ThemesDirectory => dir;

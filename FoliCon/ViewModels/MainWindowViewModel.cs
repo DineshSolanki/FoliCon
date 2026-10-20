@@ -1747,13 +1747,13 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     /// <summary>
     /// Restores theme state from a previously captured memento snapshot.
     /// </summary>
-    public static void RestoreThemeSnapshot(ThemeStateSnapshot snapshot, IThemeParser parser)
+    public static void RestoreThemeSnapshot(ThemeStateSnapshot snapshot, IThemeParser? parser = null)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
 
-        if (snapshot.ActiveThemeManifest != null && parser != null)
+        if (snapshot.ActiveThemeManifest != null)
         {
-            ApplyThemeManifest(snapshot.ActiveThemeManifest, parser);
+            ApplyThemeManifest(snapshot.ActiveThemeManifest, parser ?? new HybridThemeParser());
         }
         else
         {

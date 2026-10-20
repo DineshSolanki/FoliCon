@@ -1,5 +1,8 @@
 using System.Windows.Interop;
+using FoliCon.Models.Enums;
+using FoliCon.Models.Themes;
 using FoliCon.Modules.UI;
+using FoliCon.ViewModels;
 using HandyControl.Tools.Interop;
 
 namespace FoliconTest;
@@ -112,20 +115,25 @@ public class WindowBackdropHelperTests
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
         {
-            // Load theme dictionary
-            var themeUri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeNordicPine.xaml", UriKind.Absolute);
-            var themeDict = new System.Windows.ResourceDictionary { Source = themeUri };
-            System.Windows.Application.Current.Resources.MergedDictionaries.Add(themeDict);
+            var initialSnapshot = MainWindowViewModel.CaptureThemeSnapshot();
+            try
+            {
+                MainWindowViewModel.ApplyAppTheme(FoliconThemes.NordicPine);
 
-            var handy = new HandyWindow();
-            handy.ApplyTemplate();
+                var handy = new HandyWindow();
+                handy.ApplyTemplate();
 
-            var expectedBackdrop = (System.Windows.Media.SolidColorBrush)themeDict["WindowBackdropBrush"];
-            var actualBg = handy.Background as System.Windows.Media.SolidColorBrush;
+                var expectedBackdrop = (System.Windows.Media.SolidColorBrush)System.Windows.Application.Current.Resources["WindowBackdropBrush"];
+                var actualBg = handy.Background as System.Windows.Media.SolidColorBrush;
 
-            Assert.NotNull(actualBg);
-            Assert.Equal(expectedBackdrop.Color, actualBg.Color);
-            Assert.Equal(HandyControl.Tools.BackdropType.Mica, handy.SystemBackdropType);
+                Assert.NotNull(actualBg);
+                Assert.Equal(expectedBackdrop.Color, actualBg.Color);
+                Assert.Equal(HandyControl.Tools.BackdropType.Mica, handy.SystemBackdropType);
+            }
+            finally
+            {
+                MainWindowViewModel.RestoreThemeSnapshot(initialSnapshot);
+            }
         });
     }
 

@@ -557,7 +557,7 @@
                                                Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
                                     <hc:ComboBox x:Name="CmbTheme" AutoComplete="True"
                                                  ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                                 IsEditable="False" SelectedItem="{Binding Path=Theme}"
+                                                 IsEditable="False" SelectedItem="{Binding Path=Theme}" DropDownOpened="CmbTheme_OnDropDownOpened" DropDownClosed="CmbTheme_OnDropDownClosed" SelectionChanged="CmbTheme_OnSelectionChanged"
                                                  Margin="0,0,0,12">
                                         <hc:ComboBox.ItemTemplate>
                                             <DataTemplate>
@@ -633,7 +633,7 @@
                               Fill="{DynamicResource PrimaryBrush}" Margin="4,0,6,0" VerticalAlignment="Center" />
                         <TextBlock Text="Theme:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Margin="0,0,4,0" />
                         <ComboBox ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                  SelectedItem="{Binding Theme}"
+                                  SelectedItem="{Binding Theme}" DropDownOpened="CmbTheme_OnDropDownOpened" DropDownClosed="CmbTheme_OnDropDownClosed" SelectionChanged="CmbTheme_OnSelectionChanged"
                                   BorderThickness="0" Background="Transparent"
                                   FontSize="11" FontWeight="SemiBold"
                                   VerticalAlignment="Center">

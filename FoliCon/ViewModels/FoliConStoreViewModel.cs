@@ -126,6 +126,19 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     #region Themes Collections & Commands
 
+    public ThemeCardViewModel? SelectedTheme
+    {
+        get;
+        set
+        {
+            if (SetProperty(ref field, value) && value != null)
+            {
+                // Live preview as user navigates through themes (IntelliJ style)
+                ExecutePreviewTheme(value);
+            }
+        }
+    }
+
     public ObservableCollection<ThemeCardViewModel> Themes { get; } = [];
     public ICollectionView VisibleThemes { get; }
 

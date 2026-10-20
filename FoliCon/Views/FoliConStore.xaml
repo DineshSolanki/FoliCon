@@ -33,6 +33,9 @@
                                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter Property="BorderThickness" Value="2" />
                             </DataTrigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
@@ -292,15 +295,33 @@
                     BorderThickness="0" Background="Transparent">
             <!-- Tab 1: Themes -->
             <TabItem Header="✦ Themes">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl ItemsSource="{Binding VisibleThemes}" ItemTemplate="{StaticResource ThemeCardTemplate}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel HorizontalAlignment="Center" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </ScrollViewer>
+                <ListBox ItemsSource="{Binding VisibleThemes}"
+                         SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
+                         ItemTemplate="{StaticResource ThemeCardTemplate}"
+                         Background="Transparent" BorderThickness="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
             </TabItem>
 
             <!-- Tab 2: Overlays -->
