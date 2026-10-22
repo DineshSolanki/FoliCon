@@ -43,7 +43,7 @@ If **FoliCon** has saved you hours of manual folder customization, please consid
 ### Why sponsor?
 Your support helps keep FoliCon fast, reliable, and actively maintained:
 
-- 🎯 New features (better matching, richer metadata, improved icon quality)
+- 🎯 New features (better matching, richer metadata, Theme store)
 - 🛠️ Faster bug fixes and compatibility updates
 - 📦 Continued WinGet/Chocolatey packaging and release maintenance
 - 💬 More time for issue support and community requests
@@ -52,9 +52,6 @@ Your support helps keep FoliCon fast, reliable, and actively maintained:
 - **Monthly support:** [GitHub Sponsors](https://github.com/sponsors/DineshSolanki)
 - **One-time support:** [PayPal](http://paypal.me/DineshSolanki)
 - **Free support:** Star the repo, share it with friends, and report issues/ideas
-
-### Transparency commitment
-I’ll continue publishing changelogs and roadmap updates so supporters can see exactly what’s being improved next.
 
 ---
 
