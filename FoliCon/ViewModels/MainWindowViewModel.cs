@@ -262,6 +262,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DelegateCommand AboutCommand { get; private set; }
     public DelegateCommand ShowPreviewer { get; private set; }
+    public DelegateCommand StoreCommand { get; private set; }
     public DelegateCommand OverlayStoreCommand { get; private set; }
     public DelegateCommand OverlayDesignerCommand { get; private set; }
     public DelegateCommand UpdateCommand { get; } = new(async void () =>
@@ -959,12 +960,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         OpenFolderInExplorerCommand = new DelegateCommand<object>(OpenFolderInExplorer);
         ShowPreviewer = new DelegateCommand(() => _dialogService.ShowPreviewer(_ => { }));
 
-        // Overlay discovery and authoring are top-level menu actions: burying them inside the
-        // poster-icon settings dialog hides them from anyone not already changing that setting.
-        OverlayStoreCommand = new DelegateCommand(() =>
+        // Store discovery: unified community themes & icon overlays
+        StoreCommand = new DelegateCommand(() =>
         {
-            _dialogService.ShowOverlayStore(_ => OverlayPreviewCache.InvalidateAll());
+            _dialogService.ShowFoliConStore(_ => OverlayPreviewCache.InvalidateAll(), tab: "themes");
         });
+        OverlayStoreCommand = StoreCommand;
         OverlayDesignerCommand = new DelegateCommand(() =>
         {
             _dialogService.ShowOverlayDesigner(_ => OverlayPreviewCache.InvalidateAll());

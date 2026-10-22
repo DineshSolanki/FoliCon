@@ -270,4 +270,27 @@ public class ThemeManagementTests
             Assert.Equal(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF), revertedLightBrush.Color);
         });
     }
+
+    [Fact]
+    public void MainWindow_SnapshotRollback_RestoresOriginalTheme()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var initialSnapshot = MainWindowViewModel.CaptureThemeSnapshot();
+            try
+            {
+                MainWindowViewModel.ApplyAppTheme(FoliconThemes.TokyoNeon);
+                Assert.Equal("tokyo-neon", MainWindowViewModel.ActiveThemeId);
+
+                // Live preview simulation: rollback snapshot
+                MainWindowViewModel.RestoreThemeSnapshot(initialSnapshot);
+                Assert.Equal(initialSnapshot.ActiveThemeId, MainWindowViewModel.ActiveThemeId);
+            }
+            finally
+            {
+                MainWindowViewModel.RestoreThemeSnapshot(initialSnapshot);
+            }
+        });
+    }
 }

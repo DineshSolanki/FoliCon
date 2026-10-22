@@ -43,7 +43,7 @@ public partial class MainWindow
     {
         _isDropdownOpen = true;
         _isCommitted = false;
-        _dropdownPreviewSnapshot = MainWindowViewModel.CaptureThemeSnapshot();
+        _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
     }
 
     private void CmbTheme_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -51,14 +51,68 @@ public partial class MainWindow
         if (_isDropdownOpen && sender is WpfComboBox combo && combo.SelectedItem is FoliconThemes theme)
         {
             // Live preview as the user traverses items with mouse or arrow keys (IntelliJ style)
+            _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
             MainWindowViewModel.ApplyAppTheme(theme);
         }
+    }
+
+    private void CmbTheme_OnPreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (sender is not WpfComboBox combo) return;
+
+        if (e.Key == Key.Down)
+        {
+            e.Handled = true;
+            if (!_isDropdownOpen)
+            {
+                combo.IsDropDownOpen = true;
+            }
+            if (combo.Items.Count > 0)
+            {
+                var nextIndex = combo.SelectedIndex < combo.Items.Count - 1 ? combo.SelectedIndex + 1 : 0;
+                combo.SelectedIndex = nextIndex;
+            }
+        }
+        else if (e.Key == Key.Up)
+        {
+            e.Handled = true;
+            if (!_isDropdownOpen)
+            {
+                combo.IsDropDownOpen = true;
+            }
+            if (combo.Items.Count > 0)
+            {
+                var prevIndex = combo.SelectedIndex > 0 ? combo.SelectedIndex - 1 : combo.Items.Count - 1;
+                combo.SelectedIndex = prevIndex;
+            }
+        }
+        else if (e.Key is Key.Enter or Key.Tab)
+        {
+            e.Handled = true;
+            _isCommitted = true;
+            combo.IsDropDownOpen = false;
+            _dropdownPreviewSnapshot = null;
+        }
+        else if (e.Key == Key.Escape)
+        {
+            e.Handled = true;
+            combo.IsDropDownOpen = false;
+            RollbackDropdownPreview();
+        }
+    }
+
+    private void ComboBoxItem_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        _isCommitted = true;
     }
 
     private void CmbTheme_OnDropDownClosed(object sender, EventArgs e)
     {
         _isDropdownOpen = false;
-        _isCommitted = true;
+        if (!_isCommitted)
+        {
+            RollbackDropdownPreview();
+        }
         _dropdownPreviewSnapshot = null;
     }
 
@@ -66,8 +120,18 @@ public partial class MainWindow
     {
         if (_dropdownPreviewSnapshot != null)
         {
-            MainWindowViewModel.RestoreThemeSnapshot(_dropdownPreviewSnapshot, null!);
+            var origTheme = _dropdownPreviewSnapshot.CurrentTheme;
+            MainWindowViewModel.RestoreThemeSnapshot(_dropdownPreviewSnapshot);
             _dropdownPreviewSnapshot = null;
+
+            if (CmbTheme != null)
+            {
+                CmbTheme.SelectedItem = origTheme;
+            }
+            if (TopThemeComboBox != null)
+            {
+                TopThemeComboBox.SelectedItem = origTheme;
+            }
         }
         _isDropdownOpen = false;
         _isCommitted = false;

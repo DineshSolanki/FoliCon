@@ -299,6 +299,8 @@
                          SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
                          ItemTemplate="{StaticResource ThemeCardTemplate}"
                          Background="Transparent" BorderThickness="0"
+                         KeyboardNavigation.DirectionalNavigation="Continue"
+                         ScrollViewer.CanContentScroll="False"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <ListBox.ItemsPanel>

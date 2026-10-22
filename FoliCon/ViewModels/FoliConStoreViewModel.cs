@@ -234,50 +234,73 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     private async Task LoadThemesAsync()
     {
-        Themes.Clear();
+        // 1. Immediately populate installed themes (built-in + local custom) so the store is NEVER blank
+        PopulateInstalledThemes();
 
-        // 1. Installed themes (Built-in + Local Custom)
-        var installedThemes = _themeStorageService.GetInstalledThemes();
-        var installedDict = installedThemes.ToDictionary(t => t.Id, StringComparer.OrdinalIgnoreCase);
-
-        // 2. Remote catalog themes
+        // 2. Asynchronously fetch remote catalog with a 5-second timeout
         ThemeCatalog remoteCatalog;
         try
         {
-            remoteCatalog = await _themeRepositoryService.FetchCatalogAsync();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+            remoteCatalog = await _themeRepositoryService.FetchCatalogAsync(cts.Token);
         }
         catch (Exception ex)
         {
-            Logger.Warn(ex, "Failed to fetch remote theme catalog; falling back to installed themes only.");
+            Logger.Warn(ex, "Failed to fetch remote theme catalog; keeping installed themes.");
             remoteCatalog = new ThemeCatalog();
         }
 
+        // 3. Merge remote catalog themes & updates
+        MergeRemoteThemes(remoteCatalog);
+    }
+
+    private void PopulateInstalledThemes()
+    {
+        Themes.Clear();
+        var installedThemes = _themeStorageService.GetInstalledThemes();
         var activeId = MainWindowViewModel.ActiveThemeId;
 
-        // Process remote catalog entries
-        var processedIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        foreach (var entry in remoteCatalog.Themes)
+        foreach (var local in installedThemes)
         {
-            processedIds.Add(entry.Id);
-            var isInstalled = installedDict.TryGetValue(entry.Id, out var localManifest);
-            var isUpdate = _themeRepositoryService.IsUpdateAvailable(entry.Id);
-            var card = new ThemeCardViewModel(entry, isInstalled, isUpdate, localManifest?.Version)
+            var isUpdate = _themeRepositoryService.IsUpdateAvailable(local.Id);
+            var card = new ThemeCardViewModel(local, isInstalled: true, isUpdateAvailable: isUpdate)
             {
-                IsActive = string.Equals(activeId, entry.Id, StringComparison.OrdinalIgnoreCase)
+                IsActive = string.Equals(activeId, local.Id, StringComparison.OrdinalIgnoreCase)
             };
             Themes.Add(card);
         }
 
-        // Add remaining local themes not in remote catalog
-        foreach (var local in installedThemes)
+        VisibleThemes.Refresh();
+    }
+
+    private void MergeRemoteThemes(ThemeCatalog remoteCatalog)
+    {
+        if (remoteCatalog == null || remoteCatalog.Themes.Count == 0) return;
+
+        var installedThemes = _themeStorageService.GetInstalledThemes();
+        var installedDict = installedThemes.ToDictionary(t => t.Id, StringComparer.OrdinalIgnoreCase);
+        var activeId = MainWindowViewModel.ActiveThemeId;
+        var existingMap = Themes.ToDictionary(t => t.Id, StringComparer.OrdinalIgnoreCase);
+
+        // Process remote themes: update existing cards or insert new ones at top
+        foreach (var entry in remoteCatalog.Themes)
         {
-            if (!processedIds.Contains(local.Id))
+            var isInstalled = installedDict.TryGetValue(entry.Id, out var localManifest);
+            var isUpdate = _themeRepositoryService.IsUpdateAvailable(entry.Id);
+
+            if (existingMap.TryGetValue(entry.Id, out var existingCard))
             {
-                var card = new ThemeCardViewModel(local, isInstalled: true)
+                existingCard.IsInstalled = isInstalled;
+                existingCard.IsUpdateAvailable = isUpdate;
+                existingCard.AvailableVersion = isUpdate ? _themeRepositoryService.GetAvailableVersion(entry.Id) : null;
+            }
+            else
+            {
+                var card = new ThemeCardViewModel(entry, isInstalled, isUpdate, localManifest?.Version)
                 {
-                    IsActive = string.Equals(activeId, local.Id, StringComparison.OrdinalIgnoreCase)
+                    IsActive = string.Equals(activeId, entry.Id, StringComparison.OrdinalIgnoreCase)
                 };
-                Themes.Add(card);
+                Themes.Insert(0, card);
             }
         }
 
