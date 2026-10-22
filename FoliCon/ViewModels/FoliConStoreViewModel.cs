@@ -6,10 +6,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using FoliCon.Models.Data;
-using FoliCon.Models.Enums;
 using FoliCon.Models.Themes;
 using FoliCon.Modules.Overlays;
 using FoliCon.Modules.Themes;
@@ -52,11 +52,18 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
         _themeParser = themeParser ?? throw new ArgumentNullException(nameof(themeParser));
         _dialogService = dialogService;
 
+        // Dedicated Child ViewModel for full Overlays catalog experience
+        OverlaysViewModel = new OverlayStoreViewModel(_overlayRepositoryService, _dialogService);
+        OverlaysViewModel.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(OverlayStoreViewModel.StatusMessage) && SelectedTabIndex == 1)
+            {
+                RaisePropertyChanged(nameof(StatusMessage));
+            }
+        };
+
         VisibleThemes = CollectionViewSource.GetDefaultView(Themes);
         VisibleThemes.Filter = FilterTheme;
-
-        VisibleOverlays = CollectionViewSource.GetDefaultView(Overlays);
-        VisibleOverlays.Filter = FilterOverlay;
 
         // Theme Commands
         PreviewThemeCommand = new DelegateCommand<ThemeCardViewModel>(ExecutePreviewTheme);
@@ -69,10 +76,10 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
         ExportThemeCommand = new DelegateCommand<ThemeCardViewModel>(async t => await ExecuteExportThemeAsync(t));
         OpenThemesFolderCommand = new DelegateCommand(ExecuteOpenThemesFolder);
 
-        // Overlay Commands
-        InstallOverlayCommand = new DelegateCommand<OverlayCardViewModel>(async o => await InstallOverlayAsync(o));
-        UpdateOverlayCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UpdateOverlayAsync(o));
-        UninstallOverlayCommand = new DelegateCommand<OverlayCardViewModel>(async o => await UninstallOverlayAsync(o));
+        // Overlay Commands (delegated to OverlaysViewModel for full capability and compatibility)
+        InstallOverlayCommand = OverlaysViewModel.InstallCommand;
+        UpdateOverlayCommand = OverlaysViewModel.UpdateCommand;
+        UninstallOverlayCommand = OverlaysViewModel.UninstallCommand;
 
         RefreshCommand = new DelegateCommand(async () => await LoadAllCatalogsAsync(forceRefresh: true));
         CloseCommand = new DelegateCommand(ExecuteClose);
@@ -80,29 +87,53 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     #region Tab & Navigation Properties
 
+    private int _selectedTabIndex = 0;
     public int SelectedTabIndex
     {
-        get;
+        get => _selectedTabIndex;
         set
         {
-            if (SetProperty(ref field, value))
+            if (SetProperty(ref _selectedTabIndex, value))
             {
                 ApplyFilter();
+                RaisePropertyChanged(nameof(IsThemesTabSelected));
+                RaisePropertyChanged(nameof(IsOverlaysTabSelected));
+                RaisePropertyChanged(nameof(StatusMessage));
             }
         }
-    } = 0; // 0 = Themes, 1 = Overlays
+    }
 
+    public bool IsThemesTabSelected => SelectedTabIndex == 0;
+    public bool IsOverlaysTabSelected => SelectedTabIndex == 1;
+
+    private string _searchQuery = string.Empty;
     public string SearchQuery
     {
-        get;
+        get => _searchQuery;
         set
         {
-            if (SetProperty(ref field, value))
+            if (SetProperty(ref _searchQuery, value))
             {
                 ApplyFilter();
             }
         }
-    } = string.Empty;
+    }
+
+    private string _statusMessage = string.Empty;
+    public string StatusMessage
+    {
+        get
+        {
+            if (SelectedTabIndex == 1 && OverlaysViewModel != null)
+            {
+                return OverlaysViewModel.StatusMessage;
+            }
+            return string.IsNullOrEmpty(_statusMessage)
+                ? $"{Themes.Count} themes available"
+                : _statusMessage;
+        }
+        set => SetProperty(ref _statusMessage, value);
+    }
 
     public bool IsLoading
     {
@@ -153,10 +184,12 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     #endregion
 
-    #region Overlays Collections & Commands
+    #region Overlays Child ViewModel & Delegations
 
-    public ObservableCollection<OverlayCardViewModel> Overlays { get; } = [];
-    public ICollectionView VisibleOverlays { get; }
+    public OverlayStoreViewModel OverlaysViewModel { get; }
+
+    public ObservableCollection<OverlayCardViewModel> Overlays => OverlaysViewModel.Overlays;
+    public ICollectionView VisibleOverlays => OverlaysViewModel.VisibleOverlays;
 
     public DelegateCommand<OverlayCardViewModel> InstallOverlayCommand { get; }
     public DelegateCommand<OverlayCardViewModel> UpdateOverlayCommand { get; }
@@ -184,6 +217,8 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
             _previewSnapshot = null;
             IsPreviewing = false;
         }
+
+        OverlaysViewModel.OnDialogClosed();
     }
 
     public async void OnDialogOpened(IDialogParameters parameters)
@@ -196,8 +231,13 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
         if (parameters.TryGetValue<string>("search", out var search))
         {
             SearchQuery = search;
+            if (SelectedTabIndex == 1)
+            {
+                OverlaysViewModel.SearchQuery = search;
+            }
         }
 
+        OverlaysViewModel.OnDialogOpened(parameters);
         await LoadAllCatalogsAsync(forceRefresh: false);
     }
 
@@ -219,8 +259,9 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
             // Load Themes
             await LoadThemesAsync();
 
-            // Load Overlays
-            await LoadOverlaysAsync();
+            // Load Overlays with full previews, tag chips, and categories
+            await OverlaysViewModel.LoadCatalogAsync(forceRefresh);
+            RaisePropertyChanged(nameof(StatusMessage));
         }
         catch (Exception ex)
         {
@@ -252,6 +293,7 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
         // 3. Merge remote catalog themes & updates
         MergeRemoteThemes(remoteCatalog);
+        RaisePropertyChanged(nameof(StatusMessage));
     }
 
     private void PopulateInstalledThemes()
@@ -305,34 +347,6 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
         }
 
         VisibleThemes.Refresh();
-    }
-
-    private async Task LoadOverlaysAsync()
-    {
-        Overlays.Clear();
-        try
-        {
-            var catalog = await _overlayRepositoryService.FetchCatalogAsync();
-            foreach (var entry in catalog.Overlays)
-            {
-                var isInstalled = _overlayRepositoryService.IsOverlayInstalled(entry.Id);
-                var isUpdate = _overlayRepositoryService.IsUpdateAvailable(entry.Id);
-                var installedVer = _overlayRepositoryService.GetInstalledVersion(entry.Id);
-
-                var card = new OverlayCardViewModel(entry, installedVer)
-                {
-                    IsInstalled = isInstalled,
-                    IsUpdateAvailable = isUpdate
-                };
-                Overlays.Add(card);
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.Warn(ex, "Failed to load overlay catalog");
-        }
-
-        VisibleOverlays.Refresh();
     }
 
     #endregion
@@ -482,6 +496,8 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
             {
                 Themes.Remove(card);
             }
+            VisibleThemes.Refresh();
+            RaisePropertyChanged(nameof(StatusMessage));
         }
     }
 
@@ -491,6 +507,7 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
         var saveDialog = new SaveFileDialog
         {
+            Title = "Export FoliCon Theme",
             Filter = "FoliCon Theme Package (*.folicontheme)|*.folicontheme",
             FileName = $"{card.Id}.folicontheme"
         };
@@ -533,77 +550,11 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     #endregion
 
-    #region Overlay Operations
-
-    private async Task InstallOverlayAsync(OverlayCardViewModel? card)
-    {
-        if (card == null) return;
-        card.IsLoading = true;
-        try
-        {
-            await _overlayRepositoryService.InstallOverlayAsync(card.CatalogEntry);
-            card.IsInstalled = true;
-            card.IsUpdateAvailable = false;
-            card.OperationMessage = "Installed";
-        }
-        catch (Exception ex)
-        {
-            card.OperationMessage = $"Error: {ex.Message}";
-        }
-        finally
-        {
-            card.IsLoading = false;
-        }
-    }
-
-    private async Task UpdateOverlayAsync(OverlayCardViewModel? card)
-    {
-        if (card == null) return;
-        card.IsLoading = true;
-        try
-        {
-            await _overlayRepositoryService.UpdateOverlayAsync(card.Id);
-            card.IsUpdateAvailable = false;
-            card.OperationMessage = "Updated";
-        }
-        catch (Exception ex)
-        {
-            card.OperationMessage = $"Error: {ex.Message}";
-        }
-        finally
-        {
-            card.IsLoading = false;
-        }
-    }
-
-    private async Task UninstallOverlayAsync(OverlayCardViewModel? card)
-    {
-        if (card == null) return;
-        card.IsLoading = true;
-        try
-        {
-            await _overlayRepositoryService.UninstallOverlayAsync(card.Id);
-            card.IsInstalled = false;
-            card.OperationMessage = "Removed";
-        }
-        catch (Exception ex)
-        {
-            card.OperationMessage = $"Error: {ex.Message}";
-        }
-        finally
-        {
-            card.IsLoading = false;
-        }
-    }
-
-    #endregion
-
     #region Filtering
 
     private void ApplyFilter()
     {
         VisibleThemes.Refresh();
-        VisibleOverlays.Refresh();
     }
 
     private bool FilterTheme(object item)
@@ -613,18 +564,6 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
         var q = SearchQuery.Trim();
         return card.Name.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-               card.Author.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-               card.Description.Contains(q, StringComparison.OrdinalIgnoreCase) ||
-               card.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private bool FilterOverlay(object item)
-    {
-        if (item is not OverlayCardViewModel card) return false;
-        if (string.IsNullOrWhiteSpace(SearchQuery)) return true;
-
-        var q = SearchQuery.Trim();
-        return card.DisplayName.Contains(q, StringComparison.OrdinalIgnoreCase) ||
                card.Author.Contains(q, StringComparison.OrdinalIgnoreCase) ||
                card.Description.Contains(q, StringComparison.OrdinalIgnoreCase) ||
                card.Tags.Any(t => t.Contains(q, StringComparison.OrdinalIgnoreCase));

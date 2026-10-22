@@ -182,6 +182,46 @@ public class FoliConStoreViewModelTests : IDisposable
         });
     }
 
+    [Fact]
+    public async Task FoliConStoreViewModel_OverlaysViewModel_ExposesFullStoreCapabilities()
+    {
+        _fakeOverlayRepo.Catalog.Overlays.Add(new OverlayCatalogEntry
+        {
+            Id = "glass-icons",
+            DisplayName = "Glass Icons",
+            OverlayVersion = "1.0.0",
+            Tags = ["fluent", "translucent"]
+        });
+
+        var vm = WpfTestHost.Invoke(() => new FoliConStoreViewModel(
+            default,
+            _fakeOverlayRepo,
+            _fakeThemeRepo,
+            _fakeStorage,
+            _themeParser,
+            null!));
+
+        await WpfTestHost.Invoke(() => vm.LoadAllCatalogsAsync());
+
+        WpfTestHost.Invoke(() =>
+        {
+            Assert.NotNull(vm.OverlaysViewModel);
+            Assert.NotEmpty(vm.OverlaysViewModel.AvailableSortOptions);
+            Assert.NotEmpty(vm.OverlaysViewModel.AvailableStatusFilters);
+            Assert.Single(vm.Overlays);
+            Assert.Same(vm.Overlays, vm.OverlaysViewModel.Overlays);
+
+            // Tab selection reflects state and status message
+            Assert.True(vm.IsThemesTabSelected);
+            Assert.False(vm.IsOverlaysTabSelected);
+
+            vm.SelectedTabIndex = 1;
+            Assert.False(vm.IsThemesTabSelected);
+            Assert.True(vm.IsOverlaysTabSelected);
+            Assert.Equal(vm.OverlaysViewModel.StatusMessage, vm.StatusMessage);
+        });
+    }
+
     private sealed class FakeThemeStorage(string dir) : IThemeStorageService
     {
         public string ThemesDirectory => dir;
