@@ -4,6 +4,8 @@
   <img src="https://github.com/dinesh-solanki/Project-Assets/blob/master/Folicon/folicon Icon.png" alt="FoliCon Logo" width="128" height="128" />
 </a>
 
+![badge name](https://cdn.jsdelivr.net/gh/JMcrafter26/badges@main/src/assets/available/fmhy/cozy.svg)
+
 # FoliCon
 
 ### The Ultimate Movie, TV Series, Anime, Music & Game Folder Icon Customizer for Windows
