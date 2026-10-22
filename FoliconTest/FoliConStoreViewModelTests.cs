@@ -138,6 +138,7 @@ public class FoliConStoreViewModelTests : IDisposable
         {
             vm.PreviewThemeCommand.Execute(previewCard);
             Assert.True(vm.IsPreviewing);
+            Assert.True(previewCard.IsPreviewing);
             Assert.Equal("Preview Theme", vm.PreviewingThemeName);
 
             // Simulate closing the store window without applying
@@ -170,6 +171,7 @@ public class FoliConStoreViewModelTests : IDisposable
             // Navigating via arrow keys or clicking sets SelectedTheme
             vm.SelectedTheme = card;
             Assert.True(vm.IsPreviewing);
+            Assert.True(card.IsPreviewing);
             Assert.Equal("Nav Theme", vm.PreviewingThemeName);
 
             // Applying locks it in
@@ -179,6 +181,63 @@ public class FoliConStoreViewModelTests : IDisposable
             // Dialog closed after applying does not rollback
             vm.OnDialogClosed();
             Assert.False(vm.IsPreviewing);
+        });
+    }
+
+    [Fact]
+    public void ThemeCards_DistinctlyReflectIsPreviewingAndIsActiveStates()
+    {
+        var vm = WpfTestHost.Invoke(() => new FoliConStoreViewModel(
+            default,
+            _fakeOverlayRepo,
+            _fakeThemeRepo,
+            _fakeStorage,
+            _themeParser,
+            null!));
+
+        var cardA = WpfTestHost.Invoke(() => new ThemeCardViewModel(new ThemeManifest
+        {
+            Id = "theme-a",
+            Name = "Theme A",
+            Colors = new ThemeColorPalette { Background = "#111111", CardSurface = "#222222", Primary = "#333333" }
+        }));
+        var cardB = WpfTestHost.Invoke(() => new ThemeCardViewModel(new ThemeManifest
+        {
+            Id = "theme-b",
+            Name = "Theme B",
+            Colors = new ThemeColorPalette { Background = "#444444", CardSurface = "#555555", Primary = "#666666" }
+        }));
+
+        WpfTestHost.Invoke(() =>
+        {
+            vm.Themes.Add(cardA);
+            vm.Themes.Add(cardB);
+
+            // Initially neither is previewing
+            Assert.False(cardA.IsPreviewing);
+            Assert.False(cardB.IsPreviewing);
+
+            // Preview Card A
+            vm.PreviewThemeCommand.Execute(cardA);
+            Assert.True(cardA.IsPreviewing);
+            Assert.False(cardB.IsPreviewing);
+
+            // Preview Card B
+            vm.PreviewThemeCommand.Execute(cardB);
+            Assert.False(cardA.IsPreviewing);
+            Assert.True(cardB.IsPreviewing);
+
+            // Revert preview
+            vm.RevertPreviewCommand.Execute();
+            Assert.False(cardA.IsPreviewing);
+            Assert.False(cardB.IsPreviewing);
+
+            // Apply Card A -> active
+            vm.ApplyThemeCommand.Execute(cardA);
+            Assert.True(cardA.IsActive);
+            Assert.False(cardA.IsPreviewing);
+            Assert.False(cardB.IsActive);
+            Assert.False(cardB.IsPreviewing);
         });
     }
 

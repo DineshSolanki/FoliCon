@@ -44,10 +44,20 @@ public partial class MainWindow
         if (DataContext is MainWindowViewModel vm)
         {
             vm.RefreshAvailableThemes();
+            vm.IsPreviewingTheme = true;
         }
         _isDropdownOpen = true;
         _isCommitted = false;
         _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
+    }
+
+    private void ComboBoxItem_OnMouseEnter(object sender, MouseEventArgs e)
+    {
+        if (_isDropdownOpen && sender is ComboBoxItem item && item.DataContext is ThemeOption option && DataContext is MainWindowViewModel vm)
+        {
+            _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
+            vm.ApplyThemeOption(option, isPreview: true);
+        }
     }
 
     private void CmbTheme_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -104,6 +114,7 @@ public partial class MainWindow
             _dropdownPreviewSnapshot = null;
             if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
             {
+                vm.IsPreviewingTheme = false;
                 vm.ApplyThemeOption(option, isPreview: false);
             }
         }
@@ -123,22 +134,41 @@ public partial class MainWindow
     private void CmbTheme_OnDropDownClosed(object sender, EventArgs e)
     {
         _isDropdownOpen = false;
+        if (DataContext is MainWindowViewModel vm)
+        {
+            vm.IsPreviewingTheme = false;
+        }
+
         if (!_isCommitted)
         {
             RollbackDropdownPreview();
         }
+        else
+        {
+            if (sender is WpfComboBox combo && combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vmCommit)
+            {
+                vmCommit.ApplyThemeOption(option, isPreview: false);
+            }
+        }
         _dropdownPreviewSnapshot = null;
+        _isCommitted = false;
     }
 
     private void RollbackDropdownPreview()
     {
         if (_dropdownPreviewSnapshot != null)
         {
+            var savedCustomId = _dropdownPreviewSnapshot.ActiveThemeManifest != null && !_dropdownPreviewSnapshot.ActiveThemeManifest.IsBuiltIn
+                ? _dropdownPreviewSnapshot.ActiveThemeManifest.Id
+                : string.Empty;
+
             MainWindowViewModel.RestoreThemeSnapshot(_dropdownPreviewSnapshot);
             _dropdownPreviewSnapshot = null;
 
             if (DataContext is MainWindowViewModel vm)
             {
+                vm.IsPreviewingTheme = false;
+                vm.CustomThemeId = savedCustomId;
                 vm.SyncSelectedThemeOptionWithActive();
             }
         }

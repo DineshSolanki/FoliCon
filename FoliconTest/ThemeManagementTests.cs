@@ -300,6 +300,60 @@ public class ThemeManagementTests
     }
 
     [Fact]
+    public void MainWindow_HoverPreview_WhenIsPreviewingTheme_DoesNotCommitToCustomThemeId()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var initialSnapshot = MainWindowViewModel.CaptureThemeSnapshot();
+            try
+            {
+                var parser = new HybridThemeParser();
+                var fakeStorage = new FakeThemeStorageForMainWindow();
+                fakeStorage.Themes.AddRange(BuiltInThemes.GetAll());
+                fakeStorage.Themes.Add(new ThemeManifest
+                {
+                    Id = "retro-synth",
+                    Name = "Retro Synth",
+                    Author = "RetroDev",
+                    BaseTheme = "Dark",
+                    Colors = new ThemeColorPalette
+                    {
+                        Background = "#101010",
+                        CardSurface = "#202020",
+                        Primary = "#FF007F",
+                        Accent = "#00F0FF",
+                        PrimaryText = "#FFFFFF"
+                    }
+                });
+
+                var vm = new MainWindowViewModel(null!, fakeStorage, parser);
+                var communityOption = vm.AvailableThemes.FirstOrDefault(t => t.Id == "retro-synth");
+                Assert.NotNull(communityOption);
+
+                // Simulate dropdown open and hover preview
+                vm.IsPreviewingTheme = true;
+                vm.SelectedThemeOption = communityOption;
+
+                // Visual theme is applied for live preview
+                Assert.Equal("retro-synth", MainWindowViewModel.ActiveThemeId);
+                // BUT not committed to settings yet!
+                Assert.Equal(string.Empty, vm.CustomThemeId);
+
+                // When user clicks/commits the theme:
+                vm.IsPreviewingTheme = false;
+                vm.ApplyThemeOption(communityOption, isPreview: false);
+                Assert.Equal("retro-synth", vm.CustomThemeId);
+                Assert.Equal("retro-synth", MainWindowViewModel.ActiveThemeId);
+            }
+            finally
+            {
+                MainWindowViewModel.RestoreThemeSnapshot(initialSnapshot);
+            }
+        });
+    }
+
+    [Fact]
     public void MainWindow_AvailableThemes_IncludesBothBuiltInAndCommunityThemes()
     {
         using var host = new WpfTestHost();
@@ -346,6 +400,7 @@ public class ThemeManagementTests
             }
         });
     }
+
 
     private sealed class FakeThemeStorageForMainWindow : IThemeStorageService
     {

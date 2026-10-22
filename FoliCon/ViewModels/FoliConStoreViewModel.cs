@@ -157,12 +157,13 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     #region Themes Collections & Commands
 
+    private ThemeCardViewModel? _selectedTheme;
     public ThemeCardViewModel? SelectedTheme
     {
-        get;
+        get => _selectedTheme;
         set
         {
-            if (SetProperty(ref field, value) && value != null)
+            if (SetProperty(ref _selectedTheme, value) && value != null)
             {
                 // Live preview as user navigates through themes (IntelliJ style)
                 ExecutePreviewTheme(value);
@@ -216,6 +217,15 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
             MainWindowViewModel.RestoreThemeSnapshot(_previewSnapshot, _themeParser);
             _previewSnapshot = null;
             IsPreviewing = false;
+            PreviewingThemeName = null;
+            if (_selectedTheme != null)
+            {
+                _selectedTheme.IsPreviewing = false;
+            }
+            foreach (var t in Themes)
+            {
+                t.IsPreviewing = false;
+            }
         }
 
         OverlaysViewModel.OnDialogClosed();
@@ -377,6 +387,22 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
             MainWindowViewModel.ApplyThemeManifest(manifest, _themeParser);
             IsPreviewing = true;
             PreviewingThemeName = card.Name;
+
+            card.IsPreviewing = true;
+            foreach (var t in Themes)
+            {
+                if (!ReferenceEquals(t, card))
+                {
+                    t.IsPreviewing = false;
+                }
+            }
+
+            if (!ReferenceEquals(_selectedTheme, card))
+            {
+                _selectedTheme = card;
+                RaisePropertyChanged(nameof(SelectedTheme));
+            }
+
             Logger.Info("Live previewing theme '{Id}'", card.Id);
         }
     }
@@ -390,6 +416,14 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
         }
         IsPreviewing = false;
         PreviewingThemeName = null;
+        if (_selectedTheme != null)
+        {
+            _selectedTheme.IsPreviewing = false;
+        }
+        foreach (var t in Themes)
+        {
+            t.IsPreviewing = false;
+        }
     }
 
     private async Task ExecuteApplyThemeAsync(ThemeCardViewModel? card)
@@ -412,8 +446,16 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
             IsPreviewing = false;
             PreviewingThemeName = null;
 
+            card.IsPreviewing = false;
+            card.IsActive = true;
+            if (_selectedTheme != null && !ReferenceEquals(_selectedTheme, card))
+            {
+                _selectedTheme.IsPreviewing = false;
+            }
+
             foreach (var t in Themes)
             {
+                t.IsPreviewing = false;
                 t.IsActive = string.Equals(t.Id, card.Id, StringComparison.OrdinalIgnoreCase);
             }
         }

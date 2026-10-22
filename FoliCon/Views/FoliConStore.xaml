@@ -100,20 +100,31 @@
         <DataTemplate x:Key="ThemeCardTemplate" DataType="{x:Type viewModels:ThemeCardViewModel}">
             <Border Width="290" Height="255" Margin="8" Padding="14,12"
                     CornerRadius="8"
+                    Cursor="Hand"
                     Background="{DynamicResource SecondaryRegionBrush}"
                     BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1">
+                <Border.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding DataContext.PreviewThemeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                  CommandParameter="{Binding}" />
+                </Border.InputBindings>
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-                                <Setter Property="BorderThickness" Value="2" />
-                            </DataTrigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
                             </Trigger>
+                            <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource SuccessBrush}" />
+                                <Setter Property="BorderThickness" Value="2" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+                                <Setter Property="BorderThickness" Value="2.5" />
+                                <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
@@ -127,7 +138,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <!-- Header: Title, Author, Active Badge -->
+                    <!-- Header: Title, Author, Active & Preview Badges -->
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -143,11 +154,21 @@
                                        TextTrimming="CharacterEllipsis" />
                         </StackPanel>
 
-                        <Border Grid.Column="1" Background="{DynamicResource PrimaryBrush}" CornerRadius="10"
-                                Padding="8,2" VerticalAlignment="Top"
-                                Visibility="{Binding IsActive, Converter={StaticResource BoolToVis}}">
-                            <TextBlock Text="Active" FontSize="10" FontWeight="SemiBold" Foreground="White" />
-                        </Border>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                            <!-- Previewing Badge -->
+                            <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="10"
+                                    Padding="8,2" Margin="0,0,4,0"
+                                    Visibility="{Binding IsPreviewing, Converter={StaticResource BoolToVis}}">
+                                <TextBlock Text="👁 Previewing" FontSize="10" FontWeight="Bold" Foreground="White" />
+                            </Border>
+
+                            <!-- Active Badge -->
+                            <Border Background="{DynamicResource SuccessBrush}" CornerRadius="10"
+                                    Padding="8,2"
+                                    Visibility="{Binding IsActive, Converter={StaticResource BoolToVis}}">
+                                <TextBlock Text="✓ Active" FontSize="10" FontWeight="Bold" Foreground="White" />
+                            </Border>
+                        </StackPanel>
                     </Grid>
 
                     <!-- Palette Swatch Strip -->
@@ -184,10 +205,22 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Preview Button -->
-                        <Button Grid.Column="0" Content="Preview" Margin="0,0,3,0" Height="28" FontSize="11"
-                                Style="{DynamicResource ButtonDefault}"
+                        <Button Grid.Column="0" Margin="0,0,3,0" Height="28" FontSize="11"
                                 Command="{Binding DataContext.PreviewThemeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding}" />
+                                CommandParameter="{Binding}">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonDefault}">
+                                    <Setter Property="Content" Value="Preview" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
+                                            <Setter Property="Content" Value="Previewing" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
 
                         <!-- Apply / Install Button -->
                         <Button Grid.Column="1" Margin="3,0,0,0" Height="28" FontSize="11"
@@ -202,6 +235,10 @@
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
                                             <Setter Property="Content" Value="Update" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                            <Setter Property="Content" Value="Applied" />
+                                            <Setter Property="IsEnabled" Value="False" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

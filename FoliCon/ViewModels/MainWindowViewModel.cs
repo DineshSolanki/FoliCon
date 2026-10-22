@@ -205,6 +205,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public ObservableCollection<ThemeOption> AvailableThemes { get; } = [];
 
+    public bool IsPreviewingTheme { get; set; }
+
     private ThemeOption? _selectedThemeOption;
     public ThemeOption? SelectedThemeOption
     {
@@ -213,7 +215,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             if (SetProperty(ref _selectedThemeOption, value) && value != null)
             {
-                ApplyThemeOption(value, isPreview: false);
+                ApplyThemeOption(value, isPreview: IsPreviewingTheme);
             }
         }
     }

@@ -566,6 +566,7 @@
                                         <hc:ComboBox.ItemContainerStyle>
                                             <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
                                                 <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ComboBoxItem_OnPreviewMouseLeftButtonDown" />
+                                                <EventSetter Event="MouseEnter" Handler="ComboBoxItem_OnMouseEnter" />
                                             </Style>
                                         </hc:ComboBox.ItemContainerStyle>
                                         <hc:ComboBox.ItemTemplate>
@@ -655,6 +656,7 @@
                             <ComboBox.ItemContainerStyle>
                                 <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
                                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ComboBoxItem_OnPreviewMouseLeftButtonDown" />
+                                    <EventSetter Event="MouseEnter" Handler="ComboBoxItem_OnMouseEnter" />
                                 </Style>
                             </ComboBox.ItemContainerStyle>
                             <ComboBox.ItemTemplate>

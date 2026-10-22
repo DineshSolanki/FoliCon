@@ -111,6 +111,12 @@ public class ThemeCardViewModel : BindableBase
         set => SetProperty(ref field, value);
     }
 
+    public bool IsPreviewing
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
     public bool IsUpdateAvailable
     {
         get;
