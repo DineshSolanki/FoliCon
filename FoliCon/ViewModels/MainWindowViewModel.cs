@@ -1,4 +1,5 @@
 using FoliCon.Models.Configs;
+using FoliCon.Models.Localization;
 using FoliCon.Models.Themes;
 using FoliCon.Modules.Convertor;
 using FoliCon.Modules.Themes;
@@ -197,10 +198,57 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set => SetProperty(ref field, value);
     }
 
+    private Languages _appLanguage = Languages.English;
     public Languages AppLanguage
     {
-        get;
-        set => SetProperty(ref field, value);
+        get => _appLanguage;
+        set
+        {
+            if (SetProperty(ref _appLanguage, value))
+            {
+                SetCultureInfo();
+                SyncSelectedLanguageOption();
+            }
+        }
+    }
+
+    public ObservableCollection<LanguageOption> AvailableLanguages { get; } = [];
+
+    private LanguageOption? _selectedLanguageOption;
+    public LanguageOption? SelectedLanguageOption
+    {
+        get => _selectedLanguageOption;
+        set
+        {
+            if (SetProperty(ref _selectedLanguageOption, value) && value != null)
+            {
+                if (AppLanguage != value.Language)
+                {
+                    AppLanguage = value.Language;
+                }
+            }
+        }
+    }
+
+    public void SyncSelectedLanguageOption()
+    {
+        var match = AvailableLanguages.FirstOrDefault(l => l.Language == AppLanguage)
+                    ?? LanguageOption.All.FirstOrDefault(l => l.Language == AppLanguage);
+        if (match != null && _selectedLanguageOption?.Language != match.Language)
+        {
+            _selectedLanguageOption = match;
+            RaisePropertyChanged(nameof(SelectedLanguageOption));
+        }
+    }
+
+    private void InitializeLanguages()
+    {
+        AvailableLanguages.Clear();
+        foreach (var lang in LanguageOption.All)
+        {
+            AvailableLanguages.Add(lang);
+        }
+        SyncSelectedLanguageOption();
     }
 
     public ObservableCollection<ThemeOption> AvailableThemes { get; } = [];
@@ -346,6 +394,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             ProcessUtils.CheckWebView2();
             TrackProperties();
+            InitializeLanguages();
             RefreshAvailableThemes();
             ApplyInitialTheme();
             SetCultureInfo();
@@ -1581,7 +1630,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("TrackProperties: Tracker configured and tracking started.");
     }
 
-    private void SetCultureInfo()
+    public void SetCultureInfo()
     {
         var selectedLanguage = AppLanguage;
         Logger.Debug("SetCultureInfo: Selected language: {Language}", selectedLanguage);

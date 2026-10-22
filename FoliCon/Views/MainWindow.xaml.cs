@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using FoliCon.Models.Localization;
 using FoliCon.Models.Themes;
 using FoliCon.Modules.Themes;
 using WpfComboBox = System.Windows.Controls.ComboBox;
@@ -238,7 +239,28 @@ public partial class MainWindow
             return;
         }
 
-        var selectedLanguage = (Languages)CmbLanguage.SelectedValue;
+        Languages selectedLanguage;
+        if (CmbLanguage.SelectedItem is LanguageOption opt)
+        {
+            selectedLanguage = opt.Language;
+            if (DataContext is MainWindowViewModel vm && vm.AppLanguage != selectedLanguage)
+            {
+                vm.AppLanguage = selectedLanguage;
+            }
+        }
+        else if (CmbLanguage.SelectedItem is Languages lang)
+        {
+            selectedLanguage = lang;
+            if (DataContext is MainWindowViewModel vm && vm.AppLanguage != selectedLanguage)
+            {
+                vm.AppLanguage = selectedLanguage;
+            }
+        }
+        else
+        {
+            return;
+        }
+
         var cultureInfo = CultureUtils.GetCultureInfoByLanguage(selectedLanguage);
         LangProvider.Culture = cultureInfo;
         Thread.CurrentThread.CurrentCulture = cultureInfo;
@@ -247,6 +269,27 @@ public partial class MainWindow
         if (FinalList is not null)
         {
             UiUtils.SetColumnWidth(FinalList);
+        }
+    }
+
+    private void TopLanguageComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (sender is WpfComboBox combo && combo.SelectedItem is LanguageOption option)
+        {
+            if (DataContext is MainWindowViewModel vm && vm.AppLanguage != option.Language)
+            {
+                vm.AppLanguage = option.Language;
+            }
+
+            var cultureInfo = CultureUtils.GetCultureInfoByLanguage(option.Language);
+            LangProvider.Culture = cultureInfo;
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
+            if (FinalList is not null)
+            {
+                UiUtils.SetColumnWidth(FinalList);
+            }
         }
     }
 
