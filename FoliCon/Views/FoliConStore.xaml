@@ -599,37 +599,38 @@
 
             <!-- Tab 1: Themes -->
             <TabItem Header="✦ Themes">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,8,0,0">
-                    <ListBox ItemsSource="{Binding VisibleThemes}"
-                             SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
-                             ItemTemplate="{StaticResource ThemeCardTemplate}"
-                             Background="Transparent" BorderThickness="0"
-                             KeyboardNavigation.DirectionalNavigation="Continue"
-                             ScrollViewer.CanContentScroll="False"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel HorizontalAlignment="Center" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="BorderThickness" Value="0" />
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="Margin" Value="0" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBoxItem">
-                                            <ContentPresenter />
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
-                </ScrollViewer>
+                <ListBox x:Name="ThemesListBox"
+                         ItemsSource="{Binding VisibleThemes}"
+                         SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
+                         ItemTemplate="{StaticResource ThemeCardTemplate}"
+                         Background="Transparent" BorderThickness="0"
+                         KeyboardNavigation.DirectionalNavigation="Continue"
+                         ScrollViewer.CanContentScroll="False"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         PreviewMouseWheel="ThemesListBox_OnPreviewMouseWheel"
+                         Margin="0,8,0,0">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
             </TabItem>
 
             <!-- Tab 2: Overlays (Full feature parity with existing OverlayStore) -->
