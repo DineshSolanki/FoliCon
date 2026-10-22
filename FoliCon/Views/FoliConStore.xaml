@@ -16,11 +16,12 @@
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
+            <Setter Property="Title" Value="{Binding Title}" />
             <Setter Property="Width" Value="1080" />
             <Setter Property="Height" Value="740" />
             <Setter Property="MinWidth" Value="850" />
             <Setter Property="MinHeight" Value="580" />
-            <Setter Property="WindowStartupLocation" Value="CenterOwner" />
+            <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
             <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
         </Style>
     </prism:Dialog.WindowStyle>

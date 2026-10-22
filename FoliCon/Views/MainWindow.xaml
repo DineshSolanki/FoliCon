@@ -556,8 +556,8 @@
                                                FontWeight="SemiBold" FontSize="12"
                                                Foreground="{DynamicResource PrimaryTextBrush}" Margin="0,0,0,6" />
                                     <hc:ComboBox x:Name="CmbTheme" AutoComplete="True"
-                                                 ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                                 IsEditable="False" SelectedItem="{Binding Path=Theme}"
+                                                 ItemsSource="{Binding AvailableThemes}"
+                                                 IsEditable="False" SelectedItem="{Binding Path=SelectedThemeOption}"
                                                  DropDownOpened="CmbTheme_OnDropDownOpened"
                                                  DropDownClosed="CmbTheme_OnDropDownClosed"
                                                  SelectionChanged="CmbTheme_OnSelectionChanged"
@@ -642,8 +642,8 @@
                               Fill="{DynamicResource PrimaryBrush}" Margin="4,0,6,0" VerticalAlignment="Center" />
                         <TextBlock Text="Theme:" FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center" Margin="0,0,4,0" />
                         <ComboBox x:Name="TopThemeComboBox"
-                                  ItemsSource="{Binding Source={hc:EnumBindingSource {x:Type enums:FoliconThemes}}}"
-                                  SelectedItem="{Binding Theme}"
+                                  ItemsSource="{Binding AvailableThemes}"
+                                  SelectedItem="{Binding SelectedThemeOption}"
                                   DropDownOpened="CmbTheme_OnDropDownOpened"
                                   DropDownClosed="CmbTheme_OnDropDownClosed"
                                   SelectionChanged="CmbTheme_OnSelectionChanged"

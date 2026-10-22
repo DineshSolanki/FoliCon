@@ -1,4 +1,9 @@
 #nullable enable
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using FoliCon.Models.Themes;
+using FoliCon.Modules.Themes;
 using System.Windows;
 using System.Windows.Media;
 using FoliCon.Models.Enums;
@@ -292,5 +297,69 @@ public class ThemeManagementTests
                 MainWindowViewModel.RestoreThemeSnapshot(initialSnapshot);
             }
         });
+    }
+
+    [Fact]
+    public void MainWindow_AvailableThemes_IncludesBothBuiltInAndCommunityThemes()
+    {
+        using var host = new WpfTestHost();
+        WpfTestHost.Invoke(() =>
+        {
+            var initialSnapshot = MainWindowViewModel.CaptureThemeSnapshot();
+            try
+            {
+                var parser = new HybridThemeParser();
+                var fakeStorage = new FakeThemeStorageForMainWindow();
+                fakeStorage.Themes.AddRange(BuiltInThemes.GetAll());
+                fakeStorage.Themes.Add(new ThemeManifest
+                {
+                    Id = "synthwave-84",
+                    Name = "Synthwave '84",
+                    Author = "NeonMaster",
+                    BaseTheme = "Dark",
+                    Colors = new ThemeColorPalette
+                    {
+                        Background = "#262335",
+                        CardSurface = "#2A2139",
+                        Primary = "#FF7EDB",
+                        Accent = "#36F9F6",
+                        PrimaryText = "#FFFFFF"
+                    }
+                });
+
+                var vm = new MainWindowViewModel(null!, fakeStorage, parser);
+                Assert.True(vm.AvailableThemes.Count >= 9); // 8 built-in + 1 community
+
+                var communityOption = vm.AvailableThemes.FirstOrDefault(t => t.Id == "synthwave-84");
+                Assert.NotNull(communityOption);
+                Assert.Equal("Synthwave '84", communityOption.DisplayName);
+                Assert.False(communityOption.IsBuiltIn);
+
+                // Select community theme in dropdown
+                vm.SelectedThemeOption = communityOption;
+                Assert.Equal("synthwave-84", vm.CustomThemeId);
+                Assert.Equal("synthwave-84", MainWindowViewModel.ActiveThemeId);
+            }
+            finally
+            {
+                MainWindowViewModel.RestoreThemeSnapshot(initialSnapshot);
+            }
+        });
+    }
+
+    private sealed class FakeThemeStorageForMainWindow : IThemeStorageService
+    {
+        public string ThemesDirectory => Path.GetTempPath();
+        public List<ThemeManifest> Themes { get; } = [];
+        public IReadOnlyList<ThemeManifest> GetInstalledThemes() => Themes;
+        public IReadOnlyList<ThemeManifest> GetUserThemes() => Themes;
+        public ThemeManifest? GetThemeById(string themeId) => Themes.Find(t => t.Id == themeId);
+        public bool IsThemeInstalled(string themeId) => Themes.Exists(t => t.Id == themeId);
+        public string GetThemeFolderPath(string themeId) => Path.Combine(ThemesDirectory, themeId);
+        public Task<ThemeManifest> InstallThemeFromJsonAsync(string json, byte[]? previewImageBytes = null, CancellationToken ct = default) => throw new NotImplementedException();
+        public Task<ThemeManifest> InstallThemeFromPackageAsync(Stream packageStream, CancellationToken ct = default) => throw new NotImplementedException();
+        public Task<string> ExportThemePackageAsync(string themeId, string destinationZipPath, CancellationToken ct = default) => Task.FromResult(destinationZipPath);
+        public bool DeleteTheme(string themeId) => Themes.RemoveAll(t => t.Id == themeId) > 0;
+        public void Refresh() { }
     }
 }

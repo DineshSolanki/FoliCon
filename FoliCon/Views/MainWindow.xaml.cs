@@ -41,6 +41,10 @@ public partial class MainWindow
 
     private void CmbTheme_OnDropDownOpened(object sender, EventArgs e)
     {
+        if (DataContext is MainWindowViewModel vm)
+        {
+            vm.RefreshAvailableThemes();
+        }
         _isDropdownOpen = true;
         _isCommitted = false;
         _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
@@ -48,11 +52,17 @@ public partial class MainWindow
 
     private void CmbTheme_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_isDropdownOpen && sender is WpfComboBox combo && combo.SelectedItem is FoliconThemes theme)
+        if (_isDropdownOpen && sender is WpfComboBox combo)
         {
-            // Live preview as the user traverses items with mouse or arrow keys (IntelliJ style)
             _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
-            MainWindowViewModel.ApplyAppTheme(theme);
+            if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
+            {
+                vm.ApplyThemeOption(option, isPreview: true);
+            }
+            else if (combo.SelectedItem is FoliconThemes theme)
+            {
+                MainWindowViewModel.ApplyAppTheme(theme);
+            }
         }
     }
 
@@ -92,6 +102,10 @@ public partial class MainWindow
             _isCommitted = true;
             combo.IsDropDownOpen = false;
             _dropdownPreviewSnapshot = null;
+            if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
+            {
+                vm.ApplyThemeOption(option, isPreview: false);
+            }
         }
         else if (e.Key == Key.Escape)
         {
@@ -120,17 +134,12 @@ public partial class MainWindow
     {
         if (_dropdownPreviewSnapshot != null)
         {
-            var origTheme = _dropdownPreviewSnapshot.CurrentTheme;
             MainWindowViewModel.RestoreThemeSnapshot(_dropdownPreviewSnapshot);
             _dropdownPreviewSnapshot = null;
 
-            if (CmbTheme != null)
+            if (DataContext is MainWindowViewModel vm)
             {
-                CmbTheme.SelectedItem = origTheme;
-            }
-            if (TopThemeComboBox != null)
-            {
-                TopThemeComboBox.SelectedItem = origTheme;
+                vm.SyncSelectedThemeOptionWithActive();
             }
         }
         _isDropdownOpen = false;

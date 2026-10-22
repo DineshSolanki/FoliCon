@@ -1,5 +1,6 @@
 using FoliCon.Models.Configs;
 using FoliCon.Models.Themes;
+using FoliCon.Modules.Convertor;
 using FoliCon.Modules.Themes;
 using HandyControl.Themes;
 
@@ -103,6 +104,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     private readonly IDialogService _dialogService;
+    private readonly IThemeStorageService? _themeStorageService;
+    private readonly IThemeParser? _themeParser;
     public StatusBarData StatusBarProperties { get; set; }
 
     public ProgressBarData BusyIndicatorProperties
@@ -200,13 +203,43 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set => SetProperty(ref field, value);
     }
 
-    public FoliconThemes Theme
+    public ObservableCollection<ThemeOption> AvailableThemes { get; } = [];
+
+    private ThemeOption? _selectedThemeOption;
+    public ThemeOption? SelectedThemeOption
     {
-        get;
+        get => _selectedThemeOption;
         set
         {
-            SetProperty(ref field, value);
-            ApplyAppTheme(value);
+            if (SetProperty(ref _selectedThemeOption, value) && value != null)
+            {
+                ApplyThemeOption(value, isPreview: false);
+            }
+        }
+    }
+
+    private string _customThemeId = string.Empty;
+    public string CustomThemeId
+    {
+        get => _customThemeId;
+        set => SetProperty(ref _customThemeId, value);
+    }
+
+    private bool _isSynchronizingTheme;
+
+    private FoliconThemes _theme = FoliconThemes.System;
+    public FoliconThemes Theme
+    {
+        get => _theme;
+        set
+        {
+            if (SetProperty(ref _theme, value))
+            {
+                if (!_isSynchronizingTheme)
+                {
+                    ApplyAppTheme(value);
+                }
+            }
         }
     }
 
@@ -295,15 +328,24 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     #endregion DelegateCommands
 
-    public MainWindowViewModel(IDialogService dialogService)
+    public MainWindowViewModel(
+        IDialogService dialogService,
+        IThemeStorageService? themeStorageService = null,
+        IThemeParser? themeParser = null)
     {
         _dialogService = dialogService;
+        _themeStorageService = themeStorageService;
+        _themeParser = themeParser;
+
+        ActiveThemeChanged += OnActiveThemeChanged;
+
         Logger.Info("Application Started, Initializing MainWindowViewModel.");
         try
         {
             ProcessUtils.CheckWebView2();
             TrackProperties();
-            ApplyAppTheme(Theme);
+            RefreshAvailableThemes();
+            ApplyInitialTheme();
             SetCultureInfo();
             InitializeDelegates();
             InitializeProperties();
@@ -314,6 +356,22 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         {
             Logger.Fatal(ex, "Fatal error during MainWindowViewModel initialization");
         }
+    }
+
+    private void ApplyInitialTheme()
+    {
+        if (!string.IsNullOrEmpty(CustomThemeId))
+        {
+            var manifest = _themeStorageService?.GetThemeById(CustomThemeId);
+            if (manifest != null)
+            {
+                ApplyThemeManifest(manifest, _themeParser ?? new HybridThemeParser());
+                SyncSelectedThemeOptionWithActive(CustomThemeId);
+                return;
+            }
+        }
+        ApplyAppTheme(Theme);
+        SyncSelectedThemeOptionWithActive();
     }
 
     private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
@@ -1512,6 +1570,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             .Property(p => p.IsPosterWindowShown, false)
             .Property(p => p.AppLanguage, Languages.English)
             .Property(p => p.Theme, FoliconThemes.System)
+            .Property(p => p.CustomThemeId, string.Empty)
             .Property(p => p.EnableErrorReporting, false)
             .Property(p => p.IncludeAlreadyProcessed, false)
             .Property(p => p.ProcessSelectedFolder, false)
@@ -1664,6 +1723,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         bool isDark = IsDarkTheme(theme);
         UpdateThemeBrushes(isDark, customThemeDict);
         WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+        ActiveThemeChanged?.Invoke(ActiveThemeId);
     }
 
     public static void ApplyCommunityTheme(ThemeManifest manifest, ResourceDictionary customThemeDict)
@@ -1693,6 +1753,139 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
         UpdateThemeBrushes(manifest.IsDark, customThemeDict);
         WindowBackdropHelper.UpdateAllOpenWindows(manifest.IsDark);
+        ActiveThemeChanged?.Invoke(ActiveThemeId);
+    }
+
+    public static event Action<string?>? ActiveThemeChanged;
+
+    public void RefreshAvailableThemes()
+    {
+        var installed = _themeStorageService != null
+            ? _themeStorageService.GetInstalledThemes()
+            : BuiltInThemes.GetAll();
+
+        var currentActiveId = !string.IsNullOrEmpty(CustomThemeId)
+            ? CustomThemeId
+            : (ActiveThemeId ?? ActiveThemeManifest?.Id ?? Theme.ToString().ToLowerInvariant());
+
+        AvailableThemes.Clear();
+        foreach (var manifest in installed)
+        {
+            FoliconThemes? builtInEnum = manifest.Id.ToLowerInvariant() switch
+            {
+                "light" => FoliconThemes.Light,
+                "dark" => FoliconThemes.Dark,
+                "the-butterfly" => FoliconThemes.TheButterfly,
+                "tokyo-neon" => FoliconThemes.TokyoNeon,
+                "mica-dark-obsidian" => FoliconThemes.MicaDarkObsidian,
+                "nordic-pine" => FoliconThemes.NordicPine,
+                "cinema-35mm" => FoliconThemes.Cinema35mm,
+                "system" => FoliconThemes.System,
+                _ => null
+            };
+
+            var displayName = builtInEnum.HasValue
+                ? ThemeToDisplayConverter.GetLocalizedThemeName(builtInEnum.Value)
+                : manifest.Name;
+
+            var option = new ThemeOption
+            {
+                Id = manifest.Id,
+                DisplayName = displayName,
+                IsBuiltIn = manifest.IsBuiltIn,
+                BuiltInTheme = builtInEnum,
+                Manifest = manifest
+            };
+
+            AvailableThemes.Add(option);
+        }
+
+        SyncSelectedThemeOptionWithActive(currentActiveId);
+    }
+
+    public void SyncSelectedThemeOptionWithActive(string? targetId = null)
+    {
+        var id = targetId ?? (!string.IsNullOrEmpty(CustomThemeId) ? CustomThemeId : ActiveThemeId);
+        ThemeOption? match = null;
+
+        if (!string.IsNullOrEmpty(id))
+        {
+            match = AvailableThemes.FirstOrDefault(t => string.Equals(t.Id, id, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (match == null)
+        {
+            match = AvailableThemes.FirstOrDefault(t => t.BuiltInTheme == Theme)
+                 ?? AvailableThemes.FirstOrDefault(t => t.BuiltInTheme == FoliconThemes.System)
+                 ?? AvailableThemes.FirstOrDefault();
+        }
+
+        if (match != null && !ReferenceEquals(_selectedThemeOption, match))
+        {
+            _selectedThemeOption = match;
+            RaisePropertyChanged(nameof(SelectedThemeOption));
+        }
+    }
+
+    public void ApplyThemeOption(ThemeOption option, bool isPreview)
+    {
+        if (_isSynchronizingTheme) return;
+        try
+        {
+            _isSynchronizingTheme = true;
+            if (option.Manifest != null && !option.IsBuiltIn)
+            {
+                if (!isPreview)
+                {
+                    CustomThemeId = option.Id;
+                }
+                ApplyThemeManifest(option.Manifest, _themeParser ?? new HybridThemeParser());
+            }
+            else if (option.BuiltInTheme.HasValue)
+            {
+                if (!isPreview)
+                {
+                    CustomThemeId = string.Empty;
+                    _theme = option.BuiltInTheme.Value;
+                    RaisePropertyChanged(nameof(Theme));
+                }
+                ApplyAppTheme(option.BuiltInTheme.Value);
+            }
+        }
+        finally
+        {
+            _isSynchronizingTheme = false;
+        }
+    }
+
+    private void OnActiveThemeChanged(string? activeId)
+    {
+        if (string.IsNullOrEmpty(activeId) || _isSynchronizingTheme) return;
+        try
+        {
+            _isSynchronizingTheme = true;
+            RefreshAvailableThemes();
+            var match = AvailableThemes.FirstOrDefault(t => string.Equals(t.Id, activeId, StringComparison.OrdinalIgnoreCase));
+            if (match != null)
+            {
+                _selectedThemeOption = match;
+                if (!match.IsBuiltIn)
+                {
+                    CustomThemeId = match.Id;
+                }
+                else if (match.BuiltInTheme.HasValue)
+                {
+                    CustomThemeId = string.Empty;
+                    _theme = match.BuiltInTheme.Value;
+                    RaisePropertyChanged(nameof(Theme));
+                }
+                RaisePropertyChanged(nameof(SelectedThemeOption));
+            }
+        }
+        finally
+        {
+            _isSynchronizingTheme = false;
+        }
     }
 
     public static void ApplyThemeManifest(ThemeManifest manifest, IThemeParser parser)
