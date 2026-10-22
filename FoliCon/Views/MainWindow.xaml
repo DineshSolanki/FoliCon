@@ -562,16 +562,22 @@
                                                  DropDownClosed="CmbTheme_OnDropDownClosed"
                                                  SelectionChanged="CmbTheme_OnSelectionChanged"
                                                  PreviewKeyDown="CmbTheme_OnPreviewKeyDown"
+                                                 PreviewMouseMove="CmbTheme_OnPreviewMouseMove"
                                                  Margin="0,0,0,12">
                                         <hc:ComboBox.ItemContainerStyle>
                                             <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
                                                 <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ComboBoxItem_OnPreviewMouseLeftButtonDown" />
                                                 <EventSetter Event="MouseEnter" Handler="ComboBoxItem_OnMouseEnter" />
+                                                <EventSetter Event="PreviewMouseMove" Handler="ComboBoxItem_OnPreviewMouseMove" />
                                             </Style>
                                         </hc:ComboBox.ItemContainerStyle>
                                         <hc:ComboBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
+                                                <Border Background="Transparent" HorizontalAlignment="Stretch"
+                                                        MouseEnter="ThemeItem_OnMouseEnter"
+                                                        PreviewMouseMove="ThemeItem_OnPreviewMouseMove">
+                                                    <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
+                                                </Border>
                                             </DataTemplate>
                                         </hc:ComboBox.ItemTemplate>
                                     </hc:ComboBox>
@@ -649,6 +655,7 @@
                                   DropDownClosed="CmbTheme_OnDropDownClosed"
                                   SelectionChanged="CmbTheme_OnSelectionChanged"
                                   PreviewKeyDown="CmbTheme_OnPreviewKeyDown"
+                                  PreviewMouseMove="CmbTheme_OnPreviewMouseMove"
                                   Focusable="True" IsTabStop="True"
                                   BorderThickness="0" Background="Transparent"
                                   FontSize="11" FontWeight="SemiBold"
@@ -657,11 +664,16 @@
                                 <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
                                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ComboBoxItem_OnPreviewMouseLeftButtonDown" />
                                     <EventSetter Event="MouseEnter" Handler="ComboBoxItem_OnMouseEnter" />
+                                    <EventSetter Event="PreviewMouseMove" Handler="ComboBoxItem_OnPreviewMouseMove" />
                                 </Style>
                             </ComboBox.ItemContainerStyle>
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
+                                    <Border Background="Transparent" HorizontalAlignment="Stretch"
+                                            MouseEnter="ThemeItem_OnMouseEnter"
+                                            PreviewMouseMove="ThemeItem_OnPreviewMouseMove">
+                                        <TextBlock Text="{Binding Converter={StaticResource ThemeToDisplayConverter}}" />
+                                    </Border>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

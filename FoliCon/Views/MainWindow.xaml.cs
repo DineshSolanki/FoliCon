@@ -13,6 +13,7 @@ public partial class MainWindow
     private ThemeStateSnapshot? _dropdownPreviewSnapshot;
     private bool _isDropdownOpen;
     private bool _isCommitted;
+    private ThemeOption? _lastHoveredOption;
 
     public MainWindow()
     {
@@ -43,21 +44,72 @@ public partial class MainWindow
     {
         if (DataContext is MainWindowViewModel vm)
         {
-            vm.RefreshAvailableThemes();
             vm.IsPreviewingTheme = true;
         }
         _isDropdownOpen = true;
         _isCommitted = false;
+        _lastHoveredOption = null;
         _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
+    }
+
+    private void TriggerThemeHoverPreview(object? source)
+    {
+        var depObj = source as DependencyObject;
+        var item = FindVisualParent<ComboBoxItem>(depObj);
+        var option = item?.DataContext as ThemeOption
+                  ?? (depObj as FrameworkElement)?.DataContext as ThemeOption;
+
+        if (option != null && DataContext is MainWindowViewModel vm)
+        {
+            if (!ReferenceEquals(_lastHoveredOption, option))
+            {
+                _lastHoveredOption = option;
+                _isDropdownOpen = true;
+                _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
+                vm.IsPreviewingTheme = true;
+                vm.ApplyThemeOption(option, isPreview: true);
+            }
+        }
+    }
+
+    private void ThemeItem_OnMouseEnter(object sender, MouseEventArgs e)
+    {
+        TriggerThemeHoverPreview(sender ?? e.OriginalSource);
+    }
+
+    private void ThemeItem_OnPreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        TriggerThemeHoverPreview(sender ?? e.OriginalSource);
     }
 
     private void ComboBoxItem_OnMouseEnter(object sender, MouseEventArgs e)
     {
-        if (_isDropdownOpen && sender is ComboBoxItem item && item.DataContext is ThemeOption option && DataContext is MainWindowViewModel vm)
+        TriggerThemeHoverPreview(sender ?? e.OriginalSource);
+    }
+
+    private void ComboBoxItem_OnPreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        TriggerThemeHoverPreview(sender ?? e.OriginalSource);
+    }
+
+    private void CmbTheme_OnPreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (sender is WpfComboBox combo && combo.IsDropDownOpen)
         {
-            _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
-            vm.ApplyThemeOption(option, isPreview: true);
+            TriggerThemeHoverPreview(e.OriginalSource);
         }
+    }
+
+    private static T? FindVisualParent<T>(DependencyObject? child) where T : DependencyObject
+    {
+        while (child != null)
+        {
+            if (child is T parent) return parent;
+            child = child is Visual or System.Windows.Media.Media3D.Visual3D
+                ? VisualTreeHelper.GetParent(child)
+                : LogicalTreeHelper.GetParent(child);
+        }
+        return null;
     }
 
     private void CmbTheme_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -112,6 +164,7 @@ public partial class MainWindow
             _isCommitted = true;
             combo.IsDropDownOpen = false;
             _dropdownPreviewSnapshot = null;
+            _lastHoveredOption = null;
             if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
             {
                 vm.IsPreviewingTheme = false;
@@ -134,6 +187,7 @@ public partial class MainWindow
     private void CmbTheme_OnDropDownClosed(object sender, EventArgs e)
     {
         _isDropdownOpen = false;
+        _lastHoveredOption = null;
         if (DataContext is MainWindowViewModel vm)
         {
             vm.IsPreviewingTheme = false;
@@ -156,6 +210,7 @@ public partial class MainWindow
 
     private void RollbackDropdownPreview()
     {
+        _lastHoveredOption = null;
         if (_dropdownPreviewSnapshot != null)
         {
             var savedCustomId = _dropdownPreviewSnapshot.ActiveThemeManifest != null && !_dropdownPreviewSnapshot.ActiveThemeManifest.IsBuiltIn
