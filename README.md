@@ -33,9 +33,34 @@
 
 ---
 
-**FoliCon** is a modern, high-performance Windows application that transforms plain, generic folders into stunning, personalized media artworks. It automatically queries online databases (TMDB, IGDB, DeviantArt) for high-resolution posters, fan art, and ratings (IMDb, TMDB), dynamically renders them into native `.ico` files, and applies them instantly without restarting Windows Explorer.
+## ❤️ Support FoliCon
 
-Built with **WPF & .NET**, FoliCon features an extensible **Overlay Plugin System** and built-in **Overlay Designer**, giving you 100% creative freedom to customize shapes, 3D borders, reflections, and rating badges.
+If **FoliCon** has saved you hours of manual folder customization, please consider supporting development.
+
+[![Sponsor on GitHub](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ea4aaa?logo=githubsponsors&logoColor=white)](https://github.com/sponsors/DineshSolanki)
+[![Star this repo](https://img.shields.io/github/stars/DineshSolanki/FoliCon?style=social)](https://github.com/DineshSolanki/FoliCon/stargazers)
+
+### Why sponsor?
+Your support helps keep FoliCon fast, reliable, and actively maintained:
+
+- 🎯 New features (better matching, richer metadata, improved icon quality)
+- 🛠️ Faster bug fixes and compatibility updates
+- 📦 Continued WinGet/Chocolatey packaging and release maintenance
+- 💬 More time for issue support and community requests
+
+### Ways to help
+- **Monthly support:** [GitHub Sponsors](https://github.com/sponsors/DineshSolanki)
+- **One-time support:** [PayPal](http://paypal.me/DineshSolanki)
+- **Free support:** Star the repo, share it with friends, and report issues/ideas
+
+### Transparency commitment
+I’ll continue publishing changelogs and roadmap updates so supporters can see exactly what’s being improved next.
+
+---
+
+**FoliCon** is a modern, high-performance Windows application that transforms plain, generic folders into stunning, personalized media artworks. It automatically queries online databases (TMDB, IGDB, DeviantArt) and applies beautiful, metadata-rich icons in seconds.
+
+Built with **WPF & .NET**, FoliCon features an extensible **Overlay Plugin System** and built-in **Overlay Designer**, giving you 100% creative freedom to customize shapes, 3D borders, reflections, templates, and badge placements.
 
 ---
 
@@ -80,11 +105,11 @@ Download the latest pre-compiled archive from [**GitHub Releases**](https://gith
 
   | Searching & Matching | Poster Selection & IMDb Badges |
   |:---:|:---:|
-  | ![Searching](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/professional-mode/searching.png) | ![PosterSearch](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/poster-mode/search-result_dark.png) |
+  | ![Searching](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/professional-mode/searching.png) | ![PosterSearch](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/professional-mode/poster-search.png) |
 
   | Main Batch Workflow | Custom Manual Icon Setter |
   |:---:|:---:|
-  | ![Folicon Main View](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/main/main-loaded_dark.png) | ![FoliCon Custom Icon](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/custom-icon-setter/custom-icon-setter-example_dark.png) |
+  | ![Folicon Main View](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/main/main-loaded_dark.png) | ![FoliCon Custom Icon](https://github.com/DineshSolanki/FoliCon-docs/blob/master/docs/images/main/custom-icon-mode.png) |
 
 </details>
 
@@ -120,7 +145,7 @@ FoliCon separates icon rendering from core code using JSON-driven **Overlays**.
 
 *No complex installation required — download the latest release and run.*
 
-FoliCon connects with third-party media APIs for accurate metadata. On your first run, a friendly **Setup Wizard** will guide you through connecting the services you wish to use (*all services are 100% free*):
+FoliCon connects with third-party media APIs for accurate metadata. On your first run, a friendly **Setup Wizard** will guide you through connecting the services you wish to use (*all services are optional*).
 
 | Service | Purpose | How to Get (Free) |
 | :--- | :--- | :--- |
