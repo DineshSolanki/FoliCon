@@ -820,6 +820,7 @@
                         <!-- Prominent Vibrant Folder Badge -->
                         <Border Grid.Column="0" Width="44" Height="44" CornerRadius="10"
                                 Background="{DynamicResource FolderBadgeGradientBrush}"
+                                Effect="{DynamicResource ThemeGlowEffect}"
                                 Margin="0,0,14,0">
                             <Path Data="{StaticResource CleanFolderGeometry}" Width="22" Height="22" Stretch="Uniform"
                                   Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -836,6 +837,7 @@
                         <Button Grid.Column="2"
                                 Style="{DynamicResource ButtonPrimary}"
                                 Background="{DynamicResource PrimaryActionGradientBrush}"
+                                Effect="{DynamicResource ThemeGlowEffect}"
                                 Height="36" Padding="18,0"
                                 Command="{Binding LoadCommand}">
                             <StackPanel Orientation="Horizontal">
@@ -1253,12 +1255,13 @@
                                 </Style>
                             </StackPanel.Style>
 
-                            <Border Width="60" Height="60" CornerRadius="14"
-                                    Background="{DynamicResource SecondaryRegionBrush}"
-                                    BorderBrush="{DynamicResource BorderBrush}"
+                            <Border Width="64" Height="64" CornerRadius="16"
+                                    Background="{DynamicResource HeroCardBackgroundBrush}"
+                                    BorderBrush="{DynamicResource HeroCardBorderBrush}"
                                     BorderThickness="1"
+                                    Effect="{DynamicResource ThemeGlowEffect}"
                                     HorizontalAlignment="Center" Margin="0,0,0,12">
-                                <Path Data="{StaticResource CleanFolderGeometry}" Width="28" Height="28" Stretch="Uniform"
+                                <Path Data="{DynamicResource ThemeBrandingGeometry}" Width="30" Height="30" Stretch="Uniform"
                                       Fill="{DynamicResource PrimaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                             </Border>
                             <TextBlock Text="No Media Folders in Queue"
