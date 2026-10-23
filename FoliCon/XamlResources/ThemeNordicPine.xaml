@@ -66,8 +66,8 @@
 
     <!-- Glassy Abyssal-Spruce-to-Deep-Moss Hero Card Gradient -->
     <LinearGradientBrush x:Key="HeroCardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#182A25" Offset="0.0" />
-        <GradientStop Color="#11201C" Offset="1.0" />
+        <GradientStop Color="#D9182A25" Offset="0.0" />
+        <GradientStop Color="#CC11201C" Offset="1.0" />
     </LinearGradientBrush>
 
     <!-- Top-Down Lichen-Edge Border for Hero -->
@@ -100,4 +100,24 @@
         <GradientStop Color="#047857" Offset="1.0" />
     </LinearGradientBrush>
 
+
+    <!-- ========================================================================= -->
+    <!-- LIVING THEME TOKENS                                                       -->
+    <!-- ========================================================================= -->
+    <ImageBrush x:Key="ThemeWallpaperBrush"
+                ImageSource="pack://application:,,,/FoliCon;component/Resources/Themes/nordic_pine_backdrop.jpg"
+                Stretch="UniformToFill" Opacity="0.28" />
+
+    <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.85" RadiusY="0.85">
+        <GradientStop Color="#000C1613" Offset="0.0" />
+        <GradientStop Color="#800C1613" Offset="0.55" />
+        <GradientStop Color="#E60C1613" Offset="1.0" />
+    </RadialGradientBrush>
+
+    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="16" ShadowDepth="0" Opacity="0.65" Color="#10B981" />
+    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="22" ShadowDepth="0" Opacity="0.75" Color="#10B981" />
+    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="16" ShadowDepth="0" Opacity="0.60" Color="#6EE7B7" />
+
+    <!-- Theme Branding Glyph -->
+    <Geometry x:Key="ThemeBrandingGeometry">M12 2l4 5h-2.5l4 5h-3l4.5 6H13v4h-2v-4H3l4.5-6h-3l4-5H6l4-5z</Geometry>
 </ResourceDictionary>

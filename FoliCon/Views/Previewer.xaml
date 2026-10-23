@@ -31,6 +31,7 @@
     </prism:Dialog.WindowStyle>
 
     <Grid>
+        
         <Grid.RowDefinitions>
             <!-- Top Controls & Filters Toolbar -->
             <RowDefinition Height="Auto" />
@@ -39,11 +40,15 @@
             <!-- Bottom Status & Close Bar -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
+        <Rectangle Grid.RowSpan="3" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
+        <Rectangle Grid.RowSpan="3" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
+
 
         <!-- 1. Top Controls & Settings Card -->
         <Border Grid.Row="0"
-                Background="{DynamicResource SecondaryRegionBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
+                Background="{DynamicResource HeroCardBackgroundBrush}"
+                BorderBrush="{DynamicResource HeroCardBorderBrush}"
                 BorderThickness="0,0,0,1"
                 Padding="18,12">
             <Grid>
@@ -541,8 +546,8 @@
 
         <!-- 3. Bottom Status & Close Bar -->
         <Border Grid.Row="2"
-                Background="{DynamicResource SecondaryRegionBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
+                Background="{DynamicResource HeroCardBackgroundBrush}"
+                BorderBrush="{DynamicResource HeroCardBorderBrush}"
                 BorderThickness="0,1,0,0"
                 Padding="18,12">
             <Grid>

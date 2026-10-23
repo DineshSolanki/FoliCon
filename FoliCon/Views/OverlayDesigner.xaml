@@ -70,16 +70,21 @@
     </UserControl.InputBindings>
 
     <Grid Margin="16,12">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
+        <Rectangle Grid.RowSpan="3" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" Margin="-16,-12" />
+        <Rectangle Grid.RowSpan="3" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" Margin="-16,-12" />
+
 
         <!-- Modern Elevated Toolbar -->
         <Border Grid.Row="0" Margin="0,0,0,10" Padding="10,8"
-                Background="{DynamicResource SecondaryRegionBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
+                Background="{DynamicResource HeroCardBackgroundBrush}"
+                BorderBrush="{DynamicResource HeroCardBorderBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
             <DockPanel LastChildFill="False">

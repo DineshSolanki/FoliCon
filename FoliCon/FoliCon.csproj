@@ -49,6 +49,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Themes\*.jpg" />
     <Resource Include="Resources\icons\folicon Icon.ico" />
     <Resource Include="Resources\icons\folicon Icon.png" />
     <Resource Include="Resources\icons\LoadingPosterImage.png" />

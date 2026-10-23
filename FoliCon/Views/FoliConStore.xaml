@@ -101,8 +101,8 @@
             <Border Width="290" Height="255" Margin="8" Padding="14,12"
                     CornerRadius="8"
                     Cursor="Hand"
-                    Background="{DynamicResource SecondaryRegionBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
+                    Background="{DynamicResource HeroCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource HeroCardBorderBrush}"
                     BorderThickness="1">
                 <Border.InputBindings>
                     <MouseBinding Gesture="LeftClick"
@@ -156,6 +156,10 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
+        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
+        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
+
 
                     <!-- Full-Card Surface Tint Highlight -->
                     <Border Grid.RowSpan="5" Margin="-14,-12" CornerRadius="8" IsHitTestVisible="False">
@@ -355,8 +359,8 @@
         <DataTemplate x:Key="OverlayCardTemplate" DataType="{x:Type viewModels:OverlayCardViewModel}">
             <Border Width="220" Padding="10" Margin="4"
                     CornerRadius="8"
-                    Background="{DynamicResource SecondaryRegionBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
+                    Background="{DynamicResource HeroCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource HeroCardBorderBrush}"
                     BorderThickness="1">
                 <StackPanel>
                     <!-- Preview Image Thumbnail -->
@@ -443,8 +447,8 @@
         <DataTemplate x:Key="OverlayRowTemplate" DataType="{x:Type viewModels:OverlayCardViewModel}">
             <Border Padding="12,8"
                     CornerRadius="6"
-                    Background="{DynamicResource SecondaryRegionBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
+                    Background="{DynamicResource HeroCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource HeroCardBorderBrush}"
                     BorderThickness="1">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -524,7 +528,8 @@
     </UserControl.Resources>
 
     <!-- Root Grid: Stretch to 100% of dialog window (no hardcoded fixed width/height) -->
-    <Grid Background="{DynamicResource RegionBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        
         <Grid.RowDefinitions>
             <!-- Row 0: Top Header Banner -->
             <RowDefinition Height="Auto" />
