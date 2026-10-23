@@ -4,6 +4,8 @@ using FoliCon.Models.Themes;
 using FoliCon.Modules.Convertor;
 using FoliCon.Modules.Themes;
 using HandyControl.Themes;
+using Brushes = System.Windows.Media.Brushes;
+using DropShadowEffect = System.Windows.Media.Effects.DropShadowEffect;
 
 namespace FoliCon.ViewModels;
 
@@ -105,6 +107,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     private readonly IDialogService _dialogService;
+    private static IThemeStorageService? _activeThemeStorageService;
     private readonly IThemeStorageService? _themeStorageService;
     private readonly IThemeParser? _themeParser;
     public StatusBarData StatusBarProperties { get; set; }
@@ -385,6 +388,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     {
         _dialogService = dialogService;
         _themeStorageService = themeStorageService;
+        _activeThemeStorageService = themeStorageService;
         _themeParser = themeParser;
 
         ActiveThemeChanged += OnActiveThemeChanged;
@@ -1714,6 +1718,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             FoliconThemes.Cinema35mm => "cinema-35mm",
 
             FoliconThemes.Love => "love",
+            FoliconThemes.Corporate => "corporate",
             _ => "system"
         };
         ActiveThemeManifest = BuiltInThemes.GetAll().FirstOrDefault(t => string.Equals(t.Id, ActiveThemeId, StringComparison.OrdinalIgnoreCase));
@@ -1775,6 +1780,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ThemeManager.Current.UsingSystemTheme = false;
 
                 customThemeDict = ApplyCustomThemeOverride("ThemeLove.xaml");
+                break;
+            case FoliconThemes.Corporate:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                customThemeDict = ApplyCustomThemeOverride("ThemeCorporate.xaml");
 
                 break;
             default:
@@ -1845,6 +1855,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 "cinema-35mm" => FoliconThemes.Cinema35mm,
 
                 "love" => FoliconThemes.Love,
+                "corporate" => FoliconThemes.Corporate,
 
                 "system" => FoliconThemes.System,
                 _ => null
@@ -1972,6 +1983,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 "cinema-35mm" => FoliconThemes.Cinema35mm,
 
                 "love" => FoliconThemes.Love,
+                "corporate" => FoliconThemes.Corporate,
 
                 _ => FoliconThemes.System
             };
@@ -1983,11 +1995,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         if (!string.IsNullOrEmpty(manifest.XamlPackageFile) && !string.IsNullOrEmpty(manifest.PackageDirectory))
         {
             var xamlPath = Path.Combine(manifest.PackageDirectory, manifest.XamlPackageFile);
-            customDict = File.Exists(xamlPath) ? parser.LoadPackageResourceDictionary(xamlPath) : parser.SynthesizeResourceDictionary(manifest);
+            customDict = File.Exists(xamlPath) ? parser.LoadPackageResourceDictionary(xamlPath) : parser.SynthesizeResourceDictionary(manifest, _activeThemeStorageService?.GetUserCustomization(manifest.Id));
         }
         else
         {
-            customDict = parser.SynthesizeResourceDictionary(manifest);
+            customDict = parser.SynthesizeResourceDictionary(manifest, _activeThemeStorageService?.GetUserCustomization(manifest.Id));
         }
 
         ApplyCommunityTheme(manifest, customDict);
@@ -2037,6 +2049,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             FoliconThemes.Cinema35mm => true,
 
             FoliconThemes.Love => true,
+            FoliconThemes.Corporate => true,
             FoliconThemes.System => IsSystemThemeDark(),
             _ => IsSystemThemeDark()
         };
@@ -2100,6 +2113,21 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             res["HeaderGradientBrush"] = isDark ? DarkHeaderGradient : LightHeaderGradient;
             res["CardBorderGradientBrush"] = isDark ? DarkHeroCardBorder : LightHeroCardBorder;
             res["FolderBadgeGradientBrush"] = PrimaryActionBrush;
+
+            res["ThemeWallpaperBrush"] = Brushes.Transparent;
+            res["ThemeActionBannerBrush"] = Brushes.Transparent;
+            res["ThemeActionBannerOverlayBrush"] = Brushes.Transparent;
+            res["ThemeCardMovieBrush"] = Brushes.Transparent;
+            res["ThemeCardTvBrush"] = Brushes.Transparent;
+            res["ThemeCardGameBrush"] = Brushes.Transparent;
+            res["ThemeCardAutoBrush"] = Brushes.Transparent;
+            res["ThemeVignetteBrush"] = Brushes.Transparent;
+
+            var zeroGlow = new DropShadowEffect { BlurRadius = 0, ShadowDepth = 0, Opacity = 0 };
+            zeroGlow.Freeze();
+            res["ThemeGlowEffect"] = zeroGlow;
+            res["ThemeCtaGlowEffect"] = zeroGlow;
+            res["ActiveCardGlowEffect"] = zeroGlow;
         }
     }
 
@@ -2111,7 +2139,20 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
         else
         {
-            target.Remove(key);
+            if (key.EndsWith("Brush", StringComparison.OrdinalIgnoreCase))
+            {
+                target[key] = Brushes.Transparent;
+            }
+            else if (key.EndsWith("Effect", StringComparison.OrdinalIgnoreCase))
+            {
+                var zeroGlow = new DropShadowEffect { BlurRadius = 0, ShadowDepth = 0, Opacity = 0 };
+                zeroGlow.Freeze();
+                target[key] = zeroGlow;
+            }
+            else
+            {
+                target.Remove(key);
+            }
         }
     }
 
@@ -2143,7 +2184,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     dict.Source.OriginalString.Contains("ThemeNordicPine", StringComparison.OrdinalIgnoreCase) ||
                     dict.Source.OriginalString.Contains("ThemeCinema35mm", StringComparison.OrdinalIgnoreCase) ||
 
-                    dict.Source.OriginalString.Contains("ThemeLove", StringComparison.OrdinalIgnoreCase)))
+                    dict.Source.OriginalString.Contains("ThemeLove", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeCorporate", StringComparison.OrdinalIgnoreCase)))
                 {
                     merged.RemoveAt(i);
                 }

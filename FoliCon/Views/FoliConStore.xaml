@@ -580,7 +580,7 @@
         </Border>
 
         <!-- Transient Live Preview Bar (visible only when previewing a theme) -->
-        <Border Grid.Row="1" Background="#E03B82F6" Padding="16,8"
+        <Border Grid.Row="1" Background="{DynamicResource PrimaryBrush}" Padding="16,8"
                 Visibility="{Binding IsPreviewing, Converter={StaticResource BoolToVis}}">
             <Grid>
                 <Grid.ColumnDefinitions>

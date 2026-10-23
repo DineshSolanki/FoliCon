@@ -271,7 +271,7 @@
                                                 </Image>
 
                                                 <!-- Watcher-wall badge overlay -->
-                                                <Border Background="#E61A1A1A"
+                                                <Border Background="{DynamicResource SecondaryRegionBrush}"
                                                         CornerRadius="5"
                                                         Padding="6,3"
                                                         HorizontalAlignment="Right"

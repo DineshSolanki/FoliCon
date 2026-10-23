@@ -8,8 +8,12 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
+using System.Windows.Media.Imaging;
 using System.Xml;
 using FoliCon.Models.Themes;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using JsonException = System.Text.Json.JsonException;
@@ -20,7 +24,8 @@ namespace FoliCon.Modules.Themes;
 
 /// <summary>
 /// Hybrid theme parser capable of parsing declarative JSON manifests,
-/// synthesizing frozen WPF ResourceDictionaries, and sandboxing XAML packages.
+/// synthesizing frozen WPF ResourceDictionaries, sandboxing XAML packages,
+/// and composably layering user customizations.
 /// </summary>
 public class HybridThemeParser : IThemeParser
 {
@@ -99,6 +104,9 @@ public class HybridThemeParser : IThemeParser
             ValidateColorToken(result, "colors.accent", manifest.Colors.Accent, isRequired: false);
             ValidateColorToken(result, "colors.secondaryText", manifest.Colors.SecondaryText, isRequired: false);
             ValidateColorToken(result, "colors.thirdText", manifest.Colors.ThirdText, isRequired: false);
+            ValidateColorToken(result, "colors.success", manifest.Colors.Success, isRequired: false);
+            ValidateColorToken(result, "colors.warning", manifest.Colors.Warning, isRequired: false);
+            ValidateColorToken(result, "colors.error", manifest.Colors.Error, isRequired: false);
         }
 
         // Validate Materials & Gradients
@@ -122,6 +130,43 @@ public class HybridThemeParser : IThemeParser
             ValidateGradient(result, "materials.folderBadgeGradient", manifest.Materials.FolderBadgeGradient);
         }
 
+        // Validate Effects
+        if (manifest.Effects != null)
+        {
+            if (manifest.Effects.GlowIntensity is < 0.0 or > 2.0)
+            {
+                result.Warnings.Add("effects.glowIntensity should be between 0.0 and 2.0.");
+            }
+            if (manifest.Effects.PanelOpacity is < 0.0 or > 1.0)
+            {
+                result.Warnings.Add("effects.panelOpacity should be between 0.0 and 1.0.");
+            }
+            if (manifest.Effects.BloomRadius < 0.0)
+            {
+                result.Warnings.Add("effects.bloomRadius should be non-negative.");
+            }
+        }
+
+        // Validate Shapes
+        if (manifest.Shapes != null)
+        {
+            if (manifest.Shapes.PanelRadius < 0.0 || manifest.Shapes.ButtonRadius < 0.0 || manifest.Shapes.CardRadius < 0.0)
+            {
+                result.Warnings.Add("shapes corner radii should be non-negative.");
+            }
+        }
+
+        // Validate Assets
+        if (manifest.Assets != null)
+        {
+            ValidateAssetPath(result, "assets.wallpaper", manifest.Assets.Wallpaper);
+            ValidateAssetPath(result, "assets.actionBanner", manifest.Assets.ActionBanner);
+            ValidateAssetPath(result, "assets.movieCard", manifest.Assets.MovieCard);
+            ValidateAssetPath(result, "assets.tvCard", manifest.Assets.TvCard);
+            ValidateAssetPath(result, "assets.gameCard", manifest.Assets.GameCard);
+            ValidateAssetPath(result, "assets.autoCard", manifest.Assets.AutoCard);
+        }
+
         // Validate XamlPackageFile path safety
         if (string.IsNullOrWhiteSpace(manifest.XamlPackageFile))
         {
@@ -136,6 +181,17 @@ public class HybridThemeParser : IThemeParser
         return result;
     }
 
+    private static void ValidateAssetPath(ThemeValidationResult result, string propertyName, string? path)
+    {
+        if (string.IsNullOrWhiteSpace(path)) return;
+        if (path.StartsWith("pack://", StringComparison.OrdinalIgnoreCase)) return;
+
+        if (path.Contains(".."))
+        {
+            result.Errors.Add($"{propertyName} cannot contain path traversal sequences ('..').");
+        }
+    }
+
     public ThemeManifest Parse(string json)
     {
         var validation = Validate(json);
@@ -148,26 +204,41 @@ public class HybridThemeParser : IThemeParser
         return manifest;
     }
 
-    public ResourceDictionary SynthesizeResourceDictionary(ThemeManifest manifest)
+    public ResourceDictionary SynthesizeResourceDictionary(ThemeManifest manifest, UserThemeCustomization? customization = null)
     {
         ArgumentNullException.ThrowIfNull(manifest);
         var colors = manifest.Colors ?? new ThemeColorPalette();
         var materials = manifest.Materials;
+        var effects = manifest.Effects;
+        var shapes = manifest.Shapes;
+        var assets = manifest.Assets;
 
         var dict = new ResourceDictionary();
 
-        // 1. Resolve Color Primitives
+        // 1. Resolve Color Primitives (Layer 2 Theme Pack + Layer 3 User Overrides)
         var bgColor = ParseColor(colors.Background, Color.FromRgb(0x14, 0x14, 0x14));
         var cardColor = ParseColor(colors.CardSurface, Color.FromRgb(0x1E, 0x1E, 0x1E));
         var elevatedColor = ParseColor(colors.ElevatedSurface, AdjustBrightness(cardColor, 1.15f));
-        var primaryColor = ParseColor(colors.Primary, Color.FromRgb(0x3B, 0x82, 0xF6));
+
+        var primaryColor = !string.IsNullOrEmpty(customization?.CustomAccentColor)
+            ? ParseColor(customization.CustomAccentColor, Color.FromRgb(0x3B, 0x82, 0xF6))
+            : ParseColor(colors.Primary, Color.FromRgb(0x3B, 0x82, 0xF6));
+
         var primaryDark = ParseColor(colors.PrimaryPressed, AdjustBrightness(primaryColor, 0.8f));
         var primaryLight = ParseColor(colors.PrimaryHover, AdjustBrightness(primaryColor, 1.2f));
-        var accentColor = ParseColor(colors.Accent, primaryLight);
+
+        var accentColor = !string.IsNullOrEmpty(customization?.CustomAccentColor)
+            ? primaryColor
+            : ParseColor(colors.Accent, primaryLight);
+
         var borderColor = ParseColor(colors.Border, Color.FromRgb(0x38, 0x38, 0x38));
         var primaryTextColor = ParseColor(colors.PrimaryText, Color.FromRgb(0xF8, 0xFA, 0xFC));
         var secondaryTextColor = ParseColor(colors.SecondaryText, WithAlpha(primaryTextColor, 0xB3)); // ~70%
         var thirdTextColor = ParseColor(colors.ThirdText, WithAlpha(primaryTextColor, 0x80)); // ~50%
+
+        var successColor = ParseColor(colors.Success, Color.FromRgb(0x10, 0xB9, 0x81));
+        var warningColor = ParseColor(colors.Warning, Color.FromRgb(0xF5, 0x9E, 0x0B));
+        var dangerColor = ParseColor(colors.Error, Color.FromRgb(0xEF, 0x44, 0x44));
 
         // 2. Put Colors into ResourceDictionary
         dict["BackgroundColor"] = bgColor;
@@ -181,6 +252,9 @@ public class HybridThemeParser : IThemeParser
         dict["PrimaryTextColor"] = primaryTextColor;
         dict["SecondaryTextColor"] = secondaryTextColor;
         dict["ThirdTextColor"] = thirdTextColor;
+        dict["SuccessColor"] = successColor;
+        dict["WarningColor"] = warningColor;
+        dict["DangerColor"] = dangerColor;
 
         // HandyControl Regional Color Keys
         dict["RegionColor"] = bgColor;
@@ -205,6 +279,10 @@ public class HybridThemeParser : IThemeParser
         dict["ThirdTextBrush"] = CreateFrozenBrush(thirdTextColor);
         dict["ThirdlyTextBrush"] = CreateFrozenBrush(thirdTextColor);
 
+        dict["SuccessBrush"] = CreateFrozenBrush(successColor);
+        dict["WarningBrush"] = CreateFrozenBrush(warningColor);
+        dict["DangerBrush"] = CreateFrozenBrush(dangerColor);
+
         dict["DefaultBrush"] = CreateFrozenBrush(cardColor);
         dict["DarkDefaultBrush"] = CreateFrozenBrush(bgColor);
 
@@ -213,7 +291,11 @@ public class HybridThemeParser : IThemeParser
             ? ParseColor(materials.BackdropColor, bgColor)
             : bgColor;
 
-        var opacity = materials?.BackdropOpacity ?? 0.85;
+        var opacity = customization?.PanelOpacity
+            ?? effects?.PanelOpacity
+            ?? materials?.BackdropOpacity
+            ?? 0.85;
+
         var backdropAlpha = (byte)Math.Clamp((int)Math.Round(opacity * 255.0), 0, 255);
         dict["WindowBackdropBrush"] = CreateFrozenBrush(WithAlpha(backdropTint, backdropAlpha));
 
@@ -272,7 +354,190 @@ public class HybridThemeParser : IThemeParser
                 new GradientStop(primaryColor, 1.0)
             ]);
 
+        // 6. Synthesize Effects (Layer 4 & Layer 6)
+        var glowScalar = (effects?.GlowIntensity ?? 0.8) * (customization?.GlowMultiplier ?? 1.0);
+        var bloomRadius = effects?.BloomRadius ?? 24.0;
+        var shadowDepth = effects?.ShadowDepth ?? 0.0;
+
+        if (glowScalar > 0.01)
+        {
+            var themeGlow = new DropShadowEffect
+            {
+                Color = primaryColor,
+                BlurRadius = Math.Max(0.0, bloomRadius * glowScalar),
+                ShadowDepth = shadowDepth,
+                Opacity = Math.Clamp(glowScalar, 0.0, 1.0)
+            };
+            themeGlow.Freeze();
+            dict["ThemeGlowEffect"] = themeGlow;
+
+            var ctaGlow = new DropShadowEffect
+            {
+                Color = primaryLight,
+                BlurRadius = Math.Max(0.0, (bloomRadius + 6.0) * glowScalar),
+                ShadowDepth = shadowDepth,
+                Opacity = Math.Clamp(glowScalar * 1.1, 0.0, 1.0)
+            };
+            ctaGlow.Freeze();
+            dict["ThemeCtaGlowEffect"] = ctaGlow;
+
+            var activeCardGlow = new DropShadowEffect
+            {
+                Color = primaryColor,
+                BlurRadius = Math.Max(0.0, (bloomRadius - 4.0) * glowScalar),
+                ShadowDepth = shadowDepth,
+                Opacity = Math.Clamp(glowScalar * 0.9, 0.0, 1.0)
+            };
+            activeCardGlow.Freeze();
+            dict["ActiveCardGlowEffect"] = activeCardGlow;
+        }
+        else
+        {
+            // Crisp zero glow for Corporate/Minimal themes
+            var zeroGlow = new DropShadowEffect { BlurRadius = 0, ShadowDepth = 0, Opacity = 0 };
+            zeroGlow.Freeze();
+            dict["ThemeGlowEffect"] = zeroGlow;
+            dict["ThemeCtaGlowEffect"] = zeroGlow;
+            dict["ActiveCardGlowEffect"] = zeroGlow;
+        }
+
+        // 7. Synthesize Shapes (Layer 5)
+        var panelRadius = shapes?.PanelRadius ?? 10.0;
+        var buttonRadius = shapes?.ButtonRadius ?? 8.0;
+        var cardRadius = shapes?.CardRadius ?? 10.0;
+        dict["PanelCornerRadius"] = new CornerRadius(panelRadius);
+        dict["ButtonCornerRadius"] = new CornerRadius(buttonRadius);
+        dict["CardCornerRadius"] = new CornerRadius(cardRadius);
+        dict["ControlCornerRadius"] = new CornerRadius(buttonRadius);
+
+        // 8. Synthesize Living Assets & Wallpapers (Layer 2)
+        Brush wallpaperBrush = Brushes.Transparent;
+        if (customization != null && !customization.IsWallpaperEnabled)
+        {
+            wallpaperBrush = Brushes.Transparent;
+        }
+        else if (customization != null && !string.IsNullOrEmpty(customization.CustomWallpaperPath) && File.Exists(customization.CustomWallpaperPath))
+        {
+            var customBrush = LoadImageBrushFromFile(customization.CustomWallpaperPath);
+            if (customBrush != null) wallpaperBrush = customBrush;
+        }
+        else if (!string.IsNullOrEmpty(assets?.Wallpaper))
+        {
+            var manifestBrush = ResolveAssetBrush(assets.Wallpaper, manifest.PackageDirectory);
+            if (manifestBrush != null) wallpaperBrush = manifestBrush;
+        }
+        dict["ThemeWallpaperBrush"] = wallpaperBrush;
+
+        dict["ThemeActionBannerBrush"] = ResolveAssetBrush(assets?.ActionBanner, manifest.PackageDirectory) ?? Brushes.Transparent;
+        dict["ThemeCardMovieBrush"] = ResolveAssetBrush(assets?.MovieCard, manifest.PackageDirectory) ?? Brushes.Transparent;
+        dict["ThemeCardTvBrush"] = ResolveAssetBrush(assets?.TvCard, manifest.PackageDirectory) ?? Brushes.Transparent;
+        dict["ThemeCardGameBrush"] = ResolveAssetBrush(assets?.GameCard, manifest.PackageDirectory) ?? Brushes.Transparent;
+        dict["ThemeCardAutoBrush"] = ResolveAssetBrush(assets?.AutoCard, manifest.PackageDirectory) ?? Brushes.Transparent;
+
+        // Vignette
+        if (effects?.VignetteEnabled != false && wallpaperBrush != Brushes.Transparent)
+        {
+            var vignette = new RadialGradientBrush
+            {
+                Center = new Point(0.5, 0.4),
+                GradientOrigin = new Point(0.5, 0.4),
+                RadiusX = 0.9,
+                RadiusY = 0.9
+            };
+            vignette.GradientStops.Add(new GradientStop(Color.FromArgb(0x00, bgColor.R, bgColor.G, bgColor.B), 0.0));
+            vignette.GradientStops.Add(new GradientStop(Color.FromArgb(0x20, bgColor.R, bgColor.G, bgColor.B), 0.55));
+            vignette.GradientStops.Add(new GradientStop(Color.FromArgb(0x80, bgColor.R, bgColor.G, bgColor.B), 1.0));
+            vignette.Freeze();
+            dict["ThemeVignetteBrush"] = vignette;
+        }
+        else
+        {
+            dict["ThemeVignetteBrush"] = Brushes.Transparent;
+        }
+
+        // Action Banner Overlay
+        var bannerOverlay = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
+        bannerOverlay.GradientStops.Add(new GradientStop(Color.FromArgb(0x60, 0, 0, 0), 0.0));
+        bannerOverlay.GradientStops.Add(new GradientStop(Color.FromArgb(0x20, primaryColor.R, primaryColor.G, primaryColor.B), 0.5));
+        bannerOverlay.GradientStops.Add(new GradientStop(Color.FromArgb(0x60, 0, 0, 0), 1.0));
+        bannerOverlay.Freeze();
+        dict["ThemeActionBannerOverlayBrush"] = bannerOverlay;
+
+        // 9. Synthesize Branding Vector Geometry
+        if (!string.IsNullOrWhiteSpace(assets?.BrandingGeometry))
+        {
+            try
+            {
+                var geom = Geometry.Parse(assets.BrandingGeometry);
+                geom.Freeze();
+                dict["ThemeBrandingGeometry"] = geom;
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to parse theme branding geometry '{Geometry}'", assets.BrandingGeometry);
+            }
+        }
+
         return dict;
+    }
+
+    private static Brush? ResolveAssetBrush(string? assetPathOrUri, string? packageDirectory)
+    {
+        if (string.IsNullOrWhiteSpace(assetPathOrUri)) return null;
+
+        try
+        {
+            if (assetPathOrUri.StartsWith("pack://", StringComparison.OrdinalIgnoreCase))
+            {
+                var bi = new BitmapImage();
+                bi.BeginInit();
+                bi.UriSource = new Uri(assetPathOrUri, UriKind.Absolute);
+                bi.CacheOption = BitmapCacheOption.OnLoad;
+                bi.EndInit();
+                bi.Freeze();
+
+                var brush = new ImageBrush(bi) { Stretch = Stretch.UniformToFill };
+                brush.Freeze();
+                return brush;
+            }
+
+            string fullPath = !string.IsNullOrEmpty(packageDirectory)
+                ? Path.Combine(packageDirectory, assetPathOrUri)
+                : assetPathOrUri;
+
+            if (File.Exists(fullPath))
+            {
+                return LoadImageBrushFromFile(fullPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to resolve theme asset brush from '{Path}'", assetPathOrUri);
+        }
+
+        return null;
+    }
+
+    private static ImageBrush? LoadImageBrushFromFile(string filePath)
+    {
+        try
+        {
+            var bi = new BitmapImage();
+            bi.BeginInit();
+            bi.UriSource = new Uri(filePath, UriKind.Absolute);
+            bi.CacheOption = BitmapCacheOption.OnLoad;
+            bi.EndInit();
+            bi.Freeze();
+
+            var brush = new ImageBrush(bi) { Stretch = Stretch.UniformToFill };
+            brush.Freeze();
+            return brush;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to load image brush from file '{FilePath}'", filePath);
+            return null;
+        }
     }
 
     private static readonly HashSet<string> AllowedXamlElements = new(StringComparer.OrdinalIgnoreCase)
@@ -289,7 +554,6 @@ public class HybridThemeParser : IThemeParser
 
     private static readonly HashSet<string> AllowedNamespaces =
     [
-        with(StringComparer.OrdinalIgnoreCase),
         "http://schemas.microsoft.com/winfx/2006/xaml/presentation",
         "http://schemas.microsoft.com/winfx/2006/xaml"
     ];
@@ -350,7 +614,7 @@ public class HybridThemeParser : IThemeParser
                             if (!AllowedNamespaces.Contains(attrValue))
                             {
                                 throw new SecurityException(
-                                    $"Theme XAML defines unauthorized namespace '{attrValue}'.");
+                                    $"Theme XAML contains unauthorized xmlns declaration '{attrName}=\"{attrValue}\"'.");
                             }
                             continue;
                         }
@@ -370,7 +634,6 @@ public class HybridThemeParser : IThemeParser
                                 $"Theme XAML contains forbidden network or UNC path reference: '{attrValue}'.");
                         }
                     }
-
                     xmlReader.MoveToElement();
                 }
             }

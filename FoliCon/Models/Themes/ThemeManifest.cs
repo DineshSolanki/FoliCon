@@ -46,6 +46,18 @@ public sealed class ThemeManifest
     [JsonPropertyName("materials")]
     public ThemeMaterialTokens? Materials { get; set; }
 
+    [JsonPropertyName("effects")]
+    public ThemeEffectsTokens? Effects { get; set; }
+
+    [JsonPropertyName("shapes")]
+    public ThemeShapesTokens? Shapes { get; set; }
+
+    [JsonPropertyName("assets")]
+    public ThemeAssetsTokens? Assets { get; set; }
+
+    [JsonPropertyName("typography")]
+    public ThemeTypographyTokens? Typography { get; set; }
+
     /// <summary>
     /// Optional relative path to a custom XAML resource dictionary within a .folicontheme package.
     /// </summary>
@@ -71,7 +83,7 @@ public sealed class ThemeManifest
     public bool IsBuiltIn { get; set; }
 
     /// <summary>
-    /// Returns true if BaseTheme represents a dark theme.
+    /// Convenient helper checking if baseTheme is dark.
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
     public bool IsDark => !string.Equals(BaseTheme, "Light", System.StringComparison.OrdinalIgnoreCase);

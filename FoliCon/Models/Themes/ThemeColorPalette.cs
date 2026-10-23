@@ -41,4 +41,13 @@ public sealed class ThemeColorPalette
 
     [JsonPropertyName("thirdText")]
     public string? ThirdText { get; set; }
+
+    [JsonPropertyName("success")]
+    public string? Success { get; set; }
+
+    [JsonPropertyName("warning")]
+    public string? Warning { get; set; }
+
+    [JsonPropertyName("error")]
+    public string? Error { get; set; }
 }

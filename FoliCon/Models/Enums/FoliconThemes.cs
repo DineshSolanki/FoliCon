@@ -22,5 +22,7 @@ public enum FoliconThemes
 
     Cinema35mm,
 
-    Love
+    Love,
+
+    Corporate
 }

@@ -294,6 +294,10 @@ public class FoliConStoreViewModelTests : IDisposable
         public Task<ThemeManifest> InstallThemeFromJsonAsync(string json, byte[]? previewImageBytes = null, CancellationToken ct = default) => throw new NotImplementedException();
         public Task<ThemeManifest> InstallThemeFromPackageAsync(Stream packageStream, CancellationToken ct = default) => throw new NotImplementedException();
         public Task<string> ExportThemePackageAsync(string themeId, string destinationZipPath, CancellationToken ct = default) => Task.FromResult(destinationZipPath);
+        public Task<string> ExportThemeVariantAsync(string baseThemeId, UserThemeCustomization customization, string variantId, string variantName, string destinationZipPath, CancellationToken ct = default) => Task.FromResult(destinationZipPath);
+        public UserThemeCustomization? GetUserCustomization(string themeId) => null;
+        public void SaveUserCustomization(UserThemeCustomization customization) { }
+        public void ClearUserCustomization(string themeId) { }
         public bool DeleteTheme(string themeId) => InstalledThemes.RemoveAll(t => t.Id == themeId) > 0;
         public void Refresh() { }
     }

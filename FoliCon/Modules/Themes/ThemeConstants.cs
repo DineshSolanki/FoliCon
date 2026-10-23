@@ -75,6 +75,8 @@ public static class ThemeConstants
         "tokyo-neon",
         "mica-dark-obsidian",
         "nordic-pine",
-        "cinema-35mm"
+        "cinema-35mm",
+        "love",
+        "corporate"
     };
 }

@@ -1,0 +1,132 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ========================================================================= -->
+    <!-- FOLICON "CORPORATE MODERN" THEME                                          -->
+    <!-- Restrained, high-density slate & precision enterprise blue                -->
+    <!-- Palette:                                                                  -->
+    <!--   - Window Background:  #0F172A (Deep Slate 900)                          -->
+    <!--   - Surface Background: #1E293B (Slate 800)                               -->
+    <!--   - Panel Background:   #334155 (Slate 700)                               -->
+    <!--   - Primary Accent:     #2563EB (Enterprise Royal Blue)                   -->
+    <!--   - Secondary Accent:   #60A5FA (Crisp Sky Blue)                          -->
+    <!--   - Text Primary:       #F8FAFC (Clean Snow Slate)                        -->
+    <!--   - Text Secondary:     #94A3B8 (Muted Slate)                             -->
+    <!--   - Border:             #334155 (Crisp boundary)                          -->
+    <!--   - Success:            #10B981 (Emerald)                                 -->
+    <!--   - Warning:            #F59E0B (Amber)                                   -->
+    <!--   - Error:              #EF4444 (Crimson)                                 -->
+    <!-- ========================================================================= -->
+
+    <!-- Base Palette Colors -->
+    <Color x:Key="BackgroundColor">#0F172A</Color>
+    <Color x:Key="PrimaryAccentColor">#2563EB</Color>
+    <Color x:Key="SecondaryAccentColor">#60A5FA</Color>
+    <Color x:Key="LightTextColor">#F8FAFC</Color>
+
+    <!-- Derived Surface, Border & State Colors -->
+    <Color x:Key="DarkPrimaryColor">#1D4ED8</Color>
+    <Color x:Key="LightPrimaryColor">#3B82F6</Color>
+    <Color x:Key="CardSurfaceColor">#1E293B</Color>
+    <Color x:Key="ElevatedSurfaceColor">#334155</Color>
+    <Color x:Key="BorderLineColor">#334155</Color>
+    <Color x:Key="SecondaryTextColor">#94A3B8</Color>
+    <Color x:Key="TertiaryTextColor">#64748B</Color>
+
+    <!-- HandyControl Standard Colors -->
+    <Color x:Key="PrimaryColor">#2563EB</Color>
+    <Color x:Key="RegionColor">#0F172A</Color>
+    <Color x:Key="SecondaryRegionColor">#1E293B</Color>
+    <Color x:Key="ThirdRegionColor">#334155</Color>
+    <Color x:Key="BorderColor">#334155</Color>
+    <Color x:Key="PrimaryTextColor">#F8FAFC</Color>
+    <Color x:Key="ThirdTextColor">#64748B</Color>
+    <Color x:Key="SuccessColor">#10B981</Color>
+    <Color x:Key="WarningColor">#F59E0B</Color>
+    <Color x:Key="DangerColor">#EF4444</Color>
+
+    <!-- HandyControl & FoliCon Theme Brushes -->
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}" />
+    <SolidColorBrush x:Key="DarkPrimaryBrush" Color="{StaticResource DarkPrimaryColor}" />
+    <SolidColorBrush x:Key="LightPrimaryBrush" Color="{StaticResource LightPrimaryColor}" />
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource SecondaryAccentColor}" />
+
+    <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
+    <SolidColorBrush x:Key="SecondaryRegionBrush" Color="{StaticResource SecondaryRegionColor}" />
+    <SolidColorBrush x:Key="ThirdlyRegionBrush" Color="{StaticResource ThirdRegionColor}" />
+    <SolidColorBrush x:Key="ThirdRegionBrush" Color="{StaticResource ThirdRegionColor}" />
+
+    <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}" />
+
+    <SolidColorBrush x:Key="PrimaryTextBrush" Color="{StaticResource PrimaryTextColor}" />
+    <SolidColorBrush x:Key="SecondaryTextBrush" Color="{StaticResource SecondaryTextColor}" />
+    <SolidColorBrush x:Key="ThirdTextBrush" Color="{StaticResource ThirdTextColor}" />
+    <SolidColorBrush x:Key="ThirdlyTextBrush" Color="{StaticResource ThirdTextColor}" />
+
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}" />
+
+    <SolidColorBrush x:Key="DefaultBrush" Color="{StaticResource CardSurfaceColor}" />
+    <SolidColorBrush x:Key="DarkDefaultBrush" Color="{StaticResource BackgroundColor}" />
+
+    <!-- ========================================================================= -->
+    <!-- MATERIAL & MINIMAL CORPORATE BRUSHES                                      -->
+    <!-- ========================================================================= -->
+    <SolidColorBrush x:Key="WindowBackdropBrush" Color="#FA0F172A" />
+
+    <!-- Clean Slate Hero Card Gradient -->
+    <LinearGradientBrush x:Key="HeroCardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#E61E293B" Offset="0.0" />
+        <GradientStop Color="#F0151F30" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Precise Crisp Border for Hero -->
+    <LinearGradientBrush x:Key="HeroCardBorderBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#80475569" Offset="0.0" />
+        <GradientStop Color="#40334155" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Clean Enterprise Blue CTA Action Gradient -->
+    <LinearGradientBrush x:Key="PrimaryActionGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#3B82F6" Offset="0.0" />
+        <GradientStop Color="#2563EB" Offset="0.5" />
+        <GradientStop Color="#1D4ED8" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Clean Slate Header Bar -->
+    <LinearGradientBrush x:Key="HeaderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#1E293B" Offset="0.0" />
+        <GradientStop Color="#0F172A" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Clean Bevel Card Borders -->
+    <LinearGradientBrush x:Key="CardBorderGradientBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#475569" Offset="0.0" />
+        <GradientStop Color="#334155" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Folder Badge Gradient -->
+    <LinearGradientBrush x:Key="FolderBadgeGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#3B82F6" Offset="0.0" />
+        <GradientStop Color="#2563EB" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <!-- Corporate: No Distracting Wallpaper or Viewports -->
+    <SolidColorBrush x:Key="ThemeWallpaperBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeActionBannerBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeActionBannerOverlayBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardMovieBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardTvBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardGameBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardAutoBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeVignetteBrush" Color="Transparent" />
+
+    <!-- Zero Glow for Pure High-Density Precision -->
+    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="0" ShadowDepth="0" Opacity="0" Color="#2563EB" />
+    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="0" ShadowDepth="0" Opacity="0" Color="#2563EB" />
+    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="0" ShadowDepth="0" Opacity="0" Color="#2563EB" />
+
+    <!-- Isometric Geometric Layer Branding Glyph -->
+    <Geometry x:Key="ThemeBrandingGeometry">M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5</Geometry>
+</ResourceDictionary>

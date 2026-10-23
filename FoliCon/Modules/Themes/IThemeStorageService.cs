@@ -8,7 +8,8 @@ using FoliCon.Models.Themes;
 namespace FoliCon.Modules.Themes;
 
 /// <summary>
-/// Service managing local theme storage, discovery, packaging, and uninstallation.
+/// Service managing local theme storage, discovery, packaging, uninstallation,
+/// and user customization overrides.
 /// </summary>
 public interface IThemeStorageService
 {
@@ -56,6 +57,26 @@ public interface IThemeStorageService
     /// Exports an installed theme directory to a .folicontheme zip package archive.
     /// </summary>
     Task<string> ExportThemePackageAsync(string themeId, string destinationZipPath, CancellationToken ct = default);
+
+    /// <summary>
+    /// Exports a user-personalized variant of an existing theme to a standalone .folicontheme package archive.
+    /// </summary>
+    Task<string> ExportThemeVariantAsync(string baseThemeId, UserThemeCustomization customization, string variantId, string variantName, string destinationZipPath, CancellationToken ct = default);
+
+    /// <summary>
+    /// Gets the user's custom overrides for the specified theme, or null if uncustomized.
+    /// </summary>
+    UserThemeCustomization? GetUserCustomization(string themeId);
+
+    /// <summary>
+    /// Saves or updates the user's custom overrides for a theme.
+    /// </summary>
+    void SaveUserCustomization(UserThemeCustomization customization);
+
+    /// <summary>
+    /// Resets/clears the user's custom overrides for a theme.
+    /// </summary>
+    void ClearUserCustomization(string themeId);
 
     /// <summary>
     /// Deletes a user-installed theme. Returns false if the theme is built-in or does not exist.

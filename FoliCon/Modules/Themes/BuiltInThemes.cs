@@ -30,7 +30,10 @@ public static class BuiltInThemes
                 Border = "#3D3D3D",
                 PrimaryText = "#F8FAFC",
                 SecondaryText = "#94A3B8",
-                ThirdText = "#64748B"
+                ThirdText = "#64748B",
+                Success = "#10B981",
+                Warning = "#F59E0B",
+                Error = "#EF4444"
             }
         },
         new()
@@ -52,7 +55,10 @@ public static class BuiltInThemes
                 Border = "#E2E8F0",
                 PrimaryText = "#0F172A",
                 SecondaryText = "#64748B",
-                ThirdText = "#94A3B8"
+                ThirdText = "#94A3B8",
+                Success = "#10B981",
+                Warning = "#F59E0B",
+                Error = "#EF4444"
             }
         },
         new()
@@ -170,25 +176,98 @@ public static class BuiltInThemes
         {
             Id = "love",
             Name = "Love",
-            Description = "Romantic twilight atmosphere with luminous neon heart accents and blooming cherry blossom glow.",
+            Description = "Romantic twilight atmosphere with luminous neon heart accents, cherry blossom glow, and scenic living artwork.",
             Author = "FoliCon Team",
             Version = "1.0.0",
             BaseTheme = "Dark",
             IsBuiltIn = true,
-            Tags = ["Official", "Romantic", "Neon", "Love"],
+            Tags = ["Official", "Romantic", "Neon", "Love", "Living"],
             Colors = new ThemeColorPalette
             {
-                Background = "#1A0B16",
-                CardSurface = "#2D1226",
-                ElevatedSurface = "#3D1833",
-                Primary = "#FF2A6D",
-                PrimaryHover = "#FF7597",
-                PrimaryPressed = "#C7004C",
-                Accent = "#FF7597",
-                Border = "#5E274D",
-                PrimaryText = "#FFFFFF",
-                SecondaryText = "#D1A7C2",
-                ThirdText = "#8F6A83"
+                Background = "#080610",
+                CardSurface = "#171018",
+                ElevatedSurface = "#22151E",
+                Primary = "#FF4D7D",
+                PrimaryHover = "#FF8CB3",
+                PrimaryPressed = "#D6285A",
+                Accent = "#FF8CB3",
+                Border = "#6A3264",
+                PrimaryText = "#F8E9EF",
+                SecondaryText = "#C6A7B3",
+                ThirdText = "#8F6580",
+                Success = "#00D6A0",
+                Warning = "#F59E0B",
+                Error = "#E83E5B"
+            },
+            Effects = new ThemeEffectsTokens
+            {
+                GlowIntensity = 0.85,
+                PanelOpacity = 0.70,
+                BloomRadius = 26.0,
+                ShadowDepth = 0.0,
+                VignetteEnabled = true
+            },
+            Shapes = new ThemeShapesTokens
+            {
+                PanelRadius = 12.0,
+                ButtonRadius = 10.0,
+                CardRadius = 10.0
+            },
+            Assets = new ThemeAssetsTokens
+            {
+                Wallpaper = "pack://application:,,,/FoliCon;component/Resources/Themes/love_backdrop.jpg",
+                ActionBanner = "pack://application:,,,/FoliCon;component/Resources/Themes/love_banner.jpg",
+                MovieCard = "pack://application:,,,/FoliCon;component/Resources/Themes/love_card_movie.jpg",
+                TvCard = "pack://application:,,,/FoliCon;component/Resources/Themes/love_card_tv.jpg",
+                GameCard = "pack://application:,,,/FoliCon;component/Resources/Themes/love_card_game.jpg",
+                AutoCard = "pack://application:,,,/FoliCon;component/Resources/Themes/love_card_auto.jpg",
+                BrandingGeometry = "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            }
+        },
+        new()
+        {
+            Id = "corporate",
+            Name = "Corporate Modern",
+            Description = "Clean, distraction-free slate and precision enterprise blue engineered for peak productivity.",
+            Author = "FoliCon Team",
+            Version = "1.0.0",
+            BaseTheme = "Dark",
+            IsBuiltIn = true,
+            Tags = ["Official", "Corporate", "Slate", "Clean", "Minimal"],
+            Colors = new ThemeColorPalette
+            {
+                Background = "#0F172A",
+                CardSurface = "#1E293B",
+                ElevatedSurface = "#334155",
+                Primary = "#2563EB",
+                PrimaryHover = "#3B82F6",
+                PrimaryPressed = "#1D4ED8",
+                Accent = "#60A5FA",
+                Border = "#334155",
+                PrimaryText = "#F8FAFC",
+                SecondaryText = "#94A3B8",
+                ThirdText = "#64748B",
+                Success = "#10B981",
+                Warning = "#F59E0B",
+                Error = "#EF4444"
+            },
+            Effects = new ThemeEffectsTokens
+            {
+                GlowIntensity = 0.0,
+                PanelOpacity = 0.98,
+                BloomRadius = 0.0,
+                ShadowDepth = 0.0,
+                VignetteEnabled = false
+            },
+            Shapes = new ThemeShapesTokens
+            {
+                PanelRadius = 8.0,
+                ButtonRadius = 6.0,
+                CardRadius = 8.0
+            },
+            Assets = new ThemeAssetsTokens
+            {
+                BrandingGeometry = "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
             }
         },
         new()

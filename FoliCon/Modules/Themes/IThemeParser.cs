@@ -22,9 +22,10 @@ public interface IThemeParser
     ThemeManifest Parse(string json);
 
     /// <summary>
-    /// Synthesizes a fully frozen WPF <see cref="ResourceDictionary"/> from declarative manifest color and material tokens.
+    /// Synthesizes a fully frozen WPF <see cref="ResourceDictionary"/> from declarative manifest tokens,
+    /// optionally composed with user customization overrides (Layer 3).
     /// </summary>
-    ResourceDictionary SynthesizeResourceDictionary(ThemeManifest manifest);
+    ResourceDictionary SynthesizeResourceDictionary(ThemeManifest manifest, UserThemeCustomization? customization = null);
 
     /// <summary>
     /// Safely loads an advanced custom XAML resource dictionary from disk, enforcing security sandboxing.
