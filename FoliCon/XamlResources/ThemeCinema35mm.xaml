@@ -66,20 +66,21 @@
 
     <!-- Smoked Espresso-to-Walnut Hero Card Gradient -->
     <LinearGradientBrush x:Key="HeroCardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#D926221C" Offset="0.0" />
-        <GradientStop Color="#CC1A1713" Offset="1.0" />
+        <GradientStop Color="#C0221D17" Offset="0.0" />
+        <GradientStop Color="#8C161310" Offset="1.0" />
     </LinearGradientBrush>
 
     <!-- Top-Down Antique Bronze Border for Hero -->
     <LinearGradientBrush x:Key="HeroCardBorderBrush" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#594936" Offset="0.0" />
-        <GradientStop Color="#352C21" Offset="1.0" />
+        <GradientStop Color="#80F59E0B" Offset="0.0" />
+        <GradientStop Color="#26F59E0B" Offset="1.0" />
     </LinearGradientBrush>
 
     <!-- Glowing Projector Gold-to-Amber CTA Action Gradient -->
     <LinearGradientBrush x:Key="PrimaryActionGradientBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#F59E0B" Offset="0.0" />
-        <GradientStop Color="#D97706" Offset="1.0" />
+        <GradientStop Color="#FFA300" Offset="0.0" />
+        <GradientStop Color="#E67300" Offset="0.5" />
+        <GradientStop Color="#C45500" Offset="1.0" />
     </LinearGradientBrush>
 
     <!-- Atmospheric Sheen Header Bar -->
@@ -106,17 +107,17 @@
     <!-- ========================================================================= -->
     <ImageBrush x:Key="ThemeWallpaperBrush"
                 ImageSource="pack://application:,,,/FoliCon;component/Resources/Themes/cinema_35mm_backdrop.jpg"
-                Stretch="UniformToFill" Opacity="0.30" />
+                Stretch="UniformToFill" Opacity="0.88" />
 
-    <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.85" RadiusY="0.85">
+    <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.9" RadiusY="0.9">
         <GradientStop Color="#00141210" Offset="0.0" />
-        <GradientStop Color="#80141210" Offset="0.55" />
-        <GradientStop Color="#E6141210" Offset="1.0" />
+        <GradientStop Color="#26141210" Offset="0.55" />
+        <GradientStop Color="#8C141210" Offset="1.0" />
     </RadialGradientBrush>
 
-    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="16" ShadowDepth="0" Opacity="0.65" Color="#F59E0B" />
-    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="22" ShadowDepth="0" Opacity="0.75" Color="#F59E0B" />
-    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="16" ShadowDepth="0" Opacity="0.60" Color="#FCD34D" />
+    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="18" ShadowDepth="0" Opacity="0.75" Color="#FF8C00" />
+    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="26" ShadowDepth="0" Opacity="0.85" Color="#FF7A00" />
+    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="18" ShadowDepth="0" Opacity="0.80" Color="#FF8C00" />
 
     <!-- Theme Branding Glyph -->
     <Geometry x:Key="ThemeBrandingGeometry">M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-4.24 3.76c-.78-.78-2.05-.78-2.83 0s-.78 2.05 0 2.83 2.05.78 2.83 0 .78-2.05 0-2.83zm8.48 0c-.78.78-.78 2.05 0 2.83s2.05.78 2.83 0 .78-2.05 0-2.83-2.05-.78-2.83 0zM7.76 14.24c-.78.78-2.05.78-2.83 0s-.78-2.05 0-2.83 2.05-.78 2.83 0 .78 2.05 0 2.83zm8.48 0c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0 .78 2.05 0 2.83-2.05.78-2.83 0zM12 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z</Geometry>

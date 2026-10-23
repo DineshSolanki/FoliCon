@@ -156,9 +156,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
-        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
-        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
+
 
 
                     <!-- Full-Card Surface Tint Highlight -->
@@ -540,6 +538,10 @@
             <!-- Row 3: Bottom Footer Bar -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
+        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
+        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
+        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
 
         <!-- Top Header Banner -->
         <Border Grid.Row="0" Padding="20,14,20,12" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}">

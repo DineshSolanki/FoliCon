@@ -18,7 +18,7 @@
            Title="{Binding Title}" Height="780" Width="1200" MinWidth="880" MinHeight="660"
            WindowStartupLocation="CenterScreen" hc:WindowAttach.IsDragElement="True"           SystemBackdropType="Mica"
            ShowTitle="False"
-           ShowIcon="False"
+           ShowIcon="True"
            NonClientAreaHeight="48"
            NonClientAreaBackground="Transparent"
            NonClientAreaForeground="{DynamicResource PrimaryTextBrush}"
@@ -137,9 +137,7 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="18" />
                                 </Grid.RowDefinitions>
-        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
-        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
-        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
+
 
 
                                 <!-- Circular Icon Badge -->
@@ -188,10 +186,11 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
-                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="1.5" />
-                                <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource SecondaryRegionBrush}" />
-                                <Setter TargetName="IconBadge" Property="Background" Value="{DynamicResource PrimaryBrush}" />
-                                <Setter TargetName="IconPath" Property="Fill" Value="{DynamicResource RegionBrush}" />
+                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="2" />
+                                <Setter TargetName="CardBorder" Property="Background" Value="{DynamicResource HeroCardBackgroundBrush}" />
+                                <Setter TargetName="CardBorder" Property="Effect" Value="{DynamicResource ActiveCardGlowEffect}" />
+                                <Setter TargetName="IconBadge" Property="Background" Value="{DynamicResource PrimaryActionGradientBrush}" />
+                                <Setter TargetName="IconPath" Property="Fill" Value="White" />
                                 <Setter TargetName="ActiveIndicator" Property="Visibility" Value="Visible" />
                                 <Setter Property="FontWeight" Value="Bold" />
                                 <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
@@ -424,10 +423,8 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- FoliCon Branding with Dynamic Theme Emblem -->
+            <!-- FoliCon Branding -->
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="2,0,16,0">
-                <Path Data="{DynamicResource ThemeBrandingGeometry}" Width="16" Height="16" Stretch="Uniform"
-                      Fill="{DynamicResource PrimaryBrush}" VerticalAlignment="Center" Margin="4,0,4,0" />
                 <TextBlock Text="FoliCon" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" Margin="4,0,0,0"
                            Foreground="{DynamicResource PrimaryTextBrush}" />
                 <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="4" Padding="5,1" Margin="8,0,12,0" VerticalAlignment="Center">
@@ -781,13 +778,16 @@
         </hc:BusyIndicator.BusyContentTemplate>
 
         <Grid Background="Transparent">
-            
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />  <!-- Row 0: Folder Hero / Drop Card -->
                 <RowDefinition Height="Auto" />  <!-- Row 1: Mode & Action Control Center -->
                 <RowDefinition Height="*" />     <!-- Row 2: Results & Queue Data Grid -->
                 <RowDefinition Height="Auto" />  <!-- Row 3: Modern Status Bar Footer -->
             </Grid.RowDefinitions>
+
+            <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
+            <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
+            <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
             <!-- ========================================================================= -->
             <!-- ROW 0: FOLDER HERO & DROP TARGET CARD                                     -->
             <!-- ========================================================================= -->
@@ -921,8 +921,8 @@
 
                 <!-- CARD 1: Generation Mode & Source -->
                 <Border Grid.Column="0"
-                        Background="{DynamicResource SecondaryRegionBrush}"
-                        BorderBrush="{DynamicResource CardBorderGradientBrush}"
+                        Background="{DynamicResource HeroCardBackgroundBrush}"
+                        BorderBrush="{DynamicResource HeroCardBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
                         Padding="16,14"
@@ -1056,8 +1056,8 @@
 
                 <!-- CARD 2: Actions & Execution -->
                 <Border Grid.Column="1"
-                        Background="{DynamicResource SecondaryRegionBrush}"
-                        BorderBrush="{DynamicResource CardBorderGradientBrush}"
+                        Background="{DynamicResource HeroCardBackgroundBrush}"
+                        BorderBrush="{DynamicResource HeroCardBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
                         Padding="16,14"
@@ -1085,7 +1085,9 @@
                             <!-- Primary CTA: Make Icons -->
                             <Button Style="{DynamicResource ButtonPrimary}"
                                     Background="{DynamicResource PrimaryActionGradientBrush}"
-                                    Height="48"
+                                    BorderBrush="{DynamicResource PrimaryBrush}"
+                                    BorderThickness="1.5"
+                                    Height="52"
                                     HorizontalAlignment="Stretch"
                                     Command="{Binding SearchAndMakeCommand}"
                                     IsEnabled="{Binding IsMakeEnabled}"
@@ -1138,8 +1140,8 @@
             <!-- ROW 2: RESULTS & QUEUE DATA GRID                                          -->
             <!-- ========================================================================= -->
             <Border Grid.Row="2"
-                    Background="{DynamicResource SecondaryRegionBrush}"
-                    BorderBrush="{DynamicResource BorderBrush}"
+                    Background="{DynamicResource HeroCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource HeroCardBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
                     Margin="16,0,16,10"
@@ -1152,7 +1154,7 @@
 
                     <!-- Table Header Strip -->
                     <Border Grid.Row="0"
-                            Background="{DynamicResource RegionBrush}"
+                            Background="{DynamicResource HeaderGradientBrush}"
                             BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="0,0,0,1"
                             CornerRadius="7,7,0,0"

@@ -64,19 +64,20 @@
 
     <!-- Cyberpunk Obsidian-to-Navy Hero Card Gradient -->
     <LinearGradientBrush x:Key="HeroCardBackgroundBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#D9141E33" Offset="0.0" />
-        <GradientStop Color="#CC0D1524" Offset="1.0" />
+        <GradientStop Color="#C0141E33" Offset="0.0" />
+        <GradientStop Color="#8C0D1524" Offset="1.0" />
     </LinearGradientBrush>
 
     <!-- Electric Neon Cyan Top-Down Light-Incidence Border -->
     <LinearGradientBrush x:Key="HeroCardBorderBrush" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Color="#088395" Offset="0.0" />
-        <GradientStop Color="#1D2A40" Offset="1.0" />
+        <GradientStop Color="#8000F0FF" Offset="0.0" />
+        <GradientStop Color="#2600F0FF" Offset="1.0" />
     </LinearGradientBrush>
 
     <!-- High-Contrast Cyan-to-Teal CTA Action Gradient -->
     <LinearGradientBrush x:Key="PrimaryActionGradientBrush" StartPoint="0,0" EndPoint="1,1">
-        <GradientStop Color="#088395" Offset="0.0" />
+        <GradientStop Color="#00F0FF" Offset="0.0" />
+        <GradientStop Color="#088395" Offset="0.5" />
         <GradientStop Color="#045A67" Offset="1.0" />
     </LinearGradientBrush>
 
@@ -103,17 +104,17 @@
     <!-- ========================================================================= -->
     <ImageBrush x:Key="ThemeWallpaperBrush"
                 ImageSource="pack://application:,,,/FoliCon;component/Resources/Themes/tokyo_neon_backdrop.jpg"
-                Stretch="UniformToFill" Opacity="0.28" />
+                Stretch="UniformToFill" Opacity="0.85" />
 
-    <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.85" RadiusY="0.85">
+    <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.9" RadiusY="0.9">
         <GradientStop Color="#000B0E17" Offset="0.0" />
-        <GradientStop Color="#800B0E17" Offset="0.55" />
-        <GradientStop Color="#E60B0E17" Offset="1.0" />
+        <GradientStop Color="#260B0E17" Offset="0.55" />
+        <GradientStop Color="#8C0B0E17" Offset="1.0" />
     </RadialGradientBrush>
 
-    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="16" ShadowDepth="0" Opacity="0.65" Color="#00F0FF" />
-    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="22" ShadowDepth="0" Opacity="0.75" Color="#00F0FF" />
-    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="16" ShadowDepth="0" Opacity="0.60" Color="#FF2A85" />
+    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="18" ShadowDepth="0" Opacity="0.75" Color="#00F0FF" />
+    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="26" ShadowDepth="0" Opacity="0.85" Color="#00F0FF" />
+    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="18" ShadowDepth="0" Opacity="0.80" Color="#FF2A85" />
 
     <!-- Theme Branding Glyph -->
     <Geometry x:Key="ThemeBrandingGeometry">M2 4h20v2h-2v2h-1v-2H5v2H4V6H2V4zm4 4h12v2H6V8zm1 2v10H5V10h2zm12 0v10h-2V10h2z</Geometry>
