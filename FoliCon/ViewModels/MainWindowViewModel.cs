@@ -1844,7 +1844,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 "nordic-pine" => FoliconThemes.NordicPine,
                 "cinema-35mm" => FoliconThemes.Cinema35mm,
 
-                "love" => FoliconThemes.Love,
+                "love" => FoliconThemes.Love,
+
                 "system" => FoliconThemes.System,
                 _ => null
             };
@@ -1970,7 +1971,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 "nordic-pine" => FoliconThemes.NordicPine,
                 "cinema-35mm" => FoliconThemes.Cinema35mm,
 
-                "love" => FoliconThemes.Love,
+                "love" => FoliconThemes.Love,
+
                 _ => FoliconThemes.System
             };
             ApplyAppTheme(builtInEnum);
@@ -2073,7 +2075,11 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             SyncResource(res, customDict, "ThemeActionBannerBrush");
 
-            SyncResource(res, customDict, "ThemeActionBannerOverlayBrush");
+            SyncResource(res, customDict, "ThemeActionBannerOverlayBrush");
+            SyncResource(res, customDict, "ThemeCardMovieBrush");
+            SyncResource(res, customDict, "ThemeCardTvBrush");
+            SyncResource(res, customDict, "ThemeCardGameBrush");
+            SyncResource(res, customDict, "ThemeCardAutoBrush");
 
             SyncResource(res, customDict, "ThemeVignetteBrush");
 

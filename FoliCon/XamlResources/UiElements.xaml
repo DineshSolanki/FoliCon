@@ -162,7 +162,11 @@
     <SolidColorBrush x:Key="ThemeWallpaperBrush" Color="Transparent" />
     <SolidColorBrush x:Key="ThemeVignetteBrush" Color="Transparent" />
     <SolidColorBrush x:Key="ThemeActionBannerBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="ThemeActionBannerOverlayBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeActionBannerOverlayBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardMovieBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardTvBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardGameBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCardAutoBrush" Color="Transparent" />
     <SolidColorBrush x:Key="ThemeCtaWatermarkBrush" Color="Transparent" />
     <SolidColorBrush x:Key="EmptyStateIllustrationBrush" Color="Transparent" />
 
