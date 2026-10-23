@@ -2018,6 +2018,12 @@ namespace FoliCon.Properties.Langs {
                 return ResourceManager.GetString("ThemeCinema35mm", resourceCulture);
             }
         }
+
+        public static string ThemeLove {
+            get {
+                return ResourceManager.GetString("ThemeLove", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Great! you are using the latest version..

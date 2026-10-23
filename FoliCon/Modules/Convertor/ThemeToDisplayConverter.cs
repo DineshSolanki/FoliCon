@@ -17,6 +17,7 @@ public sealed class ThemeToDisplayConverter : IValueConverter
             FoliconThemes.MicaDarkObsidian => Lang.ThemeMicaDarkObsidian,
             FoliconThemes.NordicPine => Lang.ThemeNordicPine,
             FoliconThemes.Cinema35mm => Lang.ThemeCinema35mm,
+            FoliconThemes.Love => Lang.ThemeLove,
             _ => theme.ToString()
         };
     }

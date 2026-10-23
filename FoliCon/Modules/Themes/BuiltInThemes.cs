@@ -168,6 +168,31 @@ public static class BuiltInThemes
         },
         new()
         {
+            Id = "love",
+            Name = "Love",
+            Description = "Romantic twilight atmosphere with luminous neon heart accents and blooming cherry blossom glow.",
+            Author = "FoliCon Team",
+            Version = "1.0.0",
+            BaseTheme = "Dark",
+            IsBuiltIn = true,
+            Tags = ["Official", "Romantic", "Neon", "Love"],
+            Colors = new ThemeColorPalette
+            {
+                Background = "#1A0B16",
+                CardSurface = "#2D1226",
+                ElevatedSurface = "#3D1833",
+                Primary = "#FF2A6D",
+                PrimaryHover = "#FF7597",
+                PrimaryPressed = "#C7004C",
+                Accent = "#FF7597",
+                Border = "#5E274D",
+                PrimaryText = "#FFFFFF",
+                SecondaryText = "#D1A7C2",
+                ThirdText = "#8F6A83"
+            }
+        },
+        new()
+        {
             Id = "cinema-35mm",
             Name = "Cinema 35mm",
             Description = "Warm filmic amber and burnished gold inspired by classic celluloid.",

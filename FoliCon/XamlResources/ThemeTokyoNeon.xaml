@@ -106,6 +106,16 @@
                 ImageSource="pack://application:,,,/FoliCon;component/Resources/Themes/tokyo_neon_backdrop.jpg"
                 Stretch="UniformToFill" Opacity="0.85" />
 
+        <ImageBrush x:Key="ThemeActionBannerBrush"
+                ImageSource="pack://application:,,,/FoliCon;component/Resources/Themes/tokyo_neon_banner.jpg"
+                Stretch="UniformToFill" />
+
+    <LinearGradientBrush x:Key="ThemeActionBannerOverlayBrush" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#40000000" Offset="0.0" />
+        <GradientStop Color="#1000F0FF" Offset="0.5" />
+        <GradientStop Color="#40000000" Offset="1.0" />
+    </LinearGradientBrush>
+
     <RadialGradientBrush x:Key="ThemeVignetteBrush" Center="0.5,0.4" GradientOrigin="0.5,0.4" RadiusX="0.9" RadiusY="0.9">
         <GradientStop Color="#000B0E17" Offset="0.0" />
         <GradientStop Color="#260B0E17" Offset="0.55" />

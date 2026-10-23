@@ -27,6 +27,7 @@ public class ThemeToDisplayConverterTests
     [InlineData(FoliconThemes.MicaDarkObsidian, "Mica Dark Obsidian")]
     [InlineData(FoliconThemes.NordicPine, "Nordic Pine")]
     [InlineData(FoliconThemes.Cinema35mm, "Cinema 35mm")]
+    [InlineData(FoliconThemes.Love, "Love")]
     public void ThemeToDisplayConverter_ConvertsAllThemesAccurately(FoliconThemes theme, string expected)
     {
         var converter = new ThemeToDisplayConverter();

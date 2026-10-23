@@ -20,5 +20,7 @@ public enum FoliconThemes
 
     NordicPine,
 
-    Cinema35mm
+    Cinema35mm,
+
+    Love
 }

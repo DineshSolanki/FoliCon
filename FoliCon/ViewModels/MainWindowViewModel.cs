@@ -1712,6 +1712,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             FoliconThemes.MicaDarkObsidian => "mica-dark-obsidian",
             FoliconThemes.NordicPine => "nordic-pine",
             FoliconThemes.Cinema35mm => "cinema-35mm",
+
+            FoliconThemes.Love => "love",
             _ => "system"
         };
         ActiveThemeManifest = BuiltInThemes.GetAll().FirstOrDefault(t => string.Equals(t.Id, ActiveThemeId, StringComparison.OrdinalIgnoreCase));
@@ -1764,6 +1766,16 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
                 customThemeDict = ApplyCustomThemeOverride("ThemeCinema35mm.xaml");
+                break;
+
+            case FoliconThemes.Love:
+
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+
+                ThemeManager.Current.UsingSystemTheme = false;
+
+                customThemeDict = ApplyCustomThemeOverride("ThemeLove.xaml");
+
                 break;
             default:
                 ThemeManager.Current.UsingSystemTheme = true;
@@ -1831,6 +1843,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 "mica-dark-obsidian" => FoliconThemes.MicaDarkObsidian,
                 "nordic-pine" => FoliconThemes.NordicPine,
                 "cinema-35mm" => FoliconThemes.Cinema35mm,
+
+                "love" => FoliconThemes.Love,
                 "system" => FoliconThemes.System,
                 _ => null
             };
@@ -1955,6 +1969,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 "mica-dark-obsidian" => FoliconThemes.MicaDarkObsidian,
                 "nordic-pine" => FoliconThemes.NordicPine,
                 "cinema-35mm" => FoliconThemes.Cinema35mm,
+
+                "love" => FoliconThemes.Love,
                 _ => FoliconThemes.System
             };
             ApplyAppTheme(builtInEnum);
@@ -2017,6 +2033,8 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             FoliconThemes.MicaDarkObsidian => true,
             FoliconThemes.NordicPine => true,
             FoliconThemes.Cinema35mm => true,
+
+            FoliconThemes.Love => true,
             FoliconThemes.System => IsSystemThemeDark(),
             _ => IsSystemThemeDark()
         };
@@ -2050,6 +2068,22 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             SyncResource(res, customDict, "HeaderGradientBrush");
             SyncResource(res, customDict, "CardBorderGradientBrush");
             SyncResource(res, customDict, "FolderBadgeGradientBrush");
+
+            SyncResource(res, customDict, "ThemeWallpaperBrush");
+
+            SyncResource(res, customDict, "ThemeActionBannerBrush");
+
+            SyncResource(res, customDict, "ThemeActionBannerOverlayBrush");
+
+            SyncResource(res, customDict, "ThemeVignetteBrush");
+
+            SyncResource(res, customDict, "ThemeGlowEffect");
+
+            SyncResource(res, customDict, "ThemeCtaGlowEffect");
+
+            SyncResource(res, customDict, "ActiveCardGlowEffect");
+
+            SyncResource(res, customDict, "ThemeBrandingGeometry");
         }
         else
         {
@@ -2101,7 +2135,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                     dict.Source.OriginalString.Contains("ThemeTokyoNeon", StringComparison.OrdinalIgnoreCase) ||
                     dict.Source.OriginalString.Contains("ThemeMicaDarkObsidian", StringComparison.OrdinalIgnoreCase) ||
                     dict.Source.OriginalString.Contains("ThemeNordicPine", StringComparison.OrdinalIgnoreCase) ||
-                    dict.Source.OriginalString.Contains("ThemeCinema35mm", StringComparison.OrdinalIgnoreCase)))
+                    dict.Source.OriginalString.Contains("ThemeCinema35mm", StringComparison.OrdinalIgnoreCase) ||
+
+                    dict.Source.OriginalString.Contains("ThemeLove", StringComparison.OrdinalIgnoreCase)))
                 {
                     merged.RemoveAt(i);
                 }
