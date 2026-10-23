@@ -43,81 +43,25 @@
         <hc:Boolean2VisibilityReConverter x:Key="InvertedBoolToVis" />
         <convertor:ThemeToDisplayConverter x:Key="ThemeToDisplayConverter" />
 
-        <!-- Language Option Template with Custom Vector Flag Icons -->
+        <!-- Language Option Template with Native Language Names (Endonyms) -->
         <DataTemplate x:Key="LanguageOptionTemplate" DataType="{x:Type langModels:LanguageOption}">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Border Width="20" Height="14" CornerRadius="2.5" BorderThickness="0.8" BorderBrush="#44808080" ClipToBounds="True" Margin="0,0,7,0" VerticalAlignment="Center">
-                    <Grid>
-                        <!-- English (USA) -->
-                        <Grid x:Name="FlagEnglish" Visibility="Collapsed" Width="20" Height="14">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/><RowDefinition Height="2*"/><RowDefinition Height="2*"/><RowDefinition Height="2*"/><RowDefinition Height="2*"/><RowDefinition Height="2*"/><RowDefinition Height="2*"/>
-                            </Grid.RowDefinitions>
-                            <Rectangle Grid.Row="0" Fill="#B22234"/><Rectangle Grid.Row="1" Fill="#FFFFFF"/><Rectangle Grid.Row="2" Fill="#B22234"/><Rectangle Grid.Row="3" Fill="#FFFFFF"/><Rectangle Grid.Row="4" Fill="#B22234"/><Rectangle Grid.Row="5" Fill="#FFFFFF"/><Rectangle Grid.Row="6" Fill="#B22234"/>
-                            <Rectangle Grid.Row="0" Grid.RowSpan="4" HorizontalAlignment="Left" Width="9" Fill="#3C3B6E"/>
-                            <TextBlock Text="★" Foreground="White" FontSize="6" HorizontalAlignment="Left" Margin="2,-2,0,0" Grid.RowSpan="4"/>
-                        </Grid>
-                        <!-- Spanish (Spain) -->
-                        <Grid x:Name="FlagSpanish" Visibility="Collapsed" Width="20" Height="14">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Rectangle Grid.Row="0" Fill="#AA151B"/><Rectangle Grid.Row="1" Fill="#F1BF00"/><Rectangle Grid.Row="2" Fill="#AA151B"/>
-                            <Ellipse Grid.Row="1" HorizontalAlignment="Left" Margin="4,0,0,0" Width="4" Height="4" Fill="#AA151B" VerticalAlignment="Center"/>
-                        </Grid>
-                        <!-- Arabic -->
-                        <Grid x:Name="FlagArabic" Visibility="Collapsed" Width="20" Height="14" Background="#006C35">
-                            <TextBlock Text="عربي" FontSize="7" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                        <!-- Russian -->
-                        <Grid x:Name="FlagRussian" Visibility="Collapsed" Width="20" Height="14">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/><RowDefinition Height="1*"/><RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Rectangle Grid.Row="0" Fill="#FFFFFF"/><Rectangle Grid.Row="1" Fill="#0039A6"/><Rectangle Grid.Row="2" Fill="#D52B1E"/>
-                        </Grid>
-                        <!-- Hindi (India) -->
-                        <Grid x:Name="FlagHindi" Visibility="Collapsed" Width="20" Height="14">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1*"/><RowDefinition Height="1*"/><RowDefinition Height="1*"/>
-                            </Grid.RowDefinitions>
-                            <Rectangle Grid.Row="0" Fill="#FF9933"/><Rectangle Grid.Row="1" Fill="#FFFFFF"/><Rectangle Grid.Row="2" Fill="#138808"/>
-                            <Ellipse Grid.Row="1" Width="4" Height="4" Stroke="#000080" StrokeThickness="0.6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                        <!-- Portuguese -->
-                        <Grid x:Name="FlagPortuguese" Visibility="Collapsed" Width="20" Height="14">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/><ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
-                            <Rectangle Grid.Column="0" Fill="#006600"/><Rectangle Grid.Column="1" Fill="#FF0000"/>
-                            <Ellipse Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="6,0,0,0" Width="4" Height="4" Fill="#FFFF00" Stroke="#AA151B" StrokeThickness="0.5" VerticalAlignment="Center"/>
-                        </Grid>
-                    </Grid>
-                </Border>
-                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" FontSize="11" />
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="2,1">
+                <TextBlock Text="{Binding NativeName}" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding EnglishName, StringFormat=' ({0})'}" FontSize="10"
+                           Foreground="{DynamicResource SecondaryTextBrush}" VerticalAlignment="Center"
+                           Margin="4,0,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.English}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
-            <DataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.English}">
-                    <Setter TargetName="FlagEnglish" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.Spanish}">
-                    <Setter TargetName="FlagSpanish" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.Arabic}">
-                    <Setter TargetName="FlagArabic" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.Russian}">
-                    <Setter TargetName="FlagRussian" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.Hindi}">
-                    <Setter TargetName="FlagHindi" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Language}" Value="{x:Static enums:Languages.Portuguese}">
-                    <Setter TargetName="FlagPortuguese" Property="Visibility" Value="Visible" />
-                </DataTrigger>
-            </DataTemplate.Triggers>
         </DataTemplate>
 
         <!-- Modern Section Header Label Style -->
@@ -722,6 +666,8 @@
                         Height="28" Padding="6,1" Margin="0,0,8,0"
                         VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Path Data="{StaticResource TranslateGeometry}" Width="12" Height="12" Stretch="Uniform"
+                              Fill="{DynamicResource PrimaryBrush}" Margin="4,0,2,0" VerticalAlignment="Center" />
                         <ComboBox x:Name="TopLanguageComboBox"
                                   ItemsSource="{Binding AvailableLanguages}"
                                   SelectedItem="{Binding SelectedLanguageOption}"

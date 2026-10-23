@@ -14,17 +14,17 @@ namespace FoliconTest;
 public class LanguageSelectionTests
 {
     [Fact]
-    public void LanguageOption_All_ContainsAllSixSupportedLanguages()
+    public void LanguageOption_All_ContainsAllSixSupportedLanguagesWithNativeEndonyms()
     {
         var options = LanguageOption.All;
 
         Assert.Equal(6, options.Count);
-        Assert.Contains(options, o => o.Language == Languages.English && o.Code == "EN");
-        Assert.Contains(options, o => o.Language == Languages.Spanish && o.Code == "ES");
-        Assert.Contains(options, o => o.Language == Languages.Arabic && o.Code == "AR");
-        Assert.Contains(options, o => o.Language == Languages.Russian && o.Code == "RU");
-        Assert.Contains(options, o => o.Language == Languages.Hindi && o.Code == "HI");
-        Assert.Contains(options, o => o.Language == Languages.Portuguese && o.Code == "PT");
+        Assert.Contains(options, o => o.Language == Languages.English && o.NativeName == "English" && o.Code == "EN");
+        Assert.Contains(options, o => o.Language == Languages.Spanish && o.NativeName == "Español" && o.Code == "ES");
+        Assert.Contains(options, o => o.Language == Languages.Arabic && o.NativeName == "العربية" && o.Code == "AR");
+        Assert.Contains(options, o => o.Language == Languages.Russian && o.NativeName == "Русский" && o.Code == "RU");
+        Assert.Contains(options, o => o.Language == Languages.Hindi && o.NativeName == "हिन्दी" && o.Code == "HI");
+        Assert.Contains(options, o => o.Language == Languages.Portuguese && o.NativeName == "Português" && o.Code == "PT");
     }
 
     [Fact]
@@ -37,6 +37,9 @@ public class LanguageSelectionTests
         Assert.Equal(en1, en2);
         Assert.NotEqual(en1, es);
         Assert.Equal("English", en1.ToString());
+        Assert.Equal("Español (Spanish)", es.ToString());
+        Assert.Equal("Español", es.DisplayName);
+        Assert.Equal("Español", es.NativeName);
     }
 
     [Fact]
@@ -62,6 +65,7 @@ public class LanguageSelectionTests
                 vm.AppLanguage = Languages.Spanish;
                 Assert.Equal(Languages.Spanish, vm.SelectedLanguageOption.Language);
                 Assert.Equal("Español", vm.SelectedLanguageOption.DisplayName);
+                Assert.Equal("Español", vm.SelectedLanguageOption.NativeName);
             }
             finally
             {
