@@ -1,3 +1,4 @@
+# Created using wingetcreate 1.12.13.0
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
 
 PackageIdentifier: DineshSolanki.FoliCon
@@ -9,6 +10,7 @@ PublisherSupportUrl: https://github.com/DineshSolanki/FoliCon/issues
 Author: Dinesh Solanki
 PackageName: FoliCon
 PackageUrl: https://dineshsolanki.github.io/FoliCon/
+PrivacyUrl: https://github.com/DineshSolanki/FoliCon/blob/master/privacy.md
 License: GPL-3.0
 LicenseUrl: https://raw.githubusercontent.com/DineshSolanki/FoliCon/master/LICENSE
 Copyright: Copyright (c) Dinesh Solanki
