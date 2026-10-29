@@ -1,6 +1,4 @@
 #nullable enable
-using System;
-
 namespace FoliCon.Models.Protocol;
 
 /// <summary>

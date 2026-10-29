@@ -1,22 +1,9 @@
-using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using FoliCon.Models.Configs;
-using FoliCon.Models.Constants;
 using FoliCon.Modules.IPC;
-using FoliCon.Modules.Overlays;
 using FoliCon.Modules.Protocol;
 using FoliCon.Modules.Themes;
-using FoliCon.Modules.UI;
-using FoliCon.Modules.utils;
-using FoliCon.ViewModels;
-using FoliCon.Views;
-using NLog;
-using Prism.Dialogs;
 using Prism.Ioc;
 using Sentry;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 using Window = System.Windows.Window;
 
 namespace FoliCon;
@@ -90,7 +77,7 @@ public partial class App
         {
             try
             {
-                var args = System.Text.Json.JsonSerializer.Deserialize<string[]>(jsonArgs);
+                var args = JsonSerializer.Deserialize<string[]>(jsonArgs);
                 if (args != null)
                 {
                     foreach (var arg in args)

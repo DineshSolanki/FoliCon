@@ -1,3 +1,5 @@
+using System.Drawing.Drawing2D;
+
 namespace FoliCon.Modules.Media;
 
 [Localizable(false)]
@@ -18,9 +20,9 @@ public static class PngToIcoService
             var resized = new Bitmap(newWidth, newHeight);
             using (var g = Graphics.FromImage(resized))
             {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 g.DrawImage(bitmap, 0, 0, newWidth, newHeight);
             }
             sourceBitmap = resized;

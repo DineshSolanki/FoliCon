@@ -1,5 +1,4 @@
 #nullable enable
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace FoliCon.Models.Themes;
@@ -71,6 +70,12 @@ public sealed class ThemeManifest
     public string? PreviewImageFile { get; set; }
 
     /// <summary>
+    /// Alias for previewImageFile.
+    /// </summary>
+    [JsonPropertyName("preview")]
+    public string? Preview { get => PreviewImageFile; set => PreviewImageFile ??= value; }
+
+    /// <summary>
     /// Absolute local folder path containing the unpacked theme files. Null for built-in themes.
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
@@ -86,5 +91,5 @@ public sealed class ThemeManifest
     /// Convenient helper checking if baseTheme is dark.
     /// </summary>
     [System.Text.Json.Serialization.JsonIgnore]
-    public bool IsDark => !string.Equals(BaseTheme, "Light", System.StringComparison.OrdinalIgnoreCase);
+    public bool IsDark => !string.Equals(BaseTheme, "Light", StringComparison.OrdinalIgnoreCase);
 }

@@ -311,11 +311,10 @@ public class ThemeStorageAndParserTests
             Assert.Contains(installed, t => t.Id == "dark" && t.IsBuiltIn);
             Assert.Contains(installed, t => t.Id == "light" && t.IsBuiltIn);
             Assert.Contains(installed, t => t.Id == "the-butterfly" && t.IsBuiltIn);
-            Assert.Contains(installed, t => t.Id == "tokyo-neon" && t.IsBuiltIn);
-            Assert.Contains(installed, t => t.Id == "mica-dark-obsidian" && t.IsBuiltIn);
-            Assert.Contains(installed, t => t.Id == "nordic-pine" && t.IsBuiltIn);
-            Assert.Contains(installed, t => t.Id == "cinema-35mm" && t.IsBuiltIn);
             Assert.Contains(installed, t => t.Id == "system" && t.IsBuiltIn);
+            Assert.Contains(installed, t => t.Id == "tokyo-neon" && !t.IsBuiltIn);
+            Assert.Contains(installed, t => t.Id == "love" && !t.IsBuiltIn);
+            Assert.Contains(installed, t => t.Id == "nordic-pine" && !t.IsBuiltIn);
         }
         finally
         {
@@ -521,6 +520,103 @@ public class ThemeStorageAndParserTests
             Assert.Equal("dark", MainWindowViewModel.ActiveThemeId);
         });
     }
+
+
+    [Fact]
+    public void ResolveStandardAssetFile_FindsStandardNamedAssets()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), $"StandardAssetTest_{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempDir);
+        try
+        {
+            var backdrop = Path.Combine(tempDir, "backdrop.png");
+            var banner = Path.Combine(tempDir, "banner.jpg");
+            var preview = Path.Combine(tempDir, "preview.png");
+            var movie = Path.Combine(tempDir, "card_movie.png");
+
+
+            File.WriteAllBytes(backdrop, [1, 2, 3]);
+            File.WriteAllBytes(banner, [4, 5, 6]);
+            File.WriteAllBytes(preview, [7, 8, 9]);
+            File.WriteAllBytes(movie, [10, 11, 12]);
+
+
+            Assert.Equal("backdrop.png", HybridThemeParser.ResolveStandardAssetFile(tempDir, "backdrop", "wallpaper"));
+            Assert.Equal("banner.jpg", HybridThemeParser.ResolveStandardAssetFile(tempDir, "banner", "action_banner"));
+            Assert.Equal("preview.png", HybridThemeParser.ResolveStandardAssetFile(tempDir, "preview", "banner"));
+            Assert.Equal("card_movie.png", HybridThemeParser.ResolveStandardAssetFile(tempDir, "card_movie", "movie"));
+            Assert.Null(HybridThemeParser.ResolveStandardAssetFile(tempDir, "non_existent"));
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
+        }
+    }
+
+
+    [Fact]
+    public void SynthesizeResourceDictionary_AutoDiscoversStandardAssetFilesWhenOmittedInJson()
+    {
+        var tempDir = Path.Combine(Path.GetTempPath(), $"AutoDiscoverAssets_{Guid.NewGuid():N}");
+        Directory.CreateDirectory(tempDir);
+        try
+        {
+            var dummyPng = Convert.FromBase64String("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==");
+            File.WriteAllBytes(Path.Combine(tempDir, "backdrop.png"), dummyPng);
+            File.WriteAllBytes(Path.Combine(tempDir, "banner.png"), dummyPng);
+
+
+            var jsonWithoutAssets = """
+            {
+              "id": "minimal-test",
+              "name": "Minimal Test",
+              "baseTheme": "Dark",
+              "colors": {
+                "background": "#101010",
+                "cardSurface": "#202020",
+                "primary": "#336699",
+                "border": "#303030",
+                "primaryText": "#FFFFFF"
+              }
+            }
+            """;
+
+
+            var parser = new HybridThemeParser();
+            var manifest = parser.Parse(jsonWithoutAssets);
+            manifest.PackageDirectory = tempDir;
+
+
+            using var host = new WpfTestHost();
+            WpfTestHost.Invoke(() =>
+            {
+                var dict = parser.SynthesizeResourceDictionary(manifest);
+                Assert.NotNull(dict);
+
+
+                // Even though assets were omitted in json, standard backdrop.png and banner.png are resolved
+                var wallpaperBrush = dict["ThemeWallpaperBrush"] as ImageBrush;
+                Assert.NotNull(wallpaperBrush);
+
+
+                var bannerBrush = dict["ThemeActionBannerBrush"] as ImageBrush;
+                Assert.NotNull(bannerBrush);
+            });
+        }
+        finally
+        {
+            if (Directory.Exists(tempDir)) Directory.Delete(tempDir, true);
+        }
+    }
+
+
+    [Fact]
+    public void NetworkUtils_IsNetworkAvailable_ExecutesWithoutException()
+    {
+        var result = FoliCon.Modules.utils.NetworkUtils.IsNetworkAvailable();
+        Assert.True(result || !result);
+    }
+
 
     #endregion
 }

@@ -1,6 +1,4 @@
 #nullable enable
-using System.IO;
-using System.Windows;
 using FoliCon.Models.Themes;
 
 namespace FoliCon.Modules.Themes;

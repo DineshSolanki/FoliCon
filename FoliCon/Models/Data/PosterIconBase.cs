@@ -1,3 +1,5 @@
+using System.Drawing.Imaging;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Size = System.Windows.Size;
 
 namespace FoliCon.Models.Data;
@@ -89,11 +91,11 @@ public abstract class PosterIconBase : UserControl
         // non-premultiplied ARGB (Format32bppArgb). Un-premultiply in-place.
         UnPremultiplyBgra(pixels);
 
-        var bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+        var bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
         var bitmapData = bitmap.LockBits(
             new Rectangle(0, 0, width, height),
-            System.Drawing.Imaging.ImageLockMode.WriteOnly,
-            System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            ImageLockMode.WriteOnly,
+            PixelFormat.Format32bppArgb);
         Marshal.Copy(pixels, 0, bitmapData.Scan0, pixels.Length);
         bitmap.UnlockBits(bitmapData);
 

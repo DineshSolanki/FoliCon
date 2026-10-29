@@ -1,6 +1,4 @@
 #nullable enable
-using System.Windows.Controls;
-
 namespace FoliCon.Views;
 
 /// <summary>

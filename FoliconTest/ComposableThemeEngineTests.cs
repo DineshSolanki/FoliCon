@@ -22,12 +22,13 @@ public class ComposableThemeEngineTests
     public void PolarArchetypes_CorporateModern_MeetsContract()
     {
         var parser = new HybridThemeParser();
-        var corporate = BuiltInThemes.GetAll().FirstOrDefault(t => t.Id == "corporate");
+        var storage = new ThemeStorageService();
+        var corporate = storage.GetThemeById("corporate");
 
         Assert.NotNull(corporate);
         Assert.Equal("Corporate Modern", corporate!.Name);
         Assert.Equal("Dark", corporate.BaseTheme);
-        Assert.True(corporate.IsBuiltIn);
+        Assert.False(corporate.IsBuiltIn);
         Assert.Equal("#0F172A", corporate.Colors.Background);
         Assert.Equal("#2563EB", corporate.Colors.Primary);
         Assert.NotNull(corporate.Effects);
@@ -63,12 +64,13 @@ public class ComposableThemeEngineTests
     public void PolarArchetypes_LoveLivingTheme_MeetsContract()
     {
         var parser = new HybridThemeParser();
-        var love = BuiltInThemes.GetAll().FirstOrDefault(t => t.Id == "love");
+        var storage = new ThemeStorageService();
+        var love = storage.GetThemeById("love");
 
         Assert.NotNull(love);
         Assert.Equal("Love", love!.Name);
         Assert.Equal("Dark", love.BaseTheme);
-        Assert.True(love.IsBuiltIn);
+        Assert.False(love.IsBuiltIn);
         Assert.Equal("#080610", love.Colors.Background);
         Assert.Equal("#FF4D7D", love.Colors.Primary);
         Assert.Equal("#FF8CB3", love.Colors.Accent);

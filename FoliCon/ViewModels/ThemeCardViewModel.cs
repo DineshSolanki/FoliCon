@@ -1,13 +1,6 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using FoliCon.Models.Themes;
 using FoliCon.Modules.Themes;
-using Prism.Mvvm;
 using Color = System.Windows.Media.Color;
 
 namespace FoliCon.ViewModels;
@@ -95,6 +88,8 @@ public class ThemeCardViewModel : BindableBase
         SwatchPrimary = primary;
         SwatchAccent = accent;
         SwatchText = text;
+
+        LoadCatalogPreviewImage(entry);
     }
 
     #region State Properties
@@ -163,27 +158,139 @@ public class ThemeCardViewModel : BindableBase
 
     private void LoadLocalPreviewImage(ThemeManifest manifest)
     {
-        if (string.IsNullOrEmpty(manifest.PackageDirectory) || string.IsNullOrEmpty(manifest.PreviewImageFile))
+        var previewCandidate = manifest.PreviewImageFile ?? manifest.Preview;
+        if (string.IsNullOrEmpty(previewCandidate))
         {
-            return;
+            previewCandidate = manifest.Assets?.ActionBanner ?? manifest.Assets?.Banner ?? manifest.Assets?.Wallpaper ?? manifest.Assets?.Backdrop;
         }
 
-        var fullPath = Path.Combine(manifest.PackageDirectory, manifest.PreviewImageFile);
-        if (!File.Exists(fullPath)) return;
+        if (string.IsNullOrEmpty(previewCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            previewCandidate = HybridThemeParser.ResolveStandardAssetFile(manifest.PackageDirectory, "preview", "banner", "backdrop");
+        }
+
+        if (string.IsNullOrEmpty(previewCandidate))
+        {
+            var appDataThemesDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "FoliCon",
+                ThemeConstants.themesFolder,
+                manifest.Id.ToLowerInvariant());
+            previewCandidate = HybridThemeParser.ResolveStandardAssetFile(appDataThemesDir, "preview", "banner", "backdrop");
+        }
+
+        if (string.IsNullOrEmpty(previewCandidate)) return;
 
         try
         {
-            var bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.CacheOption = BitmapCacheOption.OnLoad;
-            bitmap.UriSource = new Uri(fullPath);
-            bitmap.EndInit();
-            bitmap.Freeze();
-            PreviewImage = bitmap;
+            Uri? uri = null;
+            if (previewCandidate.StartsWith("pack://", StringComparison.OrdinalIgnoreCase))
+            {
+                uri = new Uri(previewCandidate, UriKind.Absolute);
+            }
+            else
+            {
+                // 1. Check PackageDirectory if set
+                if (!string.IsNullOrEmpty(manifest.PackageDirectory))
+                {
+                    var fullPath = Path.Combine(manifest.PackageDirectory, previewCandidate);
+                    if (File.Exists(fullPath))
+                    {
+                        uri = new Uri(fullPath, UriKind.Absolute);
+                    }
+                }
+
+                // 2. Check AppData Themes folder
+                if (uri == null)
+                {
+                    var appDataThemesDir = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "FoliCon",
+                        ThemeConstants.themesFolder,
+                        manifest.Id.ToLowerInvariant());
+                    var fullPath = Path.Combine(appDataThemesDir, previewCandidate);
+                    if (File.Exists(fullPath))
+                    {
+                        uri = new Uri(fullPath, UriKind.Absolute);
+                    }
+                }
+
+                // 3. Check Pack URI resources
+                if (uri == null)
+                {
+                    var resourceUri = $"pack://application:,,,/FoliCon;component/Resources/Themes/{Path.GetFileName(previewCandidate)}";
+                    try
+                    {
+                        var streamInfo = Application.GetResourceStream(new Uri(resourceUri, UriKind.Absolute));
+                        if (streamInfo != null)
+                        {
+                            uri = new Uri(resourceUri, UriKind.Absolute);
+                        }
+                    }
+                    catch { }
+                }
+            }
+
+            if (uri != null)
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.UriSource = uri;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                PreviewImage = bitmap;
+            }
         }
         catch (Exception ex)
         {
             Logger.Warn(ex, "Failed to load preview image for theme '{Id}'", manifest.Id);
+        }
+    }
+
+    private void LoadCatalogPreviewImage(ThemeCatalogEntry entry)
+    {
+        if (string.IsNullOrEmpty(entry.PreviewUrl)) return;
+
+        try
+        {
+            Uri? uri = null;
+            if (entry.PreviewUrl.StartsWith("pack://", StringComparison.OrdinalIgnoreCase))
+            {
+                uri = new Uri(entry.PreviewUrl, UriKind.Absolute);
+            }
+            else if (Uri.TryCreate(entry.PreviewUrl, UriKind.Absolute, out var absUri))
+            {
+                uri = absUri;
+            }
+            else
+            {
+                var appDataThemesDir = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "FoliCon",
+                    ThemeConstants.themesFolder,
+                    entry.Id.ToLowerInvariant());
+                var fullPath = Path.Combine(appDataThemesDir, entry.PreviewUrl);
+                if (File.Exists(fullPath))
+                {
+                    uri = new Uri(fullPath, UriKind.Absolute);
+                }
+            }
+
+            if (uri != null)
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.UriSource = uri;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                PreviewImage = bitmap;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to load catalog preview image for theme '{Id}'", entry.Id);
         }
     }
 

@@ -1,3 +1,4 @@
+using Windows.Networking.Connectivity;
 using FoliCon.Models.Configs;
 using FoliCon.Models.Localization;
 using FoliCon.Models.Themes;
@@ -5,6 +6,7 @@ using FoliCon.Modules.Convertor;
 using FoliCon.Modules.Themes;
 using HandyControl.Themes;
 using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
 using DropShadowEffect = System.Windows.Media.Effects.DropShadowEffect;
 
 namespace FoliCon.ViewModels;
@@ -404,7 +406,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             SetCultureInfo();
             InitializeDelegates();
             InitializeProperties();
-            NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
+            InitializeNetworkMonitoring();
             ProcessCommandLineArgs();
         }
         catch (Exception ex)
@@ -429,11 +431,85 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         SyncSelectedThemeOptionWithActive();
     }
 
-    private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
+    private DispatcherTimer? _networkCheckTimer;
+    private int _isCheckingNetwork;
+
+    private void InitializeNetworkMonitoring()
     {
-        Logger.Debug("Network Availability Changed, Updating StatusBar.");
-        StatusBarProperties.NetIcon =
-            ApplicationHelper.IsConnectedToInternet() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
+        try
+        {
+            NetworkChange.NetworkAvailabilityChanged += OnNetworkChanged;
+            NetworkChange.NetworkAddressChanged += OnNetworkChanged;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to register .NET NetworkChange handlers.");
+        }
+
+        try
+        {
+            NetworkInformation.NetworkStatusChanged += OnWinRtNetworkStatusChanged;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to register WinRT NetworkStatusChanged handler.");
+        }
+
+        _networkCheckTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(5)
+        };
+        _networkCheckTimer.Tick += async (_, _) => await UpdateNetworkStatusAsync();
+        _networkCheckTimer.Start();
+    }
+
+    private void OnWinRtNetworkStatusChanged(object sender)
+    {
+        _ = UpdateNetworkStatusAsync();
+    }
+
+    private void OnNetworkChanged(object? sender, EventArgs e)
+    {
+        _ = UpdateNetworkStatusAsync();
+    }
+
+    private async Task UpdateNetworkStatusAsync()
+    {
+        if (Interlocked.CompareExchange(ref _isCheckingNetwork, 1, 0) != 0)
+        {
+            return;
+        }
+
+        try
+        {
+            bool isAvailable = await Task.Run(NetworkUtils.IsNetworkAvailable);
+            var iconPath = isAvailable ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
+
+            if (StatusBarProperties != null && StatusBarProperties.NetIcon != iconPath)
+            {
+                Logger.Info("Network connectivity changed. Online: {IsAvailable}", isAvailable);
+                var dispatcher = Application.Current?.Dispatcher;
+                if (dispatcher != null && !dispatcher.CheckAccess())
+                {
+                    await dispatcher.InvokeAsync(() =>
+                    {
+                        StatusBarProperties.NetIcon = iconPath;
+                    });
+                }
+                else if (StatusBarProperties != null)
+                {
+                    StatusBarProperties.NetIcon = iconPath;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Error while updating network status indicator.");
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _isCheckingNetwork, 0);
+        }
     }
 
     private void LoadMethod()
@@ -1689,19 +1765,19 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     public static string? ActiveThemeId { get; private set; }
     private static ResourceDictionary? _currentCommunityThemeDictionary;
 
-    private static readonly SolidColorBrush LightBackdropBrush = new(System.Windows.Media.Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF));
-    private static readonly SolidColorBrush DarkBackdropBrush = new(System.Windows.Media.Color.FromArgb(0xD9, 0x1C, 0x1C, 0x1C));
+    private static readonly SolidColorBrush LightBackdropBrush = new(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF));
+    private static readonly SolidColorBrush DarkBackdropBrush = new(Color.FromArgb(0xD9, 0x1C, 0x1C, 0x1C));
 
-    private static readonly SolidColorBrush LightHeroCardBg = new(System.Windows.Media.Color.FromRgb(0xFF, 0xFF, 0xFF));
-    private static readonly SolidColorBrush DarkHeroCardBg = new(System.Windows.Media.Color.FromRgb(0x2D, 0x2D, 0x2D));
+    private static readonly SolidColorBrush LightHeroCardBg = new(Color.FromRgb(0xFF, 0xFF, 0xFF));
+    private static readonly SolidColorBrush DarkHeroCardBg = new(Color.FromRgb(0x2D, 0x2D, 0x2D));
 
-    private static readonly SolidColorBrush LightHeroCardBorder = new(System.Windows.Media.Color.FromRgb(0xE2, 0xE8, 0xF0));
-    private static readonly SolidColorBrush DarkHeroCardBorder = new(System.Windows.Media.Color.FromRgb(0x3D, 0x3D, 0x3D));
+    private static readonly SolidColorBrush LightHeroCardBorder = new(Color.FromRgb(0xE2, 0xE8, 0xF0));
+    private static readonly SolidColorBrush DarkHeroCardBorder = new(Color.FromRgb(0x3D, 0x3D, 0x3D));
 
-    private static readonly SolidColorBrush LightHeaderGradient = new(System.Windows.Media.Color.FromRgb(0xF8, 0xFA, 0xFC));
-    private static readonly SolidColorBrush DarkHeaderGradient = new(System.Windows.Media.Color.FromRgb(0x24, 0x24, 0x24));
+    private static readonly SolidColorBrush LightHeaderGradient = new(Color.FromRgb(0xF8, 0xFA, 0xFC));
+    private static readonly SolidColorBrush DarkHeaderGradient = new(Color.FromRgb(0x24, 0x24, 0x24));
 
-    private static readonly SolidColorBrush PrimaryActionBrush = new(System.Windows.Media.Color.FromRgb(0x3B, 0x82, 0xF6));
+    private static readonly SolidColorBrush PrimaryActionBrush = new(Color.FromRgb(0x3B, 0x82, 0xF6));
 
     public static void ApplyAppTheme(FoliconThemes theme)
     {
@@ -1753,39 +1829,33 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
                 customThemeDict = ApplyCustomThemeOverride("ThemeTheButterfly.xaml");
                 break;
             case FoliconThemes.TokyoNeon:
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                ThemeManager.Current.UsingSystemTheme = false;
-                customThemeDict = ApplyCustomThemeOverride("ThemeTokyoNeon.xaml");
-                break;
             case FoliconThemes.MicaDarkObsidian:
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                ThemeManager.Current.UsingSystemTheme = false;
-                customThemeDict = ApplyCustomThemeOverride("ThemeMicaDarkObsidian.xaml");
-                break;
             case FoliconThemes.NordicPine:
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                ThemeManager.Current.UsingSystemTheme = false;
-                customThemeDict = ApplyCustomThemeOverride("ThemeNordicPine.xaml");
-                break;
             case FoliconThemes.Cinema35mm:
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                ThemeManager.Current.UsingSystemTheme = false;
-                customThemeDict = ApplyCustomThemeOverride("ThemeCinema35mm.xaml");
-                break;
-
             case FoliconThemes.Love:
-
-                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-
-                ThemeManager.Current.UsingSystemTheme = false;
-
-                customThemeDict = ApplyCustomThemeOverride("ThemeLove.xaml");
-                break;
             case FoliconThemes.Corporate:
+                var communityId = theme switch
+                {
+                    FoliconThemes.TokyoNeon => "tokyo-neon",
+                    FoliconThemes.MicaDarkObsidian => "mica-dark-obsidian",
+                    FoliconThemes.NordicPine => "nordic-pine",
+                    FoliconThemes.Cinema35mm => "cinema-35mm",
+                    FoliconThemes.Love => "love",
+                    FoliconThemes.Corporate => "corporate",
+                    _ => "dark"
+                };
+                var manifest = _activeThemeStorageService?.GetThemeById(communityId)
+                    ?? new ThemeStorageService().GetThemeById(communityId);
+                if (manifest != null)
+                {
+                    var parser = new HybridThemeParser();
+                    var dict = parser.SynthesizeResourceDictionary(manifest, _activeThemeStorageService?.GetUserCustomization(manifest.Id));
+                    ApplyCommunityTheme(manifest, dict);
+                    return;
+                }
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
                 ThemeManager.Current.UsingSystemTheme = false;
-                customThemeDict = ApplyCustomThemeOverride("ThemeCorporate.xaml");
-
+                ApplyCustomThemeOverride(null);
                 break;
             default:
                 ThemeManager.Current.UsingSystemTheme = true;
@@ -2088,10 +2158,14 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             SyncResource(res, customDict, "ThemeActionBannerBrush");
 
-            SyncResource(res, customDict, "ThemeActionBannerOverlayBrush");
-            SyncResource(res, customDict, "ThemeCardMovieBrush");
-            SyncResource(res, customDict, "ThemeCardTvBrush");
-            SyncResource(res, customDict, "ThemeCardGameBrush");
+            SyncResource(res, customDict, "ThemeActionBannerOverlayBrush");
+
+            SyncResource(res, customDict, "ThemeCardMovieBrush");
+
+            SyncResource(res, customDict, "ThemeCardTvBrush");
+
+            SyncResource(res, customDict, "ThemeCardGameBrush");
+
             SyncResource(res, customDict, "ThemeCardAutoBrush");
 
             SyncResource(res, customDict, "ThemeVignetteBrush");
@@ -2216,6 +2290,30 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public void Dispose()
     {
+        try
+        {
+            NetworkChange.NetworkAvailabilityChanged -= OnNetworkChanged;
+            NetworkChange.NetworkAddressChanged -= OnNetworkChanged;
+            try
+            {
+                NetworkInformation.NetworkStatusChanged -= OnWinRtNetworkStatusChanged;
+            }
+            catch
+            {
+                // ignored
+            }
+
+            if (_networkCheckTimer != null)
+            {
+                _networkCheckTimer.Stop();
+                _networkCheckTimer = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Error while unregistering network event handlers in Dispose.");
+        }
+
         _tmdbClient?.Dispose();
         GC.SuppressFinalize(this);
     }

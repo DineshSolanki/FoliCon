@@ -1,22 +1,7 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Data;
-using FoliCon.Models.Data;
 using FoliCon.Models.Themes;
-using FoliCon.Modules.Overlays;
 using FoliCon.Modules.Themes;
 using Microsoft.Win32;
-using Prism.Commands;
-using Prism.Dialogs;
-using Prism.Mvvm;
 
 namespace FoliCon.ViewModels;
 
@@ -87,53 +72,51 @@ public class FoliConStoreViewModel : BindableBase, IDialogAware
 
     #region Tab & Navigation Properties
 
-    private int _selectedTabIndex = 0;
     public int SelectedTabIndex
     {
-        get => _selectedTabIndex;
+        get;
         set
         {
-            if (SetProperty(ref _selectedTabIndex, value))
+            if (!SetProperty(ref field, value))
             {
-                ApplyFilter();
-                RaisePropertyChanged(nameof(IsThemesTabSelected));
-                RaisePropertyChanged(nameof(IsOverlaysTabSelected));
-                RaisePropertyChanged(nameof(StatusMessage));
+                return;
             }
+            ApplyFilter();
+            RaisePropertyChanged(nameof(IsThemesTabSelected));
+            RaisePropertyChanged(nameof(IsOverlaysTabSelected));
+            RaisePropertyChanged(nameof(StatusMessage));
         }
     }
 
     public bool IsThemesTabSelected => SelectedTabIndex == 0;
     public bool IsOverlaysTabSelected => SelectedTabIndex == 1;
 
-    private string _searchQuery = string.Empty;
     public string SearchQuery
     {
-        get => _searchQuery;
+        get;
         set
         {
-            if (SetProperty(ref _searchQuery, value))
+            if (SetProperty(ref field, value))
             {
                 ApplyFilter();
             }
         }
-    }
+    } = string.Empty;
 
-    private string _statusMessage = string.Empty;
     public string StatusMessage
     {
         get
         {
-            if (SelectedTabIndex == 1 && OverlaysViewModel != null)
+            if (SelectedTabIndex == 1)
             {
                 return OverlaysViewModel.StatusMessage;
             }
-            return string.IsNullOrEmpty(_statusMessage)
+            return string.IsNullOrEmpty(field)
                 ? $"{Themes.Count} themes available"
-                : _statusMessage;
+                : field;
         }
-        set => SetProperty(ref _statusMessage, value);
-    }
+        set => SetProperty(ref field, value);
+    } = string.Empty;
 
     public bool IsLoading
     {

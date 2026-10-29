@@ -1,12 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿#nullable enable
+using System.Security.Cryptography;
+using FoliCon.Modules.Overlays.Internal;
 
-#nullable enable
 namespace FoliCon.Modules.Overlays;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 /// <summary>
 /// Manages the overlay repository: catalog fetching with TTL disk caching,
@@ -263,7 +259,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
             // Atomic rename: tmp → final
             progress?.Report((95, Lang.OverlayInstallProgressInstalling));
-            Internal.OverlayPackageIo.Commit(tmpDir, finalDir);
+            OverlayPackageIo.Commit(tmpDir, finalDir);
 
             // Refresh overlay provider
             _overlayProvider.Refresh();
@@ -297,7 +293,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             var percent = 10 + (int)((i + 1) / (double)totalAssets * 70);
             progress?.Report((percent, string.Format(Lang.OverlayInstallProgressDownloading, asset)));
 
-            if (!Internal.OverlayPackageIo.TryGetContainedPath(targetDir, asset, out var assetPath))
+            if (!OverlayPackageIo.TryGetContainedPath(targetDir, asset, out var assetPath))
             {
                 throw new InvalidOperationException($"Overlay asset path '{asset}' escapes the installation directory.");
             }
@@ -399,7 +395,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
             throw new InvalidOperationException(Lang.OverlayInstallDefinitionUnreadable);
         }
 
-        var errors = Internal.OverlayValidator.Validate(tmpDir, definition);
+        var errors = OverlayValidator.Validate(tmpDir, definition);
         if (errors.Count > 0)
         {
             throw new InvalidOperationException(string.Format(
@@ -513,7 +509,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
     public bool IsOverlayInstalled(string overlayId)
     {
-        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        if (!OverlayValidator.IsValidId(overlayId))
         {
             return false;
         }
@@ -532,7 +528,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
     public string? GetInstalledVersion(string overlayId)
     {
-        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        if (!OverlayValidator.IsValidId(overlayId))
         {
             return null;
         }
@@ -578,7 +574,7 @@ public class OverlayRepositoryService : IOverlayRepositoryService
 
     private static void EnsureValidOverlayId(string overlayId, string parameterName)
     {
-        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        if (!OverlayValidator.IsValidId(overlayId))
         {
             throw new ArgumentException("Overlay IDs must contain only lowercase letters, digits, and single hyphens between characters.", parameterName);
         }

@@ -1,12 +1,5 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
 using FoliCon.Models.Protocol;
-using FoliCon.Modules.Themes;
-using Prism.Dialogs;
 
 namespace FoliCon.Modules.Protocol;
 

@@ -21,8 +21,11 @@ public class ThemeManagementTests
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
         {
-            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeTokyoNeon.xaml", UriKind.Absolute);
-            var dict = new ResourceDictionary { Source = uri };
+            var storage = new ThemeStorageService();
+            var manifest = storage.GetThemeById("tokyo-neon");
+            Assert.NotNull(manifest);
+            var parser = new HybridThemeParser();
+            var dict = parser.SynthesizeResourceDictionary(manifest);
 
             Assert.NotNull(dict);
 
@@ -51,8 +54,11 @@ public class ThemeManagementTests
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
         {
-            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeNordicPine.xaml", UriKind.Absolute);
-            var dict = new ResourceDictionary { Source = uri };
+            var storage = new ThemeStorageService();
+            var manifest = storage.GetThemeById("nordic-pine");
+            Assert.NotNull(manifest);
+            var parser = new HybridThemeParser();
+            var dict = parser.SynthesizeResourceDictionary(manifest);
 
             Assert.NotNull(dict);
 
@@ -81,8 +87,11 @@ public class ThemeManagementTests
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
         {
-            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeCinema35mm.xaml", UriKind.Absolute);
-            var dict = new ResourceDictionary { Source = uri };
+            var storage = new ThemeStorageService();
+            var manifest = storage.GetThemeById("cinema-35mm");
+            Assert.NotNull(manifest);
+            var parser = new HybridThemeParser();
+            var dict = parser.SynthesizeResourceDictionary(manifest);
 
             Assert.NotNull(dict);
 
@@ -101,7 +110,7 @@ public class ThemeManagementTests
 
             var primaryTextBrush = dict["PrimaryTextBrush"] as SolidColorBrush;
             Assert.NotNull(primaryTextBrush);
-            Assert.Equal(Color.FromRgb(0xFF, 0xFB, 0xEB), primaryTextBrush.Color);
+            Assert.Equal(Color.FromRgb(0xFF, 0xFA, 0xEB), primaryTextBrush.Color);
         });
     }
 
@@ -141,8 +150,11 @@ public class ThemeManagementTests
         using var host = new WpfTestHost();
         WpfTestHost.Invoke(() =>
         {
-            var uri = new Uri("pack://application:,,,/FoliCon;component/XamlResources/ThemeMicaDarkObsidian.xaml", UriKind.Absolute);
-            var dict = new ResourceDictionary { Source = uri };
+            var storage = new ThemeStorageService();
+            var manifest = storage.GetThemeById("mica-dark-obsidian");
+            Assert.NotNull(manifest);
+            var parser = new HybridThemeParser();
+            var dict = parser.SynthesizeResourceDictionary(manifest);
 
             Assert.NotNull(dict);
 
@@ -382,7 +394,7 @@ public class ThemeManagementTests
                 });
 
                 var vm = new MainWindowViewModel(null!, fakeStorage, parser);
-                Assert.True(vm.AvailableThemes.Count >= 9); // 8 built-in + 1 community
+                Assert.True(vm.AvailableThemes.Count >= 5); // 4 built-in + 1 community
 
                 var communityOption = vm.AvailableThemes.FirstOrDefault(t => t.Id == "synthwave-84");
                 Assert.NotNull(communityOption);

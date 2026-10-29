@@ -1,7 +1,4 @@
 #nullable enable
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
 namespace FoliCon.Modules.Themes;
 
 /// <summary>
@@ -66,17 +63,12 @@ public static class ThemeConstants
     /// <summary>
     /// Set of built-in theme IDs that cannot be deleted or uninstalled.
     /// </summary>
-    public static readonly HashSet<string> BuiltInThemeIds = new(System.StringComparer.OrdinalIgnoreCase)
-    {
+    public static readonly HashSet<string> BuiltInThemeIds =
+    [
+        with(StringComparer.OrdinalIgnoreCase),
         "light",
         "dark",
         "system",
-        "the-butterfly",
-        "tokyo-neon",
-        "mica-dark-obsidian",
-        "nordic-pine",
-        "cinema-35mm",
-        "love",
-        "corporate"
-    };
+        "the-butterfly"
+    ];
 }

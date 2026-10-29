@@ -1,7 +1,5 @@
 #nullable enable
-using System.Threading.Tasks;
 using FoliCon.Models.Protocol;
-using Prism.Dialogs;
 
 namespace FoliCon.Modules.Protocol;
 

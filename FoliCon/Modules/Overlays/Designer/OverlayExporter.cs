@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using FoliCon.Modules.Overlays.Internal;
+
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -79,7 +81,7 @@ public class OverlayExporter
         ArgumentNullException.ThrowIfNull(document);
         ArgumentException.ThrowIfNullOrWhiteSpace(destinationRoot);
 
-        if (!Internal.OverlayValidator.IsValidId(document.Id))
+        if (!OverlayValidator.IsValidId(document.Id))
         {
             var validation = new OverlayValidationResult();
             validation.AddError(
@@ -111,7 +113,7 @@ public class OverlayExporter
 
             // Validate the staged package rather than the in-memory document: this is what
             // actually ships, including the preview and copied assets.
-            var validation = Internal.OverlayValidator.ValidateDetailed(stagingPath, BuildExportDefinition(document, stagingPath));
+            var validation = OverlayValidator.ValidateDetailed(stagingPath, BuildExportDefinition(document, stagingPath));
             if (!validation.IsValid)
             {
                 SafeDelete(stagingPath);
@@ -151,7 +153,7 @@ public class OverlayExporter
         }
 
         var id = new DirectoryInfo(packagePath).Name;
-        if (!Internal.OverlayValidator.IsValidId(id))
+        if (!OverlayValidator.IsValidId(id))
         {
             return OverlayExportResult.Failure(string.Format(Lang.OverlayValidationIdInvalidChars, id));
         }
@@ -176,7 +178,7 @@ public class OverlayExporter
             foreach (var relative in Directory.GetFiles(packagePath, "*", SearchOption.AllDirectories)
                          .Select(f => Path.GetRelativePath(packagePath, f)))
             {
-                if (!Internal.OverlayPackageIo.TryGetContainedPath(staging, relative, out var assetTarget))
+                if (!OverlayPackageIo.TryGetContainedPath(staging, relative, out var assetTarget))
                 {
                     throw new InvalidOperationException(
                         $"Package asset path '{relative}' escapes the installation directory.");
@@ -212,7 +214,7 @@ public class OverlayExporter
             return OverlayExportResult.Failure(Lang.OverlayExportNoOverlaySpecified);
         }
 
-        if (!Internal.OverlayValidator.IsValidId(overlayId))
+        if (!OverlayValidator.IsValidId(overlayId))
         {
             return OverlayExportResult.Failure(string.Format(Lang.OverlayValidationIdInvalidChars, overlayId));
         }
@@ -278,14 +280,14 @@ public class OverlayExporter
     }
 
     private static void PrepareStagingFolder(string stagingPath) =>
-        Internal.OverlayPackageIo.PrepareStagingFolder(stagingPath);
+        OverlayPackageIo.PrepareStagingFolder(stagingPath);
 
     /// <summary>
     /// Copies only the assets the document actually references, so files the author
     /// abandoned mid-design never ship inside the package.
     /// </summary>
     private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath) =>
-        Internal.OverlayPackageIo.CopyReferencedAssets(document, stagingPath, requireAll: true);
+        OverlayPackageIo.CopyReferencedAssets(document, stagingPath, requireAll: true);
 
     private static async Task WritePreviewAsync(OverlayDesignerDocument document, string stagingPath)
     {
@@ -366,9 +368,9 @@ public class OverlayExporter
 
     /// <summary>Moves the staged package into place, replacing any existing folder atomically.</summary>
     private static void Commit(string stagingPath, string finalPath) =>
-        Internal.OverlayPackageIo.Commit(stagingPath, finalPath);
+        OverlayPackageIo.Commit(stagingPath, finalPath);
 
-    private static string ComputeSha256(string path) => Internal.OverlayPackageIo.ComputeSha256(path);
+    private static string ComputeSha256(string path) => OverlayPackageIo.ComputeSha256(path);
 
-    private static void SafeDelete(string path) => Internal.OverlayPackageIo.SafeDelete(path);
+    private static void SafeDelete(string path) => OverlayPackageIo.SafeDelete(path);
 }

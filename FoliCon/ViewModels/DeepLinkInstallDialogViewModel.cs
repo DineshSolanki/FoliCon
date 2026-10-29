@@ -1,12 +1,6 @@
 #nullable enable
-using System;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using FoliCon.Models.Themes;
 using FoliCon.Modules.Themes;
-using Prism.Commands;
-using Prism.Dialogs;
-using Prism.Mvvm;
 using Color = System.Windows.Media.Color;
 
 namespace FoliCon.ViewModels;

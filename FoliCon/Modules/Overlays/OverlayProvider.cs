@@ -1,10 +1,7 @@
 #nullable enable
-namespace FoliCon.Modules.Overlays;
+using FoliCon.Modules.Overlays.Internal;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+namespace FoliCon.Modules.Overlays;
 
 /// <summary>
 /// Loads and manages overlay definitions from built-in resources and user-installed folders.
@@ -162,7 +159,7 @@ public class OverlayProvider : IOverlayProvider
                 }
 
                 // Validate
-                var errors = Internal.OverlayValidator.Validate(folder, definition);
+                var errors = OverlayValidator.Validate(folder, definition);
                 if (errors.Count > 0)
                 {
                     Logger.Warn("Overlay '{Id}' failed validation: {Errors}", definition.Id, string.Join("; ", errors.Select(e => e.ToString())));

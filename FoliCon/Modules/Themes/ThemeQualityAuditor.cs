@@ -1,6 +1,4 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
 using FoliCon.Models.Themes;
 
 namespace FoliCon.Modules.Themes;

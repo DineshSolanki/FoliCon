@@ -1,15 +1,7 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Security;
-using System.Text.Json;
-using System.Windows;
 using System.Windows.Markup;
-using System.Windows.Media;
 using System.Windows.Media.Effects;
-using System.Windows.Media.Imaging;
 using System.Xml;
 using FoliCon.Models.Themes;
 using Brush = System.Windows.Media.Brush;
@@ -421,18 +413,55 @@ public class HybridThemeParser : IThemeParser
             var customBrush = LoadImageBrushFromFile(customization.CustomWallpaperPath);
             if (customBrush != null) wallpaperBrush = customBrush;
         }
-        else if (!string.IsNullOrEmpty(assets?.Wallpaper))
+        else
         {
-            var manifestBrush = ResolveAssetBrush(assets.Wallpaper, manifest.PackageDirectory);
-            if (manifestBrush != null) wallpaperBrush = manifestBrush;
+            var wpCandidate = assets?.Wallpaper ?? assets?.Backdrop;
+            if (string.IsNullOrEmpty(wpCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+            {
+                wpCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "backdrop", "wallpaper");
+            }
+            if (!string.IsNullOrEmpty(wpCandidate))
+            {
+                var manifestBrush = ResolveAssetBrush(wpCandidate, manifest.PackageDirectory);
+                if (manifestBrush != null) wallpaperBrush = manifestBrush;
+            }
         }
         dict["ThemeWallpaperBrush"] = wallpaperBrush;
 
-        dict["ThemeActionBannerBrush"] = ResolveAssetBrush(assets?.ActionBanner, manifest.PackageDirectory) ?? Brushes.Transparent;
-        dict["ThemeCardMovieBrush"] = ResolveAssetBrush(assets?.MovieCard, manifest.PackageDirectory) ?? Brushes.Transparent;
-        dict["ThemeCardTvBrush"] = ResolveAssetBrush(assets?.TvCard, manifest.PackageDirectory) ?? Brushes.Transparent;
-        dict["ThemeCardGameBrush"] = ResolveAssetBrush(assets?.GameCard, manifest.PackageDirectory) ?? Brushes.Transparent;
-        dict["ThemeCardAutoBrush"] = ResolveAssetBrush(assets?.AutoCard, manifest.PackageDirectory) ?? Brushes.Transparent;
+        var bannerCandidate = assets?.ActionBanner ?? assets?.Banner;
+        if (string.IsNullOrEmpty(bannerCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            bannerCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "banner", "action_banner");
+        }
+        dict["ThemeActionBannerBrush"] = ResolveAssetBrush(bannerCandidate, manifest.PackageDirectory) ?? Brushes.Transparent;
+
+        var movieCandidate = assets?.MovieCard;
+        if (string.IsNullOrEmpty(movieCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            movieCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "card_movie", "movie");
+        }
+        dict["ThemeCardMovieBrush"] = ResolveAssetBrush(movieCandidate, manifest.PackageDirectory) ?? Brushes.Transparent;
+
+        var tvCandidate = assets?.TvCard;
+        if (string.IsNullOrEmpty(tvCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            tvCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "card_tv", "tv");
+        }
+        dict["ThemeCardTvBrush"] = ResolveAssetBrush(tvCandidate, manifest.PackageDirectory) ?? Brushes.Transparent;
+
+        var gameCandidate = assets?.GameCard;
+        if (string.IsNullOrEmpty(gameCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            gameCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "card_game", "game");
+        }
+        dict["ThemeCardGameBrush"] = ResolveAssetBrush(gameCandidate, manifest.PackageDirectory) ?? Brushes.Transparent;
+
+        var autoCandidate = assets?.AutoCard;
+        if (string.IsNullOrEmpty(autoCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            autoCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "card_auto", "auto");
+        }
+        dict["ThemeCardAutoBrush"] = ResolveAssetBrush(autoCandidate, manifest.PackageDirectory) ?? Brushes.Transparent;
 
         // Vignette
         if (effects?.VignetteEnabled != false && wallpaperBrush != Brushes.Transparent)
@@ -478,7 +507,58 @@ public class HybridThemeParser : IThemeParser
             }
         }
 
+        // 9b. Synthesize Empty Queue Vector Geometry (Theme-specific or Neutral Folder)
+        if (!string.IsNullOrWhiteSpace(assets?.EmptyQueueGeometry))
+        {
+            try
+            {
+                var geom = Geometry.Parse(assets.EmptyQueueGeometry);
+                geom.Freeze();
+                dict["ThemeEmptyQueueGeometry"] = geom;
+            }
+            catch (Exception ex)
+            {
+                Logger.Warn(ex, "Failed to parse theme empty queue geometry '{Geometry}'", assets.EmptyQueueGeometry);
+            }
+        }
+        else
+        {
+            try
+            {
+                var defaultGeom = Geometry.Parse("M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z");
+                defaultGeom.Freeze();
+                dict["ThemeEmptyQueueGeometry"] = defaultGeom;
+            }
+            catch
+            {
+                // ignored
+            }
+        }
+
         return dict;
+    }
+
+    public static string? ResolveStandardAssetFile(string packageDirectory, params string[] baseNames)
+    {
+        if (string.IsNullOrWhiteSpace(packageDirectory) || !Directory.Exists(packageDirectory))
+        {
+            return null;
+        }
+
+        string[] extensions = [".png", ".jpg", ".jpeg", ".webp"];
+        foreach (var baseName in baseNames)
+        {
+            foreach (var ext in extensions)
+            {
+                var candidate = baseName + ext;
+                var fullPath = Path.Combine(packageDirectory, candidate);
+                if (File.Exists(fullPath))
+                {
+                    return candidate;
+                }
+            }
+        }
+        return null;
     }
 
     private static Brush? ResolveAssetBrush(string? assetPathOrUri, string? packageDirectory)
@@ -501,7 +581,7 @@ public class HybridThemeParser : IThemeParser
                 return brush;
             }
 
-            string fullPath = !string.IsNullOrEmpty(packageDirectory)
+            var fullPath = !string.IsNullOrEmpty(packageDirectory)
                 ? Path.Combine(packageDirectory, assetPathOrUri)
                 : assetPathOrUri;
 

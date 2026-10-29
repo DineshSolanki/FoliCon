@@ -1,3 +1,5 @@
+using System.Drawing.Imaging;
+
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>
@@ -54,7 +56,7 @@ public static class ReferenceImageExporter
                 using var bitmap = view.RenderToBitmap();
 
                 var filePath = Path.Combine(outputDir, $"{id}_reference.png");
-                bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                bitmap.Save(filePath, ImageFormat.Png);
                 Logger.Info("Exported {Id} -> {Path} ({Width}x{Height})", id, filePath, bitmap.Width, bitmap.Height);
             }
             catch (Exception ex)

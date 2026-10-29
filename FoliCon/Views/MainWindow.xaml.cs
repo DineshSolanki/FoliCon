@@ -1,4 +1,4 @@
-using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using FoliCon.Models.Localization;
 using FoliCon.Models.Themes;
 using FoliCon.Modules.Themes;
@@ -106,7 +106,7 @@ public partial class MainWindow
         while (child != null)
         {
             if (child is T parent) return parent;
-            child = child is Visual or System.Windows.Media.Media3D.Visual3D
+            child = child is Visual or Visual3D
                 ? VisualTreeHelper.GetParent(child)
                 : LogicalTreeHelper.GetParent(child);
         }
@@ -115,17 +115,19 @@ public partial class MainWindow
 
     private void CmbTheme_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_isDropdownOpen && sender is WpfComboBox combo)
+        if (!_isDropdownOpen || sender is not WpfComboBox combo)
         {
-            _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
-            if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
-            {
+            return;
+        }
+        _dropdownPreviewSnapshot ??= MainWindowViewModel.CaptureThemeSnapshot();
+        switch (combo.SelectedItem)
+        {
+            case ThemeOption option when DataContext is MainWindowViewModel vm:
                 vm.ApplyThemeOption(option, isPreview: true);
-            }
-            else if (combo.SelectedItem is FoliconThemes theme)
-            {
+                break;
+            case FoliconThemes theme:
                 MainWindowViewModel.ApplyAppTheme(theme);
-            }
+                break;
         }
     }
 
@@ -133,57 +135,59 @@ public partial class MainWindow
     {
         if (sender is not WpfComboBox combo) return;
 
-        if (e.Key == Key.Down)
+        switch (e.Key)
         {
-            e.Handled = true;
-            if (!_isDropdownOpen)
+            case Key.Down:
             {
-                combo.IsDropDownOpen = true;
+                e.Handled = true;
+                if (!_isDropdownOpen)
+                {
+                    combo.IsDropDownOpen = true;
+                }
+                if (combo.Items.Count > 0)
+                {
+                    var nextIndex = combo.SelectedIndex < combo.Items.Count - 1 ? combo.SelectedIndex + 1 : 0;
+                    combo.SelectedIndex = nextIndex;
+                }
+                break;
             }
-            if (combo.Items.Count > 0)
+            case Key.Up:
             {
-                var nextIndex = combo.SelectedIndex < combo.Items.Count - 1 ? combo.SelectedIndex + 1 : 0;
-                combo.SelectedIndex = nextIndex;
+                e.Handled = true;
+                if (!_isDropdownOpen)
+                {
+                    combo.IsDropDownOpen = true;
+                }
+                if (combo.Items.Count > 0)
+                {
+                    var prevIndex = combo.SelectedIndex > 0 ? combo.SelectedIndex - 1 : combo.Items.Count - 1;
+                    combo.SelectedIndex = prevIndex;
+                }
+                break;
             }
-        }
-        else if (e.Key == Key.Up)
-        {
-            e.Handled = true;
-            if (!_isDropdownOpen)
+            case Key.Enter or Key.Tab:
             {
-                combo.IsDropDownOpen = true;
+                e.Handled = true;
+                _isCommitted = true;
+                combo.IsDropDownOpen = false;
+                _dropdownPreviewSnapshot = null;
+                _lastHoveredOption = null;
+                if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
+                {
+                    vm.IsPreviewingTheme = false;
+                    vm.ApplyThemeOption(option, isPreview: false);
+                }
+                break;
             }
-            if (combo.Items.Count > 0)
-            {
-                var prevIndex = combo.SelectedIndex > 0 ? combo.SelectedIndex - 1 : combo.Items.Count - 1;
-                combo.SelectedIndex = prevIndex;
-            }
-        }
-        else if (e.Key is Key.Enter or Key.Tab)
-        {
-            e.Handled = true;
-            _isCommitted = true;
-            combo.IsDropDownOpen = false;
-            _dropdownPreviewSnapshot = null;
-            _lastHoveredOption = null;
-            if (combo.SelectedItem is ThemeOption option && DataContext is MainWindowViewModel vm)
-            {
-                vm.IsPreviewingTheme = false;
-                vm.ApplyThemeOption(option, isPreview: false);
-            }
-        }
-        else if (e.Key == Key.Escape)
-        {
-            e.Handled = true;
-            combo.IsDropDownOpen = false;
-            RollbackDropdownPreview();
+            case Key.Escape:
+                e.Handled = true;
+                combo.IsDropDownOpen = false;
+                RollbackDropdownPreview();
+                break;
         }
     }
 
-    private void ComboBoxItem_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        _isCommitted = true;
-    }
+    private void ComboBoxItem_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) => _isCommitted = true;
 
     private void CmbTheme_OnDropDownClosed(object sender, EventArgs e)
     {
@@ -274,22 +278,23 @@ public partial class MainWindow
 
     private void TopLanguageComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is WpfComboBox combo && combo.SelectedItem is LanguageOption option)
+        if (sender is not WpfComboBox { SelectedItem: LanguageOption option })
         {
-            if (DataContext is MainWindowViewModel vm && vm.AppLanguage != option.Language)
-            {
-                vm.AppLanguage = option.Language;
-            }
+            return;
+        }
+        if (DataContext is MainWindowViewModel vm && vm.AppLanguage != option.Language)
+        {
+            vm.AppLanguage = option.Language;
+        }
 
-            var cultureInfo = CultureUtils.GetCultureInfoByLanguage(option.Language);
-            LangProvider.Culture = cultureInfo;
-            Thread.CurrentThread.CurrentCulture = cultureInfo;
-            Thread.CurrentThread.CurrentUICulture = cultureInfo;
-            Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
-            if (FinalList is not null)
-            {
-                UiUtils.SetColumnWidth(FinalList);
-            }
+        var cultureInfo = CultureUtils.GetCultureInfoByLanguage(option.Language);
+        LangProvider.Culture = cultureInfo;
+        Thread.CurrentThread.CurrentCulture = cultureInfo;
+        Thread.CurrentThread.CurrentUICulture = cultureInfo;
+        Kernel32.SetThreadUILanguage((ushort)Thread.CurrentThread.CurrentUICulture.LCID);
+        if (FinalList is not null)
+        {
+            UiUtils.SetColumnWidth(FinalList);
         }
     }
 

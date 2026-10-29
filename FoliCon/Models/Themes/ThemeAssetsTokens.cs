@@ -15,10 +15,28 @@ public sealed class ThemeAssetsTokens
     public string? Wallpaper { get; set; }
 
     /// <summary>
+    /// Alias for wallpaper.
+    /// </summary>
+    [JsonPropertyName("backdrop")]
+    public string? Backdrop { get => Wallpaper; set => Wallpaper ??= value; }
+
+    /// <summary>
     /// Relative path or pack URI to action banner graphic.
     /// </summary>
     [JsonPropertyName("actionBanner")]
     public string? ActionBanner { get; set; }
+
+    /// <summary>
+    /// Alias for actionBanner.
+    /// </summary>
+    [JsonPropertyName("banner")]
+    public string? Banner { get => ActionBanner; set => ActionBanner ??= value; }
+
+    /// <summary>
+    /// Optional preview image relative file name.
+    /// </summary>
+    [JsonPropertyName("preview")]
+    public string? Preview { get; set; }
 
     /// <summary>
     /// Relative path or pack URI to Movie card illustrated viewport artwork.
@@ -49,4 +67,11 @@ public sealed class ThemeAssetsTokens
     /// </summary>
     [JsonPropertyName("brandingGeometry")]
     public string? BrandingGeometry { get; set; }
+
+    /// <summary>
+    /// SVG Path Data string representing the theme's empty queue artwork glyph.
+    /// When omitted, falls back to the neutral folder geometry.
+    /// </summary>
+    [JsonPropertyName("emptyQueueGeometry")]
+    public string? EmptyQueueGeometry { get; set; }
 }

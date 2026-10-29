@@ -1,8 +1,7 @@
 #nullable enable
-using System.Windows;
-using System.Windows.Input;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
+using Window = System.Windows.Window;
 
 namespace FoliCon.Views;
 
@@ -18,7 +17,7 @@ public partial class SearchResult
     private bool _previousShowNonClientArea = true;
     private bool _previousTopmost;
     private bool _isFullScreen;
-    private System.Windows.Window? _parentWindow;
+    private Window? _parentWindow;
 
     public SearchResult()
     {
@@ -36,7 +35,7 @@ public partial class SearchResult
 
     private void UpdateWindowFullScreenState(bool isFullScreen)
     {
-        var window = _parentWindow ??= System.Windows.Window.GetWindow(this);
+        var window = _parentWindow ??= Window.GetWindow(this);
         if (_parentWindow != null)
         {
             _parentWindow.Activated -= OnWindowActivated;
@@ -100,7 +99,7 @@ public partial class SearchResult
         }
     }
 
-    private void ApplyStandardWindowFullScreenState(System.Windows.Window window, bool isFullScreen)
+    private void ApplyStandardWindowFullScreenState(Window window, bool isFullScreen)
     {
         if (isFullScreen)
         {
@@ -223,7 +222,7 @@ public partial class SearchResult
 
         if (_isFullScreen)
         {
-            var window = _parentWindow ?? System.Windows.Window.GetWindow(this);
+            var window = _parentWindow ?? Window.GetWindow(this);
             if (window is HandyControl.Controls.Window hcWindow)
             {
                 hcWindow.Topmost = _previousTopmost;

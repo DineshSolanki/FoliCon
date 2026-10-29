@@ -1,3 +1,4 @@
+using JsonSerializer = System.Text.Json.JsonSerializer;
 using STJ = System.Text.Json.Serialization;
 
 namespace FoliCon.Modules.Configuration;
@@ -90,7 +91,7 @@ public class AppConfig : GlobalDataHelper, STJ.IJsonOnDeserialized
         {
             Directory.CreateDirectory(directory);
         }
-        var json = System.Text.Json.JsonSerializer.Serialize(this, JsonSerializerOptions);
+        var json = JsonSerializer.Serialize(this, JsonSerializerOptions);
         File.WriteAllText(FileName, json);
     }
 }

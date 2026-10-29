@@ -71,7 +71,7 @@ public class ThemeQualityAuditorTests
     {
         var manifest = new ThemeManifest
         {
-            Id = "tokyo-neon", // Built-in reserved theme ID
+            Id = "dark", // Built-in reserved theme ID
             Name = "My Tokyo Neon Copy",
             Version = "1.0.0",
             Colors = new ThemeColorPalette

@@ -1,7 +1,9 @@
+#nullable enable
+
+using System.Text;
 using HandyControl.Themes;
 using Microsoft.Web.WebView2.Core;
-
-#nullable enable
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FoliCon.Views;
 
@@ -226,7 +228,7 @@ public partial class HtmlBox
         }
 
         var targetUrl = $"{HtmlText}?hl={LangProvider.Culture.TwoLetterISOLanguageName}&origin=https://folicon.local";
-        var serializedUrl = System.Text.Json.JsonSerializer.Serialize(targetUrl);
+        var serializedUrl = JsonSerializer.Serialize(targetUrl);
         var script = $"(() => {{ const v = document.getElementById('video'); if (v) {{ v.src = {serializedUrl}; return true; }} return false; }})()";
         try
         {
@@ -293,7 +295,7 @@ public partial class HtmlBox
             return;
         }
 
-        var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(_currentContent));
+        var stream = new MemoryStream(Encoding.UTF8.GetBytes(_currentContent));
         e.Response = Browser.CoreWebView2.Environment.CreateWebResourceResponse(
             stream, 200, "OK", "Content-Type: text/html; charset=utf-8");
     }

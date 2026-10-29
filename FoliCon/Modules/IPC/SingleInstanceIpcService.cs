@@ -1,12 +1,7 @@
 #nullable enable
-using System;
 using System.Buffers.Binary;
-using System.Diagnostics;
-using System.IO;
 using System.IO.Pipes;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace FoliCon.Modules.IPC;

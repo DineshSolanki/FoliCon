@@ -1,9 +1,10 @@
+#nullable enable
+
+using System.Net.Sockets;
 using System.Windows.Documents;
 using Polly;
 using Polly.Retry;
 using TMDbLib.Objects.Find;
-
-#nullable enable
 
 namespace FoliCon.Modules.TMDB;
 
@@ -23,10 +24,10 @@ internal class TmdbService
             UseJitter = true,
             ShouldHandle = new PredicateBuilder()
                 .Handle<HttpRequestException>(ex =>
-                    ex.InnerException is IOException or System.Net.Sockets.SocketException ||
+                    ex.InnerException is IOException or SocketException ||
                     ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
                 .Handle<IOException>()
-                .Handle<System.Net.Sockets.SocketException>(),
+                .Handle<SocketException>(),
             OnRetry = args =>
             {
                 Logger.Warn(args.Outcome.Exception,

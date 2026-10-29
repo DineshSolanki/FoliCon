@@ -12,7 +12,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:FoliConStoreViewModel}"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Background="Transparent">
+             Background="{DynamicResource RegionBrush}">
 
     <prism:Dialog.WindowStyle>
         <Style TargetType="Window">
@@ -23,6 +23,8 @@
             <Setter Property="MinHeight" Value="580" />
             <Setter Property="prism:Dialog.WindowStartupLocation" Value="CenterOwner" />
             <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+            <Setter Property="Background" Value="{DynamicResource RegionBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
         </Style>
     </prism:Dialog.WindowStyle>
 
@@ -98,11 +100,11 @@
 
         <!-- Theme Card Template: Enhanced height (255px) and spacing so buttons are never cut off -->
         <DataTemplate x:Key="ThemeCardTemplate" DataType="{x:Type viewModels:ThemeCardViewModel}">
-            <Border Width="290" Height="255" Margin="8" Padding="14,12"
-                    CornerRadius="8"
+            <Border Width="295" Height="305" Margin="8" Padding="12"
+                    CornerRadius="10"
                     Cursor="Hand"
-                    Background="{DynamicResource HeroCardBackgroundBrush}"
-                    BorderBrush="{DynamicResource HeroCardBorderBrush}"
+                    Background="{DynamicResource SecondaryRegionBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="1">
                 <Border.InputBindings>
                     <MouseBinding Gesture="LeftClick"
@@ -122,7 +124,7 @@
                                 <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
                                 <Setter Property="Effect">
                                     <Setter.Value>
-                                        <DropShadowEffect BlurRadius="12" ShadowDepth="2" Direction="270" Opacity="0.3" Color="#3B82F6" />
+                                        <DropShadowEffect BlurRadius="14" ShadowDepth="2" Direction="270" Opacity="0.35" Color="#3B82F6" />
                                     </Setter.Value>
                                 </Setter>
                             </Trigger>
@@ -150,143 +152,127 @@
 
                 <Grid>
                     <Grid.RowDefinitions>
+                        <!-- Row 0: Preview Banner Image Container -->
+                        <RowDefinition Height="120" />
+                        <!-- Row 1: Title, Author & Color Swatches -->
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <!-- Row 2: Description -->
                         <RowDefinition Height="*" />
+                        <!-- Row 3: Progress -->
                         <RowDefinition Height="Auto" />
+                        <!-- Row 4: Actions Row -->
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
+                    <!-- Row 0: Preview Banner Image Container (No corner leaks) -->
+                    <Border Grid.Row="0" CornerRadius="8" Margin="0,0,0,10"
+                            Background="{DynamicResource RegionBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            ClipToBounds="True">
+                        <Grid>
+                            <!-- Mini theme mock preview when PreviewImage is null -->
+                            <Grid Background="{Binding SwatchBackground}">
+                                <Border Margin="14,10" CornerRadius="6"
+                                        Background="{Binding SwatchCard}"
+                                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                                    <Grid Margin="8,6">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Border Height="4" CornerRadius="2"
+                                                Background="{Binding SwatchPrimary}"
+                                                HorizontalAlignment="Left" Width="48" Margin="0,0,0,6" />
+                                        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                                            <Border Width="28" Height="14" CornerRadius="3"
+                                                    Background="{Binding SwatchPrimary}" Margin="0,0,4,0" />
+                                            <Border Width="18" Height="14" CornerRadius="3"
+                                                    Background="{Binding SwatchAccent}" Opacity="0.6" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </Grid>
 
+                            <!-- Preview Banner Image -->
+                            <Image Source="{Binding PreviewImage}"
+                                   Stretch="UniformToFill"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality" />
 
-                    <!-- Full-Card Surface Tint Highlight -->
-                    <Border Grid.RowSpan="5" Margin="-14,-12" CornerRadius="8" IsHitTestVisible="False">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter Property="Background" Value="#1010B981" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
-                                        <Setter Property="Background" Value="#183B82F6" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                            <!-- Bottom vignette gradient for contrast against title -->
+                            <Border VerticalAlignment="Bottom" Height="30">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#00000000" Offset="0" />
+                                        <GradientStop Color="#80000000" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                            </Border>
+
+                            <!-- Badges in top-right corner of preview -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="6">
+                                <Border Background="#3B82F6" CornerRadius="8"
+                                        Padding="7,2" Margin="0,0,4,0"
+                                        Visibility="{Binding IsPreviewing, Converter={StaticResource BoolToVis}}">
+                                    <TextBlock Text="👁 Previewing" FontSize="9.5" FontWeight="Bold" Foreground="White" />
+                                </Border>
+                                <Border Background="#10B981" CornerRadius="8"
+                                        Padding="7,2"
+                                        Visibility="{Binding IsActive, Converter={StaticResource BoolToVis}}">
+                                    <TextBlock Text="✓ Active" FontSize="9.5" FontWeight="Bold" Foreground="White" />
+                                </Border>
+                            </StackPanel>
+                        </Grid>
                     </Border>
 
-                    <!-- Top Accent Highlight Stripe -->
-                    <Border Grid.Row="0" Height="4" CornerRadius="6,6,0,0" Margin="-14,-12,-14,8" VerticalAlignment="Top">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                        <Setter Property="Background" Value="#10B981" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
-                                        <Setter Property="Visibility" Value="Visible" />
-                                        <Setter Property="Background" Value="#3B82F6" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
-
-                    <!-- Header: Title, Author, Active & Preview Badges -->
-                    <Grid Grid.Row="0" Margin="0,4,0,0">
+                    <!-- Row 1: Title, Author & Compact Palette Swatches -->
+                    <Grid Grid.Row="1" Margin="0,0,0,6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="{Binding Name}" FontSize="14"
-                                       TextTrimming="CharacterEllipsis">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="FontWeight" Value="Bold" />
-                                        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                                <Setter Property="Foreground" Value="#10B981" />
-                                                <Setter Property="FontWeight" Value="ExtraBold" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
-                                                <Setter Property="Foreground" Value="#3B82F6" />
-                                                <Setter Property="FontWeight" Value="ExtraBold" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Name}" FontSize="13.5" FontWeight="Bold"
+                                       Foreground="{DynamicResource PrimaryTextBrush}"
+                                       TextTrimming="CharacterEllipsis" />
                             <TextBlock Text="{Binding Author, StringFormat='by {0}'}" FontSize="11" Margin="0,1,0,0"
                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                        TextTrimming="CharacterEllipsis" />
                         </StackPanel>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                            <!-- Previewing Badge -->
-                            <Border Background="#3B82F6" CornerRadius="10"
-                                    Padding="8,2" Margin="0,0,4,0"
-                                    Visibility="{Binding IsPreviewing, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Text="👁 Previewing" FontSize="10" FontWeight="Bold" Foreground="White" />
-                            </Border>
-
-                            <!-- Active Badge -->
-                            <Border Background="#10B981" CornerRadius="10"
-                                    Padding="8,2"
-                                    Visibility="{Binding IsActive, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Text="✓ Active" FontSize="10" FontWeight="Bold" Foreground="White" />
-                            </Border>
-                        </StackPanel>
+                        <!-- Compact Palette Swatches (5 dots) -->
+                        <Border Grid.Column="1" Padding="4,2" CornerRadius="10"
+                                Background="{DynamicResource RegionBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                                VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="11" Height="11" Margin="2,0" Fill="{Binding SwatchBackground}" ToolTip="Background Color" Stroke="#40808080" StrokeThickness="0.5" />
+                                <Ellipse Width="11" Height="11" Margin="2,0" Fill="{Binding SwatchCard}" ToolTip="Card / Region Color" Stroke="#40808080" StrokeThickness="0.5" />
+                                <Ellipse Width="11" Height="11" Margin="2,0" Fill="{Binding SwatchPrimary}" ToolTip="Primary Accent" Stroke="#40808080" StrokeThickness="0.5" />
+                                <Ellipse Width="11" Height="11" Margin="2,0" Fill="{Binding SwatchAccent}" ToolTip="Secondary Accent" Stroke="#40808080" StrokeThickness="0.5" />
+                                <Ellipse Width="11" Height="11" Margin="2,0" Fill="{Binding SwatchText}" ToolTip="Foreground Text" Stroke="#40808080" StrokeThickness="0.5" />
+                            </StackPanel>
+                        </Border>
                     </Grid>
 
-                    <!-- Palette Swatch Strip -->
-                    <Border Grid.Row="1" Margin="0,8,0,6" Padding="6,4" CornerRadius="6"
-                            Background="{DynamicResource RegionBrush}">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
-                                <Setter Property="BorderThickness" Value="1" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                        <Setter Property="BorderBrush" Value="#8010B981" />
-                                        <Setter Property="BorderThickness" Value="1.5" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsPreviewing}" Value="True">
-                                        <Setter Property="BorderBrush" Value="#803B82F6" />
-                                        <Setter Property="BorderThickness" Value="1.5" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Ellipse Width="18" Height="18" Margin="3,0" Fill="{Binding SwatchBackground}" ToolTip="Background Color" Stroke="#40808080" StrokeThickness="1" />
-                            <Ellipse Width="18" Height="18" Margin="3,0" Fill="{Binding SwatchCard}" ToolTip="Card / Region Color" Stroke="#40808080" StrokeThickness="1" />
-                            <Ellipse Width="18" Height="18" Margin="3,0" Fill="{Binding SwatchPrimary}" ToolTip="Primary Accent" Stroke="#40808080" StrokeThickness="1" />
-                            <Ellipse Width="18" Height="18" Margin="3,0" Fill="{Binding SwatchAccent}" ToolTip="Secondary Accent" Stroke="#40808080" StrokeThickness="1" />
-                            <Ellipse Width="18" Height="18" Margin="3,0" Fill="{Binding SwatchText}" ToolTip="Foreground Text" Stroke="#40808080" StrokeThickness="1" />
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Description -->
-                    <TextBlock Grid.Row="2" Text="{Binding Description}" FontSize="11.5"
+                    <!-- Row 2: Description -->
+                    <TextBlock Grid.Row="2" Text="{Binding Description}" FontSize="11"
                                Foreground="{DynamicResource SecondaryTextBrush}"
-                               TextWrapping="Wrap" MaxHeight="38" TextTrimming="CharacterEllipsis" Margin="0,0,0,6" />
+                               TextWrapping="Wrap" MaxHeight="32" TextTrimming="CharacterEllipsis" Margin="0,0,0,6" LineHeight="15" />
 
-                    <!-- Progress / Status Message -->
-                    <StackPanel Grid.Row="3" Margin="0,0,0,6">
-                        <ProgressBar Height="4" Maximum="100" Value="{Binding ProgressPercentage}"
+                    <!-- Row 3: Progress / Status Message -->
+                    <StackPanel Grid.Row="3" Margin="0,0,0,4">
+                        <ProgressBar Height="3" Maximum="100" Value="{Binding ProgressPercentage}"
                                      Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}" />
-                        <TextBlock Text="{Binding OperationMessage}" FontSize="10.5" HorizontalAlignment="Center"
+                        <TextBlock Text="{Binding OperationMessage}" FontSize="10" HorizontalAlignment="Center"
                                    Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,2,0,0" />
                     </StackPanel>
 
-                    <!-- Actions Row -->
-                    <Grid Grid.Row="4" Margin="0,4,0,0">
+                    <!-- Row 4: Actions Row -->
+                    <Grid Grid.Row="4" Margin="0,2,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -294,7 +280,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Preview Button -->
-                        <Button Grid.Column="0" Margin="0,0,3,0" Height="28" FontSize="11"
+                        <Button Grid.Column="0" Margin="0,0,4,0" Height="28" FontSize="11"
                                 Command="{Binding DataContext.PreviewThemeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding}">
                             <Button.Style>
@@ -312,7 +298,7 @@
                         </Button>
 
                         <!-- Apply / Install Button -->
-                        <Button Grid.Column="1" Margin="3,0,0,0" Height="28" FontSize="11"
+                        <Button Grid.Column="1" Margin="4,0,0,0" Height="28" FontSize="11"
                                 Command="{Binding DataContext.ApplyThemeCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding}">
                             <Button.Style>
@@ -539,8 +525,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
-        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
+<!-- Solid background layer so behind windows never bleed through -->
+        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource RegionBrush}" IsHitTestVisible="False" />
+        <!-- Subtle theme wallpaper layer for living ambiance -->
+        <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeWallpaperBrush}" Opacity="0.25" IsHitTestVisible="False" />
         <Rectangle Grid.RowSpan="4" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
 
         <!-- Top Header Banner -->

@@ -1,13 +1,6 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Security;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using FoliCon.Models.Themes;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -42,6 +35,10 @@ public class ThemeStorageService : IThemeStorageService
         _customizationsFilePath = Path.Combine(_themesDirectory, "user_customizations.json");
 
         EnsureDirectoryExists(_themesDirectory);
+        if (themesDirectory == null)
+        {
+            EnsureDefaultCommunityThemesSeeded();
+        }
         LoadUserThemes();
         LoadCustomizations();
     }
@@ -52,14 +49,48 @@ public class ThemeStorageService : IThemeStorageService
     {
         lock (_lock)
         {
-            if (_allThemesCache == null)
+            if (_allThemesCache != null)
             {
-                var builtIn = BuiltInThemes.GetAll();
-                var combined = new List<ThemeManifest>(builtIn.Count + _userThemes.Count);
-                combined.AddRange(builtIn);
-                combined.AddRange(_userThemes);
-                _allThemesCache = combined.AsReadOnly();
+                return _allThemesCache;
             }
+            var dict = new Dictionary<string, ThemeManifest>(StringComparer.OrdinalIgnoreCase);
+
+            // 1. Built-in themes (Dark, Light, System, The Butterfly)
+            foreach (var b in BuiltInThemes.GetAll())
+            {
+                dict[b.Id] = b;
+            }
+
+            // 2. Pre-installed themes in app directory (<BaseDirectory>/Themes)
+            var appThemesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ThemeConstants.themesFolder);
+            if (Directory.Exists(appThemesDir))
+            {
+                foreach (var dir in Directory.GetDirectories(appThemesDir))
+                {
+                    var manifestFile = Path.Combine(dir, ThemeConstants.themeJsonFileName);
+                    if (!File.Exists(manifestFile)) continue;
+                    try
+                    {
+                        var json = File.ReadAllText(manifestFile);
+                        var manifest = _themeParser.Parse(json);
+                        manifest.PackageDirectory = dir;
+                        manifest.IsBuiltIn = false;
+                        dict[manifest.Id] = manifest;
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
+                }
+            }
+
+            // 3. Installed user themes from disk (may override pre-installed if customized)
+            foreach (var u in _userThemes)
+            {
+                dict[u.Id] = u;
+            }
+
+            _allThemesCache = dict.Values.ToList().AsReadOnly();
 
             return _allThemesCache;
         }
@@ -89,8 +120,41 @@ public class ThemeStorageService : IThemeStorageService
                 }
             }
 
-            _themeByIdCache.TryGetValue(themeId, out var found);
-            return found;
+            if (_themeByIdCache.TryGetValue(themeId, out var found))
+                return found;
+
+            var appThemesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ThemeConstants.themesFolder, themeId.ToLowerInvariant());
+            var manifestFile = Path.Combine(appThemesDir, ThemeConstants.themeJsonFileName);
+            if (!File.Exists(manifestFile))
+            {
+                return null;
+            }
+            {
+                try
+                {
+                    var json = File.ReadAllText(manifestFile);
+                    var manifest = _themeParser.Parse(json);
+                    manifest.PackageDirectory = appThemesDir;
+                    manifest.IsBuiltIn = false;
+                    var previewCandidate = manifest.PreviewImageFile ?? manifest.Preview;
+                    if (string.IsNullOrEmpty(previewCandidate))
+                    {
+                        previewCandidate = HybridThemeParser.ResolveStandardAssetFile(appThemesDir, "preview", "banner", "backdrop");
+                    }
+                    if (!string.IsNullOrEmpty(previewCandidate))
+                    {
+                        manifest.PreviewImageFile = previewCandidate;
+                    }
+                    _themeByIdCache[manifest.Id] = manifest;
+                    return manifest;
+                }
+                catch
+                {
+                    // ignored
+                }
+            }
+
+            return null;
         }
     }
 
@@ -143,7 +207,7 @@ public class ThemeStorageService : IThemeStorageService
 
         try
         {
-            using (var archive = new ZipArchive(packageStream, ZipArchiveMode.Read, leaveOpen: true))
+            await using (var archive = new ZipArchive(packageStream, ZipArchiveMode.Read, leaveOpen: true))
             {
                 var fullDestDir = Path.GetFullPath(tempDir);
 
@@ -501,10 +565,14 @@ public class ThemeStorageService : IThemeStorageService
                 manifest.PackageDirectory = dir;
                 manifest.IsBuiltIn = false;
 
-                var previewPath = Path.Combine(dir, ThemeConstants.previewImageFileName);
-                if (File.Exists(previewPath))
+                var previewCandidate = manifest.PreviewImageFile ?? manifest.Preview;
+                if (string.IsNullOrEmpty(previewCandidate))
                 {
-                    manifest.PreviewImageFile = ThemeConstants.previewImageFileName;
+                    previewCandidate = HybridThemeParser.ResolveStandardAssetFile(dir, "preview", "banner", "backdrop");
+                }
+                if (!string.IsNullOrEmpty(previewCandidate))
+                {
+                    manifest.PreviewImageFile = previewCandidate;
                 }
 
                 list.Add(manifest);
@@ -516,6 +584,46 @@ public class ThemeStorageService : IThemeStorageService
         }
 
         _userThemes = list;
+    }
+
+    private void EnsureDefaultCommunityThemesSeeded()
+    {
+        try
+        {
+            EnsureDirectoryExists(_themesDirectory);
+
+            var appThemesDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ThemeConstants.themesFolder);
+            if (!Directory.Exists(appThemesDir)) return;
+
+            foreach (var sourceThemeDir in Directory.GetDirectories(appThemesDir))
+            {
+                var themeId = Path.GetFileName(sourceThemeDir);
+                var targetThemeDir = GetThemeFolderPath(themeId);
+
+                var sourceManifest = Path.Combine(sourceThemeDir, ThemeConstants.themeJsonFileName);
+                var targetManifest = Path.Combine(targetThemeDir, ThemeConstants.themeJsonFileName);
+
+                if (!File.Exists(sourceManifest))
+                {
+                    continue;
+                }
+                EnsureDirectoryExists(targetThemeDir);
+                foreach (var file in Directory.GetFiles(sourceThemeDir, "*", SearchOption.AllDirectories))
+                {
+                    var rel = Path.GetRelativePath(sourceThemeDir, file);
+                    var dest = Path.Combine(targetThemeDir, rel);
+                    EnsureDirectoryExists(Path.GetDirectoryName(dest)!);
+                    if (!File.Exists(dest) || File.GetLastWriteTimeUtc(file) > File.GetLastWriteTimeUtc(dest))
+                    {
+                        File.Copy(file, dest, overwrite: true);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to seed default custom themes from application directory");
+        }
     }
 
     private static void EnsureDirectoryExists(string path)

@@ -1,7 +1,4 @@
 #nullable enable
-using FoliCon.Models.Enums;
-using Prism.Mvvm;
-
 namespace FoliCon.Models.Themes;
 
 /// <summary>

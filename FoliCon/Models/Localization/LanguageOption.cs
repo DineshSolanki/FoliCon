@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using FoliCon.Models.Enums;
-
 namespace FoliCon.Models.Localization;
 
 public sealed class LanguageOption

@@ -1,6 +1,4 @@
 #nullable enable
-using FoliCon.Models.Themes;
-
 namespace FoliCon.Models.Themes;
 
 /// <summary>
@@ -25,7 +23,7 @@ public sealed class ThemeOptionItem
     public override string ToString() => DisplayName;
 
     public override bool Equals(object? obj) =>
-        obj is ThemeOptionItem other && string.Equals(Id, other.Id, System.StringComparison.OrdinalIgnoreCase);
+        obj is ThemeOptionItem other && string.Equals(Id, other.Id, StringComparison.OrdinalIgnoreCase);
 
     public override int GetHashCode() => StringComparer.OrdinalIgnoreCase.GetHashCode(Id);
 }

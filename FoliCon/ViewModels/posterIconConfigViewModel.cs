@@ -1,4 +1,6 @@
 #nullable enable
+using FoliCon.Modules.Overlays.Designer;
+
 namespace FoliCon.ViewModels;
 
 [SuppressMessage("Performance", "CA1822:Mark members as static",
@@ -87,7 +89,7 @@ public class PosterIconConfigViewModel : BindableBase, IDialogAware
 
         // Deletion lives in OverlayExporter alongside install, so both halves of the
         // local-overlay lifecycle share one implementation and one set of guards.
-        var result = new Modules.Overlays.Designer.OverlayExporter().UninstallLocalAtPath(item.FolderPath!);
+        var result = new OverlayExporter().UninstallLocalAtPath(item.FolderPath!);
 
         if (!result.Succeeded)
         {

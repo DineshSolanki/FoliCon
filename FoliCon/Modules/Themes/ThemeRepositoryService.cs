@@ -1,12 +1,5 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using FoliCon.Models.Themes;
 using SysJsonSerializer = System.Text.Json.JsonSerializer;
 
