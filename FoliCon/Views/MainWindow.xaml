@@ -139,7 +139,7 @@
                                         Opacity="0.25"
                                         SnapsToDevicePixels="True" />
 
-                                <Grid HorizontalAlignment="Center" Margin="8,14">
+                                <Grid HorizontalAlignment="Center" Margin="8,8">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -148,16 +148,16 @@
 
                                     <!-- Circular Icon Badge (Elevated surface with crisp high-visibility icon) -->
                                     <Border x:Name="IconBadge" Grid.Row="0"
-                                            Width="44" Height="44"
-                                            CornerRadius="22"
+                                            Width="40" Height="40"
+                                            CornerRadius="20"
                                             Background="{DynamicResource ThirdRegionBrush}"
                                             BorderBrush="Transparent"
                                             BorderThickness="1"
                                             HorizontalAlignment="Center"
-                                            Margin="0,0,0,10">
+                                            Margin="0,0,0,6">
                                         <Path x:Name="IconPath"
                                               Data="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"
-                                              Width="22" Height="22" Stretch="Uniform"
+                                              Width="20" Height="20" Stretch="Uniform"
                                               Fill="{DynamicResource PrimaryTextBrush}"
                                               Opacity="1.0"
                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -175,7 +175,7 @@
                                                 Orientation="Horizontal"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
-                                                Margin="0,4,0,0"
+                                                Margin="0,2,0,0"
                                                 Visibility="Hidden">
                                         <Ellipse Width="6" Height="6"
                                                  Fill="{DynamicResource PrimaryBrush}"
@@ -823,8 +823,8 @@
                         BorderBrush="{DynamicResource HeroCardBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
-                        Padding="16,12"
-                        Margin="16,10,16,10"
+                        Padding="16,10"
+                        Margin="16,8,16,8"
                         Cursor="Hand">
                     <Border.InputBindings>
                         <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding SelectedFolderDClickCommand}" />
@@ -937,7 +937,7 @@
             <!-- ========================================================================= -->
             <!-- ROW 1: CONTROL CENTER (MODES & ACTIONS)                                   -->
             <!-- ========================================================================= -->
-            <Grid Grid.Row="1" Margin="16,0,16,10">
+            <Grid Grid.Row="1" Margin="16,0,16,8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.35*" />  <!-- Left: Modes & Options Card -->
                     <ColumnDefinition Width="1*" />     <!-- Right: Action Center Card -->
@@ -949,15 +949,15 @@
                         BorderBrush="{DynamicResource HeroCardBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
-                        Padding="16,14"
+                        Padding="14,10"
                         Margin="0,0,6,0">
                     <StackPanel>
                         <!-- Section: Icon Mode -->
                         <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.IconMode}}"
-                                   Style="{StaticResource SectionHeaderStyle}" />
+                                   Style="{StaticResource SectionHeaderStyle}" Margin="0,0,0,6" />
 
                         <!-- Segmented Pill Selector for Icon Mode -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <RadioButton x:Name="RPoster" Style="{StaticResource SegmentedRadioTabStyle}"
                                          Command="{Binding IconModeChangedCommand}" CommandParameter="Poster"
                                          GroupName="IconMode" IsChecked="True">
@@ -982,12 +982,12 @@
                         </StackPanel>
 
                         <!-- Section: Media Type / Search Mode -->
-                        <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,2,0,10"
+                        <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="0,2,0,8"
                                 Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                         <StackPanel Visibility="{Binding IsSearchModeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <!-- Section Header with Search/Filter Icon and Matched Providers Info -->
-                            <Grid Margin="0,4,0,10">
+                            <Grid Margin="0,2,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -1084,7 +1084,7 @@
                         BorderBrush="{DynamicResource HeroCardBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
-                        Padding="16,14"
+                        Padding="14,10"
                         Margin="6,0,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -1093,7 +1093,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid Grid.Row="0" Margin="0,0,0,8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
@@ -1110,68 +1110,53 @@
                         </Grid>
 
                         <StackPanel Grid.Row="1" VerticalAlignment="Center">
-                            <!-- Themed Action Banner Container -->
-                            <Border CornerRadius="12" Margin="0,0,0,10"
-                                    Background="{DynamicResource ThemeActionBannerBrush}"
-                                    BorderBrush="{DynamicResource ThemeActionBannerBorderBrush}"
-                                    BorderThickness="1"
-                                    MinHeight="130"
-                                    ClipToBounds="True"
-                                    SnapsToDevicePixels="True">
-                                <Grid>
-                                    <!-- High-contrast Dark Tint Overlay for Text Legibility -->
-                                    <Border Background="{DynamicResource ThemeActionBannerOverlayBrush}"
-                                            CornerRadius="11" />
-
-                                    <!-- Centered Floating Make Icons CTA Button -->
-                                    <Button x:Name="MakeIconsBtn"
-                                            Style="{StaticResource ActionButtonStyle}"
-                                            Command="{Binding CreateIconsCommand}"
-                                            Background="{DynamicResource SecondaryRegionBrush}"
-                                            BorderBrush="{DynamicResource PrimaryBrush}"
-                                            BorderThickness="1.5"
-                                            Cursor="Hand"
-                                            Height="44"
-                                            MinWidth="240"
-                                            Padding="32,0"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                            <Path Data="{StaticResource ModernWandGeometry}" Width="18" Height="18" Stretch="Uniform"
-                                                  Fill="{DynamicResource PrimaryBrush}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                            <TextBlock Text="Make Icons"
-                                                       FontSize="15" FontWeight="Bold" Foreground="#FFFFFF" />
-                                        </StackPanel>
-                                    </Button>
-                                </Grid>
-                            </Border>
+                            <!-- Primary CTA: Make Icons -->
+                            <Button x:Name="MakeIconsBtn"
+                                    Style="{DynamicResource ButtonPrimary}"
+                                    Command="{Binding SearchAndMakeCommand}"
+                                    IsEnabled="{Binding IsMakeEnabled}"
+                                    Background="{DynamicResource PrimaryActionGradientBrush}"
+                                    BorderBrush="{DynamicResource PrimaryBrush}"
+                                    BorderThickness="1.5"
+                                    Cursor="Hand"
+                                    Height="46"
+                                    Margin="0,0,0,8"
+                                    HorizontalAlignment="Stretch"
+                                    Effect="{DynamicResource ThemeCtaGlowEffect}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource ModernWandGeometry}" Width="18" Height="18" Stretch="Uniform"
+                                          Fill="White" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{extension:Lang Key={x:Static langs:LangKeys.MakeIcons}}"
+                                               FontSize="15" FontWeight="Bold" Foreground="#FFFFFF" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Button>
 
                             <!-- Quick Options Box -->
                             <Border Background="{DynamicResource SecondaryRegionBrush}"
                                     BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="8"
-                                    Padding="14,10"
-                                    Margin="0,6,0,0">
+                                    Padding="12,8"
+                                    Margin="0,4,0,0">
                                 <StackPanel>
-                                    <TextBlock Text="Quick Generation Options" FontSize="12" FontWeight="SemiBold"
-                                               Foreground="{DynamicResource PrimaryTextBrush}" Opacity="0.92" Margin="0,0,0,5" />
-                                    <UniformGrid Columns="2" Margin="0,3">
+                                    <TextBlock Text="Quick Generation Options" FontSize="11.5" FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryTextBrush}" Opacity="0.92" Margin="0,0,0,4" />
+                                    <UniformGrid Columns="2" Margin="0,2">
                                         <CheckBox Content="Use Poster Mockup"
-                                                  FontSize="12.5" Foreground="{DynamicResource PrimaryTextBrush}"
-                                                  IsChecked="{Binding IsPosterMockupUsed}" Margin="0,3"
+                                                  FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}"
+                                                  IsChecked="{Binding IsPosterMockupUsed}" Margin="0,2"
                                                   ToolTip="Wrap folder icons in a premium 3D jewel case or poster wrap" />
                                         <CheckBox Content="Show Rating Badge"
-                                                  FontSize="12.5" Foreground="{DynamicResource PrimaryTextBrush}"
-                                                  IsChecked="{Binding IsRatingVisible}" Margin="0,3"
+                                                  FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}"
+                                                  IsChecked="{Binding IsRatingVisible}" Margin="0,2"
                                                   ToolTip="Display IMDb / Metacritic ratings badge directly on generated icons" />
                                         <CheckBox Content="Show Poster Window"
-                                                  FontSize="12.5" Foreground="{DynamicResource PrimaryTextBrush}"
-                                                  IsChecked="{Binding IsPosterWindowShown}" Margin="0,3"
+                                                  FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}"
+                                                  IsChecked="{Binding IsPosterWindowShown}" Margin="0,2"
                                                   ToolTip="Display live poster preview window during generation" />
                                         <CheckBox Content="Skip Ambiguous Matches"
-                                                  FontSize="12.5" Foreground="{DynamicResource PrimaryTextBrush}"
-                                                  IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}" Margin="0,3"
+                                                  FontSize="12" Foreground="{DynamicResource PrimaryTextBrush}"
+                                                  IsChecked="{Binding IsSkipAmbiguous}" IsEnabled="{Binding IsSkipAmbiguousEnabled}" Margin="0,2"
                                                   ToolTip="Automatically skip folders when multiple poster matches are found" />
                                     </UniformGrid>
                                 </StackPanel>
@@ -1181,7 +1166,7 @@
                         <!-- Footer Callout Note -->
                         <TextBlock Grid.Row="2" Text="FoliCon queries TMDb, IGDB &amp; DeviantArt to automatically match and build folder icons."
                                    FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}"
-                                   TextWrapping="Wrap" Margin="0,10,0,0" />
+                                   TextWrapping="Wrap" Margin="0,6,0,0" />
                     </Grid>
                 </Border>
             </Grid>

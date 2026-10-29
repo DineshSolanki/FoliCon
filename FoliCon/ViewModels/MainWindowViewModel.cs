@@ -2156,9 +2156,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
             SyncResource(res, customDict, "ThemeWallpaperBrush");
 
-            SyncResource(res, customDict, "ThemeActionBannerBrush");
 
-            SyncResource(res, customDict, "ThemeActionBannerOverlayBrush");
 
             SyncResource(res, customDict, "ThemeCardMovieBrush");
 
@@ -2189,8 +2187,6 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             res["FolderBadgeGradientBrush"] = PrimaryActionBrush;
 
             res["ThemeWallpaperBrush"] = Brushes.Transparent;
-            res["ThemeActionBannerBrush"] = Brushes.Transparent;
-            res["ThemeActionBannerOverlayBrush"] = Brushes.Transparent;
             res["ThemeCardMovieBrush"] = Brushes.Transparent;
             res["ThemeCardTvBrush"] = Brushes.Transparent;
             res["ThemeCardGameBrush"] = Brushes.Transparent;

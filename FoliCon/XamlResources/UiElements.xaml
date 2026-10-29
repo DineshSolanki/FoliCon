@@ -161,8 +161,6 @@
     <!-- ========================================================================= -->
     <SolidColorBrush x:Key="ThemeWallpaperBrush" Color="Transparent" />
     <SolidColorBrush x:Key="ThemeVignetteBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="ThemeActionBannerBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="ThemeActionBannerOverlayBrush" Color="Transparent" />
 
     <SolidColorBrush x:Key="ThemeCardMovieBrush" Color="Transparent" />
 

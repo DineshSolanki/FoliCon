@@ -139,7 +139,7 @@ public class ThemeStorageService : IThemeStorageService
                     var previewCandidate = manifest.PreviewImageFile ?? manifest.Preview;
                     if (string.IsNullOrEmpty(previewCandidate))
                     {
-                        previewCandidate = HybridThemeParser.ResolveStandardAssetFile(appThemesDir, "preview", "banner", "backdrop");
+                        previewCandidate = HybridThemeParser.ResolveStandardAssetFile(appThemesDir, "preview", "backdrop");
                     }
                     if (!string.IsNullOrEmpty(previewCandidate))
                     {
@@ -568,7 +568,7 @@ public class ThemeStorageService : IThemeStorageService
                 var previewCandidate = manifest.PreviewImageFile ?? manifest.Preview;
                 if (string.IsNullOrEmpty(previewCandidate))
                 {
-                    previewCandidate = HybridThemeParser.ResolveStandardAssetFile(dir, "preview", "banner", "backdrop");
+                    previewCandidate = HybridThemeParser.ResolveStandardAssetFile(dir, "preview", "backdrop");
                 }
                 if (!string.IsNullOrEmpty(previewCandidate))
                 {

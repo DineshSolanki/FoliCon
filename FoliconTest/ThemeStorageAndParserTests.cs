@@ -599,8 +599,6 @@ public class ThemeStorageAndParserTests
                 Assert.NotNull(wallpaperBrush);
 
 
-                var bannerBrush = dict["ThemeActionBannerBrush"] as ImageBrush;
-                Assert.NotNull(bannerBrush);
             });
         }
         finally

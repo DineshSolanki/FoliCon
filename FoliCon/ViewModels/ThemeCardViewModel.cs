@@ -161,12 +161,12 @@ public class ThemeCardViewModel : BindableBase
         var previewCandidate = manifest.PreviewImageFile ?? manifest.Preview;
         if (string.IsNullOrEmpty(previewCandidate))
         {
-            previewCandidate = manifest.Assets?.ActionBanner ?? manifest.Assets?.Banner ?? manifest.Assets?.Wallpaper ?? manifest.Assets?.Backdrop;
+            previewCandidate = manifest.Assets?.Wallpaper ?? manifest.Assets?.Backdrop;
         }
 
         if (string.IsNullOrEmpty(previewCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
         {
-            previewCandidate = HybridThemeParser.ResolveStandardAssetFile(manifest.PackageDirectory, "preview", "banner", "backdrop");
+            previewCandidate = HybridThemeParser.ResolveStandardAssetFile(manifest.PackageDirectory, "preview", "backdrop");
         }
 
         if (string.IsNullOrEmpty(previewCandidate))
@@ -176,7 +176,7 @@ public class ThemeCardViewModel : BindableBase
                 "FoliCon",
                 ThemeConstants.themesFolder,
                 manifest.Id.ToLowerInvariant());
-            previewCandidate = HybridThemeParser.ResolveStandardAssetFile(appDataThemesDir, "preview", "banner", "backdrop");
+            previewCandidate = HybridThemeParser.ResolveStandardAssetFile(appDataThemesDir, "preview", "backdrop");
         }
 
         if (string.IsNullOrEmpty(previewCandidate)) return;

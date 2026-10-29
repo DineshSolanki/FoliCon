@@ -152,7 +152,6 @@ public class HybridThemeParser : IThemeParser
         if (manifest.Assets != null)
         {
             ValidateAssetPath(result, "assets.wallpaper", manifest.Assets.Wallpaper);
-            ValidateAssetPath(result, "assets.actionBanner", manifest.Assets.ActionBanner);
             ValidateAssetPath(result, "assets.movieCard", manifest.Assets.MovieCard);
             ValidateAssetPath(result, "assets.tvCard", manifest.Assets.TvCard);
             ValidateAssetPath(result, "assets.gameCard", manifest.Assets.GameCard);
@@ -428,12 +427,6 @@ public class HybridThemeParser : IThemeParser
         }
         dict["ThemeWallpaperBrush"] = wallpaperBrush;
 
-        var bannerCandidate = assets?.ActionBanner ?? assets?.Banner;
-        if (string.IsNullOrEmpty(bannerCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
-        {
-            bannerCandidate = ResolveStandardAssetFile(manifest.PackageDirectory, "banner", "action_banner");
-        }
-        dict["ThemeActionBannerBrush"] = ResolveAssetBrush(bannerCandidate, manifest.PackageDirectory) ?? Brushes.Transparent;
 
         var movieCandidate = assets?.MovieCard;
         if (string.IsNullOrEmpty(movieCandidate) && !string.IsNullOrEmpty(manifest.PackageDirectory))
@@ -484,13 +477,6 @@ public class HybridThemeParser : IThemeParser
             dict["ThemeVignetteBrush"] = Brushes.Transparent;
         }
 
-        // Action Banner Overlay
-        var bannerOverlay = new LinearGradientBrush { StartPoint = new Point(0, 0), EndPoint = new Point(1, 0) };
-        bannerOverlay.GradientStops.Add(new GradientStop(Color.FromArgb(0x60, 0, 0, 0), 0.0));
-        bannerOverlay.GradientStops.Add(new GradientStop(Color.FromArgb(0x20, primaryColor.R, primaryColor.G, primaryColor.B), 0.5));
-        bannerOverlay.GradientStops.Add(new GradientStop(Color.FromArgb(0x60, 0, 0, 0), 1.0));
-        bannerOverlay.Freeze();
-        dict["ThemeActionBannerOverlayBrush"] = bannerOverlay;
 
         // 9. Synthesize Branding Vector Geometry
         if (!string.IsNullOrWhiteSpace(assets?.BrandingGeometry))

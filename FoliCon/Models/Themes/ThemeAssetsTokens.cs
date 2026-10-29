@@ -21,18 +21,6 @@ public sealed class ThemeAssetsTokens
     public string? Backdrop { get => Wallpaper; set => Wallpaper ??= value; }
 
     /// <summary>
-    /// Relative path or pack URI to action banner graphic.
-    /// </summary>
-    [JsonPropertyName("actionBanner")]
-    public string? ActionBanner { get; set; }
-
-    /// <summary>
-    /// Alias for actionBanner.
-    /// </summary>
-    [JsonPropertyName("banner")]
-    public string? Banner { get => ActionBanner; set => ActionBanner ??= value; }
-
-    /// <summary>
     /// Optional preview image relative file name.
     /// </summary>
     [JsonPropertyName("preview")]
