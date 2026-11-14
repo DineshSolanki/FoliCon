@@ -696,6 +696,18 @@ and refresh Icon Cache?</value>
   <data name="ManualExplorer" xml:space="preserve">
       <value>Manual Explorer</value>
     </data>
+  <data name="ManualExplorerConnecting" xml:space="preserve">
+      <value>DeviantArtに接続しています...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
+      <value>アーカイブをダウンロードしています...</value>
+    </data>
+  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
+      <value>アーカイブ ({0}) をダウンロードしています...</value>
+    </data>
+  <data name="ManualExplorerExtractedCount" xml:space="preserve">
+      <value>{0} / {1} 個のアイコンを展開しました</value>
+    </data>
   <data name="ExtractGallery" xml:space="preserve">
       <value>Extract gallery</value>
     </data>
@@ -1869,18 +1881,6 @@ and refresh Icon Cache?</value>
   <data name="IconCountFormat" xml:space="preserve">
     <value>{0} 個のアイコン</value>
   </data>
-  <data name="ManualExplorerConnecting" xml:space="preserve">
-    <value>DeviantArtに接続しています...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchive" xml:space="preserve">
-    <value>アーカイブをダウンロードしています...</value>
-  </data>
-  <data name="ManualExplorerDownloadingArchiveWithSize" xml:space="preserve">
-    <value>アーカイブ ({0}) をダウンロードしています...</value>
-  </data>
-  <data name="ManualExplorerExtractedCount" xml:space="preserve">
-    <value>{0} / {1} 個のアイコンを展開しました</value>
-  </data>
   <data name="MatchesCountFormat" xml:space="preserve">
     <value>{0} 件の一致</value>
   </data>
@@ -1951,16 +1951,16 @@ and refresh Icon Cache?</value>
     <value>{0} 個のオーバーレイ</value>
   </data>
   <data name="PreviewerCanvasDark" xml:space="preserve">
-    <value>ダーク</value>
+    <value>Dark</value>
   </data>
   <data name="PreviewerCanvasFolder" xml:space="preserve">
-    <value>フォルダー</value>
+    <value>Folder</value>
   </data>
   <data name="PreviewerCanvasLight" xml:space="preserve">
-    <value>ライト</value>
+    <value>Light</value>
   </data>
   <data name="PreviewerCanvasTheme" xml:space="preserve">
-    <value>テーマ</value>
+    <value>Theme</value>
   </data>
   <data name="PreviewerCopyImage" xml:space="preserve">
     <value>画像をコピー</value>
