@@ -36,7 +36,7 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="IGDB" Version="6.1.0" />
     <PackageReference Include="Jot" Version="2.1.17" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="11.0.0" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4071-prerelease" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
     <PackageReference Include="NLog" Version="6.2.2" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageReference Include="Polly" Version="8.7.0" />
