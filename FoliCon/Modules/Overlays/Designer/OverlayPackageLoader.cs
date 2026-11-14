@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using FoliCon.Modules.Overlays.Internal;
 using JsonException = Newtonsoft.Json.JsonException;
 
 namespace FoliCon.Modules.Overlays.Designer;
@@ -102,7 +103,7 @@ public class OverlayPackageLoader
         var document = OverlayDesignerDocument.FromDefinition(definition, folder);
         document.CreatedAt = ReadCreatedAt(folder);
 
-        var validation = Internal.OverlayValidator.ValidateDetailed(folder, definition);
+        var validation = OverlayValidator.ValidateDetailed(folder, definition);
 
         Logger.Info("Loaded overlay package '{Id}' from {Folder} ({Errors} errors, {Warnings} warnings)",
             document.Id, folder, validation.ErrorCount, validation.WarningCount);

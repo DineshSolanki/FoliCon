@@ -12,7 +12,7 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:OverlayStoreViewModel}"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Background="{DynamicResource RegionBrush}">
+             Background="Transparent">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -26,11 +26,11 @@
             <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsInstalled}" Value="True">
-                    <Setter Property="Text" Value="✓" />
+                    <Setter Property="Text" Value="âœ“" />
                     <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsUpdateAvailable}" Value="True">
-                    <Setter Property="Text" Value="⟳" />
+                    <Setter Property="Text" Value="âŸ³" />
                     <Setter Property="Foreground" Value="{DynamicResource InfoBrush}" />
                 </DataTrigger>
             </Style.Triggers>
@@ -119,7 +119,7 @@
                                ToolTip="{Binding DisplayName}" />
                     <TextBlock FontSize="11" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"
                                Foreground="{DynamicResource SecondaryTextBrush}">
-                        <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding VersionDisplay, Mode=OneWay}" />
+                        <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" Â· " /><Run Text="{Binding VersionDisplay, Mode=OneWay}" />
                     </TextBlock>
 
                     <!-- Status Pill Row -->
@@ -206,7 +206,7 @@
                                    Foreground="{DynamicResource PrimaryTextBrush}" />
                         <TextBlock FontSize="11" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"
                                    Foreground="{DynamicResource SecondaryTextBrush}">
-                            <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" · " /><Run Text="{Binding SizeDisplay, Mode=OneWay}" />
+                            <Run Text="{Binding Author, Mode=OneWay}" /><Run Text=" Â· " /><Run Text="{Binding SizeDisplay, Mode=OneWay}" />
                         </TextBlock>
                     </StackPanel>
 

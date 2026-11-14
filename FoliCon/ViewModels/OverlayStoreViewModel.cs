@@ -31,6 +31,13 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
     {
     }
 
+    public OverlayStoreViewModel(
+        IOverlayRepositoryService repositoryService,
+        IDialogService? dialogService)
+        : this(repositoryService, ConfirmRemoval, dialogService)
+    {
+    }
+
     private OverlayStoreViewModel(
         IOverlayRepositoryService repositoryService,
         Func<OverlayCardViewModel, bool> confirmRemoval,
@@ -262,7 +269,7 @@ public class OverlayStoreViewModel : BindableBase, IDialogAware
 
     private List<OverlayCatalogEntry> _allEntries = [];
 
-    private async Task LoadCatalogAsync(bool forceRefresh = false)
+    public async Task LoadCatalogAsync(bool forceRefresh = false)
     {
         try
         {

@@ -91,7 +91,7 @@ public class LocalizedFormatConverter : IMultiValueConverter
             case int i: count = i; return true;
             case uint ui: count = ui; return true;
             case long l: count = l; return true;
-            case ulong ul: count = ul > (ulong)long.MaxValue ? long.MaxValue : (long)ul; return true;
+            case ulong ul: count = ul > long.MaxValue ? long.MaxValue : (long)ul; return true;
             case float f: count = (long)f; return true;
             case double d: count = (long)d; return true;
             case decimal m: count = (long)m; return true;

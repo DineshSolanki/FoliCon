@@ -1,4 +1,5 @@
 using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
 
 namespace FoliCon.Modules.Convertor;
 
@@ -7,7 +8,7 @@ public class BoolToColorConverter : IValueConverter
     private static readonly SolidColorBrush GreenBrush = MakeBrush(Colors.Green);
     private static readonly SolidColorBrush RedBrush = MakeBrush(Colors.Red);
 
-    private static SolidColorBrush MakeBrush(System.Windows.Media.Color color)
+    private static SolidColorBrush MakeBrush(Color color)
     {
         var brush = new SolidColorBrush(color);
         brush.Freeze();

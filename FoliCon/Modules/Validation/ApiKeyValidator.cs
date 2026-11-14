@@ -1,3 +1,4 @@
+using System.Net;
 using FoliCon.Models.Configs;
 
 namespace FoliCon.Modules.Validation;
@@ -105,5 +106,5 @@ public static class ApiKeyValidator
         }
     }
 
-    private static bool IsUnauthorized(HttpRequestException ex) => ex.StatusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden;
+    private static bool IsUnauthorized(HttpRequestException ex) => ex.StatusCode is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden;
 }

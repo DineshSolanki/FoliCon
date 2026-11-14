@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Sockets;
+using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Retry;
 
@@ -29,7 +32,7 @@ public class DArt : BindableBase, IDisposable
             },
             ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(ex =>
                 ex.InnerException is IOException ||
-                ex.InnerException is System.Net.Sockets.SocketException ||
+                ex.InnerException is SocketException ||
                 ex.Message.Contains("SSL", StringComparison.OrdinalIgnoreCase))
         })
         .Build();
@@ -151,7 +154,7 @@ public class DArt : BindableBase, IDisposable
         try
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"{deviantArtApiBase}/placebo");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", clientAccessToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", clientAccessToken);
             using var response = await Services.HttpC.SendAsync(request);
             var jsonData = await response.Content.ReadAsStringAsync();
             var tokenResponse = JsonConvert.DeserializeObject<DArtTokenResponse>(jsonData);
@@ -395,7 +398,7 @@ public class DArt : BindableBase, IDisposable
     private HttpRequestMessage CreateAuthenticatedRequest(string url, HttpMethod method)
     {
         var request = new HttpRequestMessage(method, url);
-        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", ClientAccessToken);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ClientAccessToken);
         return request;
     }
 
@@ -473,7 +476,7 @@ public class DArt : BindableBase, IDisposable
 
                 // Handle 401 Unauthorized: refresh token, then throw to exit the pipeline.
                 // The catch block below retries with a fresh request from requestFactory().
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
                 {
                     Logger.Warn($"DeviantArt API {requestType} returned 401, attempting token refresh");
 

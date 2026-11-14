@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using FoliCon.Modules.Overlays.Designer;
+using FoliCon.Modules.Overlays.Internal;
 using Thickness = System.Windows.Thickness;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -259,7 +260,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             var previous = _document.Tags.ToList();
             ApplyEdit(new PropertyEditCommand<List<string>>("Change tags",
                 (d, v) => { d.Tags.Clear(); d.Tags.AddRange(v); }, previous, parsed));
-            RaisePropertyChanged(nameof(TagsText));
+            RaisePropertyChanged();
         }
     }
 
@@ -846,7 +847,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             }
 
             PreviewContext.Rating = value;
-            RaisePropertyChanged(nameof(TestRating));
+            RaisePropertyChanged();
             RequestPreview();
         }
     }
@@ -862,7 +863,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             }
 
             PreviewContext.MediaTitle = value;
-            RaisePropertyChanged(nameof(TestTitle));
+            RaisePropertyChanged();
             RequestPreview();
         }
     }
@@ -878,7 +879,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             }
 
             PreviewContext.ShowRating = value;
-            RaisePropertyChanged(nameof(ShowTestRating));
+            RaisePropertyChanged();
             RequestPreview();
         }
     }
@@ -894,7 +895,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
             }
 
             PreviewContext.ShowMockup = value;
-            RaisePropertyChanged(nameof(ShowTestMockup));
+            RaisePropertyChanged();
             RequestPreview();
         }
     }
@@ -1169,7 +1170,7 @@ public class OverlayDesignerViewModel : BindableBase, IDialogAware, IDisposable
 
     private void RevalidateDocument()
     {
-        var result = Modules.Overlays.Internal.OverlayValidator.ValidateDetailed(
+        var result = OverlayValidator.ValidateDetailed(
             _document.AssetFolderPath, _document.CreateSnapshot());
 
         ValidationIssues.Clear();

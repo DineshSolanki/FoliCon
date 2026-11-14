@@ -3,7 +3,6 @@ using FoliCon.Modules.TMDB;
 using TMDbLib.Objects.Collections;
 using TMDbLib.Objects.Movies;
 using TMDbLib.Objects.TvShows;
-using Xunit;
 
 namespace FoliconTest;
 

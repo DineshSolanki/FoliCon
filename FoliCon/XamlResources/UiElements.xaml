@@ -142,4 +142,43 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
+
+    <!-- ========================================================================= -->
+    <!-- DEFAULT / FALLBACK MATERIAL & GRADIENT BRUSHES                            -->
+    <!-- Overridden dynamically by rich custom theme resource dictionaries         -->
+    <!-- ========================================================================= -->
+    <SolidColorBrush x:Key="WindowBackdropBrush" Color="#D91C1C1C" />
+    <SolidColorBrush x:Key="HeroCardBackgroundBrush" Color="#2D2D2D" />
+    <SolidColorBrush x:Key="HeroCardBorderBrush" Color="#3D3D3D" />
+    <SolidColorBrush x:Key="PrimaryActionGradientBrush" Color="#3B82F6" />
+    <SolidColorBrush x:Key="HeaderGradientBrush" Color="#242424" />
+    <SolidColorBrush x:Key="CardBorderGradientBrush" Color="#3D3D3D" />
+    <SolidColorBrush x:Key="FolderBadgeGradientBrush" Color="#3B82F6" />
+
+    <!-- ========================================================================= -->
+    <!-- IMMERSIVE LIVING THEME ENGINE TOKENS (FALLBACK DEFAULTS)                  -->
+    <!-- Overridden dynamically by rich custom theme resource dictionaries         -->
+    <!-- ========================================================================= -->
+    <SolidColorBrush x:Key="ThemeWallpaperBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeVignetteBrush" Color="Transparent" />
+
+    <SolidColorBrush x:Key="ThemeCardMovieBrush" Color="Transparent" />
+
+    <SolidColorBrush x:Key="ThemeCardTvBrush" Color="Transparent" />
+
+    <SolidColorBrush x:Key="ThemeCardGameBrush" Color="Transparent" />
+
+    <SolidColorBrush x:Key="ThemeCardAutoBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ThemeCtaWatermarkBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="EmptyStateIllustrationBrush" Color="Transparent" />
+
+    <DropShadowEffect x:Key="ThemeGlowEffect" BlurRadius="14" ShadowDepth="0" Opacity="0.4" Color="#3B82F6" />
+    <DropShadowEffect x:Key="ThemeCtaGlowEffect" BlurRadius="18" ShadowDepth="0" Opacity="0.5" Color="#3B82F6" />
+    <DropShadowEffect x:Key="ActiveCardGlowEffect" BlurRadius="12" ShadowDepth="0" Opacity="0.45" Color="#3B82F6" />
+
+    <!-- Default Window & App Branding Vector Geometry -->
+    <Geometry x:Key="ThemeBrandingGeometry">M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5zm4 4h-2v-2h2v2zm0-4h-2V7h2v5z</Geometry>
+
+    <!-- Default Empty Queue Geometry: Neutral Folder -->
+    <Geometry x:Key="ThemeEmptyQueueGeometry">M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z</Geometry>
 </ResourceDictionary>

@@ -14,7 +14,7 @@
              xmlns:convertor="clr-namespace:FoliCon.Modules.Convertor"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:CustomIconControlViewModel}"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              prism:ViewModelLocator.AutoWireViewModel="True"
              AllowDrop="True">
     <UserControl.Resources>

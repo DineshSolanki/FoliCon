@@ -1,4 +1,4 @@
-﻿using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Core;
 
 namespace FoliCon.Modules.utils;
 
@@ -50,7 +50,7 @@ public static class ProcessUtils
                 return;
             }
 
-            const string webView2DownloadUrl = "https://go.microsoft.com/fwlink/p/?LinkId=2124703"; // NOSONAR — intentional Microsoft download link
+            const string webView2DownloadUrl = "https://go.microsoft.com/fwlink/p/?LinkId=2124703"; // NOSONAR � intentional Microsoft download link
             StartProcess(webView2DownloadUrl);
         }
     }
@@ -128,10 +128,26 @@ public static class ProcessUtils
         var arguments = new Dictionary<string, string>();
         var args = Environment.GetCommandLineArgs();
 
-        for (var index = 1; index < args.Length; index += 2)
+        for (var index = 1; index < args.Length; index++)
         {
-            var arg = args[index].Replace("--", "");
-            arguments.Add(arg, args[index + 1]);
+            var current = args[index];
+            if (current.StartsWith("--"))
+            {
+                var key = current[2..];
+                if (index + 1 < args.Length && !args[index + 1].StartsWith("--"))
+                {
+                    arguments[key] = args[index + 1];
+                    index++;
+                }
+                else
+                {
+                    arguments[key] = "true";
+                }
+            }
+            else if (current.StartsWith("folicon://", StringComparison.OrdinalIgnoreCase))
+            {
+                arguments["deeplink"] = current;
+            }
         }
         Logger.Info("Command Line Arguments: {@Arguments}", arguments);
         return arguments;

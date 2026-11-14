@@ -12,7 +12,7 @@
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              d:DataContext="{d:DesignInstance viewModels:PreviewerViewModel}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -31,6 +31,7 @@
     </prism:Dialog.WindowStyle>
 
     <Grid>
+        
         <Grid.RowDefinitions>
             <!-- Top Controls & Filters Toolbar -->
             <RowDefinition Height="Auto" />
@@ -39,11 +40,15 @@
             <!-- Bottom Status & Close Bar -->
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <!-- Layer 2: Scenic Atmospheric Canvas & Radial Scrim Vignette -->
+        <Rectangle Grid.RowSpan="3" Fill="{DynamicResource ThemeWallpaperBrush}" IsHitTestVisible="False" />
+        <Rectangle Grid.RowSpan="3" Fill="{DynamicResource ThemeVignetteBrush}" IsHitTestVisible="False" />
+
 
         <!-- 1. Top Controls & Settings Card -->
         <Border Grid.Row="0"
-                Background="{DynamicResource SecondaryRegionBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
+                Background="{DynamicResource HeroCardBackgroundBrush}"
+                BorderBrush="{DynamicResource HeroCardBorderBrush}"
                 BorderThickness="0,0,0,1"
                 Padding="18,12">
             <Grid>
@@ -112,7 +117,7 @@
                                            VerticalAlignment="Center" />
                                 <Button Style="{StaticResource ButtonIcon}"
                                         Command="{Binding ResetPosterCommand}"
-                                        Content="✕"
+                                        Content="âœ•"
                                         FontSize="10"
                                         Width="18" Height="18"
                                         Padding="0"
@@ -154,7 +159,7 @@
                                  VerticalAlignment="Center"
                                  ToolTip="{extension:Lang Key={x:Static langs:LangKeys.MediaRating}}" />
 
-                        <TextBlock Text="{Binding Rating, StringFormat='{}{0}★'}"
+                        <TextBlock Text="{Binding Rating, StringFormat='{}{0}â˜…'}"
                                    FontSize="12"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource PrimaryBrush}"
@@ -480,7 +485,7 @@
                             <Button Grid.Column="1"
                                     Style="{StaticResource ButtonIcon}"
                                     Command="{Binding CloseInspectCommand}"
-                                    Content="✕"
+                                    Content="âœ•"
                                     FontSize="13"
                                     Width="28" Height="28"
                                     Padding="0" />
@@ -541,8 +546,8 @@
 
         <!-- 3. Bottom Status & Close Bar -->
         <Border Grid.Row="2"
-                Background="{DynamicResource SecondaryRegionBrush}"
-                BorderBrush="{DynamicResource BorderBrush}"
+                Background="{DynamicResource HeroCardBackgroundBrush}"
+                BorderBrush="{DynamicResource HeroCardBorderBrush}"
                 BorderThickness="0,1,0,0"
                 Padding="18,12">
             <Grid>

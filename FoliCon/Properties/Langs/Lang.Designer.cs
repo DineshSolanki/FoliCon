@@ -7,10 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.Resources;
+using System.Runtime.CompilerServices;
+
 namespace FoliCon.Properties.Langs {
-    using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -18,27 +21,27 @@ namespace FoliCon.Properties.Langs {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [DebuggerNonUserCode()]
+    [CompilerGenerated()]
     public class Lang {
         
-        private static global::System.Resources.ResourceManager resourceMan;
+        private static ResourceManager resourceMan;
         
-        private static global::System.Globalization.CultureInfo resourceCulture;
+        private static CultureInfo resourceCulture;
         
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Lang() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static ResourceManager ResourceManager {
             get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FoliCon.Properties.Langs.Lang", typeof(Lang).Assembly);
+                if (ReferenceEquals(resourceMan, null)) {
+                    ResourceManager temp = new ResourceManager("FoliCon.Properties.Langs.Lang", typeof(Lang).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -49,8 +52,8 @@ namespace FoliCon.Properties.Langs {
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -1977,6 +1980,51 @@ namespace FoliCon.Properties.Langs {
         public static string ThemeSystem {
             get {
                 return ResourceManager.GetString("ThemeSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Butterfly.
+        /// </summary>
+        public static string ThemeTheButterfly {
+            get {
+                return ResourceManager.GetString("ThemeTheButterfly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tokyo Neon.
+        /// </summary>
+        public static string ThemeTokyoNeon {
+            get {
+                return ResourceManager.GetString("ThemeTokyoNeon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mica Dark Obsidian.
+        /// </summary>
+        public static string ThemeMicaDarkObsidian {
+            get {
+                return ResourceManager.GetString("ThemeMicaDarkObsidian", resourceCulture);
+            }
+        }
+
+        public static string ThemeNordicPine {
+            get {
+                return ResourceManager.GetString("ThemeNordicPine", resourceCulture);
+            }
+        }
+
+        public static string ThemeCinema35mm {
+            get {
+                return ResourceManager.GetString("ThemeCinema35mm", resourceCulture);
+            }
+        }
+
+        public static string ThemeLove {
+            get {
+                return ResourceManager.GetString("ThemeLove", resourceCulture);
             }
         }
         
@@ -5158,7 +5206,7 @@ namespace FoliCon.Properties.Langs {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Smart Media Folder Icon Generator &amp; Organizer.
+        ///   Looks up a localized string similar to YOUR MEDIA. YOUR LIBRARY. REIMAGINED..
         /// </summary>
         public static string AboutTagline {
             get {

@@ -1,0 +1,95 @@
+#nullable enable
+using System.Text.Json.Serialization;
+
+namespace FoliCon.Models.Themes;
+
+/// <summary>
+/// Root manifest for a FoliCon community or built-in theme.
+/// Compatible with theme.json declarative schema and .folicontheme packages.
+/// </summary>
+public sealed class ThemeManifest
+{
+    [JsonPropertyName("$schema")]
+    public string? Schema { get; set; }
+
+    [JsonPropertyName("id")]
+    public string Id { get; set; } = string.Empty;
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("description")]
+    public string Description { get; set; } = string.Empty;
+
+    [JsonPropertyName("author")]
+    public string Author { get; set; } = "Community";
+
+    [JsonPropertyName("version")]
+    public string Version { get; set; } = "1.0.0";
+
+    /// <summary>
+    /// Base application theme mode ("Dark" or "Light").
+    /// </summary>
+    [JsonPropertyName("baseTheme")]
+    public string BaseTheme { get; set; } = "Dark";
+
+    [JsonPropertyName("minAppVersion")]
+    public string MinAppVersion { get; set; } = "5.3.1";
+
+    [JsonPropertyName("tags")]
+    public List<string> Tags { get; set; } = [];
+
+    [JsonPropertyName("colors")]
+    public ThemeColorPalette Colors { get; set; } = new();
+
+    [JsonPropertyName("materials")]
+    public ThemeMaterialTokens? Materials { get; set; }
+
+    [JsonPropertyName("effects")]
+    public ThemeEffectsTokens? Effects { get; set; }
+
+    [JsonPropertyName("shapes")]
+    public ThemeShapesTokens? Shapes { get; set; }
+
+    [JsonPropertyName("assets")]
+    public ThemeAssetsTokens? Assets { get; set; }
+
+    [JsonPropertyName("typography")]
+    public ThemeTypographyTokens? Typography { get; set; }
+
+    /// <summary>
+    /// Optional relative path to a custom XAML resource dictionary within a .folicontheme package.
+    /// </summary>
+    [JsonPropertyName("xamlPackageFile")]
+    public string? XamlPackageFile { get; set; }
+
+    /// <summary>
+    /// Optional relative path to preview image within the theme package.
+    /// </summary>
+    [JsonPropertyName("previewImageFile")]
+    public string? PreviewImageFile { get; set; }
+
+    /// <summary>
+    /// Alias for previewImageFile.
+    /// </summary>
+    [JsonPropertyName("preview")]
+    public string? Preview { get => PreviewImageFile; set => PreviewImageFile ??= value; }
+
+    /// <summary>
+    /// Absolute local folder path containing the unpacked theme files. Null for built-in themes.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public string? PackageDirectory { get; set; }
+
+    /// <summary>
+    /// True if this theme is one of the compiled built-in themes.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool IsBuiltIn { get; set; }
+
+    /// <summary>
+    /// Convenient helper checking if baseTheme is dark.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool IsDark => !string.Equals(BaseTheme, "Light", StringComparison.OrdinalIgnoreCase);
+}

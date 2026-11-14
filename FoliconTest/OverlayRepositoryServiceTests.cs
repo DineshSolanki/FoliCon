@@ -1,7 +1,5 @@
 using System.IO;
-using FoliCon.Models.Data;
 using FoliCon.Modules.Overlays;
-using Newtonsoft.Json;
 
 namespace FoliconTest;
 

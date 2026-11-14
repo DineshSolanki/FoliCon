@@ -1,7 +1,6 @@
 #nullable enable
 using System.Windows;
 using FoliCon.Views;
-using Prism.Mvvm;
 
 namespace FoliconTest;
 

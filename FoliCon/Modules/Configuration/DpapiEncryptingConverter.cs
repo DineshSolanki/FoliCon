@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text;
 using STJ = System.Text.Json.Serialization;
 
 #nullable enable
@@ -26,7 +27,7 @@ public sealed class DpapiEncryptingConverter : STJ.JsonConverter<string>
             return;
         }
 
-        var plainBytes = System.Text.Encoding.UTF8.GetBytes(value);
+        var plainBytes = Encoding.UTF8.GetBytes(value);
         var encryptedBytes = ProtectedData.Protect(plainBytes, null, DataProtectionScope.CurrentUser);
         writer.WriteStringValue(Convert.ToBase64String(encryptedBytes));
     }
@@ -46,7 +47,7 @@ public sealed class DpapiEncryptingConverter : STJ.JsonConverter<string>
         {
             var encryptedBytes = Convert.FromBase64String(value);
             var decryptedBytes = ProtectedData.Unprotect(encryptedBytes, null, DataProtectionScope.CurrentUser);
-            return System.Text.Encoding.UTF8.GetString(decryptedBytes);
+            return Encoding.UTF8.GetString(decryptedBytes);
         }
         catch (FormatException)
         {

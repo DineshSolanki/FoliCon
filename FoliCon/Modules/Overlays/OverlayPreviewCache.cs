@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿#nullable enable
+using System.Drawing.Imaging;
+using Microsoft.Extensions.Caching.Memory;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
-#nullable enable
 namespace FoliCon.Modules.Overlays;
 
 /// <summary>
@@ -157,8 +159,8 @@ public static class OverlayPreviewCache
 
         var bitmapData = bitmap.LockBits(
             new Rectangle(0, 0, width, height),
-            System.Drawing.Imaging.ImageLockMode.ReadOnly,
-            System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            ImageLockMode.ReadOnly,
+            PixelFormat.Format32bppArgb);
         Marshal.Copy(bitmapData.Scan0, pixels, 0, pixels.Length);
         bitmap.UnlockBits(bitmapData);
 

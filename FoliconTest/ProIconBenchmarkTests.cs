@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Windows.Media.Imaging;
 using FoliCon.Models.Data;
 using FoliCon.Modules.Media;
 using FoliCon.Modules.utils;

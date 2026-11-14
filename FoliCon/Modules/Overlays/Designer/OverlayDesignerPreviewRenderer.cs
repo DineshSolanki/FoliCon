@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using System.Drawing.Imaging;
+
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -222,7 +224,7 @@ public sealed class OverlayDesignerPreviewRenderer : IDisposable
         // Not disposed: BitmapImage reads the stream lazily during EndInit, and freezing
         // makes the result self-contained.
         var stream = new MemoryStream();
-        bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+        bitmap.Save(stream, ImageFormat.Png);
         stream.Position = 0;
 
         var image = new BitmapImage();

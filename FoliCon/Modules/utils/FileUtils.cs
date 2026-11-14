@@ -1,4 +1,4 @@
-﻿using System.Security.AccessControl;
+using System.Security.AccessControl;
 using System.Security.Principal;
 using FoliCon.Models.Configs;
 using Vanara.InteropServices;
@@ -337,7 +337,7 @@ public static class FileUtils
     {
         Logger.Debug("Checking for Update");
 
-        if (!ApplicationHelper.IsConnectedToInternet())
+        if (!NetworkUtils.IsNetworkAvailable())
         {
             DialogUtils.ShowGrowlError(Lang.NetworkNotAvailable);
             return;

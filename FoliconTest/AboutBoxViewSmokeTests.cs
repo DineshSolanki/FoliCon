@@ -1,5 +1,6 @@
 #nullable enable
 using System.Windows;
+using FoliCon.Properties.Langs;
 using FoliCon.ViewModels;
 using FoliCon.Views;
 
@@ -12,6 +13,12 @@ namespace FoliconTest;
 [Collection(XamlLoadingCollection.name)]
 public class AboutBoxViewSmokeTests
 {
+    [Fact]
+    public void AboutBox_UsesUpdatedTagline()
+    {
+        Assert.Equal("YOUR MEDIA. YOUR LIBRARY. REIMAGINED.", Lang.AboutTagline);
+    }
+
     [Fact]
     public void AboutBox_InstantiatesAndLoadsWithoutException()
     {

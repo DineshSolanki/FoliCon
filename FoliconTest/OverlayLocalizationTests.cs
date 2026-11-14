@@ -1,7 +1,6 @@
 #nullable enable
 using System.Globalization;
 using System.Reflection;
-using System.Resources;
 using System.Text.RegularExpressions;
 using FoliCon.Properties.Langs;
 

@@ -49,6 +49,8 @@ dineshsolanki.github.io/folicon/</Description>
     <PackageReference Include="WinCopies.IconLib" Version="0.75.0-rc" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Themes\*.jpg" />
+    <Resource Include="Resources\Themes\*.png" />
     <Resource Include="Resources\icons\folicon Icon.ico" />
     <Resource Include="Resources\icons\folicon Icon.png" />
     <Resource Include="Resources\icons\LoadingPosterImage.png" />
@@ -108,6 +110,11 @@ dineshsolanki.github.io/folicon/</Description>
     <EmbeddedResource Include="Resources\Overlays\faelpessoal\overlay.json" />
     <EmbeddedResource Include="Resources\Overlays\faelpessoal-horizontal\overlay.json" />
     <EmbeddedResource Include="Resources\Overlays\windows11\overlay.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Themes\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
 

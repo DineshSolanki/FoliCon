@@ -621,6 +621,21 @@ e renovar o cache dos Ícones?</value>
   <data name="ThemeSystem" xml:space="preserve">
     <value>Sistema</value>
   </data>
+  <data name="ThemeTheButterfly" xml:space="preserve">
+    <value>A Borboleta</value>
+  </data>
+  <data name="ThemeTokyoNeon" xml:space="preserve">
+    <value>Tóquio Neon</value>
+  </data>
+  <data name="ThemeMicaDarkObsidian" xml:space="preserve">
+    <value>Mica Obsidiana Escura</value>
+  </data>
+  <data name="ThemeNordicPine" xml:space="preserve">
+    <value>Pinho Nórdico</value>
+  </data>
+  <data name="ThemeCinema35mm" xml:space="preserve">
+    <value>Cinema 35mm</value>
+  </data>
   <data name="Portuguese(PT)" xml:space="preserve">
       <value>Português (PT)</value>
     </data>
@@ -1822,7 +1837,7 @@ e renovar o cache dos Ícones?</value>
     <value>Explorar modelos de ícones e sobreposições</value>
   </data>
   <data name="AboutTagline" xml:space="preserve">
-    <value>Gerador e organizador inteligente de ícones para pastas de mídia</value>
+    <value>A SUA MÍDIA. A SUA BIBLIOTECA. REINVENTADAS.</value>
   </data>
   <data name="AboutVersionTooltip" xml:space="preserve">
     <value>Versão {0} (Clique para copiar)</value>

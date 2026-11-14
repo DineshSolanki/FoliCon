@@ -1,6 +1,5 @@
 #nullable enable
 using FoliCon.ViewModels;
-using Prism.Dialogs;
 using System.Windows.Data;
 
 namespace FoliconTest;
@@ -93,7 +92,7 @@ public class PosterIconConfigViewModelTests
         var vm = new PosterIconConfigViewModel(dialogService);
 
         vm.BrowseOverlayStoreCommand.Execute();
-        Assert.Equal("OverlayStore", dialogService.LastShownDialogName);
+        Assert.Equal("FoliConStore", dialogService.LastShownDialogName);
 
         vm.CreateOverlayCommand.Execute();
         Assert.Equal("OverlayDesigner", dialogService.LastShownDialogName);

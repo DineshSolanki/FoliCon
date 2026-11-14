@@ -23,4 +23,10 @@
   <ItemGroup>
     <ProjectReference Include="..\FoliCon\FoliCon.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\FoliCon\Themes\**\*.*">
+      <Link>Themes\%(RecursiveDir)%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

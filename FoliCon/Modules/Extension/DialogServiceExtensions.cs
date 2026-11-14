@@ -1,4 +1,4 @@
-﻿namespace FoliCon.Modules.Extension;
+namespace FoliCon.Modules.Extension;
 
 [Localizable(false)]
 public static class DialogServiceExtensions
@@ -100,8 +100,15 @@ public static class DialogServiceExtensions
 
     public static void ShowOverlayStore(this IDialogService dialogService, Action<IDialogResult> callBack)
     {
-        Logger.Trace("ShowOverlayStore called");
-        dialogService.ShowDialog("OverlayStore", callBack);
+        Logger.Trace("ShowOverlayStore called -> redirecting to FoliConStore overlays tab");
+        dialogService.ShowFoliConStore(callBack, tab: "overlays");
+    }
+
+    public static void ShowFoliConStore(this IDialogService dialogService, Action<IDialogResult> callBack, string tab = "themes")
+    {
+        Logger.Trace("ShowFoliConStore called with tab: {Tab}", tab);
+        var p = new DialogParameters { { "tab", tab } };
+        dialogService.ShowDialog("FoliConStore", p, callBack);
     }
 
     /// <summary>

@@ -1,11 +1,61 @@
+using Windows.Networking.Connectivity;
 using FoliCon.Models.Configs;
+using FoliCon.Models.Localization;
+using FoliCon.Models.Themes;
+using FoliCon.Modules.Convertor;
+using FoliCon.Modules.Themes;
 using HandyControl.Themes;
+using Brushes = System.Windows.Media.Brushes;
+using Color = System.Windows.Media.Color;
+using DropShadowEffect = System.Windows.Media.Effects.DropShadowEffect;
 
 namespace FoliCon.ViewModels;
 
 public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDisposable
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+    static MainWindowViewModel()
+    {
+        try
+        {
+            LightBackdropBrush.Freeze();
+            DarkBackdropBrush.Freeze();
+            LightHeroCardBg.Freeze();
+            DarkHeroCardBg.Freeze();
+            LightHeroCardBorder.Freeze();
+            DarkHeroCardBorder.Freeze();
+            LightHeaderGradient.Freeze();
+            DarkHeaderGradient.Freeze();
+            PrimaryActionBrush.Freeze();
+
+            void AttachThemeListener()
+            {
+                ThemeManager.Current.SystemThemeChanged += (_, _) =>
+                {
+                    if (ThemeManager.Current.UsingSystemTheme)
+                    {
+                        bool isDark = IsSystemThemeDark();
+                        UpdateThemeBrushes(isDark, null);
+                        WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+                    }
+                };
+            }
+
+            if (Application.Current != null && !Application.Current.Dispatcher.CheckAccess())
+            {
+                Application.Current.Dispatcher.Invoke(AttachThemeListener);
+            }
+            else
+            {
+                AttachThemeListener();
+            }
+        }
+        catch
+        {
+            // Fail safely in headless/test environments
+        }
+    }
 
     private const string professionalMode = "Professional";
 
@@ -59,6 +109,9 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
     }
 
     private readonly IDialogService _dialogService;
+    private static IThemeStorageService? _activeThemeStorageService;
+    private readonly IThemeStorageService? _themeStorageService;
+    private readonly IThemeParser? _themeParser;
     public StatusBarData StatusBarProperties { get; set; }
 
     public ProgressBarData BusyIndicatorProperties
@@ -150,34 +203,97 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         set => SetProperty(ref field, value);
     }
 
+    private Languages _appLanguage = Languages.English;
     public Languages AppLanguage
     {
-        get;
-        set => SetProperty(ref field, value);
-    }
-
-    public FoliconThemes Theme
-    {
-        get;
+        get => _appLanguage;
         set
         {
-            SetProperty(ref field, value);
-            switch (value)
+            if (SetProperty(ref _appLanguage, value))
             {
-                case FoliconThemes.Light:
-                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
-                    ThemeManager.Current.UsingSystemTheme = false;
-                    break;
-                case FoliconThemes.Dark:
-                    ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
-                    ThemeManager.Current.UsingSystemTheme = false;
-                    break;
-                case FoliconThemes.System:
-                    ThemeManager.Current.UsingSystemTheme = true;
-                    break;
-                default:
-                    ThemeManager.Current.UsingSystemTheme = true;
-                    break;
+                SetCultureInfo();
+                SyncSelectedLanguageOption();
+            }
+        }
+    }
+
+    public ObservableCollection<LanguageOption> AvailableLanguages { get; } = [];
+
+    private LanguageOption? _selectedLanguageOption;
+    public LanguageOption? SelectedLanguageOption
+    {
+        get => _selectedLanguageOption;
+        set
+        {
+            if (SetProperty(ref _selectedLanguageOption, value) && value != null)
+            {
+                if (AppLanguage != value.Language)
+                {
+                    AppLanguage = value.Language;
+                }
+            }
+        }
+    }
+
+    public void SyncSelectedLanguageOption()
+    {
+        var match = AvailableLanguages.FirstOrDefault(l => l.Language == AppLanguage)
+                    ?? LanguageOption.All.FirstOrDefault(l => l.Language == AppLanguage);
+        if (match != null && _selectedLanguageOption?.Language != match.Language)
+        {
+            _selectedLanguageOption = match;
+            RaisePropertyChanged(nameof(SelectedLanguageOption));
+        }
+    }
+
+    private void InitializeLanguages()
+    {
+        AvailableLanguages.Clear();
+        foreach (var lang in LanguageOption.All)
+        {
+            AvailableLanguages.Add(lang);
+        }
+        SyncSelectedLanguageOption();
+    }
+
+    public ObservableCollection<ThemeOption> AvailableThemes { get; } = [];
+
+    public bool IsPreviewingTheme { get; set; }
+
+    private ThemeOption? _selectedThemeOption;
+    public ThemeOption? SelectedThemeOption
+    {
+        get => _selectedThemeOption;
+        set
+        {
+            if (SetProperty(ref _selectedThemeOption, value) && value != null)
+            {
+                ApplyThemeOption(value, isPreview: IsPreviewingTheme);
+            }
+        }
+    }
+
+    private string _customThemeId = string.Empty;
+    public string CustomThemeId
+    {
+        get => _customThemeId;
+        set => SetProperty(ref _customThemeId, value);
+    }
+
+    private bool _isSynchronizingTheme;
+
+    private FoliconThemes _theme = FoliconThemes.System;
+    public FoliconThemes Theme
+    {
+        get => _theme;
+        set
+        {
+            if (SetProperty(ref _theme, value))
+            {
+                if (!_isSynchronizingTheme)
+                {
+                    ApplyAppTheme(value);
+                }
             }
         }
     }
@@ -234,6 +350,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     public DelegateCommand AboutCommand { get; private set; }
     public DelegateCommand ShowPreviewer { get; private set; }
+    public DelegateCommand StoreCommand { get; private set; }
     public DelegateCommand OverlayStoreCommand { get; private set; }
     public DelegateCommand OverlayDesignerCommand { get; private set; }
     public DelegateCommand UpdateCommand { get; } = new(async void () =>
@@ -266,18 +383,30 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
 
     #endregion DelegateCommands
 
-    public MainWindowViewModel(IDialogService dialogService)
+    public MainWindowViewModel(
+        IDialogService dialogService,
+        IThemeStorageService? themeStorageService = null,
+        IThemeParser? themeParser = null)
     {
         _dialogService = dialogService;
+        _themeStorageService = themeStorageService;
+        _activeThemeStorageService = themeStorageService;
+        _themeParser = themeParser;
+
+        ActiveThemeChanged += OnActiveThemeChanged;
+
         Logger.Info("Application Started, Initializing MainWindowViewModel.");
         try
         {
             ProcessUtils.CheckWebView2();
             TrackProperties();
+            InitializeLanguages();
+            RefreshAvailableThemes();
+            ApplyInitialTheme();
             SetCultureInfo();
             InitializeDelegates();
             InitializeProperties();
-            NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
+            InitializeNetworkMonitoring();
             ProcessCommandLineArgs();
         }
         catch (Exception ex)
@@ -286,11 +415,101 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         }
     }
 
-    private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
+    private void ApplyInitialTheme()
     {
-        Logger.Debug("Network Availability Changed, Updating StatusBar.");
-        StatusBarProperties.NetIcon =
-            ApplicationHelper.IsConnectedToInternet() ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
+        if (!string.IsNullOrEmpty(CustomThemeId))
+        {
+            var manifest = _themeStorageService?.GetThemeById(CustomThemeId);
+            if (manifest != null)
+            {
+                ApplyThemeManifest(manifest, _themeParser ?? new HybridThemeParser());
+                SyncSelectedThemeOptionWithActive(CustomThemeId);
+                return;
+            }
+        }
+        ApplyAppTheme(Theme);
+        SyncSelectedThemeOptionWithActive();
+    }
+
+    private DispatcherTimer? _networkCheckTimer;
+    private int _isCheckingNetwork;
+
+    private void InitializeNetworkMonitoring()
+    {
+        try
+        {
+            NetworkChange.NetworkAvailabilityChanged += OnNetworkChanged;
+            NetworkChange.NetworkAddressChanged += OnNetworkChanged;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to register .NET NetworkChange handlers.");
+        }
+
+        try
+        {
+            NetworkInformation.NetworkStatusChanged += OnWinRtNetworkStatusChanged;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to register WinRT NetworkStatusChanged handler.");
+        }
+
+        _networkCheckTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(5)
+        };
+        _networkCheckTimer.Tick += async (_, _) => await UpdateNetworkStatusAsync();
+        _networkCheckTimer.Start();
+    }
+
+    private void OnWinRtNetworkStatusChanged(object sender)
+    {
+        _ = UpdateNetworkStatusAsync();
+    }
+
+    private void OnNetworkChanged(object? sender, EventArgs e)
+    {
+        _ = UpdateNetworkStatusAsync();
+    }
+
+    private async Task UpdateNetworkStatusAsync()
+    {
+        if (Interlocked.CompareExchange(ref _isCheckingNetwork, 1, 0) != 0)
+        {
+            return;
+        }
+
+        try
+        {
+            bool isAvailable = await Task.Run(NetworkUtils.IsNetworkAvailable);
+            var iconPath = isAvailable ? @"\Resources\icons\Strong-WiFi.png" : @"\Resources\icons\No-WiFi.png";
+
+            if (StatusBarProperties != null && StatusBarProperties.NetIcon != iconPath)
+            {
+                Logger.Info("Network connectivity changed. Online: {IsAvailable}", isAvailable);
+                var dispatcher = Application.Current?.Dispatcher;
+                if (dispatcher != null && !dispatcher.CheckAccess())
+                {
+                    await dispatcher.InvokeAsync(() =>
+                    {
+                        StatusBarProperties.NetIcon = iconPath;
+                    });
+                }
+                else if (StatusBarProperties != null)
+                {
+                    StatusBarProperties.NetIcon = iconPath;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Error while updating network status indicator.");
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _isCheckingNetwork, 0);
+        }
     }
 
     private void LoadMethod()
@@ -930,12 +1149,12 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         OpenFolderInExplorerCommand = new DelegateCommand<object>(OpenFolderInExplorer);
         ShowPreviewer = new DelegateCommand(() => _dialogService.ShowPreviewer(_ => { }));
 
-        // Overlay discovery and authoring are top-level menu actions: burying them inside the
-        // poster-icon settings dialog hides them from anyone not already changing that setting.
-        OverlayStoreCommand = new DelegateCommand(() =>
+        // Store discovery: unified community themes & icon overlays
+        StoreCommand = new DelegateCommand(() =>
         {
-            _dialogService.ShowOverlayStore(_ => OverlayPreviewCache.InvalidateAll());
+            _dialogService.ShowFoliConStore(_ => OverlayPreviewCache.InvalidateAll(), tab: "themes");
         });
+        OverlayStoreCommand = StoreCommand;
         OverlayDesignerCommand = new DelegateCommand(() =>
         {
             _dialogService.ShowOverlayDesigner(_ => OverlayPreviewCache.InvalidateAll());
@@ -1482,6 +1701,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
             .Property(p => p.IsPosterWindowShown, false)
             .Property(p => p.AppLanguage, Languages.English)
             .Property(p => p.Theme, FoliconThemes.System)
+            .Property(p => p.CustomThemeId, string.Empty)
             .Property(p => p.EnableErrorReporting, false)
             .Property(p => p.IncludeAlreadyProcessed, false)
             .Property(p => p.ProcessSelectedFolder, false)
@@ -1490,7 +1710,7 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("TrackProperties: Tracker configured and tracking started.");
     }
 
-    private void SetCultureInfo()
+    public void SetCultureInfo()
     {
         var selectedLanguage = AppLanguage;
         Logger.Debug("SetCultureInfo: Selected language: {Language}", selectedLanguage);
@@ -1540,8 +1760,556 @@ public sealed class MainWindowViewModel : BindableBase, IFileDragDropTarget, IDi
         Logger.Debug("Folder Dropped on MainWindow: {SelectedFolder}", SelectedFolder);
     }
 
+    public static FoliconThemes CurrentTheme { get; private set; } = FoliconThemes.Dark;
+    public static ThemeManifest? ActiveThemeManifest { get; private set; }
+    public static string? ActiveThemeId { get; private set; }
+    private static ResourceDictionary? _currentCommunityThemeDictionary;
+
+    private static readonly SolidColorBrush LightBackdropBrush = new(Color.FromArgb(0xD9, 0xFF, 0xFF, 0xFF));
+    private static readonly SolidColorBrush DarkBackdropBrush = new(Color.FromArgb(0xD9, 0x1C, 0x1C, 0x1C));
+
+    private static readonly SolidColorBrush LightHeroCardBg = new(Color.FromRgb(0xFF, 0xFF, 0xFF));
+    private static readonly SolidColorBrush DarkHeroCardBg = new(Color.FromRgb(0x2D, 0x2D, 0x2D));
+
+    private static readonly SolidColorBrush LightHeroCardBorder = new(Color.FromRgb(0xE2, 0xE8, 0xF0));
+    private static readonly SolidColorBrush DarkHeroCardBorder = new(Color.FromRgb(0x3D, 0x3D, 0x3D));
+
+    private static readonly SolidColorBrush LightHeaderGradient = new(Color.FromRgb(0xF8, 0xFA, 0xFC));
+    private static readonly SolidColorBrush DarkHeaderGradient = new(Color.FromRgb(0x24, 0x24, 0x24));
+
+    private static readonly SolidColorBrush PrimaryActionBrush = new(Color.FromRgb(0x3B, 0x82, 0xF6));
+
+    public static void ApplyAppTheme(FoliconThemes theme)
+    {
+        CurrentTheme = theme;
+        ActiveThemeId = theme switch
+        {
+            FoliconThemes.Light => "light",
+            FoliconThemes.Dark => "dark",
+            FoliconThemes.System => "system",
+            FoliconThemes.TheButterfly => "the-butterfly",
+            FoliconThemes.TokyoNeon => "tokyo-neon",
+            FoliconThemes.MicaDarkObsidian => "mica-dark-obsidian",
+            FoliconThemes.NordicPine => "nordic-pine",
+            FoliconThemes.Cinema35mm => "cinema-35mm",
+
+            FoliconThemes.Love => "love",
+            FoliconThemes.Corporate => "corporate",
+            _ => "system"
+        };
+        ActiveThemeManifest = BuiltInThemes.GetAll().FirstOrDefault(t => string.Equals(t.Id, ActiveThemeId, StringComparison.OrdinalIgnoreCase));
+
+        if (Application.Current != null && _currentCommunityThemeDictionary != null)
+        {
+            Application.Current.Resources.MergedDictionaries.Remove(_currentCommunityThemeDictionary);
+            _currentCommunityThemeDictionary = null;
+        }
+
+        ResourceDictionary? customThemeDict = null;
+
+        switch (theme)
+        {
+            case FoliconThemes.Light:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyCustomThemeOverride(null);
+                break;
+            case FoliconThemes.Dark:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyCustomThemeOverride(null);
+                break;
+            case FoliconThemes.System:
+                ThemeManager.Current.UsingSystemTheme = true;
+                ApplyCustomThemeOverride(null);
+                break;
+            case FoliconThemes.TheButterfly:
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                customThemeDict = ApplyCustomThemeOverride("ThemeTheButterfly.xaml");
+                break;
+            case FoliconThemes.TokyoNeon:
+            case FoliconThemes.MicaDarkObsidian:
+            case FoliconThemes.NordicPine:
+            case FoliconThemes.Cinema35mm:
+            case FoliconThemes.Love:
+            case FoliconThemes.Corporate:
+                var communityId = theme switch
+                {
+                    FoliconThemes.TokyoNeon => "tokyo-neon",
+                    FoliconThemes.MicaDarkObsidian => "mica-dark-obsidian",
+                    FoliconThemes.NordicPine => "nordic-pine",
+                    FoliconThemes.Cinema35mm => "cinema-35mm",
+                    FoliconThemes.Love => "love",
+                    FoliconThemes.Corporate => "corporate",
+                    _ => "dark"
+                };
+                var manifest = _activeThemeStorageService?.GetThemeById(communityId)
+                    ?? new ThemeStorageService().GetThemeById(communityId);
+                if (manifest != null)
+                {
+                    var parser = new HybridThemeParser();
+                    var dict = parser.SynthesizeResourceDictionary(manifest, _activeThemeStorageService?.GetUserCustomization(manifest.Id));
+                    ApplyCommunityTheme(manifest, dict);
+                    return;
+                }
+                ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
+                ThemeManager.Current.UsingSystemTheme = false;
+                ApplyCustomThemeOverride(null);
+                break;
+            default:
+                ThemeManager.Current.UsingSystemTheme = true;
+                ApplyCustomThemeOverride(null);
+                break;
+        }
+
+        bool isDark = IsDarkTheme(theme);
+        UpdateThemeBrushes(isDark, customThemeDict);
+        WindowBackdropHelper.UpdateAllOpenWindows(isDark);
+        ActiveThemeChanged?.Invoke(ActiveThemeId);
+    }
+
+    public static void ApplyCommunityTheme(ThemeManifest manifest, ResourceDictionary customThemeDict)
+    {
+        ArgumentNullException.ThrowIfNull(manifest);
+        ArgumentNullException.ThrowIfNull(customThemeDict);
+
+        ActiveThemeManifest = manifest;
+        ActiveThemeId = manifest.Id;
+        CurrentTheme = manifest.IsDark ? FoliconThemes.Dark : FoliconThemes.Light;
+
+        ApplyCustomThemeOverride(null);
+
+        ThemeManager.Current.ApplicationTheme = manifest.IsDark ? ApplicationTheme.Dark : ApplicationTheme.Light;
+        ThemeManager.Current.UsingSystemTheme = false;
+
+        if (Application.Current != null)
+        {
+            var merged = Application.Current.Resources.MergedDictionaries;
+            if (_currentCommunityThemeDictionary != null)
+            {
+                merged.Remove(_currentCommunityThemeDictionary);
+            }
+            _currentCommunityThemeDictionary = customThemeDict;
+            merged.Add(customThemeDict);
+        }
+
+        UpdateThemeBrushes(manifest.IsDark, customThemeDict);
+        WindowBackdropHelper.UpdateAllOpenWindows(manifest.IsDark);
+        ActiveThemeChanged?.Invoke(ActiveThemeId);
+    }
+
+    public static event Action<string?>? ActiveThemeChanged;
+
+    public void RefreshAvailableThemes()
+    {
+        var installed = _themeStorageService != null
+            ? _themeStorageService.GetInstalledThemes()
+            : BuiltInThemes.GetAll();
+
+        var currentActiveId = !string.IsNullOrEmpty(CustomThemeId)
+            ? CustomThemeId
+            : (ActiveThemeId ?? ActiveThemeManifest?.Id ?? Theme.ToString().ToLowerInvariant());
+
+        AvailableThemes.Clear();
+        foreach (var manifest in installed)
+        {
+            FoliconThemes? builtInEnum = manifest.Id.ToLowerInvariant() switch
+            {
+                "light" => FoliconThemes.Light,
+                "dark" => FoliconThemes.Dark,
+                "the-butterfly" => FoliconThemes.TheButterfly,
+                "tokyo-neon" => FoliconThemes.TokyoNeon,
+                "mica-dark-obsidian" => FoliconThemes.MicaDarkObsidian,
+                "nordic-pine" => FoliconThemes.NordicPine,
+                "cinema-35mm" => FoliconThemes.Cinema35mm,
+
+                "love" => FoliconThemes.Love,
+                "corporate" => FoliconThemes.Corporate,
+
+                "system" => FoliconThemes.System,
+                _ => null
+            };
+
+            var displayName = builtInEnum.HasValue
+                ? ThemeToDisplayConverter.GetLocalizedThemeName(builtInEnum.Value)
+                : manifest.Name;
+
+            var option = new ThemeOption
+            {
+                Id = manifest.Id,
+                DisplayName = displayName,
+                IsBuiltIn = manifest.IsBuiltIn,
+                BuiltInTheme = builtInEnum,
+                Manifest = manifest
+            };
+
+            AvailableThemes.Add(option);
+        }
+
+        SyncSelectedThemeOptionWithActive(currentActiveId);
+    }
+
+    public void SyncSelectedThemeOptionWithActive(string? targetId = null)
+    {
+        var id = targetId ?? (!string.IsNullOrEmpty(CustomThemeId) ? CustomThemeId : ActiveThemeId);
+        ThemeOption? match = null;
+
+        if (!string.IsNullOrEmpty(id))
+        {
+            match = AvailableThemes.FirstOrDefault(t => string.Equals(t.Id, id, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (match == null)
+        {
+            match = AvailableThemes.FirstOrDefault(t => t.BuiltInTheme == Theme)
+                 ?? AvailableThemes.FirstOrDefault(t => t.BuiltInTheme == FoliconThemes.System)
+                 ?? AvailableThemes.FirstOrDefault();
+        }
+
+        if (match != null && !ReferenceEquals(_selectedThemeOption, match))
+        {
+            _selectedThemeOption = match;
+            RaisePropertyChanged(nameof(SelectedThemeOption));
+        }
+    }
+
+    public void ApplyThemeOption(ThemeOption option, bool isPreview)
+    {
+        if (_isSynchronizingTheme) return;
+        try
+        {
+            _isSynchronizingTheme = true;
+            if (option.Manifest != null && !option.IsBuiltIn)
+            {
+                if (!isPreview)
+                {
+                    CustomThemeId = option.Id;
+                }
+                ApplyThemeManifest(option.Manifest, _themeParser ?? new HybridThemeParser());
+            }
+            else if (option.BuiltInTheme.HasValue)
+            {
+                if (!isPreview)
+                {
+                    CustomThemeId = string.Empty;
+                    _theme = option.BuiltInTheme.Value;
+                    RaisePropertyChanged(nameof(Theme));
+                }
+                ApplyAppTheme(option.BuiltInTheme.Value);
+            }
+        }
+        finally
+        {
+            _isSynchronizingTheme = false;
+        }
+    }
+
+    private void OnActiveThemeChanged(string? activeId)
+    {
+        if (string.IsNullOrEmpty(activeId) || _isSynchronizingTheme) return;
+        try
+        {
+            _isSynchronizingTheme = true;
+            RefreshAvailableThemes();
+            var match = AvailableThemes.FirstOrDefault(t => string.Equals(t.Id, activeId, StringComparison.OrdinalIgnoreCase));
+            if (match != null)
+            {
+                _selectedThemeOption = match;
+                if (!match.IsBuiltIn)
+                {
+                    CustomThemeId = match.Id;
+                }
+                else if (match.BuiltInTheme.HasValue)
+                {
+                    CustomThemeId = string.Empty;
+                    _theme = match.BuiltInTheme.Value;
+                    RaisePropertyChanged(nameof(Theme));
+                }
+                RaisePropertyChanged(nameof(SelectedThemeOption));
+            }
+        }
+        finally
+        {
+            _isSynchronizingTheme = false;
+        }
+    }
+
+    public static void ApplyThemeManifest(ThemeManifest manifest, IThemeParser parser)
+    {
+        ArgumentNullException.ThrowIfNull(manifest);
+        ArgumentNullException.ThrowIfNull(parser);
+
+        if (manifest.IsBuiltIn)
+        {
+            var builtInEnum = manifest.Id.ToLowerInvariant() switch
+            {
+                "light" => FoliconThemes.Light,
+                "dark" => FoliconThemes.Dark,
+                "the-butterfly" => FoliconThemes.TheButterfly,
+                "tokyo-neon" => FoliconThemes.TokyoNeon,
+                "mica-dark-obsidian" => FoliconThemes.MicaDarkObsidian,
+                "nordic-pine" => FoliconThemes.NordicPine,
+                "cinema-35mm" => FoliconThemes.Cinema35mm,
+
+                "love" => FoliconThemes.Love,
+                "corporate" => FoliconThemes.Corporate,
+
+                _ => FoliconThemes.System
+            };
+            ApplyAppTheme(builtInEnum);
+            return;
+        }
+
+        ResourceDictionary customDict;
+        if (!string.IsNullOrEmpty(manifest.XamlPackageFile) && !string.IsNullOrEmpty(manifest.PackageDirectory))
+        {
+            var xamlPath = Path.Combine(manifest.PackageDirectory, manifest.XamlPackageFile);
+            customDict = File.Exists(xamlPath) ? parser.LoadPackageResourceDictionary(xamlPath) : parser.SynthesizeResourceDictionary(manifest, _activeThemeStorageService?.GetUserCustomization(manifest.Id));
+        }
+        else
+        {
+            customDict = parser.SynthesizeResourceDictionary(manifest, _activeThemeStorageService?.GetUserCustomization(manifest.Id));
+        }
+
+        ApplyCommunityTheme(manifest, customDict);
+    }
+
+    /// <summary>
+    /// Creates a memento snapshot of the current active theme state for transient live preview rollback.
+    /// </summary>
+    public static ThemeStateSnapshot CaptureThemeSnapshot()
+    {
+        return new ThemeStateSnapshot
+        {
+            ActiveThemeManifest = ActiveThemeManifest,
+            ActiveThemeId = ActiveThemeId,
+            CurrentTheme = CurrentTheme,
+            UsingSystemTheme = ThemeManager.Current.UsingSystemTheme
+        };
+    }
+
+    /// <summary>
+    /// Restores theme state from a previously captured memento snapshot.
+    /// </summary>
+    public static void RestoreThemeSnapshot(ThemeStateSnapshot snapshot, IThemeParser? parser = null)
+    {
+        ArgumentNullException.ThrowIfNull(snapshot);
+
+        if (snapshot.ActiveThemeManifest != null)
+        {
+            ApplyThemeManifest(snapshot.ActiveThemeManifest, parser ?? new HybridThemeParser());
+        }
+        else
+        {
+            ApplyAppTheme(snapshot.CurrentTheme);
+        }
+    }
+
+    public static bool IsDarkTheme(FoliconThemes theme)
+    {
+        return theme switch
+        {
+            FoliconThemes.Light => false,
+            FoliconThemes.Dark => true,
+            FoliconThemes.TheButterfly => true,
+            FoliconThemes.TokyoNeon => true,
+            FoliconThemes.MicaDarkObsidian => true,
+            FoliconThemes.NordicPine => true,
+            FoliconThemes.Cinema35mm => true,
+
+            FoliconThemes.Love => true,
+            FoliconThemes.Corporate => true,
+            FoliconThemes.System => IsSystemThemeDark(),
+            _ => IsSystemThemeDark()
+        };
+    }
+
+    public static bool IsSystemThemeDark()
+    {
+        try
+        {
+            return ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Dark;
+        }
+        catch
+        {
+            return true;
+        }
+    }
+
+    public static bool IsCurrentThemeDark() => IsDarkTheme(CurrentTheme);
+
+    private static void UpdateThemeBrushes(bool isDark, ResourceDictionary? customDict)
+    {
+        if (Application.Current == null) return;
+
+        var res = Application.Current.Resources;
+        if (customDict != null)
+        {
+            SyncResource(res, customDict, "WindowBackdropBrush");
+            SyncResource(res, customDict, "HeroCardBackgroundBrush");
+            SyncResource(res, customDict, "HeroCardBorderBrush");
+            SyncResource(res, customDict, "PrimaryActionGradientBrush");
+            SyncResource(res, customDict, "HeaderGradientBrush");
+            SyncResource(res, customDict, "CardBorderGradientBrush");
+            SyncResource(res, customDict, "FolderBadgeGradientBrush");
+
+            SyncResource(res, customDict, "ThemeWallpaperBrush");
+
+
+
+            SyncResource(res, customDict, "ThemeCardMovieBrush");
+
+            SyncResource(res, customDict, "ThemeCardTvBrush");
+
+            SyncResource(res, customDict, "ThemeCardGameBrush");
+
+            SyncResource(res, customDict, "ThemeCardAutoBrush");
+
+            SyncResource(res, customDict, "ThemeVignetteBrush");
+
+            SyncResource(res, customDict, "ThemeGlowEffect");
+
+            SyncResource(res, customDict, "ThemeCtaGlowEffect");
+
+            SyncResource(res, customDict, "ActiveCardGlowEffect");
+
+            SyncResource(res, customDict, "ThemeBrandingGeometry");
+        }
+        else
+        {
+            res["WindowBackdropBrush"] = isDark ? DarkBackdropBrush : LightBackdropBrush;
+            res["HeroCardBackgroundBrush"] = isDark ? DarkHeroCardBg : LightHeroCardBg;
+            res["HeroCardBorderBrush"] = isDark ? DarkHeroCardBorder : LightHeroCardBorder;
+            res["PrimaryActionGradientBrush"] = PrimaryActionBrush;
+            res["HeaderGradientBrush"] = isDark ? DarkHeaderGradient : LightHeaderGradient;
+            res["CardBorderGradientBrush"] = isDark ? DarkHeroCardBorder : LightHeroCardBorder;
+            res["FolderBadgeGradientBrush"] = PrimaryActionBrush;
+
+            res["ThemeWallpaperBrush"] = Brushes.Transparent;
+            res["ThemeCardMovieBrush"] = Brushes.Transparent;
+            res["ThemeCardTvBrush"] = Brushes.Transparent;
+            res["ThemeCardGameBrush"] = Brushes.Transparent;
+            res["ThemeCardAutoBrush"] = Brushes.Transparent;
+            res["ThemeVignetteBrush"] = Brushes.Transparent;
+
+            var zeroGlow = new DropShadowEffect { BlurRadius = 0, ShadowDepth = 0, Opacity = 0 };
+            zeroGlow.Freeze();
+            res["ThemeGlowEffect"] = zeroGlow;
+            res["ThemeCtaGlowEffect"] = zeroGlow;
+            res["ActiveCardGlowEffect"] = zeroGlow;
+        }
+    }
+
+    private static void SyncResource(ResourceDictionary target, ResourceDictionary source, string key)
+    {
+        if (source.Contains(key))
+        {
+            target[key] = source[key];
+        }
+        else
+        {
+            if (key.EndsWith("Brush", StringComparison.OrdinalIgnoreCase))
+            {
+                target[key] = Brushes.Transparent;
+            }
+            else if (key.EndsWith("Effect", StringComparison.OrdinalIgnoreCase))
+            {
+                var zeroGlow = new DropShadowEffect { BlurRadius = 0, ShadowDepth = 0, Opacity = 0 };
+                zeroGlow.Freeze();
+                target[key] = zeroGlow;
+            }
+            else
+            {
+                target.Remove(key);
+            }
+        }
+    }
+
+    private static readonly Dictionary<string, ResourceDictionary> CustomThemeDictionaries = new(StringComparer.OrdinalIgnoreCase);
+
+    private static ResourceDictionary? ApplyCustomThemeOverride(string? themeXamlName)
+    {
+        try
+        {
+            if (Application.Current == null)
+            {
+                return null;
+            }
+
+            var merged = Application.Current.Resources.MergedDictionaries;
+            if (_currentCommunityThemeDictionary != null)
+            {
+                merged.Remove(_currentCommunityThemeDictionary);
+                _currentCommunityThemeDictionary = null;
+            }
+
+            for (var i = merged.Count - 1; i >= 0; i--)
+            {
+                var dict = merged[i];
+                if (dict.Source != null && (
+                    dict.Source.OriginalString.Contains("ThemeTheButterfly", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeTokyoNeon", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeMicaDarkObsidian", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeNordicPine", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeCinema35mm", StringComparison.OrdinalIgnoreCase) ||
+
+                    dict.Source.OriginalString.Contains("ThemeLove", StringComparison.OrdinalIgnoreCase) ||
+                    dict.Source.OriginalString.Contains("ThemeCorporate", StringComparison.OrdinalIgnoreCase)))
+                {
+                    merged.RemoveAt(i);
+                }
+            }
+
+            if (string.IsNullOrEmpty(themeXamlName))
+            {
+                return null;
+            }
+
+            if (!CustomThemeDictionaries.TryGetValue(themeXamlName, out var themeDict))
+            {
+                themeDict = new ResourceDictionary
+                {
+                    Source = new Uri($"pack://application:,,,/FoliCon;component/XamlResources/{themeXamlName}", UriKind.Absolute)
+                };
+                CustomThemeDictionaries[themeXamlName] = themeDict;
+            }
+            merged.Add(themeDict);
+            return themeDict;
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Failed to apply custom theme override for {ThemeXaml}", themeXamlName);
+            return null;
+        }
+    }
+
     public void Dispose()
     {
+        try
+        {
+            NetworkChange.NetworkAvailabilityChanged -= OnNetworkChanged;
+            NetworkChange.NetworkAddressChanged -= OnNetworkChanged;
+            try
+            {
+                NetworkInformation.NetworkStatusChanged -= OnWinRtNetworkStatusChanged;
+            }
+            catch
+            {
+                // ignored
+            }
+
+            if (_networkCheckTimer != null)
+            {
+                _networkCheckTimer.Stop();
+                _networkCheckTimer = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.Warn(ex, "Error while unregistering network event handlers in Dispose.");
+        }
+
         _tmdbClient?.Dispose();
         GC.SuppressFinalize(this);
     }

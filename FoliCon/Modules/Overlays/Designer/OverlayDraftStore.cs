@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using FoliCon.Modules.Overlays.Internal;
 using JsonException = Newtonsoft.Json.JsonException;
 
 namespace FoliCon.Modules.Overlays.Designer;
@@ -50,7 +51,7 @@ public class OverlayDraftStore(string? draftsRoot = null)
     {
         ArgumentNullException.ThrowIfNull(document);
 
-        if (!Internal.OverlayValidator.IsValidId(document.Id))
+        if (!OverlayValidator.IsValidId(document.Id))
         {
             throw new InvalidOperationException(
                 string.IsNullOrWhiteSpace(document.Id)
@@ -139,7 +140,7 @@ public class OverlayDraftStore(string? draftsRoot = null)
 
     /// <summary>True when a draft folder exists for this overlay ID.</summary>
     public virtual bool Exists(string draftId) =>
-        Internal.OverlayValidator.IsValidId(draftId)
+        OverlayValidator.IsValidId(draftId)
         && File.Exists(Path.Combine(_draftsRoot, draftId, OverlayConstants.overlayJsonFileName));
 
     /// <summary>Path to a draft's <c>overlay.json</c>, for handing to the package loader.</summary>
@@ -164,7 +165,7 @@ public class OverlayDraftStore(string? draftsRoot = null)
 
     private static void EnsureValidDraftId(string draftId)
     {
-        if (!Internal.OverlayValidator.IsValidId(draftId))
+        if (!OverlayValidator.IsValidId(draftId))
         {
             throw new ArgumentException(
                 "Draft IDs must contain only lowercase letters, digits, and single hyphens between characters.",
@@ -173,11 +174,11 @@ public class OverlayDraftStore(string? draftsRoot = null)
     }
 
     private static void CopyReferencedAssets(OverlayDesignerDocument document, string stagingPath) =>
-        Internal.OverlayPackageIo.CopyReferencedAssets(document, stagingPath, requireAll: false);
+        OverlayPackageIo.CopyReferencedAssets(document, stagingPath, requireAll: false);
 
     /// <summary>Swaps the staged draft into place, keeping the previous copy until it succeeds.</summary>
     private static void Commit(string stagingPath, string finalPath) =>
-        Internal.OverlayPackageIo.Commit(stagingPath, finalPath);
+        OverlayPackageIo.Commit(stagingPath, finalPath);
 
-    private static void SafeDelete(string path) => Internal.OverlayPackageIo.SafeDelete(path);
+    private static void SafeDelete(string path) => OverlayPackageIo.SafeDelete(path);
 }

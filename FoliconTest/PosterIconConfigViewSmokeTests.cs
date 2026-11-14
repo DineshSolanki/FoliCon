@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using FoliCon.Views;
-using Prism.Mvvm;
 
 namespace FoliconTest;
 

@@ -12,7 +12,7 @@
              xmlns:views="clr-namespace:FoliCon.Views"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ManualExplorerViewModel }"
-             Background="{DynamicResource RegionBrush}"
+             Background="Transparent"
              x:Name="Root">
     <UserControl.Resources>
         <hc:BindingProxy x:Key="Proxy" Value="{Binding}" />
@@ -82,7 +82,7 @@
                                            Foreground="White"/>
                             </Border>
 
-                            <TextBlock Text="Click to select • Double-click to choose"
+                            <TextBlock Text="Click to select â€¢ Double-click to choose"
                                        FontSize="11"
                                        Foreground="{DynamicResource SecondaryTextBrush}"
                                        VerticalAlignment="Center"/>

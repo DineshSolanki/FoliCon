@@ -1,4 +1,6 @@
 ﻿#nullable enable
+using System.Text;
+
 namespace FoliCon.Modules.Overlays.Designer;
 
 /// <summary>
@@ -273,7 +275,7 @@ public class OverlayTemplateProvider(IOverlayProvider overlayProvider)
             return string.Empty;
         }
 
-        var builder = new System.Text.StringBuilder(displayName.Length);
+        var builder = new StringBuilder(displayName.Length);
         var lastWasHyphen = false;
 
         foreach (var ch in displayName.Trim().ToLowerInvariant())
